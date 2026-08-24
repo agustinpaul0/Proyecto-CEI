@@ -263,18 +263,19 @@ diferencia de Java, `.5` no es un float válido en MiniJava — es el token `pun
 
 ### 6.5. Palabras clave — por qué no tienen autómata propio
 
-Las 22 palabras clave (`class`, `extends`, `interface`, `implements`, `static`, `boolean`, `char`,
+Las 21 palabras clave (`class`, `extends`, `interface`, `implements`, `static`, `boolean`, `char`,
 `int`, `void`, `public`, `if`, `else`, `while`, `return`, `var`, `this`, `new`, `null`, `true`,
-`false`, `float`, `double` — las últimas dos no figuran en los PDFs de la cátedra; se agregan por la
-regla "ante la duda, como en Java" de `AGENTS.md` §0.1, confirmado además directamente por el
-profesor) **no** se modelan con un autómata dedicado — hacerlo requeriría casi un estado por letra y
-fusionar esos estados con los del autómata de identificadores, generando un autómata enorme y frágil.
-En cambio, se usa la técnica estándar: se reconoce un `idMV` normalmente y, antes de emitirlo, se
-consulta una tabla de lookup; si el lexema coincide con una palabra clave, se emite esa palabra
-clave. **Caso especial**: `float` y `double` son dos lexemas distintos pero un único `TipoDeToken`
-(`PR_FLOAT`) — el profesor indicó tratarlos como un solo tipo de dato, así que la tabla mapea ambos
-lexemas al mismo tipo. Sigue siendo un solo lookup; la única particularidad es que dos entradas del
-mapa apuntan al mismo valor en vez de a valores distintos.
+`false`, `float` — la última no figura en los PDFs de la cátedra; se agrega por confirmación directa
+del profesor) **no** se modelan con un autómata dedicado — hacerlo requeriría casi un estado por
+letra y fusionar esos estados con los del autómata de identificadores, generando un autómata enorme
+y frágil. En cambio, se usa la técnica estándar: se reconoce un `idMV` normalmente y, antes de
+emitirlo, se consulta una tabla de lookup; si el lexema coincide con una palabra clave, se emite esa
+palabra clave.
+
+**`double` no es palabra clave.** MiniJava tiene un único tipo de dato de punto flotante (`float`,
+por indicación del profesor) — `double` sigue siendo un identificador común. Los sufijos `f`/`F`/
+`d`/`D` del literal float (§6.4, heredados de Java) son la única forma en que "double" aparece en la
+sintaxis de MiniJava, y no requieren que la palabra `double` sea reservada.
 
 ### 6.6. Tres casos especiales — corrección de una confusión anterior
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -154,18 +155,28 @@ class AnalizadorLexicoTest {
             "char|PR_CHAR", "int|PR_INT", "void|PR_VOID", "public|PR_PUBLIC",
             "if|PR_IF", "else|PR_ELSE", "while|PR_WHILE", "return|PR_RETURN",
             "var|PR_VAR", "this|PR_THIS", "new|PR_NEW", "null|PR_NULL",
-            "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT", "double|PR_FLOAT",
+            "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT",
     })
-    // float y double se agregan como palabra reservada por confirmación directa
-    // del profesor (no figura en los PDFs de la cátedra) — AGENTS.md §5. También por
-    // indicación del profesor, "double" tokeniza como PR_FLOAT (mismo tipo que "float":
-    // se tratan como un único tipo de dato float, no dos).
-    void reconoceLasVeintidosPalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
+    // float se agrega como palabra reservada por confirmación directa del
+    // profesor (no figura en los PDFs de la cátedra) — AGENTS.md §5. "double"
+    // NO es palabra clave: el profesor aclaró que float y double son "lo
+    // mismo" (un único tipo float en MiniJava) — no que "double" también
+    // deba reservarse como palabra, sino que el literal float ya cubre
+    // ambos casos vía sus sufijos f/F/d/D (ver floats.java, §6.4).
+    void reconoceLasVeintiunaPalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
             throws Exception {
         Token token = crearAnalizador(dir, fuente).proximoToken();
 
         assertEquals(TipoDeToken.valueOf(tipoEsperado), token.tipo());
         assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void dobleNoEsPalabraClaveEsUnIdentificadorComun(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "double").proximoToken();
+
+        assertEquals(TipoDeToken.ID_MV, token.tipo());
+        assertEquals("double", token.lexema());
     }
 
     @Test
@@ -612,5 +623,35 @@ class AnalizadorLexicoTest {
 
         assertEquals(TipoDeToken.LIT_STRING, token.tipo());
         assertEquals(fuente, token.lexema());
+    }
+
+    // JLS §3.10.7 (verificado contra la especificación, no de memoria): en un
+    // litString sólo son válidos los escapes b,s,t,n,f,r,",',\ y un dígito
+    // octal 0-7 (más el escape unicode, que ya tiene su propio test arriba)
+    // — cualquier otro carácter tras la barra es error de compilación en
+    // Java real. A
+    // diferencia de charLiteral, la cátedra NO dice "\x con x cualquiera"
+    // para litString (Aspectos Lexicos §2.3.3 sólo cita a Java para el caso
+    // \"), así que acá aplica la regla "ante la duda, como en Java" en vez
+    // de la permisividad explícita que sí tiene charLiteral (AGENTS.md §0.1).
+    @ParameterizedTest
+    @ValueSource(strings = {"b", "s", "t", "n", "f", "r", "\"", "'", "\\", "0", "7"})
+    void stringLiteralAceptaSoloLosEscapesValidosDeJava(String escape, @TempDir Path dir)
+            throws Exception {
+        String fuente = "\"antes \\" + escape + " despues\"";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"q", "x", "d", "8", "9", "A"})
+    void stringLiteralConEscapeInvalidoSegunJavaEsError(String escape, @TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"antes \\" + escape + " despues\"");
+
+        org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 }

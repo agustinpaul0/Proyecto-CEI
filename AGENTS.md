@@ -30,8 +30,11 @@ de Java**, no inventar una regla propia. Dos aplicaciones concretas ya resueltas
 
 - El escape Unicode acepta repetir el marcador `u` una o más veces (`\uu0041`, `\uuu0041`, ...) —
   así lo define el JLS §3.3.
-- `float` y `double` son palabras reservadas (ver §5) — en Java real lo son; confirmado además
-  explícitamente por la cátedra en una consulta directa (no escrito en los PDFs).
+- `float` es palabra reservada (ver §5) — confirmado por el profesor en una consulta directa (no
+  escrito en los PDFs). `double` **no** lo es: el profesor aclaró que MiniJava trata float y double
+  como "lo mismo" (un único tipo `float`), no que ambas palabras deban reservarse — `double` sigue
+  siendo un identificador común. El literal float sí conserva los sufijos `f`/`F`/`d`/`D` heredados
+  de Java (§6.4), que es donde realmente "aparece" el concepto double en la sintaxis.
 
 Si en el futuro la cátedra publica una regla explícita que contradiga el comportamiento de Java, esa
 regla explícita gana — esto es sólo el criterio de desempate cuando no hay ninguna.
@@ -181,7 +184,7 @@ estado inicial, sin una clase por símbolo.
 
 | Elemento | Regla | Token(s) |
 |---|---|---|
-| Palabras clave (22 lexemas, 21 tipos de token) | lookup tras armar un identificador (Clase 02, slide 62-63: **no** se modelan como AF propio, para evitar fusionar decenas de estados con los de identificador) | `pr_class`, `pr_extends`, `pr_interface`, `pr_implements`, `pr_static`, `pr_boolean`, `pr_char`, `pr_int`, `pr_void`, `pr_public`, `pr_if`, `pr_else`, `pr_while`, `pr_return`, `pr_var`, `pr_this`, `pr_new`, `pr_null`, `pr_true`, `pr_false`, `pr_float` (lexemas `float` **y** `double`) |
+| Palabras clave (21) | lookup tras armar un identificador (Clase 02, slide 62-63: **no** se modelan como AF propio, para evitar fusionar decenas de estados con los de identificador) | `pr_class`, `pr_extends`, `pr_interface`, `pr_implements`, `pr_static`, `pr_boolean`, `pr_char`, `pr_int`, `pr_void`, `pr_public`, `pr_if`, `pr_else`, `pr_while`, `pr_return`, `pr_var`, `pr_this`, `pr_new`, `pr_null`, `pr_true`, `pr_false`, `pr_float` |
 | idClase / idInterfaz | letra mayúscula + uno o más de (letra, dígito, `_`) — mínimo 2 caracteres | `idClase` |
 | idGen (parám. genérico) | una única letra mayúscula | `idGen` |
 | idMV (método/variable) | letra minúscula + cero o más de (letra, dígito, `_`) | `idMV` |
@@ -196,15 +199,18 @@ estado inicial, sin una clase por símbolo.
 Las expresiones regulares exactas de cada token (todas, incluidos los símbolos de un solo carácter)
 y sus autómatas están en `documentacion/arquitectura.md` §Especificación léxica formal.
 
-**`float` y `double` como palabras reservadas, unificadas en un solo tipo**: no figuran en ningún PDF
-de la cátedra (se buscó explícitamente); se agregan por la regla de §0.1 (en Java son reservadas) y
-por confirmación directa del profesor en una consulta puntual del usuario. Antes de este cambio
-ninguna de las dos era palabra clave — un identificador `float`/`double` habría tokenizado como
-`idMV`; ahora ambas tokenizan como `pr_float` y no pueden usarse como nombre de variable/método/
-clase. **`double` no tiene un `TipoDeToken` propio**: por indicación explícita del profesor, MiniJava
-trata `float` y `double` como un único tipo de dato — `TablaDePalabrasClave` mapea el lexema
-`"double"` directamente a `TipoDeToken.PR_FLOAT` (mismo tipo que el lexema `"float"`). El lexema
-reportado sigue siendo el texto crudo (`double`), sólo el `TipoDeToken` es compartido.
+**`float` como palabra reservada**: no figura en ningún PDF de la cátedra (se buscó explícitamente);
+se agrega por confirmación directa del profesor en una consulta puntual del usuario. Antes de este
+cambio no era palabra clave — un identificador `float` habría tokenizado como `idMV`; ahora tokeniza
+como `pr_float` y no puede usarse como nombre de variable/método/clase.
+
+**`double` NO es palabra clave.** Primera versión de esta decisión (revertida): se había agregado
+`double` como palabra reservada mapeada al mismo `TipoDeToken.PR_FLOAT` que `float`, interpretando
+"tratemos float y double como lo mismo" como "ambas palabras son reservadas". El usuario corrigió
+esa lectura: lo que el profesor quiso decir es que MiniJava sólo tiene **un** tipo de dato de punto
+flotante (`float`), no que la palabra `double` deba existir como reservada. `double` sigue siendo un
+identificador común (`idMV`) — sólo los **sufijos** `f`/`F`/`d`/`D` del literal float (§6.4, heredados
+tal cual de Java) son donde el concepto "double" realmente aparece en la sintaxis de MiniJava.
 
 **Corrección de una imprecisión anterior**: en un intento previo se descartó un archivo pensado para
 pegar en una herramienta externa de generación de autómatas (no se va a usar esa herramienta — no
