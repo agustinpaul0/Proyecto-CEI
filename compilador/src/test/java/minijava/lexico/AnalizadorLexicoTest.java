@@ -154,9 +154,13 @@ class AnalizadorLexicoTest {
             "char|PR_CHAR", "int|PR_INT", "void|PR_VOID", "public|PR_PUBLIC",
             "if|PR_IF", "else|PR_ELSE", "while|PR_WHILE", "return|PR_RETURN",
             "var|PR_VAR", "this|PR_THIS", "new|PR_NEW", "null|PR_NULL",
-            "true|PR_TRUE", "false|PR_FALSE",
+            "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT", "double|PR_FLOAT",
     })
-    void reconoceLasVeintePalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
+    // float y double se agregan como palabra reservada por confirmación directa
+    // del profesor (no figura en los PDFs de la cátedra) — AGENTS.md §5. También por
+    // indicación del profesor, "double" tokeniza como PR_FLOAT (mismo tipo que "float":
+    // se tratan como un único tipo de dato float, no dos).
+    void reconoceLasVeintidosPalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
             throws Exception {
         Token token = crearAnalizador(dir, fuente).proximoToken();
 
@@ -587,5 +591,26 @@ class AnalizadorLexicoTest {
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+    }
+
+    // El JLS (§3.3) permite repetir el marcador 'u' del escape Unicode
+    // (\uu0041, \uuu0041, ...) — semántica heredada tal cual en MiniJava
+    // ante la falta de especificación propia de la cátedra (AGENTS.md §5).
+    @Test
+    void charLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
+        String fuente = "'\\" + "uu0041'";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void stringLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
+        String fuente = "\"letra \\" + "uuuu00F1 final\"";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
     }
 }

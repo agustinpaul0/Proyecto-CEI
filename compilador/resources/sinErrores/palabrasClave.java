@@ -2,6 +2,7 @@ class extends interface implements static
 boolean char int void public
 if else while return var
 this new null true false
+float double
 
 //#class,1
 //#extends,1
@@ -23,4 +24,6 @@ this new null true false
 //#null,4
 //#true,4
 //#false,4
-//#$,27
+//#float,5
+//#double,5
+//#$,30

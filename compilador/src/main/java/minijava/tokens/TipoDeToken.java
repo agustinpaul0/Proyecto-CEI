@@ -6,7 +6,7 @@ public enum TipoDeToken {
     PR_CHAR("pr_char"), PR_INT("pr_int"), PR_VOID("pr_void"), PR_PUBLIC("pr_public"),
     PR_IF("pr_if"), PR_ELSE("pr_else"), PR_WHILE("pr_while"), PR_RETURN("pr_return"),
     PR_VAR("pr_var"), PR_THIS("pr_this"), PR_NEW("pr_new"), PR_NULL("pr_null"),
-    PR_TRUE("pr_true"), PR_FALSE("pr_false"),
+    PR_TRUE("pr_true"), PR_FALSE("pr_false"), PR_FLOAT("pr_float"),
 
     ID_CLASE("idClase"), ID_GEN("idGen"), ID_MV("idMV"),
 

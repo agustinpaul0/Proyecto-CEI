@@ -8,7 +8,7 @@ import minijava.lexico.ResultadoDeTransicion;
 
 // Tras la barra invertida dentro de un charLiteral: cualquier carácter es
 // válido como escapado, salvo EOF (no hay nada que escapar). 'u' dispara el
-// escape Unicode de 4 hex dígitos (logro Unicodes).
+// escape Unicode (logro Unicodes) — ver EstadoMarcadorUnicode.
 public final class EstadoCharEscapado implements EstadoLexico {
 
     public static final EstadoCharEscapado INSTANCIA = new EstadoCharEscapado();
@@ -23,7 +23,7 @@ public final class EstadoCharEscapado implements EstadoLexico {
         }
         if (contexto.getCaracterActual() == 'u') {
             contexto.avanzar();
-            return new Continuar(new EstadoEscapeUnicode(4, EstadoCharCerrando.INSTANCIA));
+            return new Continuar(new EstadoMarcadorUnicode(EstadoCharCerrando.INSTANCIA));
         }
         contexto.avanzar();
         return new Continuar(EstadoCharCerrando.INSTANCIA);

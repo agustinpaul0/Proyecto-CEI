@@ -27,7 +27,11 @@ public final class TablaDePalabrasClave {
             Map.entry("new", TipoDeToken.PR_NEW),
             Map.entry("null", TipoDeToken.PR_NULL),
             Map.entry("true", TipoDeToken.PR_TRUE),
-            Map.entry("false", TipoDeToken.PR_FALSE));
+            Map.entry("false", TipoDeToken.PR_FALSE),
+            // "double" tokeniza como PR_FLOAT: por indicación directa del profesor, MiniJava
+            // trata float y double como un único tipo de dato float (AGENTS.md §5).
+            Map.entry("float", TipoDeToken.PR_FLOAT),
+            Map.entry("double", TipoDeToken.PR_FLOAT));
 
     private TablaDePalabrasClave() {
     }

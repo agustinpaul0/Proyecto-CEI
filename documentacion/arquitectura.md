@@ -211,9 +211,15 @@ Todos los tokens del lenguaje, sin omitir ninguno (incluidos los símbolos de un
 | `idClase` | `LetraMayus (Letra\|Digito\|_)+` | `Alpha`, `A1` |
 | `idMV` | `LetraMin (Letra\|Digito\|_)*` | `v1`, `x` |
 | `intLiteral` | `Digito Digito? Digito? Digito? Digito? Digito? Digito? Digito? Digito?` (1 a 9 dígitos) | `543` |
-| `charLiteral` | `'(X)' \| '\Y'` — `X` = cualquier carácter salvo `\` y `'`; `Y` = cualquier carácter | `'a'`, `'\n'` |
-| `litString` | `"(Z\|\W)*"` — `Z` = cualquier carácter salvo `\`, `"` y salto de línea; `W` = cualquier carácter | `"hola"` |
+| `charLiteral` | `'(X)' \| '\Y' \| '\U'` — `X` = cualquier carácter salvo `\` y `'`; `Y` = cualquier carácter salvo `u`; `U` = escape Unicode, ver abajo | `'a'`, `'\n'` |
+| `litString` | `"(Z\|\W\|\U)*"` — `Z` = cualquier carácter salvo `\`, `"` y salto de línea; `W` = cualquier carácter salvo `u`; `U` = escape Unicode, ver abajo | `"hola"`, `"letra ñ"` |
 | `floatLiteral` | ver §6.4 | `1.5`, `1e5`, `1.5E-3f` |
+
+**Escape Unicode (`U` en las dos ER de arriba)**: `\u+H H H H` — `H` = dígito hexadecimal
+(`[0-9a-fA-F]`). El marcador `u` se repite **una o más veces** (no una sola), semántica heredada tal
+cual de Java (JLS §3.3) por la regla de `AGENTS.md` §0.1: `\u0041`, `\uu0041` y `\uuuu0041` son
+todos escapes válidos y equivalentes. `EstadoMarcadorUnicode` consume la corrida de `u`; `EstadoEscapeUnicode`
+exige exactamente 4 hex dígitos después de la última.
 
 ### 6.2. Puntuación (todos los símbolos de un carácter)
 
@@ -257,13 +263,18 @@ diferencia de Java, `.5` no es un float válido en MiniJava — es el token `pun
 
 ### 6.5. Palabras clave — por qué no tienen autómata propio
 
-Las 20 palabras clave (`class`, `extends`, `interface`, `implements`, `static`, `boolean`, `char`,
+Las 22 palabras clave (`class`, `extends`, `interface`, `implements`, `static`, `boolean`, `char`,
 `int`, `void`, `public`, `if`, `else`, `while`, `return`, `var`, `this`, `new`, `null`, `true`,
-`false`) **no** se modelan con un autómata dedicado — hacerlo requeriría casi un estado por letra y
+`false`, `float`, `double` — las últimas dos no figuran en los PDFs de la cátedra; se agregan por la
+regla "ante la duda, como en Java" de `AGENTS.md` §0.1, confirmado además directamente por el
+profesor) **no** se modelan con un autómata dedicado — hacerlo requeriría casi un estado por letra y
 fusionar esos estados con los del autómata de identificadores, generando un autómata enorme y frágil.
 En cambio, se usa la técnica estándar: se reconoce un `idMV` normalmente y, antes de emitirlo, se
 consulta una tabla de lookup; si el lexema coincide con una palabra clave, se emite esa palabra
-clave en vez de `idMV`.
+clave. **Caso especial**: `float` y `double` son dos lexemas distintos pero un único `TipoDeToken`
+(`PR_FLOAT`) — el profesor indicó tratarlos como un solo tipo de dato, así que la tabla mapea ambos
+lexemas al mismo tipo. Sigue siendo un solo lookup; la única particularidad es que dos entradas del
+mapa apuntan al mismo valor en vez de a valores distintos.
 
 ### 6.6. Tres casos especiales — corrección de una confusión anterior
 
@@ -311,7 +322,12 @@ stateDiagram-v2
 **El límite de 9 dígitos de `intLiteral`.** Toda repetición acotada (entre 1 y N repeticiones) es
 regular — no hace falta ningún truco: alcanza con una cadena lineal de 9 estados, todos terminales,
 sin bucle. La ER es simplemente `Digito Digito? Digito? Digito? Digito? Digito? Digito? Digito?
-Digito?` (un dígito obligatorio más 8 opcionales). La implementación real usa una variante
+Digito?` (un dígito obligatorio más 8 opcionales) — equivalente a la notación de repetición acotada
+`Digito{1,9}` que el profesor describió como "una estrella de Kleene de aridad 1-9": misma ER, sólo
+que escrita con el operador de cota en vez de expandir los 9 términos a mano. Ojo con la diferencia:
+`Digito*` (Kleene sin cota) sería **incorrecto** acá — el límite de 9 es exactamente lo que se está
+modelando, así que la cota tiene que estar explícita, ya sea expandida o como `{1,9}`. La implementación
+real usa una variante
 observacionalmente equivalente pero más simple de programar: un único estado con bucle (como el de
 un entero sin límite) que consume **toda** la corrida de dígitos y, recién al terminar, valida por
 código que no haya más de 9 — necesario además porque, si el siguiente carácter es un `.` o una
@@ -327,7 +343,7 @@ en el noveno dígito rompería esa continuación.
 | Good Job! I | Que la entrega tenga sólo errores menores | Idem |
 | Manejador de Archivos Eficiente | Leer char a char (no por líneas), sólo con `java.io` | `ManejadorDeArchivoEficiente` — ver §8 para el porqué es obligatorio, no opcional |
 | Floats I | Reconocer literales float, con la salvedad de empezar siempre con dígito | Estados `EstadoFloat*` (§6.4) |
-| Unicodes | Caracteres Unicode crudos en char/string, más la secuencia escapada de 4 hex dígitos | Los estados de char/string aceptan cualquier carácter no reservado; `EstadoEscapeUnicode` valida los 4 hex tras `\u` |
+| Unicodes | Caracteres Unicode crudos en char/string, más la secuencia escapada de 4 hex dígitos | Los estados de char/string aceptan cualquier carácter no reservado; `EstadoMarcadorUnicode` consume el marcador `u` (una o más veces — JLS §3.3, regla "ante la duda, como en Java" de `AGENTS.md` §0.1) y `EstadoEscapeUnicode` valida los 4 hex que le siguen |
 | Multi-detección de Errores | No terminar en el primer error, reportar todos en una corrida | `AnalizadorLexico.recuperarDeError()` + bucle de recuperación en `ModuloPrincipal` (§5.2) |
 | Reporte de Error Elegante | Mostrar la línea y apuntar con `^` al error | `FormateadorDeError` (§5.3) — este proyecto además agrega la **columna**, más allá de lo pedido |
 
@@ -370,7 +386,9 @@ compilador/
     │       └── lexico/              ← AnalizadorLexico, ContextoLexico, TablaDePalabrasClave
     │           └── estados/         ← un archivo por estado del autómata (§4)
     └── test/java/
-        ├── catedra/                 ← los 2 testers de la cátedra (no son entregables, se editan libre)
+        ├── catedra/                 ← los 2 testers originales de la cátedra, sin más cambio que el
+        │                              paquete y el import de Main (no son entregables, se pueden
+        │                              editar libremente, pero se dejaron tal cual las entregó la cátedra)
         └── minijava/                ← tests propios, un paquete espejo por cada uno de arriba
 ```
 
@@ -401,6 +419,11 @@ IntelliJ importa el proyecto Maven correctamente.
 
 ## 12. Ver también
 
-- [`AGENTS.md`](../AGENTS.md) — memoria operativa del proyecto: decisiones tomadas, invariantes
-  técnicas, estrategia de testing detallada, bitácora de decisiones con fecha y motivo.
-- [`todos/todos.md`](../todos/todos.md) — qué queda pendiente de verificar o implementar ahora mismo.
+- [`patron-state.md`](patron-state.md) — profundiza el §4 de este documento: cómo interactúan
+  `EstadoLexico`, `ContextoLexico`, `Continuar`/`Emitir` y el driver, con el criterio exacto de
+  cuándo cada estado es un singleton compartido y cuándo se construye con `new`.
+
+Este documento es autocontenido (§ arriba) y no depende de `AGENTS.md` para entenderse. Es
+`AGENTS.md` el que enlaza hacia acá, no al revés — ver ahí la memoria operativa completa del
+proyecto (convenciones de la cátedra, invariantes técnicas, estrategia de testing, historial en
+`git log`).

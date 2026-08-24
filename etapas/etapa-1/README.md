@@ -10,3 +10,8 @@ El Manejador de Archivos otorgado por la cátedra es un template: pueden modific
 
 Por último, todo lo que NO esté especificado para MiniJava tiene comportamiento por defecto igual al de Java; es decir, todo lo que no esté debidamente especificado, es igual a Java.
 
+---
+
+**Nota del proyecto (no es parte de la consigna original de la cátedra):** cómo se interpretó y
+aplicó cada punto de este archivo está documentado en [`AGENTS.md`](../../AGENTS.md), en la raíz del
+repositorio — empezar por ahí antes de tocar código.

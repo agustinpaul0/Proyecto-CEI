@@ -21,10 +21,14 @@ public final class AnalizadorLexico {
         EstadoLexico estado = EstadoInicial.INSTANCIA;
         while (true) {
             ResultadoDeTransicion resultado = estado.procesar(contexto);
-            if (resultado instanceof Emitir emitir) {
-                return emitir.token();
+            // switch exhaustivo sobre la interfaz sellada (Continuar | Emitir):
+            // el compilador exige cubrir ambos permits, sin default ni casteo.
+            switch (resultado) {
+                case Emitir emitir -> {
+                    return emitir.token();
+                }
+                case Continuar continuar -> estado = continuar.siguiente();
             }
-            estado = ((Continuar) resultado).siguiente();
         }
     }
 

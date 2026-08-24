@@ -29,6 +29,6 @@ class TipoDeTokenTest {
 
     @Test
     void tieneExactamenteCincuentaYCincoTipos() {
-        assertEquals(55, TipoDeToken.values().length);
+        assertEquals(56, TipoDeToken.values().length);
     }
 }

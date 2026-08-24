@@ -18,10 +18,19 @@ documentacion/        onboarding autocontenido de la arquitectura (para explicar
                       sin leer código)
 todos/                pendientes a verificar/implementar (sin historial — eso vive en git log)
 etapas/               consignas originales de la cátedra, una carpeta por etapa
-vendor/               material de referencia de la cátedra sin modificar (SourceManager, testers)
+vendor/               copia de referencia intacta de los zips originales de la cátedra
 entregables/          lo que efectivamente se entrega por etapa
 compilador/           proyecto Maven — el código fuente y los tests
 ```
+
+## Ante la duda, como en Java
+
+Regla explícita de la cátedra (`etapas/etapa-1/README.md`): *"todo lo que NO esté especificado para
+MiniJava tiene comportamiento por defecto igual al de Java"*. Cuando el comportamiento léxico de un
+caso puntual no está resuelto explícitamente por la consigna ni por una decisión ya registrada en
+`AGENTS.md`, el criterio de desempate es replicar la semántica real de Java (ver `AGENTS.md` §0.1) —
+nunca inventar una regla propia. Si la cátedra publica después una regla explícita que diga otra
+cosa, esa regla explícita gana.
 
 ## Compilar y testear
 

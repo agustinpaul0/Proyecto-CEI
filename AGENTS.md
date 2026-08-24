@@ -16,6 +16,26 @@ leer Clase 02 (slides 34-62) como imágenes se pierde el ejemplo completo de imp
 **Regla**: al empezar una etapa nueva, releer todos los PDFs de esa etapa como imágenes antes de
 diseñar, aunque ya se haya hecho una pasada de texto.
 
+## 0.1. Regla de desambiguación: ante la duda, como en Java
+
+**Esto NO es una convención inventada por este documento — es una regla escrita explícitamente por
+la cátedra**, última línea de `etapas/etapa-1/README.md`:
+
+> "todo lo que NO esté especificado para MiniJava tiene comportamiento por defecto igual al de Java;
+> es decir, todo lo que no esté debidamente especificado, es igual a Java."
+
+Cuando una pregunta de comportamiento léxico no está resuelta explícitamente por los PDFs de la
+cátedra ni por una decisión ya tomada en este documento, el default es **replicar la semántica real
+de Java**, no inventar una regla propia. Dos aplicaciones concretas ya resueltas con este criterio:
+
+- El escape Unicode acepta repetir el marcador `u` una o más veces (`\uu0041`, `\uuu0041`, ...) —
+  así lo define el JLS §3.3.
+- `float` y `double` son palabras reservadas (ver §5) — en Java real lo son; confirmado además
+  explícitamente por la cátedra en una consulta directa (no escrito en los PDFs).
+
+Si en el futuro la cátedra publica una regla explícita que contradiga el comportamiento de Java, esa
+regla explícita gana — esto es sólo el criterio de desempate cuando no hay ninguna.
+
 ## 1. Contexto y alcance
 
 Materia **Compiladores e Intérpretes** (UNS, 2do cuatrimestre 2026). Proyecto: compilador completo
@@ -109,11 +129,20 @@ public Token proximoToken() throws ExcepcionLexica {
     EstadoLexico estado = EstadoInicial.INSTANCIA;
     while (true) {
         ResultadoDeTransicion resultado = estado.procesar(contexto);
-        if (resultado instanceof Emitir emitir) return emitir.token();
-        estado = ((Continuar) resultado).siguiente();
+        switch (resultado) {
+            case Emitir emitir -> { return emitir.token(); }
+            case Continuar continuar -> estado = continuar.siguiente();
+        }
     }
 }
 ```
+
+`ResultadoDeTransicion` es una `sealed interface` con únicamente estos dos `permits`, por eso el
+`switch` de arriba es exhaustivo sin `default` — el compilador exige cubrir ambos casos (requiere
+`maven.compiler.release=21`; el proyecto usaba 17, se subió porque el JDK instalado es 25 y no hay
+ninguna directiva de la cátedra que fije una versión de Java). Detalle completo de esta interacción
+(`EstadoLexico`, `ContextoLexico`, criterio singleton-vs-`new` por estado, trazado paso a paso) en
+[`documentacion/patron-state.md`](documentacion/patron-state.md).
 
 ### Paquetes (`compilador/src/main/java/`)
 
@@ -152,7 +181,7 @@ estado inicial, sin una clase por símbolo.
 
 | Elemento | Regla | Token(s) |
 |---|---|---|
-| Palabras clave (20) | lookup tras armar un identificador (Clase 02, slide 62-63: **no** se modelan como AF propio, para evitar fusionar decenas de estados con los de identificador) | `pr_class`, `pr_extends`, `pr_interface`, `pr_implements`, `pr_static`, `pr_boolean`, `pr_char`, `pr_int`, `pr_void`, `pr_public`, `pr_if`, `pr_else`, `pr_while`, `pr_return`, `pr_var`, `pr_this`, `pr_new`, `pr_null`, `pr_true`, `pr_false` |
+| Palabras clave (22 lexemas, 21 tipos de token) | lookup tras armar un identificador (Clase 02, slide 62-63: **no** se modelan como AF propio, para evitar fusionar decenas de estados con los de identificador) | `pr_class`, `pr_extends`, `pr_interface`, `pr_implements`, `pr_static`, `pr_boolean`, `pr_char`, `pr_int`, `pr_void`, `pr_public`, `pr_if`, `pr_else`, `pr_while`, `pr_return`, `pr_var`, `pr_this`, `pr_new`, `pr_null`, `pr_true`, `pr_false`, `pr_float` (lexemas `float` **y** `double`) |
 | idClase / idInterfaz | letra mayúscula + uno o más de (letra, dígito, `_`) — mínimo 2 caracteres | `idClase` |
 | idGen (parám. genérico) | una única letra mayúscula | `idGen` |
 | idMV (método/variable) | letra minúscula + cero o más de (letra, dígito, `_`) | `idMV` |
@@ -167,6 +196,16 @@ estado inicial, sin una clase por símbolo.
 Las expresiones regulares exactas de cada token (todas, incluidos los símbolos de un solo carácter)
 y sus autómatas están en `documentacion/arquitectura.md` §Especificación léxica formal.
 
+**`float` y `double` como palabras reservadas, unificadas en un solo tipo**: no figuran en ningún PDF
+de la cátedra (se buscó explícitamente); se agregan por la regla de §0.1 (en Java son reservadas) y
+por confirmación directa del profesor en una consulta puntual del usuario. Antes de este cambio
+ninguna de las dos era palabra clave — un identificador `float`/`double` habría tokenizado como
+`idMV`; ahora ambas tokenizan como `pr_float` y no pueden usarse como nombre de variable/método/
+clase. **`double` no tiene un `TipoDeToken` propio**: por indicación explícita del profesor, MiniJava
+trata `float` y `double` como un único tipo de dato — `TablaDePalabrasClave` mapea el lexema
+`"double"` directamente a `TipoDeToken.PR_FLOAT` (mismo tipo que el lexema `"float"`). El lexema
+reportado sigue siendo el texto crudo (`double`), sólo el `TipoDeToken` es compartido.
+
 **Corrección de una imprecisión anterior**: en un intento previo se descartó un archivo pensado para
 pegar en una herramienta externa de generación de autómatas (no se va a usar esa herramienta — no
 aporta valor). De paso, ese archivo afirmaba que el EOF, el comentario multilínea y el límite de 9
@@ -177,7 +216,14 @@ corregido en `documentacion/arquitectura.md`:
 - El comentario multilínea tiene una ER exacta y estándar (la misma que usa `lex`/`flex` para
   comentarios de C): `/\*([^*]|\*+[^*/])*\*+/`. No es una aproximación.
 - El límite de 9 dígitos es trivialmente regular (toda repetición acotada lo es): una cadena lineal
-  de 9 estados terminales sin bucle, o la ER `D D? D? D? D? D? D? D? D?`.
+  de 9 estados terminales sin bucle, o la ER `D D? D? D? D? D? D? D? D?`. Formulación equivalente
+  que el profesor confirmó como válida: una estrella de Kleene "de aridad 1-9" — es decir, `D{1,9}`,
+  la notación de repetición acotada que en el fondo se expande exactamente a la misma cadena de
+  nueve `D?` opcionales de arriba (no es una estrella de Kleene sin cota; `*` sin límite sería
+  incorrecto acá, precisamente porque el límite de 9 es lo que se está modelando).
+- El escape Unicode (`\u` + 4 hex dígitos) acepta repetir el marcador `u` una o más veces
+  (`\uu0041`, `\uuu0041`, ...), semántica heredada de Java (JLS §3.3) por la regla de §0.1. Implica
+  que la ER real del escape es `\u+[0-9a-fA-F]{4}` (una o más `u`), no `\u[0-9a-fA-F]{4}` (una sola).
 
 ### Decisiones ambiguas resueltas (documentar también en el informe)
 

@@ -15,8 +15,6 @@ Sólo lo que falta verificar o implementar ahora mismo. Sin historial ni backlog
 - [ ] Catálogo de casos de test (documento aparte que exige la consigna, junto al informe).
 - [ ] Empaquetar la entrega final: sólo archivos `.java` + catálogo + informe PDF, según especifica
   la consigna.
-- [ ] Decidir con el usuario la visibilidad del repo en GitHub (público/privado — es una entrega
-  académica individual, conviene privado) y hacer el primer push (`git push -u origin main`).
 
 ## Verificar
 
