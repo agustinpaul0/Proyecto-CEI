@@ -21,8 +21,6 @@ public final class AnalizadorLexico {
         EstadoLexico estado = EstadoInicial.INSTANCIA;
         while (true) {
             ResultadoDeTransicion resultado = estado.procesar(contexto);
-            // switch exhaustivo sobre la interfaz sellada (Continuar | Emitir):
-            // el compilador exige cubrir ambos permits, sin default ni casteo.
             switch (resultado) {
                 case Emitir emitir -> {
                     return emitir.token();

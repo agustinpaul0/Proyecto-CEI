@@ -8,8 +8,6 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Tras un primer '/': desambigua entre división, comentario de línea (//) y
-// comentario multilínea (/*).
 public final class EstadoBarra implements EstadoLexico {
 
     public static final EstadoBarra INSTANCIA = new EstadoBarra();

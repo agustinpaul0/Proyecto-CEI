@@ -6,7 +6,6 @@ import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
-// Tras el signo del exponente: el primer dígito es obligatorio.
 public final class EstadoFloatExponenteRequiereDigito implements EstadoLexico {
 
     public static final EstadoFloatExponenteRequiereDigito INSTANCIA =

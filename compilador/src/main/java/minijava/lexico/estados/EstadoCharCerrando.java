@@ -8,7 +8,6 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: espera la comilla simple de cierre.
 public final class EstadoCharCerrando implements EstadoLexico {
 
     public static final EstadoCharCerrando INSTANCIA = new EstadoCharCerrando();

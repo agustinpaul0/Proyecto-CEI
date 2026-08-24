@@ -8,7 +8,6 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: ya hay al menos un dígito del exponente.
 public final class EstadoFloatExponenteDigitos implements EstadoLexico {
 
     public static final EstadoFloatExponenteDigitos INSTANCIA = new EstadoFloatExponenteDigitos();

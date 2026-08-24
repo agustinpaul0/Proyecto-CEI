@@ -6,9 +6,6 @@ import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
-// Logro Unicodes: tras la barra invertida más 'u' dentro de un char o string
-// literal, exige exactamente 4 dígitos hexadecimales antes de continuar con
-// el estado que corresponda a ese contexto (cerrar el char, o seguir el string).
 public final class EstadoEscapeUnicode implements EstadoLexico {
 
     private final int digitosRestantes;

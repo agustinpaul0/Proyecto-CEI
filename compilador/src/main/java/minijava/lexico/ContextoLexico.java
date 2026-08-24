@@ -43,13 +43,11 @@ public final class ContextoLexico {
         return caracterActual == SourceManager.END_OF_FILE;
     }
 
-    // Consume el carácter actual: lo agrega al lexema y avanza la lectura.
     public void avanzar() {
         lexema.append(caracterActual);
         consumirCaracterActual();
     }
 
-    // Descarta el carácter actual sin agregarlo al lexema (blancos, comentarios).
     public void descartar() {
         consumirCaracterActual();
     }
@@ -61,7 +59,6 @@ public final class ContextoLexico {
         caracterActual = leerSiguienteCaracter();
     }
 
-    // Agrega el carácter ofensivo al lexema SIN avanzar (para el reporte de error).
     public void agregarCaracterOfensivo() {
         lexema.append(caracterActual);
     }

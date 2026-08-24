@@ -44,7 +44,8 @@ java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
 
 ## Más información
 
-- [`AGENTS.md`](AGENTS.md) — convenciones de la cátedra, arquitectura, estrategia de testing.
+- [`AGENTS.md`](AGENTS.md) — memoria operativa del proyecto e índice hacia `agents/` (convenciones
+  de la cátedra, protocolo de investigación, arquitectura, testing, workflow).
 - [`documentacion/arquitectura.md`](documentacion/arquitectura.md) — cómo funciona el compilador,
-  componente por componente.
+  componente por componente, sin necesidad de leer código.
 - [`todos/todos.md`](todos/todos.md) — qué queda pendiente.

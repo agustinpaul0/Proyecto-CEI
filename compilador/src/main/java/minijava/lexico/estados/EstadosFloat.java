@@ -1,6 +1,5 @@
 package minijava.lexico.estados;
 
-// Utilidad compartida por los estados de floatLiteral.
 final class EstadosFloat {
 
     private EstadosFloat() {

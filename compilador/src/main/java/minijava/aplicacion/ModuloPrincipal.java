@@ -11,8 +11,6 @@ import minijava.tokens.TipoDeToken;
 
 import java.io.IOException;
 
-// Cliente del Analizador Léxico: pide tokens hasta EOF o error, y los
-// muestra por la interfaz Salida (Pautas Etapa 1, esquema Módulo Principal).
 public final class ModuloPrincipal {
 
     private final Salida salida;

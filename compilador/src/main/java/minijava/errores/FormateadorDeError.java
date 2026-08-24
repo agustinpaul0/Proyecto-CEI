@@ -2,8 +2,6 @@ package minijava.errores;
 
 import java.util.List;
 
-// Reporte de Error Elegante (logro): línea completa del fuente + '^' apuntando
-// a la columna del carácter ofensivo (Pautas Etapa 1, slide 43).
 public final class FormateadorDeError {
 
     public List<String> formatear(ExcepcionLexica excepcion) {
