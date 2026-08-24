@@ -162,41 +162,9 @@ no se puede seguir extendiendo se emite el token.
 
 ## 5. Manejo de errores
 
-### 5.1. Cuándo y cómo se detecta un error
-
-Un estado detecta un error léxico cuando, mirando el carácter actual, ninguna transición válida
-existe desde ese estado (por ejemplo: `EstadoInicial` viendo un `#`, que no es letra, dígito, ni
-ningún símbolo conocido). En ese momento se lanza `ExcepcionLexica`, que lleva: el lexema armado
-hasta ese punto (incluyendo el carácter ofensivo), la línea, la columna, y el texto completo de la
-línea fuente (para el reporte elegante).
-
-### 5.2. Recuperación (logro Multi-detección de Errores)
-
-La consigna base de la cátedra dice: *"al detectar un error deberá reportarse y finalizar la
-ejecución"*. El logro *Multi-detección de Errores* cambia ese comportamiento: en vez de terminar,
-el Módulo Principal captura la excepción, la reporta, le pide al Analizador Léxico que **se
-recupere** (`recuperarDeError()` — descarta el carácter que rompió todo, o llega a EOF) y sigue
-pidiendo tokens. Esto garantiza terminación: cada recuperación avanza al menos un carácter, así que
-en el peor caso el análisis termina cuando se acaba el archivo.
-
-### 5.3. Los dos formatos de reporte
-
-Cuando hay error, se imprimen dos cosas:
-
-1. Un **reporte legible** (logro *Reporte de Error Elegante*): la razón del error, la línea fuente
-   completa, y un `^` apuntando exactamente a la columna del carácter ofensivo. Ejemplo real
-   (tomado de la consigna, fuente `v1 + # chau` en la línea 2):
-
-   ```text
-   Error Léxico en línea 2: # no es un símbolo válido
-   Detalle: v1 + # chau
-                 ^
-   [Error:#|2]
-   ```
-
-2. Un **código de error** de una sola línea, `[Error:Lexema|NroLinea]` — este es el contrato exacto
-   que verifican los testers de la cátedra, y **no lleva columna** (la columna es sólo parte del
-   reporte legible, que es un agregado propio más allá de lo pedido).
+Cómo se detecta un error, cómo se recupera (Multi-detección de Errores) y los dos formatos de
+reporte se movieron a [`manejo-de-errores.md`](manejo-de-errores.md) — incluye también la corrección
+de un bug real de columna encontrado por el usuario.
 
 ## 6. Especificación léxica formal
 
@@ -292,6 +260,8 @@ IntelliJ importa el proyecto Maven correctamente.
 
 - [`especificacion-lexica.md`](especificacion-lexica.md) — ER exacta de todos los tokens, incluidos
   los símbolos de un carácter, y los tres autómatas especiales (EOF, comentario, límite de dígitos).
+- [`manejo-de-errores.md`](manejo-de-errores.md) — detección, recuperación, los dos formatos de
+  reporte, y a qué posición apunta la columna en cada tipo de error.
 - [`patron-state.md`](patron-state.md) — profundiza el §4 de este documento: cómo interactúan
   `EstadoLexico`, `ContextoLexico`, `Continuar`/`Emitir` y el driver, con el criterio exacto de
   cuándo cada estado es un singleton compartido y cuándo se construye con `new`.

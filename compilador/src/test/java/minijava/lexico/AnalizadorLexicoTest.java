@@ -426,6 +426,34 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
+    // Si la comilla de apertura queda seguida de un salto de línea real (sin
+    // contenido), el lexema reportado NO debe incluir ese '\n' crudo: un
+    // carácter de control embebido en el lexema rompe el formato de una
+    // sola línea del reporte de error y del código [Error:Lexema|Linea]
+    // (bug real: apareció al recuperarse de un error previo y quedar una
+    // comilla huérfana justo antes del salto de línea).
+    @Test
+    void comillaDeAperturaSeguidaDeSaltoDeLineaNoIncluyeElSaltoEnElLexema(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'\nv1");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("'", excepcion.getLexemaOfensivo());
+    }
+
+    @Test
+    void comillaDeAperturaSeguidaDeEofNoIncluyeElCentinelaEnElLexema(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("'", excepcion.getLexemaOfensivo());
+    }
+
     @Test
     void reconoceUnStringLiteralVacio(@TempDir Path dir) throws Exception {
         Token token = crearAnalizador(dir, "\"\"").proximoToken();

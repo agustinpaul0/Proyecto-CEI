@@ -72,45 +72,16 @@ el stream global de la JVM, con una implementación `SalidaEnMemoria` para asser
 tests sin mocks frameworks pesados. **Modularidad sobre tamaño de archivo**: no hay un límite
 numérico de líneas por archivo — la regla es que cada clase tenga una responsabilidad clara y
 acotada (un estado del AF, un formateador, una excepción); si una clase crece porque mezcla
-responsabilidades, se separa por diseño, no para cumplir una cifra.
-
-**Comentarios: cero por defecto.** No se comenta código que se explica solo (nombres de método
-descriptivos, un `switch` sobre un tipo sellado, un getter). Un comentario sólo se justifica cuando
-explica algo que el código **no puede** decir por sí mismo: una decisión no obvia, el motivo de un
-workaround, una referencia a una fuente externa (slide de la cátedra, sección del JLS) que justifica
-por qué el código hace lo que hace, o una invariante que rompería silenciosamente si alguien lo
-tocara sin saberlo. Ante la duda, no comentar — un comentario que sólo repite lo que ya dice el
-nombre de la variable o el método es ruido, no documentación.
+responsabilidades, se separa por diseño, no para cumplir una cifra. Reglas de estilo de código
+(comentarios, etc.) están en [`workflow.md`](workflow.md), no acá — esto es sólo estructura.
 
 **Reuso concreto para no explotar en clases**: un solo componente `EstadoOperadorConSufijoOpcional`
 parametrizado cubre los seis pares `>`/`>=`, `<`/`<=`, `!`/`!=`, `=`/`==`, `+`/`++`, `-`/`--`; los
 símbolos de puntuación de un carácter se resuelven con una tabla `Map<Character,TipoDeToken>` en el
 estado inicial, sin una clase por símbolo.
 
-### `PosicionLexica` — cuándo un error reporta el lookahead actual y cuándo no
-
-Bug real encontrado por el usuario corriendo la suite desde IntelliJ (el `^` apuntaba a un carácter
-distinto del que decía el mensaje, en varios casos). Hay dos categorías de error, y confundirlas es
-la causa del bug:
-
-1. **"Lo que estoy mirando ahora mismo es inválido"** (un carácter desconocido, una comilla de cierre
-   ausente, un dígito de exponente faltante, un escape de string no reconocido): el lookahead actual
-   (`contexto.getColumna()`/`getLineaFuente()`) **es** el problema — reportarlo es correcto.
-2. **"El lexema que ya terminé de construir resultó inválido como un todo"** (un `&`/`|` sin su
-   segundo carácter, un `intLiteral` de más de 9 dígitos): en el momento del `throw`, el lookahead
-   actual ya avanzó más allá del lexema completo — puede ser cualquier cosa (un espacio, EOF, letra
-   siguiente) y **no tiene relación con el error**. Reportar su columna es lo que producía el bug.
-
-`ContextoLexico.posicionUltimoConsumido()` resuelve la categoría 2: devuelve un `PosicionLexica`
-(línea + columna + línea fuente) capturado dentro de `avanzar()`, **antes** de consumir — es decir,
-la posición del último carácter que sí quedó en el lexema. `EstadoEntero` y `EstadoOperadorDoble` lo
-usan para el `throw`. El mismo mecanismo resuelve un segundo bug relacionado: el comentario
-multilínea sin cerrar reportaba la línea de apertura correcta en el mensaje, pero la línea-fuente y
-la columna mostradas eran las de la posición del EOF (que puede estar varias líneas después, en
-contenido no relacionado) — `EstadoBarra` ahora captura `posicionUltimoConsumido()` (la posición del
-`/` de apertura) al construir `EstadoComentarioMultilinea`, y el `throw` usa esa foto completa en vez
-de mezclar una línea overrideada con una columna/línea-fuente que seguían siendo las del lookahead
-actual.
+El manejo de errores (`ExcepcionLexica`, `PosicionLexica`, `FormateadorDeError`) tiene su propio
+archivo: [`manejo-de-errores.md`](manejo-de-errores.md).
 
 ## Por qué el `SourceManagerImpl` de la cátedra no sirve tal cual
 

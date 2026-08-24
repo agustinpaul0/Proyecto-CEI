@@ -48,23 +48,43 @@ y logros después), **los tests son más importantes que el código** — máxim
 ramas, máxima cantidad de casos, happy paths y edge cases siempre. Desarrollo pensado para abrirse y
 correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`, donde está el `pom.xml`).
 
-## 2. Índice del resto de la memoria operativa (`agents/`)
+## 2. Qué leer según la tarea
+
+**Siempre, para cualquier tarea**: [`agents/workflow.md`](agents/workflow.md) (workflow paso a paso,
+estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica sin excepción.
+
+| Si la tarea es... | Leer |
+|---|---|
+| Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `agents/` | [`agents/investigacion.md`](agents/investigacion.md) — **antes** de escribir código |
+| Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`agents/especificacion-lexica.md`](agents/especificacion-lexica.md) + [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) (ER formal) |
+| Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`agents/arquitectura.md`](agents/arquitectura.md) + [`documentacion/patron-state.md`](documentacion/patron-state.md) |
+| Tocar `ExcepcionLexica`, el reporte de error, o el posicionamiento línea/columna | [`agents/manejo-de-errores.md`](agents/manejo-de-errores.md) |
+| Escribir o revisar tests, decidir qué tipo de test corresponde | [`agents/testing.md`](agents/testing.md) |
+| Verificar qué es negociable y qué no lo es (contrato de salida, invariantes duras) | [`agents/convenciones-catedra.md`](agents/convenciones-catedra.md) |
+| Compilar, correr, empaquetar, o preparar la entrega | [`agents/comandos-y-entrega.md`](agents/comandos-y-entrega.md) |
+| Explicarle el proyecto a alguien sin que lea código (onboarding) | todo `documentacion/*.md` — son autocontenidos, no dependen de `agents/` |
+| Saber qué falta | [`todos/todos.md`](todos/todos.md) |
+
+## 3. Índice completo de `agents/` (referencia)
 
 | Archivo | Contenido |
 |---|---|
 | [`agents/investigacion.md`](agents/investigacion.md) | Protocolo obligatorio ante cualquier duda de comportamiento no resuelta explícitamente: MiniJava primero, Java verificado contra la especificación después, informar siempre. |
 | [`agents/convenciones-catedra.md`](agents/convenciones-catedra.md) | Convenciones no negociables de la cátedra + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
 | [`agents/arquitectura.md`](agents/arquitectura.md) | Método por Estado (obligatorio), driver iterativo, `sealed interface` + `switch`, estructura de paquetes, por qué `Salida` es interfaz, por qué el `SourceManagerImpl` de la cátedra no sirve tal cual. |
+| [`agents/manejo-de-errores.md`](agents/manejo-de-errores.md) | `ExcepcionLexica`, `PosicionLexica` (cuándo un error reporta el lookahead actual vs. una posición capturada antes), `FormateadorDeError`. |
 | [`agents/especificacion-lexica.md`](agents/especificacion-lexica.md) | Tabla de tokens, decisiones ambiguas resueltas (con su fuente), los 8 logros y su estrategia. |
 | [`agents/testing.md`](agents/testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
-| [`agents/workflow.md`](agents/workflow.md) | Workflow paso a paso antes de implementar y ante un bug; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
+| [`agents/workflow.md`](agents/workflow.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
 | [`agents/comandos-y-entrega.md`](agents/comandos-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
 
-## 3. Documentación de onboarding (para explicar el proyecto sin leer código)
+## 4. Documentación de onboarding (para explicar el proyecto sin leer código)
 
 - [`documentacion/arquitectura.md`](documentacion/arquitectura.md) — visión completa autocontenida.
 - [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) — ER formal de
   cada token, con autómatas.
+- [`documentacion/manejo-de-errores.md`](documentacion/manejo-de-errores.md) — detección,
+  recuperación, los dos formatos de reporte, a qué posición apunta la columna.
 - [`documentacion/patron-state.md`](documentacion/patron-state.md) — cómo interactúan
   `EstadoLexico`/`ContextoLexico`/`Continuar`/`Emitir` y el driver, paso a paso.
 - [`todos/todos.md`](todos/todos.md) — qué queda pendiente de verificar o implementar ahora mismo.

@@ -25,6 +25,16 @@ Reproducirlo → escribir el test de regresión → confirmar que falla antes de
 posible) → implementar el fix → confirmar que el test pasa → correr tests relacionados → correr la
 suite completa cuando corresponda.
 
+## Estilo de código: comentarios
+
+**Cero por defecto.** No se comenta código que se explica solo (nombres de método descriptivos, un
+`switch` sobre un tipo sellado, un getter). Un comentario sólo se justifica cuando explica algo que
+el código **no puede** decir por sí mismo: una decisión no obvia, el motivo de un workaround, una
+referencia a una fuente externa (slide de la cátedra, sección del JLS) que justifica por qué el
+código hace lo que hace, o una invariante que rompería silenciosamente si alguien lo tocara sin
+saberlo. Ante la duda, no comentar — un comentario que sólo repite lo que ya dice el nombre de la
+variable o el método es ruido, no documentación.
+
 ## Regla vital al terminar cualquier feature
 
 Ninguna tarea se considera terminada hasta que se cumplen **las tres** condiciones:

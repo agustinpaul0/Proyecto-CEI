@@ -18,7 +18,10 @@ public final class EstadoCharAbierto implements EstadoLexico {
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
-        if (contexto.esFinDeArchivo() || actual == '\n' || actual == '\'') {
+        if (contexto.esFinDeArchivo() || actual == '\n') {
+            throw contexto.crearExcepcionLexica();
+        }
+        if (actual == '\'') {
             contexto.agregarCaracterOfensivo();
             throw contexto.crearExcepcionLexica();
         }
