@@ -65,4 +65,40 @@ se compara literal porque es lo que verifica el tester.
 ## Fuzzing reproducible
 
 Semilla fija por corrida; todo input que produzca un fallo se persiste como caso permanente en
-`compilador/resources/regresion/` (no se descarta al terminar la corrida de fuzzing).
+`compilador/resources/regresion/` (no se descarta al terminar la corrida de fuzzing). Ya encontró y
+confirmó un bug real en esta sesión (el de los carets colgando — ver `manejo-de-errores.md`); el caso
+que lo disparó quedó persistido como regresión permanente.
+
+## Mutation testing (PIT) — score actual y por qué ciertos sobrevivientes no se cazan
+
+Última corrida: **92% de mutantes matados** (238/259), *test strength* 96%. Comando:
+`mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (el goal no está bindeado a ninguna fase
+del profile, hay que invocarlo explícito).
+
+**Patrón recurrente de mutante equivalente en este código base**: varios estados hacen
+`contexto.avanzar(); return new Continuar(SiguienteEstado);` justo antes de pasarle el control a un
+estado cuya PROPIA lógica vuelve a chequear y consumir ese mismo carácter (por ejemplo,
+`EstadoInicial` viendo un dígito pasa a `EstadoEntero`, que en su primer chequeo también acepta
+dígitos). Si PIT elimina ese `avanzar()` puntual, el carácter se termina consumiendo de todos modos
+—un paso después, por el chequeo duplicado del estado siguiente— y el lexema final resulta idéntico.
+Esto hace que el mutante **sobreviva sin que sea un hueco real de testing**: es un mutante
+equivalente, invisible a los filtros automáticos de PIT porque cruza el límite entre dos clases
+distintas. Confirmado así en: `EstadoInicial` (dígito), `EstadoIdGenOClase`, `EstadoCharEscapado` y
+`EstadoStringEscapado` (marcador `u`), `EstadoFloatExponenteInicio`,
+`EstadoFloatExponenteRequiereDigito`, `EstadoBarra` (ambas ramas de comentario). **No intentar
+"matarlos" agregando tests** — no hay ningún test posible que distinga el comportamiento mutado del
+original, porque no lo hay.
+
+**Sobrevivientes reales que sí se corrigieron** (agregando aserciones de lexema exacto donde sólo se
+verificaba que lanzara excepción o el tipo de token): `EstadoCharAbierto`/`EstadoStringEscapado`
+(agregarCaracterOfensivo en casos de error), y falta de cobertura completa de `EstadoInicial`
+(puntuación) y `EstadoFloatExponenteDigitos` (exponentes de 2+ dígitos, nunca ejercitados).
+
+**Sobrevivientes aceptados, no perseguidos**: `Main.main()` y `SalidaEstandar` tocan `System.out`
+real — deliberadamente no se testean de forma directa (para eso existe la interfaz `Salida`, que sí
+está 100% testeada vía `SalidaEnMemoria`); forzar un test ahí implicaría capturar stdout real o
+lanzar un proceso, sin aportar valor proporcional. `ModuloPrincipal`'s `manejador.close()` no se
+puede espiar sin inyectar `ManejadorDeArchivo` por constructor (hoy se instancia adentro del método)
+— cambio de diseño no justificado sólo para este hueco, dado que `close()` únicamente libera memoria
+en un proceso de corta vida (no hay handle de archivo del SO abierto de por medio). `SourceManagerImpl`
+es código original de la cátedra sin tocar, no se le agregan tests propios.

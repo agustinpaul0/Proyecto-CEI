@@ -21,10 +21,9 @@ Sólo lo que falta verificar o implementar ahora mismo. Sin historial ni backlog
 
 ## Verificar
 
-- [ ] Correr `mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (PIT, el goal no está
-  bindeado a una fase del profile) al menos una vez y revisar el score de mutación; decidir qué
-  mutantes sobrevivientes ameritan un test nuevo. **Verificar primero si PIT 1.17.0 soporta bytecode
-  de Java 25** (class file major version 69) — JaCoCo 0.8.12 no lo soportaba y hubo que subir a
-  0.8.15; PIT podría tener el mismo problema y necesitar una versión más nueva.
 - [ ] Seguir ampliando el corpus de `compilador/resources/{sinErrores,conErrores}/` a medida que
   aparezcan casos límite nuevos — no es un número cerrado, es continuo mientras dure la Etapa 1.
+- [ ] Re-correr PIT (`mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage`) después de cambios
+  grandes al léxico para vigilar que el score de mutación (92% al momento de escribir esto, ver
+  `agents/testing.md`) no baje. No hace falta perseguir el 100%: varios sobrevivientes son mutantes
+  equivalentes o bordes de I/O real deliberadamente sin testear (documentado en `agents/testing.md`).

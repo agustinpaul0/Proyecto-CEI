@@ -258,6 +258,19 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "(|PAREN_A", ")|PAREN_C", "{|LLAVE_A", "}|LLAVE_C",
+            "[|CORCHETE_A", "]|CORCHETE_C", ";|PUNTO_Y_COMA",
+            ",|COMA", ".|PUNTO", ":|DOS_PUNTOS",
+    })
+    void reconocePuntuacion(String fuente, String tipoEsperado, @TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.valueOf(tipoEsperado), token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
     @Test
     void mayorSeguidoDeOtroCaracterNoConsumeElSiguiente(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, ">5");
@@ -422,8 +435,10 @@ class AnalizadorLexicoTest {
     void charLiteralVacioEsError(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "''");
 
-        org.junit.jupiter.api.Assertions.assertThrows(
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("''", excepcion.getLexemaOfensivo());
     }
 
     // Si la comilla de apertura queda seguida de un salto de línea real (sin
@@ -529,6 +544,22 @@ class AnalizadorLexicoTest {
     }
 
     @Test
+    void reconoceUnFloatConExponenteDeVariosDigitos(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "1e123").proximoToken();
+
+        assertEquals(TipoDeToken.FLOAT_LITERAL, token.tipo());
+        assertEquals("1e123", token.lexema());
+    }
+
+    @Test
+    void reconoceUnFloatConExponenteDeVariosDigitosYSufijo(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "1e12f").proximoToken();
+
+        assertEquals(TipoDeToken.FLOAT_LITERAL, token.tipo());
+        assertEquals("1e12f", token.lexema());
+    }
+
+    @Test
     void reconoceUnFloatConExponenteYSignoNegativo(@TempDir Path dir) throws Exception {
         Token token = crearAnalizador(dir, "1.5E-3").proximoToken();
 
@@ -558,6 +589,12 @@ class AnalizadorLexicoTest {
         assertEquals("5", segundo.lexema());
     }
 
+    // Si el error ocurre porque se llegó a EOF (o a un salto de línea real)
+    // esperando más contenido, la columna reportada no puede caer "después"
+    // del último carácter imprimible de la línea — ahí no hay nada que el
+    // '^' pueda señalar, y el reporte queda con un caret colgando en el
+    // aire (bug real: encontrado comparando dos errores en cascada donde
+    // uno apuntaba a un carácter real y el otro a una posición vacía).
     @Test
     void exponenteSinDigitosEsError(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "1e");
@@ -566,6 +603,21 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("1e", excepcion.getLexemaOfensivo());
+        assertEquals(2, excepcion.getColumna());
+        assertEquals("1e", excepcion.getLineaFuente());
+    }
+
+    @Test
+    void charLiteralInterrumpidoPorSaltoDeLineaApuntaAlUltimoCaracterReal(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'a\nv1");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("'a", excepcion.getLexemaOfensivo());
+        assertEquals(2, excepcion.getColumna());
+        assertEquals("'a", excepcion.getLineaFuente());
     }
 
     @Test
@@ -711,7 +763,9 @@ class AnalizadorLexicoTest {
             throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"antes \\" + escape + " despues\"");
 
-        org.junit.jupiter.api.Assertions.assertThrows(
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("\"antes \\" + escape, excepcion.getLexemaOfensivo());
     }
 }

@@ -98,7 +98,15 @@ public final class ContextoLexico {
         return manejador.getCurrentLineText();
     }
 
+    // Si el lookahead actual es EOF o un salto de línea real, no aparece en
+    // getLineaFuente() (que corta antes del '\n') — reportar su columna
+    // dejaría el '^' apuntando después del último carácter imprimible de la
+    // línea, sin nada debajo. En ese caso se usa la posición del último
+    // carácter realmente consumido en su lugar.
     public ExcepcionLexica crearExcepcionLexica() {
+        if ((esFinDeArchivo() || caracterActual == '\n') && posicionUltimoConsumido != null) {
+            return crearExcepcionLexica(getLexema(), posicionUltimoConsumido);
+        }
         return new ExcepcionLexica(getLexema(), getLinea(), getColumna(), getLineaFuente());
     }
 

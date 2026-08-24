@@ -68,7 +68,19 @@ contenido completamente distinto (a veces una línea vacía). Ahora `EstadoBarra
 comentario, y ese snapshot completo — no sólo el número de línea — es lo que se usa si el comentario
 nunca cierra.
 
-## 5. El lexema nunca lleva un carácter de control crudo
+## 5. El `^` nunca puede colgar después del final de la línea impresa
+
+Cuarto bug de la misma familia, más sistémico: **cualquier** estado que lanza la excepción cuando el
+lookahead es EOF o un `\n` cae en la misma trampa que la categoría 2 de arriba, pero por otra razón —
+`getLineaFuente()` corta el texto justo antes del salto de línea, así que esa posición ni siquiera
+aparece en la línea impresa. El resultado visual: un `^` una posición más allá del último carácter
+visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los estados que pueden
+toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar, escapes interrumpidos,
+exponentes sin dígitos). Se resolvió en un solo lugar: `ContextoLexico.crearExcepcionLexica()` (la
+variante sin argumentos) ahora usa automáticamente `posicionUltimoConsumido()` cuando detecta que el
+lookahead es EOF o `\n`, sin que cada estado individual tenga que saberlo.
+
+## 6. El lexema nunca lleva un carácter de control crudo
 
 Un tercer bug de la misma familia: si el carácter ofensivo agregado al lexema era un salto de línea
 real o el centinela de EOF (no imprimibles), ese byte quedaba embebido tal cual en el lexema — y como

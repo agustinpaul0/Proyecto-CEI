@@ -46,6 +46,26 @@ estado nuevo, preguntarse a cuál de las dos categorías de arriba pertenece. Si
 construido es el que está mal, no el carácter que se está mirando ahora), usar
 `contexto.posicionUltimoConsumido()`, no la posición ambiente.
 
+## El `^` nunca puede colgar después del final de la línea impresa
+
+Tercer bug de la misma familia, más sistémico que los dos anteriores: **cualquier** estado que lanza
+`crearExcepcionLexica()` (sin argumentos) cuando el lookahead actual es EOF o un salto de línea real
+cae en la misma trampa que categoría 2 de arriba, pero por una razón distinta — no es que el lexema
+completo esté mal, es que la posición ambiente (`getColumna()`) apunta a un carácter que
+`getLineaFuente()` ni siquiera incluye (esa función corta el texto antes del `\n`). El resultado: un
+`^` una posición más allá del último carácter imprimible de la línea, señalando el aire. Afectaba a
+`EstadoCharAbierto`, `EstadoStringAbierto`, `EstadoCharCerrando`, `EstadoCharEscapado`,
+`EstadoStringEscapado`, `EstadoEscapeUnicode`, `EstadoFloatExponenteInicio` y
+`EstadoFloatExponenteRequiereDigito` — prácticamente cualquier estado que puede toparse con un EOF o
+un `\n` inesperado.
+
+En vez de parchear cada uno, se centralizó en `ContextoLexico.crearExcepcionLexica()` (la variante sin
+argumentos): si el lookahead actual es EOF o `\n`, usa `posicionUltimoConsumido()` automáticamente en
+lugar de la posición ambiente — ningún estado individual necesita saberlo. **Esta es la razón por la
+que la variante sin argumentos sigue siendo la opción por defecto para código nuevo**: ya incorpora
+esta protección; sólo hace falta pasar a la variante con `PosicionLexica` explícita para la categoría
+2 de arriba (lexema completo inválido, no una interrupción por EOF/salto de línea).
+
 ## El lexema de un error nunca debe llevar un carácter de control crudo
 
 Segundo bug real, encontrado en la misma sesión que el de arriba: `EstadoCharAbierto` llamaba
