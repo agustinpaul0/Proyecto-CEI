@@ -87,6 +87,31 @@ parametrizado cubre los seis pares `>`/`>=`, `<`/`<=`, `!`/`!=`, `=`/`==`, `+`/`
 símbolos de puntuación de un carácter se resuelven con una tabla `Map<Character,TipoDeToken>` en el
 estado inicial, sin una clase por símbolo.
 
+### `PosicionLexica` — cuándo un error reporta el lookahead actual y cuándo no
+
+Bug real encontrado por el usuario corriendo la suite desde IntelliJ (el `^` apuntaba a un carácter
+distinto del que decía el mensaje, en varios casos). Hay dos categorías de error, y confundirlas es
+la causa del bug:
+
+1. **"Lo que estoy mirando ahora mismo es inválido"** (un carácter desconocido, una comilla de cierre
+   ausente, un dígito de exponente faltante, un escape de string no reconocido): el lookahead actual
+   (`contexto.getColumna()`/`getLineaFuente()`) **es** el problema — reportarlo es correcto.
+2. **"El lexema que ya terminé de construir resultó inválido como un todo"** (un `&`/`|` sin su
+   segundo carácter, un `intLiteral` de más de 9 dígitos): en el momento del `throw`, el lookahead
+   actual ya avanzó más allá del lexema completo — puede ser cualquier cosa (un espacio, EOF, letra
+   siguiente) y **no tiene relación con el error**. Reportar su columna es lo que producía el bug.
+
+`ContextoLexico.posicionUltimoConsumido()` resuelve la categoría 2: devuelve un `PosicionLexica`
+(línea + columna + línea fuente) capturado dentro de `avanzar()`, **antes** de consumir — es decir,
+la posición del último carácter que sí quedó en el lexema. `EstadoEntero` y `EstadoOperadorDoble` lo
+usan para el `throw`. El mismo mecanismo resuelve un segundo bug relacionado: el comentario
+multilínea sin cerrar reportaba la línea de apertura correcta en el mensaje, pero la línea-fuente y
+la columna mostradas eran las de la posición del EOF (que puede estar varias líneas después, en
+contenido no relacionado) — `EstadoBarra` ahora captura `posicionUltimoConsumido()` (la posición del
+`/` de apertura) al construir `EstadoComentarioMultilinea`, y el `throw` usa esa foto completa en vez
+de mezclar una línea overrideada con una columna/línea-fuente que seguían siendo las del lookahead
+actual.
+
 ## Por qué el `SourceManagerImpl` de la cátedra no sirve tal cual
 
 `SourceManagerImpl.java` (contenido original de la cátedra, hoy en `minijava.io`) lee **por líneas**

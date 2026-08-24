@@ -220,6 +220,11 @@ class AnalizadorLexicoTest {
 
         assertEquals("1234567890", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
+        // La columna debe apuntar dentro del lexema ofensivo (su último
+        // dígito, el que completa la corrida inválida de 10), no al
+        // carácter que viene después (que no tiene nada que ver con el
+        // error: podría ser cualquier cosa, incluido EOF).
+        assertEquals(10, excepcion.getColumna());
     }
 
     @Test
@@ -273,6 +278,10 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("&", excepcion.getLexemaOfensivo());
+        // La columna tiene que apuntar al '&' mismo (columna 1), no al
+        // carácter que viene después ('x', columna 2) — ese carácter no
+        // tiene nada que ver con por qué el '&' solo es inválido.
+        assertEquals(1, excepcion.getColumna());
     }
 
     @Test
@@ -283,6 +292,7 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("|", excepcion.getLexemaOfensivo());
+        assertEquals(1, excepcion.getColumna());
     }
 
     @Test
@@ -334,6 +344,28 @@ class AnalizadorLexicoTest {
 
         assertEquals("/*", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
+    }
+
+    // Si el comentario abre en una línea y el archivo sigue varias líneas
+    // más (en blanco) antes del EOF, el reporte tiene que describir la
+    // línea de APERTURA en los tres campos a la vez (línea, columna, línea
+    // fuente) — no la línea número reportada apuntando a la apertura pero
+    // la línea fuente y la columna mostrando una línea totalmente distinta
+    // (la del EOF, varias líneas después).
+    @Test
+    void comentarioSinCerrarConVariasLineasEnBlancoAntesDelEofReportaLaLineaDeApertura(
+            @TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "v1\n/* abre aca\n\n\n");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, () -> {
+                    analizador.proximoToken();
+                    analizador.proximoToken();
+                });
+
+        assertEquals(2, excepcion.getLinea());
+        assertEquals("/* abre aca", excepcion.getLineaFuente());
+        assertEquals(1, excepcion.getColumna());
     }
 
     @Test

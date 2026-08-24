@@ -45,7 +45,7 @@ public final class EstadoEntero implements EstadoLexico {
 
         String lexema = contexto.getLexema();
         if (lexema.length() > MAXIMO_DIGITOS) {
-            throw contexto.crearExcepcionLexica();
+            throw contexto.crearExcepcionLexica(lexema, contexto.posicionUltimoConsumido());
         }
         return new Emitir(new Token(TipoDeToken.INT_LITERAL, lexema, contexto.getLinea()));
     }

@@ -19,6 +19,16 @@ public final class ContextoLexico {
     // está MIRANDO el '\n' (sin haberlo consumido) reporte la línea que ese
     // salto termina, no la siguiente.
     private int linea = 1;
+    // Posición del último carácter agregado al lexema (no del lookahead
+    // actual, que puede ya haber avanzado más allá). Se actualiza dentro de
+    // avanzar(), justo antes de consumir, cuando línea/columna/línea-fuente
+    // todavía describen ese carácter. La usan los estados cuyo error no es
+    // "este carácter que estoy mirando es inválido" sino "el lexema que ya
+    // terminé de construir resultó inválido" (p. ej. un operador con
+    // segundo carácter obligatorio ausente, o un entero de más de 9
+    // dígitos): en esos casos el lookahead actual no tiene ninguna relación
+    // con el motivo del error, así que reportarlo sería engañoso.
+    private PosicionLexica posicionUltimoConsumido;
 
     public ContextoLexico(ManejadorDeArchivo manejador) {
         this.manejador = manejador;
@@ -45,7 +55,12 @@ public final class ContextoLexico {
 
     public void avanzar() {
         lexema.append(caracterActual);
+        posicionUltimoConsumido = new PosicionLexica(getLinea(), getColumna(), getLineaFuente());
         consumirCaracterActual();
+    }
+
+    public PosicionLexica posicionUltimoConsumido() {
+        return posicionUltimoConsumido;
     }
 
     public void descartar() {
@@ -83,17 +98,15 @@ public final class ContextoLexico {
         return manejador.getCurrentLineText();
     }
 
-    // Punto único de construcción de ExcepcionLexica: garantiza que todo
-    // error lleve consistentemente lexema, línea, columna y la línea fuente
-    // completa (necesaria para el Reporte de Error Elegante).
     public ExcepcionLexica crearExcepcionLexica() {
         return new ExcepcionLexica(getLexema(), getLinea(), getColumna(), getLineaFuente());
     }
 
-    // Variante para errores cuyo lexema/línea reportados no son los del
-    // lookahead actual (p. ej. comentario multilínea sin cerrar: se reporta
-    // la línea de APERTURA, no la línea donde se encontró el EOF).
-    public ExcepcionLexica crearExcepcionLexica(String lexema, int linea) {
-        return new ExcepcionLexica(lexema, linea, getColumna(), getLineaFuente());
+    // Variante para errores sobre una posición distinta de la del lookahead
+    // actual: el lexema ya construido resultó inválido como un todo (ver
+    // posicionUltimoConsumido()), o el error es sobre la posición de
+    // APERTURA de una construcción que nunca cerró (comentario multilínea).
+    public ExcepcionLexica crearExcepcionLexica(String lexema, PosicionLexica posicion) {
+        return new ExcepcionLexica(lexema, posicion.linea(), posicion.columna(), posicion.lineaFuente());
     }
 }
