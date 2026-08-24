@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "ast-grep": {
+      "source": "ast-grep/agent-skill",
+      "sourceType": "github",
+      "skillPath": "ast-grep/skills/ast-grep/SKILL.md",
+      "computedHash": "3bca45167617f547e97454ae16d271ba3aeb2550d89e6ef1942057bd122c0061"
+    },
+    "caveman": {
+      "source": "juliusbrussee/skills",
+      "sourceType": "github",
+      "skillPath": "skills/caveman/SKILL.md",
+      "computedHash": "1902fa0b569912d0c05736d8d98a72097d9b82719aac88c0c1d03bb546f9176d"
+    },
+    "clean-code": {
+      "source": "davila7/claude-code-templates",
+      "sourceType": "github",
+      "skillPath": "cli-tool/components/skills/development/clean-code/SKILL.md",
+      "computedHash": "723e4955a7f12526cc4a182f085e41495bcbb8fae232e491e82e10926597624b"
+    },
+    "investigate-first": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/investigate-first/SKILL.md",
+      "computedHash": "59b581b5abfc0e19b7dd5a7c3bb2b16621ab5e94e085065c7b724a9c86cc3d4d"
+    },
+    "java": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "java/SKILL.md",
+      "computedHash": "f773176519dffc918a31d78b73c61e9627051cdc6ce3aa872b123c025e3245e8"
+    },
+    "safe-refactor": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/safe-refactor/SKILL.md",
+      "computedHash": "9df34a21a7a2c18ce13dbbe4a3f66b4e91df9e4bc33c1c9da8a80261583367ec"
+    },
+    "testing-best-practices": {
+      "source": "alleneubank/claude-code",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/testing-best-practices/SKILL.md",
+      "computedHash": "64d3db816627dc339301b05a7a028fc3151d6a61ab15b96537d8403b12ccf68e"
+    }
+  }
+}

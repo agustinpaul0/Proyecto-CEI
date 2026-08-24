@@ -1,0 +1,25 @@
+# Maven
+compilador/target/
+compilador/.jqwik-database
+
+# Java
+*.class
+*.jar
+
+# IDE — IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# IDE — VS Code
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs y temporales
+*.log
+*.tmp
