@@ -75,6 +75,36 @@ cada corrida — antes no lo leía ningún tester, así que los casos guardados 
 confirmó un bug real en esta sesión (el de los carets colgando — ver `manejo-de-errores.md`); el caso
 que lo disparó quedó persistido como regresión permanente.
 
+## Verificación cruzada contra la suite de un compañero (26/08/2026)
+
+Un compañero compartió su suite (3 testers JUnit 4 + 24 casos). Sirvió como **oráculo
+independiente**, que es el uso que vale la pena darle a material ajeno: los 24 casos se corrieron
+contra este compilador con un script descartable —no se copió nada al proyecto para probarlos— y
+**pasaron los 24**, incluida la secuencia exacta de tokens y errores intercalados. Ninguna
+divergencia, ningún bug encontrado.
+
+Qué era cada cosa, para no volver a evaluarlo desde cero:
+
+- Sus `TesterDeCasosSinErrores` y `TesterDeCasosConErrores` son los mismos archivos de la cátedra
+  que ya están en `src/test/java/catedra/` (idénticos salvo espacios).
+- Su `TesterDeCasosConErroresYTokens` cumple la función de nuestro
+  `minijava.casos.TesterDeCasosConErroresEstricto` y usa **el mismo formato de anotación**
+  (`// [Error:lex|linea]` + `//#lex,linea`) — el nuestro verifica además la ausencia de
+  `[SinErrores]` y que ninguna línea de salida lleve un carácter de control. No se integró.
+- Sus casos son casi un subconjunto de `resources/`: sólo cuatro huecos reales, que quedaron
+  cubiertos con casos propios escritos en el formato del corpus —
+  `sinErrores/puntoSeguidoDeSufijoDeFloat.java` (`1.f`: la forma `Digito+ . Digito* Sufijo` con
+  parte fraccionaria vacía), `sinErrores/igualdadCuadrupleYBarraAsteriscoSeparados.java` (`a====b`,
+  `a!=!b`, y `/` seguido de espacio y `*`, que **no** abre un comentario),
+  `sinErrores/charsConDolarYControlesEscapados.java` (`'$'` — adversarial, porque `$` es el lexema
+  del `EOF` — más `'\r'`, `'\f'`, `'\b'`) y `conErrores/pipeTriple.java` (`|||`, la simetría que
+  faltaba con `ampersandTriple.java`).
+
+**Lección para la próxima**: el aporte de una suite ajena está en la verificación, no en el volumen
+de casos. Correrla antes de copiar nada evita ensuciar el corpus con duplicados, y un caso ajeno
+cuya expectativa contradice una decisión ya documentada se informa —verificándolo contra `javac`
+como manda `AGENTS.md` §0.1— pero no se adopta.
+
 ## El oráculo externo: `javac`
 
 Cuando la cátedra no especifica un comportamiento, `AGENTS.md` §0.1 manda hacer lo que hace Java,
