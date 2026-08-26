@@ -189,10 +189,18 @@ es un salto de línea, **parte el código de error en dos líneas** y rompe el c
 un elemento por línea. Pasaba típicamente en cascadas: una comilla simple huérfana justo antes de un
 salto de línea real abre un char literal que "termina" en ese salto.
 
-La regla, aplicada en un solo lugar (`ContextoLexico`, al construir la excepción): **todo carácter de
-control del lexema de un error se renderiza con su escape de Java** (`\n`, `\r`, `\t`, `\f`, `\b`, o
+La regla, aplicada en un solo lugar (`ContextoLexico`, al construir la excepción): **todo carácter
+invisible del lexema de un error se renderiza con su escape de Java** (`\n`, `\r`, `\t`, `\f`, `\b`, o
 `\uXXXX` para el resto). Así el lexema reportado sigue siendo una descripción fiel de lo que se
 consumió, y siempre es imprimible.
+
+"Invisible" no son sólo los controles C0: también los caracteres de formato (el BOM entre ellos), los
+separadores de espacio que no son el espacio común (el no rompible entre ellos) y los surrogados
+sueltos, que `System.out` convertiría en un `?`. Sin eso, el encabezado de un espacio no rompible se
+leía `Error Léxico en línea 1, columna 4:   no es un símbolo válido`. Es la misma convención de
+`javac`, que para ese caso reporta literalmente `error: illegal character: '\u00a0'` (verificado
+ejecutándolo). Un par surrogado bien formado —un emoji— se deja crudo: se ve perfecto y escaparlo
+sólo haría el mensaje más difícil de leer.
 
 Esto vale **sólo** para el lexema de un error. El lexema de un **token** se imprime crudo, porque el
 contrato de la cátedra es que sea el texto exacto del fuente — un tabulador dentro de un `litString`

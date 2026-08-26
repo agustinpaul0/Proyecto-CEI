@@ -150,6 +150,11 @@ mencionarlas en el informe.
 | BOM al inicio del archivo | se descarta | es un carácter desconocido |
 | `3.5e38f`, `1e999` (float fuera de rango) | `floating-point number too large` | `floatLiteral` válido: el rango es un chequeo semántico, no léxico |
 | `0000000001` | `intLiteral` válido (el límite es de valor) | error: el límite de MiniJava es de **dígitos** |
+| `041` | literal **octal**, vale 33 | `intLiteral` decimal de 3 dígitos |
+| `09` | `illegal digit in an octal literal` | `intLiteral` válido de 2 dígitos |
+| `0x1F`, `0b1010` | literal hexadecimal / binario | `intLiteral(0)` + `idMV` — la ER de la cátedra es decimal y nada más |
+| `1_000` | válido (separadores desde Java 7) | `intLiteral(1)`, error por el `_`, `intLiteral(000)` |
+| Un carácter invisible en el mensaje de error | `illegal character: '\u00a0'` — escapado | escapado igual, misma convención |
 
 ## Los 8 logros y su estrategia
 

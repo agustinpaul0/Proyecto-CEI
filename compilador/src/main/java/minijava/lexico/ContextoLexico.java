@@ -156,14 +156,19 @@ public final class ContextoLexico {
     }
 
     // El lexema de un error se imprime literal en el encabezado legible y
-    // dentro de [Error:Lexema|NroLinea]. Un carácter de control crudo ahí
-    // rompe el contrato de la cátedra de una línea por elemento (un '\n'
-    // parte el código de error en dos) o, en el mejor de los casos, es
-    // invisible en el reporte. Se renderizan todos con su escape de Java.
+    // dentro de [Error:Lexema|NroLinea]. Un carácter invisible ahí deja el
+    // mensaje ilegible ("  no es un símbolo válido") y, si es un salto de
+    // línea, además parte el código de error en dos y rompe el contrato de la
+    // cátedra de un elemento por línea.
     //
-    // Esto vale SÓLO para el lexema de un error. El lexema de un token se
-    // imprime crudo, porque el contrato de la cátedra es que sea el texto
-    // exacto del fuente (ver resources/sinErrores/stringConTabuladorInterior).
+    // Se renderizan con su escape de Java, igual que hace javac, que para un
+    // espacio no rompible reporta literalmente:
+    //
+    //     error: illegal character: '\u00a0'
+    //
+    // Esto vale SÓLO para el lexema de un error. El de un token se imprime
+    // crudo, porque el contrato de la cátedra es que sea el texto exacto del
+    // fuente (ver resources/sinErrores/stringConTabuladorInterior.java).
     private static String escaparNoImprimibles(String texto) {
         StringBuilder escapado = new StringBuilder(texto.length());
         for (int i = 0; i < texto.length(); i++) {
@@ -175,7 +180,7 @@ public final class ContextoLexico {
                 case '\f' -> escapado.append("\\f");
                 case '\b' -> escapado.append("\\b");
                 default -> {
-                    if (c < 0x20 || c == 0x7F) {
+                    if (esInvisible(texto, i)) {
                         escapado.append("\\u").append(String.format("%04x", (int) c));
                     } else {
                         escapado.append(c);
@@ -184,5 +189,28 @@ public final class ContextoLexico {
             }
         }
         return escapado.toString();
+    }
+
+    // Invisible = no se ve nada al imprimirlo, o directamente no se puede
+    // imprimir. Cubre los controles C0/DEL, los caracteres de formato (el BOM
+    // entre ellos), los separadores de espacio que no son el espacio común
+    // (el no rompible entre ellos) y los surrogados SUELTOS. Un par surrogado
+    // bien formado (un emoji) se deja crudo: se ve perfecto y escaparlo sólo
+    // haría el mensaje más difícil de leer.
+    private static boolean esInvisible(String texto, int posicion) {
+        char c = texto.charAt(posicion);
+        if (Character.isISOControl(c)) {
+            return true;
+        }
+        if (Character.isHighSurrogate(c)) {
+            return posicion + 1 >= texto.length() || !Character.isLowSurrogate(texto.charAt(posicion + 1));
+        }
+        if (Character.isLowSurrogate(c)) {
+            return posicion == 0 || !Character.isHighSurrogate(texto.charAt(posicion - 1));
+        }
+        if (Character.isSpaceChar(c)) {
+            return c != ' ';
+        }
+        return Character.getType(c) == Character.FORMAT;
     }
 }

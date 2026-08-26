@@ -34,12 +34,15 @@ con_errores("centinelaEofEmbebido.java",
             ["v1" + SUB, "v2"])
 
 # El BOM no se descarta (javac si lo salta): es un caracter desconocido mas.
+# Su lexema sale ESCAPADO porque es invisible; javac hace lo mismo, reporta
+# literalmente  error: illegal character: '\u00a0'  para el espacio no
+# rompible. Sin escapar, el mensaje se leeria "  no es un simbolo valido".
 con_errores("marcaDeOrdenDeBytes.java",
-            [T("v1", 1), E(BOM, 1), T("v2", 1)],
+            [T("v1", 1), E("\\ufeff", 1), T("v2", 1)],
             ["v1 " + BOM + " v2"])
 
 con_errores("espacioNoRompible.java",
-            [T("v1", 1), E(NBSP, 1), T("v2", 1)],
+            [T("v1", 1), E("\\u00a0", 1), T("v2", 1)],
             ["v1 " + NBSP + " v2"])
 
 # -------------------------------------------------------------- Unicode raro
