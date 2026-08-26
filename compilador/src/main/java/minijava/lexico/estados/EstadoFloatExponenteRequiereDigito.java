@@ -21,7 +21,7 @@ public final class EstadoFloatExponenteRequiereDigito implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoFloatExponenteDigitos.INSTANCIA);
         }
-        // El mensaje habla del literal entero ('1e'), no del carácter que se
+        // El mensaje habla del literal entero ('1e-'), no del carácter que se
         // está mirando —que es un token perfectamente legítimo y no se
         // consume—, así que el '^' va donde el literal empieza. Es lo que
         // hace javac: "malformed floating-point literal" señala el primer

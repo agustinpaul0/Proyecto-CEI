@@ -10,7 +10,7 @@ import minijava.tokens.TipoDeToken;
 
 // Cubre los seis pares de operador con sufijo opcional de un carácter:
 // >/>=, </<=, !/!=, =/==, +/++, -/--. Reuso en vez de una clase por par
-// (AGENTS.md §4).
+// (agents/arquitectura.md).
 public final class EstadoOperadorConSufijoOpcional implements EstadoLexico {
 
     public static final EstadoOperadorConSufijoOpcional MAYOR =

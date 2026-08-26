@@ -9,6 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
+// Logro "Manejador de Archivos Eficiente", y en la práctica un requisito: el
+// SourceManagerImpl provisto lee por líneas y reporta el EOF una línea antes de
+// lo que esperan los propios casos de ejemplo de la cátedra cuando el archivo
+// termina en salto de línea (además de romper con un archivo vacío).
+//
+// Acá el fuente se carga entero una sola vez y se sirve carácter por carácter.
+// Eso deja disponible todo el contexto, que es lo que hace exactos y baratos
+// getCurrentLineText() y el reconteo de columnas del Reporte de Error Elegante.
+// Ver documentacion/manejador-de-archivo.md.
 public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
 
     private char[] contenido;
@@ -61,8 +70,8 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         // Se captura ANTES de mutar inicioDeLineaActual: mismo patrón que
         // columnaDevuelta/columnaSiguiente. Sin esto, getCurrentLineText()
         // mostraría la línea SIGUIENTE en el instante exacto en que se
-        // devuelve el '\n' que termina la línea actual (bug real encontrado
-        // por TDD, ver bitácora en AGENTS.md).
+        // devuelve el '\n' que termina la línea actual (bug real, encontrado
+        // escribiendo el test antes que el código).
         inicioDeLineaDevuelta = inicioDeLineaActual;
         if (actual == '\n') {
             numeroDeLinea++;
@@ -91,7 +100,9 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         return columnaDevuelta;
     }
 
-    // Línea del último carácter DEVUELTO (mismo criterio que getColumnNumber()).
+    // El TEXTO de la línea del último carácter devuelto, sin su salto final
+    // (mismo criterio que getColumnNumber()). Lo consume el Reporte de Error
+    // Elegante para imprimir la línea y poner el '^' debajo.
     @Override
     public String getCurrentLineText() {
         int fin = inicioDeLineaDevuelta;

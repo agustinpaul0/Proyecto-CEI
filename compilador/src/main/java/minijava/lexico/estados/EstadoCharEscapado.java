@@ -8,8 +8,10 @@ import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
 // Tras la barra invertida dentro de un charLiteral: cualquier carácter es
-// válido como escapado, salvo EOF (no hay nada que escapar). 'u' dispara el
-// escape Unicode (logro Unicodes) — ver EstadoMarcadorUnicode.
+// válido como escapado —permisividad explícita de Aspectos Léxicos §2.3.2,
+// más laxa que Java— salvo EOF y salto de línea, donde no hay nada que
+// escapar y el literal quedó sin cerrar. 'u' dispara el escape Unicode
+// (logro Unicodes) — ver EstadoMarcadorUnicode.
 public final class EstadoCharEscapado implements EstadoLexico {
 
     public static final EstadoCharEscapado INSTANCIA = new EstadoCharEscapado();

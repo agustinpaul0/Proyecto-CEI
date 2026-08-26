@@ -56,7 +56,7 @@ class AnalizadorLexicoTest {
         assertEquals(3, token.linea());
     }
 
-    // Regresión: los 3 casos de EOF documentados en AGENTS.md §3, verificados
+    // Regresión: los 3 casos de EOF documentados en agents/convenciones-catedra.md, verificados
     // acá a nivel AnalizadorLexico (no sólo del manejador), porque un bug real
     // de conteo de línea apareció en esta capa durante el desarrollo de
     // literales string (ver commit del fix en ContextoLexico.consumirCaracterActual).
@@ -164,7 +164,7 @@ class AnalizadorLexicoTest {
             "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT",
     })
     // float se agrega como palabra reservada por confirmación directa del
-    // profesor (no figura en los PDFs de la cátedra) — AGENTS.md §5. "double"
+    // profesor (no figura en los PDFs de la cátedra) — agents/especificacion-lexica.md. "double"
     // NO es palabra clave: el profesor aclaró que float y double son "lo
     // mismo" (un único tipo float en MiniJava) — no que "double" también
     // deba reservarse como palabra, sino que el literal float ya cubre
@@ -642,7 +642,7 @@ class AnalizadorLexicoTest {
 
     // Logro Multi-detección de Errores: tras un error se puede seguir
     // escaneando SIN repetir el mismo error indefinidamente (invariante de
-    // terminación, AGENTS.md §6). No hace falta ningún paso de recuperación:
+    // terminación, agents/manejo-de-errores.md). No hace falta ningún paso de recuperación:
     // el estado que lanzó ya consumió el carácter que reportó.
     @Test
     void trasUnErrorLexicoSePuedeSeguirEscaneando(@TempDir Path dir) throws Exception {
@@ -724,7 +724,7 @@ class AnalizadorLexicoTest {
 
     // El JLS (§3.3) permite repetir el marcador 'u' del escape Unicode
     // (\uu0041, \uuu0041, ...) — semántica heredada tal cual en MiniJava
-    // ante la falta de especificación propia de la cátedra (AGENTS.md §5).
+    // ante la falta de especificación propia de la cátedra (agents/especificacion-lexica.md).
     @Test
     void charLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
         String fuente = "'\\" + "uu0041'";

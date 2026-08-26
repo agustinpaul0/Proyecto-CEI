@@ -35,7 +35,7 @@ public final class AnalizadorLexico {
     //
     // Driver iterativo del patrón State: mismo AF que la cátedra enseña
     // encadenando llamadas, sin la profundidad de pila del encadenamiento
-    // recursivo (ver AGENTS.md §4).
+    // recursivo (ver agents/arquitectura.md).
     public Token proximoToken() throws ExcepcionLexica {
         contexto.iniciarNuevoToken();
         EstadoLexico estado = EstadoInicial.INSTANCIA;

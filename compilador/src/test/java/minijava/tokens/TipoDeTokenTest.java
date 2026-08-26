@@ -8,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TipoDeTokenTest {
 
-    // Tabla copiada independientemente de AGENTS.md §5 y §2 (ejemplos de la cátedra),
+    // Tabla copiada independientemente de agents/especificacion-lexica.md y de los
+    // ejemplos de la cátedra,
     // no derivada del enum: sirve para detectar errores de transcripción.
     @ParameterizedTest
     @CsvSource({

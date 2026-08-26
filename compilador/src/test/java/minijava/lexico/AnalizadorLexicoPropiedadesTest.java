@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 // Invariantes de robustez que deben sostenerse para CUALQUIER entrada, no
-// sólo para los casos concretos de AnalizadorLexicoTest (AGENTS.md §8).
+// sólo para los casos concretos de AnalizadorLexicoTest (agents/testing.md).
 class AnalizadorLexicoPropiedadesTest {
 
     private static final int LIMITE_DE_SEGURIDAD = 100_000;

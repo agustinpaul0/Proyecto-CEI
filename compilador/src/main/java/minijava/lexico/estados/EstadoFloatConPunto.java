@@ -8,9 +8,10 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: tras "N.", la parte fraccionaria es opcional (Clase 01 §Floats:
-// "misma estructura que los floats de Java" — Java permite "1." sin dígitos
-// después del punto).
+// Terminal: tras "N.", la parte fraccionaria es opcional. Pautas Etapa 1 pide
+// la "misma estructura que los floats de Java", y Java acepta "1." sin dígitos
+// después del punto (verificado con javac; caso fijado en
+// resources/sinErrores/puntoSeguidoDeSufijoDeFloat.java).
 public final class EstadoFloatConPunto implements EstadoLexico {
 
     public static final EstadoFloatConPunto INSTANCIA = new EstadoFloatConPunto();

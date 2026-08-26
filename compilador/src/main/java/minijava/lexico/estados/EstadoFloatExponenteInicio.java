@@ -8,7 +8,8 @@ import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
 // Tras 'e'/'E': el signo es opcional pero al menos un dígito es obligatorio
-// después (AGENTS.md §5: "1e"/"1.5e" sin dígitos → error, sin backtracking).
+// después: "1e"/"1.5e" son error, sin backtracking a un token más corto
+// (agents/especificacion-lexica.md).
 public final class EstadoFloatExponenteInicio implements EstadoLexico {
 
     public static final EstadoFloatExponenteInicio INSTANCIA = new EstadoFloatExponenteInicio();

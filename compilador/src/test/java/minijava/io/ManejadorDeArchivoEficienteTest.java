@@ -165,7 +165,8 @@ class ManejadorDeArchivoEficienteTest {
     // línea, getCurrentLineText() debe seguir mostrando ESA línea (la que el
     // salto termina), no la siguiente — aunque el salto ya haya sido
     // devuelto. Encontrado construyendo un caso de corpus con un char literal
-    // sin cerrar al final de línea (ver AGENTS.md bitácora).
+    // sin cerrar al final de línea: el reporte mostraba la línea siguiente y
+    // el '^' señalaba texto sin relación con el error.
     @Test
     void textoDeLaLineaSigueSiendoLaAnteriorJustoAlDevolverElSalto(@TempDir Path dir) throws IOException {
         manejador.open(escribir(dir, "f.txt", "v1\nchau").toString());

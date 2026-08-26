@@ -15,17 +15,20 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
+// Tester provisto por la cátedra, con su criterio de verificación intacto: por
+// cada archivo de resources/sinErrores/ se ejecuta el compilador, se comprueba
+// que informe [SinErrores], y se compara la secuencia de tokens impresa contra
+// las expectativas //#lexema,nroLinea escritas en el propio archivo.
+//
+// Sólo se comparan LEXEMA y NÚMERO DE LÍNEA: el nombre del token se ignora a
+// propósito, porque la cátedra no fija los nombres internos de cada proyecto.
 @RunWith(Parameterized.class)
 public class TesterDeCasosSinErrores {
 
     private static final String MSG_EXITO = "[SinErrores]";
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
     private static final String EXPECTED_TOKEN_PREFIX = "//#";
-
-    // TODO: Reemplazar Main por la clase del proyecto que declara:
-    // public static void main(String[] args)
-    // No es necesario crear una instancia de dicha clase.
-    private static final Main init = null;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -83,7 +86,7 @@ public class TesterDeCasosSinErrores {
         String path = TEST_FILES_DIRECTORY_PATH + name;
         List<TokenEsperado> tokensEsperados = leerTokensEsperados(path);
 
-        init.main(new String[] { path });
+        invocarCompilador(path);
 
         String salida = outContent.toString();
 
@@ -133,6 +136,18 @@ public class TesterDeCasosSinErrores {
                     CoreMatchers.is(esperado.linea)
             );
         }
+    }
+
+    // El punto de entrada del proyecto, invocado in-process una vez por caso.
+    // Si la clase con el main cambia de nombre o de paquete, se ajusta el
+    // import de arriba y esta única línea.
+    //
+    // Que la invocación sea in-process y repetida es la razón por la que Main
+    // no puede llamar a System.exit() ni guardar estado estático mutable: lo
+    // primero mataría la corrida entera de tests en el primer caso, y lo
+    // segundo haría que un caso contamine al siguiente.
+    private void invocarCompilador(String rutaDelFuente) {
+        Main.main(new String[] { rutaDelFuente });
     }
 
     /*

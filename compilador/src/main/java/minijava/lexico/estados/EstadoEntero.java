@@ -11,9 +11,11 @@ import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
 // Terminal: intLiteral, salvo que la corrida de dígitos continúe hacia un
-// floatLiteral (Clase 01 §Floats — logro). Se consume la corrida completa
-// de dígitos (maximal munch) y recién ahí se valida el límite de 9 dígitos,
-// para no cortar un float largo a mitad de la parte entera (AGENTS.md §5).
+// floatLiteral (logro Floats I). Se consume la corrida completa de dígitos
+// (maximal munch) y recién ahí se valida el límite de 9 dígitos, para no
+// cortar un float largo a mitad de la parte entera: '1234567890.5' es un
+// float válido con diez dígitos en la parte entera, mientras que
+// '1234567890' solo es error (agents/especificacion-lexica.md).
 public final class EstadoEntero implements EstadoLexico {
 
     public static final EstadoEntero INSTANCIA = new EstadoEntero();

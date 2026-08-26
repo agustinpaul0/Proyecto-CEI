@@ -15,7 +15,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Fuzzing con semilla fija (AGENTS.md §8): bytes UTF-8 arbitrarios, sin
+// Fuzzing con semilla fija (agents/testing.md): bytes UTF-8 arbitrarios, sin
 // ninguna estructura léxica intencional. El único contrato exigido es que
 // el compilador termine y que cualquier fallo sea ExcepcionLexica —  nunca
 // un crash sin controlar (NullPointerException, StackOverflowError, etc.).
