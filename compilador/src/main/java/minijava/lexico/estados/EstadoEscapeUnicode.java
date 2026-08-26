@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
@@ -22,7 +23,7 @@ public final class EstadoEscapeUnicode implements EstadoLexico {
             return new Continuar(siguienteAlTerminar);
         }
         if (!esHexadecimal(contexto.getCaracterActual())) {
-            throw contexto.crearExcepcionLexica();
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.UNICODE_MAL_FORMADO);
         }
         contexto.avanzar();
         return new Continuar(new EstadoEscapeUnicode(digitosRestantes - 1, siguienteAlTerminar));

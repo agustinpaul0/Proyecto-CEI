@@ -23,3 +23,4 @@ Thumbs.db
 # Logs y temporales
 *.log
 *.tmp
+__pycache__/

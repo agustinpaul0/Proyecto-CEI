@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Emitir;
 import minijava.lexico.EstadoLexico;
@@ -18,7 +19,13 @@ public final class EstadoCharCerrando implements EstadoLexico {
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         if (contexto.getCaracterActual() != '\'') {
-            throw contexto.crearExcepcionLexica();
+            // El literal "nunca se cerró" sólo si lo interrumpió el fin de
+            // línea o el fin de archivo; si lo interrumpió un carácter
+            // cualquiera, el literal está mal formado (tiene más de uno).
+            boolean seInterrumpio = contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n';
+            throw contexto.crearExcepcionLexica(seInterrumpio
+                    ? TipoDeErrorLexico.CHAR_SIN_CERRAR
+                    : TipoDeErrorLexico.CHAR_MAL_FORMADO);
         }
         int linea = contexto.getLinea();
         contexto.avanzar();

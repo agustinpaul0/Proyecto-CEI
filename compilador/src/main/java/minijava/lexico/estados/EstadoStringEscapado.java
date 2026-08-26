@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
@@ -28,17 +29,29 @@ public final class EstadoStringEscapado implements EstadoLexico {
 
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
-        if (contexto.esFinDeArchivo()) {
-            throw contexto.crearExcepcionLexica();
+        // Un salto de línea real tras la barra invertida no es un escape:
+        // el literal quedó sin cerrar. Se lo trata aparte para no meter el
+        // '\n' crudo en el lexema (documentacion/manejo-de-errores.md §6).
+        if (contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n') {
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.STRING_SIN_CERRAR);
         }
         char actual = contexto.getCaracterActual();
-        if (actual == 'u') {
+        // Con el logro Unicodes desactivado la 'u' deja de ser el marcador
+        // del escape especial y cae al chequeo de abajo, donde no figura
+        // entre los escapes válidos de Java: pasa a ser un escape inválido.
+        if (actual == 'u' && contexto.getConfiguracion().unicodeHabilitado()) {
             contexto.avanzar();
             return new Continuar(new EstadoMarcadorUnicode(EstadoStringAbierto.INSTANCIA));
         }
         if (ESCAPES_DE_UN_CARACTER.indexOf(actual) < 0 && !esDigitoOctal(actual)) {
-            contexto.agregarCaracterOfensivo();
-            throw contexto.crearExcepcionLexica();
+            // Error NO fatal, como javac: "illegal escape character" se
+            // reporta pero el literal se sigue leyendo hasta su comilla de
+            // cierre, así que el litString se emite igual y no hay cascada.
+            // (Verificado ejecutando javac sobre "hola \q mundo".)
+            contexto.avanzar();
+            contexto.registrarError(contexto.crearExcepcionLexicaSobreElUltimoConsumido(
+                    TipoDeErrorLexico.STRING_ESCAPE_INVALIDO));
+            return new Continuar(EstadoStringAbierto.INSTANCIA);
         }
         contexto.avanzar();
         return new Continuar(EstadoStringAbierto.INSTANCIA);

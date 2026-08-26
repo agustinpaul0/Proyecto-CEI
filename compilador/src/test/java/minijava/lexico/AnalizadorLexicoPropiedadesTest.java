@@ -59,7 +59,6 @@ class AnalizadorLexicoPropiedadesTest {
                     return emitidos;
                 }
             } catch (ExcepcionLexica excepcion) {
-                analizador.recuperarDeError();
             }
         }
         throw new AssertionError("No terminó tras " + LIMITE_DE_SEGURIDAD + " pasos: " + fuente);
@@ -91,10 +90,11 @@ class AnalizadorLexicoPropiedadesTest {
         assertEquals(TipoDeToken.EOF, tokens.get(tokens.size() - 1).tipo());
     }
 
-    // Prueba directa de que recuperarDeError() avanza siempre exactamente un
-    // carácter: una corrida de K símbolos inválidos consecutivos produce
-    // exactamente K errores (ni más, por consumir de más; ni un ciclo
-    // infinito, por no consumir nada) antes de llegar a EOF.
+    // Prueba directa del criterio de recuperación: cada error consume
+    // exactamente el carácter que reporta, así que una corrida de K símbolos
+    // inválidos consecutivos produce exactamente K errores — ni más (por
+    // consumir de más) ni un ciclo infinito (por no consumir nada) — antes de
+    // llegar a EOF. Ya no hay ningún paso de recuperación que invocar.
     @Property
     void unaCorridaDeKSimbolosInvalidosProduceExactamenteKErrores(
             @ForAll @IntRange(min = 1, max = 40) int cantidad) throws IOException {
@@ -110,7 +110,6 @@ class AnalizadorLexicoPropiedadesTest {
                 return;
             } catch (ExcepcionLexica excepcion) {
                 errores++;
-                analizador.recuperarDeError();
             }
         }
         fail("no llegó a EOF tras " + cantidad + " recuperaciones");

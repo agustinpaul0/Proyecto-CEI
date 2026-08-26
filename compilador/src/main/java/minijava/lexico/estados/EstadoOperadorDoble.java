@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Emitir;
 import minijava.lexico.EstadoLexico;
@@ -30,6 +31,7 @@ public final class EstadoOperadorDoble implements EstadoLexico {
             contexto.avanzar();
             return new Emitir(new Token(tipo, contexto.getLexema(), linea));
         }
-        throw contexto.crearExcepcionLexica(contexto.getLexema(), contexto.posicionUltimoConsumido());
+        throw contexto.crearExcepcionLexica(TipoDeErrorLexico.OPERADOR_INCOMPLETO,
+                contexto.getLexema(), contexto.posicionUltimoConsumido());
     }
 }

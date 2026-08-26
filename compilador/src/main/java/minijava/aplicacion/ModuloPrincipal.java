@@ -1,5 +1,6 @@
 package minijava.aplicacion;
 
+import minijava.config.ConfiguracionDelCompilador;
 import minijava.errores.ExcepcionLexica;
 import minijava.errores.FormateadorDeError;
 import minijava.io.ManejadorDeArchivo;
@@ -10,18 +11,24 @@ import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
 import java.io.IOException;
+import java.util.List;
 
 public final class ModuloPrincipal {
 
     private final Salida salida;
-    private final FormateadorDeError formateadorDeError = new FormateadorDeError();
+    private final ConfiguracionDelCompilador configuracion;
+    private final FormateadorDeError formateadorDeError;
 
     public ModuloPrincipal(Salida salida) {
-        this.salida = salida;
+        this(salida, ConfiguracionDelCompilador.DEFAULT);
     }
 
-    // Logro Multi-detección de Errores: no finaliza en el primer error, se
-    // recupera y sigue reportando hasta EOF (AGENTS.md §6).
+    public ModuloPrincipal(Salida salida, ConfiguracionDelCompilador configuracion) {
+        this.salida = salida;
+        this.configuracion = configuracion;
+        this.formateadorDeError = new FormateadorDeError(configuracion);
+    }
+
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);
@@ -29,16 +36,24 @@ public final class ModuloPrincipal {
         boolean huboErrores = false;
 
         try {
-            boolean llegoAEof = false;
-            while (!llegoAEof) {
+            boolean termino = false;
+            while (!termino) {
                 try {
                     Token token = analizador.proximoToken();
+                    // Los errores no fatales ocurrieron DENTRO del token, así
+                    // que se reportan antes de imprimirlo.
+                    boolean huboNoFatales = reportarErroresNoFatales(analizador);
+                    huboErrores |= huboNoFatales;
                     imprimirToken(token);
-                    llegoAEof = token.tipo() == TipoDeToken.EOF;
+                    termino = token.tipo() == TipoDeToken.EOF
+                            || (huboNoFatales && !configuracion.multiDeteccionDeErrores());
                 } catch (ExcepcionLexica excepcion) {
+                    huboErrores |= reportarErroresNoFatales(analizador);
                     huboErrores = true;
                     reportarError(excepcion);
-                    analizador.recuperarDeError();
+                    // Sin paso de recuperación: el estado que lanzó ya
+                    // consumió lo que reportó (ver AnalizadorLexico).
+                    termino = !configuracion.multiDeteccionDeErrores();
                 }
             }
         } finally {
@@ -51,6 +66,12 @@ public final class ModuloPrincipal {
 
     private void imprimirToken(Token token) {
         salida.imprimir("(" + token.tipo().getNombre() + "," + token.lexema() + "," + token.linea() + ")");
+    }
+
+    private boolean reportarErroresNoFatales(AnalizadorLexico analizador) {
+        List<ExcepcionLexica> pendientes = analizador.tomarErroresNoFatales();
+        pendientes.forEach(this::reportarError);
+        return !pendientes.isEmpty();
     }
 
     private void reportarError(ExcepcionLexica excepcion) {

@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.Emitir;
@@ -94,8 +95,11 @@ public final class EstadoInicial implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoStringAbierto.INSTANCIA);
         }
-        contexto.agregarCaracterOfensivo();
-        throw contexto.crearExcepcionLexica();
+        // Criterio de recuperación: se consume el carácter ofensivo, porque
+        // es exactamente lo que se reporta como lexema. Sin esto el análisis
+        // no avanzaría y el error se repetiría para siempre.
+        contexto.avanzar();
+        throw contexto.crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico.CARACTER_DESCONOCIDO);
     }
 
     private static boolean esBlanco(char c) {

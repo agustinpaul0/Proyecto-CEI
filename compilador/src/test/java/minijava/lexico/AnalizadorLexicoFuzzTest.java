@@ -61,10 +61,72 @@ class AnalizadorLexicoFuzzTest {
                     return;
                 }
             } catch (ExcepcionLexica excepcionControlada) {
-                analizador.recuperarDeError();
+                // Sin paso de recuperación: el estado que lanzó ya consumió
+                // lo que reportó, así que el bucle avanza solo.
             }
         }
         throw new AssertionError("no llegó a EOF tras " + LIMITE_DE_SEGURIDAD + " pasos");
+    }
+
+    // Segunda corrida, sobre BYTES CRUDOS en vez de un String codificado a
+    // UTF-8. La corrida de arriba nunca puede generar una secuencia UTF-8
+    // invalida (getBytes(UTF_8) siempre produce bytes bien formados), asi que
+    // el camino de decodificacion quedaba sin fuzzear — y ahi se escondia un
+    // UncheckedIOException(MalformedInputException) que reventaba el
+    // compilador con un archivo binario. Ver DefectosDeRobustezTest.
+    @Test
+    void bytesCrudosArbitrariosNuncaProducenUnFalloNoControlado() throws IOException {
+        Random random = new Random(SEMILLA);
+        Path archivo = Files.createTempFile("minijava-fuzz-bytes-", ".mjava");
+        archivo.toFile().deleteOnExit();
+
+        for (int corrida = 0; corrida < CANTIDAD_DE_CORRIDAS; corrida++) {
+            byte[] bytes = new byte[random.nextInt(LARGO_MAXIMO)];
+            random.nextBytes(bytes);
+            Files.write(archivo, bytes);
+
+            try {
+                tokenizarConRecuperacion(archivo);
+            } catch (AssertionError | RuntimeException fallo) {
+                Path caso = Path.of("resources", "regresion",
+                        "fuzz-bytes-semilla-" + SEMILLA + "-corrida-" + corrida + ".mjava");
+                Files.createDirectories(caso.getParent());
+                Files.write(caso, bytes);
+                fail("Fallo con semilla " + SEMILLA + ", corrida " + corrida
+                        + " — caso guardado en " + caso, fallo);
+            }
+        }
+    }
+
+    // Tercera corrida, sesgada a construcciones sin cerrar: literales y
+    // comentarios abiertos son donde vive la mayor parte de la logica de
+    // error, y el alfabeto general los produce demasiado poco seguido.
+    @Test
+    void construccionesSinCerrarNuncaProducenUnFalloNoControlado() throws IOException {
+        Random random = new Random(SEMILLA + 1);
+        Path archivo = Files.createTempFile("minijava-fuzz-abiertos-", ".mjava");
+        archivo.toFile().deleteOnExit();
+        String[] piezas = {"'", "\"", "\\", "/*", "*/", "//", "\n", "u", "0", "a", " ", "'\\", "\"\\"};
+
+        for (int corrida = 0; corrida < CANTIDAD_DE_CORRIDAS; corrida++) {
+            StringBuilder fuente = new StringBuilder();
+            int cantidad = random.nextInt(30);
+            for (int i = 0; i < cantidad; i++) {
+                fuente.append(piezas[random.nextInt(piezas.length)]);
+            }
+            Files.write(archivo, fuente.toString().getBytes(StandardCharsets.UTF_8));
+
+            try {
+                tokenizarConRecuperacion(archivo);
+            } catch (AssertionError | RuntimeException fallo) {
+                Path caso = Path.of("resources", "regresion",
+                        "fuzz-abiertos-semilla-" + SEMILLA + "-corrida-" + corrida + ".mjava");
+                Files.createDirectories(caso.getParent());
+                Files.write(caso, fuente.toString().getBytes(StandardCharsets.UTF_8));
+                fail("Fallo con semilla " + SEMILLA + ", corrida " + corrida
+                        + " — caso guardado en " + caso, fallo);
+            }
+        }
     }
 
     // Genera texto con alta probabilidad de caracteres "interesantes" para

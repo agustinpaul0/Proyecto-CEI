@@ -18,11 +18,18 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
     private int inicioDeLineaDevuelta;
     private int columnaSiguiente;
     private int columnaDevuelta;
+    private boolean devolvioFinDeArchivo;
 
     @Override
     public void open(String filePath) throws FileNotFoundException {
         try {
-            String texto = Files.readString(Path.of(filePath), StandardCharsets.UTF_8);
+            // new String(bytes, UTF_8) reemplaza las secuencias mal formadas
+            // por U+FFFD en vez de lanzar MalformedInputException, que es lo
+            // que hace Files.readString: un archivo binario reventaba el
+            // compilador con un UncheckedIOException. Ahora los bytes basura
+            // llegan al léxico como caracteres desconocidos y se reportan como
+            // errores léxicos normales.
+            String texto = new String(Files.readAllBytes(Path.of(filePath)), StandardCharsets.UTF_8);
             contenido = texto.replace("\r\n", "\n").replace('\r', '\n').toCharArray();
         } catch (NoSuchFileException excepcion) {
             throw new FileNotFoundException(filePath);
@@ -30,6 +37,7 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
             throw new UncheckedIOException(excepcion);
         }
         posicion = 0;
+        devolvioFinDeArchivo = false;
         numeroDeLinea = 1;
         inicioDeLineaActual = 0;
         columnaSiguiente = 1;
@@ -45,6 +53,7 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         if (posicion >= contenido.length) {
             columnaDevuelta = columnaSiguiente;
             inicioDeLineaDevuelta = inicioDeLineaActual;
+            devolvioFinDeArchivo = true;
             return SourceManager.END_OF_FILE;
         }
         char actual = contenido[posicion++];
@@ -63,6 +72,11 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
             columnaSiguiente++;
         }
         return actual;
+    }
+
+    @Override
+    public boolean estaEnFinDeArchivo() {
+        return devolvioFinDeArchivo;
     }
 
     @Override

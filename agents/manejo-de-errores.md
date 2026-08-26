@@ -5,10 +5,28 @@ formatos de reporte) con diagramas, ver
 [`../documentacion/arquitectura.md`](../documentacion/arquitectura.md) §5 — este archivo cubre el
 detalle de implementación de `ExcepcionLexica`/`PosicionLexica`/`FormateadorDeError`, no el tutorial.
 
+## El criterio de recuperación (leer primero)
+
+**Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en el
+lexema, ni uno más.** No existe `recuperarDeError()`: la recuperación es estructural, el siguiente
+`proximoToken()` arranca en el primer carácter que no formó parte del lexema. Verificado contra
+`javac` (ver `documentacion/manejo-de-errores.md` §2), porque la cátedra no dice nada sobre cómo
+recuperarse — su comportamiento base ni siquiera tiene recuperación.
+
+**Regla para código nuevo**: si vas a agregar un `throw` en un estado, preguntate si el carácter que
+estás mirando forma parte del error. Si sí, `avanzar()` y usar
+`crearExcepcionLexicaSobreElUltimoConsumido(tipo)`. Si no (el lexema ya construido es el que está
+mal), no lo toques y usá `crearExcepcionLexica(tipo, lexema, posicionUltimoConsumido())`.
+`agregarCaracterOfensivo()` ya no existe: era justamente el método que rompía la correspondencia
+entre lo que se reporta y lo que se consume, y por eso la recuperación se comía tokens válidos.
+
+El único error **no fatal** es el escape inválido dentro de un `litString`: se registra con
+`contexto.registrarError(...)` y el literal se sigue leyendo, igual que hace `javac`.
+
 ## El contrato de `ExcepcionLexica`
 
-Cada `ExcepcionLexica` lleva cuatro datos: lexema, línea, columna y la línea fuente completa (para el
-Reporte de Error Elegante). `ContextoLexico.crearExcepcionLexica()` es el punto único de construcción
+Cada `ExcepcionLexica` lleva cinco datos: tipo (`TipoDeErrorLexico`), lexema, línea, columna y la
+línea fuente completa (para el Reporte de Error Elegante). `ContextoLexico.crearExcepcionLexica()` es el punto único de construcción
 — ningún estado arma una `ExcepcionLexica` a mano, siempre pasa por ahí, para que los cuatro campos
 sean consistentes entre sí.
 
@@ -32,8 +50,10 @@ la causa del bug:
 
 `ContextoLexico.posicionUltimoConsumido()` resuelve la categoría 2: devuelve un `PosicionLexica`
 (línea + columna + línea fuente) capturado dentro de `avanzar()`, **antes** de consumir — es decir,
-la posición del último carácter que sí quedó en el lexema. `EstadoEntero` y `EstadoOperadorDoble` lo
-usan para el `throw`. El mismo mecanismo resuelve un segundo bug relacionado: el comentario
+la posición del último carácter que sí quedó en el lexema. `EstadoEntero`, `EstadoOperadorDoble` y los dos
+estados de exponente lo usan para el `throw` (los de exponente estaban mal clasificados en la
+categoría 1: reportaban la columna del carácter siguiente cuando había uno, y la correcta cuando
+venía un fin de línea). El mismo mecanismo resuelve un segundo bug relacionado: el comentario
 multilínea sin cerrar reportaba la línea de apertura correcta en el mensaje, pero la línea-fuente y
 la columna mostradas eran las de la posición del EOF (que puede estar varias líneas después, en
 contenido no relacionado) — `EstadoBarra` ahora captura `posicionUltimoConsumido()` (la posición del

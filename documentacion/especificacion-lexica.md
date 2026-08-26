@@ -75,6 +75,18 @@ Igual que los floats de Java, con la salvedad de que **siempre** empiezan con un
 diferencia de Java, `.5` no es un float válido en MiniJava — es el token `punto` seguido de
 `intLiteral`).
 
+**Sin límite de dígitos.** A diferencia de `intLiteral` (acotado a 9 dígitos), ninguna de las tres
+partes del `floatLiteral` tiene cota: `Digito+` es una estrella de Kleene sin límite en la parte
+entera, la fraccionaria y el exponente. No es un olvido — la cátedra sólo acota el entero, y Java
+tampoco limita la cantidad de dígitos de un literal de punto flotante.
+
+Lo que Java **sí** rechaza es un literal no nulo que se redondee a infinito o a cero
+(`floating-point number too large` / `too small`), pero eso es un chequeo de **valor** que hace al
+convertir el literal, no al tokenizarlo. MiniJava no lo implementa: la consigna pidió la misma
+*estructura*, y el rango es una cuestión semántica que no corresponde a la Etapa 1. Queda fijado por
+`resources/sinErrores/floatFueraDelRangoDeJava.java`, donde `3.5e38f`, `1e-46f`, `1.8e308` y `1e999`
+son todos `floatLiteral` válidos.
+
 ## 5. Palabras clave — por qué no tienen autómata propio
 
 Las 21 palabras clave (`class`, `extends`, `interface`, `implements`, `static`, `boolean`, `char`,

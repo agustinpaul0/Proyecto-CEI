@@ -64,14 +64,54 @@ se compara literal porque es lo que verifica el tester.
 
 ## Fuzzing reproducible
 
-Semilla fija por corrida; todo input que produzca un fallo se persiste como caso permanente en
-`compilador/resources/regresion/` (no se descarta al terminar la corrida de fuzzing). Ya encontró y
+Tres corridas con semilla fija, cada una tapando un hueco distinto: alfabeto sesgado a caracteres
+"interesantes", **bytes crudos** (la primera nunca puede generar UTF-8 inválido porque codifica un
+`String`, y ahí se escondía un `UncheckedIOException` que reventaba el compilador con un archivo
+binario), y construcciones sin cerrar (donde vive la mayor parte de la lógica de error).
+
+Todo input que produzca un fallo se persiste como caso permanente en
+`compilador/resources/regresion/`, y `CorpusDeRegresionTest` **reprocesa ese directorio entero** en
+cada corrida — antes no lo leía ningún tester, así que los casos guardados no protegían de nada. Ya encontró y
 confirmó un bug real en esta sesión (el de los carets colgando — ver `manejo-de-errores.md`); el caso
 que lo disparó quedó persistido como regresión permanente.
 
+## El oráculo externo: `javac`
+
+Cuando la cátedra no especifica un comportamiento, `AGENTS.md` §0.1 manda hacer lo que hace Java,
+**verificado, no de memoria**. En la práctica eso significa escribir el caso en un `.java` y correr
+`javac`. Ya cambió dos decisiones de diseño:
+
+- el criterio de recuperación (`javac` no sincroniza hasta el delimitador y nunca descarta un
+  carácter ajeno al lexema reportado — ver `documentacion/manejo-de-errores.md` §2);
+- el escape inválido de `litString` como error **no fatal**.
+
+Y confirmó una tercera: los floats **no** tienen límite de dígitos, ni en la cátedra ni en Java; lo
+que Java rechaza es un valor fuera de rango, y eso es semántico, no léxico.
+
+**Regla**: todo test cuyo oráculo sea "así hace Java" lleva en su comentario la salida **real** de
+`javac`, copiada de la corrida, para que sea rastreable y no una afirmación de memoria.
+
+## Los dos testers de casos de `resources/conErrores/`
+
+Corren sobre los **mismos archivos** y conviven:
+
+- `catedra.TesterDeCasosConErrores` — el de la cátedra, intacto. Lee **sólo la primera línea** y hace
+  `containsString` del código declarado.
+- `minijava.casos.TesterDeCasosConErroresEstricto` — propio. Con la marca `// [Completo]` en la
+  cabecera exige la secuencia **exacta y ordenada** de errores **y de tokens**, sin nada de más;
+  verifica además que no aparezca `[SinErrores]` y que ninguna línea lleve un carácter de control.
+
+Declarar los tokens y no sólo los errores es lo que hace verificable que la recuperación no se coma
+nada: con el criterio viejo, `v1 &v2` imprimía `(intLiteral,2,1)` y ningún tester lo notaba.
+
+Los casos nuevos se generan con `compilador/herramientas/lote*.py`, que calculan la línea del `EOF` y
+el desplazamiento de la cabecera. **Las expectativas se predicen antes de correr**: si un caso falla,
+lo primero es decidir si el equivocado es el oráculo o el compilador. Varios casos del corpus salen
+de haber predicho mal y haber ido a mirar por qué.
+
 ## Mutation testing (PIT) — score actual y por qué ciertos sobrevivientes no se cazan
 
-Última corrida: **92% de mutantes matados** (238/259), *test strength* 96%. Comando:
+Última corrida: **92% de mutantes matados** (271/293), *test strength* 95%. Comando:
 `mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (el goal no está bindeado a ninguna fase
 del profile, hay que invocarlo explícito).
 
@@ -94,10 +134,12 @@ verificaba que lanzara excepción o el tipo de token): `EstadoCharAbierto`/`Esta
 (agregarCaracterOfensivo en casos de error), y falta de cobertura completa de `EstadoInicial`
 (puntuación) y `EstadoFloatExponenteDigitos` (exponentes de 2+ dígitos, nunca ejercitados).
 
-**Sobrevivientes aceptados, no perseguidos**: `Main.main()` y `SalidaEstandar` tocan `System.out`
-real — deliberadamente no se testean de forma directa (para eso existe la interfaz `Salida`, que sí
-está 100% testeada vía `SalidaEnMemoria`); forzar un test ahí implicaría capturar stdout real o
-lanzar un proceso, sin aportar valor proporcional. `ModuloPrincipal`'s `manejador.close()` no se
+**Sobrevivientes aceptados, no perseguidos**: `SalidaEstandar` toca `System.out` real —
+deliberadamente no se testea de forma directa (para eso existe la interfaz `Salida`, que sí está 100%
+testeada vía `SalidaEnMemoria`). `Main.main()` **sí** se testea ahora (`MainTest`), pero sólo en sus
+modos de falla —sin argumentos, archivo inexistente, extensión rara— capturando `System.out`: son los
+casos en los que una excepción sin atrapar mataría la corrida in-process de los testers de la
+cátedra, así que valen el costo. `ModuloPrincipal`'s `manejador.close()` no se
 puede espiar sin inyectar `ManejadorDeArchivo` por constructor (hoy se instancia adentro del método)
 — cambio de diseño no justificado sólo para este hueco, dado que `close()` únicamente libera memoria
 en un proceso de corta vida (no hay handle de archivo del SO abierto de por medio). `SourceManagerImpl`

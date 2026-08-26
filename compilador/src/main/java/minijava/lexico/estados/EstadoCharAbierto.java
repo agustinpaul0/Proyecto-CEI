@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
@@ -19,11 +20,11 @@ public final class EstadoCharAbierto implements EstadoLexico {
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
         if (contexto.esFinDeArchivo() || actual == '\n') {
-            throw contexto.crearExcepcionLexica();
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR);
         }
         if (actual == '\'') {
-            contexto.agregarCaracterOfensivo();
-            throw contexto.crearExcepcionLexica();
+            contexto.avanzar();
+            throw contexto.crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico.CHAR_VACIO);
         }
         if (actual == '\\') {
             contexto.avanzar();

@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
@@ -18,10 +19,13 @@ public final class EstadoCharEscapado implements EstadoLexico {
 
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
-        if (contexto.esFinDeArchivo()) {
-            throw contexto.crearExcepcionLexica();
+        // Igual que en litString: un salto de línea real tras la barra
+        // invertida deja el char sin cerrar, y consumirlo metería un '\n'
+        // crudo en el lexema, partiendo [Error:Lexema|NroLinea] en dos.
+        if (contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n') {
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR);
         }
-        if (contexto.getCaracterActual() == 'u') {
+        if (contexto.getCaracterActual() == 'u' && contexto.getConfiguracion().unicodeHabilitado()) {
             contexto.avanzar();
             return new Continuar(new EstadoMarcadorUnicode(EstadoCharCerrando.INSTANCIA));
         }

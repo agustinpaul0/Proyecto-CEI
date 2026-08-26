@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
@@ -20,7 +21,7 @@ public final class EstadoComentarioMultilinea implements EstadoLexico {
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         if (contexto.esFinDeArchivo()) {
-            throw contexto.crearExcepcionLexica("/*", posicionDeApertura);
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.COMENTARIO_SIN_CERRAR, "/*", posicionDeApertura);
         }
         char actual = contexto.getCaracterActual();
         if (ultimoFueAsterisco && actual == '/') {

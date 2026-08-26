@@ -5,9 +5,9 @@ Sólo lo que falta verificar o implementar ahora mismo. Sin historial ni backlog
 
 ## Implementar
 
-- [ ] `ConfiguracionDelCompilador` con flags para los 4 logros de comportamiento (floats, unicode,
-  reporte elegante, multi-detección) — hoy los cuatro están activos de forma incondicional, sin
-  poder testear la combinación "logro desactivado".
+- [x] `ConfiguracionDelCompilador` con flags para los 4 logros de comportamiento (floats, unicode,
+  reporte elegante, multi-detección). `unicodeHabilitado` gatea sólo el escape `\uXXXX`, no los
+  caracteres no-ASCII crudos — decisión documentada en `agents/especificacion-lexica.md`.
 - [ ] Informe entregable en PDF: portada minimalista, paleta monocromática, índice. Debe incluir la
   ER de **todos** los tokens sin omitir ninguno (incluidos los símbolos de un solo carácter — ya
   están completos en `documentacion/especificacion-lexica.md`, falta trasladarlos al PDF), las
@@ -20,6 +20,14 @@ Sólo lo que falta verificar o implementar ahora mismo. Sin historial ni backlog
   completo vs. sólo `.java` + informe PDF, como decía la consigna original).
 
 ## Verificar
+
+- [ ] **Consultar al profesor si el rango de un `floatLiteral` debe validarse en el léxico.** Hoy no
+  se valida: `3.5e38f` y `1e999` son `floatLiteral` válidos en MiniJava y en Java no compilan
+  (`floating-point number too large`). La consigna pide "la misma estructura que los floats de
+  Java", y en Java el chequeo de rango es semántico, no léxico — por eso se dejó afuera. Está
+  documentado en `agents/especificacion-lexica.md` y fijado por
+  `resources/sinErrores/floatFueraDelRangoDeJava.java`; si el profesor lo quiere en el léxico, es un
+  chequeo puntual en los estados terminales de float.
 
 - [ ] Seguir ampliando el corpus de `compilador/resources/{sinErrores,conErrores}/` a medida que
   aparezcan casos límite nuevos — no es un número cerrado, es continuo mientras dure la Etapa 1.

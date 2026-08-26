@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.Emitir;
@@ -23,7 +24,7 @@ public final class EstadoStringAbierto implements EstadoLexico {
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
         if (contexto.esFinDeArchivo() || actual == '\n') {
-            throw contexto.crearExcepcionLexica();
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.STRING_SIN_CERRAR);
         }
         if (actual == '"') {
             int linea = contexto.getLinea();

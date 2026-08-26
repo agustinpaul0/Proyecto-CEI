@@ -49,7 +49,31 @@ Sufijo    = f|F|d|D
 ```
 
 Pautas Etapa 1 dice literalmente: *"Estos deben tener la misma estructura que los floats de Java, con
-la salvedad que siempre deben comenzar con un dígito."* Toda esta gramática (incluidos los sufijos
+la salvedad que siempre deben comenzar con un dígito."*
+
+**Los floats no tienen límite de dígitos, ni por la cátedra ni por Java.** El límite de 9 dígitos es
+exclusivo de `intLiteral`: la ER del `floatLiteral` usa `Digito+` sin cota en las tres partes (entera,
+fraccionaria y exponente), y la frase de Pautas habla de **estructura**, no de rango.
+
+Java tampoco acota la cantidad de dígitos — lo verificado con `javac`:
+
+| literal | `javac` |
+|---|---|
+| `1.0000…0001f` (60+ dígitos) | **compila** |
+| `123456789012345678901234567890.0f` (30 dígitos) | **compila** |
+| `3.4e38f` / `3.5e38f` | compila / `floating-point number too large` |
+| `1e-45f` / `1e-46f` | compila / `floating-point number too small` |
+
+Lo que Java rechaza es un literal **no nulo que se redondee a infinito o a cero**: un chequeo de
+**valor**, no léxico (lo hace al convertir el literal, no al tokenizarlo). **MiniJava no lo hace**, y
+la decisión es deliberada: la cátedra pidió la misma *estructura*, y un chequeo de rango es
+semántico, no de Etapa 1. Fijado en `resources/sinErrores/floatFueraDelRangoDeJava.java`.
+
+**Asimetría a tener presente**: el chequeo de 9 dígitos de `EstadoEntero` corre **sólo si la corrida
+de dígitos no continúa hacia un float**, así que `1234567890.5` es un `floatLiteral` válido con diez
+dígitos en la parte entera, mientras que `1234567890` solo es un error. Y el límite de MiniJava es de
+**dígitos** mientras que el de Java es de **valor**: `0000000001` (diez dígitos, valor 1) es error en
+MiniJava y válido en Java. Toda esta gramática (incluidos los sufijos
 `f`/`F`/`d`/`D`) se deriva de esa frase vía el protocolo de [`investigacion.md`](investigacion.md),
 ya que `Aspectos Lexicos MiniJava 2026.pdf` no menciona floats en absoluto (no está entre sus "cinco
 tipos de literales" — floats es puramente un logro de Pautas, no parte de la especificación base).
@@ -101,6 +125,31 @@ regulares, corregido en
 - **`/*` sin cerrar → error**, con lexema `/*` y la línea de **apertura** del comentario.
 - **`1abc` → dos tokens**: `intLiteral(1)` seguido de `idMV(abc)` (maximal munch estándar, igual que
   el lexer de Java).
+- **El escape inválido de `litString` es un error NO fatal**: se reporta y el literal se sigue
+  leyendo hasta su comilla de cierre, así que el token se emite igual. Es lo que hace `javac`
+  (`illegal escape character` no aborta el literal, verificado ejecutándolo). El escape unicode mal
+  formado sí es fatal: Java lo resuelve en el pre-lexer (JLS §3.3) y no hay comportamiento que
+  copiar.
+- **`unicodeHabilitado` gatea sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
+  literales: gatear eso exigiría clasificadores ASCII-only en todo el autómata, y el logro se puede
+  demostrar igual con el escape.
+
+## Divergencias con Java que quedan fijadas por tests
+
+Ninguna es un descuido: están todas cubiertas por casos de `resources/` a propósito, y hay que
+mencionarlas en el informe.
+
+| Caso | Java | MiniJava |
+|---|---|---|
+| `\uXXXX` fuera de un literal (en un comentario, en un identificador) | se traduce **antes** de tokenizar en todo el archivo (JLS §3.3), así que un `\u12G4` en un comentario no compila | el escape sólo significa algo dentro de un `charLiteral` o un `litString`; en un comentario es texto |
+| `"\u0022"` | el escape se traduce primero y la comilla **cierra** el string | no cierra nada: son seis caracteres del lexema |
+| Dígitos árabe-índicos (`١٢٣`) | no valen en un literal numérico | `Character.isDigit` los acepta: son un `intLiteral` |
+| Dígitos no ASCII en `\uXXXX` | inválidos | `Character.digit(c,16)` los acepta |
+| `中` al empezar un identificador | válido | error: no es ni mayúscula ni minúscula, aunque **sí** puede continuar un identificador |
+| Form feed y tabulador vertical | son blancos | son errores léxicos |
+| BOM al inicio del archivo | se descarta | es un carácter desconocido |
+| `3.5e38f`, `1e999` (float fuera de rango) | `floating-point number too large` | `floatLiteral` válido: el rango es un chequeo semántico, no léxico |
+| `0000000001` | `intLiteral` válido (el límite es de valor) | error: el límite de MiniJava es de **dígitos** |
 
 ## Los 8 logros y su estrategia
 

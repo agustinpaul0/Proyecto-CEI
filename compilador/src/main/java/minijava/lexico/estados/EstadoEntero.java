@@ -1,6 +1,7 @@
 package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.lexico.ContextoLexico;
 import minijava.lexico.Continuar;
 import minijava.lexico.Emitir;
@@ -29,23 +30,29 @@ public final class EstadoEntero implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(INSTANCIA);
         }
-        if (actual == '.') {
-            contexto.avanzar();
-            return new Continuar(EstadoFloatConPunto.INSTANCIA);
-        }
-        if (actual == 'e' || actual == 'E') {
-            contexto.avanzar();
-            return new Continuar(EstadoFloatExponenteInicio.INSTANCIA);
-        }
-        if (EstadosFloat.esSufijoFloat(actual)) {
-            int linea = contexto.getLinea();
-            contexto.avanzar();
-            return new Emitir(new Token(TipoDeToken.FLOAT_LITERAL, contexto.getLexema(), linea));
+        // Con el logro Floats I desactivado, la corrida de dígitos no
+        // continúa hacia un floatLiteral: '.', 'e'/'E' y los sufijos
+        // terminan el intLiteral como cualquier otro carácter no numérico.
+        if (contexto.getConfiguracion().floatsHabilitados()) {
+            if (actual == '.') {
+                contexto.avanzar();
+                return new Continuar(EstadoFloatConPunto.INSTANCIA);
+            }
+            if (actual == 'e' || actual == 'E') {
+                contexto.avanzar();
+                return new Continuar(EstadoFloatExponenteInicio.INSTANCIA);
+            }
+            if (EstadosFloat.esSufijoFloat(actual)) {
+                int linea = contexto.getLinea();
+                contexto.avanzar();
+                return new Emitir(new Token(TipoDeToken.FLOAT_LITERAL, contexto.getLexema(), linea));
+            }
         }
 
         String lexema = contexto.getLexema();
         if (lexema.length() > MAXIMO_DIGITOS) {
-            throw contexto.crearExcepcionLexica(lexema, contexto.posicionUltimoConsumido());
+            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.ENTERO_DEMASIADO_LARGO, lexema,
+                    contexto.posicionUltimoConsumido());
         }
         return new Emitir(new Token(TipoDeToken.INT_LITERAL, lexema, contexto.getLinea()));
     }

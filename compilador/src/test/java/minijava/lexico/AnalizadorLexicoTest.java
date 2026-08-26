@@ -1,5 +1,6 @@
 package minijava.lexico;
 
+import minijava.config.ConfiguracionDelCompilador;
 import minijava.io.ManejadorDeArchivo;
 import minijava.io.ManejadorDeArchivoEficiente;
 import minijava.tokens.Token;
@@ -19,11 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AnalizadorLexicoTest {
 
     private AnalizadorLexico crearAnalizador(Path dir, String fuente) throws IOException {
+        return crearAnalizador(dir, fuente, ConfiguracionDelCompilador.DEFAULT);
+    }
+
+    private AnalizadorLexico crearAnalizador(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
+            throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
-        return new AnalizadorLexico(manejador);
+        return new AnalizadorLexico(manejador, configuracion);
     }
 
     @Test
@@ -633,16 +639,16 @@ class AnalizadorLexicoTest {
         assertEquals("x", segundo.lexema());
     }
 
-    // Logro Multi-detección de Errores: tras un error, recuperarDeError()
-    // debe permitir seguir escaneando SIN repetir el mismo error indefinidamente
-    // (invariante de terminación, AGENTS.md §6).
+    // Logro Multi-detección de Errores: tras un error se puede seguir
+    // escaneando SIN repetir el mismo error indefinidamente (invariante de
+    // terminación, AGENTS.md §6). No hace falta ningún paso de recuperación:
+    // el estado que lanzó ya consumió el carácter que reportó.
     @Test
-    void recuperarDeErrorPermiteSeguirEscaneandoTrasUnErrorLexico(@TempDir Path dir) throws Exception {
+    void trasUnErrorLexicoSePuedeSeguirEscaneando(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "#v1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
-        analizador.recuperarDeError();
         Token token = analizador.proximoToken();
 
         assertEquals(TipoDeToken.ID_MV, token.tipo());
@@ -650,12 +656,11 @@ class AnalizadorLexicoTest {
     }
 
     @Test
-    void recuperarDeErrorEnElUltimoCaracterLlegaAEofSinExplotar(@TempDir Path dir) throws Exception {
+    void unErrorEnElUltimoCaracterLlegaAEofSinExplotar(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "#");
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
-        analizador.recuperarDeError();
         Token token = analizador.proximoToken();
 
         assertEquals(TipoDeToken.EOF, token.tipo());
@@ -757,15 +762,100 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
+    // Un escape inválido dentro de un litString es un error NO fatal: se
+    // reporta, pero el literal se sigue leyendo hasta su comilla de cierre y
+    // el token se emite igual. Copia el comportamiento de javac, verificado
+    // ejecutándolo sobre `String s = "hola \q mundo";` — un solo
+    // "illegal escape character", sin cascada y sin perder el resto del
+    // literal. El lexema del error llega hasta el carácter ofensivo.
     @ParameterizedTest
     @ValueSource(strings = {"q", "x", "d", "8", "9", "A"})
-    void stringLiteralConEscapeInvalidoSegunJavaEsError(String escape, @TempDir Path dir)
+    void stringLiteralConEscapeInvalidoSegunJavaEsErrorNoFatal(String escape, @TempDir Path dir)
             throws Exception {
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"antes \\" + escape + " despues\"");
+        String fuente = "\"antes \\" + escape + " despues\"";
+        AnalizadorLexico analizador = crearAnalizador(dir, fuente);
 
-        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+        Token token = analizador.proximoToken();
+        var errores = analizador.tomarErroresNoFatales();
 
-        assertEquals("\"antes \\" + escape, excepcion.getLexemaOfensivo());
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+        assertEquals(1, errores.size());
+        assertEquals("\"antes \\" + escape, errores.get(0).getLexemaOfensivo());
+        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, errores.get(0).getTipo());
+    }
+
+    // Dos escapes inválidos en el mismo literal producen dos errores no
+    // fatales y un único token: la prueba de que el literal no se corta.
+    @Test
+    void dosEscapesInvalidosEnUnStringProducenDosErroresYUnSoloToken(@TempDir Path dir)
+            throws Exception {
+        String fuente = "\"a\\q b\\z c\"";
+        AnalizadorLexico analizador = crearAnalizador(dir, fuente);
+
+        Token token = analizador.proximoToken();
+        var errores = analizador.tomarErroresNoFatales();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+        assertEquals(2, errores.size());
+    }
+
+    // Logro Floats I desactivado: la corrida de dígitos no continúa hacia
+    // un floatLiteral — '.' y 'e'/'E' terminan el intLiteral como cualquier
+    // otro carácter no numérico.
+    @Test
+    void conFloatsDeshabilitadosElPuntoNoContinuaElEntero(@TempDir Path dir) throws Exception {
+        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+        AnalizadorLexico analizador = crearAnalizador(dir, "1.5", configuracion);
+
+        Token primero = analizador.proximoToken();
+        Token segundo = analizador.proximoToken();
+        Token tercero = analizador.proximoToken();
+
+        assertEquals(TipoDeToken.INT_LITERAL, primero.tipo());
+        assertEquals("1", primero.lexema());
+        assertEquals(TipoDeToken.PUNTO, segundo.tipo());
+        assertEquals(TipoDeToken.INT_LITERAL, tercero.tipo());
+        assertEquals("5", tercero.lexema());
+    }
+
+    @Test
+    void conFloatsDeshabilitadosLaEYaNoIniciaUnExponente(@TempDir Path dir) throws Exception {
+        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+        AnalizadorLexico analizador = crearAnalizador(dir, "1e5", configuracion);
+
+        Token primero = analizador.proximoToken();
+        Token segundo = analizador.proximoToken();
+
+        assertEquals(TipoDeToken.INT_LITERAL, primero.tipo());
+        assertEquals("1", primero.lexema());
+        assertEquals(TipoDeToken.ID_MV, segundo.tipo());
+        assertEquals("e5", segundo.lexema());
+    }
+
+    // Logro Unicodes desactivado: la barra invertida seguida de 'u' dentro
+    // de un litString deja de ser el marcador del escape especial — 'u' no
+    // está en el conjunto de escapes válidos de Java (§ escapes de un
+    // carácter), así que pasa a ser un escape inválido, igual que '\q'.
+    //
+    // OJO: este comentario NO puede escribir esa secuencia literal. javac
+    // traduce los escapes unicode en TODO el archivo fuente antes de
+    // tokenizar, comentarios incluidos (JLS §3.3 — la misma regla que
+    // implementa EstadoMarcadorUnicode), y sin 4 dígitos hexadecimales
+    // detrás falla con "illegal unicode escape". MiniJava, en cambio, no
+    // hace esa pre-traducción: ver los casos de resources/sinErrores/
+    // comentarioConEscapeUnicode.java.
+    @Test
+    void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsError(@TempDir Path dir) throws Exception {
+        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\u0041\"", configuracion);
+
+        Token token = analizador.proximoToken();
+        var errores = analizador.tomarErroresNoFatales();
+
+        assertEquals(1, errores.size());
+        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, errores.get(0).getTipo());
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
     }
 }

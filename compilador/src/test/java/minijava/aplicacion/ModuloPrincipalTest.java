@@ -1,5 +1,6 @@
 package minijava.aplicacion;
 
+import minijava.config.ConfiguracionDelCompilador;
 import minijava.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -89,5 +90,37 @@ class ModuloPrincipalTest {
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.stream().anyMatch(l -> l.contains("idMV,v1,")));
         assertTrue(lineas.stream().anyMatch(l -> l.contains("idMV,v2,")));
+    }
+
+    // Logro Multi-detección de Errores desactivado: comportamiento base de
+    // la cátedra ("al detectar un error deberá reportarse y finalizar la
+    // ejecución") — se detiene en el PRIMER error, no reporta el segundo.
+    @Test
+    void conMultiDeteccionDesactivadaSeDetieneEnElPrimerError(@TempDir Path dir) throws IOException {
+        Path archivo = escribir(dir, "v1 # v2 @ v3");
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        var configuracion = new ConfiguracionDelCompilador(true, true, true, false);
+
+        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+
+        List<String> lineas = salida.getLineas();
+        assertTrue(lineas.contains("[Error:#|1]"));
+        assertTrue(lineas.stream().noneMatch(l -> l.equals("[Error:@|1]")));
+        assertTrue(lineas.stream().noneMatch(l -> l.contains("idMV,v2,")));
+    }
+
+    @Test
+    void conReporteEleganteDesactivadoSoloImprimeElCodigoDeContrato(@TempDir Path dir)
+            throws IOException {
+        Path archivo = escribir(dir, "v1 # v2");
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        var configuracion = new ConfiguracionDelCompilador(true, true, false, true);
+
+        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+
+        List<String> lineas = salida.getLineas();
+        assertTrue(lineas.contains("[Error:#|1]"));
+        assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Error Léxico")));
+        assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Detalle:")));
     }
 }
