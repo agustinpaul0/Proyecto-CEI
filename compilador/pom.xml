@@ -48,6 +48,11 @@
     </dependencies>
 
     <build>
+        <!-- Pautas Etapa 1: el compilador debe poder invocarse como
+             `java -jar Compilador.jar programa1.java`. Sin esto el artefacto
+             sale como minijava-compilador-<version>.jar. -->
+        <finalName>Compilador</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

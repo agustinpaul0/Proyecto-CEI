@@ -22,7 +22,11 @@ public enum TipoDeErrorLexico {
     CHAR_MAL_FORMADO("charLiteral mal formado, contiene más de un carácter: %s"),
     CHAR_SIN_CERRAR("charLiteral sin cerrar: %s"),
 
-    STRING_ESCAPE_INVALIDO("litString con secuencia de escape inválida: %s"),
+    // La única con plantilla de dos datos: el lexema armado que exige Pautas
+    // ("a\q) no ES la secuencia de escape, así que nombrarla aparte evita
+    // que el mensaje se lea al revés. Ver describir(lexema, fragmento).
+    STRING_ESCAPE_INVALIDO("litString con secuencia de escape inválida: %s",
+            "litString con secuencia de escape inválida %s: %s"),
     STRING_SIN_CERRAR("litString sin cerrar: %s"),
 
     UNICODE_MAL_FORMADO("escape unicode mal formado, se esperaban 4 dígitos hexadecimales: %s"),
@@ -34,12 +38,30 @@ public enum TipoDeErrorLexico {
     EXPONENTE_SIN_DIGITOS("exponente sin dígitos: %s");
 
     private final String plantilla;
+    // Null salvo donde el error tiene, además del lexema armado, un fragmento
+    // ofensivo más chico que vale la pena nombrar. Sus dos %s son, en orden,
+    // (fragmento, lexema).
+    private final String plantillaConFragmento;
 
     TipoDeErrorLexico(String plantilla) {
+        this(plantilla, null);
+    }
+
+    TipoDeErrorLexico(String plantilla, String plantillaConFragmento) {
         this.plantilla = plantilla;
+        this.plantillaConFragmento = plantillaConFragmento;
     }
 
     public String describir(String lexema) {
         return plantilla.formatted(lexema);
+    }
+
+    // Se degrada al mensaje de un solo dato si no hay fragmento, o si este
+    // tipo no tiene ninguno que nombrar: nunca imprime un "null".
+    public String describir(String lexema, String fragmentoOfensivo) {
+        if (fragmentoOfensivo == null || plantillaConFragmento == null) {
+            return describir(lexema);
+        }
+        return plantillaConFragmento.formatted(fragmentoOfensivo, lexema);
     }
 }

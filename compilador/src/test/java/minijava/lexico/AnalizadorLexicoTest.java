@@ -226,11 +226,12 @@ class AnalizadorLexicoTest {
 
         assertEquals("1234567890", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
-        // La columna debe apuntar dentro del lexema ofensivo (su último
-        // dígito, el que completa la corrida inválida de 10), no al
-        // carácter que viene después (que no tiene nada que ver con el
-        // error: podría ser cualquier cosa, incluido EOF).
-        assertEquals(10, excepcion.getColumna());
+        // El mensaje habla del literal entero, no de un carácter puntual, así
+        // que el ^ va al primer dígito: es lo que hace javac con "integer
+        // number too large" (verificado ejecutándolo). Lo que NO puede pasar
+        // es que apunte al carácter siguiente al lexema, que no tiene nada que
+        // ver con el error y podría ser cualquier cosa, incluido EOF.
+        assertEquals(1, excepcion.getColumna());
     }
 
     @Test
@@ -595,12 +596,12 @@ class AnalizadorLexicoTest {
         assertEquals("5", segundo.lexema());
     }
 
-    // Si el error ocurre porque se llegó a EOF (o a un salto de línea real)
-    // esperando más contenido, la columna reportada no puede caer "después"
-    // del último carácter imprimible de la línea — ahí no hay nada que el
-    // '^' pueda señalar, y el reporte queda con un caret colgando en el
-    // aire (bug real: encontrado comparando dos errores en cascada donde
-    // uno apuntaba a un carácter real y el otro a una posición vacía).
+    // Estos dos errores hablan de la construcción entera (el literal float
+    // '1e', el charLiteral que nunca cerró), no de un carácter puntual, así
+    // que el '^' va a donde la construcción empieza — el criterio de javac,
+    // verificado ejecutándolo. Eso además hace imposible el bug original:
+    // la columna no puede caer "después" del último carácter imprimible de
+    // la línea, dejando el caret colgando en el aire.
     @Test
     void exponenteSinDigitosEsError(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "1e");
@@ -609,12 +610,12 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("1e", excepcion.getLexemaOfensivo());
-        assertEquals(2, excepcion.getColumna());
+        assertEquals(1, excepcion.getColumna());
         assertEquals("1e", excepcion.getLineaFuente());
     }
 
     @Test
-    void charLiteralInterrumpidoPorSaltoDeLineaApuntaAlUltimoCaracterReal(@TempDir Path dir)
+    void charLiteralInterrumpidoPorSaltoDeLineaApuntaALaComillaDeApertura(@TempDir Path dir)
             throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "'a\nv1");
 
@@ -622,7 +623,7 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'a", excepcion.getLexemaOfensivo());
-        assertEquals(2, excepcion.getColumna());
+        assertEquals(1, excepcion.getColumna());
         assertEquals("'a", excepcion.getLineaFuente());
     }
 

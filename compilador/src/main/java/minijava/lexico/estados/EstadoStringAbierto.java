@@ -24,7 +24,7 @@ public final class EstadoStringAbierto implements EstadoLexico {
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
         if (contexto.esFinDeArchivo() || actual == '\n') {
-            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.STRING_SIN_CERRAR);
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.STRING_SIN_CERRAR);
         }
         if (actual == '"') {
             int linea = contexto.getLinea();

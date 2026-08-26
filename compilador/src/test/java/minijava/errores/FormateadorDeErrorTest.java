@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class FormateadorDeErrorTest {
 
@@ -38,6 +39,38 @@ class FormateadorDeErrorTest {
                         + "charLiteral mal formado, contiene más de un carácter: 'a",
                 formateador.formatear(
                         new ExcepcionLexica(TipoDeErrorLexico.CHAR_MAL_FORMADO, "'a", 1, 3, "'ab'")).get(0));
+    }
+
+    // Pautas Etapa 1 (slide 24) obliga a mostrar "el lexema armado hasta el
+    // momento del error", que para un escape inválido es todo el litString
+    // leído hasta ahí — y ese lexema NO es la secuencia de escape, así que
+    // sin nombrarla el mensaje se lee al revés ("la secuencia inválida es
+    // \"a\\q"). El encabezado nombra las dos cosas; el código de contrato
+    // sigue llevando sólo el lexema, que es lo que compara el tester.
+    @Test
+    void elEncabezadoDeUnEscapeInvalidoNombraLaSecuenciaYElLexemaArmado() {
+        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+        var excepcion = new ExcepcionLexica(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO,
+                "\"a\\q", 7, 4, "\"a\\q b\\z c\"", "\\q");
+
+        List<String> lineas = formateador.formatear(excepcion);
+
+        assertEquals("Error Léxico en línea 7, columna 4: "
+                + "litString con secuencia de escape inválida \\q: \"a\\q", lineas.get(0));
+        assertEquals("[Error:\"a\\q|7]", lineas.get(3));
+    }
+
+    // Los otros diez tipos no tienen fragmento que nombrar: el lexema entero
+    // ES lo ofensivo. El encabezado no puede degenerar en un "null".
+    @Test
+    void unErrorSinFragmentoConservaElEncabezadoDeUnSoloDato() {
+        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+
+        for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
+            String encabezado = formateador.formatear(
+                    new ExcepcionLexica(tipo, "x", 1, 1, "x")).get(0);
+            assertFalse(encabezado.contains("null"), () -> tipo + ": " + encabezado);
+        }
     }
 
     // El '^' se posiciona contando CARACTERES de la linea fuente, uno por

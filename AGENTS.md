@@ -80,13 +80,27 @@ estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica 
 
 ## 4. Documentación de onboarding (para explicar el proyecto sin leer código)
 
-- [`documentacion/arquitectura.md`](documentacion/arquitectura.md) — visión completa autocontenida.
+Escrita para que la lea el profesor: cada documento es autocontenido y explica **por qué** el
+compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
+
+- [`documentacion/README.md`](documentacion/README.md) — índice, guía de lectura y resumen en una
+  página.
+- [`documentacion/arquitectura.md`](documentacion/arquitectura.md) — visión completa: componentes,
+  ciclo de vida, decisiones estructurales.
 - [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) — ER formal de
-  cada token, con autómatas.
-- [`documentacion/manejo-de-errores.md`](documentacion/manejo-de-errores.md) — detección,
-  recuperación, los dos formatos de reporte, a qué posición apunta la columna.
+  los 56 tokens, con autómatas.
 - [`documentacion/patron-state.md`](documentacion/patron-state.md) — cómo interactúan
   `EstadoLexico`/`ContextoLexico`/`Continuar`/`Emitir` y el driver, paso a paso.
+- [`documentacion/manejo-de-errores.md`](documentacion/manejo-de-errores.md) — detección,
+  recuperación, los dos formatos de reporte, a qué posición apunta la columna.
+- [`documentacion/manejador-de-archivo.md`](documentacion/manejador-de-archivo.md) — por qué el
+  `SourceManager` provisto no alcanza y qué hace el reemplazo.
+- [`documentacion/decisiones.md`](documentacion/decisiones.md) — **el catálogo completo de
+  decisiones**, cada una con su fuente, la alternativa descartada y su justificación.
+- [`documentacion/testing.md`](documentacion/testing.md) — qué garantiza cada suite y las
+  invariantes que sostiene.
+- [`documentacion/logros.md`](documentacion/logros.md) — los 8 logros, dónde está cada uno y cómo
+  verificarlo.
 - [`todos/todos.md`](todos/todos.md) — qué queda pendiente de verificar o implementar ahora mismo.
 
 El historial de decisiones vive en `git log`, no en estos documentos.

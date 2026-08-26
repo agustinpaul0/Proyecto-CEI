@@ -23,7 +23,7 @@ public final class EstadoCharCerrando implements EstadoLexico {
             // línea o el fin de archivo; si lo interrumpió un carácter
             // cualquiera, el literal está mal formado (tiene más de uno).
             boolean seInterrumpio = contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n';
-            throw contexto.crearExcepcionLexica(seInterrumpio
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(seInterrumpio
                     ? TipoDeErrorLexico.CHAR_SIN_CERRAR
                     : TipoDeErrorLexico.CHAR_MAL_FORMADO);
         }

@@ -14,8 +14,8 @@ configuración adicional (click derecho sobre `src/test/java` → `Run 'All Test
 ```
 AGENTS.md            memoria operativa del proyecto: convenciones, arquitectura, estrategia
                       de testing y workflow — punto de partida para entender cualquier decisión
-documentacion/        onboarding autocontenido de la arquitectura (para explicar el proyecto
-                      sin leer código)
+documentacion/        documentación técnica autocontenida (arquitectura, especificación léxica,
+                      decisiones, testing, logros) — para explicar el proyecto sin leer código
 todos/                pendientes a verificar/implementar (sin historial — eso vive en git log)
 etapas/               consignas originales de la cátedra, una carpeta por etapa
 vendor/               copia de referencia intacta de los zips originales de la cátedra
@@ -46,6 +46,8 @@ java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
 
 - [`AGENTS.md`](AGENTS.md) — memoria operativa del proyecto e índice hacia `agents/` (convenciones
   de la cátedra, protocolo de investigación, arquitectura, testing, workflow).
-- [`documentacion/arquitectura.md`](documentacion/arquitectura.md) — cómo funciona el compilador,
-  componente por componente, sin necesidad de leer código.
+- [`documentacion/README.md`](documentacion/README.md) — la documentación técnica completa: cómo
+  funciona el compilador componente por componente, la especificación léxica formal, el catálogo de
+  decisiones con su justificación, la estrategia de testing y los 8 logros. Sin necesidad de leer
+  código.
 - [`todos/todos.md`](todos/todos.md) — qué queda pendiente.

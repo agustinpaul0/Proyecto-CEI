@@ -31,7 +31,6 @@ public final class EstadoOperadorDoble implements EstadoLexico {
             contexto.avanzar();
             return new Emitir(new Token(tipo, contexto.getLexema(), linea));
         }
-        throw contexto.crearExcepcionLexica(TipoDeErrorLexico.OPERADOR_INCOMPLETO,
-                contexto.getLexema(), contexto.posicionUltimoConsumido());
+        throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.OPERADOR_INCOMPLETO);
     }
 }

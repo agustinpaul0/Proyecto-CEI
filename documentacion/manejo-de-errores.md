@@ -1,17 +1,22 @@
 # Manejo de errores léxicos
 
-Documento autocontenido: cómo se detecta, recupera y reporta un error léxico. Complementa
-[`arquitectura.md`](arquitectura.md) (que referencia esta sección desde su ciclo de vida de
-ejecución) — para el resto del proyecto, ver ese documento.
+Documento autocontenido: cómo se detecta, cómo se recupera y cómo se reporta un error léxico. Es el
+desarrollo completo de dos de los ocho logros de la Etapa 1 —*Multi-detección de Errores Léxicos* y
+*Reporte de Error Elegante*— y de los tres bugs reales que hubo que arreglar para que funcionaran
+bien. Para la visión de conjunto, ver [`arquitectura.md`](arquitectura.md).
 
 ## 1. Cuándo y cómo se detecta un error
 
 Un estado detecta un error léxico cuando, mirando el carácter actual, ninguna transición válida
 existe desde ese estado (por ejemplo: `EstadoInicial` viendo un `#`, que no es letra, dígito, ni
 ningún símbolo conocido). En ese momento se lanza `ExcepcionLexica`, que lleva: el tipo de error, el
-lexema, la línea, la columna, y el texto completo de la línea fuente (para el reporte elegante).
+lexema, la línea, la columna, el texto completo de la línea fuente (para el reporte elegante) y, en
+un solo tipo de error, la secuencia ofensiva concreta (ver §2.1).
 
-**Qué contiene el lexema** — se sigue del criterio de recuperación de §2, y hay dos casos:
+**Qué contiene el lexema**: siempre **el lexema armado hasta el momento del error**. No es una
+decisión del proyecto, lo fija `Pautas Etapa 1.pdf` slide 24, y el código `[Error:Lexema|NroLinea]`
+lleva ese mismo lexema. Qué caracteres alcanzaron a entrar en él se sigue del criterio de
+recuperación de §2, y hay dos casos:
 
 - Si el carácter ofensivo **es** el problema (un `#` suelto, un `''` vacío, un escape `\q` inválido),
   el estado lo consume y por lo tanto queda incluido en el lexema, como manda la cátedra en Clase 02
@@ -21,13 +26,18 @@ lexema, la línea, la columna, y el texto completo de la línea fuente (para el 
   legítimo que no tiene nada que ver con el error: no se consume ni se incluye. Reportarlo sería
   engañoso y, peor, hacía desaparecer ese token de la salida.
 
+Dónde apunta la **columna** es una decisión aparte de qué contiene el lexema, y tiene su propia
+sección (§4).
+
 ## 2. Recuperación: el criterio, en una línea
 
 La consigna base de la cátedra dice: *"al detectar un error deberá reportarse y finalizar la
 ejecución"*. El logro *Multi-detección de Errores* cambia ese comportamiento: en vez de terminar, el
 Módulo Principal captura la excepción, la reporta y sigue pidiendo tokens. **La cátedra no dice nada
 sobre CÓMO recuperarse** — su comportamiento base no tiene recuperación en absoluto — así que aplica
-la regla de `AGENTS.md` §0.1: como en Java, verificado contra `javac`, no de memoria.
+la regla que la propia cátedra escribió —"todo lo que NO esté especificado para MiniJava tiene
+comportamiento por defecto igual al de Java"— resuelta como manda el procedimiento del proyecto:
+verificando contra `javac`, no de memoria.
 
 > **Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en el
 > lexema, ni uno más.** No hay ningún paso de recuperación posterior: el siguiente `proximoToken()`
@@ -77,13 +87,27 @@ produce un token válido además del mensaje:
 
 ```text
 "hola \q mundo"
-→ Error Léxico en línea 1, columna 8: litString con secuencia de escape inválida: "hola \q
+→ Error Léxico en línea 1, columna 8: litString con secuencia de escape inválida \q: "hola \q
 → [Error:"hola \q|1]
 → (litString,"hola \q mundo",1)
 ```
 
 `ContextoLexico.registrarError()` acumula estos errores y `ModuloPrincipal` los drena y los reporta
-justo antes de imprimir el token dentro del cual ocurrieron.
+justo antes de imprimir el token dentro del cual ocurrieron — de ahí que el error aparezca **antes**
+del token, aunque el token empiece antes en el fuente: el error se descubre mientras el literal
+todavía se está armando.
+
+Tres detalles del encabezado que conviene leer juntos, porque los tres vienen de reglas distintas:
+
+- El **lexema** es `"hola \q`, no el literal completo: `Pautas Etapa 1.pdf` slide 24 pide "el lexema
+  armado hasta el momento del error". Por eso, con dos escapes inválidos en un mismo literal, el
+  segundo error reporta un lexema que contiene al del primero (`"a\q` y después `"a\q b\z`).
+- La **secuencia ofensiva** (`\q`) se nombra aparte porque ese lexema armado no *es* la secuencia, y
+  sin nombrarla el mensaje se lee al revés. Es el único error con este dato extra.
+- El **token se emite igual**, con su lexema crudo completo: el literal está bien delimitado, sólo su
+  contenido tiene escapes inválidos. Abortarlo produciría una cascada de errores falsos (el resto del
+  literal se re-tokenizaría como identificadores y una comilla huérfana), que es exactamente lo que
+  `javac` evita.
 
 **El alcance es deliberadamente acotado a ese caso**, que es exactamente donde `javac` lo hace. El
 escape unicode mal formado sigue siendo fatal, porque Java lo resuelve en un nivel completamente
@@ -95,7 +119,7 @@ Léxicos §2.3.2).
 
 `TipoDeErrorLexico` tiene un valor por punto de falla, cada uno con su propia razón. Antes había una
 sola frase para los catorce, así que el reporte no podía decir qué construcción había fallado y los
-tests no podían validar por tipo (que es lo que pide `agents/testing.md`).
+tests no podían validar por tipo, que es la regla del proyecto (ver [`testing.md`](testing.md) §1).
 
 | Valor | Razón que imprime |
 |---|---|
@@ -103,7 +127,7 @@ tests no podían validar por tipo (que es lo que pide `agents/testing.md`).
 | `CHAR_VACIO` | `charLiteral vacío` |
 | `CHAR_MAL_FORMADO` | `charLiteral mal formado, contiene más de un carácter` |
 | `CHAR_SIN_CERRAR` | `charLiteral sin cerrar` |
-| `STRING_ESCAPE_INVALIDO` | `litString con secuencia de escape inválida` (no fatal) |
+| `STRING_ESCAPE_INVALIDO` | `litString con secuencia de escape inválida <secuencia>` (no fatal; el único que nombra la secuencia además del lexema) |
 | `STRING_SIN_CERRAR` | `litString sin cerrar` |
 | `UNICODE_MAL_FORMADO` | `escape unicode mal formado, se esperaban 4 dígitos hexadecimales` |
 | `COMENTARIO_SIN_CERRAR` | `comentario multilínea sin cerrar` |
@@ -121,7 +145,7 @@ código `[Error:Lexema|NroLinea]` no cambia ni de formato ni de contenido.
 Cuando hay error, se imprimen dos cosas:
 
 1. Un **reporte legible** (logro *Reporte de Error Elegante*): la razón del error, la línea fuente
-   completa, y un `^` apuntando exactamente a la columna del carácter ofensivo. Ejemplo real
+   completa, y un `^` apuntando a la columna que corresponde según el criterio de la §4. Ejemplo real
    (tomado de la consigna, fuente `v1 + # chau` en la línea 2):
 
    ```text
@@ -135,51 +159,73 @@ Cuando hay error, se imprimen dos cosas:
    que verifican los testers de la cátedra, y **no lleva columna** (la columna es sólo parte del
    reporte legible, que es un agregado propio más allá de lo pedido).
 
-## 4. A qué posición apunta la columna — dos categorías de error
+## 4. A qué posición apunta la columna
 
-No todo error se reporta sobre "el carácter que se está mirando ahora mismo". Confundir esto produjo
-un bug real (el `^` apuntaba a un carácter distinto del que decía el mensaje), encontrado por el
-usuario corriendo la suite desde IntelliJ. Hay dos categorías:
+La cátedra no pide columna — sólo línea. La columna, y el `^` que la acompaña, son un agregado propio
+del logro *Reporte de Error Elegante*. Como no está especificada, aplica la regla de "ante la duda,
+como en Java", y el criterio se tomó de `javac` verificándolo contra el compilador real, un caso por
+diagnóstico. `javac` sigue **una sola regla**:
 
-1. **"Lo que estoy mirando ahora mismo es inválido"** — un carácter desconocido, una comilla de
-   cierre ausente, un escape de string no reconocido. El lookahead actual **es** el problema, así que
-   su columna es la que corresponde reportar.
-2. **"El lexema que ya terminé de construir resultó inválido como un todo"** — un `&`/`|` sin su
-   segundo carácter obligatorio, un `intLiteral` de más de 9 dígitos. En el momento de lanzar el
-   error, el lookahead actual ya avanzó más allá del lexema completo: puede ser cualquier cosa (un
-   espacio, EOF, la letra siguiente) y no tiene ninguna relación con el motivo del error. Reportar
-   esa posición es lo que producía el bug.
+> Si el mensaje habla de un **carácter ofensivo puntual**, el `^` va a ese carácter. Si habla de la
+> **construcción entera** que falló, el `^` va a donde esa construcción **empieza**.
 
-Para la categoría 2, `ContextoLexico` expone `posicionUltimoConsumido()`: una foto (línea + columna +
-línea fuente) tomada dentro de `avanzar()`, justo antes de consumir — es decir, la posición del
-**último carácter que sí quedó en el lexema**, no la del próximo. `EstadoEntero` (dígitos de más),
-`EstadoOperadorDoble` (`&`/`|` sin su par) y los dos estados de exponente la usan al construir su
-`ExcepcionLexica`.
+| fuente | diagnóstico de `javac` | dónde cae el `^` |
+|---|---|---|
+| `v1 # v2` | `illegal character` | el `#` |
+| `"a\q b\z c"` | `illegal escape character` (dos veces) | la `q` y la `z` — no la barra |
+| `'\u12G4'` | `illegal unicode escape` | la `G` |
+| `''` | `empty character literal` | la comilla de apertura |
+| `'a` / `'ab'` | `unclosed character literal` | la comilla de apertura |
+| `"hola sin cerrar` | `unclosed string literal` | la comilla de apertura |
+| `1234567890123` | `integer number too large` | el primer dígito |
+| `1e` | `malformed floating-point literal` | el primer carácter del literal |
+| `/* sin cerrar` | `unclosed comment` | la barra de apertura |
 
-Los estados de exponente estaban mal clasificados en la categoría 1 y se corrigieron: `1e ` reportaba
-la columna del espacio (que no es parte de `1e` ni tiene nada que ver con el error) mientras que
-`1e` al final de una línea reportaba bien la columna de la `e`, porque el fallback automático de la
-§5 entraba en acción. Dos columnas distintas para el mismo error según lo que viniera detrás.
+Tiene sentido más allá de imitar a Java: en `"hola sin cerrar`, lo que hay que corregir es la comilla
+de apertura (falta su par), no la última letra que se alcanzó a leer; en `1234567890`, el problema es
+el número entero, y su primer dígito es donde empieza a leerse.
 
-El mismo mecanismo resuelve un segundo bug relacionado: un comentario multilínea sin cerrar reportaba
-correctamente la línea de **apertura** en el mensaje, pero la línea-fuente y la columna mostradas
-eran las de donde el analizador encontró el EOF — que puede estar varias líneas después, mostrando
-contenido completamente distinto (a veces una línea vacía). Ahora `EstadoBarra` captura
-`posicionUltimoConsumido()` (la posición exacta del `/` de apertura) en el momento de entrar al
-comentario, y ese snapshot completo — no sólo el número de línea — es lo que se usa si el comentario
-nunca cierra.
+### Cómo se implementa
+
+`ContextoLexico` mantiene **dos** fotos de posición, ambas tomadas dentro de `avanzar()` justo antes
+de consumir —cuando línea, columna y línea-fuente todavía describen ese carácter— y ambas del tipo
+`PosicionLexica`:
+
+- `posicionPrimerConsumido`: el **primer** carácter del lexema en curso. Es la que usan los errores
+  que hablan de la construcción entera, vía `crearExcepcionLexicaSobreElInicioDelLexema()`.
+- `posicionUltimoConsumido`: el **último** carácter que quedó en el lexema. Es la que usan los
+  errores cuyo carácter ofensivo ya fue consumido antes del `throw` — un símbolo desconocido, un
+  escape inválido —, vía `crearExcepcionLexicaSobreElUltimoConsumido()`.
+
+La distinción importa porque en el momento del `throw` el lookahead actual puede haber avanzado más
+allá del lexema: puede ser un espacio, un EOF o la letra siguiente, sin ninguna relación con el
+motivo del error. Reportar su columna producía un bug real, encontrado por el usuario corriendo la
+suite desde IntelliJ: el `^` apuntaba a un carácter distinto del que decía el mensaje.
+
+Un caso necesita más que las dos fotos: el **comentario multilínea sin cerrar**. `EstadoBarra`
+descarta el `/*` del lexema para que el comentario no forme parte de ningún token, así que cuando el
+error se lanza —posiblemente muchas líneas después, en el EOF— ya no queda rastro de dónde empezaba.
+Por eso `EstadoBarra` fotografía la apertura y se la pasa a `EstadoComentarioMultilinea`, que la usa
+entera al lanzar. Antes de eso, el mensaje decía la línea de apertura correcta pero mostraba la
+línea-fuente y la columna del EOF, que puede caer varias líneas después en contenido no relacionado.
 
 ## 5. El `^` nunca puede colgar después del final de la línea impresa
 
-Cuarto bug de la misma familia, más sistémico: **cualquier** estado que lanza la excepción cuando el
-lookahead es EOF o un `\n` cae en la misma trampa que la categoría 2 de arriba, pero por otra razón —
-`getLineaFuente()` corta el texto justo antes del salto de línea, así que esa posición ni siquiera
-aparece en la línea impresa. El resultado visual: un `^` una posición más allá del último carácter
-visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los estados que pueden
-toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar, escapes interrumpidos,
-exponentes sin dígitos). Se resolvió en un solo lugar: `ContextoLexico.crearExcepcionLexica()` (la
-variante sin argumentos) ahora usa automáticamente `posicionUltimoConsumido()` cuando detecta que el
-lookahead es EOF o `\n`, sin que cada estado individual tenga que saberlo.
+Bug de la misma familia: **cualquier** estado que lanza la excepción cuando el lookahead es EOF o un
+`\n` reporta una posición que ni siquiera aparece en la línea impresa, porque `getLineaFuente()`
+corta el texto justo antes del salto de línea. El resultado visual: un `^` una posición más allá del
+último carácter visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los
+estados que pueden toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar,
+escapes interrumpidos, exponentes sin dígitos). Se resolvió en un solo lugar:
+`ContextoLexico.crearExcepcionLexica()` (la variante sin argumentos) usa automáticamente
+`posicionUltimoConsumido()` cuando detecta que el lookahead es EOF o `\n`, sin que cada estado
+individual tenga que saberlo.
+
+La mayoría de aquellos estados ya no depende de esa protección: al adoptar el criterio de `javac` de
+la §4 pasaron a señalar el inicio de la construcción, que por definición está dentro de la línea que
+se imprime. La protección sigue viva para los que sí reportan el lookahead, y la invariante ("el `^`
+siempre cae sobre un carácter de la línea mostrada") se verifica caso por caso en
+`PosicionDelCaretTest` y sobre entradas generadas en `PropiedadesDelReporteTest`.
 
 ## 6. El lexema de un error nunca lleva un carácter de control crudo
 
@@ -213,7 +259,7 @@ escapa nada, deja el literal sin cerrar.
 ## 7. Los dos defectos de robustez que trataba como fin de archivo
 
 Dos casos en los que el compilador no fallaba con una `ExcepcionLexica` controlada sino de formas
-peores, y que según `agents/testing.md` son siempre defectos:
+peores, y que en este proyecto son siempre defectos (ver [`testing.md`](testing.md) §1):
 
 - **El byte `0x1A`**: el centinela `SourceManager.END_OF_FILE` de la cátedra es `(char) 26`, que
   también es un byte perfectamente legítimo dentro de un archivo. Comparar el carácter devuelto
@@ -229,4 +275,7 @@ peores, y que según `agents/testing.md` son siempre defectos:
 ## Ver también
 
 - [`arquitectura.md`](arquitectura.md) — visión completa del proyecto, ciclo de vida de ejecución.
+- [`decisiones.md`](decisiones.md) §4 — cada decisión de este documento, con su fuente.
+- [`testing.md`](testing.md) — las invariantes que verifican todo lo de acá.
+- [`logros.md`](logros.md) — los logros *Multi-detección de Errores* y *Reporte de Error Elegante*.
 - [`especificacion-lexica.md`](especificacion-lexica.md) — ER formal de cada token.

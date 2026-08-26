@@ -26,7 +26,7 @@ public final class EstadoBarra implements EstadoLexico {
             return new Continuar(EstadoComentarioDeLinea.INSTANCIA);
         }
         if (actual == '*') {
-            var posicionDeApertura = contexto.posicionUltimoConsumido();
+            var posicionDeApertura = contexto.posicionPrimerConsumido();
             contexto.iniciarNuevoToken();
             contexto.descartar();
             return new Continuar(new EstadoComentarioMultilinea(posicionDeApertura, false));

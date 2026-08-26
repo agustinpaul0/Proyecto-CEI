@@ -26,13 +26,15 @@ public final class ContextoLexico {
     // Posición del último carácter agregado al lexema (no del lookahead
     // actual, que puede ya haber avanzado más allá). Se actualiza dentro de
     // avanzar(), justo antes de consumir, cuando línea/columna/línea-fuente
-    // todavía describen ese carácter. La usan los estados cuyo error no es
-    // "este carácter que estoy mirando es inválido" sino "el lexema que ya
-    // terminé de construir resultó inválido" (p. ej. un operador con
-    // segundo carácter obligatorio ausente, o un entero de más de 9
-    // dígitos): en esos casos el lookahead actual no tiene ninguna relación
-    // con el motivo del error, así que reportarlo sería engañoso.
+    // todavía describen ese carácter. La usan los errores cuyo carácter
+    // ofensivo ya fue consumido antes del throw (el escape inválido de un
+    // litString, un carácter desconocido).
     private PosicionLexica posicionUltimoConsumido;
+    // Posición del PRIMER carácter del lexema en curso, capturada igual que
+    // la de arriba. La usan los errores cuyo mensaje habla de la construcción
+    // ENTERA y no de un carácter puntual — ver
+    // crearExcepcionLexicaSobreElInicioDelLexema().
+    private PosicionLexica posicionPrimerConsumido;
     // Errores que NO abortan el token en curso (ver registrarError).
     private final List<ExcepcionLexica> erroresNoFatales = new ArrayList<>();
 
@@ -70,13 +72,20 @@ public final class ContextoLexico {
     }
 
     public void avanzar() {
+        PosicionLexica posicion = new PosicionLexica(getLinea(), getColumna(), getLineaFuente());
+        if (lexema.isEmpty()) {
+            posicionPrimerConsumido = posicion;
+        }
         lexema.append(caracterActual);
-        posicionUltimoConsumido = new PosicionLexica(getLinea(), getColumna(), getLineaFuente());
+        posicionUltimoConsumido = posicion;
         consumirCaracterActual();
     }
 
-    public PosicionLexica posicionUltimoConsumido() {
-        return posicionUltimoConsumido;
+    // La expone sólo EstadoBarra, que necesita fotografiar la apertura de un
+    // comentario multilínea antes de que iniciarNuevoToken() borre el lexema
+    // (el error se lanza mucho después, desde otro estado).
+    public PosicionLexica posicionPrimerConsumido() {
+        return posicionPrimerConsumido;
     }
 
     public void descartar() {
@@ -104,8 +113,12 @@ public final class ContextoLexico {
         return tomados;
     }
 
+    // EstadoBarra la llama a mitad de token para descartar el '/' de un
+    // comentario, así que el reset de la posición de apertura tiene que vivir
+    // acá y no en AnalizadorLexico.proximoToken().
     public void iniciarNuevoToken() {
         lexema.setLength(0);
+        posicionPrimerConsumido = null;
     }
 
     public String getLexema() {
@@ -145,10 +158,32 @@ public final class ContextoLexico {
         return crearExcepcionLexica(tipo, getLexema(), posicionUltimoConsumido);
     }
 
-    // Variante para errores sobre una posición distinta de la del lookahead
-    // actual: el lexema ya construido resultó inválido como un todo (ver
-    // posicionUltimoConsumido()), o el error es sobre la posición de
-    // APERTURA de una construcción que nunca cerró (comentario multilínea).
+    // Misma variante, nombrando además el fragmento concreto que está mal
+    // dentro del lexema armado (la secuencia de escape inválida). El
+    // fragmento se escapa igual que el lexema: también se imprime.
+    public ExcepcionLexica crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico tipo,
+                                                                     String fragmentoOfensivo) {
+        return new ExcepcionLexica(tipo, escaparNoImprimibles(getLexema()),
+                posicionUltimoConsumido.linea(), posicionUltimoConsumido.columna(),
+                posicionUltimoConsumido.lineaFuente(), escaparNoImprimibles(fragmentoOfensivo));
+    }
+
+    // Variante para los errores que hablan de la CONSTRUCCIÓN ENTERA y no de
+    // un carácter puntual (un literal sin cerrar o vacío, un intLiteral de
+    // más de 9 dígitos, un exponente sin dígitos). El '^' va donde la
+    // construcción empieza, que es lo que hace javac — verificado
+    // ejecutándolo, ver agents/manejo-de-errores.md.
+    public ExcepcionLexica crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico tipo) {
+        if (posicionPrimerConsumido == null) {
+            return crearExcepcionLexica(tipo);
+        }
+        return crearExcepcionLexica(tipo, getLexema(), posicionPrimerConsumido);
+    }
+
+    // Variante para errores sobre una posición que ningún estado puede
+    // reconstruir en el momento del throw: la apertura de una construcción
+    // que nunca cerró y cuyo lexema ya fue descartado (comentario
+    // multilínea). El resto usa alguna de las variantes de arriba.
     public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo, String lexema,
                                                 PosicionLexica posicion) {
         return new ExcepcionLexica(tipo, escaparNoImprimibles(lexema),

@@ -33,7 +33,7 @@ public final class EstadoStringEscapado implements EstadoLexico {
         // el literal quedó sin cerrar. Se lo trata aparte para no meter el
         // '\n' crudo en el lexema (documentacion/manejo-de-errores.md §6).
         if (contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n') {
-            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.STRING_SIN_CERRAR);
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.STRING_SIN_CERRAR);
         }
         char actual = contexto.getCaracterActual();
         // Con el logro Unicodes desactivado la 'u' deja de ser el marcador
@@ -47,10 +47,14 @@ public final class EstadoStringEscapado implements EstadoLexico {
             // Error NO fatal, como javac: "illegal escape character" se
             // reporta pero el literal se sigue leyendo hasta su comilla de
             // cierre, así que el litString se emite igual y no hay cascada.
-            // (Verificado ejecutando javac sobre "hola \q mundo".)
+            // (Verificado ejecutando javac sobre "hola \q mundo".) La columna
+            // es la del carácter escapado, no la de la barra: también es lo
+            // que hace javac. El lexema reportado es el armado hasta acá,
+            // como exige Pautas, y la secuencia concreta viaja aparte para
+            // que el encabezado pueda nombrarla.
             contexto.avanzar();
             contexto.registrarError(contexto.crearExcepcionLexicaSobreElUltimoConsumido(
-                    TipoDeErrorLexico.STRING_ESCAPE_INVALIDO));
+                    TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, "\\" + actual));
             return new Continuar(EstadoStringAbierto.INSTANCIA);
         }
         contexto.avanzar();

@@ -106,6 +106,10 @@ regulares, corregido en
   2026.pdf` §2.4.2 — sólo `&&` y `||`. Sus estados iniciales son no terminadores.
 - **Escapes en `charLiteral`: `'\x'` con `x` arbitrario es válido** — dicho explícitamente en
   `Aspectos Lexicos MiniJava 2026.pdf` §2.3.2. `'\q'` es un `charLiteral` válido con valor `q`.
+- **`''` (char vacío) es error.** La ER de la cátedra es `'x'` con `x ≠ \, '` o `'\x'`: la cadena
+  vacía no está en ninguna de las dos alternativas. `javac` coincide (`empty character literal`), así
+  que no hay ambigüedad por ningún lado. Cubierto por `resources/conErrores/tresComillasSimples.java`,
+  que además ejercita la cascada: la tercera comilla abre un `charLiteral` que nunca cierra.
 - **Escapes en `litString`: restringidos al conjunto válido de Java** (JLS §3.10.7, verificado contra
   la especificación — ver [`investigacion.md`](investigacion.md)): `b s t n f r " ' \` o un dígito
   octal `0`-`7`, más el escape unicode. A diferencia de `charLiteral`, la cátedra **no** dice
@@ -117,8 +121,11 @@ regulares, corregido en
   por `\`") daría un string sin cerrar en ese caso; se prioriza la regla "ante la duda, como en Java".
 - **El lexema reportado es siempre el texto crudo del fuente.** Confirmado por
   `testersLexico/Guia_de_uso_testers.md`: se espera `//#'\n',3` (4 caracteres literales), no el salto
-  de línea decodificado. El valor decodificado (para etapas posteriores) se guarda aparte en el
-  `Token`, nunca reemplaza el lexema.
+  de línea decodificado. **El valor decodificado todavía no se calcula ni se guarda**: `Token` es hoy
+  `record Token(TipoDeToken tipo, String lexema, int linea)`, sin campo de valor. Etapa 1 no lo
+  necesita —la salida imprime el lexema crudo, que es lo que exige la cátedra— y se agregará cuando
+  una etapa posterior lo requiera. Cuando se agregue, será un campo aparte: **nunca** reemplaza al
+  lexema.
 - **Límite de 9 dígitos**: se consume la corrida completa de dígitos y recién ahí se valida — así no
   se rompe un float largo (`1234567890.5` es válido, la parte entera sola no debe cortar antes).
 - **`1e` / `1.5e` sin dígitos después del exponente → error**, sin backtracking a un token más corto.
@@ -129,7 +136,9 @@ regulares, corregido en
   leyendo hasta su comilla de cierre, así que el token se emite igual. Es lo que hace `javac`
   (`illegal escape character` no aborta el literal, verificado ejecutándolo). El escape unicode mal
   formado sí es fatal: Java lo resuelve en el pre-lexer (JLS §3.3) y no hay comportamiento que
-  copiar.
+  copiar. Es además el único error cuyo encabezado nombra dos cosas —la secuencia ofensiva (`\q`) y
+  el lexema armado que exige Pautas (`"a\q`)— porque ahí el lexema es más grande que lo que está
+  mal; ver [`manejo-de-errores.md`](manejo-de-errores.md).
 - **`unicodeHabilitado` gatea sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
   literales: gatear eso exigiría clasificadores ASCII-only en todo el autómata, y el logro se puede
   demostrar igual con el escape.
@@ -155,6 +164,7 @@ mencionarlas en el informe.
 | `0x1F`, `0b1010` | literal hexadecimal / binario | `intLiteral(0)` + `idMV` — la ER de la cátedra es decimal y nada más |
 | `1_000` | válido (separadores desde Java 7) | `intLiteral(1)`, error por el `_`, `intLiteral(000)` |
 | Un carácter invisible en el mensaje de error | `illegal character: '\u00a0'` — escapado | escapado igual, misma convención |
+| Columna a la que apunta el `^` | carácter ofensivo, o inicio de la construcción que falló | mismo criterio, caso por caso (`PosicionDelCaretTest`) |
 
 ## Los 8 logros y su estrategia
 
@@ -162,7 +172,7 @@ mencionarlas en el informe.
 |---|---|
 | Manejador de Archivos Eficiente | **Requisito, no un extra**: ver [`arquitectura.md`](arquitectura.md) "por qué el manejador de la cátedra está roto". Char a char sobre buffer de bloques, sólo `java.io`. |
 | Multi-detección de Errores | recuperación en el Módulo Principal; invariante a testear con property-based: cada recuperación consume ≥1 carácter o llega a EOF (garantiza terminación). |
-| Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. |
+| Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. Dónde apunta el `^` sigue el criterio de `javac`, verificado ejecutándolo: ver [`manejo-de-errores.md`](manejo-de-errores.md). |
 | Floats I | activable/testeable por flag, ver `ConfiguracionDelCompilador`. |
 | Unicodes | caracteres no-ASCII crudos dentro de literales char/string + escape `\uXXXX` (marcador repetible). |
 | Imbatibilidad Léxica | consecuencia de la suite masiva + corpus de `resources/`. |

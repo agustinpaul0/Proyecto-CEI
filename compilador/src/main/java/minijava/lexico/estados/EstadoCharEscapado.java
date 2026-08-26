@@ -23,7 +23,7 @@ public final class EstadoCharEscapado implements EstadoLexico {
         // invertida deja el char sin cerrar, y consumirlo metería un '\n'
         // crudo en el lexema, partiendo [Error:Lexema|NroLinea] en dos.
         if (contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n') {
-            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR);
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.CHAR_SIN_CERRAR);
         }
         if (contexto.getCaracterActual() == 'u' && contexto.getConfiguracion().unicodeHabilitado()) {
             contexto.avanzar();

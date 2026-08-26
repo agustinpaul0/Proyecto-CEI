@@ -27,21 +27,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // única frase.
 class TipoDeErrorLexicoTest {
 
-    // fuente -> (tipo esperado, línea, columna del carácter señalado)
+    // fuente -> (tipo esperado, línea, columna del carácter señalado por el ^)
+    //
+    // El criterio de la columna es el de javac, verificado ejecutándolo: si el
+    // mensaje habla de un carácter ofensivo puntual (un símbolo desconocido,
+    // un escape inválido, un dígito hexadecimal que no lo es), el ^ va a ese
+    // carácter; si habla de la construcción entera que falló (un literal sin
+    // cerrar o vacío, un intLiteral de más de 9 dígitos, un exponente sin
+    // dígitos), el ^ va a donde la construcción empieza.
     private record Caso(String fuente, int linea, int columna) {
     }
 
     private static final Map<TipoDeErrorLexico, Caso> CASOS = new EnumMap<>(Map.ofEntries(
             Map.entry(TipoDeErrorLexico.CARACTER_DESCONOCIDO, new Caso("v1 # v2", 1, 4)),
-            Map.entry(TipoDeErrorLexico.CHAR_VACIO, new Caso("''", 1, 2)),
-            Map.entry(TipoDeErrorLexico.CHAR_MAL_FORMADO, new Caso("'ab'", 1, 3)),
-            Map.entry(TipoDeErrorLexico.CHAR_SIN_CERRAR, new Caso("'a\n", 1, 2)),
-            Map.entry(TipoDeErrorLexico.STRING_SIN_CERRAR, new Caso("\"hola\n", 1, 5)),
+            Map.entry(TipoDeErrorLexico.CHAR_VACIO, new Caso("''", 1, 1)),
+            Map.entry(TipoDeErrorLexico.CHAR_MAL_FORMADO, new Caso("'ab'", 1, 1)),
+            Map.entry(TipoDeErrorLexico.CHAR_SIN_CERRAR, new Caso("'a\n", 1, 1)),
+            Map.entry(TipoDeErrorLexico.STRING_SIN_CERRAR, new Caso("\"hola\n", 1, 1)),
             Map.entry(TipoDeErrorLexico.UNICODE_MAL_FORMADO, new Caso("'\\u12G4'", 1, 6)),
             Map.entry(TipoDeErrorLexico.COMENTARIO_SIN_CERRAR, new Caso("/* sin cerrar", 1, 1)),
-            Map.entry(TipoDeErrorLexico.ENTERO_DEMASIADO_LARGO, new Caso("1234567890 ", 1, 10)),
+            Map.entry(TipoDeErrorLexico.ENTERO_DEMASIADO_LARGO, new Caso("1234567890 ", 1, 1)),
             Map.entry(TipoDeErrorLexico.OPERADOR_INCOMPLETO, new Caso("a & b", 1, 3)),
-            Map.entry(TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS, new Caso("1e ", 1, 2)),
+            Map.entry(TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS, new Caso("1e ", 1, 1)),
             // El único no fatal: no viaja como excepción, se verifica aparte
             // en escapeInvalidoDeStringEsElUnicoErrorNoFatal().
             Map.entry(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, new Caso("\"a\\q\"", 1, 4))));
@@ -120,6 +127,32 @@ class TipoDeErrorLexicoTest {
         assertEquals("\"hola \\q mundo\"", token.lexema());
         assertEquals(1, errores.size());
         assertEquals(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, errores.get(0).getTipo());
+    }
+
+    // El fragmento ofensivo tiene que viajar desde el estado que detecta el
+    // error, no armarse en el formateador: es la única parte del reporte que
+    // sabe qué carácter venía después de la barra invertida.
+    @Test
+    void elEscapeInvalidoViajaConLaSecuenciaOfensivaAdemasDelLexemaArmado(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
+
+        analizador.proximoToken();
+        var error = analizador.tomarErroresNoFatales().get(0);
+
+        // Lo que exige Pautas: el lexema es el armado hasta el error.
+        assertEquals("\"hola \\q", error.getLexemaOfensivo());
+        // Lo que agrega el reporte elegante: cuál de sus caracteres está mal.
+        assertEquals("\\q", error.getFragmentoOfensivo());
+    }
+
+    // Sin fragmento, describir() de dos argumentos tiene que dar exactamente
+    // lo mismo que el de uno: es el caso de los otros diez tipos.
+    @Test
+    void describirSinFragmentoEsIgualAlMensajeDeUnSoloDato() {
+        for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
+            assertEquals(tipo.describir("x"), tipo.describir("x", null), tipo::name);
+        }
     }
 
     // El mensaje de CARACTER_DESCONOCIDO es el de la slide 43 y no puede

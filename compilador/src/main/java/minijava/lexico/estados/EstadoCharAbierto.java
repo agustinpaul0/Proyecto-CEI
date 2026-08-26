@@ -20,11 +20,11 @@ public final class EstadoCharAbierto implements EstadoLexico {
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
         if (contexto.esFinDeArchivo() || actual == '\n') {
-            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR);
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.CHAR_SIN_CERRAR);
         }
         if (actual == '\'') {
             contexto.avanzar();
-            throw contexto.crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico.CHAR_VACIO);
+            throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.CHAR_VACIO);
         }
         if (actual == '\\') {
             contexto.avanzar();

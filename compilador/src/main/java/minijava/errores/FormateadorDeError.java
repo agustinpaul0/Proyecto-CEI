@@ -19,7 +19,8 @@ public final class FormateadorDeError {
         }
         String encabezado = "Error Léxico en línea " + excepcion.getLinea()
                 + ", columna " + excepcion.getColumna() + ": "
-                + excepcion.getTipo().describir(excepcion.getLexemaOfensivo());
+                + excepcion.getTipo().describir(excepcion.getLexemaOfensivo(),
+                        excepcion.getFragmentoOfensivo());
         String detalle = "Detalle: " + excepcion.getLineaFuente();
         String caret = " ".repeat("Detalle: ".length() + excepcion.getColumna() - 1) + "^";
         return List.of(encabezado, detalle, caret, codigo);
