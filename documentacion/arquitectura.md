@@ -86,7 +86,7 @@ if class}
 1. El usuario ejecuta `java -jar Compilador.jar programa.java`.
 2. `Main` valida que haya un argumento y delega en `ModuloPrincipal.ejecutar(ruta)`.
 3. `ModuloPrincipal` abre el archivo con el Manejador y crea un `AnalizadorLexico`.
-4. Bucle: pide un token, drena los errores no fatales que hayan ocurrido dentro de él, lo imprime.
+4. Bucle: pide un token y lo imprime.
    Repite hasta `EOF`.
 5. Sin errores, imprime `[SinErrores]`. El manejador se cierra en un `finally`.
 
@@ -143,10 +143,10 @@ los caracteres que reportó en el lexema, ni uno más** — así el siguiente `p
 naturalmente en el primer carácter que no formó parte del error. El detalle, y el bug que esto
 arregló, están en [`manejo-de-errores.md`](manejo-de-errores.md) §2.
 
-Además del error fatal (excepción) existe **un** error no fatal: el escape inválido dentro de un
-`litString`, que se reporta pero no aborta el literal. Se acumula en el analizador y el Módulo
-Principal lo drena antes de imprimir el token — por eso en la salida el error aparece *antes* del
-token que lo contiene. Ver [`manejo-de-errores.md`](manejo-de-errores.md) §2.1.
+La única excepción es un escape mal formado dentro de un `litString`: ahí sí se descarta lo que queda
+del literal hasta su comilla de cierre, para que el análisis se reanude fuera del literal y no en
+mitad de su contenido. Es resincronización en modo pánico, y se explica entera en
+[`manejo-de-errores.md`](manejo-de-errores.md) §2.1.
 
 ## 4. Cómo reconoce un token: Método por Estado
 
@@ -195,7 +195,7 @@ Es la única desviación respecto de lo que muestran las slides, y es deliberada
 | Pieza | Rol |
 |---|---|
 | `EstadoLexico` | La interfaz común: un único método `procesar(contexto)`. |
-| `ContextoLexico` | Lo que todos los estados comparten: el carácter que se está mirando, el lexema que se viene armando, la línea, y las posiciones que los errores necesitan. Expone `avanzar()` (consumir el carácter y agregarlo al lexema) y `descartar()` (consumirlo sin agregarlo — blancos y comentarios). |
+| `ContextoLexico` | Lo que todos los estados comparten, como fachada de dos piezas: `BuilderDeLexema` (el carácter que se está mirando, el lexema que se viene armando, la línea y las posiciones que los errores necesitan) y `FabricaDeExcepcionesLexicas` (el punto único donde se construye una `ExcepcionLexica`). Expone `avanzar()` (consumir el carácter y agregarlo al lexema) y `descartar()` (consumirlo sin agregarlo — blancos, comentarios y la resincronización de un `litString` roto). |
 | `ResultadoDeTransicion` | Lo que devuelve `procesar()`. Es una `sealed interface` con exactamente dos implementaciones posibles. |
 | `Continuar(siguiente)` | "Todavía no hay token: seguí desde este otro estado." |
 | `Emitir(token)` | "El token está completo: acá está." |
@@ -236,9 +236,31 @@ stream global de la JVM en cada test — frágil y hostil a la ejecución en par
 ### 5.2. Todas las dependencias se inyectan por constructor
 
 `ModuloPrincipal` recibe su `Salida` y su configuración; `AnalizadorLexico` recibe su
-`ManejadorDeArchivo`. Ninguna clase construye sus colaboradores adentro ni los busca en una variable
-global. Consecuencia práctica: cada pieza se testea sustituyendo colaboradores reales, sin necesidad
-de un framework de mocking.
+`ContextoLexico` ya construido, y el `ModuloPrincipal` es quien lo arma con la configuración que a su
+vez recibió. Ninguna clase busca sus colaboradores en una variable global. Consecuencia práctica:
+cada pieza se testea sustituyendo colaboradores reales, sin necesidad de un framework de mocking.
+
+Que la cadena esté completa no es cosmético. Mientras `AnalizadorLexico` construía su propio
+`ContextoLexico` con la configuración por omisión, la configuración que `ModuloPrincipal` recibía de
+su llamador **se perdía en el camino**: los dos flags que lee el autómata (*Floats I* y *Unicodes*)
+no tenían efecto alguno al ejecutar el compilador de punta a punta. Los tests de configuración que
+existían no lo detectaban porque ejercitaban los otros dos flags, que se resuelven fuera del léxico.
+Hoy hay dos casos que recorren la cadena entera, uno por flag.
+
+### 5.2.1. `ContextoLexico` es una fachada, no un objeto que hace de todo
+
+Lo que los estados ven es una sola interfaz, pero detrás hay dos piezas con responsabilidades
+separadas:
+
+| Pieza | De qué se ocupa |
+|---|---|
+| `BuilderDeLexema` | El lexema en construcción, el carácter que se está mirando, el contador de líneas y las dos fotos de posición. Todo lo que cambia al consumir un carácter. |
+| `FabricaDeExcepcionesLexicas` | Las cinco formas de construir una `ExcepcionLexica`, y el escapado de caracteres invisibles del lexema que se va a imprimir. |
+
+La división no es teórica: son los dos motivos por los que la clase cambiaba. Un ajuste en cómo se
+cuenta una línea y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí, y antes convivían
+en el mismo archivo junto con la lógica de escapado. Los estados no se enteraron del cambio: la
+fachada conserva exactamente la misma API que usaban.
 
 ### 5.3. Los cuatro logros de comportamiento se activan por configuración
 
@@ -302,8 +324,9 @@ compilador/
     │   ├── tokens/               ← Token (record inmutable), TipoDeToken (56 valores)
     │   ├── errores/              ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError
     │   ├── salida/               ← interfaz Salida + SalidaEstandar
-    │   └── lexico/               ← AnalizadorLexico, ContextoLexico, PosicionLexica,
-    │       └── estados/             TablaDePalabrasClave, y un archivo por estado del AF
+    │   └── lexico/               ← AnalizadorLexico, ContextoLexico (+ BuilderDeLexema y
+    │       └── estados/             FabricaDeExcepcionesLexicas), PosicionLexica,
+    │                                TablaDePalabrasClave, y un archivo por estado del AF
     └── test/java/
         ├── catedra/              ← los 2 testers de la cátedra (sólo se cambió el paquete y el
         │                            import de Main, cambio que la guía de uso autoriza)

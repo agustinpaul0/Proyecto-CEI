@@ -59,12 +59,18 @@ menos un carácter y la posición de lectura siempre avanza.
 ### 3.2. Los lexemas reconstruyen el fuente
 
 Sobre un fuente sin blancos ni comentarios, **la concatenación de los lexemas de todos los tokens
-emitidos y de todos los errores fatales reconstruye el fuente completo**, carácter por carácter.
+emitidos y de todos los errores reconstruye el fuente completo**, carácter por carácter.
 
 Esta es la invariante más fuerte de la suite, porque cierra de un plumazo toda una familia de bugs:
 si la recuperación se comiera un carácter, o si un estado consumiera algo que no reporta, la
 concatenación no daría igual al original. Fue exactamente el bug que se encontró de esta forma —ver
 [`decisiones.md`](decisiones.md) §4.2.
+
+Tiene una única excepción, y está escrita explícitamente en la propiedad: el resto de un `litString`
+descartado tras un escape mal formado ([`decisiones.md`](decisiones.md) §4.3) no aparece en ningún
+lexema. La propiedad reproduce esa regla de descarte **por su cuenta**, en vez de reusar la del
+léxico, justamente para que un cambio accidental en el descarte la haga fallar en vez de pasar
+inadvertido.
 
 ### 3.3. Las líneas nunca decrecen
 
@@ -140,7 +146,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 
 | Suite | Casos | Qué cubre |
 |---|---|---|
-| `AnalizadorLexicoTest` | 146 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
+| `AnalizadorLexicoTest` | 151 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
 | `catedra.TesterDeCasosConErrores` | 77 | El tester original de la cátedra sobre `resources/conErrores/`. |
 | `TesterDeCasosConErroresEstricto` | 77 | Los **mismos** archivos, pero verificando la salida completa. |
 | `catedra.TesterDeCasosSinErrores` | 65 | El tester original de la cátedra sobre `resources/sinErrores/`. |
@@ -151,7 +157,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `CriterioDeRecuperacionTest` | 14 | Que tras cada error el análisis retome en el carácter correcto. |
 | `LimitesNumericosTest` | 12 | El límite de 9 dígitos y su interacción con los floats. |
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
-| `ModuloPrincipalTest` | 7 | El cliente completo, incluidas las combinaciones de configuración. |
+| `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
 | `FormateadorDeErrorTest` | 6 | Las cuatro líneas del reporte, y el `^` con tabuladores y caracteres CJK. |
 | `PropiedadesDelReporteTest` | 5 | Las invariantes de §3.2, §3.4 y §3.6 sobre entradas generadas. |
 | `AnalizadorLexicoPropiedadesTest` | 4 | Las invariantes de §3.1 y §3.3. |
@@ -161,7 +167,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
 | `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
 
-**Total: 512 casos ejecutables.**
+**Total: 519 casos ejecutables.**
 
 ## 6. Cómo correr
 

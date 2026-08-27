@@ -26,7 +26,7 @@ canónica.
 | Pieza | Tipo | Rol |
 |---|---|---|
 | `EstadoLexico` | interfaz | El contrato común a todo estado: un único método `procesar(contexto)`. |
-| `ContextoLexico` | clase | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. |
+| `ContextoLexico` | clase (fachada) | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. Delega en dos piezas internas, `BuilderDeLexema` y `FabricaDeExcepcionesLexicas` (ver [`arquitectura.md`](arquitectura.md) §5.2.1); los estados sólo ven la fachada. |
 | `ResultadoDeTransicion` | **interfaz sellada** | Lo que devuelve `procesar()`: sólo puede ser una de dos cosas, nunca una tercera. |
 | `Continuar` | `record` | "Todavía no hay token completo — el próximo estado a consultar es este otro." |
 | `Emitir` | `record` | "El token ya está completo — acá está." |
@@ -204,8 +204,9 @@ Tres estados sí cargan un dato específico de **este** recorrido puntual, y por
   hexadecimales faltan (empieza en 4 y decrece) y sabe a qué estado volver al terminar, que es
   distinto según si el escape está dentro de un `charLiteral` o de un `litString`. Ninguno de los dos
   datos es fijo entre usos.
-- **`EstadoMarcadorUnicode(siguienteAlTerminar)`** — consume la corrida de `u` repetidos del marcador
-  y, por la misma razón, necesita saber a dónde volver.
+- **`EstadoMarcadorUnicode(siguienteAlTerminar, dentroDeLitString)`** — consume la corrida de `u`
+  repetidos del marcador y, por la misma razón, necesita saber a dónde volver y en qué clase de
+  literal está.
 
 **La regla, en una frase**: si `procesar()` sólo consulta al `ContextoLexico`, el estado es un
 singleton; si necesita cargar algún dato que varía según *cómo se llegó hasta ahí en este recorrido*,

@@ -132,13 +132,15 @@ regulares, corregido en
 - **`/*` sin cerrar → error**, con lexema `/*` y la línea de **apertura** del comentario.
 - **`1abc` → dos tokens**: `intLiteral(1)` seguido de `idMV(abc)` (maximal munch estándar, igual que
   el lexer de Java).
-- **El escape inválido de `litString` es un error NO fatal**: se reporta y el literal se sigue
-  leyendo hasta su comilla de cierre, así que el token se emite igual. Es lo que hace `javac`
-  (`illegal escape character` no aborta el literal, verificado ejecutándolo). El escape unicode mal
-  formado sí es fatal: Java lo resuelve en el pre-lexer (JLS §3.3) y no hay comportamiento que
-  copiar. Es además el único error cuyo encabezado nombra dos cosas —la secuencia ofensiva (`\q`) y
-  el lexema armado que exige Pautas (`"a\q`)— porque ahí el lexema es más grande que lo que está
-  mal; ver [`manejo-de-errores.md`](manejo-de-errores.md).
+- **Un escape mal formado dentro de un `litString` descarta el literal hasta su comilla de cierre**:
+  se reporta el primero y no se emite token. Vale igual para un escape inválido (`"a\q`) y para un
+  escape unicode sin sus 4 hex dígitos (`"a\u12G4"`) — un solo criterio, sin casos especiales.
+  Criterio fijado por el **profesor**, no por `javac` (que sigue leyendo el literal): es el único
+  punto del proyecto donde la indicación de la cátedra pisa a la regla "ante la duda, como en Java".
+  En `charLiteral` no aplica: `'\x'` es válido por permiso explícito, y ahí el unicode mal formado
+  conserva la recuperación estructural. Es además el único error cuyo encabezado nombra dos cosas
+  —la secuencia ofensiva (`\q`) y el lexema armado que exige Pautas (`"a\q`)— porque ahí el lexema
+  es más grande que lo que está mal; ver [`manejo-de-errores.md`](manejo-de-errores.md).
 - **`unicodeHabilitado` gatea sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
   literales: gatear eso exigiría clasificadores ASCII-only en todo el autómata, y el logro se puede
   demostrar igual con el escape.

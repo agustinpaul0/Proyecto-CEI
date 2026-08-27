@@ -67,8 +67,8 @@ cuarta, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los teste
 | Técnica de implementación | Método por Estado (patrón State), **sin generadores automáticos** |
 | Tokens reconocidos | 56 (21 palabras clave, 3 familias de identificadores, 4 de literales, 10 símbolos de puntuación, 17 operadores, EOF) |
 | Estados del autómata | 21 clases en `minijava.lexico.estados`, una por estado |
-| Clases de producción | 44 |
-| Suites de test | 20 (18 propias + los 2 testers de la cátedra), con **512 casos** ejecutables |
+| Clases de producción | 47 |
+| Suites de test | 20 (18 propias + los 2 testers de la cátedra), con **519 casos** ejecutables |
 | Casos de fuente | 65 sin errores + 77 con errores + 1 de regresión de fuzzing |
 | Logros perseguidos | los 8 de la Etapa 1 |
 | Java | 25 (`maven.compiler.release=25`) |

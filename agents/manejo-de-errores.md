@@ -8,10 +8,10 @@ detalle de implementación de `ExcepcionLexica`/`PosicionLexica`/`FormateadorDeE
 ## El criterio de recuperación (leer primero)
 
 **Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en el
-lexema, ni uno más.** No existe `recuperarDeError()`: la recuperación es estructural, el siguiente
-`proximoToken()` arranca en el primer carácter que no formó parte del lexema. Verificado contra
-`javac` (ver `documentacion/manejo-de-errores.md` §2), porque la cátedra no dice nada sobre cómo
-recuperarse — su comportamiento base ni siquiera tiene recuperación.
+lexema, ni uno más — con una única excepción, abajo.** No existe `recuperarDeError()`: la
+recuperación es estructural, el siguiente `proximoToken()` arranca en el primer carácter que no formó
+parte del lexema. Verificado contra `javac` (ver `documentacion/manejo-de-errores.md` §2), porque la
+cátedra no dice nada sobre cómo recuperarse — su comportamiento base ni siquiera tiene recuperación.
 
 **Regla para código nuevo**: si vas a agregar un `throw` en un estado, preguntate si el carácter que
 estás mirando forma parte del error. Si sí, `avanzar()` y usar
@@ -20,23 +20,33 @@ mal), no lo toques. Dónde apunta el `^` en cada caso es una decisión aparte, y
 `agregarCaracterOfensivo()` ya no existe: era justamente el método que rompía la correspondencia
 entre lo que se reporta y lo que se consume, y por eso la recuperación se comía tokens válidos.
 
-El único error **no fatal** es el escape inválido dentro de un `litString`: se registra con
-`contexto.registrarError(...)` y el literal se sigue leyendo, igual que hace `javac`.
+**La única excepción: el escape mal formado dentro de un `litString`.** Ahí, además de reportar, se
+descarta lo que queda del literal hasta su comilla de cierre (`RecuperacionDeLitString
+.descartarHastaElCierre()`) y no se emite token. Cubre los dos errores que pueden aparecer tras la
+barra: `STRING_ESCAPE_INVALIDO` y `UNICODE_MAL_FORMADO` — este último sólo cuando ocurre dentro de un
+`litString`, que es lo que le dice el flag `dentroDeLitString` que arrastran `EstadoMarcadorUnicode`
+y `EstadoEscapeUnicode`. Criterio del **profesor**, no de `javac`; justificación completa en
+`documentacion/decisiones.md` §4.3.
+
+**Regla para código nuevo**: la excepción se construye **antes** de resincronizar. El lexema
+reportado tiene que ser el armado hasta el error (`"a\q`), no lo que se descartó después; y el
+descarte usa `descartar()`, nunca `avanzar()`. Ya no existen errores no fatales: `registrarError()` y
+`tomarErroresNoFatales()` fueron eliminados.
 
 ## El contrato de `ExcepcionLexica`
 
 Cada `ExcepcionLexica` lleva cinco datos obligatorios: tipo (`TipoDeErrorLexico`), lexema, línea,
 columna y la línea fuente completa (para el Reporte de Error Elegante), más uno opcional, el
-**fragmento ofensivo**. `ContextoLexico.crearExcepcionLexica()` es el punto único de construcción
+**fragmento ofensivo**. `FabricaDeExcepcionesLexicas` es el punto único de construcción
 — ningún estado arma una `ExcepcionLexica` a mano, siempre pasa por ahí, para que los campos
 sean consistentes entre sí.
 
 **El lexema es el armado hasta el momento del error, siempre.** No es una elección nuestra: lo fija
 `Pautas Etapa 1.pdf` slide 24 (*"Deberá reportarse un mensaje adecuado a la naturaleza del error
 indicando el lexema armado hasta el momento del error y en qué número de línea del fuente MiniJava se
-produjo"*), y el `[Error:Lexema|NroLinea]` tiene que llevar ese mismo lexema. De ahí que dos escapes
-inválidos en un mismo `litString` reporten `"a\q` y después `"a\q b\z`, con el segundo conteniendo al
-primero: es exactamente lo pedido, no un defecto.
+produjo"*), y el `[Error:Lexema|NroLinea]` tiene que llevar ese mismo lexema. De ahí que un escape
+inválido en `"a\q b\z c"` reporte `"a\q` y no el literal entero, aunque el estado haya consumido el
+literal completo para resincronizar.
 
 **El fragmento ofensivo existe justamente por eso.** Cuando el lexema armado es más grande que la
 parte que está mal, el encabezado se lee al revés (`secuencia de escape inválida: "a\q` da a entender
@@ -74,13 +84,16 @@ impide que esto vuelva a divergir por partes):
 | `1e` | `malformed floating-point literal` | el **primer** carácter del literal |
 | `/* sin cerrar` | `unclosed comment` | la barra de **apertura** |
 
+De `javac` se copió **dónde cae el `^`**, no cuántos errores reporta: en `"a\q b\z c"` MiniJava
+señala la `q` igual que él, pero reporta un solo error porque al primero descarta el literal.
+
 Este criterio corrige un bug real: la mitad de los errores señalaba el inicio de la construcción y la
 otra mitad el último carácter consumido, porque `posicionUltimoConsumido()` —introducido para
 arreglar carets que colgaban en el aire, ver la sección siguiente— quedó aplicado también donde
 correspondía la apertura. Un `charLiteral vacío: ''` señalaba la comilla de cierre; un `litString sin
 cerrar` de veinte caracteres señalaba el vigésimo.
 
-### Las variantes de `ContextoLexico`, y cuál usar
+### Las variantes de `FabricaDeExcepcionesLexicas`, y cuál usar
 
 Todas devuelven una `ExcepcionLexica` ya armada; las dos posiciones (`posicionPrimerConsumido` y
 `posicionUltimoConsumido`) son `PosicionLexica` —línea + columna + línea fuente— capturadas dentro de
@@ -117,7 +130,7 @@ línea real reporta una posición ambiente (`getColumna()`) que apunta a un car�
 `EstadoFloatExponenteRequiereDigito` — prácticamente cualquier estado que puede toparse con un EOF o
 un `\n` inesperado.
 
-En vez de parchear cada uno, se centralizó en `ContextoLexico.crearExcepcionLexica()` (la variante sin
+En vez de parchear cada uno, se centralizó en `FabricaDeExcepcionesLexicas.crearExcepcionLexica()` (la variante sin
 argumentos): si el lookahead actual es EOF o `\n`, usa `posicionUltimoConsumido()` automáticamente en
 lugar de la posición ambiente — ningún estado individual necesita saberlo.
 

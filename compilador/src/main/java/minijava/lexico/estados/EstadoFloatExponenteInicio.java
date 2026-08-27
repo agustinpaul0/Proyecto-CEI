@@ -7,9 +7,8 @@ import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
-// Tras 'e'/'E': el signo es opcional pero al menos un dígito es obligatorio
-// después: "1e"/"1.5e" son error, sin backtracking a un token más corto
-// (agents/especificacion-lexica.md).
+// Tras 'e'/'E': signo opcional, pero al menos un dígito obligatorio. "1e" es
+// error, sin backtracking a un token más corto.
 public final class EstadoFloatExponenteInicio implements EstadoLexico {
 
     public static final EstadoFloatExponenteInicio INSTANCIA = new EstadoFloatExponenteInicio();
@@ -28,11 +27,8 @@ public final class EstadoFloatExponenteInicio implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoFloatExponenteDigitos.INSTANCIA);
         }
-        // El mensaje habla del literal entero ('1e'), no del carácter que se
-        // está mirando —que es un token perfectamente legítimo y no se
-        // consume—, así que el '^' va donde el literal empieza. Es lo que
-        // hace javac: "malformed floating-point literal" señala el primer
-        // carácter del número (ver agents/manejo-de-errores.md).
+        // El '^' va donde empieza el literal, no en el lookahead: javac
+        // señala así "malformed floating-point literal".
         throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(
                 TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS);
     }

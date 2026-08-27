@@ -90,7 +90,8 @@ compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
 - [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) — ER formal de
   los 56 tokens, con autómatas.
 - [`documentacion/patron-state.md`](documentacion/patron-state.md) — cómo interactúan
-  `EstadoLexico`/`ContextoLexico`/`Continuar`/`Emitir` y el driver, paso a paso.
+  `EstadoLexico`/`ContextoLexico` (y sus piezas `BuilderDeLexema` y
+  `FabricaDeExcepcionesLexicas`)/`Continuar`/`Emitir` y el driver, paso a paso.
 - [`documentacion/manejo-de-errores.md`](documentacion/manejo-de-errores.md) — detección,
   recuperación, los dos formatos de reporte, a qué posición apunta la columna.
 - [`documentacion/manejador-de-archivo.md`](documentacion/manejador-de-archivo.md) — por qué el

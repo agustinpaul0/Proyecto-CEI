@@ -40,8 +40,8 @@ public Token proximoToken() throws ExcepcionLexica {
 `ResultadoDeTransicion` es una `sealed interface` con únicamente estos dos `permits`, por eso el
 `switch` de arriba es exhaustivo sin `default` — el compilador exige cubrir ambos casos (requiere
 `maven.compiler.release=25`, ver [`comandos-y-entrega.md`](comandos-y-entrega.md)). Detalle completo
-de esta interacción (`EstadoLexico`, `ContextoLexico`, criterio singleton-vs-`new` por estado,
-trazado paso a paso) en [`../documentacion/patron-state.md`](../documentacion/patron-state.md).
+de esta interacción (`EstadoLexico`, `ContextoLexico` y sus dos piezas, criterio singleton-vs-`new`
+por estado, trazado paso a paso) en [`../documentacion/patron-state.md`](../documentacion/patron-state.md).
 
 ## Paquetes (`compilador/src/main/java/`)
 
@@ -52,7 +52,8 @@ minijava/
 │                     cátedra, contenido sin tocar — sólo se movió el `package` al mudarlas
 │                     acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo
 │                     (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
-├── lexico/          AnalizadorLexico, contexto léxico, tabla de palabras clave
+├── lexico/          AnalizadorLexico, ContextoLexico (fachada de BuilderDeLexema +
+│                     FabricaDeExcepcionesLexicas), tabla de palabras clave
 │   └── estados/     un componente por estado del AF (patrón State)
 ├── tokens/          Token (record inmutable), TipoDeToken
 ├── errores/         ExcepcionLexica, tipos de error, formateadores, estrategia de recuperación

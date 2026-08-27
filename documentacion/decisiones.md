@@ -274,25 +274,49 @@ nunca es vacío, así que cada error consumió al menos un carácter y el análi
 eso lo garantizaba el método que descartaba un carácter, que era justamente el que rompía la
 correspondencia.
 
-### 4.3. El escape inválido de `litString` es el único error no fatal
+### 4.3. Un escape mal formado descarta el `litString` hasta su comilla de cierre
 
-**Fuente**: `javac`, verificado ejecutándolo.
+**Fuente**: **indicación del profesor de la materia**. Es el único caso del catálogo en que la
+fuente no es ni la consigna escrita ni Java: el profesor revisó la salida del compilador y fijó el
+criterio explícitamente. Por eso pisa a la Regla 2 — donde la cátedra habla, no se aplica "como en
+Java".
 
-**Decisión**: se reporta el error pero **no se aborta el literal**: se sigue leyendo hasta la comilla
-de cierre y el token se emite igual.
+**Decisión**: al primer escape mal formado dentro de un `litString` se reporta el error y se
+**descarta lo que queda del literal hasta su comilla de cierre**, sin emitir token. Vale tanto para
+un escape inválido (`"a\q`, `"a\8`) como para un escape Unicode sin sus cuatro dígitos
+hexadecimales (`"a\u12G4"`): son el mismo defecto y tienen la misma recuperación.
 
-**Por qué**, con números: abortar el literal en `"a\q b\z c"` haría que el análisis se reanude en
-` b\z c"`, produciendo `idMV(b)`, un error por el `\`, `idMV(z)`, `idMV(c)` y un `litString` sin
-cerrar. Tres tokens fantasma y dos errores inventados, para reemplazar a un error real. Es
-exactamente la cascada que el logro *Multi-detección de Errores* existe para evitar.
+**Qué reemplaza**: la primera versión copiaba a `javac` — reportaba el escape como error **no fatal**
+y seguía leyendo el literal hasta emitirlo entero como token. Con `"a\q b\z c"` eso imprimía dos
+errores y después el `litString` completo. El profesor consideró esa salida incorrecta: el compilador
+afirma haber reconocido un literal cuyo contenido no supo interpretar, y el ruido crece con cada
+escape roto.
 
-`javac` da sobre esa línea exactamente dos `illegal escape character` y **ningún**
-`unclosed string literal`.
+**Por qué el criterio nuevo se sostiene**, más allá de la indicación: es **recuperación en modo
+pánico con token de sincronización**, la técnica clásica ante un error de análisis — se descarta
+entrada hasta un delimitador que devuelve al analizador a un estado conocido. El delimitador natural
+de un `litString` es su comilla de cierre.
 
-**El alcance es deliberadamente acotado a ese caso**. El escape Unicode mal formado sigue siendo
-fatal, porque Java lo resuelve en un nivel completamente distinto (un pre-lexer que traduce los
-escapes antes de tokenizar, JLS §3.3) y ahí no hay comportamiento de Java que copiar. En
-`charLiteral` el caso ni siquiera existe, porque `'\x'` con cualquier `x` es válido (§3.4).
+**Descartado**: reportar el primer escape y dejar que la recuperación estructural de §4.2 siga su
+curso, sin descartar nada. Sobre `"a\q b\z c" + v1` eso produce `idMV(b)`, un error por la barra
+suelta, `idMV(z)`, `idMV(c)`, y —lo decisivo— la comilla de **cierre** abre un literal nuevo que se
+come ` + v1` y muere sin cerrar: tres tokens fantasma, dos errores inventados, y dos tokens legítimos
+(`+` y `v1`) perdidos. Descartar hasta el cierre los conserva.
+
+**Consecuencia sobre §4.2**: es la única excepción a "se consume exactamente lo que se reporta". El
+lexema reportado sigue siendo el armado hasta el error (`"a\q`, como exige §4.1); lo descartado es
+recuperación y no aparece en ningún lexema. La excepción está documentada y verificada en la
+propiedad de reconstrucción del fuente.
+
+**Qué queda afuera**: dentro de un mismo literal sólo se reporta el primer error, porque el segundo
+es un defecto derivado de un literal que ya se descartó. Entre literales distintos la multi-detección
+sigue intacta: `"a\q" "b\z"` reporta dos errores. En `charLiteral` la decisión no aplica — `'\x'`
+con cualquier `x` es válido por permiso explícito de la cátedra (§3.4), y un escape Unicode mal
+formado ahí conserva la recuperación estructural, porque no hay literal delimitado que descartar.
+
+**Divergencia con Java, asumida**: `javac` sobre `"a\q b\z c"` da dos `illegal escape character` y
+ningún `unclosed string literal` — sigue leyendo el literal. MiniJava da un solo error y no emite el
+literal. Está en la tabla de §7.
 
 ### 4.4. Dónde apunta el `^`: el criterio de `javac`
 
@@ -421,6 +445,7 @@ propósito, y todas tienen su razón.
 | `3.5e38f`, `1e999` | `floating-point number too large` | `floatLiteral` válido | el rango es un chequeo semántico, no léxico (§3.3) |
 | `.5` | `floatLiteral` válido | `punto` + `intLiteral` | la consigna exige que un float empiece con dígito |
 | `'\q'` | `illegal escape character` | `charLiteral` válido | permisividad explícita de la cátedra (§3.4) |
+| `"a\q b\z c"` | dos `illegal escape character`, y el literal se sigue leyendo | **un** error, y el literal se descarta hasta su comilla de cierre sin emitir token | criterio fijado por el profesor (§4.3) |
 | Dígitos árabe-índicos (`١٢٣`) | no valen en un literal numérico | son un `intLiteral` | `Character.isDigit` los acepta; restringir a ASCII contradiría el logro Unicodes |
 | Dígitos no ASCII en `\uXXXX` | inválidos | aceptados | `Character.digit(c,16)` los acepta |
 | `中` al empezar un identificador | válido | error — aunque **sí** puede continuar un identificador | la ER de la cátedra dice "letra mayúscula" / "letra minúscula", y `中` no es ninguna de las dos |

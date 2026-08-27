@@ -125,6 +125,11 @@ de las dos y no la otra.
 Un `litString` **no puede contener un salto de línea real**: si aparece uno antes de la comilla de
 cierre, el literal quedó sin cerrar y es error.
 
+Un escape mal formado —tanto uno inválido (`"a\q`) como un `\u` sin sus cuatro dígitos
+hexadecimales— aborta el literal: se reporta el primero y se descarta lo que queda **hasta la comilla
+de cierre**, sin emitir token. El detalle y su justificación están en
+[`manejo-de-errores.md`](manejo-de-errores.md) §2.1.
+
 ### 3.4. `floatLiteral`
 
 ```text

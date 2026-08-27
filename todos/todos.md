@@ -21,6 +21,15 @@ Sólo lo que falta verificar o implementar ahora mismo. Sin historial ni backlog
 
 ## Verificar
 
+- [ ] **Confirmar con el profesor el criterio de escapes mal formados en `litString`** (viernes
+  28/08/2026). Hoy: al primer escape mal formado se reporta el error y se descarta el literal hasta
+  su comilla de cierre, sin emitir token — indicación verbal del profesor, implementada y
+  documentada en `documentacion/decisiones.md` §4.3. El criterio se unificó con el escape Unicode
+  mal formado dentro de un `litString`, que antes no resincronizaba. Si el profesor lo rechaza, el
+  procedimiento completo de vuelta atrás está en
+  `documentacion/rollback-escapes-invalidos.md` — borrar ese archivo cuando el criterio quede
+  confirmado.
+
 - [ ] **Consultar al profesor si el rango de un `floatLiteral` debe validarse en el léxico.** Hoy no
   se valida: `3.5e38f` y `1e999` son `floatLiteral` válidos en MiniJava y en Java no compilan
   (`floating-point number too large`). La consigna pide "la misma estructura que los floats de

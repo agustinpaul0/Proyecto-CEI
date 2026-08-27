@@ -130,9 +130,11 @@ Todos eran invisibles en el corpus de entonces porque cada caso tenía un espaci
 malo. Los descubrió una **invariante**, no un caso: "la concatenación de los lexemas de todos los
 tokens y errores reconstruye el fuente completo".
 
-**El caso especial**: el escape inválido dentro de un `litString` es el único error **no fatal**. Se
-reporta pero no aborta el literal, igual que hace `javac`. Abortarlo produciría una cascada de
-errores falsos — el detalle, con los números, está en [`decisiones.md`](decisiones.md) §4.3.
+**El caso especial**: un escape mal formado dentro de un `litString` es el único error que descarta
+más de lo que reporta — se resincroniza en la comilla de cierre del literal. Es lo contrario de una
+excepción a la multi-detección: sin ese descarte, el resto del literal se re-tokenizaría y la comilla
+de cierre abriría un literal nuevo, inventando errores que ocultarían a los reales. El detalle, con
+los números, está en [`decisiones.md`](decisiones.md) §4.3.
 
 **Cómo verificarlo:**
 

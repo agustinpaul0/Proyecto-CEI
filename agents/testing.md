@@ -113,13 +113,19 @@ Cuando la cátedra no especifica un comportamiento, `AGENTS.md` §0.1 manda hace
 
 - el criterio de recuperación (`javac` no sincroniza hasta el delimitador y nunca descarta un
   carácter ajeno al lexema reportado — ver `documentacion/manejo-de-errores.md` §2);
-- el escape inválido de `litString` como error **no fatal**.
+- dónde apunta el `^` en cada diagnóstico.
 
 Y confirmó una tercera: los floats **no** tienen límite de dígitos, ni en la cátedra ni en Java; lo
 que Java rechaza es un valor fuera de rango, y eso es semántico, no léxico.
 
 **Regla**: todo test cuyo oráculo sea "así hace Java" lleva en su comentario la salida **real** de
 `javac`, copiada de la corrida, para que sea rastreable y no una afirmación de memoria.
+
+**Y el límite del oráculo**: `javac` vale mientras la cátedra calle. Donde el profesor fijó un
+criterio, ése manda aunque Java haga otra cosa — hoy pasa en un solo lugar, el escape mal formado
+dentro de un `litString` (`documentacion/decisiones.md` §4.3), donde `javac` sigue leyendo el
+literal y MiniJava lo descarta hasta la comilla de cierre. Los tests de ese caso citan la indicación
+del profesor, no a `javac`.
 
 ## Los dos testers de casos de `resources/conErrores/`
 

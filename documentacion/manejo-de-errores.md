@@ -40,8 +40,10 @@ comportamiento por defecto igual al de Java"— resuelta como manda el procedimi
 verificando contra `javac`, no de memoria.
 
 > **Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en el
-> lexema, ni uno más.** No hay ningún paso de recuperación posterior: el siguiente `proximoToken()`
-> arranca en el primer carácter que **no** formó parte del lexema reportado.
+> lexema, ni uno más** — salvo un escape mal formado dentro de un `litString`, que además descarta lo
+> que queda del literal hasta su comilla de cierre (§2.1). Fuera de esa excepción no hay ningún paso
+> de recuperación posterior: el siguiente `proximoToken()` arranca en el primer carácter que **no**
+> formó parte del lexema reportado.
 
 Esto coincide además, literalmente, con el código que propone la cátedra en Clase 02 slide 43:
 `actualizarLexema()` y después `throw`, sin descartar nada.
@@ -77,43 +79,59 @@ corpus de entonces porque cada caso ponía un espacio o un fin de línea detrás
 
 La propiedad que lo cierra para cualquier entrada está en `PropiedadesDelReporteTest`: sobre un
 fuente sin blancos ni comentarios, la concatenación de los lexemas de todos los tokens emitidos y de
-todos los errores fatales **reconstruye el fuente completo**.
+todos los errores —más, en el único caso que resincroniza, el resto del `litString` descartado—
+**reconstruye el fuente completo**. Que la excepción esté escrita ahí y no reusada del código de
+producción es deliberado: si el léxico dejara de descartar exactamente lo que dice descartar, la
+propiedad lo detectaría en vez de acompañarlo.
 
-## 2.1. El único error no fatal
+## 2.1. La única excepción: el escape mal formado dentro de un `litString`
 
-`javac` reporta un escape inválido dentro de un `litString` pero **no aborta el literal**: lo sigue
-leyendo hasta su comilla de cierre. MiniJava hace lo mismo, y es el único error del léxico que
-produce un token válido además del mensaje:
+Un escape mal formado dentro de un `litString` —`"a\q`, `"a\8`, o un escape Unicode sin sus cuatro
+dígitos hexadecimales— es el único error que **no se limita a consumir lo que reporta**: reporta el
+primero que encuentra y después descarta lo que queda del literal **hasta su comilla de cierre**, sin
+emitir token.
 
 ```text
-"hola \q mundo"
-→ Error Léxico en línea 1, columna 8: litString con secuencia de escape inválida \q: "hola \q
-→ [Error:"hola \q|1]
-→ (litString,"hola \q mundo",1)
+"a\q b\z c" + v1
+→ Error Léxico en línea 1, columna 4: litString con secuencia de escape inválida \q: "a\q
+→ [Error:"a\q|1]
+→ (op+,+,1)
+→ (idMV,v1,1)
+→ (EOF,$,2)
 ```
 
-`ContextoLexico.registrarError()` acumula estos errores y `ModuloPrincipal` los drena y los reporta
-justo antes de imprimir el token dentro del cual ocurrieron — de ahí que el error aparezca **antes**
-del token, aunque el token empiece antes en el fuente: el error se descubre mientras el literal
-todavía se está armando.
+Es **recuperación en modo pánico con token de sincronización**, la técnica clásica de construcción de
+compiladores: ante un error se descarta entrada hasta un delimitador que devuelve al analizador a un
+estado conocido. Acá el delimitador es la comilla de cierre, y el estado conocido es "fuera de todo
+literal". El criterio lo fijó el profesor de la materia; su justificación completa, y la alternativa
+que reemplaza, están en [`decisiones.md`](decisiones.md) §4.3.
 
-Tres detalles del encabezado que conviene leer juntos, porque los tres vienen de reglas distintas:
+Lo que se gana es que el análisis sigue **en el token siguiente al literal roto**, no en mitad de su
+contenido. Sin resincronizar, el mismo fuente daría `idMV(b)`, un error por la barra suelta,
+`idMV(z)`, `idMV(c)` y —lo peor— la comilla de **cierre** abriría un literal nuevo que se comería
+` + v1` y moriría sin cerrar: tres tokens fantasma, dos errores inventados y dos tokens legítimos
+perdidos, todo derivado de un único defecto real.
 
-- El **lexema** es `"hola \q`, no el literal completo: `Pautas Etapa 1.pdf` slide 24 pide "el lexema
-  armado hasta el momento del error". Por eso, con dos escapes inválidos en un mismo literal, el
-  segundo error reporta un lexema que contiene al del primero (`"a\q` y después `"a\q b\z`).
+Tres detalles del encabezado, que vienen de reglas distintas:
+
+- El **lexema** es `"a\q`, no el literal completo ni lo descartado: `Pautas Etapa 1.pdf` slide 24
+  pide "el lexema armado hasta el momento del error". El descarte es recuperación, no parte de lo que
+  se reporta, y por eso la excepción se construye **antes** de resincronizar.
 - La **secuencia ofensiva** (`\q`) se nombra aparte porque ese lexema armado no *es* la secuencia, y
   sin nombrarla el mensaje se lee al revés. Es el único error con este dato extra.
-- El **token se emite igual**, con su lexema crudo completo: el literal está bien delimitado, sólo su
-  contenido tiene escapes inválidos. Abortarlo produciría una cascada de errores falsos (el resto del
-  literal se re-tokenizaría como identificadores y una comilla huérfana), que es exactamente lo que
-  `javac` evita.
+- **No se emite token**: el literal quedó mal formado, y emitirlo sería afirmar que el programa
+  contiene un `litString` que el compilador no pudo interpretar.
 
-**El alcance es deliberadamente acotado a ese caso**, que es exactamente donde `javac` lo hace. El
-escape unicode mal formado sigue siendo fatal, porque Java lo resuelve en un nivel completamente
-distinto (pre-lexer, JLS §3.3) y ahí no hay comportamiento de Java que copiar. En `charLiteral` el
-caso no existe: `'\x'` con `x` cualquiera es válido por permiso explícito de la cátedra (Aspectos
-Léxicos §2.3.2).
+**Qué queda fuera del alcance.** Dentro de un mismo literal sólo se reporta un error: el segundo
+escape roto de `"a\q b\z c"` no aparece, porque es un defecto derivado del mismo literal ya
+descartado. Entre literales distintos la multi-detección sigue intacta — `"a\q" "b\z"` reporta dos
+errores, uno por literal. Y en `charLiteral` el caso directamente no existe: `'\x'` con `x`
+cualquiera es válido por permiso explícito de la cátedra (Aspectos Léxicos §2.3.2), y un escape
+Unicode mal formado ahí conserva la recuperación estructural, porque no hay literal delimitado que
+descartar.
+
+Si el literal nunca cierra, el descarte se detiene en el salto de línea: un `litString` no cruza
+líneas, así que `"a\q` seguido de un fin de línea reporta su error y deja la línea siguiente intacta.
 
 ## 2.2. Los tipos de error
 
@@ -127,9 +145,9 @@ tests no podían validar por tipo, que es la regla del proyecto (ver [`testing.m
 | `CHAR_VACIO` | `charLiteral vacío` |
 | `CHAR_MAL_FORMADO` | `charLiteral mal formado, contiene más de un carácter` |
 | `CHAR_SIN_CERRAR` | `charLiteral sin cerrar` |
-| `STRING_ESCAPE_INVALIDO` | `litString con secuencia de escape inválida <secuencia>` (no fatal; el único que nombra la secuencia además del lexema) |
+| `STRING_ESCAPE_INVALIDO` | `litString con secuencia de escape inválida <secuencia>` — el único que nombra la secuencia además del lexema, y uno de los dos que resincronizan (§2.1) |
 | `STRING_SIN_CERRAR` | `litString sin cerrar` |
-| `UNICODE_MAL_FORMADO` | `escape unicode mal formado, se esperaban 4 dígitos hexadecimales` |
+| `UNICODE_MAL_FORMADO` | `escape unicode mal formado, se esperaban 4 dígitos hexadecimales` — resincroniza sólo cuando ocurre dentro de un `litString` (§2.1) |
 | `COMENTARIO_SIN_CERRAR` | `comentario multilínea sin cerrar` |
 | `ENTERO_DEMASIADO_LARGO` | `intLiteral de más de 9 dígitos` |
 | `OPERADOR_INCOMPLETO` | `operador incompleto, se esperaba && o \|\|` |
@@ -185,10 +203,14 @@ Tiene sentido más allá de imitar a Java: en `"hola sin cerrar`, lo que hay que
 de apertura (falta su par), no la última letra que se alcanzó a leer; en `1234567890`, el problema es
 el número entero, y su primer dígito es donde empieza a leerse.
 
+La tabla describe **dónde pone `javac` el `^`**, que es lo único que se le copió. Cuántos errores
+reporta es una decisión aparte: en `"a\q b\z c"` MiniJava señala la `q` igual que `javac`, pero
+reporta un solo error y no dos, porque al primero descarta el literal entero (§2.1).
+
 ### Cómo se implementa
 
-`ContextoLexico` mantiene **dos** fotos de posición, ambas tomadas dentro de `avanzar()` justo antes
-de consumir —cuando línea, columna y línea-fuente todavía describen ese carácter— y ambas del tipo
+`BuilderDeLexema` —la pieza del contexto léxico que arma el lexema— mantiene **dos** fotos de
+posición, ambas tomadas dentro de `avanzar()` justo antes de consumir —cuando línea, columna y línea-fuente todavía describen ese carácter— y ambas del tipo
 `PosicionLexica`:
 
 - `posicionPrimerConsumido`: el **primer** carácter del lexema en curso. Es la que usan los errores
@@ -217,9 +239,9 @@ corta el texto justo antes del salto de línea. El resultado visual: un `^` una 
 último carácter visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los
 estados que pueden toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar,
 escapes interrumpidos, exponentes sin dígitos). Se resolvió en un solo lugar:
-`ContextoLexico.crearExcepcionLexica()` (la variante sin argumentos) usa automáticamente
-`posicionUltimoConsumido()` cuando detecta que el lookahead es EOF o `\n`, sin que cada estado
-individual tenga que saberlo.
+`FabricaDeExcepcionesLexicas.crearExcepcionLexica()` (la variante sin argumentos) usa
+automáticamente `posicionUltimoConsumido()` cuando detecta que el lookahead es EOF o `\n`, sin que
+cada estado individual tenga que saberlo.
 
 La mayoría de aquellos estados ya no depende de esa protección: al adoptar el criterio de `javac` de
 la §4 pasaron a señalar el inicio de la construcción, que por definición está dentro de la línea que
@@ -235,7 +257,7 @@ es un salto de línea, **parte el código de error en dos líneas** y rompe el c
 un elemento por línea. Pasaba típicamente en cascadas: una comilla simple huérfana justo antes de un
 salto de línea real abre un char literal que "termina" en ese salto.
 
-La regla, aplicada en un solo lugar (`ContextoLexico`, al construir la excepción): **todo carácter
+La regla, aplicada en un solo lugar (`FabricaDeExcepcionesLexicas`, al construir la excepción): **todo carácter
 invisible del lexema de un error se renderiza con su escape de Java** (`\n`, `\r`, `\t`, `\f`, `\b`, o
 `\uXXXX` para el resto). Así el lexema reportado sigue siendo una descripción fiel de lo que se
 consumió, y siempre es imprimible.
