@@ -2,6 +2,7 @@ package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipal;
 import minijava.errores.ExcepcionLexica;
+import minijava.errores.TipoDeErrorLexico;
 import minijava.io.ManejadorDeArchivo;
 import minijava.io.ManejadorDeArchivoEficiente;
 import minijava.tokens.TipoDeToken;
@@ -110,15 +111,12 @@ class PropiedadesDelReporteTest {
     }
 
     // Round-trip: si el fuente no tiene blancos ni comentarios, absolutamente
-    // TODO carácter tiene que aparecer en algún lexema — de token emitido o de
-    // error fatal. Es la demostración de que la recuperación ya no se traga
-    // nada: antes del criterio nuevo esta propiedad fallaba con cualquier '&'
-    // o entero largo pegado a otro token.
-    //
-    // Se corre contra el analizador y no contra la salida impresa porque los
-    // errores NO fatales (escape inválido de string) reportan un lexema que es
-    // PREFIJO del literal que después se emite completo: contarlos sería
-    // contar dos veces el mismo texto.
+    // TODO carácter tiene que aparecer en algún lexema —de token emitido o de
+    // error— o, en el único caso en que la recuperación descarta a propósito,
+    // en el resto del litString que se saltea hasta su comilla de cierre. Es
+    // la demostración de que la recuperación no se traga nada por accidente:
+    // antes del criterio de recuperación esta propiedad fallaba con cualquier
+    // '&' o entero largo pegado a otro token.
     @Property
     void todoCaracterDelFuenteApareceEnAlgunLexema(@ForAll("fuentesSinBlancos") String fuente)
             throws IOException {
@@ -131,18 +129,46 @@ class PropiedadesDelReporteTest {
         for (int i = 0; i < 10_000; i++) {
             try {
                 Token token = analizador.proximoToken();
-                analizador.tomarErroresNoFatales();
                 if (token.tipo() == TipoDeToken.EOF) {
                     assertEquals(fuente, reconstruido.toString());
                     return;
                 }
                 reconstruido.append(token.lexema());
             } catch (ExcepcionLexica excepcion) {
-                analizador.tomarErroresNoFatales();
                 reconstruido.append(excepcion.getLexemaOfensivo());
+                if (resincronizoElLitString(excepcion)) {
+                    reconstruido.append(descarteDeLitString(fuente, reconstruido.length()));
+                }
             }
         }
         throw new AssertionError("no llego a EOF: " + fuente);
+    }
+
+    // Los dos errores que resincronizan en la comilla de cierre. El unicode
+    // mal formado sólo lo hace dentro de un litString; en un charLiteral no,
+    // y ahí el lexema empieza con comilla simple.
+    private static boolean resincronizoElLitString(ExcepcionLexica excepcion) {
+        return excepcion.getTipo() == TipoDeErrorLexico.STRING_ESCAPE_INVALIDO
+                || (excepcion.getTipo() == TipoDeErrorLexico.UNICODE_MAL_FORMADO
+                        && excepcion.getLexemaOfensivo().startsWith("\""));
+    }
+
+    // La regla de RecuperacionDeLitString, reescrita a propósito en vez de
+    // reusada: si el léxico deja de descartar lo que dice descartar, esta
+    // propiedad lo detecta en vez de acompañarlo.
+    private static String descarteDeLitString(String fuente, int desde) {
+        int hasta = desde;
+        while (hasta < fuente.length() && fuente.charAt(hasta) != '\n') {
+            char actual = fuente.charAt(hasta);
+            hasta++;
+            if (actual == '"') {
+                break;
+            }
+            if (actual == '\\' && hasta < fuente.length() && fuente.charAt(hasta) != '\n') {
+                hasta++;
+            }
+        }
+        return fuente.substring(desde, hasta);
     }
 
     @Provide

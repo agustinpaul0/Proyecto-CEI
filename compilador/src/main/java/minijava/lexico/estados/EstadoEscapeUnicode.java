@@ -11,10 +11,16 @@ public final class EstadoEscapeUnicode implements EstadoLexico {
 
     private final int digitosRestantes;
     private final EstadoLexico siguienteAlTerminar;
+    // Dentro de un litString el error resincroniza en la comilla de cierre,
+    // igual que cualquier otro escape mal formado; dentro de un charLiteral no
+    // hay resincronización, la recuperación es estructural.
+    private final boolean dentroDeLitString;
 
-    public EstadoEscapeUnicode(int digitosRestantes, EstadoLexico siguienteAlTerminar) {
+    public EstadoEscapeUnicode(int digitosRestantes, EstadoLexico siguienteAlTerminar,
+                               boolean dentroDeLitString) {
         this.digitosRestantes = digitosRestantes;
         this.siguienteAlTerminar = siguienteAlTerminar;
+        this.dentroDeLitString = dentroDeLitString;
     }
 
     @Override
@@ -23,10 +29,15 @@ public final class EstadoEscapeUnicode implements EstadoLexico {
             return new Continuar(siguienteAlTerminar);
         }
         if (!esHexadecimal(contexto.getCaracterActual())) {
-            throw contexto.crearExcepcionLexica(TipoDeErrorLexico.UNICODE_MAL_FORMADO);
+            ExcepcionLexica error = contexto.crearExcepcionLexica(TipoDeErrorLexico.UNICODE_MAL_FORMADO);
+            if (dentroDeLitString) {
+                RecuperacionDeLitString.descartarHastaElCierre(contexto);
+            }
+            throw error;
         }
         contexto.avanzar();
-        return new Continuar(new EstadoEscapeUnicode(digitosRestantes - 1, siguienteAlTerminar));
+        return new Continuar(new EstadoEscapeUnicode(digitosRestantes - 1, siguienteAlTerminar,
+                dentroDeLitString));
     }
 
     private static boolean esHexadecimal(char c) {

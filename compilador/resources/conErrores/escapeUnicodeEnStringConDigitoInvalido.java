@@ -1,7 +1,5 @@
-// [Error:"a\u12|7]
+// [Error:"a\u12|5]
 // [Completo]
-// [Error:"a\u12|7]
-//#G4,7
-// [Error:"|7]
-//#$,8
+// [Error:"a\u12|5]
+//#$,6
 "a\u12G4"

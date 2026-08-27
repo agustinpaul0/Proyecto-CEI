@@ -1,7 +1,5 @@
-// [Error:"a\q|7]
+// [Error:"a\q|5]
 // [Completo]
-// [Error:"a\q|7]
-// [Error:"a\q b\z|7]
-//#"a\q b\z c",7
-//#$,8
+// [Error:"a\q|5]
+//#$,6
 "a\q b\z c"

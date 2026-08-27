@@ -29,7 +29,7 @@ public final class EstadoCharEscapado implements EstadoLexico {
         }
         if (contexto.getCaracterActual() == 'u' && contexto.getConfiguracion().unicodeHabilitado()) {
             contexto.avanzar();
-            return new Continuar(new EstadoMarcadorUnicode(EstadoCharCerrando.INSTANCIA));
+            return new Continuar(new EstadoMarcadorUnicode(EstadoCharCerrando.INSTANCIA, false));
         }
         contexto.avanzar();
         return new Continuar(EstadoCharCerrando.INSTANCIA);

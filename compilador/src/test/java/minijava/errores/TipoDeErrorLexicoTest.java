@@ -49,8 +49,6 @@ class TipoDeErrorLexicoTest {
             Map.entry(TipoDeErrorLexico.ENTERO_DEMASIADO_LARGO, new Caso("1234567890 ", 1, 1)),
             Map.entry(TipoDeErrorLexico.OPERADOR_INCOMPLETO, new Caso("a & b", 1, 3)),
             Map.entry(TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS, new Caso("1e ", 1, 1)),
-            // El único no fatal: no viaja como excepción, se verifica aparte
-            // en escapeInvalidoDeStringEsElUnicoErrorNoFatal().
             Map.entry(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, new Caso("\"a\\q\"", 1, 4))));
 
     private AnalizadorLexico crear(Path dir, String fuente) throws IOException {
@@ -69,16 +67,6 @@ class TipoDeErrorLexicoTest {
         assertNotNull(caso, () -> "falta un caso para " + tipo);
 
         AnalizadorLexico analizador = crear(dir, caso.fuente());
-
-        if (tipo == TipoDeErrorLexico.STRING_ESCAPE_INVALIDO) {
-            analizador.proximoToken();
-            var errores = analizador.tomarErroresNoFatales();
-            assertEquals(1, errores.size());
-            assertEquals(tipo, errores.get(0).getTipo());
-            assertEquals(caso.linea(), errores.get(0).getLinea());
-            assertEquals(caso.columna(), errores.get(0).getColumna());
-            return;
-        }
 
         // El error no tiene por que estar en el primer token: se piden tokens
         // hasta que aparezca.
@@ -113,20 +101,19 @@ class TipoDeErrorLexicoTest {
         assertEquals(TipoDeErrorLexico.CHAR_SIN_CERRAR, sinCerrarPorEof.getTipo());
     }
 
-    // javac reporta "illegal escape character" pero NO aborta el literal:
-    // sigue leyéndolo hasta la comilla de cierre. Es el único error del léxico
-    // que produce un token válido además del mensaje.
+    // Un escape inválido aborta el literal: se reporta el primero y se
+    // descarta lo que queda hasta la comilla de cierre, sin emitir token. Es
+    // resincronización en modo pánico, con la comilla de cierre como token de
+    // sincronización — criterio indicado por el profesor de la materia.
     @Test
-    void escapeInvalidoDeStringEsElUnicoErrorNoFatal(@TempDir Path dir) throws Exception {
+    void escapeInvalidoDeStringDescartaElLiteralYNoEmiteToken(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
 
-        var token = analizador.proximoToken();
-        var errores = analizador.tomarErroresNoFatales();
+        var excepcion = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
-        assertEquals("\"hola \\q mundo\"", token.lexema());
-        assertEquals(1, errores.size());
-        assertEquals(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, errores.get(0).getTipo());
+        assertEquals(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, excepcion.getTipo());
+        assertEquals("\"hola \\q", excepcion.getLexemaOfensivo());
+        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
     // El fragmento ofensivo tiene que viajar desde el estado que detecta el
@@ -137,8 +124,7 @@ class TipoDeErrorLexicoTest {
             throws Exception {
         AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
 
-        analizador.proximoToken();
-        var error = analizador.tomarErroresNoFatales().get(0);
+        var error = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
         // Lo que exige Pautas: el lexema es el armado hasta el error.
         assertEquals("\"hola \\q", error.getLexemaOfensivo());

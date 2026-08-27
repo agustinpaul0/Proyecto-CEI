@@ -5,9 +5,6 @@ import minijava.errores.ExcepcionLexica;
 import minijava.errores.TipoDeErrorLexico;
 import minijava.io.ManejadorDeArchivo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // Fachada: lo único que ven los estados del autómata. Construye sus dos partes
 // internas (el lexema en curso y la fábrica de excepciones) en vez de
 // recibirlas: son piezas de la fachada, no dependencias externas — esas dos,
@@ -18,7 +15,6 @@ public final class ContextoLexico {
     private final ConfiguracionDelCompilador configuracion;
     private final BuilderDeLexema lexema;
     private final FabricaDeExcepcionesLexicas fabrica;
-    private final List<ExcepcionLexica> erroresNoFatales = new ArrayList<>();
 
     public ContextoLexico(ManejadorDeArchivo manejador, ConfiguracionDelCompilador configuracion) {
         this.manejador = manejador;
@@ -69,19 +65,6 @@ public final class ContextoLexico {
     // (el error se lanza mucho después, desde otro estado).
     public PosicionLexica posicionPrimerConsumido() {
         return lexema.posicionPrimerConsumido();
-    }
-
-    // Un error no fatal se reporta pero no interrumpe el reconocimiento: el
-    // token se termina de armar y se emite igual. Hoy lo usa un solo caso, el
-    // escape inválido dentro de un litString.
-    public void registrarError(ExcepcionLexica error) {
-        erroresNoFatales.add(error);
-    }
-
-    public List<ExcepcionLexica> tomarErroresNoFatales() {
-        List<ExcepcionLexica> tomados = List.copyOf(erroresNoFatales);
-        erroresNoFatales.clear();
-        return tomados;
     }
 
     public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo) {

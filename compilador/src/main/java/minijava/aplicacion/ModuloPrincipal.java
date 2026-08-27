@@ -12,7 +12,6 @@ import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
 import java.io.IOException;
-import java.util.List;
 
 public final class ModuloPrincipal {
 
@@ -42,15 +41,9 @@ public final class ModuloPrincipal {
             while (!termino) {
                 try {
                     Token token = analizador.proximoToken();
-                    // Los errores no fatales ocurrieron DENTRO del token, así
-                    // que se reportan antes de imprimirlo.
-                    boolean huboNoFatales = reportarErroresNoFatales(analizador);
-                    huboErrores |= huboNoFatales;
                     imprimirToken(token);
-                    termino = token.tipo() == TipoDeToken.EOF
-                            || (huboNoFatales && !configuracion.multiDeteccionDeErrores());
+                    termino = token.tipo() == TipoDeToken.EOF;
                 } catch (ExcepcionLexica excepcion) {
-                    huboErrores |= reportarErroresNoFatales(analizador);
                     huboErrores = true;
                     reportarError(excepcion);
                     // Sin paso de recuperación: el estado que lanzó ya
@@ -68,12 +61,6 @@ public final class ModuloPrincipal {
 
     private void imprimirToken(Token token) {
         salida.imprimir("(" + token.tipo().getNombre() + "," + token.lexema() + "," + token.linea() + ")");
-    }
-
-    private boolean reportarErroresNoFatales(AnalizadorLexico analizador) {
-        List<ExcepcionLexica> pendientes = analizador.tomarErroresNoFatales();
-        pendientes.forEach(this::reportarError);
-        return !pendientes.isEmpty();
     }
 
     private void reportarError(ExcepcionLexica excepcion) {

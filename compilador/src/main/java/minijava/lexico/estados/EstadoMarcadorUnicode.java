@@ -7,15 +7,16 @@ import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
 // JLS §3.3: el marcador de un escape Unicode admite repetir 'u' una o más
-// veces (\uu0041, \uuu0041, ...). Se consumen todas las 'u' seguidas y recién
-// ahí se exigen los 4 hex dígitos — semántica de Java heredada tal cual, sin
-// especificación propia de la cátedra (agents/especificacion-lexica.md).
+// veces. Se consumen todas las 'u' seguidas y recién ahí se exigen los 4 hex
+// dígitos.
 public final class EstadoMarcadorUnicode implements EstadoLexico {
 
     private final EstadoLexico siguienteAlTerminar;
+    private final boolean dentroDeLitString;
 
-    public EstadoMarcadorUnicode(EstadoLexico siguienteAlTerminar) {
+    public EstadoMarcadorUnicode(EstadoLexico siguienteAlTerminar, boolean dentroDeLitString) {
         this.siguienteAlTerminar = siguienteAlTerminar;
+        this.dentroDeLitString = dentroDeLitString;
     }
 
     @Override
@@ -24,6 +25,6 @@ public final class EstadoMarcadorUnicode implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(this);
         }
-        return new Continuar(new EstadoEscapeUnicode(4, siguienteAlTerminar));
+        return new Continuar(new EstadoEscapeUnicode(4, siguienteAlTerminar, dentroDeLitString));
     }
 }

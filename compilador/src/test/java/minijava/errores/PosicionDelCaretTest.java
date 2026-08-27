@@ -10,11 +10,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Dónde apunta el '^' del Reporte de Error Elegante, caso por caso.
@@ -94,30 +94,26 @@ class PosicionDelCaretTest {
                         + error.getLineaFuente() + "»");
     }
 
-    // Un litString puede acumular varios escapes inválidos: cada uno reporta
-    // su propia columna, y ninguno arrastra la del anterior. javac sobre
-    // "a\q b\z c" da exactamente dos "illegal escape character", en la 'q' y
-    // en la 'z', y ningún "unclosed string literal": sigue leyendo el literal.
+    // Cada litString roto reporta la columna de SU carácter escapado, sin
+    // arrastrar la del anterior. Son dos literales y no uno solo con dos
+    // escapes inválidos, porque al primer escape inválido el literal se
+    // descarta entero: dentro de un mismo literal nunca hay un segundo error.
     @org.junit.jupiter.api.Test
-    void cadaEscapeInvalidoDeUnMismoLitStringReportaSuPropiaColumna(@TempDir Path dir)
-            throws IOException, ExcepcionLexica {
+    void cadaLitStringRotoDeUnaMismaLineaReportaSuPropiaColumna(@TempDir Path dir)
+            throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
-        Files.writeString(archivo, "\"a\\q b\\z c\"");
+        Files.writeString(archivo, "\"a\\q\" \"b\\z\"");
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
         AnalizadorLexico analizador = new AnalizadorLexico(manejador);
 
-        analizador.proximoToken();
-        List<ExcepcionLexica> errores = analizador.tomarErroresNoFatales();
+        ExcepcionLexica primero = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
+        ExcepcionLexica segundo = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(2, errores.size());
-        assertEquals(4, errores.get(0).getColumna());
-        assertEquals(8, errores.get(1).getColumna());
+        assertEquals(4, primero.getColumna());
+        assertEquals(10, segundo.getColumna());
     }
 
-    // El primer error del fuente, sea fatal (viaja como excepción) o no fatal
-    // (se acumula en el analizador y el token se emite igual, como hace javac
-    // con un escape inválido).
     private ExcepcionLexica primerError(Path dir, String fuente) throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
@@ -127,15 +123,10 @@ class PosicionDelCaretTest {
         try {
             for (int i = 0; i < 100; i++) {
                 analizador.proximoToken();
-                List<ExcepcionLexica> noFatales = analizador.tomarErroresNoFatales();
-                if (!noFatales.isEmpty()) {
-                    return noFatales.get(0);
-                }
             }
             return null;
         } catch (ExcepcionLexica fatal) {
-            List<ExcepcionLexica> noFatales = analizador.tomarErroresNoFatales();
-            return noFatales.isEmpty() ? fatal : noFatales.get(0);
+            return fatal;
         }
     }
 }

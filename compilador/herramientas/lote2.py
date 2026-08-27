@@ -38,17 +38,25 @@ sin_errores("charConComillaDobleYComa.java", [
     "';'",
 ], [("','", 1), ("'\"'", 2), ("':'", 3), ("';'", 4)])
 
-# --------------------------------------------------- escapes invalidos (no fatales)
+# ------------------------------------------------------- escapes invalidos
+# Un escape mal formado descarta el litString hasta su comilla de cierre: se
+# reporta el primero y no se emite token. Por eso el segundo escape invalido
+# de un mismo literal no aparece, y los tokens posteriores a la comilla de
+# cierre si aparecen.
+con_errores("stringConEscapeInvalido.java",
+            [E('"hola \\q', 1)],
+            ['"hola \\q mundo"'])
+
 con_errores("stringConDosEscapesInvalidos.java",
-            [E('"a\\q', 1), E('"a\\q b\\z', 1), T('"a\\q b\\z c"', 1)],
+            [E('"a\\q', 1)],
             ['"a\\q b\\z c"'])
 
 con_errores("stringConEscapeOctalFueraDeRango.java",
-            [E('"a\\8', 1), T('"a\\8"', 1)],
+            [E('"a\\8', 1)],
             ['"a\\8"'])
 
 con_errores("stringConEscapeInvalidoYLuegoCodigoValido.java",
-            [E('"x\\q', 1), T('"x\\q"', 1), T("+", 1), T("v1", 1)],
+            [E('"x\\q', 1), T("+", 1), T("v1", 1)],
             ['"x\\q" + v1'])
 
 # ----------------------------------------------------- unicode mal formado
@@ -63,8 +71,11 @@ con_errores("escapeUnicodeConEspacio.java",
             [E("'\\u", 1), T("041", 1), E("'", 1)],
             ["'\\u 041'"])
 
+# Dentro de un litString el unicode mal formado sigue la misma regla que
+# cualquier otro escape mal formado: descarta hasta la comilla de cierre. En
+# los charLiteral de arriba no, ahi la recuperacion sigue siendo estructural.
 con_errores("escapeUnicodeEnStringConDigitoInvalido.java",
-            [E('"a\\u12', 1), T("G4", 1), E('"', 1)],
+            [E('"a\\u12', 1)],
             ['"a\\u12G4"'])
 
 con_errores("escapeUnicodeConMarcadorRepetidoYDigitoInvalido.java",
