@@ -6,6 +6,7 @@ import minijava.errores.FormateadorDeError;
 import minijava.io.ManejadorDeArchivo;
 import minijava.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
+import minijava.lexico.ContextoLexico;
 import minijava.salida.Salida;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
@@ -32,7 +33,8 @@ public final class ModuloPrincipal {
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);
-        AnalizadorLexico analizador = new AnalizadorLexico(manejador);
+        AnalizadorLexico analizador =
+                new AnalizadorLexico(new ContextoLexico(manejador, configuracion));
         boolean huboErrores = false;
 
         try {

@@ -123,4 +123,42 @@ class ModuloPrincipalTest {
         assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Error Léxico")));
         assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Detalle:")));
     }
+
+    // Regresión: ModuloPrincipal creaba el AnalizadorLexico con el
+    // constructor de un solo argumento, que usa ConfiguracionDelCompilador
+    // .DEFAULT — la configuración que recibía de su caller nunca llegaba al
+    // léxico. Los dos tests de configuración de arriba no lo detectaban
+    // porque multiDeteccionDeErrores y reporteElegante se resuelven fuera del
+    // léxico; estos dos ejercitan los dos flags que sí lee el autómata.
+    @Test
+    void laConfiguracionLlegaAlLexicoConLosFloatsDeshabilitados(@TempDir Path dir)
+            throws IOException {
+        Path archivo = escribir(dir, "1.5");
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+
+        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+
+        List<String> lineas = salida.getLineas();
+        assertEquals(List.of(
+                "(intLiteral,1,1)",
+                "(punto,.,1)",
+                "(intLiteral,5,1)",
+                "(EOF,$,1)",
+                "[SinErrores]"
+        ), lineas);
+    }
+
+    @Test
+    void laConfiguracionLlegaAlLexicoConElUnicodeDeshabilitado(@TempDir Path dir)
+            throws IOException {
+        Path archivo = escribir(dir, "\"a\\u0041\"");
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+
+        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+
+        List<String> lineas = salida.getLineas();
+        assertTrue(lineas.stream().anyMatch(l -> l.startsWith("[Error:")));
+    }
 }

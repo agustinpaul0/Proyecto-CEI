@@ -12,12 +12,16 @@ public final class AnalizadorLexico {
 
     private final ContextoLexico contexto;
 
+    public AnalizadorLexico(ContextoLexico contexto) {
+        this.contexto = contexto;
+    }
+
     public AnalizadorLexico(ManejadorDeArchivo manejador) {
         this(manejador, ConfiguracionDelCompilador.DEFAULT);
     }
 
     public AnalizadorLexico(ManejadorDeArchivo manejador, ConfiguracionDelCompilador configuracion) {
-        this.contexto = new ContextoLexico(manejador, configuracion);
+        this(new ContextoLexico(manejador, configuracion));
     }
 
     // Errores detectados durante el último proximoToken() que no impidieron
