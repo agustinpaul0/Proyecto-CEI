@@ -23,9 +23,8 @@ class AnalizadorLexicoPropiedadesTest {
 
     private static final int LIMITE_DE_SEGURIDAD = 100_000;
 
-    // Un único archivo temporal, reescrito en cada llamada, en vez de uno
-    // por intento — jqwik corre miles de intentos por propiedad y crear un
-    // archivo por intento inundaba /tmp con miles de archivos sin limpiar.
+    // Uno solo reescrito en cada llamada: jqwik corre miles de intentos por
+    // propiedad e inundaba /tmp con un archivo por intento.
     private static final Path ARCHIVO_COMPARTIDO = crearArchivoCompartido();
 
     private static Path crearArchivoCompartido() {
@@ -45,9 +44,8 @@ class AnalizadorLexicoPropiedadesTest {
         return new AnalizadorLexico(manejador);
     }
 
-    // Tokeniza con recuperación (igual que ModuloPrincipal) y devuelve los
-    // tokens emitidos con éxito. Corta con AssertionError si supera el
-    // límite de seguridad — eso indicaría un ciclo infinito real, un bug.
+    // Como ModuloPrincipal. Corta con AssertionError si supera el límite: eso sería
+    // un ciclo infinito real.
     private List<Token> tokenizarConRecuperacion(String fuente) throws IOException {
         AnalizadorLexico analizador = crear(fuente);
         List<Token> emitidos = new ArrayList<>();
@@ -90,11 +88,8 @@ class AnalizadorLexicoPropiedadesTest {
         assertEquals(TipoDeToken.EOF, tokens.get(tokens.size() - 1).tipo());
     }
 
-    // Prueba directa del criterio de recuperación: cada error consume
-    // exactamente el carácter que reporta, así que una corrida de K símbolos
-    // inválidos consecutivos produce exactamente K errores — ni más (por
-    // consumir de más) ni un ciclo infinito (por no consumir nada) — antes de
-    // llegar a EOF. Ya no hay ningún paso de recuperación que invocar.
+    // K símbolos inválidos consecutivos dan exactamente K errores: ni más (por
+    // consumir de más) ni un ciclo infinito (por no consumir nada).
     @Property
     void unaCorridaDeKSimbolosInvalidosProduceExactamenteKErrores(
             @ForAll @IntRange(min = 1, max = 40) int cantidad) throws IOException {

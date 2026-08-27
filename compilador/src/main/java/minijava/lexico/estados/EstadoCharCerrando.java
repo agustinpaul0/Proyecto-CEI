@@ -19,9 +19,8 @@ public final class EstadoCharCerrando implements EstadoLexico {
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         if (contexto.getCaracterActual() != '\'') {
-            // El literal "nunca se cerró" sólo si lo interrumpió el fin de
-            // línea o el fin de archivo; si lo interrumpió un carácter
-            // cualquiera, el literal está mal formado (tiene más de uno).
+            // "Sin cerrar" sólo si lo cortó el fin de línea o de archivo; otro
+            // carácter lo deja "mal formado".
             boolean seInterrumpio = contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n';
             throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(seInterrumpio
                     ? TipoDeErrorLexico.CHAR_SIN_CERRAR

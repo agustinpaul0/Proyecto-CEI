@@ -16,16 +16,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// resources/regresion/ es donde AnalizadorLexicoFuzzTest persiste cualquier
-// entrada que haya hecho fallar una corrida, para que el caso quede para
-// siempre (agents/testing.md: las regresiones son append-only). Hasta ahora
-// NINGÚN tester leía ese directorio, así que los casos guardados no protegían
-// de nada: quedaban de adorno. Este test los reprocesa todos.
-//
-// No hay oráculo por caso — son entradas aleatorias, nadie sabe qué tokens
-// "deberían" salir. Lo que se verifica es el contrato que sí vale para
-// cualquier entrada: el compilador termina, no lanza nada que no sea una
-// ExcepcionLexica controlada, y la salida respeta el formato.
+// Reprocesa todo resources/regresion/, donde el fuzzer persiste append-only lo que
+// hizo fallar una corrida. No hay oráculo por caso —son entradas aleatorias—, así
+// que se verifica el contrato general: termina, no crashea, y respeta el formato.
 class CorpusDeRegresionTest {
 
     private static final Path DIRECTORIO = Path.of("resources", "regresion");
@@ -62,8 +55,7 @@ class CorpusDeRegresionTest {
                         + String.join("\n", lineas));
     }
 
-    // Guardia sobre la propia infraestructura: si alguien borra el directorio
-    // o su contenido, el test de arriba pasaría vacío y en silencio.
+    // Si alguien borra el directorio, el test de arriba pasaría vacío y en silencio.
     @Test
     void elDirectorioDeRegresionExisteYNoEstaVacio() throws IOException {
         assertTrue(Files.isDirectory(DIRECTORIO), DIRECTORIO + " no existe");

@@ -15,17 +15,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// El criterio de recuperación léxica, en una línea: TODO estado que lanza un
-// error consume del fuente exactamente los caracteres que reporta en el
-// lexema, ni uno más. No hay descarte posterior — el siguiente
-// proximoToken() arranca en el primer carácter que NO formó parte del lexema
-// reportado.
-//
-// La cátedra no da ninguna bajada de línea sobre CÓMO recuperarse (su
-// comportamiento base es "reportar y finalizar"; la recuperación existe sólo
-// por el logro Multi-detección), así que aplica AGENTS.md §0.1: como en Java.
-// El comportamiento de javac se verificó ejecutándolo, no de memoria; cada
-// test cita la salida real obtenida.
+// El criterio de recuperación: todo estado que lanza un error consume exactamente
+// lo que reporta en el lexema, ni uno más. La cátedra no dice cómo recuperarse, así
+// que aplica AGENTS.md §0.1; cada test cita la salida real de javac.
 class CriterioDeRecuperacionTest {
 
     private List<String> ejecutar(Path dir, String fuente) throws IOException {
@@ -36,12 +28,8 @@ class CriterioDeRecuperacionTest {
         return salida.getLineas();
     }
 
-    // javac sobre "char d = 'a;":
-    //   error: unclosed character literal
-    //   char d = 'a;
-    //            ^
-    // ...y NADA más: el ';' sobrevive y la línea siguiente compila limpia.
-    // Acá el lexema reportado es "'a", así que el ';' no puede desaparecer.
+    // javac sobre "char d = 'a;": un unclosed character literal y nada más — el
+    // ';' sobrevive. Acá el lexema es "'a", así que tampoco puede desaparecer.
     @Test
     void unCharSinCerrarNoSeTragaElCaracterQueLoInterrumpio(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "'a;");
@@ -50,10 +38,8 @@ class CriterioDeRecuperacionTest {
         assertTrue(lineas.contains("(puntoYComa,;,1)"), lineas::toString);
     }
 
-    // javac sobre "int c = 1234567890123 + 9;":
-    //   error: integer number too large
-    // ...y el "+ 9" sobrevive. El lexema reportado es la corrida de dígitos
-    // completa; el operador que la terminó nunca formó parte de él.
+    // javac sobre "int c = 1234567890123 + 9;": integer number too large, y el
+    // "+ 9" sobrevive — el operador nunca formó parte del lexema.
     @ParameterizedTest
     @CsvSource({
             "'1234567890+1', '[Error:1234567890|1]', '(op+,+,1)'",
@@ -69,9 +55,8 @@ class CriterioDeRecuperacionTest {
         assertTrue(lineas.contains(token), lineas::toString);
     }
 
-    // El caso más dañino de todos: sin el criterio, "v1 &v2" imprimía
-    // (intLiteral,2,1) — la 'v' desaparecía y el identificador se convertía
-    // en un número.
+    // El más dañino: sin el criterio, "v1 &v2" imprimía (intLiteral,2,1) — la 'v'
+    // desaparecía y el identificador se volvía un número.
     @Test
     void unOperadorDobleIncompletoNoSeTragaElIdentificadorSiguiente(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "v1 &v2");
@@ -88,12 +73,8 @@ class CriterioDeRecuperacionTest {
         assertTrue(lineas.contains("(idMV,v2,1)"), lineas::toString);
     }
 
-    // javac sobre "char c = 'abbc';":
-    //   error: unclosed character literal   (en la ' de apertura)
-    //   error: unclosed character literal   (en la ' de cierre)
-    //   error: not a statement              ('bbc' quedó como identificador)
-    // Es decir: consume 'a, sigue en la primera b, tokeniza bbc, y la comilla
-    // de cierre abre un char nuevo que muere en el ';'. Misma estructura acá.
+    // javac sobre "char c = 'abbc';": dos unclosed character literal y un not a
+    // statement — consume 'a, tokeniza bbc, y la ' de cierre abre otro char.
     @Test
     void unCharConVariosCaracteresReproduceLaEstructuraDeJavac(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "'abbc'");
@@ -115,9 +96,8 @@ class CriterioDeRecuperacionTest {
         assertTrue(lineas.contains("[Error:'|1]"), lineas::toString);
     }
 
-    // Invariante de terminación que reemplaza al viejo "cada recuperación
-    // avanza exactamente un carácter": el lexema de un error nunca es vacío,
-    // así que cada error consumió al menos un carácter y el análisis avanza.
+    // Terminación: el lexema de un error nunca es vacío, así que siempre se avanzó
+    // al menos un carácter.
     @Test
     void ningunErrorReportaUnLexemaVacio(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "@ # ? ~ ^ $ _ ` 'a \"b &  |  1e 1234567890");
@@ -126,9 +106,8 @@ class CriterioDeRecuperacionTest {
                 .noneMatch(l -> l.startsWith("[Error:|")), lineas::toString);
     }
 
-    // Ninguna línea de salida puede llevar un carácter de control crudo: el
-    // contrato de la cátedra es una línea por elemento, y un '\n' embebido en
-    // un lexema parte [Error:...|N] en dos.
+    // Un '\n' embebido en un lexema parte [Error:...|N] en dos, y la cátedra espera
+    // una línea por elemento.
     @ParameterizedTest
     @CsvSource(delimiter = ';', value = {
             "'\\\n'",

@@ -15,10 +15,8 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Fuzzing con semilla fija (agents/testing.md): bytes UTF-8 arbitrarios, sin
-// ninguna estructura léxica intencional. El único contrato exigido es que
-// el compilador termine y que cualquier fallo sea ExcepcionLexica —  nunca
-// un crash sin controlar (NullPointerException, StackOverflowError, etc.).
+// Fuzzing con semilla fija: el único contrato es que el compilador termine y que
+// todo fallo sea ExcepcionLexica, nunca un crash sin controlar.
 class AnalizadorLexicoFuzzTest {
 
     private static final long SEMILLA = 20260824L;
@@ -61,19 +59,15 @@ class AnalizadorLexicoFuzzTest {
                     return;
                 }
             } catch (ExcepcionLexica excepcionControlada) {
-                // Sin paso de recuperación: el estado que lanzó ya consumió
-                // lo que reportó, así que el bucle avanza solo.
+                // Sin paso de recuperación: el bucle avanza solo.
             }
         }
         throw new AssertionError("no llegó a EOF tras " + LIMITE_DE_SEGURIDAD + " pasos");
     }
 
-    // Segunda corrida, sobre BYTES CRUDOS en vez de un String codificado a
-    // UTF-8. La corrida de arriba nunca puede generar una secuencia UTF-8
-    // invalida (getBytes(UTF_8) siempre produce bytes bien formados), asi que
-    // el camino de decodificacion quedaba sin fuzzear — y ahi se escondia un
-    // UncheckedIOException(MalformedInputException) que reventaba el
-    // compilador con un archivo binario. Ver DefectosDeRobustezTest.
+    // Sobre BYTES CRUDOS: getBytes(UTF_8) siempre produce bytes bien formados, así
+    // que el camino de decodificación quedaba sin fuzzear — y ahí se escondía el
+    // crash con archivos binarios (ver DefectosDeRobustezTest).
     @Test
     void bytesCrudosArbitrariosNuncaProducenUnFalloNoControlado() throws IOException {
         Random random = new Random(SEMILLA);
@@ -98,9 +92,8 @@ class AnalizadorLexicoFuzzTest {
         }
     }
 
-    // Tercera corrida, sesgada a construcciones sin cerrar: literales y
-    // comentarios abiertos son donde vive la mayor parte de la logica de
-    // error, y el alfabeto general los produce demasiado poco seguido.
+    // Sesgada a construcciones sin cerrar, donde vive la mayor parte de la lógica
+    // de error: el alfabeto general las produce demasiado poco seguido.
     @Test
     void construccionesSinCerrarNuncaProducenUnFalloNoControlado() throws IOException {
         Random random = new Random(SEMILLA + 1);
@@ -129,10 +122,8 @@ class AnalizadorLexicoFuzzTest {
         }
     }
 
-    // Genera texto con alta probabilidad de caracteres "interesantes" para
-    // el léxico (comillas, barras, escapes) además de ruido general, para
-    // no desperdiciar corridas en texto trivialmente válido o trivialmente
-    // inválido.
+    // Sesga hacia caracteres interesantes (comillas, barras, escapes) para no
+    // desperdiciar corridas en texto trivialmente válido o inválido.
     private String generarFuenteAleatoria(Random random) {
         String alfabeto = "abcXYZ019 \t\n{}()\"'\\/*.+-<>=!&|#%;,:_ ";
         int largo = random.nextInt(LARGO_MAXIMO);

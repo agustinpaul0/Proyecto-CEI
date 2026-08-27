@@ -24,10 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Invariantes del REPORTE y de la recuperación que deben sostenerse para
-// cualquier entrada. Complementan AnalizadorLexicoPropiedadesTest, que mira
-// el analizador; acá se mira la salida completa del Módulo Principal, que es
-// lo que efectivamente ve la cátedra.
+// Invariantes del reporte y de la recuperación para cualquier entrada. A
+// diferencia de AnalizadorLexicoPropiedadesTest, acá se mira la salida completa
+// del Módulo Principal, que es lo que ve la cátedra.
 class PropiedadesDelReporteTest {
 
     private static final String PREFIJO_DETALLE = "Detalle: ";
@@ -50,9 +49,7 @@ class PropiedadesDelReporteTest {
         return salida.getLineas();
     }
 
-    // El contrato de la cátedra es un elemento por línea. Un salto de línea
-    // embebido en un lexema partiría [Error:Lexema|NroLinea] en dos y
-    // rompería el formato; por eso los caracteres de control se escapan.
+    // Un salto embebido en un lexema partiría [Error:Lexema|NroLinea] en dos.
     @Property
     void ningunaLineaDeSalidaContieneUnSaltoDeLinea(@ForAll("fuentes") String fuente) throws IOException {
         List<String> lineas = ejecutar(fuente);
@@ -71,11 +68,8 @@ class PropiedadesDelReporteTest {
                 lineas::toString);
     }
 
-    // El '^' del Reporte de Error Elegante tiene que caer SOBRE un carácter de
-    // la línea que se acaba de imprimir, nunca en el aire después del final.
-    // Fue un bug real (ver documentacion/manejo-de-errores.md §5) y esta
-    // propiedad lo cierra para cualquier entrada, no sólo para los casos
-    // conocidos.
+    // El '^' tiene que caer SOBRE un carácter de la línea recién impresa, nunca en
+    // el aire después del final. Fue un bug real (manejo-de-errores.md §5).
     @Property
     void elCaretNuncaCaeMasAllaDelFinalDeLaLineaDeDetalle(@ForAll("fuentes") String fuente)
             throws IOException {
@@ -97,8 +91,7 @@ class PropiedadesDelReporteTest {
         }
     }
 
-    // O hubo al menos un error, o el análisis fue exitoso: nunca las dos
-    // cosas, y nunca ninguna.
+    // O hubo error, o hubo éxito: nunca las dos, nunca ninguna.
     @Property
     void oHayErroresOHaySinErroresPeroNuncaAmbos(@ForAll("fuentes") String fuente) throws IOException {
         List<String> lineas = ejecutar(fuente);
@@ -110,13 +103,9 @@ class PropiedadesDelReporteTest {
         assertFalse(huboErrores && exito, lineas::toString);
     }
 
-    // Round-trip: si el fuente no tiene blancos ni comentarios, absolutamente
-    // TODO carácter tiene que aparecer en algún lexema —de token emitido o de
-    // error— o, en el único caso en que la recuperación descarta a propósito,
-    // en el resto del litString que se saltea hasta su comilla de cierre. Es
-    // la demostración de que la recuperación no se traga nada por accidente:
-    // antes del criterio de recuperación esta propiedad fallaba con cualquier
-    // '&' o entero largo pegado a otro token.
+    // Round-trip: sin blancos ni comentarios, todo carácter tiene que aparecer en
+    // algún lexema —o en el resto del litString que se descarta a propósito—. Es la
+    // demostración de que la recuperación no se traga nada por accidente.
     @Property
     void todoCaracterDelFuenteApareceEnAlgunLexema(@ForAll("fuentesSinBlancos") String fuente)
             throws IOException {
@@ -144,18 +133,16 @@ class PropiedadesDelReporteTest {
         throw new AssertionError("no llego a EOF: " + fuente);
     }
 
-    // Los dos errores que resincronizan en la comilla de cierre. El unicode
-    // mal formado sólo lo hace dentro de un litString; en un charLiteral no,
-    // y ahí el lexema empieza con comilla simple.
+    // Los dos que resincronizan. El unicode sólo dentro de un litString; en un
+    // charLiteral el lexema empieza con comilla simple.
     private static boolean resincronizoElLitString(ExcepcionLexica excepcion) {
         return excepcion.getTipo() == TipoDeErrorLexico.STRING_ESCAPE_INVALIDO
                 || (excepcion.getTipo() == TipoDeErrorLexico.UNICODE_MAL_FORMADO
                         && excepcion.getLexemaOfensivo().startsWith("\""));
     }
 
-    // La regla de RecuperacionDeLitString, reescrita a propósito en vez de
-    // reusada: si el léxico deja de descartar lo que dice descartar, esta
-    // propiedad lo detecta en vez de acompañarlo.
+    // La regla de RecuperacionDeLitString reescrita a propósito: si el léxico deja
+    // de descartar lo que dice, esta propiedad lo detecta en vez de acompañarlo.
     private static String descarteDeLitString(String fuente, int desde) {
         int hasta = desde;
         while (hasta < fuente.length() && fuente.charAt(hasta) != '\n') {
@@ -187,9 +174,8 @@ class PropiedadesDelReporteTest {
         });
     }
 
-    // Sin blancos ni barras: los blancos y los comentarios se descartan y no
-    // sobreviven en ningún lexema, así que romperían el round-trip por
-    // diseño, no por un defecto.
+    // Sin blancos ni barras: no sobreviven en ningún lexema y romperían el
+    // round-trip por diseño, no por un defecto.
     @Provide
     Arbitrary<String> fuentesSinBlancos() {
         Arbitrary<Character> caracteres = Arbitraries.of(

@@ -11,10 +11,8 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Main es deliberadamente delgado y toca System.out real (agents/testing.md),
-// pero sus modos de falla SÍ tienen que estar cubiertos: los testers de la
-// cátedra invocan main() in-process y repetidamente dentro de la misma JVM,
-// así que una excepción sin atrapar mata la corrida entera de tests.
+// Main es delgado y toca System.out real, pero sus modos de falla tienen que estar
+// cubiertos: una excepción sin atrapar mata la corrida entera de los testers.
 class MainTest {
 
     private String capturarSalidaDe(String... args) {
@@ -29,8 +27,8 @@ class MainTest {
         return capturada.toString(StandardCharsets.UTF_8);
     }
 
-    // Antes tiraba ArrayIndexOutOfBoundsException: args[0] estaba dentro de
-    // un try que sólo capturaba IOException.
+    // Antes tiraba ArrayIndexOutOfBoundsException: args[0] caía en un try que sólo
+    // capturaba IOException.
     @Test
     void sinArgumentosInformaElUsoYNoLanzaExcepcion() {
         String salida = capturarSalidaDe();
@@ -45,8 +43,7 @@ class MainTest {
         assertTrue(salida.contains("No se pudo leer el archivo fuente"), salida);
     }
 
-    // La cátedra exige aceptar cualquier extensión, no sólo .java
-    // (agents/convenciones-catedra.md).
+    // La cátedra exige aceptar cualquier extensión, no sólo .java.
     @Test
     void aceptaCualquierExtensionDeArchivo(@TempDir Path dir) throws Exception {
         Path archivo = dir.resolve("fuente.loquesea");

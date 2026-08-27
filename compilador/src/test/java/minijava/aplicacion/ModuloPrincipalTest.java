@@ -21,8 +21,7 @@ class ModuloPrincipalTest {
         return archivo;
     }
 
-    // Oráculo copiado literal del ejemplo de Pautas Etapa 1 (slide 26), no
-    // derivado de la implementación.
+    // Oráculo literal de Pautas Etapa 1 slide 26, no derivado de la implementación.
     @Test
     void ejemploCompletoDeLaCatedraSinErrores(@TempDir Path dir) throws IOException {
         Path archivo = escribir(dir, "\"hola\"\nv1 + chau\nif class}");
@@ -56,8 +55,7 @@ class ModuloPrincipalTest {
         assertTrue(lineas.contains("[Error:#|2]"));
     }
 
-    // Logro Multi-detección de Errores: no se detiene en el primer error,
-    // reporta todos los que encuentra en una sola corrida.
+    // Multi-detección: reporta todos los errores de una corrida, no sólo el primero.
     @Test
     void reportaTodosLosErroresDeUnaCorridaNoSoloElPrimero(@TempDir Path dir) throws IOException {
         Path archivo = escribir(dir, "v1 # v2 @ v3");
@@ -92,9 +90,7 @@ class ModuloPrincipalTest {
         assertTrue(lineas.stream().anyMatch(l -> l.contains("idMV,v2,")));
     }
 
-    // Logro Multi-detección de Errores desactivado: comportamiento base de
-    // la cátedra ("al detectar un error deberá reportarse y finalizar la
-    // ejecución") — se detiene en el PRIMER error, no reporta el segundo.
+    // Desactivado: el comportamiento base de la cátedra, "reportarse y finalizar".
     @Test
     void conMultiDeteccionDesactivadaSeDetieneEnElPrimerError(@TempDir Path dir) throws IOException {
         Path archivo = escribir(dir, "v1 # v2 @ v3");
@@ -124,12 +120,9 @@ class ModuloPrincipalTest {
         assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Detalle:")));
     }
 
-    // Regresión: ModuloPrincipal creaba el AnalizadorLexico con el
-    // constructor de un solo argumento, que usa ConfiguracionDelCompilador
-    // .DEFAULT — la configuración que recibía de su caller nunca llegaba al
-    // léxico. Los dos tests de configuración de arriba no lo detectaban
-    // porque multiDeteccionDeErrores y reporteElegante se resuelven fuera del
-    // léxico; estos dos ejercitan los dos flags que sí lee el autómata.
+    // Regresión: la configuración no llegaba al léxico, porque ModuloPrincipal usaba
+    // el constructor que asume DEFAULT. Los tests de arriba no lo detectaban: sus
+    // dos flags se resuelven fuera del léxico. Estos ejercitan los que sí lee el AF.
     @Test
     void laConfiguracionLlegaAlLexicoConLosFloatsDeshabilitados(@TempDir Path dir)
             throws IOException {

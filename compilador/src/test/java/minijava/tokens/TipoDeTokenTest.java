@@ -8,9 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TipoDeTokenTest {
 
-    // Tabla copiada independientemente de agents/especificacion-lexica.md y de los
-    // ejemplos de la cátedra,
-    // no derivada del enum: sirve para detectar errores de transcripción.
+    // Copiada de la especificación y no derivada del enum: detecta errores de
+    // transcripción.
     @ParameterizedTest
     @CsvSource({
             "PR_CLASS,pr_class", "PR_IF,pr_if", "PR_ELSE,pr_else", "PR_FALSE,pr_false",

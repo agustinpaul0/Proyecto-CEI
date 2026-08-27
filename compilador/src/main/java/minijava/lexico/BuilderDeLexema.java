@@ -5,26 +5,19 @@ import minijava.io.ManejadorDeArchivo;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-// El lexema en construcción, el carácter que se está mirando, y las dos fotos
-// de posición que los errores necesitan. Un solo objeto porque los cuatro
-// datos cambian juntos: no se puede consumir un carácter sin actualizar el
-// lexema, la línea y la posición del último consumido.
+// El lexema en curso, el lookahead y las dos fotos de posición: un solo objeto
+// porque todo eso cambia junto al consumir un carácter.
 public final class BuilderDeLexema {
 
     private final ManejadorDeArchivo manejador;
     private final StringBuilder lexema = new StringBuilder();
     private char caracterActual;
-    // Línea propia, no delegada a manejador.getLineNumber(): esa cuenta se
-    // adelanta cuando un '\n' es DEVUELTO como lookahead, no cuando se lo
-    // consume. Acá se incrementa recién al consumirlo, para que un estado que
-    // todavía está MIRANDO el '\n' reporte la línea que ese salto termina.
+    // Propia y no manejador.getLineNumber(): esa se adelanta al DEVOLVER el '\n',
+    // y un estado que todavía lo mira reportaría la línea siguiente.
     private int linea = 1;
-    // Posición del PRIMER carácter del lexema en curso. La usan los errores
-    // cuyo mensaje habla de la construcción entera.
+    // La usan los errores que hablan de la construcción entera.
     private PosicionLexica posicionPrimerConsumido;
-    // Posición del último carácter agregado al lexema, no del lookahead (que
-    // ya puede haber avanzado más allá). La usan los errores cuyo carácter
-    // ofensivo se consumió antes del throw.
+    // No el lookahead: la usan los errores cuyo ofensivo ya se consumió.
     private PosicionLexica posicionUltimoConsumido;
 
     public BuilderDeLexema(ManejadorDeArchivo manejador) {
@@ -55,9 +48,7 @@ public final class BuilderDeLexema {
         consumirCaracterActual();
     }
 
-    // EstadoBarra la llama a mitad de token para descartar el '/' de un
-    // comentario, así que el reset de la posición de apertura tiene que vivir
-    // acá y no en AnalizadorLexico.proximoToken().
+    // EstadoBarra la llama a mitad de token: por eso el reset vive acá.
     public void iniciarNuevoToken() {
         lexema.setLength(0);
         posicionPrimerConsumido = null;
@@ -82,8 +73,6 @@ public final class BuilderDeLexema {
         caracterActual = leerSiguienteCaracter();
     }
 
-    // ManejadorDeArchivoEficiente nunca lanza IOException en la práctica;
-    // se adapta acá para no propagar el checked exception de la interfaz.
     private char leerSiguienteCaracter() {
         try {
             return manejador.getNextChar();

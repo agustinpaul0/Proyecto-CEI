@@ -9,9 +9,7 @@ import minijava.lexico.TablaDePalabrasClave;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: reconoce idMV, o la palabra clave correspondiente si el lexema
-// coincide con la tabla de lookup (Clase 02, slide 62-63 — no hay AF propio
-// por palabra clave).
+// Terminal: idMV, o la palabra clave si el lexema está en la tabla de lookup.
 public final class EstadoIdMV implements EstadoLexico {
 
     public static final EstadoIdMV INSTANCIA = new EstadoIdMV();

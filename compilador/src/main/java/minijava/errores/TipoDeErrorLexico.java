@@ -1,8 +1,7 @@
 package minijava.errores;
 
-// Un valor por punto de falla del léxico, con la razón que se imprime en el
-// encabezado del Reporte de Error Elegante. Sólo afecta a ese encabezado: el
-// código de contrato [Error:Lexema|NroLinea] no lleva el tipo.
+// Un valor por punto de falla, con la razón que va en el encabezado del reporte
+// elegante. El código [Error:Lexema|NroLinea] no lleva el tipo.
 public enum TipoDeErrorLexico {
 
     // Único mensaje que fija la cátedra (Pautas Etapa 1, slide 43): no se toca.
@@ -12,9 +11,8 @@ public enum TipoDeErrorLexico {
     CHAR_MAL_FORMADO("charLiteral mal formado, contiene más de un carácter: %s"),
     CHAR_SIN_CERRAR("charLiteral sin cerrar: %s"),
 
-    // La única con plantilla de dos datos: el lexema armado que exige Pautas
-    // ("a\q) no ES la secuencia de escape, y nombrarla aparte evita que el
-    // mensaje se lea al revés.
+    // La única con dos plantillas: el lexema armado ("a\q) no ES la secuencia, y
+    // nombrarla aparte evita que el mensaje se lea al revés.
     STRING_ESCAPE_INVALIDO("litString con secuencia de escape inválida: %s",
             "litString con secuencia de escape inválida %s: %s"),
     STRING_SIN_CERRAR("litString sin cerrar: %s"),
@@ -28,7 +26,6 @@ public enum TipoDeErrorLexico {
     EXPONENTE_SIN_DIGITOS("exponente sin dígitos: %s");
 
     private final String plantilla;
-    // Sus dos %s son, en orden, (fragmento, lexema).
     private final String plantillaConFragmento;
 
     TipoDeErrorLexico(String plantilla) {
@@ -44,7 +41,6 @@ public enum TipoDeErrorLexico {
         return plantilla.formatted(lexema);
     }
 
-    // Se degrada al mensaje de un dato si no hay fragmento: nunca imprime "null".
     public String describir(String lexema, String fragmentoOfensivo) {
         if (fragmentoOfensivo == null || plantillaConFragmento == null) {
             return describir(lexema);

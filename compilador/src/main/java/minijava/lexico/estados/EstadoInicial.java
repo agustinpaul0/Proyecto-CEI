@@ -95,9 +95,7 @@ public final class EstadoInicial implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoStringAbierto.INSTANCIA);
         }
-        // Criterio de recuperación: se consume el carácter ofensivo, porque
-        // es exactamente lo que se reporta como lexema. Sin esto el análisis
-        // no avanzaría y el error se repetiría para siempre.
+        // Se consume el ofensivo: es lo que se reporta, y sin eso el análisis no avanza.
         contexto.avanzar();
         throw contexto.crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico.CARACTER_DESCONOCIDO);
     }

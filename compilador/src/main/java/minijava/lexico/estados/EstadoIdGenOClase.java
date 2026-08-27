@@ -8,10 +8,8 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: tras una única letra mayúscula. Si sigue un carácter de
-// identificador es idClase (mínimo 2 caracteres); si no, es idGen (Clase 01
-// slide 9-11 — mismo patrón de no-determinismo/fusión que Mayor/MayorIgual,
-// aplicado a los identificadores reales de MiniJava).
+// Terminal tras una única mayúscula: si sigue un carácter de identificador es
+// idClase (mínimo 2), si no es idGen (Clase 01, slides 9-11).
 public final class EstadoIdGenOClase implements EstadoLexico {
 
     public static final EstadoIdGenOClase INSTANCIA = new EstadoIdGenOClase();

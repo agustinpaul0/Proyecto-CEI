@@ -9,15 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
-// Logro "Manejador de Archivos Eficiente", y en la práctica un requisito: el
-// SourceManagerImpl provisto lee por líneas y reporta el EOF una línea antes de
-// lo que esperan los propios casos de ejemplo de la cátedra cuando el archivo
-// termina en salto de línea (además de romper con un archivo vacío).
-//
-// Acá el fuente se carga entero una sola vez y se sirve carácter por carácter.
-// Eso deja disponible todo el contexto, que es lo que hace exactos y baratos
-// getCurrentLineText() y el reconteo de columnas del Reporte de Error Elegante.
-// Ver documentacion/manejador-de-archivo.md.
+// Logro "Manejador de Archivos Eficiente": el fuente se carga entero y se sirve
+// carácter a carácter. Por qué el de la cátedra no alcanza: documentacion/manejador-de-archivo.md.
 public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
 
     private char[] contenido;
@@ -32,12 +25,8 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
     @Override
     public void open(String filePath) throws FileNotFoundException {
         try {
-            // new String(bytes, UTF_8) reemplaza las secuencias mal formadas
-            // por U+FFFD en vez de lanzar MalformedInputException, que es lo
-            // que hace Files.readString: un archivo binario reventaba el
-            // compilador con un UncheckedIOException. Ahora los bytes basura
-            // llegan al léxico como caracteres desconocidos y se reportan como
-            // errores léxicos normales.
+            // new String(bytes, UTF_8) mapea lo mal formado a U+FFFD en vez de
+            // lanzar como Files.readString: un binario da errores léxicos, no un crash.
             String texto = new String(Files.readAllBytes(Path.of(filePath)), StandardCharsets.UTF_8);
             contenido = texto.replace("\r\n", "\n").replace('\r', '\n').toCharArray();
         } catch (NoSuchFileException excepcion) {
@@ -67,11 +56,8 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         }
         char actual = contenido[posicion++];
         columnaDevuelta = columnaSiguiente;
-        // Se captura ANTES de mutar inicioDeLineaActual: mismo patrón que
-        // columnaDevuelta/columnaSiguiente. Sin esto, getCurrentLineText()
-        // mostraría la línea SIGUIENTE en el instante exacto en que se
-        // devuelve el '\n' que termina la línea actual (bug real, encontrado
-        // escribiendo el test antes que el código).
+        // Antes de mutar inicioDeLineaActual: si no, getCurrentLineText() muestra
+        // la línea siguiente justo al devolver el '\n' que termina la actual.
         inicioDeLineaDevuelta = inicioDeLineaActual;
         if (actual == '\n') {
             numeroDeLinea++;
@@ -93,16 +79,11 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         return numeroDeLinea;
     }
 
-    // Columna del último carácter DEVUELTO (no del próximo): así el reporte
-    // de error apunta a la posición real del carácter ofensivo.
     @Override
     public int getColumnNumber() {
         return columnaDevuelta;
     }
 
-    // El TEXTO de la línea del último carácter devuelto, sin su salto final
-    // (mismo criterio que getColumnNumber()). Lo consume el Reporte de Error
-    // Elegante para imprimir la línea y poner el '^' debajo.
     @Override
     public String getCurrentLineText() {
         int fin = inicioDeLineaDevuelta;

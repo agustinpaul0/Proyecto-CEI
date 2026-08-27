@@ -46,8 +46,7 @@ public final class ModuloPrincipal {
                 } catch (ExcepcionLexica excepcion) {
                     huboErrores = true;
                     reportarError(excepcion);
-                    // Sin paso de recuperación: el estado que lanzó ya
-                    // consumió lo que reportó (ver AnalizadorLexico).
+                    // Sin paso de recuperación: el estado que lanzó ya consumió lo suyo.
                     termino = !configuracion.multiDeteccionDeErrores();
                 }
             }

@@ -20,21 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Un caso por cada TipoDeErrorLexico, validado por TIPO y LOCALIZACIÓN, que
-// es lo que pide agents/testing.md ("los errores esperados se validan por tipo
-// y localización, nunca por el texto completo del mensaje"). Antes de que
-// existiera el enum esto era imposible: los 14 puntos de falla compartían una
-// única frase.
+// Un caso por cada TipoDeErrorLexico, validado por tipo y localización y nunca por
+// el texto del mensaje, como pide agents/testing.md.
 class TipoDeErrorLexicoTest {
 
-    // fuente -> (tipo esperado, línea, columna del carácter señalado por el ^)
-    //
-    // El criterio de la columna es el de javac, verificado ejecutándolo: si el
-    // mensaje habla de un carácter ofensivo puntual (un símbolo desconocido,
-    // un escape inválido, un dígito hexadecimal que no lo es), el ^ va a ese
-    // carácter; si habla de la construcción entera que falló (un literal sin
-    // cerrar o vacío, un intLiteral de más de 9 dígitos, un exponente sin
-    // dígitos), el ^ va a donde la construcción empieza.
+    // fuente -> (tipo, línea, columna del carácter señalado por el ^). Criterio de
+    // javac: un carácter puntual lleva el ^ encima; una construcción entera, a su
+    // primer carácter.
     private record Caso(String fuente, int linea, int columna) {
     }
 
@@ -68,8 +60,7 @@ class TipoDeErrorLexicoTest {
 
         AnalizadorLexico analizador = crear(dir, caso.fuente());
 
-        // El error no tiene por que estar en el primer token: se piden tokens
-        // hasta que aparezca.
+        // El error no tiene por qué estar en el primer token.
         ExcepcionLexica excepcion = assertThrows(ExcepcionLexica.class, () -> {
             for (int i = 0; i < 100; i++) {
                 analizador.proximoToken();
@@ -81,10 +72,8 @@ class TipoDeErrorLexicoTest {
         assertEquals(caso.columna(), excepcion.getColumna(), () -> "fuente: " + caso.fuente());
     }
 
-    // La distinción que pidió el usuario: si el literal se interrumpió por fin
-    // de línea o fin de archivo el reporte dice "sin cerrar"; si lo
-    // interrumpió un carácter cualquiera dice "mal formado". Los dos salen del
-    // mismo estado (EstadoCharCerrando), que decide mirando el lookahead.
+    // Fin de línea o de archivo dan "sin cerrar"; otro carácter da "mal formado".
+    // Los dos salen de EstadoCharCerrando, que decide mirando el lookahead.
     @Test
     void charCerradoPorUnCaracterEsMalFormadoYCortadoPorFinDeLineaEsSinCerrar(@TempDir Path dir)
             throws IOException {
@@ -101,10 +90,8 @@ class TipoDeErrorLexicoTest {
         assertEquals(TipoDeErrorLexico.CHAR_SIN_CERRAR, sinCerrarPorEof.getTipo());
     }
 
-    // Un escape inválido aborta el literal: se reporta el primero y se
-    // descarta lo que queda hasta la comilla de cierre, sin emitir token. Es
-    // resincronización en modo pánico, con la comilla de cierre como token de
-    // sincronización — criterio indicado por el profesor de la materia.
+    // Aborta el literal: se reporta el primero y se descarta hasta la comilla de
+    // cierre, sin emitir token. Criterio indicado por el profesor.
     @Test
     void escapeInvalidoDeStringDescartaElLiteralYNoEmiteToken(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
@@ -116,9 +103,8 @@ class TipoDeErrorLexicoTest {
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // El fragmento ofensivo tiene que viajar desde el estado que detecta el
-    // error, no armarse en el formateador: es la única parte del reporte que
-    // sabe qué carácter venía después de la barra invertida.
+    // El fragmento viaja desde el estado que detecta el error: es el único que sabe
+    // qué carácter venía tras la barra.
     @Test
     void elEscapeInvalidoViajaConLaSecuenciaOfensivaAdemasDelLexemaArmado(@TempDir Path dir)
             throws Exception {
@@ -132,8 +118,7 @@ class TipoDeErrorLexicoTest {
         assertEquals("\\q", error.getFragmentoOfensivo());
     }
 
-    // Sin fragmento, describir() de dos argumentos tiene que dar exactamente
-    // lo mismo que el de uno: es el caso de los otros diez tipos.
+    // Sin fragmento, describir() de dos argumentos da lo mismo que el de uno.
     @Test
     void describirSinFragmentoEsIgualAlMensajeDeUnSoloDato() {
         for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
@@ -141,9 +126,8 @@ class TipoDeErrorLexicoTest {
         }
     }
 
-    // El mensaje de CARACTER_DESCONOCIDO es el de la slide 43 y no puede
-    // cambiar; el resto tiene que decir de qué construcción habla, no repetir
-    // la frase genérica.
+    // El de CARACTER_DESCONOCIDO es el de la slide 43 y no puede cambiar; el resto
+    // tiene que nombrar su construcción.
     @Test
     void soloElCaracterDesconocidoConservaLaFraseDeLaCatedra() {
         assertEquals("# no es un símbolo válido",

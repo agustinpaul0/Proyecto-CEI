@@ -8,7 +8,7 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: idClase, ya con al menos 2 caracteres (llegado desde EstadoIdGenOClase).
+// Terminal: idClase, ya con al menos 2 caracteres.
 public final class EstadoIdClase implements EstadoLexico {
 
     public static final EstadoIdClase INSTANCIA = new EstadoIdClase();

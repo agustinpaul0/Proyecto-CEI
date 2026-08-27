@@ -10,12 +10,8 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal: intLiteral, salvo que la corrida de dígitos continúe hacia un
-// floatLiteral (logro Floats I). Se consume la corrida completa de dígitos
-// (maximal munch) y recién ahí se valida el límite de 9 dígitos, para no
-// cortar un float largo a mitad de la parte entera: '1234567890.5' es un
-// float válido con diez dígitos en la parte entera, mientras que
-// '1234567890' solo es error (agents/especificacion-lexica.md).
+// Terminal: intLiteral, salvo que la corrida siga hacia un floatLiteral. El
+// límite de 9 dígitos se valida tras consumirla entera, por '1234567890.5'.
 public final class EstadoEntero implements EstadoLexico {
 
     public static final EstadoEntero INSTANCIA = new EstadoEntero();
@@ -32,9 +28,7 @@ public final class EstadoEntero implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(INSTANCIA);
         }
-        // Con el logro Floats I desactivado, la corrida de dígitos no
-        // continúa hacia un floatLiteral: '.', 'e'/'E' y los sufijos
-        // terminan el intLiteral como cualquier otro carácter no numérico.
+        // Sin el logro Floats I, '.', 'e'/'E' y los sufijos cierran el intLiteral.
         if (contexto.getConfiguracion().floatsHabilitados()) {
             if (actual == '.') {
                 contexto.avanzar();

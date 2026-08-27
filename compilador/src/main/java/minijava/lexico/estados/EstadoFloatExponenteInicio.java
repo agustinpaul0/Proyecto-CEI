@@ -27,8 +27,7 @@ public final class EstadoFloatExponenteInicio implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoFloatExponenteDigitos.INSTANCIA);
         }
-        // El '^' va donde empieza el literal, no en el lookahead: javac
-        // señala así "malformed floating-point literal".
+        // El '^' va donde empieza el literal, no en el lookahead, como javac.
         throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(
                 TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS);
     }

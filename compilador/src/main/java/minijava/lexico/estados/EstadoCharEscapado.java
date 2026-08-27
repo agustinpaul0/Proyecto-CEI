@@ -7,9 +7,8 @@ import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
-// Tras la barra invertida dentro de un charLiteral cualquier carácter es
-// válido como escapado: permisividad explícita de Aspectos Léxicos §2.3.2,
-// más laxa que Java.
+// Tras la barra dentro de un charLiteral cualquier carácter vale: permisividad
+// explícita de Aspectos Léxicos §2.3.2, más laxa que Java.
 public final class EstadoCharEscapado implements EstadoLexico {
 
     public static final EstadoCharEscapado INSTANCIA = new EstadoCharEscapado();
@@ -19,8 +18,7 @@ public final class EstadoCharEscapado implements EstadoLexico {
 
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
-        // Consumir el salto metería un '\n' crudo en el lexema, partiendo
-        // [Error:Lexema|NroLinea] en dos.
+        // Consumir el salto metería un '\n' crudo en el lexema.
         if (contexto.esFinDeArchivo() || contexto.getCaracterActual() == '\n') {
             throw contexto.crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico.CHAR_SIN_CERRAR);
         }

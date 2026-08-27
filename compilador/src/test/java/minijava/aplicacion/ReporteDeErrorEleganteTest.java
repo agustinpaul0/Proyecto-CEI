@@ -19,9 +19,7 @@ class ReporteDeErrorEleganteTest {
         return archivo;
     }
 
-    // Oráculo copiado literal del ejemplo de Pautas Etapa 1 (slide 43, logro
-    // "Reporte de Error Elegante"), con la línea completa y un '^' apuntando
-    // a la posición del carácter ofensivo.
+    // Oráculo literal del ejemplo de Pautas Etapa 1 slide 43.
     @Test
     void muestraLaLineaCompletaConUnCaretApuntandoAlError(@TempDir Path dir) throws IOException {
         Path archivo = escribir(dir, "\"hola\"\nv1 + # chau\nif class}");

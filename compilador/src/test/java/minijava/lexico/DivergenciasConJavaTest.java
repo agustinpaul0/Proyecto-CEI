@@ -17,9 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Puntos donde MiniJava se aparta de Java a propósito. Ninguno es un
-// descuido; están todos en la tabla de agents/especificacion-lexica.md y hay
-// que mencionarlos en el informe.
+// Puntos donde MiniJava se aparta de Java a propósito. Están todos en la tabla de
+// agents/especificacion-lexica.md y van en el informe.
 class DivergenciasConJavaTest {
 
     private AnalizadorLexico crear(Path dir, String fuente) throws IOException {
@@ -38,17 +37,9 @@ class DivergenciasConJavaTest {
         return salida.getLineas();
     }
 
-    // Java traduce los escapes unicode en TODO el archivo fuente ANTES de
-    // tokenizar (JLS §3.3), comentarios incluidos. MiniJava no: el escape
-    // sólo significa algo dentro de un charLiteral o un litString.
-    //
-    // Esto no es teoría: durante esta sesión el propio archivo
-    // AnalizadorLexicoTest.java dejó de compilar por tener la secuencia
-    // cruda en un COMENTARIO, con el error de javac
-    //
-    //     AnalizadorLexicoTest.java:[811,39] illegal unicode escape
-    //
-    // La misma línea, como fuente MiniJava, no produce ningún error.
+    // Java traduce los escapes unicode en todo el fuente antes de tokenizar (JLS
+    // §3.3), comentarios incluidos; MiniJava sólo dentro de un literal. No es
+    // teoría: un comentario de este proyecto dio "illegal unicode escape" en javac.
     @Test
     void unEscapeUnicodeMalFormadoEnUnComentarioNoEsError(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "// esto en Java no compila: \\u12G4\nv1\n");
@@ -57,9 +48,8 @@ class DivergenciasConJavaTest {
         assertTrue(lineas.contains("(idMV,v1,2)"), lineas::toString);
     }
 
-    // En Java el escape se convierte en un salto de línea real antes de
-    // lexer, así que TERMINA el comentario y lo que sigue es código. Acá el
-    // comentario sigue hasta el salto de línea físico.
+    // En Java el escape se vuelve un salto real y TERMINA el comentario; acá el
+    // comentario sigue hasta el salto físico.
     @Test
     void unSaltoDeLineaEscapadoNoTerminaUnComentarioDeLinea(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "// \\u000A v1\nv2\n");
@@ -69,8 +59,8 @@ class DivergenciasConJavaTest {
         assertTrue(lineas.contains("(idMV,v2,2)"), lineas::toString);
     }
 
-    // Por lo mismo, un \u0022 dentro de un litString NO lo cierra: son seis
-    // caracteres del lexema. En Java esa línea no compila.
+    // Por lo mismo, un escape de comilla no cierra el litString: son seis caracteres
+    // del lexema. En Java esa línea no compila.
     @Test
     void unEscapeUnicodeDeComillaNoCierraElString(@TempDir Path dir) throws Exception {
         Token token = crear(dir, "\"a\\u0022b\" ").proximoToken();
@@ -79,9 +69,8 @@ class DivergenciasConJavaTest {
         assertEquals("\"a\\u0022b\"", token.lexema());
     }
 
-    // Character.isDigit acepta los dígitos árabe-índicos, así que arrancan un
-    // intLiteral y cuentan para el límite de nueve. Java no los admite en un
-    // literal numérico.
+    // Character.isDigit los acepta, así que arrancan un intLiteral y cuentan para el
+    // límite de nueve. Java no los admite.
     @Test
     void losDigitosArabeIndicosArrancanUnEntero(@TempDir Path dir) throws Exception {
         Token token = crear(dir, "\u0661\u0662\u0663 ").proximoToken();
@@ -90,10 +79,8 @@ class DivergenciasConJavaTest {
         assertEquals("\u0661\u0662\u0663", token.lexema());
     }
 
-    // Una letra que no es ni mayúscula ni minúscula no puede EMPEZAR un
-    // identificador (EstadoInicial usa isLowerCase/isUpperCase), pero sí
-    // puede continuarlo (EstadoIdMV usa isLetterOrDigit). En Java sirve para
-    // las dos cosas.
+    // No puede EMPEZAR un identificador (isLowerCase/isUpperCase) pero sí
+    // continuarlo (isLetterOrDigit). En Java sirve para las dos cosas.
     @Test
     void unaLetraSinCajaContinuaUnIdentificadorPeroNoLoEmpieza(@TempDir Path dir) throws Exception {
         Token token = crear(dir, "a\u4E2D ").proximoToken();
@@ -105,8 +92,8 @@ class DivergenciasConJavaTest {
         assertTrue(lineas.contains("(idMV,abc,1)"), lineas::toString);
     }
 
-    // Un par surrogado fuera de un literal son dos char de Java, así que
-    // produce DOS errores, uno por mitad. Adentro de un literal pasa entero.
+    // Fuera de un literal son dos char de Java, así que dan DOS errores; adentro
+    // pasa entero.
     @Test
     void unParSurrogadoFueraDeUnLiteralDaDosErrores(@TempDir Path dir) throws IOException {
         String emoji = new String(Character.toChars(0x1F600));
@@ -129,8 +116,7 @@ class DivergenciasConJavaTest {
         assertEquals("\"hola " + emoji + "\"", token.lexema());
     }
 
-    // El form feed y el tabulador vertical son blancos en Java y errores acá:
-    // esBlanco() sólo acepta espacio, tabulador y salto de línea.
+    // Blancos en Java y errores acá: esBlanco() sólo acepta espacio, tab y salto.
     @Test
     void elFormFeedNoEsUnBlanco(@TempDir Path dir) throws IOException {
         List<String> lineas = ejecutar(dir, "v1 " + (char) 12 + " v2\n");

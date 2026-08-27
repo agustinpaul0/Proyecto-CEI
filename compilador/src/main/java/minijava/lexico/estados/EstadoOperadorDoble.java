@@ -9,8 +9,7 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Cubre && y ||: el segundo carácter es obligatorio (& y | solos son error,
-// no están en la lista de operadores de Aspectos Léxicos §2.4.2).
+// && y ||: el segundo carácter es obligatorio, & y | solos son error (§2.4.2).
 public final class EstadoOperadorDoble implements EstadoLexico {
 
     public static final EstadoOperadorDoble AND = new EstadoOperadorDoble('&', TipoDeToken.OP_AND);

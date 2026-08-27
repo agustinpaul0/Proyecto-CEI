@@ -161,12 +161,9 @@ class ManejadorDeArchivoEficienteTest {
         assertEquals("chau", manejador.getCurrentLineText());
     }
 
-    // Regresión: justo cuando getNextChar() DEVUELVE el '\n' que termina una
-    // línea, getCurrentLineText() debe seguir mostrando ESA línea (la que el
-    // salto termina), no la siguiente — aunque el salto ya haya sido
-    // devuelto. Encontrado construyendo un caso de corpus con un char literal
-    // sin cerrar al final de línea: el reporte mostraba la línea siguiente y
-    // el '^' señalaba texto sin relación con el error.
+    // Regresión: al DEVOLVER el '\n' que termina una línea, getCurrentLineText()
+    // debe seguir mostrando ESA línea y no la siguiente. Con un char sin cerrar al
+    // final de línea, el '^' señalaba texto sin relación con el error.
     @Test
     void textoDeLaLineaSigueSiendoLaAnteriorJustoAlDevolverElSalto(@TempDir Path dir) throws IOException {
         manejador.open(escribir(dir, "f.txt", "v1\nchau").toString());

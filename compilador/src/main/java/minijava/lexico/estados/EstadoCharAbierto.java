@@ -7,8 +7,7 @@ import minijava.lexico.Continuar;
 import minijava.lexico.EstadoLexico;
 import minijava.lexico.ResultadoDeTransicion;
 
-// Tras la comilla simple de apertura. '\x' con x arbitrario es válido
-// (Aspectos Léxicos §2.3.2); '' vacío y sin cerrar son error.
+// Tras la comilla de apertura. '\x' con x arbitrario es válido (§2.3.2); '' y sin cerrar, error.
 public final class EstadoCharAbierto implements EstadoLexico {
 
     public static final EstadoCharAbierto INSTANCIA = new EstadoCharAbierto();

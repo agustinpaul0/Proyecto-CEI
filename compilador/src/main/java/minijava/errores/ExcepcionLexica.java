@@ -7,10 +7,8 @@ public final class ExcepcionLexica extends Exception {
     private final int linea;
     private final int columna;
     private final String lineaFuente;
-    // Parte del lexema que es concretamente la ofensiva, cuando el lexema
-    // armado que exige Pautas ("el lexema armado hasta el momento del error")
-    // es más grande que ella. Null en casi todos los errores, donde el lexema
-    // entero ES lo ofensivo. Hoy sólo lo usa el escape inválido de litString.
+    // La parte concretamente ofensiva, cuando el lexema armado que exige Pautas
+    // es más grande que ella. Null salvo en el escape mal formado de litString.
     private final String fragmentoOfensivo;
 
     public ExcepcionLexica(TipoDeErrorLexico tipo, String lexema, int linea, int columna,

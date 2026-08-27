@@ -4,10 +4,8 @@ import minijava.errores.ExcepcionLexica;
 import minijava.errores.TipoDeErrorLexico;
 import minijava.io.ManejadorDeArchivo;
 
-// Punto único de construcción de ExcepcionLexica: ningún estado arma una a
-// mano, para que el lexema, la línea, la columna y la línea fuente sean
-// siempre consistentes entre sí. Cuál de las cinco variantes corresponde a
-// cada error está en agents/manejo-de-errores.md.
+// Punto único de construcción de ExcepcionLexica, para que lexema, línea, columna
+// y línea fuente sean consistentes. Qué variante usa cada error: agents/manejo-de-errores.md.
 public final class FabricaDeExcepcionesLexicas {
 
     private final BuilderDeLexema lexema;
@@ -18,11 +16,8 @@ public final class FabricaDeExcepcionesLexicas {
         this.manejador = manejador;
     }
 
-    // Si el lookahead actual es EOF o un salto de línea real, no aparece en
-    // getCurrentLineText() (que corta antes del '\n') — reportar su columna
-    // dejaría el '^' apuntando después del último carácter imprimible de la
-    // línea, sin nada debajo. En ese caso se usa la posición del último
-    // carácter realmente consumido en su lugar.
+    // Un lookahead EOF o '\n' no aparece en getCurrentLineText(), y reportar su
+    // columna dejaría el '^' colgando después del final de la línea impresa.
     public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo) {
         boolean lookaheadFueraDeLaLineaImpresa =
                 manejador.estaEnFinDeArchivo() || lexema.getCaracterActual() == '\n';
@@ -33,16 +28,12 @@ public final class FabricaDeExcepcionesLexicas {
                 lexema.getLinea(), manejador.getColumnNumber(), manejador.getCurrentLineText());
     }
 
-    // Para los estados que SÍ consumen el carácter ofensivo antes de lanzar.
-    // Tras el avanzar(), getColumnNumber() ya apunta al carácter siguiente,
-    // así que la posición correcta es la del último consumido.
+    // Tras el avanzar() getColumnNumber() ya apunta al siguiente, no al ofensivo.
     public ExcepcionLexica crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico tipo) {
         return crearExcepcionLexica(tipo, lexema.getLexema(), lexema.posicionUltimoConsumido());
     }
 
-    // Ídem, nombrando además el fragmento concreto que está mal dentro del
-    // lexema armado. El fragmento se escapa igual que el lexema: también se
-    // imprime.
+    // Ídem, nombrando el fragmento que está mal. Se escapa: también se imprime.
     public ExcepcionLexica crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico tipo,
                                                                      String fragmentoOfensivo) {
         PosicionLexica posicion = lexema.posicionUltimoConsumido();
@@ -51,9 +42,7 @@ public final class FabricaDeExcepcionesLexicas {
                 escaparNoImprimibles(fragmentoOfensivo));
     }
 
-    // Para los errores que hablan de la CONSTRUCCIÓN ENTERA y no de un
-    // carácter puntual. El '^' va donde la construcción empieza, que es lo que
-    // hace javac — verificado ejecutándolo.
+    // Para los errores que hablan de la construcción entera: el '^' va donde empieza.
     public ExcepcionLexica crearExcepcionLexicaSobreElInicioDelLexema(TipoDeErrorLexico tipo) {
         if (lexema.posicionPrimerConsumido() == null) {
             return crearExcepcionLexica(tipo);
@@ -61,24 +50,16 @@ public final class FabricaDeExcepcionesLexicas {
         return crearExcepcionLexica(tipo, lexema.getLexema(), lexema.posicionPrimerConsumido());
     }
 
-    // Para errores sobre una posición que ningún estado puede reconstruir en
-    // el momento del throw: la apertura de una construcción que nunca cerró y
-    // cuyo lexema ya fue descartado (comentario multilínea).
+    // Para una posición irreconstruible en el throw: la apertura de un comentario
+    // multilínea, cuyo lexema ya se descartó.
     public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo, String lexemaOfensivo,
                                                 PosicionLexica posicion) {
         return new ExcepcionLexica(tipo, escaparNoImprimibles(lexemaOfensivo),
                 posicion.linea(), posicion.columna(), posicion.lineaFuente());
     }
 
-    // El lexema de un error se imprime literal en el encabezado legible y
-    // dentro de [Error:Lexema|NroLinea]. Un carácter invisible ahí deja el
-    // mensaje ilegible y, si es un salto de línea, además parte el código de
-    // error en dos y rompe el contrato de la cátedra de un elemento por línea.
-    // Se renderizan con su escape de Java, igual que hace javac, que para un
-    // espacio no rompible reporta literalmente `illegal character: ' '`.
-    //
-    // Vale SÓLO para el lexema de un error. El de un token se imprime crudo,
-    // porque el contrato de la cátedra es que sea el texto exacto del fuente.
+    // Un invisible en el lexema deja el mensaje ilegible —o, si es un salto, parte
+    // [Error:Lexema|NroLinea] en dos—. Sólo para errores: el de un token va crudo.
     private static String escaparNoImprimibles(String texto) {
         StringBuilder escapado = new StringBuilder(texto.length());
         for (int i = 0; i < texto.length(); i++) {
@@ -101,12 +82,8 @@ public final class FabricaDeExcepcionesLexicas {
         return escapado.toString();
     }
 
-    // Invisible = no se ve nada al imprimirlo, o directamente no se puede
-    // imprimir. Cubre los controles C0/DEL, los caracteres de formato (el BOM
-    // entre ellos), los separadores de espacio que no son el espacio común, y
-    // los surrogados SUELTOS. Un par surrogado bien formado (un emoji) se deja
-    // crudo: se ve perfecto y escaparlo sólo haría el mensaje más difícil de
-    // leer.
+    // Controles, formato (el BOM), espacios que no son el común, y surrogados
+    // SUELTOS. Un par bien formado —un emoji— se deja crudo: se ve.
     private static boolean esInvisible(String texto, int posicion) {
         char c = texto.charAt(posicion);
         if (Character.isISOControl(c)) {

@@ -10,9 +10,8 @@ import minijava.lexico.ResultadoDeTransicion;
 import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
 
-// Terminal (se cierra a sí mismo con la comilla doble). '\' escapa el
-// carácter siguiente (permite \" embebida); un salto de línea sin cerrar
-// antes es error (Aspectos Léxicos §2.3.3).
+// Terminal, se cierra con la comilla doble. '\' escapa el siguiente (permite \"
+// embebida); un salto de línea antes del cierre es error (Aspectos Léxicos §2.3.3).
 public final class EstadoStringAbierto implements EstadoLexico {
 
     public static final EstadoStringAbierto INSTANCIA = new EstadoStringAbierto();

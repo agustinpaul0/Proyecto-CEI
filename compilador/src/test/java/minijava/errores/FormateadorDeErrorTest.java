@@ -23,9 +23,8 @@ class FormateadorDeErrorTest {
         assertEquals("[Error:#|2]", lineas.get(3));
     }
 
-    // El encabezado sale de TipoDeErrorLexico. Para CARACTER_DESCONOCIDO el
-    // texto es el de la slide 43 y no puede cambiar; el resto de los tipos
-    // estrena razón propia, que es lo que permite decir "sin cerrar".
+    // Para CARACTER_DESCONOCIDO el texto es el de la slide 43 y no puede cambiar;
+    // el resto tiene razón propia.
     @Test
     void elEncabezadoDescribeElTipoDeErrorYNoUnaFraseGenerica() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
@@ -41,12 +40,9 @@ class FormateadorDeErrorTest {
                         new ExcepcionLexica(TipoDeErrorLexico.CHAR_MAL_FORMADO, "'a", 1, 3, "'ab'")).get(0));
     }
 
-    // Pautas Etapa 1 (slide 24) obliga a mostrar "el lexema armado hasta el
-    // momento del error", que para un escape inválido es todo el litString
-    // leído hasta ahí — y ese lexema NO es la secuencia de escape, así que
-    // sin nombrarla el mensaje se lee al revés ("la secuencia inválida es
-    // \"a\\q"). El encabezado nombra las dos cosas; el código de contrato
-    // sigue llevando sólo el lexema, que es lo que compara el tester.
+    // Pautas slide 24 obliga al "lexema armado hasta el error", que no ES la
+    // secuencia: sin nombrarla aparte el mensaje se lee al revés. El encabezado
+    // lleva las dos; el código de contrato, sólo el lexema.
     @Test
     void elEncabezadoDeUnEscapeInvalidoNombraLaSecuenciaYElLexemaArmado() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
@@ -60,8 +56,8 @@ class FormateadorDeErrorTest {
         assertEquals("[Error:\"a\\q|7]", lineas.get(3));
     }
 
-    // Los otros diez tipos no tienen fragmento que nombrar: el lexema entero
-    // ES lo ofensivo. El encabezado no puede degenerar en un "null".
+    // Los otros diez no tienen fragmento: el lexema entero ES lo ofensivo, y el
+    // encabezado no puede degenerar en un "null".
     @Test
     void unErrorSinFragmentoConservaElEncabezadoDeUnSoloDato() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
@@ -73,14 +69,9 @@ class FormateadorDeErrorTest {
         }
     }
 
-    // El '^' se posiciona contando CARACTERES de la linea fuente, uno por
-    // columna. Con un tabulador o con caracteres CJK (que la terminal dibuja
-    // con dos celdas) el caret sigue apuntando al caracter correcto en
-    // terminos de indice, pero se ve corrido en pantalla. Es una limitacion
-    // conocida y aceptada: corregirla exigiria conocer el ancho de
-    // renderizado, que depende de la terminal. Lo que NO puede pasar es que
-    // el indice se vaya del largo de la linea, y eso es lo que se fija aca y
-    // en la propiedad de PropiedadesDelReporteTest.
+    // El '^' cuenta CARACTERES, no celdas de terminal: con un tab o con CJK apunta
+    // al índice correcto pero se ve corrido. Limitación aceptada; lo que se fija
+    // acá es que el índice nunca se vaya del largo de la línea.
     @Test
     void elCaretSeUbicaPorIndiceDeCaracterAunConTabsOCaracteresAnchos() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);

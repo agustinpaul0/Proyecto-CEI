@@ -22,10 +22,8 @@ public final class AnalizadorLexico {
         this(new ContextoLexico(manejador, configuracion));
     }
 
-    // Driver iterativo del patrón State: mismo AF que la cátedra enseña
-    // encadenando llamadas, sin la profundidad de pila del encadenamiento
-    // recursivo (ver agents/arquitectura.md). No hay paso de recuperación —
-    // el criterio está en agents/manejo-de-errores.md.
+    // Driver iterativo: mismo AF que encadena la cátedra, sin su profundidad de
+    // pila. No hay paso de recuperación (agents/manejo-de-errores.md).
     public Token proximoToken() throws ExcepcionLexica {
         contexto.iniciarNuevoToken();
         EstadoLexico estado = EstadoInicial.INSTANCIA;

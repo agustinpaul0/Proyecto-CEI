@@ -18,26 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Corre sobre los MISMOS archivos que catedra.TesterDeCasosConErrores, que se
-// deja intacto al lado. Ese tester sólo hace containsString del PRIMER código
-// de error declarado, así que un caso con cinco errores queda casi sin
-// verificar, y nada comprueba qué tokens salen entre medio — que es
-// justamente donde se escondía el defecto de la recuperación tragándose
-// caracteres.
-//
-// Formato de la cabecera (las líneas de comentario al principio del archivo):
+// Los MISMOS archivos que catedra.TesterDeCasosConErrores, que sólo verifica el
+// primer código de error y ningún token entre medio. Cabecera de un caso:
 //
 //   // [Error:Lexema|NroLinea]     un código de error esperado, en orden
 //   //#lexema,nroLinea             un token esperado, en orden
-//   // [Completo]                  activa la verificación estricta
+//   // [Completo]                  exige de acá en más la secuencia EXACTA
 //
-// La línea 1 tiene que ser siempre un `// [Error:...]` para que el tester de
-// la cátedra (que lee sólo esa línea y hace substring(3)) siga funcionando.
-//
-// Sin `[Completo]` se verifica que todos los códigos declarados aparezcan en
-// orden — ya más fuerte que la cátedra, y retrocompatible con los casos
-// viejos. Con `[Completo]` se exige además la secuencia EXACTA de errores y
-// tokens, sin nada de más ni de menos.
+// La línea 1 siempre un `// [Error:...]`: el tester de la cátedra le hace substring(3).
 class TesterDeCasosConErroresEstricto {
 
     private static final Path DIRECTORIO = Path.of("resources", "conErrores");
@@ -74,8 +62,7 @@ class TesterDeCasosConErroresEstricto {
         }
     }
 
-    // Los códigos declarados tienen que aparecer todos y en el mismo orden,
-    // aunque el caso no sea estricto y haya otros elementos entre medio.
+    // Todos y en orden, aunque el caso no sea estricto y haya otros entre medio.
     private void verificarSubsecuenciaEnOrden(Path caso, List<String> esperado, List<String> obtenido,
                                               List<String> salida) {
         int siguiente = 0;
@@ -97,11 +84,9 @@ class TesterDeCasosConErroresEstricto {
         return salida.getLineas();
     }
 
-    // Los códigos de error se comparan literales (son el contrato de la
-    // cátedra). Los tokens se normalizan a (lexema,linea) descartando el
-    // nombre del token, con el mismo criterio de primera-coma/última-coma que
-    // usa el tester de la cátedra: los nombres internos no son contrato, y
-    // así se admiten lexemas que contienen comas.
+    // Los códigos van literales (son el contrato); los tokens se normalizan a
+    // (lexema,linea) porque el nombre interno no es contrato. El criterio de
+    // primera-coma/última-coma es el de la cátedra y admite lexemas con comas.
     private List<String> soloErroresYTokens(List<String> salida) {
         List<String> elementos = new ArrayList<>();
         for (String linea : salida) {
@@ -123,18 +108,14 @@ class TesterDeCasosConErroresEstricto {
             if (!texto.startsWith("//")) {
                 break;
             }
-            // Los dos casos originales de la cátedra escriben la cabecera con
-            // TRES barras y sin espacio (///[Error:#|5]), porque su tester
-            // hace un substring(3) crudo. Se acepta esa forma también.
+            // Los dos casos de la cátedra usan tres barras (///[Error:#|5]).
             String contenido = texto.substring(2).strip();
             if (contenido.startsWith("/")) {
                 contenido = contenido.substring(1).strip();
             }
             if (contenido.equals(MARCA_ESTRICTA)) {
-                // Todo lo anterior era la línea que lee el tester de la
-                // cátedra (que sólo mira la primera): la secuencia exacta
-                // empieza acá, así que se descarta lo acumulado para no
-                // contar dos veces el primer error.
+                // Lo anterior era la línea del tester de la cátedra: se descarta para
+                // no contar dos veces el primer error.
                 estricta = true;
                 esperado.clear();
             } else if (contenido.startsWith("[Error:")) {
@@ -146,9 +127,7 @@ class TesterDeCasosConErroresEstricto {
         return new Cabecera(List.copyOf(esperado), estricta);
     }
 
-    // Un token declarado como //#lexema,linea se compara contra la salida
-    // (NombreToken,Lexema,NroLinea) ignorando el nombre del token, igual que
-    // hace el tester de la cátedra: los nombres internos no son contrato.
+    // //#lexema,linea contra (NombreToken,Lexema,NroLinea), ignorando el nombre.
     private record Cabecera(List<String> esperado, boolean estricta) {
     }
 }

@@ -2,21 +2,15 @@ package minijava.lexico.estados;
 
 import minijava.lexico.ContextoLexico;
 
-// Resincronización en modo pánico ante un escape mal formado dentro de un
-// litString: se descarta lo que queda del literal hasta su comilla de cierre,
-// que es el token de sincronización. Sin esto el análisis se reanudaría en
-// mitad del literal y la comilla de cierre abriría uno nuevo, inventando
-// errores en cascada (ver documentacion/decisiones.md §4.3).
-//
-// Descarta y no avanza: el lexema reportado tiene que quedar en el armado
-// hasta el momento del error, como exige Pautas Etapa 1 slide 24.
+// Modo pánico ante un escape mal formado en un litString: descarta hasta la
+// comilla de cierre, que es el token de sincronización (decisiones.md §4.3).
+// Descarta y no avanza: el lexema reportado es el armado hasta el error.
 final class RecuperacionDeLitString {
 
     private RecuperacionDeLitString() {
     }
 
-    // Un litString no cruza líneas: si aparece un salto antes de la comilla,
-    // el descarte se detiene ahí y el análisis sigue en la línea siguiente.
+    // Un litString no cruza líneas: un salto corta el descarte.
     static void descartarHastaElCierre(ContextoLexico contexto) {
         while (!contexto.esFinDeArchivo() && contexto.getCaracterActual() != '\n') {
             char actual = contexto.getCaracterActual();
@@ -24,8 +18,7 @@ final class RecuperacionDeLitString {
             if (actual == '"') {
                 return;
             }
-            // Una comilla escapada no cierra el literal: se descarta junto con
-            // su barra para no confundirla con el cierre real.
+            // Una comilla escapada no cierra: se descarta con su barra.
             if (actual == '\\' && !contexto.esFinDeArchivo() && contexto.getCaracterActual() != '\n') {
                 contexto.descartar();
             }

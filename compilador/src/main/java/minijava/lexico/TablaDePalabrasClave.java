@@ -5,11 +5,8 @@ import minijava.tokens.TipoDeToken;
 import java.util.Map;
 import java.util.Optional;
 
-// Las 21 palabras reservadas se reconocen como un identificador común y recién
-// antes de emitir el token se consulta esta tabla. Es la técnica que enseña la
-// cátedra (Clase 02, slides 62-63): un AF propio por palabra exigiría casi un
-// estado por letra, fusionados con los del identificador — decenas de estados
-// frágiles para algo que un lookup resuelve en tiempo constante.
+// Las 21 reservadas se reconocen como identificador y se consultan acá antes de
+// emitir: la técnica de la cátedra (Clase 02, slides 62-63).
 public final class TablaDePalabrasClave {
 
     private static final Map<String, TipoDeToken> PALABRAS = Map.ofEntries(

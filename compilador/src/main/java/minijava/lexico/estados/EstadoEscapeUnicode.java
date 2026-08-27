@@ -11,9 +11,8 @@ public final class EstadoEscapeUnicode implements EstadoLexico {
 
     private final int digitosRestantes;
     private final EstadoLexico siguienteAlTerminar;
-    // Dentro de un litString el error resincroniza en la comilla de cierre,
-    // igual que cualquier otro escape mal formado; dentro de un charLiteral no
-    // hay resincronización, la recuperación es estructural.
+    // En un litString el error resincroniza en la comilla de cierre; en un
+    // charLiteral no, la recuperación es estructural.
     private final boolean dentroDeLitString;
 
     public EstadoEscapeUnicode(int digitosRestantes, EstadoLexico siguienteAlTerminar,

@@ -20,23 +20,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-// Tester provisto por la cátedra. Se conserva su criterio de verificación tal
-// cual: por cada archivo de resources/conErrores/ se ejecuta el compilador y se
-// comprueba que su salida CONTENGA el código de error declarado en la primera
-// línea del propio archivo.
-//
-// Ese criterio deja fuera dos cosas: un caso con varios errores queda
-// verificado sólo por el primero, y no se comprueba qué tokens salen entre
-// medio. Por eso el proyecto agrega minijava.casos.TesterDeCasosConErroresEstricto,
-// que corre sobre los MISMOS archivos y verifica la salida completa. Este
-// tester se deja al lado, sin endurecerlo, para poder mostrar que la entrega
-// pasa la batería de la cátedra tal como ella la escribió.
+// Tester de la cátedra, con su criterio intacto: la salida tiene que CONTENER el
+// código de error declarado en la primera línea del caso. Se deja sin endurecer
+// para mostrar que la entrega pasa su batería tal como ella la escribió;
+// minijava.casos.TesterDeCasosConErroresEstricto verifica lo demás.
 @RunWith(Parameterized.class)
 public class TesterDeCasosConErrores {
 
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
-    // La primera línea del caso es "// [Error:Lexema|NroLinea]": se saltean los
-    // tres caracteres de "// " para quedarse con el código.
+    // La primera línea es "// [Error:Lexema|NroLinea]": se saltea el "// ".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -114,9 +106,7 @@ public class TesterDeCasosConErrores {
         );
     }
 
-    // El punto de entrada del proyecto, invocado in-process una vez por caso.
-    // Si la clase con el main cambia de nombre o de paquete, se ajusta el
-    // import de arriba y esta única línea.
+    // Invocado in-process una vez por caso. Si el main se muda, se ajusta acá.
     private void invocarCompilador(String rutaDelFuente) {
         Main.main(new String[] { rutaDelFuente });
     }

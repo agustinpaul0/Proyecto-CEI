@@ -1,9 +1,7 @@
 package minijava.tokens;
 
-// Los 56 tokens de MiniJava. El String de cada valor NO es decorativo: es el
-// nombre exacto que se imprime en (NombreToken,Lexema,NroLinea), que es el
-// formato de salida que fija la cátedra. Cambiar uno cambia la salida del
-// compilador.
+// Los 56 tokens. El String de cada valor es el nombre que se imprime en
+// (NombreToken,Lexema,NroLinea): cambiarlo cambia la salida del compilador.
 public enum TipoDeToken {
     PR_CLASS("pr_class"), PR_EXTENDS("pr_extends"), PR_INTERFACE("pr_interface"),
     PR_IMPLEMENTS("pr_implements"), PR_STATIC("pr_static"), PR_BOOLEAN("pr_boolean"),

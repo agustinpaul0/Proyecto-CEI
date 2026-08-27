@@ -56,10 +56,8 @@ class AnalizadorLexicoTest {
         assertEquals(3, token.linea());
     }
 
-    // Regresión: los 3 casos de EOF documentados en agents/convenciones-catedra.md, verificados
-    // acá a nivel AnalizadorLexico (no sólo del manejador), porque un bug real
-    // de conteo de línea apareció en esta capa durante el desarrollo de
-    // literales string (ver commit del fix en ContextoLexico.consumirCaracterActual).
+    // Los 3 casos de EOF de agents/convenciones-catedra.md, verificados a nivel
+    // analizador y no sólo del manejador: un bug de conteo apareció en esta capa.
     @Test
     void eofEnLinea22ConVeintiunSaltosYNewlineFinal(@TempDir Path dir) throws Exception {
         String fuente = "x" + "\n".repeat(21);
@@ -163,12 +161,8 @@ class AnalizadorLexicoTest {
             "var|PR_VAR", "this|PR_THIS", "new|PR_NEW", "null|PR_NULL",
             "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT",
     })
-    // float se agrega como palabra reservada por confirmación directa del
-    // profesor (no figura en los PDFs de la cátedra) — agents/especificacion-lexica.md. "double"
-    // NO es palabra clave: el profesor aclaró que float y double son "lo
-    // mismo" (un único tipo float en MiniJava) — no que "double" también
-    // deba reservarse como palabra, sino que el literal float ya cubre
-    // ambos casos vía sus sufijos f/F/d/D (ver floats.java, §6.4).
+    // float es reservada por confirmación directa del profesor; "double" NO lo es
+    // (los sufijos f/F/d/D del literal ya cubren ambos). agents/especificacion-lexica.md.
     void reconoceLasVeintiunaPalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
             throws Exception {
         Token token = crearAnalizador(dir, fuente).proximoToken();
@@ -226,11 +220,8 @@ class AnalizadorLexicoTest {
 
         assertEquals("1234567890", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
-        // El mensaje habla del literal entero, no de un carácter puntual, así
-        // que el ^ va al primer dígito: es lo que hace javac con "integer
-        // number too large" (verificado ejecutándolo). Lo que NO puede pasar
-        // es que apunte al carácter siguiente al lexema, que no tiene nada que
-        // ver con el error y podría ser cualquier cosa, incluido EOF.
+        // Habla del literal entero, así que el '^' va al primer dígito, como javac
+        // con "integer number too large". Nunca al carácter siguiente al lexema.
         assertEquals(1, excepcion.getColumna());
     }
 
@@ -298,9 +289,7 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("&", excepcion.getLexemaOfensivo());
-        // La columna tiene que apuntar al '&' mismo (columna 1), no al
-        // carácter que viene después ('x', columna 2) — ese carácter no
-        // tiene nada que ver con por qué el '&' solo es inválido.
+        // Al '&' mismo, no al carácter que viene después: ése no tiene nada que ver.
         assertEquals(1, excepcion.getColumna());
     }
 
@@ -366,12 +355,8 @@ class AnalizadorLexicoTest {
         assertEquals(1, excepcion.getLinea());
     }
 
-    // Si el comentario abre en una línea y el archivo sigue varias líneas
-    // más (en blanco) antes del EOF, el reporte tiene que describir la
-    // línea de APERTURA en los tres campos a la vez (línea, columna, línea
-    // fuente) — no la línea número reportada apuntando a la apertura pero
-    // la línea fuente y la columna mostrando una línea totalmente distinta
-    // (la del EOF, varias líneas después).
+    // Los tres campos (línea, columna, línea fuente) tienen que describir la
+    // APERTURA a la vez, no el número correcto con la línea fuente del EOF.
     @Test
     void comentarioSinCerrarConVariasLineasEnBlancoAntesDelEofReportaLaLineaDeApertura(
             @TempDir Path dir) throws Exception {
@@ -448,12 +433,8 @@ class AnalizadorLexicoTest {
         assertEquals("''", excepcion.getLexemaOfensivo());
     }
 
-    // Si la comilla de apertura queda seguida de un salto de línea real (sin
-    // contenido), el lexema reportado NO debe incluir ese '\n' crudo: un
-    // carácter de control embebido en el lexema rompe el formato de una
-    // sola línea del reporte de error y del código [Error:Lexema|Linea]
-    // (bug real: apareció al recuperarse de un error previo y quedar una
-    // comilla huérfana justo antes del salto de línea).
+    // El lexema no debe llevar el '\n' crudo: un control embebido parte en dos el
+    // [Error:Lexema|Linea], que la cátedra espera en una sola línea.
     @Test
     void comillaDeAperturaSeguidaDeSaltoDeLineaNoIncluyeElSaltoEnElLexema(@TempDir Path dir)
             throws Exception {
@@ -596,12 +577,8 @@ class AnalizadorLexicoTest {
         assertEquals("5", segundo.lexema());
     }
 
-    // Estos dos errores hablan de la construcción entera (el literal float
-    // '1e', el charLiteral que nunca cerró), no de un carácter puntual, así
-    // que el '^' va a donde la construcción empieza — el criterio de javac,
-    // verificado ejecutándolo. Eso además hace imposible el bug original:
-    // la columna no puede caer "después" del último carácter imprimible de
-    // la línea, dejando el caret colgando en el aire.
+    // Los dos hablan de la construcción entera, así que el '^' va donde empieza
+    // (criterio de javac). Eso hace imposible que quede colgando fuera de la línea.
     @Test
     void exponenteSinDigitosEsError(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "1e");
@@ -640,10 +617,8 @@ class AnalizadorLexicoTest {
         assertEquals("x", segundo.lexema());
     }
 
-    // Logro Multi-detección de Errores: tras un error se puede seguir
-    // escaneando SIN repetir el mismo error indefinidamente (invariante de
-    // terminación, agents/manejo-de-errores.md). No hace falta ningún paso de recuperación:
-    // el estado que lanzó ya consumió el carácter que reportó.
+    // Multi-detección: tras un error se sigue escaneando sin repetirlo para siempre,
+    // porque el estado que lanzó ya consumió lo que reportó.
     @Test
     void trasUnErrorLexicoSePuedeSeguirEscaneando(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "#v1");
@@ -667,8 +642,7 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.EOF, token.tipo());
     }
 
-    // Logro Unicodes: caracteres no-ASCII crudos dentro de literales char/string,
-    // y la secuencia escapada de 4 hex dígitos (backslash + u + hex*4).
+    // Logro Unicodes: no-ASCII crudos en literales, y el escape de 4 hex dígitos.
     @Test
     void stringLiteralAceptaCaracteresUnicodeCrudos(@TempDir Path dir) throws Exception {
         Token token = crearAnalizador(dir, "\"ñoño 中文 café\"").proximoToken();
@@ -685,9 +659,8 @@ class AnalizadorLexicoTest {
         assertEquals("'ñ'", token.lexema());
     }
 
-    // NOTA: se concatena "\\" con "u" + hex por separado en vez de escribir
-    // la secuencia de corrido — javac decodifica esa secuencia como escape
-    // Unicode DEL PROPIO ARCHIVO FUENTE antes de tokenizar strings.
+    // Se concatena en vez de escribir la secuencia de corrido: javac la decodificaría
+    // como escape Unicode de ESTE archivo antes de tokenizar (JLS §3.3).
     @Test
     void charLiteralAceptaEscapeUnicodeDeCuatroHexDigitos(@TempDir Path dir) throws Exception {
         String fuente = "'\\" + "u0041'";
@@ -722,9 +695,8 @@ class AnalizadorLexicoTest {
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
-    // El JLS (§3.3) permite repetir el marcador 'u' del escape Unicode
-    // (\uu0041, \uuu0041, ...) — semántica heredada tal cual en MiniJava
-    // ante la falta de especificación propia de la cátedra (agents/especificacion-lexica.md).
+    // JLS §3.3 permite repetir el marcador 'u'; heredado tal cual ante la falta de
+    // especificación propia de la cátedra.
     @Test
     void charLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
         String fuente = "'\\" + "uu0041'";
@@ -743,15 +715,8 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
-    // JLS §3.10.7 (verificado contra la especificación, no de memoria): en un
-    // litString sólo son válidos los escapes b,s,t,n,f,r,",',\ y un dígito
-    // octal 0-7 (más el escape unicode, que ya tiene su propio test arriba)
-    // — cualquier otro carácter tras la barra es error de compilación en
-    // Java real. A
-    // diferencia de charLiteral, la cátedra NO dice "\x con x cualquiera"
-    // para litString (Aspectos Lexicos §2.3.3 sólo cita a Java para el caso
-    // \"), así que acá aplica la regla "ante la duda, como en Java" en vez
-    // de la permisividad explícita que sí tiene charLiteral (AGENTS.md §0.1).
+    // JLS §3.10.7: en un litString sólo valen b,s,t,n,f,r,",',\ y un octal 0-7.
+    // La cátedra no le da a litString la permisividad que sí le da a charLiteral.
     @ParameterizedTest
     @ValueSource(strings = {"b", "s", "t", "n", "f", "r", "\"", "'", "\\", "0", "7"})
     void stringLiteralAceptaSoloLosEscapesValidosDeJava(String escape, @TempDir Path dir)
@@ -763,11 +728,8 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
-    // Un escape inválido dentro de un litString es un error FATAL: se reporta
-    // el primero y se descarta lo que queda del literal hasta su comilla de
-    // cierre, sin emitir token. Criterio indicado por el profesor de la
-    // materia; ver documentacion/decisiones.md §4.3. El lexema del error llega
-    // hasta el carácter ofensivo, como exige Pautas Etapa 1 slide 24.
+    // Fatal: se reporta el primero y se descarta el literal hasta su comilla de
+    // cierre, sin emitir token. Criterio del profesor (decisiones.md §4.3).
     @ParameterizedTest
     @ValueSource(strings = {"q", "x", "d", "8", "9", "A"})
     void stringLiteralConEscapeInvalidoSegunJavaEsErrorFatal(String escape, @TempDir Path dir)
@@ -783,9 +745,7 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // Dos escapes inválidos en el mismo literal reportan sólo el primero: el
-    // segundo es un defecto derivado del mismo literal roto, no un error
-    // nuevo, y para cuando se lo alcanzaría el literal ya fue descartado.
+    // Sólo el primero: el segundo es un defecto derivado del mismo literal roto.
     @Test
     void dosEscapesInvalidosEnUnStringReportanSoloElPrimero(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\q b\\z c\"");
@@ -798,8 +758,7 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // El descarte para en la comilla de CIERRE, no se come el resto de la
-    // línea: los tokens que siguen al literal roto se reconocen normalmente.
+    // El descarte para en la comilla de CIERRE, no se come el resto de la línea.
     @Test
     void trasElDescarteElAnalisisSigueEnElTokenPosteriorALaComillaDeCierre(@TempDir Path dir)
             throws Exception {
@@ -815,8 +774,8 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // Un literal roto no enmascara al siguiente: la multi-detección sigue
-    // viva, lo que se pierde es sólo el segundo error DENTRO de un literal.
+    // La multi-detección sigue viva: lo único que se pierde es un segundo error
+    // DENTRO del mismo literal.
     @Test
     void unSegundoLitStringRotoEnLaMismaLineaReportaSuPropioError(@TempDir Path dir)
             throws Exception {
@@ -832,8 +791,7 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // Un litString no cruza líneas: si no hay comilla de cierre el descarte se
-    // detiene en el salto y la línea siguiente se analiza intacta.
+    // Sin comilla de cierre, el descarte se detiene en el salto de línea.
     @Test
     void elDescarteNoSeComeLaLineaSiguienteCuandoFaltaLaComillaDeCierre(@TempDir Path dir)
             throws Exception {
@@ -848,9 +806,7 @@ class AnalizadorLexicoTest {
         assertEquals(2, identificador.linea());
     }
 
-    // Misma regla para el escape Unicode mal formado: dentro de un litString
-    // también descarta hasta la comilla de cierre, así el proyecto tiene UN
-    // criterio para "escape mal formado dentro de un litString" y no dos.
+    // Misma regla para el Unicode mal formado: un solo criterio, no dos.
     @Test
     void escapeUnicodeMalFormadoEnUnStringDescartaHastaLaComillaDeCierre(@TempDir Path dir)
             throws Exception {
@@ -864,9 +820,7 @@ class AnalizadorLexicoTest {
         assertEquals(TipoDeToken.OP_SUMA, analizador.proximoToken().tipo());
     }
 
-    // Regresión del alcance: en un charLiteral NO hay resincronización — no
-    // hay literal que descartar (la cátedra permite '\x' con x cualquiera) y
-    // la recuperación sigue siendo estructural, como siempre.
+    // Regresión del alcance: en un charLiteral no hay resincronización.
     @Test
     void escapeUnicodeMalFormadoEnUnCharLiteralConservaLaRecuperacionEstructural(@TempDir Path dir)
             throws Exception {
@@ -880,9 +834,7 @@ class AnalizadorLexicoTest {
         assertEquals("G4", siguiente.lexema());
     }
 
-    // Logro Floats I desactivado: la corrida de dígitos no continúa hacia
-    // un floatLiteral — '.' y 'e'/'E' terminan el intLiteral como cualquier
-    // otro carácter no numérico.
+    // Sin el logro Floats I, '.' y 'e'/'E' terminan el intLiteral.
     @Test
     void conFloatsDeshabilitadosElPuntoNoContinuaElEntero(@TempDir Path dir) throws Exception {
         var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
@@ -913,18 +865,9 @@ class AnalizadorLexicoTest {
         assertEquals("e5", segundo.lexema());
     }
 
-    // Logro Unicodes desactivado: la barra invertida seguida de 'u' dentro
-    // de un litString deja de ser el marcador del escape especial — 'u' no
-    // está en el conjunto de escapes válidos de Java (§ escapes de un
-    // carácter), así que pasa a ser un escape inválido, igual que '\q'.
-    //
-    // OJO: este comentario NO puede escribir esa secuencia literal. javac
-    // traduce los escapes unicode en TODO el archivo fuente antes de
-    // tokenizar, comentarios incluidos (JLS §3.3 — la misma regla que
-    // implementa EstadoMarcadorUnicode), y sin 4 dígitos hexadecimales
-    // detrás falla con "illegal unicode escape". MiniJava, en cambio, no
-    // hace esa pre-traducción: ver los casos de resources/sinErrores/
-    // comentarioConEscapeUnicode.java.
+    // Sin el logro Unicodes la 'u' deja de ser marcador y pasa a ser un escape
+    // inválido. Ojo: no escribir la secuencia literal acá, javac la decodifica
+    // hasta en los comentarios (JLS §3.3) y falla sin 4 hex dígitos detrás.
     @Test
     void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsError(@TempDir Path dir) throws Exception {
         var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
