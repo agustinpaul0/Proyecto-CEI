@@ -16,6 +16,7 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
     private char[] contenido;
     private int posicion;
     private int numeroDeLinea;
+    private int lineaDevuelta;
     private int inicioDeLineaActual;
     private int inicioDeLineaDevuelta;
     private int columnaSiguiente;
@@ -25,9 +26,11 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
     @Override
     public void open(String filePath) throws FileNotFoundException {
         try {
-            // new String(bytes, UTF_8) mapea lo mal formado a U+FFFD en vez de
-            // lanzar como Files.readString: un binario da errores léxicos, no un crash.
-            String texto = new String(Files.readAllBytes(Path.of(filePath)), StandardCharsets.UTF_8);
+            // El IDE sugiere Files.readString: NO aplicar. Ante bytes UTF-8 inválidos
+            // ésa lanza MalformedInputException (verificado) y esto los mapea a U+FFFD:
+            // un binario tiene que dar errores léxicos, no matar el compilador.
+            byte[] bytes = Files.readAllBytes(Path.of(filePath));
+            String texto = new String(bytes, StandardCharsets.UTF_8);
             contenido = texto.replace("\r\n", "\n").replace('\r', '\n').toCharArray();
         } catch (NoSuchFileException excepcion) {
             throw new FileNotFoundException(filePath);
@@ -37,6 +40,7 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         posicion = 0;
         devolvioFinDeArchivo = false;
         numeroDeLinea = 1;
+        lineaDevuelta = 1;
         inicioDeLineaActual = 0;
         columnaSiguiente = 1;
     }
@@ -49,16 +53,14 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
     @Override
     public char getNextChar() {
         if (posicion >= contenido.length) {
-            columnaDevuelta = columnaSiguiente;
-            inicioDeLineaDevuelta = inicioDeLineaActual;
+            fotografiarPosicion();
             devolvioFinDeArchivo = true;
             return SourceManager.END_OF_FILE;
         }
         char actual = contenido[posicion++];
-        columnaDevuelta = columnaSiguiente;
-        // Antes de mutar inicioDeLineaActual: si no, getCurrentLineText() muestra
-        // la línea siguiente justo al devolver el '\n' que termina la actual.
-        inicioDeLineaDevuelta = inicioDeLineaActual;
+        // Antes de mutar: si no, los tres datos describen la línea SIGUIENTE justo
+        // al devolver el '\n' que termina la actual.
+        fotografiarPosicion();
         if (actual == '\n') {
             numeroDeLinea++;
             columnaSiguiente = 1;
@@ -74,9 +76,11 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
         return devolvioFinDeArchivo;
     }
 
+    // Los tres accesores describen el mismo carácter: el último devuelto, que es
+    // el lookahead del léxico. Mezclarlos deja el '^' señalando texto ajeno.
     @Override
     public int getLineNumber() {
-        return numeroDeLinea;
+        return lineaDevuelta;
     }
 
     @Override
@@ -91,5 +95,11 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
             fin++;
         }
         return new String(contenido, inicioDeLineaDevuelta, fin - inicioDeLineaDevuelta);
+    }
+
+    private void fotografiarPosicion() {
+        lineaDevuelta = numeroDeLinea;
+        columnaDevuelta = columnaSiguiente;
+        inicioDeLineaDevuelta = inicioDeLineaActual;
     }
 }

@@ -47,18 +47,37 @@ por estado, trazado paso a paso) en [`../documentacion/patron-state.md`](../docu
 
 ```
 minijava/
-├── aplicacion/     Main (punto de entrada), ModuloPrincipal, FormateadorDeError
+├── aplicacion/     Main (punto de entrada), ModuloPrincipal
+├── config/          ConfiguracionDelCompilador (flags de logros)
 ├── io/              SourceManager + SourceManagerImpl (interfaz e impl ORIGINALES de la
 │                     cátedra, contenido sin tocar — sólo se movió el `package` al mudarlas
 │                     acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo
 │                     (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
-├── lexico/          AnalizadorLexico, ContextoLexico (fachada de BuilderDeLexema +
-│                     FabricaDeExcepcionesLexicas), tabla de palabras clave
-│   └── estados/     un componente por estado del AF (patrón State)
-├── tokens/          Token (record inmutable), TipoDeToken
-├── errores/         ExcepcionLexica, tipos de error, formateadores, estrategia de recuperación
-└── salida/          interfaz Salida + implementaciones (real / en memoria para tests)
+├── errores/         ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError, PosicionLexica
+│                     (las coordenadas del reporte), EscapadorDeNoImprimibles
+├── tokens/          Token (record inmutable), TipoDeToken, TablaDePalabrasClave
+├── salida/          interfaz Salida + implementaciones (real / en memoria para tests)
+└── lexico/          AnalizadorLexico (el driver)
+    ├── automata/       EstadoLexico, ResultadoDeTransicion + Continuar/Emitir
+    ├── contexto/       ContextoLexico (fachada de BuilderDeLexema +
+    │                    FabricaDeExcepcionesLexicas), AnclaDeError
+    ├── recuperacion/   RecuperacionDeLitString (el único modo pánico que hay)
+    └── estados/        EstadoInicial (el despachador) y un componente por estado del AF
+                         (patrón State), agrupados por familia léxica: comentarios/,
+                         identificadores/, literales/, numeros/, operadores/
 ```
+
+**Criterio de ubicación, para no volver a discutirlo caso por caso**: `PosicionLexica` vive en
+`errores/` porque línea + columna + línea fuente son las coordenadas del reporte, no del autómata;
+`TablaDePalabrasClave` en `tokens/` porque su única razón de existir es decidir qué `TipoDeToken`
+corresponde a un lexema; `RecuperacionDeLitString` fuera de `estados/` porque no es un estado del AF.
+`FabricaDeExcepcionesLexicas` se queda del lado de `lexico/` a propósito: moverla a `errores/`
+invertiría la dirección de la dependencia entre los dos paquetes.
+
+El corte de `estados/` en familias deja package-private a `EstadosFloat.esSufijoFloat()` y a
+`EstadoIdMV.esAlfanumericoOGuion()` (sus llamadores caen dentro de su propia familia). El único que
+pierde encapsulamiento es `RecuperacionDeLitString`, que pasa a `public` — a cambio queda
+directamente testeable en vez de sólo a través de un litString completo.
 
 Tests bajo `compilador/src/test/java/`: `catedra/` (los 2 testers de la cátedra, paquete propio —
 no son entregables, se pueden editar libremente) y `minijava/...` (espejo de la estructura de
@@ -100,8 +119,13 @@ sólo `java.io`) es un requisito para pasar los tests de la cátedra, no un extr
 otro logro sea necesario expandir la interface provista"*) con `getColumnNumber()` y
 `getCurrentLineText()`, necesarios para el Reporte de Error Elegante.
 
-**Semántica a implementar en el reemplazo**: el contador de línea se incrementa **después** de
-devolver un `\n`; con eso los tres casos de EOF de arriba salen correctos sin casos especiales. Los
+**Semántica a implementar en el reemplazo**: `getLineNumber()`, `getColumnNumber()` y
+`getCurrentLineText()` describen **el mismo carácter, el último devuelto** — los tres se fotografían
+al entrar a `getNextChar()`, antes de mutar los contadores. El contador interno se sigue
+incrementando al devolver el `\n`, pero lo observable es la foto: mientras el `\n` es el último
+devuelto la línea es todavía la suya, y con eso los tres casos de EOF de arriba salen correctos sin
+casos especiales. Esa simetría es la que hace innecesario el contador propio que `BuilderDeLexema`
+mantenía en paralelo. Los
 tres convenios de salto de línea (`\n`, `\r`, `\r\n`) se normalizan a `\n` antes de entregar el
 carácter al léxico, así el autómata sólo ve un tipo de salto y cuenta líneas igual sin importar el
 convenio del archivo fuente.

@@ -1,18 +1,19 @@
 package catedra;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import minijava.aplicacion.Main;
-
+import minijava.casos.VolcadoDeCasos;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
@@ -32,10 +33,9 @@ public class TesterDeCasosConErrores {
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-
-    // Cambiar a true solo para ver la salida del compilador durante la ejecucion de los tests.
-    private final boolean fullCompilerOutputPrintingInEachTest = false;
+    // Estática y capturada al cargar la clase: setUp() redirige System.out para
+    // capturar al compilador, y @AfterClass no ve los campos de instancia.
+    private static final PrintStream CONSOLA = System.out;
 
     private final String input;
 
@@ -51,7 +51,7 @@ public class TesterDeCasosConErrores {
 
     @After
     public void tearDown() {
-        System.setOut(originalOut);
+        System.setOut(CONSOLA);
     }
 
     @Parameters(name = "{0}")
@@ -79,6 +79,11 @@ public class TesterDeCasosConErrores {
         return names;
     }
 
+    @AfterClass
+    public static void informarElCorpusProcesado() {
+        VolcadoDeCasos.resumirDirectorio(CONSOLA, TEST_FILES_DIRECTORY_PATH);
+    }
+
     @Test
     public void testIterado() {
         probarFallo(input);
@@ -92,11 +97,9 @@ public class TesterDeCasosConErrores {
 
         String salida = outContent.toString();
 
-        if (fullCompilerOutputPrintingInEachTest) {
-            originalOut.println("----- Salida de " + path + " -----");
-            originalOut.print(salida);
-            originalOut.println("--------------------------------");
-        }
+        // CONSOLA y no System.out: setUp() lo tiene redirigido para capturar al
+        // compilador. Qué imprime lo decide -Dvolcado (VolcadoDeCasos).
+        VolcadoDeCasos.volcar(CONSOLA, path, salida);
 
         assertThat(
                 "No se encontro el codigo: " + errorCode + " en: " + path

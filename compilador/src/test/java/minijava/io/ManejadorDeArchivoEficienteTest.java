@@ -39,11 +39,23 @@ class ManejadorDeArchivoEficienteTest {
         assertEquals(1, manejador.getLineNumber());
     }
 
+    // getLineNumber() describe el carácter DEVUELTO, no el próximo: mientras el
+    // '\n' es el último devuelto la línea sigue siendo la suya. El léxico depende
+    // de eso — un estado que mira el '\n' como lookahead reporta su propia línea.
+    @Test
+    void elSaltoDeLineaTodaviaPerteneceALaLineaQueTermina(@TempDir Path dir) throws IOException {
+        manejador.open(escribir(dir, "f.txt", "A\nB").toString());
+        manejador.getNextChar();
+        assertEquals('\n', manejador.getNextChar());
+        assertEquals(1, manejador.getLineNumber());
+    }
+
     @Test
     void saltoDeLineaLfAvanzaLaLinea(@TempDir Path dir) throws IOException {
         manejador.open(escribir(dir, "f.txt", "A\nB").toString());
         manejador.getNextChar();
         manejador.getNextChar();
+        assertEquals('B', manejador.getNextChar());
         assertEquals(2, manejador.getLineNumber());
     }
 
@@ -52,6 +64,7 @@ class ManejadorDeArchivoEficienteTest {
         manejador.open(escribir(dir, "f.txt", "A\r\nB").toString());
         manejador.getNextChar();
         manejador.getNextChar();
+        assertEquals('B', manejador.getNextChar());
         assertEquals(2, manejador.getLineNumber());
     }
 
@@ -60,7 +73,29 @@ class ManejadorDeArchivoEficienteTest {
         manejador.open(escribir(dir, "f.txt", "A\rB").toString());
         manejador.getNextChar();
         manejador.getNextChar();
+        assertEquals('B', manejador.getNextChar());
         assertEquals(2, manejador.getLineNumber());
+    }
+
+    // La invariante que hace innecesario el contador propio que tenía
+    // BuilderDeLexema: los tres accesores describen SIEMPRE el mismo carácter.
+    @Test
+    void losTresDatosDePosicionDescribenElMismoCaracter(@TempDir Path dir) throws IOException {
+        String fuente = "uno\ndos dos\n\ncuatro";
+        manejador.open(escribir(dir, "f.txt", fuente).toString());
+        String[] lineas = fuente.split("\n", -1);
+
+        char c;
+        while ((c = manejador.getNextChar()) != SourceManager.END_OF_FILE) {
+            int linea = manejador.getLineNumber();
+            String textoDeLaLinea = lineas[linea - 1];
+            assertEquals(textoDeLaLinea, manejador.getCurrentLineText(),
+                    "la línea fuente no es la de getLineNumber()");
+            int columna = manejador.getColumnNumber();
+            char esperado = columna > textoDeLaLinea.length() ? '\n' : textoDeLaLinea.charAt(columna - 1);
+            assertEquals(esperado, c,
+                    "el carácter devuelto no es el de (linea " + linea + ", columna " + columna + ")");
+        }
     }
 
     @Test

@@ -389,6 +389,28 @@ línea o de archivo, el literal **nunca se cerró**; si fue un carácter cualqui
 más de un carácter**. Son dos problemas distintos y merecen dos mensajes distintos. Sólo cambia el
 encabezado legible: el código `[Error:Lexema|NroLinea]` no cambia ni de formato ni de contenido.
 
+### 4.8. Un comentario de línea no puede estar mal formado
+
+**Fuente**: derivado de la gramática, verificado contra el código y contra `javac`.
+
+Vale dejarlo escrito porque la pregunta reaparece: **no falta ningún caso de prueba de "comentarios
+de línea mal formados", porque esa categoría de error no existe**. Un `//` se cierra con un `'\n'` o
+con el fin de archivo, y las dos terminaciones son igual de válidas — `javac` compila sin una queja
+un archivo cuya última línea es un comentario sin salto final. Por eso `EstadoComentarioDeLinea` no
+tiene ninguna rama de error y no hay ningún `TipoDeErrorLexico` que pueda producir: descarta
+caracteres hasta una de esas dos condiciones y vuelve a `EstadoInicial`.
+
+El único error de la familia comentario es `COMENTARIO_SIN_CERRAR`, exclusivo de `/* */`, que sí
+tiene una terminación obligatoria.
+
+Lo que sí hacía falta cubrir son los **bordes**, y ahí el corpus tenía huecos reales: qué pasa con un
+`//` que contiene una construcción que en otro contexto abriría algo (`"`, `'`, `/*`), con un `//`
+vacío entre dos tokens, con uno terminado en barra invertida (Java no tiene continuación de línea) y
+con uno cerrado por `\r` solo o por `\r\n`. Los casos que terminan exactamente en el constructo
+—el archivo entero es `//`, o `/*`, o `/`— no se pueden escribir en el formato del corpus, porque
+sus líneas de oráculo son ellas mismas comentarios y quedarían después; viven como unit tests en
+`AnalizadorLexicoTest`.
+
 ## 5. Decisiones de arquitectura
 
 Desarrolladas en [`arquitectura.md`](arquitectura.md) §5; resumen con su justificación:

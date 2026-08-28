@@ -2,13 +2,22 @@ package minijava.lexico.estados;
 
 import minijava.errores.ExcepcionLexica;
 import minijava.errores.TipoDeErrorLexico;
-import minijava.lexico.ContextoLexico;
-import minijava.lexico.Continuar;
-import minijava.lexico.Emitir;
-import minijava.lexico.EstadoLexico;
-import minijava.lexico.ResultadoDeTransicion;
-import minijava.tokens.Token;
+import minijava.lexico.automata.Continuar;
+import minijava.lexico.automata.Emitir;
+import minijava.lexico.automata.EstadoLexico;
+import minijava.lexico.automata.ResultadoDeTransicion;
+import minijava.lexico.contexto.AnclaDeError;
+import minijava.lexico.contexto.ContextoLexico;
+import minijava.lexico.estados.comentarios.EstadoBarra;
+import minijava.lexico.estados.identificadores.EstadoIdGenOClase;
+import minijava.lexico.estados.identificadores.EstadoIdMV;
+import minijava.lexico.estados.literales.EstadoCharAbierto;
+import minijava.lexico.estados.literales.EstadoStringAbierto;
+import minijava.lexico.estados.numeros.EstadoEntero;
+import minijava.lexico.estados.operadores.EstadoOperadorConSufijoOpcional;
+import minijava.lexico.estados.operadores.EstadoOperadorDoble;
 import minijava.tokens.TipoDeToken;
+import minijava.tokens.Token;
 
 import java.util.Map;
 
@@ -97,7 +106,8 @@ public final class EstadoInicial implements EstadoLexico {
         }
         // Se consume el ofensivo: es lo que se reporta, y sin eso el análisis no avanza.
         contexto.avanzar();
-        throw contexto.crearExcepcionLexicaSobreElUltimoConsumido(TipoDeErrorLexico.CARACTER_DESCONOCIDO);
+        throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO,
+                AnclaDeError.ULTIMO_CONSUMIDO);
     }
 
     private static boolean esBlanco(char c) {

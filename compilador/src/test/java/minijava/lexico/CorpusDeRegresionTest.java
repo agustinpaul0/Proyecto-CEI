@@ -1,7 +1,9 @@
 package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipal;
+import minijava.casos.VolcadoDeCasos;
 import minijava.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,6 +45,7 @@ class CorpusDeRegresionTest {
         new ModuloPrincipal(salida).ejecutar(caso.toString());
 
         List<String> lineas = salida.getLineas();
+        VolcadoDeCasos.volcar(caso.toString(), lineas);
         assertFalse(lineas.isEmpty(), () -> caso + ": no produjo ninguna salida");
         assertTrue(lineas.stream().anyMatch(l -> l.startsWith("(EOF,")),
                 () -> caso + ": el analisis no llego al token EOF.\n" + String.join("\n", lineas));
@@ -53,6 +56,11 @@ class CorpusDeRegresionTest {
                         .noneMatch(l -> l.chars().anyMatch(c -> c < 0x20)),
                 () -> caso + ": un codigo de error lleva un caracter de control crudo.\n"
                         + String.join("\n", lineas));
+    }
+
+    @AfterAll
+    static void informarElCorpusProcesado() {
+        VolcadoDeCasos.resumirDirectorio(DIRECTORIO.toString());
     }
 
     // Si alguien borra el directorio, el test de arriba pasaría vacío y en silencio.

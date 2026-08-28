@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class FormateadorDeErrorTest {
 
     private ExcepcionLexica excepcionDeEjemplo() {
-        return new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#", 2, 5, "v1 + # chau");
+        return new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#",
+                new PosicionLexica(2, 5, "v1 + # chau"));
     }
 
     @Test
@@ -33,11 +34,13 @@ class FormateadorDeErrorTest {
                 formateador.formatear(excepcionDeEjemplo()).get(0));
         assertEquals("Error Léxico en línea 3, columna 2: charLiteral sin cerrar: 'a",
                 formateador.formatear(
-                        new ExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR, "'a", 3, 2, "'a")).get(0));
+                        new ExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR, "'a",
+                                new PosicionLexica(3, 2, "'a"))).get(0));
         assertEquals("Error Léxico en línea 1, columna 3: "
                         + "charLiteral mal formado, contiene más de un carácter: 'a",
                 formateador.formatear(
-                        new ExcepcionLexica(TipoDeErrorLexico.CHAR_MAL_FORMADO, "'a", 1, 3, "'ab'")).get(0));
+                        new ExcepcionLexica(TipoDeErrorLexico.CHAR_MAL_FORMADO, "'a",
+                                new PosicionLexica(1, 3, "'ab'"))).get(0));
     }
 
     // Pautas slide 24 obliga al "lexema armado hasta el error", que no ES la
@@ -46,8 +49,8 @@ class FormateadorDeErrorTest {
     @Test
     void elEncabezadoDeUnEscapeInvalidoNombraLaSecuenciaYElLexemaArmado() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
-        var excepcion = new ExcepcionLexica(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO,
-                "\"a\\q", 7, 4, "\"a\\q b\\z c\"", "\\q");
+        var excepcion = new ExcepcionLexica(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, "\"a\\q",
+                new PosicionLexica(7, 4, "\"a\\q b\\z c\""), "\\q");
 
         List<String> lineas = formateador.formatear(excepcion);
 
@@ -64,7 +67,7 @@ class FormateadorDeErrorTest {
 
         for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
             String encabezado = formateador.formatear(
-                    new ExcepcionLexica(tipo, "x", 1, 1, "x")).get(0);
+                    new ExcepcionLexica(tipo, "x", new PosicionLexica(1, 1, "x"))).get(0);
             assertFalse(encabezado.contains("null"), () -> tipo + ": " + encabezado);
         }
     }
@@ -77,9 +80,11 @@ class FormateadorDeErrorTest {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
 
         List<String> conTab = formateador.formatear(
-                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#", 1, 3, "a\t#"));
+                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#",
+                        new PosicionLexica(1, 3, "a\t#")));
         List<String> conCjk = formateador.formatear(
-                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#", 1, 3, "\u4E2D\u6587#"));
+                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#",
+                        new PosicionLexica(1, 3, "\u4E2D\u6587#")));
 
         for (List<String> lineas : List.of(conTab, conCjk)) {
             String detalle = lineas.get(1);

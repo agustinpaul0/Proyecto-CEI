@@ -168,8 +168,17 @@ a la línea siguiente; si `getCurrentLineText()` respondiera con el cursor actua
 error ocurrido en ese `\n` mostraría **la línea siguiente**, con el `^` apuntando a texto que no tiene
 nada que ver.
 
-El contador de línea sigue el mismo criterio: se incrementa **después** de devolver el `\n`. Con eso,
-los tres casos de EOF de §2.1 salen correctos sin ningún caso especial.
+El número de línea sigue el mismo criterio, y por la misma razón: `getLineNumber()` responde con la
+línea del carácter **devuelto**, no con la del próximo. Los tres datos se fotografían juntos al
+entrar a `getNextChar()`, antes de tocar los contadores internos —que sí avanzan al devolver el
+`\n`—, así que mientras el `\n` es el último devuelto la línea es todavía la suya. Con eso los tres
+casos de EOF de §2.1 salen correctos sin ningún caso especial.
+
+Que los tres accesores describan siempre el mismo carácter no es cosmético: mientras `getLineNumber()`
+se adelantaba y los otros dos no, el analizador tenía que llevar **su propio** contador de líneas en
+paralelo (`BuilderDeLexema`) para no reportar la línea siguiente cada vez que un estado se topaba con
+un salto inesperado. Ese contador duplicado ya no existe: la asimetría era del manejador, y se
+arregló donde estaba.
 
 ## 5. La decisión discutible: se carga el archivo entero en memoria
 

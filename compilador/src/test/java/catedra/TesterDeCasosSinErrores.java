@@ -6,9 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 import minijava.aplicacion.Main;
-
+import minijava.casos.VolcadoDeCasos;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -27,10 +28,9 @@ public class TesterDeCasosSinErrores {
     private static final String EXPECTED_TOKEN_PREFIX = "//#";
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-
-    // Cambiar a true solo para ver la salida del compilador durante la ejecucion de los tests.
-    private final boolean fullCompilerOutputPrintingInEachTest = false;
+    // Estática y capturada al cargar la clase: setUp() redirige System.out para
+    // capturar al compilador, y @AfterClass no ve los campos de instancia.
+    private static final PrintStream CONSOLA = System.out;
 
     private final String input;
 
@@ -46,7 +46,7 @@ public class TesterDeCasosSinErrores {
 
     @After
     public void tearDown() {
-        System.setOut(originalOut);
+        System.setOut(CONSOLA);
     }
 
     @Parameterized.Parameters(name = "{0}")
@@ -73,6 +73,11 @@ public class TesterDeCasosSinErrores {
         return names;
     }
 
+    @AfterClass
+    public static void informarElCorpusProcesado() {
+        VolcadoDeCasos.resumirDirectorio(CONSOLA, TEST_FILES_DIRECTORY_PATH);
+    }
+
     @Test
     public void testIterado() {
         probarExito(input);
@@ -86,11 +91,9 @@ public class TesterDeCasosSinErrores {
 
         String salida = outContent.toString();
 
-        if (fullCompilerOutputPrintingInEachTest) {
-            originalOut.println("----- Salida de " + path + " -----");
-            originalOut.print(salida);
-            originalOut.println("--------------------------------");
-        }
+        // CONSOLA y no System.out: setUp() lo tiene redirigido para capturar al
+        // compilador. Qué imprime lo decide -Dvolcado (VolcadoDeCasos).
+        VolcadoDeCasos.volcar(CONSOLA, path, salida);
 
         assertThat(
                 "No se informo analisis exitoso en: " + path

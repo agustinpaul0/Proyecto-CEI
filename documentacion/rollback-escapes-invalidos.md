@@ -137,8 +137,9 @@ Reemplazar el bloque del escape inválido por:
 ```java
 if (ESCAPES_DE_UN_CARACTER.indexOf(actual) < 0 && !esDigitoOctal(actual)) {
     contexto.avanzar();
-    contexto.registrarError(contexto.crearExcepcionLexicaSobreElUltimoConsumido(
-            TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, "\\" + actual));
+    contexto.registrarError(contexto.crearExcepcionLexica(
+            TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, AnclaDeError.ULTIMO_CONSUMIDO,
+            "\\" + actual));
     return new Continuar(EstadoStringAbierto.INSTANCIA);
 }
 ```
@@ -149,14 +150,16 @@ if (ESCAPES_DE_UN_CARACTER.indexOf(actual) < 0 && !esDigitoOctal(actual)) {
 `EstadoEscapeUnicode` vuelve a lanzar sin resincronizar:
 
 ```java
-throw contexto.crearExcepcionLexica(TipoDeErrorLexico.UNICODE_MAL_FORMADO);
+throw contexto.crearExcepcionLexica(TipoDeErrorLexico.UNICODE_MAL_FORMADO,
+        AnclaDeError.LOOKAHEAD);
 ```
 
 Actualizar los dos call sites: `EstadoStringEscapado` y `EstadoCharEscapado`.
 
 ### 4.6. Borrar `RecuperacionDeLitString`
 
-`compilador/src/main/java/minijava/lexico/estados/RecuperacionDeLitString.java` queda sin usar.
+`compilador/src/main/java/minijava/lexico/recuperacion/RecuperacionDeLitString.java` queda sin
+usar, y con él todo el paquete `lexico/recuperacion/`.
 
 ### 4.7. Los cuatro tests
 

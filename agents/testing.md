@@ -145,9 +145,24 @@ el desplazamiento de la cabecera. **Las expectativas se predicen antes de correr
 lo primero es decidir si el equivocado es el oráculo o el compilador. Varios casos del corpus salen
 de haber predicho mal y haber ido a mirar por qué.
 
+## El volcado de la salida por caso, y por qué vuelve a estar prendido
+
+`484d0fc` había apagado el flag `fullCompilerOutputPrintingInEachTest` de los testers de la cátedra
+porque "llenaba de ruido cada corrida". El costo real de eso apareció después: con los cuatro
+runners de corpus mudos, la única forma de ver qué reporta el compilador sobre un caso es romperle
+el assert. Se revierte, pero con un interruptor y en los cuatro runners, no sólo en los dos de la
+cátedra: `minijava.casos.VolcadoDeCasos`, `-Dvolcado=completo|resumen|off` (completo por defecto,
+declarado en el `pom.xml` para que llegue al JVM forkeado). Cada caso imprime su encabezado, la
+salida entera del compilador y un pie con los conteos; cada suite cierra con
+`resources/<dir>: N casos procesados, M con errores`.
+
+**Regla para código nuevo**: un runner de corpus nuevo llama a `VolcadoDeCasos.volcar()` con la
+salida que ya tiene en la mano. Los que capturan `System.out` —los dos de la cátedra— tienen que
+pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
+
 ## Mutation testing (PIT) — score actual y por qué ciertos sobrevivientes no se cazan
 
-Última corrida: **92% de mutantes matados** (271/293), *test strength* 95%. Comando:
+Última corrida: **94% de mutantes matados** (306/327), *test strength* 97%. Comando:
 `mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (el goal no está bindeado a ninguna fase
 del profile, hay que invocarlo explícito).
 

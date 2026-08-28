@@ -161,14 +161,16 @@ compilador mantenga los casos sincronizados, en vez de confiar en que alguien se
 
 ## 6. Singleton compartido vs. instancia nueva — el criterio
 
-Mirando el paquete `minijava.lexico.estados` se ven dos estilos de construcción, y la elección
+Mirando `minijava.lexico.estados` y sus cinco subpaquetes por familia léxica (`comentarios/`,
+`identificadores/`, `literales/`, `numeros/`, `operadores/`) se ven dos estilos de construcción, y la
+elección
 **no es arbitraria**: depende de si el estado necesita recordar algo específico de *este* recorrido,
 o si su comportamiento es una función pura del `ContextoLexico` que recibe.
 
 ### Estados sin memoria propia → un único `INSTANCIA` compartido
 
 `EstadoInicial`, `EstadoIdMV`, `EstadoEntero`, `EstadoStringAbierto`, `EstadoCharCerrando` y la
-mayoría del paquete **no tienen ningún campo de instancia**. Todo lo que necesitan para decidir la
+mayoría de los estados **no tienen ningún campo de instancia**. Todo lo que necesitan para decidir la
 transición ya está en el contexto que reciben por parámetro. Como no cargan datos propios, una única
 instancia —creada una sola vez como constante estática— es segura de reutilizar en cualquier momento,
 para cualquier token, incluso de forma intercalada:

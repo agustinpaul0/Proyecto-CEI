@@ -6,10 +6,10 @@ import minijava.errores.FormateadorDeError;
 import minijava.io.ManejadorDeArchivo;
 import minijava.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
-import minijava.lexico.ContextoLexico;
+import minijava.lexico.contexto.ContextoLexico;
 import minijava.salida.Salida;
-import minijava.tokens.Token;
 import minijava.tokens.TipoDeToken;
+import minijava.tokens.Token;
 
 import java.io.IOException;
 

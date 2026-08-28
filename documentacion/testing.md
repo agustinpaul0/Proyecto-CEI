@@ -177,6 +177,9 @@ cd compilador
 mvn test                 # suite propia + los 2 testers de la cátedra, en la misma pasada
 mvn verify               # además exige el umbral de cobertura de JaCoCo
 mvn -Pmutacion test      # análisis de mutación con PIT
+
+mvn test -Dvolcado=resumen   # el volcado por caso, en su forma corta
+mvn test -Dvolcado=off       # sin volcado
 ```
 
 Los testers de la cátedra están escritos con JUnit 4; corren junto a los propios (JUnit 5) gracias al

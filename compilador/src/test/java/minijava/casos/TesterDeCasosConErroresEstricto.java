@@ -2,6 +2,7 @@ package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipal;
 import minijava.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -81,7 +82,14 @@ class TesterDeCasosConErroresEstricto {
     private List<String> ejecutar(Path caso) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
         new ModuloPrincipal(salida).ejecutar(caso.toString());
-        return salida.getLineas();
+        List<String> lineas = salida.getLineas();
+        VolcadoDeCasos.volcar(caso.toString(), lineas);
+        return lineas;
+    }
+
+    @AfterAll
+    static void informarElCorpusProcesado() {
+        VolcadoDeCasos.resumirDirectorio(DIRECTORIO.toString());
     }
 
     // Los códigos van literales (son el contrato); los tokens se normalizan a

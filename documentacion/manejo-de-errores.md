@@ -214,10 +214,10 @@ posición, ambas tomadas dentro de `avanzar()` justo antes de consumir —cuando
 `PosicionLexica`:
 
 - `posicionPrimerConsumido`: el **primer** carácter del lexema en curso. Es la que usan los errores
-  que hablan de la construcción entera, vía `crearExcepcionLexicaSobreElInicioDelLexema()`.
+  que hablan de la construcción entera, con el ancla `INICIO_DEL_LEXEMA`.
 - `posicionUltimoConsumido`: el **último** carácter que quedó en el lexema. Es la que usan los
   errores cuyo carácter ofensivo ya fue consumido antes del `throw` — un símbolo desconocido, un
-  escape inválido —, vía `crearExcepcionLexicaSobreElUltimoConsumido()`.
+  escape inválido —, con el ancla `ULTIMO_CONSUMIDO`.
 
 La distinción importa porque en el momento del `throw` el lookahead actual puede haber avanzado más
 allá del lexema: puede ser un espacio, un EOF o la letra siguiente, sin ninguna relación con el
@@ -239,7 +239,7 @@ corta el texto justo antes del salto de línea. El resultado visual: un `^` una 
 último carácter visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los
 estados que pueden toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar,
 escapes interrumpidos, exponentes sin dígitos). Se resolvió en un solo lugar:
-`FabricaDeExcepcionesLexicas.crearExcepcionLexica()` (la variante sin argumentos) usa
+`BuilderDeLexema.posicionDe(LOOKAHEAD)` usa
 automáticamente `posicionUltimoConsumido()` cuando detecta que el lookahead es EOF o `\n`, sin que
 cada estado individual tenga que saberlo.
 
@@ -257,7 +257,8 @@ es un salto de línea, **parte el código de error en dos líneas** y rompe el c
 un elemento por línea. Pasaba típicamente en cascadas: una comilla simple huérfana justo antes de un
 salto de línea real abre un char literal que "termina" en ese salto.
 
-La regla, aplicada en un solo lugar (`FabricaDeExcepcionesLexicas`, al construir la excepción): **todo carácter
+La regla, aplicada en un solo lugar (`EscapadorDeNoImprimibles`, que la fábrica invoca al construir
+la excepción): **todo carácter
 invisible del lexema de un error se renderiza con su escape de Java** (`\n`, `\r`, `\t`, `\f`, `\b`, o
 `\uXXXX` para el resto). Así el lexema reportado sigue siendo una descripción fiel de lo que se
 consumió, y siempre es imprimible.

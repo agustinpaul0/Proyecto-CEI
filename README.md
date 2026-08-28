@@ -38,6 +38,10 @@ cosa, esa regla explícita gana.
 cd compilador
 mvn test        # suite completa (tests propios + testers de la cátedra)
 mvn verify       # + chequeo de umbral de cobertura (JaCoCo)
+
+# La corrida imprime, por cada caso de resources/, la salida real del compilador.
+mvn test -Dvolcado=resumen   # una línea por caso + sus códigos de error
+mvn test -Dvolcado=off       # sin volcado
 mvn package      # genera compilador/target/Compilador.jar
 java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
 ```

@@ -195,7 +195,7 @@ Es la única desviación respecto de lo que muestran las slides, y es deliberada
 | Pieza | Rol |
 |---|---|
 | `EstadoLexico` | La interfaz común: un único método `procesar(contexto)`. |
-| `ContextoLexico` | Lo que todos los estados comparten, como fachada de dos piezas: `BuilderDeLexema` (el carácter que se está mirando, el lexema que se viene armando, la línea y las posiciones que los errores necesitan) y `FabricaDeExcepcionesLexicas` (el punto único donde se construye una `ExcepcionLexica`). Expone `avanzar()` (consumir el carácter y agregarlo al lexema) y `descartar()` (consumirlo sin agregarlo — blancos, comentarios y la resincronización de un `litString` roto). |
+| `ContextoLexico` | Lo que todos los estados comparten, como fachada de dos piezas: `BuilderDeLexema` (el carácter que se está mirando, el lexema que se viene armando y las posiciones que los errores necesitan) y `FabricaDeExcepcionesLexicas` (el punto único donde se construye una `ExcepcionLexica`). Expone `avanzar()` (consumir el carácter y agregarlo al lexema) y `descartar()` (consumirlo sin agregarlo — blancos, comentarios y la resincronización de un `litString` roto). |
 | `ResultadoDeTransicion` | Lo que devuelve `procesar()`. Es una `sealed interface` con exactamente dos implementaciones posibles. |
 | `Continuar(siguiente)` | "Todavía no hay token: seguí desde este otro estado." |
 | `Emitir(token)` | "El token está completo: acá está." |
@@ -254,12 +254,13 @@ separadas:
 
 | Pieza | De qué se ocupa |
 |---|---|
-| `BuilderDeLexema` | El lexema en construcción, el carácter que se está mirando, el contador de líneas y las dos fotos de posición. Todo lo que cambia al consumir un carácter. |
-| `FabricaDeExcepcionesLexicas` | Las cinco formas de construir una `ExcepcionLexica`, y el escapado de caracteres invisibles del lexema que se va a imprimir. |
+| `BuilderDeLexema` | El lexema en construcción, el carácter que se está mirando y las dos fotos de posición. Todo lo que cambia al consumir un carácter — más resolver un `AnclaDeError` a la `PosicionLexica` concreta, que es lo que él y sólo él puede hacer. |
+| `FabricaDeExcepcionesLexicas` | El punto único de construcción de una `ExcepcionLexica`: recibe el tipo y un `AnclaDeError` que dice dónde cae el `^`, y arma los campos consistentes entre sí. |
+| `EscapadorDeNoImprimibles` | Escapar los caracteres invisibles del lexema que se va a imprimir. Vive en `errores/`, aparte: es otra responsabilidad y se testea sola. |
 
-La división no es teórica: son los dos motivos por los que la clase cambiaba. Un ajuste en cómo se
-cuenta una línea y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí, y antes convivían
-en el mismo archivo junto con la lógica de escapado. Los estados no se enteraron del cambio: la
+La división no es teórica: son los motivos por los que la clase cambiaba. Un ajuste en cómo se cuenta
+una línea y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí, y antes convivían en el
+mismo archivo junto con la lógica de escapado — que hoy tampoco está ahí. Los estados no se enteraron del cambio: la
 fachada conserva exactamente la misma API que usaban.
 
 ### 5.3. Los cuatro logros de comportamiento se activan por configuración
@@ -321,12 +322,19 @@ compilador/
     │   ├── config/               ← ConfiguracionDelCompilador
     │   ├── io/                   ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
     │   │                            contenido intacto), ManejadorDeArchivo + el reemplazo propio
-    │   ├── tokens/               ← Token (record inmutable), TipoDeToken (56 valores)
-    │   ├── errores/              ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError
+    │   ├── tokens/               ← Token (record inmutable), TipoDeToken (56 valores),
+    │   │                            TablaDePalabrasClave (las 21 palabras reservadas)
+    │   ├── errores/              ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError,
+    │   │                            PosicionLexica, EscapadorDeNoImprimibles
     │   ├── salida/               ← interfaz Salida + SalidaEstandar
-    │   └── lexico/               ← AnalizadorLexico, ContextoLexico (+ BuilderDeLexema y
-    │       └── estados/             FabricaDeExcepcionesLexicas), PosicionLexica,
-    │                                TablaDePalabrasClave, y un archivo por estado del AF
+    │   └── lexico/               ← AnalizadorLexico (el driver)
+    │       ├── automata/         ← EstadoLexico, ResultadoDeTransicion, Continuar, Emitir
+    │       ├── contexto/         ← ContextoLexico (fachada de BuilderDeLexema y
+    │       │                        FabricaDeExcepcionesLexicas), AnclaDeError
+    │       ├── recuperacion/     ← RecuperacionDeLitString
+    │       └── estados/          ← EstadoInicial y un archivo por estado del AF, agrupados
+    │                                en comentarios/ identificadores/ literales/ numeros/
+    │                                operadores/
     └── test/java/
         ├── catedra/              ← los 2 testers de la cátedra (sólo se cambió el paquete y el
         │                            import de Main, cambio que la guía de uso autoriza)

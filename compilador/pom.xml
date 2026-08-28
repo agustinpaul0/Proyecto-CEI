@@ -14,6 +14,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.14.1</junit.version>
         <jqwik.version>1.9.1</jqwik.version>
+        <!-- Volcado a consola de la salida del compilador por cada caso del corpus:
+             completo (default) | resumen | off. Ver VolcadoDeCasos. -->
+        <volcado>completo</volcado>
     </properties>
 
     <dependencyManagement>
@@ -64,6 +67,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+                <configuration>
+                    <!-- Explícito y no confiando en la propagación implícita de -D
+                         al JVM forkeado: es un interruptor que se usa a mano. -->
+                    <systemPropertyVariables>
+                        <volcado>${volcado}</volcado>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -99,9 +109,9 @@
                     </execution>
                     <execution>
                         <!-- mvn verify falla si la cobertura baja de estos umbrales.
-                             Arrancan un poco por debajo de la cobertura real (93%/91%
-                             al configurar esto) para no romper con cualquier variación
-                             menor; subir a medida que la suite madure (AGENTS.md §11). -->
+                             Arrancan un poco por debajo de la cobertura real (94,4%/95,2%
+                             hoy) para no romper con cualquier variación menor; subir a
+                             medida que la suite madure. -->
                         <id>jacoco-check</id>
                         <phase>verify</phase>
                         <goals>

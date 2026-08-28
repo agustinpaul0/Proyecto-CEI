@@ -3,6 +3,11 @@ package minijava.lexico;
 import minijava.config.ConfiguracionDelCompilador;
 import minijava.errores.ExcepcionLexica;
 import minijava.io.ManejadorDeArchivo;
+import minijava.lexico.automata.Continuar;
+import minijava.lexico.automata.Emitir;
+import minijava.lexico.automata.EstadoLexico;
+import minijava.lexico.automata.ResultadoDeTransicion;
+import minijava.lexico.contexto.ContextoLexico;
 import minijava.lexico.estados.EstadoInicial;
 import minijava.tokens.Token;
 

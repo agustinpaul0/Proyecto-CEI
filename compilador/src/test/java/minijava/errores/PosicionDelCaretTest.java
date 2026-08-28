@@ -54,7 +54,13 @@ class PosicionDelCaretTest {
                 new Caso("exponente sin dígitos", "1e", 1,
                         "malformed floating-point literal — señala el primer carácter"),
                 new Caso("comentario multilínea sin cerrar", "/* sin cerrar", 1,
-                        "unclosed comment — señala la barra de apertura"));
+                        "unclosed comment — señala la barra de apertura"),
+                // El caso que distingue "la apertura" de "la columna 1". Corrida real:
+                //   T.java:1: error: unclosed comment
+                //   class T { } /*
+                //               ^
+                new Caso("comentario abierto en la última columna", "v2 /*", 4,
+                        "unclosed comment — señala la barra de apertura, no la columna 1"));
     }
 
     @ParameterizedTest
