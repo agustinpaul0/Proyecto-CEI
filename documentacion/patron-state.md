@@ -147,7 +147,7 @@ Funciona, pero tiene dos problemas de fondo que el `switch` resuelve:
 
 1. **No hay chequeo de exhaustividad.** Si mañana `ResultadoDeTransicion` ganara un tercer tipo, el
    código de arriba seguiría compilando igual, y el casteo `(Continuar) resultado` explotaría con un
-   `ClassCastException` recién cuando ese tercer caso realmente ocurriera. Un bug que el compilador
+   `ClassCastException` recién cuando ese tercer caso realmente ocurriera. Un defecto que el compilador
    podía atrapar se convierte en uno que sólo aparece en ejecución.
 2. **El casteo es manual y silencioso.** `((Continuar) resultado)` le pide al lector confiar en que
    "si no era `Emitir`, tiene que ser `Continuar`" — una inferencia correcta hoy, pero que nada deja
@@ -222,7 +222,7 @@ Se revisaron los 21 estados uno por uno para escribir esta sección, y los tres 
 No se trata de ahorrar objetos. Un estado con memoria propia **compartido** entre recorridos sería
 directamente incorrecto: dos comentarios multilínea en el mismo archivo reportarían la misma posición
 de apertura, y dos escapes Unicode se pisarían el contador. La regla existe para que sea imposible
-escribir ese bug: si el estado tiene un campo, no puede ser una constante.
+escribir ese defecto: si el estado tiene un campo, no puede ser una constante.
 
 ## 7. Cómo agregar un token nuevo
 

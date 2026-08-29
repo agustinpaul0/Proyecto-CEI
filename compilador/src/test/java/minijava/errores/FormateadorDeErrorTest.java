@@ -58,11 +58,9 @@ class FormateadorDeErrorTest {
         }
     }
 
-    // El '^' cuenta CARACTERES, no celdas de terminal: con un tab o con CJK apunta
-    // al índice correcto pero se ve corrido. Limitación aceptada; lo que se fija
-    // acá es que el índice nunca se vaya del largo de la línea.
+    // El detalle normaliza tabs y el '^' usa el mismo ancho visual que el detalle.
     @Test
-    void elCaretSeUbicaPorIndiceDeCaracterAunConTabsOCaracteresAnchos() {
+    void elCaretSeAlineaConTabsOCaracteresAnchos() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
 
         List<String> conTab = formateador.formatear(
@@ -72,13 +70,25 @@ class FormateadorDeErrorTest {
                 new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#",
                         new PosicionLexica(1, 3, "\u4E2D\u6587#")));
 
-        for (List<String> lineas : List.of(conTab, conCjk)) {
-            String detalle = lineas.get(1);
-            String caret = lineas.get(2);
-            int indice = caret.indexOf('^') - "Detalle: ".length();
-            assertEquals(2, indice, () -> "el caret deberia caer en el indice 2: " + lineas);
-            assertEquals('#', detalle.charAt("Detalle: ".length() + indice));
-        }
+        assertEquals(8, columnaDelCaret(conTab));
+        assertEquals(4, columnaDelCaret(conCjk));
+        assertEquals("Detalle: a       #", conTab.get(1));
+        assertEquals("Detalle: 中文#", conCjk.get(1));
+    }
+
+    @Test
+    void unaMarcaCombinanteSeEscapaParaQueElCaretSeaVisible() {
+        List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
+                .formatear(new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\u20cc",
+                        new PosicionLexica(1, 2, "(⃌>%")));
+
+        assertEquals("Detalle: (\\u20cc>%", lineas.get(1));
+        assertEquals("Detalle: ".length() + 1, lineas.get(2).indexOf('^'));
+        assertEquals("[Error:\\u20cc|1]", lineas.get(4));
+    }
+
+    private int columnaDelCaret(List<String> lineas) {
+        return lineas.get(2).indexOf('^') - "Detalle: ".length();
     }
 
     @Test

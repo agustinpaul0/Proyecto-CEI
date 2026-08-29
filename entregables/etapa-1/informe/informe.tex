@@ -291,9 +291,9 @@ estrella $+$ selector & \lex{U+2B50 U+FE0F} & 2 & error: \emph{mal formado} \\
 
 \medskip
 Todo lo que vive en el BMP (\lex{U+0000}--\lex{U+FFFF}) ocupa una unidad y entra sin problema; lo que
-está fuera se codifica como par subrogado y no entra. La última fila es la más traicionera: es la
+está fuera se codifica como par subrogado y no entra. La última fila requiere especial atención: es la
 misma estrella de la segunda fila \emph{más} un selector de variación \lex{U+FE0F} ---lo que suelen
-insertar el teclado o el celular--- y en pantalla se ve idéntica, pero son dos unidades y el literal
+insertar distintos métodos de entrada--- y en pantalla se ve idéntica, pero son dos unidades y el literal
 queda mal formado.
 
 Conviene subrayar que esto \textbf{no} es una divergencia respecto de Java sino una coincidencia:
@@ -830,6 +830,13 @@ Los lexemas de error nunca llevan un carácter invisible crudo: un salto de lín
 partiría la línea del reporte en dos y rompería el formato de un elemento por línea. Se renderizan
 con su escape (\lex{\bs n}, \lex{\bs t}, \lex{\bs u00a0}).
 
+Para que el puntero conserve su alineación en una terminal, el detalle expande cada tabulador a la
+siguiente posición de una tabulación de ocho columnas. El puntero se calcula con el ancho visual de
+los caracteres precedentes; por ello también conserva la alineación ante caracteres de ancho doble.
+Si el carácter señalado no posee una celda visible propia, como ocurre con una marca combinante, se
+lo muestra en notación \lex{\\uXXXX} y el puntero se ubica sobre el inicio de esa representación.
+La columna del encabezado mantiene, en cambio, el índice lógico del fuente.
+
 \subsection{Criterio de recuperación}
 
 \begin{quote}
@@ -847,7 +854,7 @@ La única excepción es el escape Unicode mal formado dentro de un \tok{litStrin
 lo que queda del literal hasta su comilla de cierre. Es recuperación en modo pánico con token de
 sincronización: el delimitador es la comilla de cierre, y el estado conocido al que se vuelve es
 ``fuera de todo literal''. Sin resincronizar, la comilla de \emph{cierre} abriría un literal nuevo
-que se comería el resto de la línea.
+que descartaría el resto de la línea.
 
 \subsection{Por qué el \tok{charLiteral} no resincroniza}
 \label{sec:asimetria}
@@ -867,14 +874,14 @@ sea contenido del literal. Descartarlo descartaría código.
 De ahí salen tres consecuencias concretas:
 
 \begin{description}
-\item[No hay nada que descartar.] El modo pánico existe para saltear una corrida de basura de largo
+	\item[No hay nada que descartar.] El modo pánico existe para saltear una secuencia residual de largo
   arbitrario. En un \tok{charLiteral} esa corrida tiene largo a lo sumo uno: al detectar el error se
   consumieron la comilla de apertura y un carácter.
 \item[La comilla simple no es un delimitador confiable.] En un \tok{litString} la \lex{"} de cierre
   es inequívoca, porque todo lo que está entre comillas es contenido. En un \tok{charLiteral}, una
   \lex{'} posterior puede ser tanto el cierre de éste como la apertura del siguiente ---y muchas
   veces no hay ninguna: en \lex{'a; x = 1;} no aparece una segunda comilla en toda la línea, así que
-  descartar hasta el cierre se comería cinco tokens legítimos.
+  descartar hasta el cierre descartaría cinco tokens legítimos.
 \item[La recuperación estructural ya alcanza.] Como el literal es acotado, el criterio general
   ---consumir exactamente lo que se reporta--- basta por sí solo: al reportar \lex{'a} la lectura
   quedó sobre el carácter ofensivo y el análisis retoma ahí sin ningún paso adicional.
@@ -935,7 +942,7 @@ diagnóstico, no en la recuperación: \lex{javac} usa un mismo mensaje para los 
 que acá se distingue \emph{sin cerrar} ---lo cortó un fin de línea o de archivo--- de \emph{mal
 formado} ---contiene más de un carácter---, que son dos problemas distintos y ayudan distinto.
 
-\paragraph{Por qué se acepta ese costo.} Porque la alternativa es peor. Lo que se ve en la última
+\paragraph{Por qué se acepta ese costo.} La alternativa resulta menos conveniente. Lo que se observa en la última
 línea del ejemplo es que todo el código posterior al literal roto sobrevive intacto; si se descartara
 hasta la comilla de cierre, se perdería. Se prefiere un error de más antes que un token legítimo de
 menos: un error extra el lector lo ignora, mientras que un token que desaparece arruina el

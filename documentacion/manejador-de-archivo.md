@@ -117,7 +117,7 @@ En `open()`:
 **Por qué `new String(bytes, UTF_8)` y no `Files.readString()`**: `readString` lanza
 `MalformedInputException` ante una secuencia UTF-8 inválida, con lo que un archivo binario reventaría
 el compilador con una excepción no controlada. `new String(bytes, UTF_8)` reemplaza las secuencias
-mal formadas por `U+FFFD`, así los bytes basura llegan al léxico como caracteres desconocidos y se
+mal formadas por `U+FFFD`, así los bytes residuales llegan al léxico como caracteres desconocidos y se
 reportan como errores léxicos normales (requisito 2.2).
 
 **Por qué normalizar los saltos de línea en la frontera**: sin la normalización, el autómata tendría

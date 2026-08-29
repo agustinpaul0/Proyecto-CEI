@@ -48,6 +48,7 @@ class EscapadorDeNoImprimiblesTest {
         assertEquals("\\ufe0f", EscapadorDeNoImprimibles.escapar("\uFE0F"));
         // Un acento combinante suelto, por el mismo motivo.
         assertEquals("\\u0301", EscapadorDeNoImprimibles.escapar("\u0301"));
+        assertEquals("\\u20cc", EscapadorDeNoImprimibles.escapar("\u20CC"));
     }
 
     // Pero pegada a su base sí se ve, y escaparla ensuciaría el mensaje: "café"

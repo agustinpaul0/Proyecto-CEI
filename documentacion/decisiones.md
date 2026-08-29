@@ -25,7 +25,7 @@ La segunda regla tiene un procedimiento asociado, y es tan importante como la re
 > registrado en la documentación y fijado en un test.
 
 La razón es práctica: el comportamiento de Java en los bordes (escapes, literales octales, límites
-numéricos, escapes Unicode) es lleno de sorpresas, y una suposición razonable resulta equivocada con
+numéricos, escapes Unicode) presenta casos no evidentes, y una suposición razonable resulta equivocada con
 frecuencia. Varias de las decisiones de este documento **contradicen** lo que uno esperaría, y sólo
 se descubrió al ejecutar el compilador de referencia.
 
@@ -311,7 +311,7 @@ reporta en el lexema, ni uno más. No existe ningún método `recuperarDeError()
 O sea: `javac` no sincroniza hasta un delimitador, y nunca descarta un carácter que no formó parte
 del lexema reportado.
 
-**El bug que esto arregló**: la implementación anterior descartaba siempre el carácter que estaba
+**El defecto que esto corrigió**: la implementación anterior descartaba siempre el carácter que estaba
 mirando, incluso cuando nunca había formado parte del error. Consecuencias reales, todas invisibles
 en el corpus de entonces porque cada caso tenía un espacio detrás del lexema malo:
 
@@ -484,7 +484,7 @@ Desarrolladas en [`arquitectura.md`](arquitectura.md) §5; resumen con su justif
 
 ### 6.1. Los tests importan más que el código de producción
 
-Es una regla explícita del proyecto, no una aspiración. Todo código nuevo lleva tests; todo bug
+Es una regla explícita del proyecto, no una aspiración. Todo código nuevo lleva tests; todo defecto
 encontrado se convierte en un test de regresión permanente que **nunca** se borra ni se renumera.
 Un error léxico ante un programa inválido es comportamiento esperado; una excepción no controlada
 —cualquier cosa que no sea `ExcepcionLexica`— es siempre un defecto y hace fallar el test.

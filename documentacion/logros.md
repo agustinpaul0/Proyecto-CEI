@@ -17,7 +17,7 @@ interruptor de configuración y el comportamiento base que pide la consigna sigu
 | 3. Multi-detección de Errores Léxicos | cambia la política ante errores | implementado, con interruptor |
 | 4. Reporte de Error Elegante | agrega salida | implementado, con interruptor |
 | 5. Manejador de Archivos Eficiente | reemplaza una pieza | implementado — y es un requisito, no un extra |
-| 6. Imbatibilidad Léxica | consecuencia de la suite | los 158 casos de fuente y los 2 testers de la cátedra pasan |
+| 6. Imbatibilidad Léxica | consecuencia de la suite | los 158 casos de fuente, el caso de regresión y los 2 testers de la cátedra pasan |
 | 7. Good Job! I | consecuencia de lo anterior | — |
 | 8. Entrega Anticipada Léxica | hito de calendario | — |
 
@@ -117,7 +117,7 @@ Es una propiedad estructural, no un algoritmo. Y trae la garantía de terminaci�
 de un error nunca es vacío, así que cada error consumió al menos un carácter y el análisis siempre
 avanza.
 
-**El bug que este criterio arregló** — la versión anterior descartaba siempre el carácter que estaba
+**El defecto que este criterio corrigió** — la versión anterior descartaba siempre el carácter que estaba
 mirando, incluso cuando nunca había formado parte del error:
 
 | fuente | antes | ahora |
@@ -227,7 +227,8 @@ subconjunto de lo ya cubierto.
 
 Los instrumentos que apuntan específicamente a esto:
 
-- **158 archivos de caso** (76 sin errores, 82 con errores) contra los 5 de ejemplo provistos.
+- **158 archivos de caso funcional** (76 sin errores, 82 con errores) y 1 caso de regresión de
+  fuzzing, contra los 5 de ejemplo provistos.
 - Un **tester estricto propio** que verifica la salida completa de cada caso con error —todos los
   errores y todos los tokens intercalados—, donde el de la cátedra sólo busca el primer código.
 - **Tests basados en propiedades** que verifican invariantes sobre entradas generadas, no sobre casos
@@ -240,7 +241,7 @@ Los instrumentos que apuntan específicamente a esto:
 **Cómo verificarlo:**
 
 ```bash
-mvn -o verify          # 512 casos + umbral de cobertura
+mvn -o verify          # 627 tests + umbral de cobertura
 mvn -o -Pmutacion test # los mutantes sobrevivientes son tests faltantes
 ```
 
@@ -250,7 +251,7 @@ mvn -o -Pmutacion test # los mutantes sobrevivientes son tests faltantes
 
 Consecuencia de lo anterior, no un objetivo con implementación propia. Lo que el proyecto hace para
 merecerlo, además de la suite: **deuda técnica cero** como regla de trabajo — nada queda "para
-después", la documentación se actualiza al cerrar cada tarea, y todo bug encontrado se convierte en
+después", la documentación se actualiza al cerrar cada tarea, y todo defecto encontrado se convierte en
 un test de regresión permanente.
 
 ## 8. Entrega Anticipada Léxica

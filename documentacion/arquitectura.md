@@ -140,7 +140,7 @@ Detalle: v1 # v2
 Principal no llama a ningún `recuperarDeError()`, simplemente vuelve a pedir un token. Funciona
 porque el analizador garantiza que **todo estado que lanza un error consumió del fuente exactamente
 los caracteres que reportó en el lexema, ni uno más** — así el siguiente `proximoToken()` arranca
-naturalmente en el primer carácter que no formó parte del error. El detalle, y el bug que esto
+naturalmente en el primer carácter que no formó parte del error. El detalle, y el defecto que esto
 arregló, están en [`manejo-de-errores.md`](manejo-de-errores.md) §2.
 
 La única excepción es un escape mal formado dentro de un `litString`: ahí sí se descarta lo que queda
@@ -231,7 +231,7 @@ cátedra ("toda la salida por `System.out`").
 **Por qué la indirección**: es la decisión de mayor impacto en la testeabilidad del proyecto. Permite
 ejercitar el Módulo Principal completo contra una `SalidaEnMemoria` que guarda las líneas en una
 lista, y compararlas con `assertEquals` una por una. Sin esto habría que capturar y restaurar el
-stream global de la JVM en cada test — frágil y hostil a la ejecución en paralelo.
+stream global de la JVM en cada test — una alternativa más frágil para la ejecución en paralelo.
 
 ### 5.2. Todas las dependencias se inyectan por constructor
 
@@ -288,7 +288,7 @@ y retorna, en vez de terminar el proceso con un código de salida.
 
 ### 5.5. Reuso deliberado para no explotar en clases
 
-Dos casos donde una clase por símbolo habría sido absurda:
+Dos casos donde una clase por símbolo habría sido innecesaria:
 
 - Los seis pares `>`/`>=`, `<`/`<=`, `!`/`!=`, `=`/`==`, `+`/`++`, `-`/`--` los cubre **un** estado
   parametrizado, `EstadoOperadorConSufijoOpcional`, con seis constantes configuradas.
@@ -315,9 +315,9 @@ que la cátedra recomienda explícitamente (Clase 02, slides 62-63).
 compilador/
 ├── pom.xml                       ← Maven: JUnit 5 (+vintage), jqwik, JaCoCo, PIT
 ├── resources/
-│   ├── sinErrores/               ← 65 casos válidos, con oráculo //#lexema,línea
-│   ├── conErrores/               ← 77 casos con error, con oráculo // [Error:lexema|línea]
-│   └── regresion/                ← casos que reprodujeron un bug real (nunca se borran)
+│   ├── sinErrores/               ← 76 casos válidos, con oráculo //#lexema,línea
+│   ├── conErrores/               ← 82 casos con error, con oráculo // [Error:lexema|línea]
+│   └── regresion/                ← casos que reprodujeron un defecto real (nunca se borran)
 └── src/
     ├── main/java/minijava/
     │   ├── aplicacion/           ← Main, ModuloPrincipal

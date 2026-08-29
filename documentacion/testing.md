@@ -5,7 +5,7 @@ Documento autocontenido: qué garantiza cada suite de tests, cómo están organi
 En este proyecto **los tests son la prioridad número uno, por encima del código de producción**. La
 razón es específica de un compilador: un analizador léxico tiene una superficie de entrada infinita
 y llena de bordes (literales sin cerrar, escapes raros, caracteres invisibles, archivos truncados),
-y la única forma de saber que funciona es ejercitarlo sistemáticamente. Un bug léxico no se
+y la única forma de saber que funciona es ejercitarlo sistemáticamente. Un defecto léxico no se
 manifiesta como una excepción ruidosa: se manifiesta como un token de menos, silenciosamente, tres
 etapas más adelante.
 
@@ -16,7 +16,7 @@ etapas más adelante.
 2. **Los tests verifican comportamiento, contratos e invariantes — nunca implementación interna.**
    Concretamente: un error se valida por **tipo y localización**, jamás por el texto completo del
    mensaje. Cambiar la redacción de un mensaje no debe romper ningún test.
-3. **Todo bug encontrado se convierte en test de regresión permanente.** El ciclo es: reproducir →
+3. **Todo defecto encontrado se convierte en test de regresión permanente.** El ciclo es: reproducir →
    escribir el test que falla → arreglar → confirmar que pasa → el caso queda en la suite para
    siempre. Los casos de regresión son **append-only**: no se borran ni se renumeran.
 4. **Nunca se ajusta un test para acomodar una implementación equivocada.** Si un test falla, se
@@ -63,7 +63,7 @@ emitidos y de todos los errores reconstruye el fuente completo**, carácter por 
 
 Esta es la invariante más fuerte de la suite, porque cierra de un plumazo toda una familia de bugs:
 si la recuperación se comiera un carácter, o si un estado consumiera algo que no reporta, la
-concatenación no daría igual al original. Fue exactamente el bug que se encontró de esta forma —ver
+concatenación no daría igual al original. Fue exactamente el defecto que se encontró de esta forma —ver
 [`decisiones.md`](decisiones.md) §4.2.
 
 Tiene una única excepción, y está escrita explícitamente en la propiedad: el resto de un `litString`
@@ -79,9 +79,9 @@ puede "volver" a una línea anterior.
 
 ### 3.4. El `^` nunca cae fuera de la línea impresa
 
-En un reporte de error elegante, la columna del `^` siempre corresponde a un carácter que la línea
-mostrada debajo de `Detalle:` realmente contiene. Un caret una posición más allá del último carácter
-señala el aire — fue un bug real, y ahora es una invariante verificada tanto caso por caso
+En un reporte de error elegante, la columna del `^` siempre corresponde a un carácter o a su
+representación visible en la línea mostrada debajo de `Detalle:`. Un caret una posición más allá del
+último carácter señala el aire — fue un defecto real, y ahora es una invariante verificada tanto caso por caso
 (`PosicionDelCaretTest`) como sobre entradas generadas (`PropiedadesDelReporteTest`).
 
 ### 3.5. Ningún fallo es un crash
@@ -113,7 +113,7 @@ El tester de errores que provee la cátedra sólo verifica que el **primer** có
 aparezca en algún lugar de la salida. Eso deja dos agujeros grandes:
 
 - un caso con cinco errores queda casi sin verificar;
-- **nada comprueba qué tokens salen entre medio** — y ahí es exactamente donde se escondía el bug de
+- **nada comprueba qué tokens salen entre medio** — y ahí es exactamente donde se escondía el defecto de
   la recuperación tragándose caracteres.
 
 Por eso el proyecto agrega `TesterDeCasosConErroresEstricto`, que corre sobre **los mismos archivos**
@@ -161,7 +161,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
 | `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
 | `AnalizadorLexicoPropiedadesTest` | 6 | Las invariantes de §3.1 y §3.3. |
-| `FormateadorDeErrorTest` | 5 | Las líneas del reporte elegante, y el `^` con tabuladores y caracteres CJK. |
+| `FormateadorDeErrorTest` | 6 | Las líneas del reporte elegante, y el `^` con tabs, caracteres CJK y marcas combinantes. |
 | `PropiedadesDelReporteTest` | 5 | Las invariantes de §3.2, §3.4 y §3.6 sobre entradas generadas. |
 | `AnalizadorLexicoFuzzTest` | 3 | Bytes UTF-8 arbitrarios con semilla fija. |
 | `DefectosDeRobustezTest` | 3 | Caracteres de control e invisibles en lexemas y mensajes. |
@@ -169,7 +169,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
 | `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
 
-**Total: 626 casos ejecutables, en 22 suites.**
+**Total: 627 casos ejecutables, en 22 suites.**
 
 ## 6. Cómo correr
 

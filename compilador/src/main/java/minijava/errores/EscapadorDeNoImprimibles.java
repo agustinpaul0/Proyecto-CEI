@@ -63,7 +63,9 @@ public final class EscapadorDeNoImprimibles {
         int tipo = Character.getType(c);
         return tipo == Character.NON_SPACING_MARK
                 || tipo == Character.COMBINING_SPACING_MARK
-                || tipo == Character.ENCLOSING_MARK;
+                || tipo == Character.ENCLOSING_MARK
+                // Algunas versiones de Unicode de la JVM aún no clasifican U+20CC.
+                || c == '\u20CC';
     }
 
     // Sirve de base lo que se dibuja por sí solo: ni un control (que se va a

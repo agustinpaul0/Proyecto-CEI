@@ -2,7 +2,7 @@
 
 Documento autocontenido: cómo se detecta, cómo se recupera y cómo se reporta un error léxico. Es el
 desarrollo completo de dos de los ocho logros de la Etapa 1 —*Multi-detección de Errores Léxicos* y
-*Reporte de Error Elegante*— y de los tres bugs reales que hubo que arreglar para que funcionaran
+*Reporte de Error Elegante*— y de los tres defectos reales que hubo que corregir para que funcionaran
 bien. Para la visión de conjunto, ver [`arquitectura.md`](arquitectura.md).
 
 ## 1. Cuándo y cómo se detecta un error
@@ -24,7 +24,7 @@ recuperación de §2, y hay dos casos:
 - Si el problema es el lexema **ya construido** (un `&` sin su par, un `intLiteral` de más de nueve
   dígitos, un exponente sin dígitos), el carácter que se está mirando es un token perfectamente
   legítimo que no tiene nada que ver con el error: no se consume ni se incluye. Reportarlo sería
-  engañoso y, peor, hacía desaparecer ese token de la salida.
+engañoso y, además, hacía desaparecer ese token de la salida.
 
 Dónde apunta la **columna** es una decisión aparte de qué contiene el lexema, y tiene su propia
 sección (§4).
@@ -64,7 +64,7 @@ menos un carácter y el análisis siempre avanza. Antes esto lo garantizaba un m
 O sea: `javac` **no** sincroniza hasta el delimitador de cierre, y **nunca descarta un carácter que
 no formó parte del lexema reportado**. Las dos cosas quedaron reflejadas en el criterio.
 
-### El bug que esto arregló
+### El defecto que esto corrigió
 
 La implementación anterior descartaba siempre el carácter que estaba mirando, incluso cuando ese
 carácter nunca había formado parte del lexema ofensivo. Consecuencias reales, todas invisibles en el
@@ -107,7 +107,7 @@ que reemplaza, están en [`decisiones.md`](decisiones.md) §4.3.
 
 Lo que se gana es que el análisis sigue **en el token siguiente al literal roto**, no en mitad de su
 contenido. Sin resincronizar, el mismo fuente daría `idMV(G4)` y —lo peor— la comilla de **cierre**
-abriría un literal nuevo que se comería ` + v1` y moriría sin cerrar: tokens fantasma, errores
+abriría un literal nuevo que consumiría ` + v1` y terminaría sin cerrar: tokens espurios, errores
 inventados y dos tokens legítimos perdidos, todo derivado de un único defecto real.
 
 Dos detalles, que vienen de reglas distintas:
@@ -166,6 +166,12 @@ Cuando hay error, se imprimen dos cosas:
    [Error:#|2]
    ```
 
+El detalle del reporte expande los tabuladores a tabulaciones de ocho columnas y calcula el `^`
+según el ancho visual del texto. Si el carácter señalado no tiene una celda visible propia —por
+ejemplo, una marca combinante como U+20CC— se muestra en notación `\uXXXX`, y el `^` se ubica sobre
+el inicio de esa representación. La columna del encabezado sigue siendo la columna lógica del
+fuente.
+
 2. Un **código de error** de una sola línea, `[Error:Lexema|NroLinea]` — este es el contrato exacto
    que verifican los testers de la cátedra, y **no lleva columna** (la columna es sólo parte del
    reporte legible, que es un agregado propio más allá de lo pedido).
@@ -213,7 +219,7 @@ posición, ambas tomadas dentro de `avanzar()` justo antes de consumir —cuando
 
 La distinción importa porque en el momento del `throw` el lookahead actual puede haber avanzado más
 allá del lexema: puede ser un espacio, un EOF o la letra siguiente, sin ninguna relación con el
-motivo del error. Reportar su columna producía un bug real, encontrado por el usuario corriendo la
+motivo del error. Reportar su columna producía un defecto real, encontrado al ejecutar la
 suite desde IntelliJ: el `^` apuntaba a un carácter distinto del que decía el mensaje.
 
 Un caso necesita más que las dos fotos: el **comentario multilínea sin cerrar**. `EstadoBarra`
@@ -228,7 +234,7 @@ línea-fuente y la columna del EOF, que puede caer varias líneas después en co
 Bug de la misma familia: **cualquier** estado que lanza la excepción cuando el lookahead es EOF o un
 `\n` reporta una posición que ni siquiera aparece en la línea impresa, porque `getLineaFuente()`
 corta el texto justo antes del salto de línea. El resultado visual: un `^` una posición más allá del
-último carácter visible, apuntando al aire en vez de a algo concreto. Afectaba a casi todos los
+último carácter visible, apuntando al aire en vez de a un carácter concreto. Afectaba a casi todos los
 estados que pueden toparse con un EOF o salto de línea inesperado (chars y strings sin cerrar,
 escapes interrumpidos, exponentes sin dígitos). Se resolvió en un solo lugar:
 `BuilderDeLexema.posicionDe(LOOKAHEAD)` usa
@@ -263,9 +269,10 @@ leía `Error Léxico en línea 1, columna 4:   no es un símbolo válido`. Es la
 ejecutándolo). Un par surrogado bien formado —un emoji— se deja crudo: se ve perfecto y escaparlo
 sólo haría el mensaje más difícil de leer.
 
-Esto vale **sólo** para el lexema de un error. El lexema de un **token** se imprime crudo, porque el
-contrato de la cátedra es que sea el texto exacto del fuente — un tabulador dentro de un `litString`
-sale como tabulador (ver `resources/sinErrores/stringConTabuladorInterior.java`).
+Esto vale **sólo** para el lexema de un error y, en el detalle, para el carácter señalado cuando no
+posee una celda visible propia. El lexema de un **token** se imprime crudo, porque el contrato de la
+cátedra es que sea el texto exacto del fuente — un tabulador dentro de un `litString` sale como
+tabulador (ver `resources/sinErrores/stringConTabuladorInterior.java`).
 
 Aparte de eso, los estados que siguen a una barra invertida (`EstadoCharEscapado`,
 `EstadoStringTrasBarra`) rechazan explícitamente el salto de línea en vez de consumirlo: una barra al
@@ -287,7 +294,7 @@ entrada, y las dos están fijadas por `DefectosDeRobustezTest`:
   `[SinErrores]`—.
 - **Bytes que no son UTF-8 válido**: `Files.readString` lanza `MalformedInputException`, que saldría
   como un `UncheckedIOException` sin atrapar. Se usa `new String(bytes, UTF_8)`, que sustituye las
-  secuencias mal formadas por `U+FFFD`; los bytes basura llegan al léxico y se reportan como errores
+  secuencias mal formadas por `U+FFFD`; los bytes residuales llegan al léxico y se reportan como errores
   léxicos normales.
 
 ## Ver también

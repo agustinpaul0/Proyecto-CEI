@@ -164,11 +164,14 @@ lexema se construye sin él.
 ## `FormateadorDeError` y el Reporte de Error Elegante
 
 `FormateadorDeError.formatear(ExcepcionLexica)` arma las líneas de salida: el encabezado legible
-(línea + columna + motivo, vía `TipoDeErrorLexico.describir(lexema)`), la línea fuente completa, el
-`^` posicionado con `" ".repeat("Detalle: ".length() + columna - 1)`, un **renglón en blanco** y el
-código de contrato `[Error:Lexema|NroLinea]`. El renglón en blanco es el del ejemplo de Pautas slide
-25, y el de éxito antes de `[SinErrores]` es el de la slide 26. La columna es un agregado del usuario
-más allá de lo que pide la cátedra (que sólo exige línea) — ver `especificacion-lexica.md`.
+(línea + columna + motivo, vía `TipoDeErrorLexico.describir(lexema)`), el detalle con tabs
+expandidos a tabulaciones de ocho columnas, el `^` alineado con el ancho visual del carácter, un
+**renglón en blanco** y el código de contrato `[Error:Lexema|NroLinea]`. Si el carácter señalado no
+tiene una celda visible propia —por ejemplo, una marca combinante— se lo representa como `\uXXXX`
+en el detalle y el `^` se ubica sobre el inicio de esa representación. El renglón en blanco es el
+del ejemplo de Pautas slide 25, y el de éxito antes de `[SinErrores]` es el de la slide 26. La
+columna es un agregado del usuario más allá
+de lo que pide la cátedra (que sólo exige línea) — ver `especificacion-lexica.md`.
 
 ```text
 Error Léxico en línea 7, columna 4: litString con secuencia de escape inválida \q: "a\q

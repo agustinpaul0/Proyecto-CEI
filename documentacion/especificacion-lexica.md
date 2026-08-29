@@ -100,11 +100,11 @@ declara `char getNextChar()` y un `char` de Java son 16 bits.
 | `'⭐️'` | `U+2B50 U+FE0F` | 2 | error: *mal formado* |
 
 Todo lo que vive en el BMP (`U+0000`–`U+FFFF`) ocupa una unidad y entra sin problema. Lo que está
-fuera del BMP se codifica como par subrogado —dos unidades— y no entra. El último caso es el más
-traicionero: `'⭐️'` es la estrella **más** un selector de variación `U+FE0F`, que es lo que suelen
-insertar el teclado o el celular, y en pantalla se ve idéntico a `'⭐'`.
+fuera del BMP se codifica como par subrogado —dos unidades— y no entra. El último caso requiere
+especial atención: `'⭐️'` es la estrella **más** un selector de variación `U+FE0F`, combinación que
+puede ser incorporada por distintos métodos de entrada y que en pantalla se ve idéntica a `'⭐'`.
 
-**Esto no es una divergencia con Java, es una coincidencia.** `javac` sobre `char c = '🌟';` responde
+**Esto no es una divergencia con Java, sino una coincidencia.** `javac` sobre `char c = '🌟';` responde
 `error: character literal contains more than one UTF-16 code unit` — nombra literalmente la misma
 limitación, y por la misma razón. Fijado por `resources/sinErrores/charConSimbolosNoAscii.java` y
 `resources/conErrores/charConEmojiFueraDelBmp.java`.
@@ -150,8 +150,7 @@ O sea: un lookbehind de un carácter sobre el texto crudo. **No existe un conjun
 válidos** dentro de un `litString` — `"hola \q"` es un string común y corriente, con una barra y una
 `q` como dos caracteres cualesquiera.
 
-De que la regla sea posicional y no de apareamiento salen unas cuantas consecuencias que conviene
-tener a mano:
+De que la regla sea posicional y no de apareamiento se desprenden las siguientes consecuencias:
 
 | Fuente | Resultado | Por qué |
 |---|---|---|
@@ -216,8 +215,8 @@ U = \ u+ Hex Hex Hex Hex
 ```
 
 El marcador `u` se repite **una o más veces**: `\u0041`, `\uu0041` y `\uuuu0041` son todos válidos y
-equivalentes. Es semántica heredada tal cual de Java (JLS §3.3) y no se adivinó: se verificó contra
-la especificación. Existe porque el pre-procesador de escapes de Java necesita poder representar un
+equivalentes. Es una regla heredada de Java (JLS §3.3), verificada contra la especificación. Existe
+porque el pre-procesador de escapes de Java necesita poder representar un
 `\u` literal sin re-traducirlo.
 
 `EstadoMarcadorUnicode` consume la corrida de `u`; `EstadoEscapeUnicode` exige exactamente cuatro
