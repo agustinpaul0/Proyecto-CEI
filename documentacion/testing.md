@@ -102,8 +102,8 @@ oráculo escrito en las primeras líneas, en el formato que definen los testers 
 
 ```
 resources/
-├── sinErrores/    75 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
-├── conErrores/    81 archivos   oráculo: // [Error:lexema|nroLinea]
+├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
+├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
 └── regresion/                    entradas que rompieron una corrida de fuzzing
 ```
 
@@ -147,16 +147,16 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | Suite | Casos | Qué cubre |
 |---|---|---|
 | `AnalizadorLexicoTest` | 163 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
-| `TesterDeCasosConErroresEstricto` | 81 | Los **mismos** archivos, pero verificando la salida completa. |
-| `catedra.TesterDeCasosConErrores` | 81 | El tester original de la cátedra sobre `resources/conErrores/`. |
-| `catedra.TesterDeCasosSinErrores` | 75 | El tester original de la cátedra sobre `resources/sinErrores/`. |
+| `TesterDeCasosConErroresEstricto` | 82 | Los **mismos** archivos, pero verificando la salida completa. |
+| `catedra.TesterDeCasosConErrores` | 82 | El tester original de la cátedra sobre `resources/conErrores/`. |
+| `catedra.TesterDeCasosSinErrores` | 76 | El tester original de la cátedra sobre `resources/sinErrores/`. |
 | `TablaDeLexemasTest` | 53 | Que los 56 tipos de token estén cubiertos y que cada uno de los 49 lexemas fijos, suelto, produzca su propio tipo. |
 | `ManejadorDeArchivoEficienteTest` | 26 | EOF en los tres casos de ejemplo, archivo vacío, los tres convenios de fin de línea, `0x1A` embebido, UTF-8 inválido, columnas y línea-fuente, y el costo de ubicar el error en un fuente de 200.000 líneas. |
 | `TipoDeTokenTest` | 22 | Que los nombres impresos coincidan con los que fija la cátedra. |
 | `PosicionDelCaretTest` | 21 | Dónde apunta el `^`, con el diagnóstico de `javac` citado en cada caso. |
 | `CriterioDeRecuperacionTest` | 14 | Que tras cada error el análisis retome en el carácter correcto. |
 | `TipoDeErrorLexicoTest` | 14 | Un caso por cada tipo de error, validado por tipo y localización. |
-| `EscapadorDeNoImprimiblesTest` | 12 | Que ningún carácter invisible llegue crudo al mensaje de un error ni parta el formato de una línea por elemento. |
+| `EscapadorDeNoImprimiblesTest` | 15 | Que ningún carácter invisible llegue crudo al mensaje de un error ni parta el formato de una línea por elemento. |
 | `LimitesNumericosTest` | 12 | El límite de 9 dígitos y su interacción con los floats. |
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
 | `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
@@ -169,7 +169,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
 | `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
 
-**Total: 620 casos ejecutables, en 22 suites.**
+**Total: 626 casos ejecutables, en 22 suites.**
 
 ## 6. Cómo correr
 

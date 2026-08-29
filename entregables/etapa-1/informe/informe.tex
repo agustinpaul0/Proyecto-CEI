@@ -271,6 +271,37 @@ letra: valen las letras acentuadas, la eñe y los alfabetos no latinos igual que
 línea o un fin de archivo dejan el literal sin cerrar---, y la \lex{u} es el único carácter que no se
 consume como común, porque abre el escape Unicode.
 
+\paragraph{Qué significa exactamente ``un carácter''.} El límite no es ASCII: es que \lex{X} e
+\lex{Y} son \textbf{una unidad de código UTF-16}. Viene de la interfaz provista, que declara
+\lex{char getNextChar()}, y un \lex{char} de Java son 16 bits.
+
+\begin{center}
+\begin{tabular}{@{}llcl@{}}
+\toprule
+\textbf{Carácter} & \textbf{Code points} & \textbf{Unidades} & \textbf{Resultado} \\
+\midrule
+eñe & \lex{U+00F1} & 1 & \tok{charLiteral} válido \\
+estrella blanca & \lex{U+2B50} & 1 & \tok{charLiteral} válido \\
+ideograma CJK & \lex{U+4E2D} & 1 & \tok{charLiteral} válido \\
+estrella brillante & \lex{U+1F31F} & 2 (par subrogado) & error: \emph{mal formado} \\
+estrella $+$ selector & \lex{U+2B50 U+FE0F} & 2 & error: \emph{mal formado} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Todo lo que vive en el BMP (\lex{U+0000}--\lex{U+FFFF}) ocupa una unidad y entra sin problema; lo que
+está fuera se codifica como par subrogado y no entra. La última fila es la más traicionera: es la
+misma estrella de la segunda fila \emph{más} un selector de variación \lex{U+FE0F} ---lo que suelen
+insertar el teclado o el celular--- y en pantalla se ve idéntica, pero son dos unidades y el literal
+queda mal formado.
+
+Conviene subrayar que esto \textbf{no} es una divergencia respecto de Java sino una coincidencia:
+\lex{javac} sobre un \tok{charLiteral} con un carácter fuera del BMP responde \emph{character literal
+contains more than one UTF-16 code unit}, nombrando la misma limitación por el mismo motivo. Admitir
+caracteres astrales exigiría trabajar con \emph{code points} (\lex{int}) y cambiar la firma de
+\lex{getNextChar()}, que es parte del material provisto.
+
 Ésta es la primera de \textbf{dos} asimetrías entre el \tok{charLiteral} y el \tok{litString}. La
 segunda, la de recuperación ante un error, está en la sección~\ref{sec:asimetria}, y las dos salen
 del mismo lugar: la especificación describe cada literal con una clase de regla distinta.
@@ -982,8 +1013,8 @@ prueba y su propia especificación: el compilador las ignora y el tester las lee
 
 \begin{codigoLlano}
 resources/
-    sinErrores/    75 archivos   oráculo: //#lexema,nroLinea
-    conErrores/    81 archivos   oráculo: // [Error:lexema|nroLinea]
+    sinErrores/    76 archivos   oráculo: //#lexema,nroLinea
+    conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
     regresion/                   entradas que rompieron una corrida de fuzzing
 \end{codigoLlano}
 

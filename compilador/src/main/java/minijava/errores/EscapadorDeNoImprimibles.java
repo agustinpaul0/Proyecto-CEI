@@ -33,8 +33,9 @@ public final class EscapadorDeNoImprimibles {
         return escapado.toString();
     }
 
-    // Controles, formato (el BOM), espacios que no son el común, y surrogados
-    // SUELTOS. Un par bien formado —un emoji— se deja crudo: se ve.
+    // Controles, formato (el BOM), espacios que no son el común, surrogados
+    // SUELTOS y marcas combinantes SIN BASE. Un par bien formado —un emoji— y una
+    // marca sobre su letra —un acento descompuesto— se dejan crudos: se ven.
     private static boolean esInvisible(String texto, int posicion) {
         char c = texto.charAt(posicion);
         if (Character.isISOControl(c)) {
@@ -49,6 +50,25 @@ public final class EscapadorDeNoImprimibles {
         if (Character.isSpaceChar(c)) {
             return c != ' ';
         }
+        // Una marca combinante se dibuja SOBRE el carácter anterior: pegada a su
+        // base se ve, y suelta no se ve nada. El caso real es el selector de
+        // variación U+FE0F de un emoji, que queda solo en el lexema de un error.
+        if (esMarcaCombinante(c)) {
+            return posicion == 0 || !tieneBaseVisible(texto.charAt(posicion - 1));
+        }
         return Character.getType(c) == Character.FORMAT;
+    }
+
+    private static boolean esMarcaCombinante(char c) {
+        int tipo = Character.getType(c);
+        return tipo == Character.NON_SPACING_MARK
+                || tipo == Character.COMBINING_SPACING_MARK
+                || tipo == Character.ENCLOSING_MARK;
+    }
+
+    // Sirve de base lo que se dibuja por sí solo: ni un control (que se va a
+    // escapar) ni otra marca (que tampoco tiene forma propia).
+    private static boolean tieneBaseVisible(char anterior) {
+        return !Character.isISOControl(anterior) && !esMarcaCombinante(anterior);
     }
 }

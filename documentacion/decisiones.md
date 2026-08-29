@@ -165,6 +165,19 @@ cualquier carácter.
 **Decisión**: `'\q'` es un `charLiteral` válido, con valor `q`. Es una **permisividad explícita** de
 la cátedra, más laxa que Java.
 
+**Hasta dónde llega "cualquier carácter"**: no hay restricción a ASCII —`'\ñ'`, `'⭐'` y `'中'` son
+válidos—, pero sí un límite técnico heredado de la interfaz provista. `SourceManager` declara
+`char getNextChar()`, y un `char` de Java es **una unidad de código UTF-16**, de 16 bits. Por eso lo
+que vive en el BMP entra y lo que está fuera —un emoji como `'🌟'`, que es un par subrogado— no: son
+dos unidades, y el literal sale *mal formado*. Lo mismo pasa con `'⭐️'`, que es la estrella más un
+selector de variación `U+FE0F` aunque se dibuje igual que `'⭐'`.
+
+**No es una divergencia con Java**: `javac` responde
+`error: character literal contains more than one UTF-16 code unit`, o sea la misma limitación con el
+mismo motivo. **Descartado** trabajar con *code points* (`int`) para admitir caracteres astrales:
+exigiría cambiar la firma de `getNextChar()`, que es material de la cátedra y no se toca. Ver
+[`especificacion-lexica.md`](especificacion-lexica.md) §3.2.
+
 ### 3.5. Escapes en `litString`: no hay lista de escapes, hay una regla posicional
 
 **Fuente**: `Aspectos Lexicos MiniJava 2026.pdf` §2.3.3, textual. Es un caso de manual de la Regla 1:

@@ -72,8 +72,8 @@ Etapa 1 (slides 25 y 26).
 | Tokens reconocidos | 56 (21 palabras clave, 3 familias de identificadores, 4 de literales, 10 símbolos de puntuación, 17 operadores, EOF) |
 | Estados del autómata | 22 clases en `minijava.lexico.estados`, una por estado |
 | Clases de producción | 49 |
-| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **620 casos** ejecutables |
-| Casos de fuente | 75 sin errores + 81 con errores + 1 de regresión de fuzzing |
+| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **626 casos** ejecutables |
+| Casos de fuente | 76 sin errores + 82 con errores + 1 de regresión de fuzzing |
 | Logros perseguidos | los 8 de la Etapa 1 |
 | Java | 25 (`maven.compiler.release=25`) |
 | Build | Maven; `mvn package` genera `target/Compilador.jar` |

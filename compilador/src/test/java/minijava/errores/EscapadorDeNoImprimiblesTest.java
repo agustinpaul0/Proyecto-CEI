@@ -39,6 +39,32 @@ class EscapadorDeNoImprimiblesTest {
         assertEquals("a\\u200bb", EscapadorDeNoImprimibles.escapar("a\u200Bb"));
     }
 
+    // El selector de variación U+FE0F NO es FORMAT sino NON_SPACING_MARK
+    // (Character.getType da 6, no 16), así que la rama del BOM no lo alcanza.
+    // Aparece de verdad: un '⭐️' del teclado es la estrella MÁS este selector, y
+    // el selector queda solo en el lexema del segundo error.
+    @Test
+    void unaMarcaCombinanteSinBaseSeEscapa() {
+        assertEquals("\\ufe0f", EscapadorDeNoImprimibles.escapar("\uFE0F"));
+        // Un acento combinante suelto, por el mismo motivo.
+        assertEquals("\\u0301", EscapadorDeNoImprimibles.escapar("\u0301"));
+    }
+
+    // Pero pegada a su base sí se ve, y escaparla ensuciaría el mensaje: "café"
+    // escrito en forma descompuesta tiene que salir tal cual.
+    @Test
+    void unaMarcaCombinanteSobreSuBaseSeDejaCruda() {
+        assertEquals("cafe\u0301", EscapadorDeNoImprimibles.escapar("cafe\u0301"));
+        assertEquals("\u2b50\uFE0F", EscapadorDeNoImprimibles.escapar("\u2b50\uFE0F"));
+    }
+
+    // Dos marcas seguidas: la primera tiene base y la segunda no tiene forma
+    // propia sobre la cual dibujarse, así que se escapa.
+    @Test
+    void unaMarcaSobreOtraMarcaNoTieneBaseVisible() {
+        assertEquals("e\u0301\\u0301", EscapadorDeNoImprimibles.escapar("e\u0301\u0301"));
+    }
+
     // El espacio común se deja; cualquier otro se ve igual que él y por eso
     // confunde: el no-rompible es un error léxico frecuente de copiar y pegar.
     @Test

@@ -87,6 +87,28 @@ U = escape Unicode (ver §3.5)
 La cadena vacía (`''`) **no** está en ninguna alternativa: es un error. Y `'\q'` **sí** es válido,
 con valor `q` — es una permisividad explícita de la cátedra, más laxa que Java.
 
+**Qué significa exactamente "un carácter".** `X` e `Y` no están restringidos a ASCII: valen las
+letras acentuadas, la eñe y los alfabetos no latinos igual que las de ASCII. El límite real es que
+`X` e `Y` son **una unidad de código UTF-16**, porque la interfaz `SourceManager` que fija la cátedra
+declara `char getNextChar()` y un `char` de Java son 16 bits.
+
+| Fuente | Code points | Unidades UTF-16 | Resultado |
+|---|---|---|---|
+| `'⭐'` | `U+2B50` | 1 | `charLiteral` válido |
+| `'ñ'`, `'中'`, `'Ω'` | uno cada uno | 1 | `charLiteral` válido |
+| `'🌟'` | `U+1F31F` | 2 (par subrogado) | error: *mal formado* |
+| `'⭐️'` | `U+2B50 U+FE0F` | 2 | error: *mal formado* |
+
+Todo lo que vive en el BMP (`U+0000`–`U+FFFF`) ocupa una unidad y entra sin problema. Lo que está
+fuera del BMP se codifica como par subrogado —dos unidades— y no entra. El último caso es el más
+traicionero: `'⭐️'` es la estrella **más** un selector de variación `U+FE0F`, que es lo que suelen
+insertar el teclado o el celular, y en pantalla se ve idéntico a `'⭐'`.
+
+**Esto no es una divergencia con Java, es una coincidencia.** `javac` sobre `char c = '🌟';` responde
+`error: character literal contains more than one UTF-16 code unit` — nombra literalmente la misma
+limitación, y por la misma razón. Fijado por `resources/sinErrores/charConSimbolosNoAscii.java` y
+`resources/conErrores/charConEmojiFueraDelBmp.java`.
+
 ```mermaid
 stateDiagram-v2
     [*] --> Abierto: '
