@@ -16,6 +16,9 @@ out/
 # IDE — VS Code
 .vscode/
 
+# Configuración local de agentes
+.agents/
+
 # IDE — Metals / Bloop (language server de VS Code)
 .metals/
 .bloop/

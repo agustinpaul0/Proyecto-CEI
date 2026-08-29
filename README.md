@@ -16,10 +16,8 @@ AGENTS.md            memoria operativa del proyecto: convenciones, arquitectura,
                       de testing y workflow — punto de partida para entender cualquier decisión
 documentacion/        documentación técnica autocontenida (arquitectura, especificación léxica,
                       decisiones, testing, logros) — para explicar el proyecto sin leer código
-etapas/               consignas originales de la cátedra, una carpeta por etapa
+etapas/               consignas originales, material y entregables de la cátedra, una carpeta por etapa
 vendor/               copia de referencia intacta de los zips originales de la cátedra
-entregables/          lo que efectivamente se entrega por etapa: el informe en PDF y su
-                      fuente LaTeX
 compilador/           proyecto Maven — el código fuente y los tests
 ```
 
@@ -54,6 +52,6 @@ java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
   funciona el compilador componente por componente, la especificación léxica formal, el catálogo de
   decisiones con su justificación, la estrategia de testing y los 8 logros. Sin necesidad de leer
   código.
-- [`entregables/etapa-1/Informe-Etapa1-Lexico.pdf`](entregables/etapa-1/Informe-Etapa1-Lexico.pdf) —
+- [`etapas/etapa-1/entregables/Informe-Etapa1-Lexico.pdf`](etapas/etapa-1/entregables/Informe-Etapa1-Lexico.pdf) —
   el informe de entrega: los 56 tokens con su ER, los autómatas, las decisiones tomadas y los logros.
-  Se regenera con `latexmk -pdf informe.tex` desde `entregables/etapa-1/informe/`.
+  Se regenera con `latexmk -pdf informe.tex` desde `etapas/etapa-1/entregables/informe/`.
