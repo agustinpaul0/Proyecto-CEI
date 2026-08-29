@@ -39,6 +39,7 @@ class ModuloPrincipalTest {
                 "(pr_class,class,3)",
                 "(llaveC,},3)",
                 "(EOF,$,3)",
+                "",
                 "[SinErrores]"
         ), lineas);
     }
@@ -138,6 +139,7 @@ class ModuloPrincipalTest {
                 "(punto,.,1)",
                 "(intLiteral,5,1)",
                 "(EOF,$,1)",
+                "",
                 "[SinErrores]"
         ), lineas);
     }
@@ -145,7 +147,9 @@ class ModuloPrincipalTest {
     @Test
     void laConfiguracionLlegaAlLexicoConElUnicodeDeshabilitado(@TempDir Path dir)
             throws IOException {
-        Path archivo = escribir(dir, "\"a\\u0041\"");
+        // En un charLiteral: sin el logro, "\\u" deja de ser el marcador de un
+        // escape de 6 caracteres y el literal queda con más de un carácter.
+        Path archivo = escribir(dir, "'\\" + "u0041'");
         SalidaEnMemoria salida = new SalidaEnMemoria();
         var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
 

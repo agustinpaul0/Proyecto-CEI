@@ -17,15 +17,8 @@ public final class FabricaDeExcepcionesLexicas {
     }
 
     public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo, AnclaDeError ancla) {
-        return crearExcepcionLexica(tipo, ancla, null);
-    }
-
-    // El fragmento nombra la parte concretamente ofensiva cuando el lexema armado
-    // que exige Pautas es más grande que ella. Se escapa: también se imprime.
-    public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo, AnclaDeError ancla,
-                                                String fragmentoOfensivo) {
         return new ExcepcionLexica(tipo, EscapadorDeNoImprimibles.escapar(lexema.getLexema()),
-                lexema.posicionDe(ancla), EscapadorDeNoImprimibles.escapar(fragmentoOfensivo));
+                lexema.posicionDe(ancla));
     }
 
     // Única con posición explícita: la apertura de un comentario multilínea, cuyo

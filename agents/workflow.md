@@ -41,7 +41,7 @@ Ninguna tarea se considera terminada hasta que se cumplen **las tres** condicion
 
 1. **Deuda técnica en 0**: sin TODOs colgados, sin tests deshabilitados o comentados, sin
    implementaciones a medias, sin código muerto dejado "por las dudas". Si algo queda pendiente a
-   propósito (por alcance, no por falta de tiempo), se anota explícitamente en `todos/todos.md`, no
+   propósito (por alcance, no por falta de tiempo), se anota explícitamente en el issue o el commit, no
    se deja implícito en el código.
 2. **Documentación actualizada**: `AGENTS.md`, los archivos de `agents/` y
    `documentacion/*.md` reflejan el estado real del código en ese momento — ninguno puede describir

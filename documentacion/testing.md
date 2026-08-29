@@ -67,8 +67,8 @@ concatenación no daría igual al original. Fue exactamente el bug que se encont
 [`decisiones.md`](decisiones.md) §4.2.
 
 Tiene una única excepción, y está escrita explícitamente en la propiedad: el resto de un `litString`
-descartado tras un escape mal formado ([`decisiones.md`](decisiones.md) §4.3) no aparece en ningún
-lexema. La propiedad reproduce esa regla de descarte **por su cuenta**, en vez de reusar la del
+descartado tras un escape Unicode mal formado ([`decisiones.md`](decisiones.md) §4.3) no aparece en
+ningún lexema. La propiedad reproduce esa regla de descarte **por su cuenta**, en vez de reusar la del
 léxico, justamente para que un cambio accidental en el descarte la haga fallar en vez de pasar
 inadvertido.
 
@@ -102,8 +102,8 @@ oráculo escrito en las primeras líneas, en el formato que definen los testers 
 
 ```
 resources/
-├── sinErrores/    65 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
-├── conErrores/    77 archivos   oráculo: // [Error:lexema|nroLinea]
+├── sinErrores/    75 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
+├── conErrores/    81 archivos   oráculo: // [Error:lexema|nroLinea]
 └── regresion/                    entradas que rompieron una corrida de fuzzing
 ```
 
@@ -123,13 +123,13 @@ testers de la cátedra quedan intactos al lado, corriendo en la misma pasada.
 La cabecera de un caso estricto se ve así:
 
 ```java
-// [Error:"a\q|7]          ← primera línea: lo que verifica el tester de la cátedra
+// [Error:"a\u12|6]        ← primera línea: lo que verifica el tester de la cátedra
 // [Completo]              ← activa la verificación estricta de todo lo que sigue
-// [Error:"a\q|7]
-// [Error:"a\q b\z|7]
-//#"a\q b\z c",7
-//#$,8
-"a\q b\z c"
+// [Error:"a\u12|6]
+//#+,6
+//#v1,6
+//#$,7
+"a\u12G4" + v1
 ```
 
 ### El corpus de regresión de fuzzing
@@ -146,28 +146,30 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 
 | Suite | Casos | Qué cubre |
 |---|---|---|
-| `AnalizadorLexicoTest` | 151 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
-| `catedra.TesterDeCasosConErrores` | 77 | El tester original de la cátedra sobre `resources/conErrores/`. |
-| `TesterDeCasosConErroresEstricto` | 77 | Los **mismos** archivos, pero verificando la salida completa. |
-| `catedra.TesterDeCasosSinErrores` | 65 | El tester original de la cátedra sobre `resources/sinErrores/`. |
+| `AnalizadorLexicoTest` | 163 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
+| `TesterDeCasosConErroresEstricto` | 81 | Los **mismos** archivos, pero verificando la salida completa. |
+| `catedra.TesterDeCasosConErrores` | 81 | El tester original de la cátedra sobre `resources/conErrores/`. |
+| `catedra.TesterDeCasosSinErrores` | 75 | El tester original de la cátedra sobre `resources/sinErrores/`. |
+| `TablaDeLexemasTest` | 53 | Que los 56 tipos de token estén cubiertos y que cada uno de los 49 lexemas fijos, suelto, produzca su propio tipo. |
+| `ManejadorDeArchivoEficienteTest` | 26 | EOF en los tres casos de ejemplo, archivo vacío, los tres convenios de fin de línea, `0x1A` embebido, UTF-8 inválido, columnas y línea-fuente, y el costo de ubicar el error en un fuente de 200.000 líneas. |
 | `TipoDeTokenTest` | 22 | Que los nombres impresos coincidan con los que fija la cátedra. |
 | `PosicionDelCaretTest` | 21 | Dónde apunta el `^`, con el diagnóstico de `javac` citado en cada caso. |
-| `ManejadorDeArchivoEficienteTest` | 19 | EOF en los tres casos de ejemplo, archivo vacío, los tres convenios de fin de línea, `0x1A` embebido, UTF-8 inválido, columnas y línea-fuente. |
-| `TipoDeErrorLexicoTest` | 16 | Un caso por cada tipo de error, validado por tipo y localización. |
 | `CriterioDeRecuperacionTest` | 14 | Que tras cada error el análisis retome en el carácter correcto. |
+| `TipoDeErrorLexicoTest` | 14 | Un caso por cada tipo de error, validado por tipo y localización. |
+| `EscapadorDeNoImprimiblesTest` | 12 | Que ningún carácter invisible llegue crudo al mensaje de un error ni parta el formato de una línea por elemento. |
 | `LimitesNumericosTest` | 12 | El límite de 9 dígitos y su interacción con los floats. |
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
 | `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
-| `FormateadorDeErrorTest` | 6 | Las cuatro líneas del reporte, y el `^` con tabuladores y caracteres CJK. |
+| `AnalizadorLexicoPropiedadesTest` | 6 | Las invariantes de §3.1 y §3.3. |
+| `FormateadorDeErrorTest` | 5 | Las líneas del reporte elegante, y el `^` con tabuladores y caracteres CJK. |
 | `PropiedadesDelReporteTest` | 5 | Las invariantes de §3.2, §3.4 y §3.6 sobre entradas generadas. |
-| `AnalizadorLexicoPropiedadesTest` | 4 | Las invariantes de §3.1 y §3.3. |
 | `AnalizadorLexicoFuzzTest` | 3 | Bytes UTF-8 arbitrarios con semilla fija. |
 | `DefectosDeRobustezTest` | 3 | Caracteres de control e invisibles en lexemas y mensajes. |
 | `MainTest` | 3 | El punto de entrada: sin argumentos, archivo inexistente, caso feliz. |
 | `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
 | `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
 
-**Total: 519 casos ejecutables.**
+**Total: 620 casos ejecutables, en 22 suites.**
 
 ## 6. Cómo correr
 

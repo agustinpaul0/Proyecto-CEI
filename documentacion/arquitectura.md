@@ -302,7 +302,9 @@ responsabilidad clara y acotada — un estado del autómata, un formateador, una
 ### 5.6. Las palabras clave no tienen autómata propio
 
 Las 21 palabras reservadas se reconocen como un identificador común y, antes de emitir el token, se
-consulta una tabla de lookup (`TablaDePalabrasClave`). Modelarlas con estados dedicados exigiría casi
+consulta una tabla de lookup (`TablaDeLexemas`, que además nombra a los otros 28 tokens de lexema
+fijo — ver [`especificacion-lexica.md`](especificacion-lexica.md) §7). Modelarlas con estados
+dedicados exigiría casi
 un estado por letra de cada palabra, fusionados con los estados de identificador — decenas de estados
 frágiles para una decisión que una tabla resuelve en tiempo constante. Es la técnica estándar, y la
 que la cátedra recomienda explícitamente (Clase 02, slides 62-63).
@@ -323,7 +325,7 @@ compilador/
     │   ├── io/                   ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
     │   │                            contenido intacto), ManejadorDeArchivo + el reemplazo propio
     │   ├── tokens/               ← Token (record inmutable), TipoDeToken (56 valores),
-    │   │                            TablaDePalabrasClave (las 21 palabras reservadas)
+    │   │                            TablaDeLexemas (los 49 tokens de lexema fijo)
     │   ├── errores/              ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError,
     │   │                            PosicionLexica, EscapadorDeNoImprimibles
     │   ├── salida/               ← interfaz Salida + SalidaEstandar
@@ -346,18 +348,20 @@ lo único que se les cambió es la declaración de `package`, para agruparlas co
 implementación propias que las extienden. No se reescribieron ni se corrigieron — el reemplazo es
 una clase nueva y aparte, y las originales quedan como referencia de lo que se recibió.
 
-## 7. Por qué el manejador de archivo de la cátedra no alcanza
+## 7. El Manejador de Archivos Eficiente
 
 Resumen; el desarrollo completo está en [`manejador-de-archivo.md`](manejador-de-archivo.md).
 
-`SourceManagerImpl` (la implementación de referencia provista) lee **por líneas** con `readLine()` y
-usa `reader.ready()` para decidir si queda contenido. Ese diseño **falla contra los propios casos de
-ejemplo de la cátedra**: `lexSinErrores01.java` tiene 21 saltos de línea y termina en newline, y su
-oráculo espera el EOF en la línea 22, pero `reader.ready()` lo reporta en la 21. Además lanza
-`NullPointerException` con un archivo vacío.
+`ManejadorDeArchivoEficiente` implementa el logro homónimo: sirve el fuente **carácter por carácter**
+en vez de línea por línea, con una única lectura del archivo en `open()`. Además de eso resuelve tres
+requisitos que el resto del compilador da por sentados:
 
-Conclusión operativa: el logro *Manejador de Archivos Eficiente* figura como opcional en la consigna,
-pero en la práctica es un **requisito** para pasar los tests de la propia cátedra.
+- **La línea del EOF** es `cantidad de saltos consumidos + 1`, incluido el caso del archivo que
+  termina en salto de línea — es lo que esperan los oráculos de los tres casos de ejemplo.
+- **El fin de archivo se detecta por posición**, no comparando el carácter leído contra el centinela
+  `(char) 26`, que es un byte legítimo dentro de un fuente.
+- **La posición del error se obtiene sin una segunda pasada**: la columna es un contador O(1) y el
+  texto de la línea se recorre sólo desde su inicio, nunca desde el principio del archivo.
 
 ## 8. Ver también
 

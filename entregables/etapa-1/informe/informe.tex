@@ -1,0 +1,950 @@
+\documentclass[11pt,a4paper]{article}
+\input{preambulo}
+
+\begin{document}
+
+% ===========================================================================
+% Portada
+% ===========================================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\raggedright
+\vspace*{2.2cm}
+
+{\color{grisMedio}\footnotesize\sffamily
+UNIVERSIDAD NACIONAL DEL SUR\\
+Departamento de Ciencias e Ingeniería de la Computación\\
+Compiladores e Intérpretes --- Segundo Cuatrimestre de 2026\par}
+
+\vspace{2.4cm}
+{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+\vspace{1.1cm}
+
+{\Huge\bfseries\color{acento} Compilador de MiniJava\par}
+\vspace{0.5cm}
+{\LARGE\color{tinta} Etapa 1 --- Analizador Léxico\\[0.25cm]
+\large\color{grisMedio} y Módulo Principal\par}
+
+\vspace{1.1cm}
+{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+
+\vspace{2.6cm}
+{\large\color{tinta} Agustín Paul\par}
+\vspace{0.35cm}
+{\color{grisMedio} Informe de entrega\par}
+
+\vfill
+{\color{grisMedio}\footnotesize
+Implementación por \emph{Método por Estado} (patrón State).\\
+Los 56 componentes léxicos, sus expresiones regulares y sus autómatas.\par}
+\vspace{0.6cm}
+{\color{grisMedio}\footnotesize 29 de agosto de 2026\par}
+\end{titlepage}
+
+% ===========================================================================
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+% ===========================================================================
+\section{Alcance}
+% ===========================================================================
+
+Este informe documenta la Etapa 1 del compilador de MiniJava: el \textbf{Analizador Léxico} y el
+\textbf{Módulo Principal} que lo consume por consola. Cubre la expresión regular de los 56
+componentes léxicos sin omitir ninguno, los autómatas que los reconocen, las decisiones tomadas
+donde la especificación admitía más de una lectura, el tratamiento de errores y los ocho logros
+perseguidos.
+
+\subsection{Qué hace el programa}
+
+Toma un archivo fuente MiniJava y emite por salida estándar la secuencia de sus componentes léxicos,
+uno por línea, en el formato \lex{(NombreToken,Lexema,NroLinea)}. Si no hubo errores, cierra con
+\lex{[SinErrores]}; si los hubo, emite un reporte por cada uno, terminado en el código de contrato
+\lex{[Error:Lexema|NroLinea]}.
+
+\begin{codigoLlano}
+$ java -jar Compilador.jar programa1.java
+(litString,"hola",1)
+(idMV,v1,2)
+(op+,+,2)
+(idMV,chau,2)
+(pr_if,if,3)
+(pr_class,class,3)
+(llaveC,},3)
+(EOF,$,3)
+
+[SinErrores]
+\end{codigoLlano}
+
+El renglón en blanco antes de \lex{[SinErrores]} --- y el equivalente antes de
+\lex{[Error:\ldots]} --- son los de los ejemplos de \emph{Pautas Etapa 1}. El archivo fuente puede
+tener cualquier extensión: el compilador no inspecciona el nombre, sólo abre la ruta que recibe.
+
+\subsection{Cómo compilarlo y ejecutarlo}
+
+\begin{codigoLlano}
+cd compilador
+mvn package                                   # genera target/Compilador.jar
+java -jar target/Compilador.jar programa1.java
+
+mvn test        # suite propia + los 2 testers de la cátedra, en la misma pasada
+mvn verify      # además exige los umbrales de cobertura
+\end{codigoLlano}
+
+Requiere Java 25 (\lex{maven.compiler.release=25}).
+
+% ===========================================================================
+\section{Notación de expresiones regulares}
+\label{sec:notacion}
+% ===========================================================================
+
+Toda expresión regular de este informe usa la notación siguiente. La cardinalidad se escribe
+siempre como \textbf{exponente} del símbolo o del grupo al que afecta. Los dos operadores que más
+conviene distinguir son la estrella de Kleene, que admite \emph{cero o más} repeticiones, y la
+repetición acotada \ere{X}{m--n}, que es la que necesita el literal entero.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Forma} & \textbf{Significado} \\
+\midrule
+\ere{X}{*} & cero o más repeticiones de \lex{X} (estrella de Kleene) \\
+\ere{X}{+} & una o más repeticiones de \lex{X} \\
+\ere{X}{?} & cero o una repetición de \lex{X} \\
+\ere{X}{m--n} & entre \lex{m} y \lex{n} repeticiones, \textbf{ambos extremos inclusive} \\
+\lex{A | B} & alternativa: \lex{A} o \lex{B} \\
+\lex{( \ldots )}\sups{c} & agrupación; el exponente \lex{c} afecta al grupo entero \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Y las clases de caracteres que se usan como abreviatura:
+
+\begin{codigoLlano}
+Digito     = [0-9]
+LetraMayus = [A-Z]
+LetraMin   = [a-z]
+Letra      = LetraMayus | LetraMin
+Hex        = [0-9a-fA-F]
+\end{codigoLlano}
+
+\begin{quote}\small\color{grisMedio}
+Una precisión sobre ``letra'' y ``dígito'': la implementación los reconoce con
+\lex{Character.isLetter} y \lex{Character.isDigit}, que abarcan más que el ASCII. Las consecuencias
+están en la sección~\ref{sec:divergencias}.
+\end{quote}
+
+% ===========================================================================
+\section{Los 56 componentes léxicos}
+% ===========================================================================
+
+\begin{center}
+\begin{tabular}{@{}llp{9.2cm}@{}}
+\toprule
+\textbf{Familia} & \textbf{Cant.} & \textbf{Tokens} \\
+\midrule
+Palabras clave & 21 & \tok{pr\_class}, \tok{pr\_extends}, \tok{pr\_interface},
+  \tok{pr\_implements}, \tok{pr\_static}, \tok{pr\_boolean}, \tok{pr\_char}, \tok{pr\_int},
+  \tok{pr\_void}, \tok{pr\_public}, \tok{pr\_if}, \tok{pr\_else}, \tok{pr\_while},
+  \tok{pr\_return}, \tok{pr\_var}, \tok{pr\_this}, \tok{pr\_new}, \tok{pr\_null},
+  \tok{pr\_true}, \tok{pr\_false}, \tok{pr\_float} \\
+Identificadores & 3 & \tok{idClase}, \tok{idGen}, \tok{idMV} \\
+Literales & 4 & \tok{intLiteral}, \tok{charLiteral}, \tok{litString}, \tok{floatLiteral} \\
+Puntuación & 10 & \tok{parenA}, \tok{parenC}, \tok{llaveA}, \tok{llaveC}, \tok{corcheteA},
+  \tok{corcheteC}, \tok{puntoYComa}, \tok{coma}, \tok{punto}, \tok{dosPuntos} \\
+Operadores & 17 & \tok{op\_mayor}, \tok{op\_menor}, \tok{op\_negacion}, \tok{op\_asignacion},
+  \tok{op\_igual}, \tok{op\_mayorIgual}, \tok{op\_menorIgual}, \tok{op\_distinto}, \tok{op\_and},
+  \tok{op\_or}, \tok{op\_modulo}, \tok{op+}, \tok{op-}, \tok{op\_mult}, \tok{op\_div},
+  \tok{op\_incremento}, \tok{op\_decremento} \\
+Fin de archivo & 1 & \tok{EOF} \\
+\midrule
+\textbf{Total} & \textbf{56} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Los nombres de la columna derecha son literales: son exactamente los que se imprimen, porque el
+formato de salida fijado es \lex{(NombreToken,Lexema,NroLinea)}.
+
+\subsection{Identificadores}
+
+Los tres se distinguen por la caja de su primera letra y, entre los dos que empiezan con mayúscula,
+por su longitud.\notaKleene
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Token} & \textbf{Expresión regular} & \textbf{Ejemplos} \\
+\midrule
+\tok{idGen} & \lex{LetraMayus} & \lex{A}, \lex{T} \\
+\tok{idClase} & \lex{LetraMayus ( Letra | Digito | \_ )}\sups{+} & \lex{Alpha}, \lex{A1}, \lex{Mi\_Clase} \\
+\tok{idMV} & \lex{LetraMin ( Letra | Digito | \_ )}\sups{*} & \lex{v1}, \lex{x}, \lex{mi\_metodo} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\tok{idGen} y \tok{idClase} comparten el primer carácter y se distinguen por longitud: \textbf{una}
+mayúscula sola es \tok{idGen}; una mayúscula seguida de al menos un carácter más es \tok{idClase}.
+Ahí está la diferencia entre los dos exponentes de la tabla: el \sups{+} de \tok{idClase} exige ese
+carácter adicional, mientras que el \sups{*} de \tok{idMV} admite el identificador de una sola
+letra.
+
+Un identificador que empieza con minúscula es siempre \tok{idMV}, \textbf{salvo} que su lexema
+completo coincida con una de las 21 palabras clave; ver la sección~\ref{sec:tabla}.
+
+\subsection{\tok{intLiteral}}
+
+\begin{er}
+intLiteral = \ere{Digito}{1--9}
+\end{er}
+
+Entre uno y nueve dígitos, ambos extremos inclusive. La cota superior es parte de la
+especificación del lenguaje, no una limitación de la implementación, y por eso la repetición es
+\textbf{acotada} y no una estrella de Kleene: \ere{Digito}{*} describiría un lenguaje distinto ---y
+además admitiría el literal vacío---. Escrita sin la abreviatura de cardinalidad:
+
+\begin{er}
+intLiteral = Digito \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?} \ere{Digito}{?}
+\end{er}
+
+\noindent
+El autómata que le corresponde es, por lo tanto, una \textbf{cadena de nueve estados terminales sin
+ciclo}: un bucle sobre un único estado aceptaría corridas de cualquier longitud, que es justamente lo
+que la cota prohíbe. Cada uno de los nueve estados es de aceptación, porque un literal entero puede
+terminar en cualquier cantidad de dígitos entre uno y nueve; el décimo dígito no tiene transición, y
+ahí está el error.
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=0.82cm,font=\scriptsize,
+                        inner sep=1pt},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\scriptsize}]
+  \node[state,initial,initial text={}] (i)                     {$e_0$};
+  \node[state,accepting]               (d1) [right=2.05cm of i]  {$d_1$};
+  \node[state,accepting]               (d2) [right=2.05cm of d1] {$d_2$};
+  \node[state,accepting]               (d3) [right=2.05cm of d2] {$d_3$};
+  \node                                (p)  [right=1.5cm of d3]  {$\cdots$};
+  \node[state,accepting]               (d8) [right=1.5cm of p]   {$d_8$};
+  \node[state,accepting]               (d9) [right=2.05cm of d8] {$d_9$};
+  \path[->] (i)  edge node {Digito} (d1)
+            (d1) edge node {Digito} (d2)
+            (d2) edge node {Digito} (d3)
+            (d3) edge (p)
+            (p)  edge (d8)
+            (d8) edge node {Digito} (d9);
+\end{tikzpicture}
+\end{center}
+
+\paragraph{El límite se valida al final de la corrida, no durante.} El estado consume la corrida
+\emph{completa} de dígitos y recién al terminar comprueba que no supere nueve. La razón es que si el
+carácter siguiente a la corrida es un \lex{.} o una \lex{e}/\lex{E}, la corrida continúa hacia un
+\tok{floatLiteral}, que \textbf{no} tiene ese límite; cortar en el noveno dígito rompería esa
+continuación. Por eso \lex{1234567890.5} es un float válido con diez dígitos en la parte entera,
+mientras que \lex{1234567890} solo es un error.
+
+\subsection{\tok{charLiteral}}
+
+\begin{er}
+charLiteral = ' X '\quad|\quad' \bs\ Y '\quad|\quad' \bs\ U '
+\medskip
+X = cualquier carácter salvo \bs\ y '
+Y = cualquier carácter salvo u
+U = escape Unicode
+\end{er}
+
+La especificación da aquí una \textbf{producción con dos alternativas}, y las variables \lex{X} e
+\lex{Y} son independientes entre sí. Eso hace que la barra invertida y el carácter que la sigue
+formen una \emph{unidad}: de ahí que \lex{'\bs\bs'} y \lex{'\bs''} sean literales válidos. El literal
+vacío \lex{''} no está en ninguna alternativa y es un error.
+
+Como \lex{Y} es ``cualquier carácter'', \lex{'\bs q'} es válido, con valor \lex{q}: una permisividad
+explícita de la especificación, más laxa que Java.
+
+\subsection{\tok{litString}}
+\label{sec:string}
+
+\begin{er}
+litString = " ( Z | \bs\ C )\sups{*} "\qquad con la " de cierre NO antecedida por \bs
+\medskip
+Z = cualquier carácter salvo \bs, " y salto de línea
+C = cualquier carácter salvo salto de línea\quad(incluye \bs\ y ")
+\end{er}
+
+\paragraph{Por qué esta ER tiene otra forma que la del \tok{charLiteral}.} La especificación
+\emph{no} da una producción para el string. Da una regla \textbf{posicional}:
+
+\begin{quote}\itshape\small
+``es posible que en la secuencia de caracteres aparezca una comilla doble siempre y cuando se la
+anteceda por el caracter \lex{\bs}. Por esto último la comilla doble que marca el final de un string
+correcto nunca estará antecedida por ese caracter.''
+\end{quote}
+
+Es un \emph{lookbehind} de un carácter sobre el texto crudo. Consecuencia directa: \textbf{no existe
+un conjunto de escapes válidos} dentro de un \tok{litString}. \lex{"hola \bs q"} es un string común y
+corriente, en el que la barra y la \lex{q} son dos caracteres cualesquiera.
+
+\begin{center}
+\begin{tabular}{@{}llp{6.6cm}@{}}
+\toprule
+\textbf{Fuente} & \textbf{Resultado} & \textbf{Por qué} \\
+\midrule
+\lex{"hola \bs q"} & \tok{litString} válido & la \lex{"} de cierre no está antecedida por \lex{\bs} \\
+\lex{"di \bs"hola\bs" chau"} & \textbf{un solo} \tok{litString} & las dos \lex{"} internas están antecedidas por \lex{\bs} \\
+\lex{"a\bs\bs"} & \emph{sin cerrar} & la \lex{"} final está antecedida por \lex{\bs}: no cierra \\
+\lex{"a\bs\bs\bs""} & \tok{litString} válido & la primera \lex{"} no cierra, la segunda sí \\
+\lex{"barra \bs\bs\ al medio"} & \tok{litString} válido & la barra sólo importa pegada a la comilla de cierre \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+La tercera fila es el único punto en que esta regla se aparta de Java, donde \lex{"a\bs\bs"} denota
+la barra invertida: aquí una barra no ``cancela'' a la anterior, porque la regla no habla de pares
+sino de qué carácter antecede a la comilla de cierre. Se resolvió a favor de la especificación
+escrita, que es explícita en decir \emph{nunca}.
+
+Un \tok{litString} tampoco puede contener un salto de línea real: si aparece uno antes de la comilla
+de cierre, el literal quedó sin cerrar.
+
+\subsection{\tok{floatLiteral}}
+
+\begin{er}
+floatLiteral = \ere{Digito}{+} . \ere{Digito}{*} \ere{Exponente}{?} \ere{Sufijo}{?}
+\phantom{floatLiteral }| \ere{Digito}{+} Exponente \ere{Sufijo}{?}
+\phantom{floatLiteral }| \ere{Digito}{+} Sufijo
+\medskip
+Exponente = ( e | E ) ( + | - )\sups{?} \ere{Digito}{+}
+Sufijo\phantom{nte} = f | F | d | D
+\end{er}
+
+Misma estructura que los floats de Java, con la salvedad que fija la consigna: \textbf{siempre
+empiezan con un dígito}. Por eso \lex{.5} no es un float en MiniJava, sino el token \tok{punto}
+seguido de \tok{intLiteral(5)}.
+
+\paragraph{La cardinalidad del exponente, que es donde se juega todo.}\notaKleene\ En
+\lex{Exponente = ( e | E ) ( + | - )}\sups{?}\lex{ }\ere{Digito}{+} conviven los tres casos, y cada
+uno dice algo distinto:
+
+\begin{description}
+\item[\lex{( e | E )}] la marca de exponente es obligatoria y va \emph{sin} exponente de
+  cardinalidad: aparece exactamente una vez.
+\item[\lex{( + | - )}\sups{?}] el signo es \textbf{opcional} --- cero o una vez. \lex{1e5},
+  \lex{1e+5} y \lex{1e-5} son los tres válidos.
+\item[\ere{Digito}{+}] los dígitos del exponente son \textbf{uno o más}, \emph{nunca}
+  \ere{Digito}{*}. Ésta es la diferencia que hace que \lex{1e} y \lex{1.5e+} sean errores: con
+  \sups{*} el exponente vacío sería válido y \lex{1e} tokenizaría como un float.
+\end{description}
+
+En cambio, la parte fraccionaria sí lleva estrella de Kleene: \ere{Digito}{+}\lex{ . }\ere{Digito}{*}
+admite \lex{1.} como float válido, con cero dígitos después del punto, igual que en Java.
+
+Ninguna de las tres partes tiene cota superior de dígitos, a diferencia del \tok{intLiteral}. Un
+float fuera del rango representable (\lex{3.5e38f}, \lex{1e999}) es un literal léxicamente
+\textbf{válido}: en Java el rechazo por rango es un chequeo semántico, no léxico, y aquí se respeta
+esa separación de fases.
+
+No hay retroceso a un token más corto: una vez consumida la \lex{e} como inicio de exponente, el
+literal está comprometido, y si no vienen dígitos es un error en lugar de un \tok{intLiteral}
+seguido de un \tok{idMV}.
+
+\subsection{El escape Unicode}
+
+\begin{er}
+U = \bs\ \ere{u}{+} Hex Hex Hex Hex\qquad=\qquad\bs\ \ere{u}{+} \ere{Hex}{4--4}
+\end{er}
+
+El marcador \lex{u} se repite \textbf{una o más} veces: \lex{\bs u0041}, \lex{\bs uu0041} y
+\lex{\bs uuuu0041} son todos válidos y equivalentes. Es semántica heredada de Java, que la necesita
+para poder representar un \lex{\bs u} literal sin re-traducirlo. Después de la última \lex{u} se
+exigen exactamente cuatro dígitos hexadecimales --- no más, no menos: no es \ere{Hex}{+} ni
+\ere{Hex}{*}, es una repetición acotada de extremos iguales, \ere{Hex}{4--4}.
+
+El mismo escape sirve dentro de un \tok{charLiteral} y dentro de un \tok{litString}, y los estados
+que lo reconocen están parametrizados por el estado al que deben volver.
+
+\subsection{Puntuación}
+
+\begin{center}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\textbf{Token} & \textbf{ER} & \textbf{Token} & \textbf{ER} & \textbf{Token} & \textbf{ER} & \textbf{Token} & \textbf{ER} \\
+\midrule
+\tok{parenA} & \lex{(} & \tok{parenC} & \lex{)} & \tok{llaveA} & \lex{\{} & \tok{llaveC} & \lex{\}} \\
+\tok{corcheteA} & \lex{[} & \tok{corcheteC} & \lex{]} & \tok{puntoYComa} & \lex{;} & \tok{coma} & \lex{,} \\
+\tok{punto} & \lex{.} & \tok{dosPuntos} & \lex{:} & & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Los diez son tokens de un solo carácter, sin lookahead: la ER de cada uno es ese carácter y nada
+más.
+
+\subsection{Operadores}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Token} & \textbf{ER} & \textbf{Token} & \textbf{ER} \\
+\midrule
+\tok{op\_mayor} & \lex{>} & \tok{op\_mayorIgual} & \lex{>=} \\
+\tok{op\_menor} & \lex{<} & \tok{op\_menorIgual} & \lex{<=} \\
+\tok{op\_negacion} & \lex{!} & \tok{op\_distinto} & \lex{!=} \\
+\tok{op\_asignacion} & \lex{=} & \tok{op\_igual} & \lex{==} \\
+\tok{op+} & \lex{+} & \tok{op\_incremento} & \lex{++} \\
+\tok{op-} & \lex{-} & \tok{op\_decremento} & \lex{--} \\
+\tok{op\_mult} & \lex{*} & \tok{op\_div} & \lex{/} \\
+\tok{op\_modulo} & \lex{\%} & & \\
+\tok{op\_and} & \lex{\&\&} & \tok{op\_or} & \lex{||} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Se agrupan en tres clases por su comportamiento en el autómata:
+
+\begin{description}
+\item[Con sufijo opcional] (\lex{>}, \lex{<}, \lex{!}, \lex{=}, \lex{+}, \lex{-}): el primer carácter
+  ya forma un token válido y el segundo lo extiende. El estado que los reconoce es \textbf{terminal}:
+  si el sufijo no viene, emite el token corto sin consumir el carácter que miró.
+\item[Con segundo carácter obligatorio] (\lex{\&\&}, \lex{||}): \lex{\&} y \lex{|} sueltos \textbf{no}
+  son tokens del lenguaje. El estado es \textbf{no terminal}: si el segundo carácter no viene, es un
+  error léxico.
+\item[De un solo carácter] (\lex{*}, \lex{\%}, y \lex{/} cuando no abre un comentario).
+\end{description}
+
+\subsection{\tok{EOF}}
+
+Es un token más, con lexema \lex{\$}, tal como lo fija la especificación. Su ER es trivial: un solo
+símbolo sobre la condición de fin de contenido.
+
+\paragraph{El lexema \lex{\$} y el centinela de fin de archivo son cosas distintas.} El centinela que
+devuelve el manejador de archivo cuando se acabó el contenido es \lex{(char) 26}, valor fijado por la
+interfaz \lex{SourceManager}. El \lex{\$} es solamente el lexema que se \emph{imprime} para el token
+\tok{EOF}: no se lee del fuente y no tiene ninguna relación con el centinela. Un \lex{\$} escrito en
+el fuente es un símbolo inválido y produce un error léxico.
+
+De esa distinción sale una decisión del manejador de archivo: \textbf{el fin de archivo se detecta
+por posición, no comparando el carácter leído contra el centinela}. El byte \lex{0x1A} es legítimo
+dentro de un archivo, y compararlo contra el centinela truncaría el análisis ahí en silencio,
+informando \lex{[SinErrores]} sobre un fuente que nunca se terminó de leer.
+
+Por último, la línea del \tok{EOF} es \emph{cantidad de saltos de línea consumidos $+$ 1}, lo que
+incluye el caso del archivo que termina en salto de línea.
+
+\subsection{Lo que no es un token}
+
+\subsubsection{Separadores}
+
+Espacio, tabulador y salto de línea. Se descartan sin agregarse a ningún lexema. LF, CR y CRLF
+cuentan cada uno como \textbf{un} solo salto de línea, de modo que dos archivos que difieran
+únicamente en el convenio de fin de línea reportan los mismos números de línea.
+
+El \emph{form feed} y el tabulador vertical \textbf{no} son separadores en MiniJava, aunque sí lo son
+en Java: no están en la lista de la especificación, y por lo tanto producen error léxico.
+
+\subsubsection{Comentarios}
+
+De línea (\lex{// \ldots} hasta el fin de línea) y multilínea (\lex{/* \ldots */}). Se descartan por
+completo: no producen token y su contenido no forma parte de ningún lexema. \textbf{Todo} lo que está
+dentro de un comentario se ignora, incluidos escapes Unicode mal formados y comillas sin cerrar.
+
+La ER del comentario multilínea es la estándar, la misma que usan \lex{lex}/\lex{flex} para los
+comentarios de C:
+
+\begin{er}
+/\bs*\quad( [\caret*] | \bs*\sups{+} [\caret*/] )\sups{*}\quad\bs*\sups{+}\quad/
+\end{er}
+
+En palabras: tras el \lex{/*}, el contenido es cualquier cantidad de (un carácter que no sea
+\lex{*}) o (uno o más \lex{*} seguidos de un carácter que no sea ni \lex{*} ni \lex{/}), y cierra con
+uno o más \lex{*} seguidos de \lex{/}. Los comentarios \textbf{no anidan}.
+
+Un comentario multilínea sin cerrar es un error léxico, y se reporta con el lexema \lex{/*} y la
+línea de \textbf{apertura}, no la del fin de archivo donde se descubrió.
+
+% ===========================================================================
+\section{Los autómatas}
+% ===========================================================================
+
+La implementación usa la técnica de \emph{Método por Estado}: hay una clase por estado del autómata
+finito, cada una responsable de una sola transición. El driver es iterativo --- cada estado devuelve
+o bien el estado siguiente, o bien el token a emitir --- de modo que la profundidad de pila no crece
+con la longitud del lexema.
+
+\subsection{Identificadores y palabras clave}
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=1.05cm,font=\small},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\footnotesize}]
+  \node[state,initial,initial text={}] (i)                       {$e_0$};
+  \node[state,accepting]               (g) [right=3.2cm of i]    {IdGen};
+  \node[state,accepting]               (c) [right=4.4cm of g]    {IdClase};
+  \node[state,accepting]               (m) [below=2.6cm of g]    {IdMV};
+  \path[->] (i) edge node {LetraMayus} (g)
+            (g) edge node {Letra | Digito | \_} (c)
+            (i) edge node[swap,pos=0.55] {LetraMin} (m);
+  \path[->] (c) edge [loop above] node {Letra | Digito | \_} ();
+  \path[->] (m) edge [loop below] node {Letra | Digito | \_} ();
+\end{tikzpicture}
+\end{center}
+
+\noindent
+El estado \textsf{IdGen} es \textbf{terminal}: si el token termina ahí, es \tok{idGen}; si aparece un
+carácter más, transiciona a \textsf{IdClase}. Al emitir desde \textsf{IdMV} se consulta la tabla de
+lexemas: si el lexema completo coincide con una palabra reservada, se emite la palabra clave.
+
+\subsection{\tok{charLiteral}}
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=3.1cm,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=1.0cm,font=\small},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\small}]
+  \node[state,initial,initial text={}] (i)                {$e_0$};
+  \node[state]                         (a) [right=of i]   {Abierto};
+  \node[state]                         (e) [below=2.3cm of a] {Escapado};
+  \node[state]                         (c) [right=3.6cm of a] {Cerrando};
+  \node[state,accepting]               (f) [right=3.4cm of c] {char};
+  \path[->] (i) edge node {\lex{'}} (a)
+            (a) edge node {$\neq$ \lex{\bs} , \lex{'}} (c)
+            (a) edge node[swap] {\lex{\bs}} (e)
+            (e) edge node[swap,pos=0.4] {$\neq$ \lex{u}} (c)
+            (c) edge node {\lex{'}} (f);
+\end{tikzpicture}
+\end{center}
+
+\noindent
+Desde \textsf{Escapado}, una \lex{u} deriva al autómata del escape Unicode, que vuelve a
+\textsf{Cerrando} tras consumir los cuatro dígitos hexadecimales. Los tres caminos que no llegan al
+estado final son los tres errores del \tok{charLiteral}: \lex{''} (vacío), un fin de línea o de
+archivo antes de cerrar (\emph{sin cerrar}), y cualquier otro carácter donde debía ir la comilla de
+cierre (\emph{mal formado}).
+
+\subsection{\tok{litString}}
+
+El \emph{lookbehind} de la sección~\ref{sec:string} es un bit de memoria, y se modela con dos
+estados: en \textsf{Abierto} el carácter anterior no fue una barra; en \textsf{TrasBarra} sí lo fue.
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=1.0cm,font=\small},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\footnotesize}]
+  \node[state,initial,initial text={}] (i)                    {$e_0$};
+  \node[state]                         (a) [right=2.7cm of i] {Abierto};
+  \node[state]                         (b) [right=6.2cm of a] {TrasBarra};
+  \node[state,accepting]               (f) [below=3.0cm of a] {litString};
+  \path[->] (i) edge node {\lex{"}} (a);
+  \path[->] (a) edge [bend left=22] node[above,pos=0.5] {\lex{\bs}} (b);
+  \path[->] (b) edge [bend left=22] node[below,pos=0.5] {cualquier otro, incluida \lex{"}} (a);
+  \path[->] (a) edge node[swap] {\lex{"}} (f);
+  \path[->] (a) edge [loop above] node[above] {$\neq$ \lex{\bs} , \lex{"} , salto} ();
+  \path[->] (b) edge [loop above] node[above] {\lex{\bs}} ();
+\end{tikzpicture}
+\end{center}
+
+\noindent
+Hay que reparar en el bucle de \textsf{TrasBarra} sobre \lex{\bs}: una barra que sigue a otra barra
+\textbf{no} devuelve al estado \textsf{Abierto}, porque la comilla que venga después seguirá estando
+antecedida por una barra. Eso es exactamente lo que hace que \lex{"a\bs\bs"} quede sin cerrar. Desde
+\textsf{TrasBarra}, una \lex{u} deriva al escape Unicode.
+
+\subsection{\tok{floatLiteral}}
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=0.95cm,font=\small},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\footnotesize}]
+  \node[state,initial,initial text={}] (i)                     {$e_0$};
+  \node[state,accepting]               (e) [right=2.9cm of i]  {Entero};
+  \node[state,accepting]               (p) [right=4.2cm of e]  {ConPunto};
+  \node[state]                         (x) [below=3.2cm of i]  {ExpInicio};
+  \node[state]                         (r) [right=3.9cm of x]  {ReqDigito};
+  \node[state,accepting]               (d) [right=4.2cm of r]  {ExpDigitos};
+  \path[->] (i) edge node {Digito} (e);
+  \path[->] (e) edge node {\lex{.}} (p);
+  % Las dos entradas al exponente llegan por lados distintos para que sus
+  % etiquetas no compartan espacio.
+  \path[->] (e) edge node[swap,pos=0.55] {\lex{e} | \lex{E}} (x);
+  \path[->] (p) edge node[pos=0.22,right=2pt] {\lex{e} | \lex{E}} (x);
+  \path[->] (x) edge node[above] {\lex{+} | \lex{-}} (r);
+  \path[->] (x) edge [bend right=22] node[below,pos=0.55] {Digito} (d);
+  \path[->] (r) edge node[above] {Digito} (d);
+  \path[->] (e) edge [loop above] node[above] {Digito} ();
+  \path[->] (p) edge [loop above] node[above] {Digito} ();
+  \path[->] (d) edge [loop below] node[below] {Digito} ();
+\end{tikzpicture}
+\end{center}
+
+\noindent
+\textsf{Entero}, \textsf{ConPunto} y \textsf{ExpDigitos} son terminales; \textsf{ExpInicio} y
+\textsf{ReqDigito} no lo son, y ahí está representado el \ere{Digito}{+} del exponente: llegar a
+\textsf{ExpInicio} y no encontrar un dígito ni un signo es el error de \lex{1e}. Los sufijos
+\lex{f}/\lex{F}/\lex{d}/\lex{D} pueden cerrar desde \textsf{Entero}, \textsf{ConPunto} o
+\textsf{ExpDigitos}; se omiten del diagrama para no saturarlo.
+
+Los bucles sobre \textsf{Entero}, \textsf{ConPunto} y \textsf{ExpDigitos} son correctos acá y no
+contradicen la cadena de nueve estados del \tok{intLiteral}: ninguna de las tres partes de un
+\tok{floatLiteral} tiene cota de dígitos, así que la repetición \emph{sí} es una estrella de Kleene.
+La cota de nueve pertenece únicamente al literal entero.
+
+\subsection{Comentario multilínea}
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=4.0cm,on grid,auto,
+    every state/.style={draw=grisMedio,thick,fill=grisFondo,minimum size=1.0cm,font=\small},
+    every edge/.style={draw=grisMedio,->,>={Stealth[round]}},
+    every node/.style={font=\small}]
+  \node[state,initial,initial text={\lex{/*}}] (s)              {SinAst};
+  \node[state]                                 (c) [right=of s] {ConAst};
+  \node[state,accepting]                       (f) [right=of c] {cierra};
+  \path[->] (s) edge [bend left=12] node {\lex{*}} (c)
+            (c) edge [bend left=12] node {$\neq$ \lex{*} , \lex{/}} (s)
+            (c) edge node {\lex{/}} (f);
+  \path[->] (s) edge [loop above] node {$\neq$ \lex{*}} ();
+  \path[->] (c) edge [loop above] node {\lex{*}} ();
+\end{tikzpicture}
+\end{center}
+
+\subsection{El reparto entre autómata y tabla}
+\label{sec:tabla}
+
+De los 56 tokens, \textbf{49 tienen lexema fijo}, en el sentido de que el tipo y el lexema se
+determinan mutuamente: las 21 palabras clave, los 10 símbolos de puntuación, los 17 operadores y
+\tok{EOF}. Los otros 7 --- los tres identificadores y los cuatro literales --- leen su lexema del
+fuente.
+
+Los 49 no necesitan un estado que lleve su tipo encima: alcanza con que el autómata delimite el
+lexema y con consultar una tabla. Lo único que la tabla \emph{no} puede resolver es el
+\emph{maximal munch}: no sabe si un \lex{>} es \tok{op\_mayor} o el principio de un
+\tok{op\_mayorIgual}, y eso lo decide el autómata mirando el carácter siguiente. El reparto queda
+nítido:
+
+\begin{quote}
+\textbf{el autómata delimita el lexema; la tabla lo nombra.}
+\end{quote}
+
+Es la técnica recomendada para las palabras clave, generalizada a los 49. Modelar cada palabra
+reservada con estados dedicados exigiría casi un estado por letra, fusionados con los estados de
+identificador: decenas de estados frágiles para algo que una tabla resuelve en tiempo constante.
+
+% ===========================================================================
+\section{Decisiones tomadas}
+% ===========================================================================
+
+Dos reglas gobiernan todas las decisiones del proyecto:
+
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{Lo que la especificación fija, se respeta al pie de la letra.}
+\item \textbf{Lo que no fija, se resuelve como en Java} --- regla escrita explícitamente en la
+  consigna.
+\end{enumerate}
+
+\medskip
+Los casos que admitían más de una lectura, y cómo se resolvió cada uno:
+
+\begin{center}
+\begin{longtable}{@{}p{4.3cm}p{5.0cm}p{5.6cm}@{}}
+\toprule
+\textbf{Caso} & \textbf{Decisión} & \textbf{Fundamento} \\
+\midrule
+\endhead
+\lex{float} y \lex{double} como palabras reservadas &
+\lex{float} es reservada; \lex{double} \textbf{no}: sigue siendo un \tok{idMV} común &
+\lex{float} se agregó por confirmación directa de la cátedra; que MiniJava tenga un único tipo de
+punto flotante no convierte a \lex{double} en reservada \\
+
+Gramática del \tok{floatLiteral} &
+la de Java, con la salvedad de que siempre empieza con dígito &
+la consigna la describe en una sola frase: ``la misma estructura que los floats de Java'' \\
+
+Límite de dígitos de los floats &
+sin límite, a diferencia del \tok{intLiteral} &
+la cota de 9 dígitos está enunciada sólo para el literal entero \\
+
+Float fuera de rango (\lex{1e999}) &
+literal léxicamente válido &
+en Java el rechazo por rango es un chequeo \emph{semántico}; el léxico no valida magnitudes \\
+
+Escapes en \tok{charLiteral} &
+cualquier carácter tras la barra &
+la especificación da una producción con dos alternativas y ``cualquier caracter'' explícito \\
+
+Escapes en \tok{litString} &
+no hay conjunto de escapes: cierra la primera \lex{"} no antecedida por \lex{\bs} &
+la especificación da una regla \emph{posicional}, no una producción; ver sección~\ref{sec:string} \\
+
+\lex{\&} y \lex{|} sueltos &
+error léxico &
+la lista de operadores incluye \lex{\&\&} y \lex{||}, y no los incluye sueltos \\
+
+\lex{''} (char vacío) &
+error léxico &
+no está en ninguna de las dos alternativas de la producción \\
+
+Marcador \lex{u} repetido &
+\lex{\bs uu0041} es válido y equivale a \lex{\bs u0041} &
+semántica de Java (JLS §3.3), verificada contra la especificación \\
+
+Maximal munch &
+se consume siempre el token más largo posible, sin retroceso &
+comportamiento estándar; \lex{1234abc} da \tok{intLiteral(1234)} y \tok{idMV(abc)} \\
+
+Escape Unicode mal formado en un \tok{litString} &
+se reporta y se descarta el literal hasta su comilla de cierre, sin emitir token &
+sobre \lex{"a\bs u12G4" + v1} se emite un error y luego \tok{op+} e \tok{idMV(v1)}: el literal roto
+no se emite, y el análisis retoma en el token siguiente \\
+
+Rango de un \tok{intLiteral} &
+la cota es de \emph{dígitos}, no de valor: \lex{0000000001} es error &
+la especificación acota dígitos, no magnitud \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% ===========================================================================
+\section{Manejo de errores}
+% ===========================================================================
+
+\subsection{Formato del reporte}
+
+Ante un error, el léxico lanza una excepción que el Módulo Principal captura y formatea. La última
+línea es siempre el código de contrato \lex{[Error:Lexema|NroLinea]}; las anteriores son el reporte
+legible, que es uno de los logros perseguidos.
+
+\begin{codigoLlano}
+(idMV,v1,2)
+Error Léxico en línea 2, columna 6: # no es un símbolo válido
+Detalle: v1 + # chau
+              ^
+
+[Error:#|2]
+(idMV,chau,2)
+\end{codigoLlano}
+
+\textbf{El lexema reportado es siempre el armado hasta el momento del error}, como exige la
+consigna, y el código de contrato lleva ese mismo lexema. Si el carácter ofensivo \emph{es} el
+problema, queda incluido en el lexema; si el problema es el lexema ya construido (un \lex{\&} sin su
+par, un entero de más de nueve dígitos, un exponente sin dígitos), el carácter que se está mirando es
+un token legítimo que no tiene nada que ver con el error, y por lo tanto no se consume ni se incluye.
+
+Los lexemas de error nunca llevan un carácter invisible crudo: un salto de línea dentro de un lexema
+partiría la línea del reporte en dos y rompería el formato de un elemento por línea. Se renderizan
+con su escape (\lex{\bs n}, \lex{\bs t}, \lex{\bs u00a0}).
+
+\subsection{Criterio de recuperación}
+
+\begin{quote}
+\textbf{Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en
+el lexema, ni uno más.}
+\end{quote}
+
+No hay un paso de recuperación posterior: el siguiente pedido de token arranca en el primer carácter
+que \textbf{no} formó parte del lexema reportado. Esto coincide con lo que hace \lex{javac}, que
+tampoco descarta caracteres ajenos al lexema ofensivo, y garantiza estructuralmente la terminación:
+el lexema de un error nunca es vacío, así que cada error consumió al menos un carácter y la posición
+de lectura siempre avanza.
+
+La única excepción es el escape Unicode mal formado dentro de un \tok{litString}, que además descarta
+lo que queda del literal hasta su comilla de cierre. Es recuperación en modo pánico con token de
+sincronización: el delimitador es la comilla de cierre, y el estado conocido al que se vuelve es
+``fuera de todo literal''. Sin resincronizar, la comilla de \emph{cierre} abriría un literal nuevo
+que se comería el resto de la línea.
+
+\subsection{Dónde apunta el \lex{\caret}}
+
+Se adoptó el criterio de \lex{javac}, verificado ejecutándolo sobre cada caso:
+
+\begin{quote}
+Si el mensaje habla de un \textbf{carácter ofensivo puntual}, el \lex{\caret} va a ese carácter. Si habla
+de la \textbf{construcción entera} que falló, el \lex{\caret} va a donde esa construcción \textbf{empieza}.
+\end{quote}
+
+\subsection{Ubicar el error sin releer el archivo}
+
+El reporte necesita la columna y el texto completo de la línea del error. Ninguna de las dos cosas
+obliga a una segunda pasada sobre el fuente:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Operación} & \textbf{Costo} & \textbf{Cómo} \\
+\midrule
+columna & $O(1)$ & contador que avanza al leer y se reinicia en cada salto de línea \\
+texto de la línea & $O(\text{largo de la línea})$ & otro contador guarda dónde empieza la línea actual \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+La información de posición se construye \emph{mientras} se lee, con dos enteros, y el recorrido para
+recuperar la línea está acotado por su largo, que es exactamente el texto que el reporte va a
+imprimir de todos modos.
+
+% ===========================================================================
+\section{Logros perseguidos}
+% ===========================================================================
+
+El proyecto aspira a \textbf{los ocho logros} de la Etapa 1, perseguidos desde el comienzo del
+desarrollo y no como agregados posteriores sobre un mínimo producto viable:
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3ex]
+\item Floats I
+\item Unicodes
+\item Multi-detección de Errores Léxicos
+\item Reporte de Error Elegante
+\item Manejador de Archivos Eficiente
+\item Imbatibilidad Léxica
+\item Good Job! I
+\item Entrega Anticipada Léxica
+\end{enumerate}
+
+Cuatro de ellos ---Floats I, Unicodes, Multi-detección y Reporte de Error Elegante--- cambian el
+comportamiento observable del compilador. Para que tanto el comportamiento base que pide la consigna
+como el del logro sean demostrables, cada uno vive detrás de un interruptor de configuración, todos
+en \lex{true} por omisión:
+
+\begin{codigoLlano}
+ConfiguracionDelCompilador(floatsHabilitados, unicodeHabilitado,
+                           reporteElegante, multiDeteccionDeErrores)
+\end{codigoLlano}
+
+Sin esos interruptores el comportamiento base quedaría sepultado bajo el del logro y no habría forma
+de mostrar los dos.
+
+% ===========================================================================
+\section{Estrategia de prueba}
+% ===========================================================================
+
+El catálogo de casos de test \textbf{es el propio directorio de casos} del repositorio, con el
+oráculo escrito en las primeras líneas de cada archivo en el formato que definen los testers
+provistos. Como esas líneas son comentarios MiniJava válidos, el archivo es a la vez el caso de
+prueba y su propia especificación: el compilador las ignora y el tester las lee.
+
+\begin{codigoLlano}
+resources/
+    sinErrores/    75 archivos   oráculo: //#lexema,nroLinea
+    conErrores/    81 archivos   oráculo: // [Error:lexema|nroLinea]
+    regresion/                   entradas que rompieron una corrida de fuzzing
+\end{codigoLlano}
+
+\subsection{Cómo se declara el oráculo de un caso}
+
+Un caso de \lex{sinErrores/} declara, con una línea \lex{//\#lexema,nroLinea} por token, la secuencia
+completa que debe salir. Un caso de \lex{conErrores/} declara además, con
+\lex{// [Error:lexema|nroLinea]}, cada código de error esperado.
+
+El tester provisto verifica únicamente que el \emph{primer} código de error declarado aparezca en
+algún lugar de la salida. Eso deja dos huecos: un caso con varios errores queda casi sin verificar, y
+nada comprueba qué tokens salen entre medio ---que es justamente donde se esconderían los errores de
+recuperación---. Por eso la cabecera admite una marca extra:
+
+\begin{quote}
+\lex{// [Completo]} --- de esta línea en adelante, la secuencia declarada debe coincidir
+\textbf{exactamente} con la salida real: todos los códigos de error y todos los tokens, en orden y
+sin nada de más ni de menos.
+\end{quote}
+
+Sin esa marca la verificación es de \emph{subsecuencia}: los elementos declarados tienen que
+aparecer todos y en orden, pero se admite que haya otros entre medio. Con la marca es de igualdad.
+Un caso completo se ve así:
+
+\begin{codigoLlano}
+// [Error:"a\u12|6]     <- primera línea: el código que lee el tester provisto
+// [Completo]           <- de acá en más, verificación exacta
+// [Error:"a\u12|6]
+//#+,6
+//#v1,6
+//#$,7
+"a\u12G4" + v1
+\end{codigoLlano}
+
+\noindent
+Se lee así: sobre ese fuente, el compilador debe emitir el error del escape Unicode mal formado con
+lexema \lex{"a\bs u12} en la línea 6, después el token \lex{+}, después \lex{v1}, y cerrar con el
+\tok{EOF} en la línea 7 --- exactamente eso y nada más. La primera línea está duplicada a propósito:
+el tester provisto le hace \lex{substring(3)} a la línea 1 del archivo, así que ahí tiene que estar
+sí o sí el código de error.
+
+% ===========================================================================
+\section{Divergencias deliberadas respecto de Java}
+\label{sec:divergencias}
+% ===========================================================================
+
+Ninguna de éstas es un descuido: todas están cubiertas por casos de test escritos a propósito, y
+todas tienen su razón.
+
+\begin{center}
+\begin{longtable}{@{}p{3.4cm}p{4.6cm}p{6.4cm}@{}}
+\toprule
+\textbf{Caso} & \textbf{MiniJava} & \textbf{Por qué} \\
+\midrule
+\endhead
+\lex{\bs uXXXX} fuera de un literal &
+en un comentario es texto común &
+en Java el escape se traduce antes de tokenizar, en todo el archivo; implementar ese
+pre-procesamiento es una fase entera aparte que la consigna no pide \\
+
+\lex{041}, \lex{0x1F}, \lex{0b1010} &
+decimal; no hay literales octales, hexadecimales ni binarios &
+la ER de la especificación es decimal y nada más \\
+
+\lex{1\_000} &
+\tok{intLiteral(1)}, error por el \lex{\_}, \tok{intLiteral(000)} &
+ídem: no hay separadores de miles \\
+
+\lex{0000000001} &
+error &
+la cota es de \emph{dígitos}, no de valor como en Java \\
+
+\lex{1e999} &
+\tok{floatLiteral} válido &
+el rango es un chequeo semántico, no léxico \\
+
+\lex{.5} &
+\tok{punto} + \tok{intLiteral} &
+la consigna exige que un float empiece con dígito \\
+
+\lex{'\bs q'} &
+\tok{charLiteral} válido &
+permisividad explícita de la especificación \\
+
+\lex{"a\bs q"} &
+\tok{litString} válido &
+la especificación no define un conjunto de escapes: define qué comilla cierra \\
+
+\lex{"a\bs\bs"} &
+\emph{sin cerrar} &
+la regla es \textbf{posicional}: la comilla de cierre nunca está antecedida por \lex{\bs}, y una
+barra no cancela a la anterior \\
+
+Dígitos árabe-índicos &
+son un \tok{intLiteral} &
+\lex{Character.isDigit} los acepta; restringir a ASCII contradiría el logro Unicodes \\
+
+Un ideograma CJK (\lex{U+4E2D}) al empezar un identificador &
+error, aunque sí puede continuarlo &
+la ER dice ``letra mayúscula'' / ``letra minúscula'', y no es ninguna de las dos \\
+
+\emph{Form feed} y tabulador vertical &
+error léxico &
+no están en la lista de separadores \\
+
+BOM al inicio del archivo &
+carácter desconocido &
+ídem \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\end{document}

@@ -11,10 +11,6 @@ public enum TipoDeErrorLexico {
     CHAR_MAL_FORMADO("charLiteral mal formado, contiene más de un carácter: %s"),
     CHAR_SIN_CERRAR("charLiteral sin cerrar: %s"),
 
-    // La única con dos plantillas: el lexema armado ("a\q) no ES la secuencia, y
-    // nombrarla aparte evita que el mensaje se lea al revés.
-    STRING_ESCAPE_INVALIDO("litString con secuencia de escape inválida: %s",
-            "litString con secuencia de escape inválida %s: %s"),
     STRING_SIN_CERRAR("litString sin cerrar: %s"),
 
     UNICODE_MAL_FORMADO("escape unicode mal formado, se esperaban 4 dígitos hexadecimales: %s"),
@@ -26,25 +22,12 @@ public enum TipoDeErrorLexico {
     EXPONENTE_SIN_DIGITOS("exponente sin dígitos: %s");
 
     private final String plantilla;
-    private final String plantillaConFragmento;
 
     TipoDeErrorLexico(String plantilla) {
-        this(plantilla, null);
-    }
-
-    TipoDeErrorLexico(String plantilla, String plantillaConFragmento) {
         this.plantilla = plantilla;
-        this.plantillaConFragmento = plantillaConFragmento;
     }
 
     public String describir(String lexema) {
         return plantilla.formatted(lexema);
-    }
-
-    public String describir(String lexema, String fragmentoOfensivo) {
-        if (fragmentoOfensivo == null || plantillaConFragmento == null) {
-            return describir(lexema);
-        }
-        return plantillaConFragmento.formatted(fragmentoOfensivo, lexema);
     }
 }

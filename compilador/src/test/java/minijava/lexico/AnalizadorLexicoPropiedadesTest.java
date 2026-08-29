@@ -125,4 +125,54 @@ class AnalizadorLexicoPropiedadesTest {
         });
     }
 
+    // --- La regla de cierre del litString (Aspectos Léxicos §2.3.3) ---
+
+    // Cualquier contenido, con cualquier carácter tras una barra, es un litString
+    // válido mientras la comilla de cierre no quede antecedida por una barra y no
+    // haya un escape Unicode que validar. No hay conjunto de escapes permitidos:
+    // si esta propiedad empieza a fallar, alguien volvió a introducir uno.
+    @Property(tries = 500)
+    void unStringSinBarraFinalNiUnicodeEsSiempreUnUnicoLitString(
+            @ForAll("contenidosDeString") String contenido) throws Exception {
+        String fuente = "\"" + contenido + "\"";
+        AnalizadorLexico analizador = crear(fuente);
+
+        Token token = analizador.proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo(), fuente);
+        assertEquals(fuente, token.lexema());
+        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
+    }
+
+    // Y el reverso: agregarle una barra justo antes de la comilla de cierre lo
+    // rompe siempre, con el lexema crudo y sin decodificar.
+    @Property(tries = 500)
+    void unaBarraAntesDeLaComillaDeCierreSiempreDejaElStringSinCerrar(
+            @ForAll("contenidosDeString") String contenido) throws Exception {
+        String fuente = "\"" + contenido + "\\\"";
+        AnalizadorLexico analizador = crear(fuente);
+
+        ExcepcionLexica excepcion = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
+        assertEquals(fuente, excepcion.getLexemaOfensivo());
+    }
+
+    // Contenido arbitrario sin saltos de línea ni comillas dobles sueltas, con
+    // barras seguidas de cualquier cosa menos 'u' (que sí se valida) y sin quedar
+    // una barra pegada al final.
+    @Provide
+    Arbitrary<String> contenidosDeString() {
+        Arbitrary<String> comunes = Arbitraries.strings()
+                .withChars('a', 'z').withChars('0', '9').withChars(' ', '!', '#', '%', 'ñ')
+                .ofMaxLength(6);
+        Arbitrary<String> escapados = Arbitraries.chars()
+                .range('a', 't').range('v', 'z').range('0', '9')
+                .with('\\', '"', '\'', 'n', '!')
+                .map(c -> "\\" + c);
+        return Combinators.combine(comunes, escapados, comunes)
+                .as((izquierda, escape, derecha) -> izquierda + escape + derecha)
+                // Una barra pegada al cierre lo dejaría sin cerrar: es la otra propiedad.
+                .filter(texto -> !texto.endsWith("\\"));
+    }
 }

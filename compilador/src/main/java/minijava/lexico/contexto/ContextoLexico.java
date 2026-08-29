@@ -65,11 +65,6 @@ public final class ContextoLexico {
         return fabrica.crearExcepcionLexica(tipo, ancla);
     }
 
-    public ExcepcionLexica crearExcepcionLexica(TipoDeErrorLexico tipo, AnclaDeError ancla,
-                                                String fragmentoOfensivo) {
-        return fabrica.crearExcepcionLexica(tipo, ancla, fragmentoOfensivo);
-    }
-
     public ExcepcionLexica crearExcepcionLexicaEn(TipoDeErrorLexico tipo, String lexemaOfensivo,
                                                   PosicionLexica posicion) {
         return fabrica.crearExcepcionLexicaEn(tipo, lexemaOfensivo, posicion);

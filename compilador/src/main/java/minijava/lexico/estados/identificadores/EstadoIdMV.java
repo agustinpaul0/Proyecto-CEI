@@ -5,11 +5,12 @@ import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.tokens.TablaDePalabrasClave;
+import minijava.tokens.TablaDeLexemas;
 import minijava.tokens.TipoDeToken;
 import minijava.tokens.Token;
 
-// Terminal: idMV, o la palabra clave si el lexema está en la tabla de lookup.
+// Terminal: idMV, o la palabra clave si el lexema figura en la tabla de lexemas.
+// Consultarla entera es seguro: un lexema de identificador nunca puede ser "(" ni ">=".
 public final class EstadoIdMV implements EstadoLexico {
 
     public static final EstadoIdMV INSTANCIA = new EstadoIdMV();
@@ -24,7 +25,7 @@ public final class EstadoIdMV implements EstadoLexico {
             return new Continuar(INSTANCIA);
         }
         String lexema = contexto.getLexema();
-        TipoDeToken tipo = TablaDePalabrasClave.buscar(lexema).orElse(TipoDeToken.ID_MV);
+        TipoDeToken tipo = TablaDeLexemas.buscar(lexema).orElse(TipoDeToken.ID_MV);
         return new Emitir(new Token(tipo, lexema, contexto.getLinea()));
     }
 

@@ -12,6 +12,10 @@ import minijava.lexico.estados.EstadoInicial;
 
 public final class EstadoComentarioMultilinea implements EstadoLexico {
 
+    // No es un token, así que no vive en TablaDeLexemas: es el lexema con el que
+    // se reporta un comentario que nunca cerró.
+    private static final String LEXEMA_DE_APERTURA = "/*";
+
     private final PosicionLexica posicionDeApertura;
     private final boolean ultimoFueAsterisco;
 
@@ -23,7 +27,7 @@ public final class EstadoComentarioMultilinea implements EstadoLexico {
     @Override
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         if (contexto.esFinDeArchivo()) {
-            throw contexto.crearExcepcionLexicaEn(TipoDeErrorLexico.COMENTARIO_SIN_CERRAR, "/*",
+            throw contexto.crearExcepcionLexicaEn(TipoDeErrorLexico.COMENTARIO_SIN_CERRAR, LEXEMA_DE_APERTURA,
                     posicionDeApertura);
         }
         char actual = contexto.getCaracterActual();

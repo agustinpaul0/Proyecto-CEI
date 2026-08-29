@@ -175,13 +175,13 @@ dígitos). Si PIT elimina ese `avanzar()` puntual, el carácter se termina consu
 Esto hace que el mutante **sobreviva sin que sea un hueco real de testing**: es un mutante
 equivalente, invisible a los filtros automáticos de PIT porque cruza el límite entre dos clases
 distintas. Confirmado así en: `EstadoInicial` (dígito), `EstadoIdGenOClase`, `EstadoCharEscapado` y
-`EstadoStringEscapado` (marcador `u`), `EstadoFloatExponenteInicio`,
+`EstadoStringTrasBarra` (marcador `u`), `EstadoFloatExponenteInicio`,
 `EstadoFloatExponenteRequiereDigito`, `EstadoBarra` (ambas ramas de comentario). **No intentar
 "matarlos" agregando tests** — no hay ningún test posible que distinga el comportamiento mutado del
 original, porque no lo hay.
 
 **Sobrevivientes reales que sí se corrigieron** (agregando aserciones de lexema exacto donde sólo se
-verificaba que lanzara excepción o el tipo de token): `EstadoCharAbierto`/`EstadoStringEscapado`
+verificaba que lanzara excepción o el tipo de token): `EstadoCharAbierto`/`EstadoStringTrasBarra`
 (agregarCaracterOfensivo en casos de error), y falta de cobertura completa de `EstadoInicial`
 (puntuación) y `EstadoFloatExponenteDigitos` (exponentes de 2+ dígitos, nunca ejercitados).
 

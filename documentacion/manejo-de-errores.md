@@ -10,15 +10,15 @@ bien. Para la visión de conjunto, ver [`arquitectura.md`](arquitectura.md).
 Un estado detecta un error léxico cuando, mirando el carácter actual, ninguna transición válida
 existe desde ese estado (por ejemplo: `EstadoInicial` viendo un `#`, que no es letra, dígito, ni
 ningún símbolo conocido). En ese momento se lanza `ExcepcionLexica`, que lleva: el tipo de error, el
-lexema, la línea, la columna, el texto completo de la línea fuente (para el reporte elegante) y, en
-un solo tipo de error, la secuencia ofensiva concreta (ver §2.1).
+lexema, la línea, la columna y el texto completo de la línea fuente (para el reporte elegante).
 
 **Qué contiene el lexema**: siempre **el lexema armado hasta el momento del error**. No es una
 decisión del proyecto, lo fija `Pautas Etapa 1.pdf` slide 24, y el código `[Error:Lexema|NroLinea]`
 lleva ese mismo lexema. Qué caracteres alcanzaron a entrar en él se sigue del criterio de
 recuperación de §2, y hay dos casos:
 
-- Si el carácter ofensivo **es** el problema (un `#` suelto, un `''` vacío, un escape `\q` inválido),
+- Si el carácter ofensivo **es** el problema (un `#` suelto, un `''` vacío, un `\u` sin sus cuatro
+  dígitos hexadecimales),
   el estado lo consume y por lo tanto queda incluido en el lexema, como manda la cátedra en Clase 02
   slide 43.
 - Si el problema es el lexema **ya construido** (un `&` sin su par, un `intLiteral` de más de nueve
@@ -40,8 +40,8 @@ comportamiento por defecto igual al de Java"— resuelta como manda el procedimi
 verificando contra `javac`, no de memoria.
 
 > **Todo estado que lanza un error consume del fuente exactamente los caracteres que reporta en el
-> lexema, ni uno más** — salvo un escape mal formado dentro de un `litString`, que además descarta lo
-> que queda del literal hasta su comilla de cierre (§2.1). Fuera de esa excepción no hay ningún paso
+> lexema, ni uno más** — salvo un escape Unicode mal formado dentro de un `litString`, que además
+> descarta lo que queda del literal hasta su comilla de cierre (§2.1). Fuera de esa excepción no hay ningún paso
 > de recuperación posterior: el siguiente `proximoToken()` arranca en el primer carácter que **no**
 > formó parte del lexema reportado.
 
@@ -58,7 +58,7 @@ menos un carácter y el análisis siempre avanza. Antes esto lo garantizaba un m
 |---|---|
 | `char c = 'abbc';` | dos errores `unclosed character literal` (apertura y cierre) y `bbc` tokenizado como identificador |
 | `char d = 'a;` | un error en la comilla; **el `;` sobrevive** |
-| `String s = "hola \q mundo";` | un error `illegal escape character`, y **sigue leyendo el literal hasta la comilla de cierre**; sin cascada |
+| `String s = "hola \q mundo";` | un error `illegal escape character`, y **sigue leyendo el literal hasta la comilla de cierre**; sin cascada. En MiniJava ese fuente ni siquiera es un error: §2.3.3 no define un conjunto de escapes válidos |
 | `int c = 1234567890123 + 9;` | un error `integer number too large`; **el `+ 9` sobrevive** |
 
 O sea: `javac` **no** sincroniza hasta el delimitador de cierre, y **nunca descarta un carácter que
@@ -84,17 +84,16 @@ todos los errores —más, en el único caso que resincroniza, el resto del `lit
 producción es deliberado: si el léxico dejara de descartar exactamente lo que dice descartar, la
 propiedad lo detectaría en vez de acompañarlo.
 
-## 2.1. La única excepción: el escape mal formado dentro de un `litString`
+## 2.1. La única excepción: el escape Unicode mal formado dentro de un `litString`
 
-Un escape mal formado dentro de un `litString` —`"a\q`, `"a\8`, o un escape Unicode sin sus cuatro
-dígitos hexadecimales— es el único error que **no se limita a consumir lo que reporta**: reporta el
-primero que encuentra y después descarta lo que queda del literal **hasta su comilla de cierre**, sin
-emitir token.
+Un escape Unicode sin sus cuatro dígitos hexadecimales dentro de un `litString` es el único error que
+**no se limita a consumir lo que reporta**: después de reportarlo se descarta lo que queda del
+literal **hasta su comilla de cierre**, sin emitir token.
 
 ```text
-"a\q b\z c" + v1
-→ Error Léxico en línea 1, columna 4: litString con secuencia de escape inválida \q: "a\q
-→ [Error:"a\q|1]
+"a\u12G4" + v1
+→ Error Léxico en línea 1, columna 7: escape unicode mal formado, se esperaban 4 dígitos hexadecimales: "a\u12
+→ [Error:"a\u12|1]
 → (op+,+,1)
 → (idMV,v1,1)
 → (EOF,$,2)
@@ -107,28 +106,23 @@ literal". El criterio lo fijó el profesor de la materia; su justificación comp
 que reemplaza, están en [`decisiones.md`](decisiones.md) §4.3.
 
 Lo que se gana es que el análisis sigue **en el token siguiente al literal roto**, no en mitad de su
-contenido. Sin resincronizar, el mismo fuente daría `idMV(b)`, un error por la barra suelta,
-`idMV(z)`, `idMV(c)` y —lo peor— la comilla de **cierre** abriría un literal nuevo que se comería
-` + v1` y moriría sin cerrar: tres tokens fantasma, dos errores inventados y dos tokens legítimos
-perdidos, todo derivado de un único defecto real.
+contenido. Sin resincronizar, el mismo fuente daría `idMV(G4)` y —lo peor— la comilla de **cierre**
+abriría un literal nuevo que se comería ` + v1` y moriría sin cerrar: tokens fantasma, errores
+inventados y dos tokens legítimos perdidos, todo derivado de un único defecto real.
 
-Tres detalles del encabezado, que vienen de reglas distintas:
+Dos detalles, que vienen de reglas distintas:
 
-- El **lexema** es `"a\q`, no el literal completo ni lo descartado: `Pautas Etapa 1.pdf` slide 24
+- El **lexema** es `"a\u12`, no el literal completo ni lo descartado: `Pautas Etapa 1.pdf` slide 24
   pide "el lexema armado hasta el momento del error". El descarte es recuperación, no parte de lo que
   se reporta, y por eso la excepción se construye **antes** de resincronizar.
-- La **secuencia ofensiva** (`\q`) se nombra aparte porque ese lexema armado no *es* la secuencia, y
-  sin nombrarla el mensaje se lee al revés. Es el único error con este dato extra.
 - **No se emite token**: el literal quedó mal formado, y emitirlo sería afirmar que el programa
   contiene un `litString` que el compilador no pudo interpretar.
 
-**Qué queda fuera del alcance.** Dentro de un mismo literal sólo se reporta un error: el segundo
-escape roto de `"a\q b\z c"` no aparece, porque es un defecto derivado del mismo literal ya
-descartado. Entre literales distintos la multi-detección sigue intacta — `"a\q" "b\z"` reporta dos
-errores, uno por literal. Y en `charLiteral` el caso directamente no existe: `'\x'` con `x`
-cualquiera es válido por permiso explícito de la cátedra (Aspectos Léxicos §2.3.2), y un escape
-Unicode mal formado ahí conserva la recuperación estructural, porque no hay literal delimitado que
-descartar.
+**Qué queda fuera del alcance.** Dentro de un mismo literal sólo se reporta un error, porque el
+resto ya se descartó. Entre literales distintos la multi-detección sigue intacta:
+`"a\u12G4" "b\u34Z6"` reporta dos errores, uno por literal. Y en `charLiteral` la resincronización
+no aplica: no hay contenido de largo arbitrario que descartar, así que la recuperación es
+estructural.
 
 Si el literal nunca cierra, el descarte se detiene en el salto de línea: un `litString` no cruza
 líneas, así que `"a\q` seguido de un fin de línea reporta su error y deja la línea siguiente intacta.
@@ -145,9 +139,8 @@ tests no podían validar por tipo, que es la regla del proyecto (ver [`testing.m
 | `CHAR_VACIO` | `charLiteral vacío` |
 | `CHAR_MAL_FORMADO` | `charLiteral mal formado, contiene más de un carácter` |
 | `CHAR_SIN_CERRAR` | `charLiteral sin cerrar` |
-| `STRING_ESCAPE_INVALIDO` | `litString con secuencia de escape inválida <secuencia>` — el único que nombra la secuencia además del lexema, y uno de los dos que resincronizan (§2.1) |
-| `STRING_SIN_CERRAR` | `litString sin cerrar` |
-| `UNICODE_MAL_FORMADO` | `escape unicode mal formado, se esperaban 4 dígitos hexadecimales` — resincroniza sólo cuando ocurre dentro de un `litString` (§2.1) |
+| `STRING_SIN_CERRAR` | `litString sin cerrar` — incluye el caso de la barra pegada a la comilla de cierre (`"a\\"`), que por la regla posicional de Aspectos Léxicos §2.3.3 no cierra el literal |
+| `UNICODE_MAL_FORMADO` | `escape unicode mal formado, se esperaban 4 dígitos hexadecimales` — el único que resincroniza, y sólo cuando ocurre dentro de un `litString` (§2.1) |
 | `COMENTARIO_SIN_CERRAR` | `comentario multilínea sin cerrar` |
 | `ENTERO_DEMASIADO_LARGO` | `intLiteral de más de 9 dígitos` |
 | `OPERADOR_INCOMPLETO` | `operador incompleto, se esperaba && o \|\|` |
@@ -190,8 +183,7 @@ diagnóstico. `javac` sigue **una sola regla**:
 | fuente | diagnóstico de `javac` | dónde cae el `^` |
 |---|---|---|
 | `v1 # v2` | `illegal character` | el `#` |
-| `"a\q b\z c"` | `illegal escape character` (dos veces) | la `q` y la `z` — no la barra |
-| `'\u12G4'` | `illegal unicode escape` | la `G` |
+| `'\u12G4'` | `illegal unicode escape` | la `G` — no la barra ni la `u` |
 | `''` | `empty character literal` | la comilla de apertura |
 | `'a` / `'ab'` | `unclosed character literal` | la comilla de apertura |
 | `"hola sin cerrar` | `unclosed string literal` | la comilla de apertura |
@@ -204,8 +196,8 @@ de apertura (falta su par), no la última letra que se alcanzó a leer; en `1234
 el número entero, y su primer dígito es donde empieza a leerse.
 
 La tabla describe **dónde pone `javac` el `^`**, que es lo único que se le copió. Cuántos errores
-reporta es una decisión aparte: en `"a\q b\z c"` MiniJava señala la `q` igual que `javac`, pero
-reporta un solo error y no dos, porque al primero descarta el literal entero (§2.1).
+reporta es una decisión aparte: en `"a\u12G4 b\u34Z6"` MiniJava señala la `G` igual que `javac`,
+pero reporta un solo error y no dos, porque al primero descarta el literal entero (§2.1).
 
 ### Cómo se implementa
 
@@ -216,8 +208,8 @@ posición, ambas tomadas dentro de `avanzar()` justo antes de consumir —cuando
 - `posicionPrimerConsumido`: el **primer** carácter del lexema en curso. Es la que usan los errores
   que hablan de la construcción entera, con el ancla `INICIO_DEL_LEXEMA`.
 - `posicionUltimoConsumido`: el **último** carácter que quedó en el lexema. Es la que usan los
-  errores cuyo carácter ofensivo ya fue consumido antes del `throw` — un símbolo desconocido, un
-  escape inválido —, con el ancla `ULTIMO_CONSUMIDO`.
+  errores cuyo carácter ofensivo ya fue consumido antes del `throw` —un símbolo desconocido, por
+  ejemplo—, con el ancla `ULTIMO_CONSUMIDO`.
 
 La distinción importa porque en el momento del `throw` el lookahead actual puede haber avanzado más
 allá del lexema: puede ser un espacio, un EOF o la letra siguiente, sin ninguna relación con el
@@ -275,25 +267,27 @@ Esto vale **sólo** para el lexema de un error. El lexema de un **token** se imp
 contrato de la cátedra es que sea el texto exacto del fuente — un tabulador dentro de un `litString`
 sale como tabulador (ver `resources/sinErrores/stringConTabuladorInterior.java`).
 
-Aparte de eso, los estados de escape (`EstadoCharEscapado`, `EstadoStringEscapado`) rechazan
-explícitamente el salto de línea en vez de consumirlo: una barra invertida al final de una línea no
-escapa nada, deja el literal sin cerrar.
+Aparte de eso, los estados que siguen a una barra invertida (`EstadoCharEscapado`,
+`EstadoStringTrasBarra`) rechazan explícitamente el salto de línea en vez de consumirlo: una barra al
+final de una línea no escapa nada, deja el literal sin cerrar.
 
-## 7. Los dos defectos de robustez que trataba como fin de archivo
+## 7. Dos entradas que no pueden hacer caer al compilador
 
-Dos casos en los que el compilador no fallaba con una `ExcepcionLexica` controlada sino de formas
-peores, y que en este proyecto son siempre defectos (ver [`testing.md`](testing.md) §1):
+Un fuente inválido tiene que producir una `ExcepcionLexica` controlada, nunca una falla de otra
+naturaleza: en este proyecto cualquier otra excepción es un defecto (ver
+[`testing.md`](testing.md) §1). Dos entradas concretas obligan a tomar precauciones en la frontera de
+entrada, y las dos están fijadas por `DefectosDeRobustezTest`:
 
-- **El byte `0x1A`**: el centinela `SourceManager.END_OF_FILE` de la cátedra es `(char) 26`, que
-  también es un byte perfectamente legítimo dentro de un archivo. Comparar el carácter devuelto
-  contra el centinela hacía que un `0x1A` embebido **truncara el análisis en silencio** — el resto
-  del archivo desaparecía y encima se imprimía `[SinErrores]`. Ahora
-  `ManejadorDeArchivo.estaEnFinDeArchivo()` responde por **posición** y no por valor, y ese byte es
-  un carácter desconocido más.
-- **Bytes que no son UTF-8 válido**: `Files.readString` lanza `MalformedInputException`, que salía
-  como un `UncheckedIOException` sin atrapar. Se cambió por `new String(bytes, UTF_8)`, que sustituye
-  las secuencias mal formadas por `U+FFFD`; los bytes basura llegan al léxico y se reportan como
-  errores léxicos normales.
+- **El byte `0x1A`**: el centinela `SourceManager.END_OF_FILE` es `(char) 26`, que también es un byte
+  perfectamente legítimo dentro de un archivo. Si el fin de archivo se detectara comparando el
+  carácter devuelto contra el centinela, un `0x1A` embebido **truncaría el análisis en silencio** —el
+  resto del archivo desaparecería y encima se imprimiría `[SinErrores]`—. Por eso
+  `ManejadorDeArchivo.estaEnFinDeArchivo()` responde por **posición** y no por valor, y ese byte
+  llega al léxico como un carácter desconocido más.
+- **Bytes que no son UTF-8 válido**: `Files.readString` lanza `MalformedInputException`, que saldría
+  como un `UncheckedIOException` sin atrapar. Se usa `new String(bytes, UTF_8)`, que sustituye las
+  secuencias mal formadas por `U+FFFD`; los bytes basura llegan al léxico y se reportan como errores
+  léxicos normales.
 
 ## Ver también
 

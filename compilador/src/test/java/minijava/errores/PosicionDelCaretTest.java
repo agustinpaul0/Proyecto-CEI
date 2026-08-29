@@ -35,8 +35,6 @@ class PosicionDelCaretTest {
                 // --- El mensaje habla de un carácter puntual: el '^' va ahí ---
                 new Caso("carácter desconocido", "v1 # v2", 4,
                         "illegal character: '#' — señala el '#'"),
-                new Caso("escape inválido de litString", "\"a\\q b\\z c\"", 4,
-                        "illegal escape character — señala la 'q', no la barra"),
                 new Caso("escape unicode con hexadecimal inválido", "'\\u12G4'", 6,
                         "illegal unicode escape — señala la 'G'"),
 
@@ -88,13 +86,13 @@ class PosicionDelCaretTest {
                         + error.getLineaFuente() + "»");
     }
 
-    // Cada litString roto reporta la columna de SU carácter escapado. Son dos
-    // literales y no uno con dos escapes, porque el primero descarta el literal.
+    // Cada litString roto reporta la columna de SU escape Unicode fallado. Son
+    // dos literales y no uno con dos errores, porque el primero se descarta.
     @org.junit.jupiter.api.Test
     void cadaLitStringRotoDeUnaMismaLineaReportaSuPropiaColumna(@TempDir Path dir)
             throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
-        Files.writeString(archivo, "\"a\\q\" \"b\\z\"");
+        Files.writeString(archivo, "\"a\\" + "u12G4\" \"b\\" + "u34Z6\"");
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
         AnalizadorLexico analizador = new AnalizadorLexico(manejador);
@@ -102,8 +100,8 @@ class PosicionDelCaretTest {
         ExcepcionLexica primero = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
         ExcepcionLexica segundo = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(4, primero.getColumna());
-        assertEquals(10, segundo.getColumna());
+        assertEquals(7, primero.getColumna());
+        assertEquals(17, segundo.getColumna());
     }
 
     private ExcepcionLexica primerError(Path dir, String fuente) throws IOException {

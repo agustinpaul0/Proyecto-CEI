@@ -568,12 +568,48 @@ class AnalizadorLexicoTest {
         assertEquals("\"di \\\"hola\\\"\"", token.lexema());
     }
 
+    // Aspectos Léxicos §2.3.3 es una regla POSICIONAL: la comilla que cierra
+    // nunca está antecedida por una barra. Una barra tras otra barra no "se
+    // cancela": la comilla que sigue igual queda antecedida por barra.
     @Test
-    void barraInvertidaEscapadaNoCierraElStringDeMas(@TempDir Path dir) throws Exception {
-        Token token = crearAnalizador(dir, "\"a\\\\\"").proximoToken();
+    void unaBarraAntesDeLaComillaDeCierreDejaElStringSinCerrar(@TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\\\\"");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
+        assertEquals("\"a\\\\\"", excepcion.getLexemaOfensivo());
+    }
+
+    // Tres barras: la tercera vuelve a dejar antecedida a la comilla siguiente,
+    // que por eso no cierra; cierra recién la que va después.
+    @Test
+    void tresBarrasYDosComillasCierranEnLaSegundaComilla(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "\"a\\\\\\\"\"").proximoToken();
 
         assertEquals(TipoDeToken.LIT_STRING, token.tipo());
-        assertEquals("\"a\\\\\"", token.lexema());
+        assertEquals("\"a\\\\\\\"\"", token.lexema());
+    }
+
+    // La barra sólo importa pegada a la comilla de cierre: en el medio es un
+    // carácter común y el literal cierra normalmente.
+    @Test
+    void unaBarraEnElMedioNoImpideElCierre(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "\"barra \\\\ al medio\"").proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals("\"barra \\\\ al medio\"", token.lexema());
+    }
+
+    @Test
+    void unStringTerminadoEnComillaEscapadaQuedaSinCerrar(@TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"abc\\\"");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
     }
 
     @Test
@@ -802,11 +838,13 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
-    // JLS §3.10.7: en un litString sólo valen b,s,t,n,f,r,",',\ y un octal 0-7.
-    // La cátedra no le da a litString la permisividad que sí le da a charLiteral.
+    // No hay lista de escapes válidos: §2.3.3 no da una producción con barra,
+    // sólo dice que una comilla antecedida por barra no cierra. Así que tras una
+    // barra vale cualquier carácter, igual que en charLiteral (§2.3.2).
     @ParameterizedTest
-    @ValueSource(strings = {"b", "s", "t", "n", "f", "r", "\"", "'", "\\", "0", "7"})
-    void stringLiteralAceptaSoloLosEscapesValidosDeJava(String escape, @TempDir Path dir)
+    @ValueSource(strings = {"b", "s", "t", "n", "f", "r", "\"", "'", "0", "7",
+            "q", "x", "d", "8", "9", "A", "-", " "})
+    void stringLiteralAceptaCualquierCaracterTrasLaBarra(String escape, @TempDir Path dir)
             throws Exception {
         String fuente = "\"antes \\" + escape + " despues\"";
         Token token = crearAnalizador(dir, fuente).proximoToken();
@@ -815,41 +853,22 @@ class AnalizadorLexicoTest {
         assertEquals(fuente, token.lexema());
     }
 
-    // Fatal: se reporta el primero y se descarta el literal hasta su comilla de
-    // cierre, sin emitir token. Criterio del profesor (decisiones.md §4.3).
-    @ParameterizedTest
-    @ValueSource(strings = {"q", "x", "d", "8", "9", "A"})
-    void stringLiteralConEscapeInvalidoSegunJavaEsErrorFatal(String escape, @TempDir Path dir)
-            throws Exception {
-        String fuente = "\"antes \\" + escape + " despues\"";
-        AnalizadorLexico analizador = crearAnalizador(dir, fuente);
-
-        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
-
-        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, excepcion.getTipo());
-        assertEquals("\"antes \\" + escape, excepcion.getLexemaOfensivo());
-        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
-    }
-
-    // Sólo el primero: el segundo es un defecto derivado del mismo literal roto.
+    // Varias barras sueltas en un mismo literal: ninguna es un error, el
+    // literal es uno solo y su lexema va crudo.
     @Test
-    void dosEscapesInvalidosEnUnStringReportanSoloElPrimero(@TempDir Path dir) throws Exception {
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\q b\\z c\"");
+    void variasBarrasSueltasEnUnStringNoSonError(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "\"a\\q b\\z c\"").proximoToken();
 
-        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
-
-        assertEquals("\"a\\q", excepcion.getLexemaOfensivo());
-        assertEquals("\\q", excepcion.getFragmentoOfensivo());
-        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals("\"a\\q b\\z c\"", token.lexema());
     }
 
     // El descarte para en la comilla de CIERRE, no se come el resto de la línea.
+    // El único error que lo dispara es el escape Unicode mal formado.
     @Test
     void trasElDescarteElAnalisisSigueEnElTokenPosteriorALaComillaDeCierre(@TempDir Path dir)
             throws Exception {
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"x\\q\" + v1");
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"x\\" + "u12G4\" + v1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
@@ -866,15 +885,16 @@ class AnalizadorLexicoTest {
     @Test
     void unSegundoLitStringRotoEnLaMismaLineaReportaSuPropioError(@TempDir Path dir)
             throws Exception {
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\q\" \"b\\z\"");
+        AnalizadorLexico analizador = crearAnalizador(dir,
+                "\"a\\" + "u12G4\" \"b\\" + "u34Z6\"");
 
         var primero = org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
         var segundo = org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals("\"a\\q", primero.getLexemaOfensivo());
-        assertEquals("\"b\\z", segundo.getLexemaOfensivo());
+        assertEquals("\"a\\" + "u12", primero.getLexemaOfensivo());
+        assertEquals("\"b\\" + "u34", segundo.getLexemaOfensivo());
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
@@ -882,7 +902,7 @@ class AnalizadorLexicoTest {
     @Test
     void elDescarteNoSeComeLaLineaSiguienteCuandoFaltaLaComillaDeCierre(@TempDir Path dir)
             throws Exception {
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\q\nv1");
+        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\" + "u12G4\nv1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
@@ -952,18 +972,30 @@ class AnalizadorLexicoTest {
         assertEquals("e5", segundo.lexema());
     }
 
-    // Sin el logro Unicodes la 'u' deja de ser marcador y pasa a ser un escape
-    // inválido. Ojo: no escribir la secuencia literal acá, javac la decodifica
-    // hasta en los comentarios (JLS §3.3) y falla sin 4 hex dígitos detrás.
+    // Sin el logro Unicodes la 'u' deja de ser marcador y pasa a ser un carácter
+    // como cualquier otro, así que el literal es válido y no se valida nada.
+    // Ojo: no escribir la secuencia literal acá, javac la decodifica hasta en los
+    // comentarios (JLS §3.3) y falla sin 4 hex dígitos detrás.
     @Test
-    void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsError(@TempDir Path dir) throws Exception {
+    void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsUnCaracterComun(@TempDir Path dir)
+            throws Exception {
         var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
-        AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\u0041\"", configuracion);
+        String fuente = "\"a\\" + "u0041\"";
+        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
 
-        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
 
-        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, excepcion.getTipo());
-        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
+    // Y un Unicode mal formado tampoco es error sin el logro: nada lo valida.
+    @Test
+    void conUnicodeDeshabilitadoUnEscapeUnicodeRotoTampocoEsError(@TempDir Path dir)
+            throws Exception {
+        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+        String fuente = "\"a\\" + "u12G4\"";
+        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
     }
 }

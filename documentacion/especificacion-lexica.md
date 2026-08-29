@@ -107,28 +107,64 @@ la comilla de cierre (`mal formado`).
 ### 3.3. `litString`
 
 ```text
-litString = " ( Z | \ W | \ U )* "
+litString = " ( Z | \ C )* "     con la " de cierre NO antecedida por \
 
 Z = cualquier carácter salvo \, " y salto de línea
-W = uno de: b s t n f r " ' \  o un dígito octal 0-7
-U = escape Unicode (ver §3.5)
+C = cualquier carácter salvo salto de línea  (incluye \ y ")
+U = escape Unicode (ver §3.5), que se superpone a la regla anterior
 ```
 
-**Por qué `litString` restringe los escapes (`W`) y `charLiteral` no.** La cátedra autoriza
-explícitamente al `charLiteral` a aceptar cualquier carácter tras la barra invertida
-(`Aspectos Lexicos MiniJava 2026.pdf` §2.3.2). Para `litString` **no** hay esa autorización: §2.3.3
-sólo cita a Java para el caso puntual de `\"`. Ante esa falta de especificación aplica "ante la duda,
-como en Java", y el conjunto válido es el del JLS §3.10.7. Por eso `"a\q"` es un error léxico
-mientras que `'\q'` es válido — una asimetría intencional que viene de que la cátedra especificó una
-de las dos y no la otra.
+**El `litString` se especifica distinto que el `charLiteral`, y por eso su ER tiene otra forma.**
+`Aspectos Lexicos MiniJava 2026.pdf` §2.3.2 le da al `charLiteral` una **producción con dos
+alternativas** (`'x'` y `'\y'`, con `x` e `y` independientes): es una regla de **apareamiento**, la
+barra y el carácter siguiente forman una unidad. §2.3.3, en cambio, no da ninguna producción para el
+string; da una regla **posicional**:
+
+> *"es posible que en la secuencia de caracteres aparezca una comilla doble siempre y cuando se la
+> anteceda por el caracter `\`. Por esto último la comilla doble que marca el final de un string
+> correcto nunca estará antecedida por ese caracter."*
+
+O sea: un lookbehind de un carácter sobre el texto crudo. **No existe un conjunto de escapes
+válidos** dentro de un `litString` — `"hola \q"` es un string común y corriente, con una barra y una
+`q` como dos caracteres cualesquiera.
+
+De que la regla sea posicional y no de apareamiento salen unas cuantas consecuencias que conviene
+tener a mano:
+
+| Fuente | Resultado | Por qué |
+|---|---|---|
+| `"hola \q"` | `litString` válido | la `"` de cierre no está antecedida por `\` |
+| `"di \"hola\" chau"` | **un solo** `litString` | las dos `"` internas están antecedidas por `\` |
+| `"a\\"` | `litString sin cerrar` | la `"` final está antecedida por `\`, así que no cierra |
+| `"a\\\""` | `litString` válido | la primera `"` no cierra, la segunda sí |
+| `"barra \\ al medio"` | `litString` válido | la barra sólo importa pegada a la comilla de cierre |
+
+La tercera fila es el único punto donde MiniJava **diverge de Java**, donde `"a\\"` es la barra
+invertida: acá una barra no "cancela" a la anterior, porque la regla no habla de pares sino de qué
+carácter antecede a la comilla. Está en [`decisiones.md`](decisiones.md) §7.
 
 Un `litString` **no puede contener un salto de línea real**: si aparece uno antes de la comilla de
 cierre, el literal quedó sin cerrar y es error.
 
-Un escape mal formado —tanto uno inválido (`"a\q`) como un `\u` sin sus cuatro dígitos
-hexadecimales— aborta el literal: se reporta el primero y se descarta lo que queda **hasta la comilla
-de cierre**, sin emitir token. El detalle y su justificación están en
+El **escape Unicode** se superpone a esa regla y es lo único que se valida dentro del literal (es un
+logro, §3.5). Un `\u` sin sus cuatro dígitos hexadecimales aborta el literal: se reporta y se
+descarta lo que queda **hasta la comilla de cierre**, sin emitir token. El detalle está en
 [`manejo-de-errores.md`](manejo-de-errores.md) §2.1.
+
+El autómata implementa el lookbehind con dos estados, que es exactamente el bit de memoria que la
+regla necesita:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Abierto: "
+    Abierto --> Abierto: carácter ≠ \ , " y salto
+    Abierto --> TrasBarra: \
+    TrasBarra --> TrasBarra: \
+    TrasBarra --> Abierto: cualquier otro carácter, incluida "
+    TrasBarra --> MarcadorUnicode: u
+    MarcadorUnicode --> Abierto: (4 dígitos hex)
+    Abierto --> [*]: " Emitir litString
+```
 
 ### 3.4. `floatLiteral`
 
@@ -241,14 +277,31 @@ stateDiagram-v2
     ConAsterisco --> [*]: / cierra el comentario
 ```
 
-## 7. Las palabras clave no tienen autómata propio
+## 7. El autómata delimita el lexema, la tabla lo nombra
 
-Las 21 palabras reservadas se reconocen como un `idMV` común y, antes de emitir el token, se consulta
-una tabla de lookup. Si el lexema coincide, se emite la palabra clave.
+Los 56 tokens se parten en dos grupos según de dónde sale su lexema:
 
-Modelarlas con estados dedicados exigiría casi un estado por letra de cada palabra, fusionados con
-los estados de identificador — decenas de estados frágiles para algo que una tabla resuelve en tiempo
-constante. Es la técnica que la cátedra recomienda explícitamente (Clase 02, slides 62-63).
+| Grupo | Cuántos | Cuáles |
+|---|---|---|
+| **Lexema fijo** — el tipo y el lexema se determinan mutuamente | 49 | las 21 palabras clave, los 10 símbolos de puntuación, los 17 operadores y `EOF` |
+| **Lexema variable** — se lee del fuente | 7 | `idClase`, `idGen`, `idMV`, `intLiteral`, `charLiteral`, `litString`, `floatLiteral` |
+
+Los 49 del primer grupo no necesitan un estado que lleve su tipo encima: alcanza con que el autómata
+delimite el lexema y con consultar una tabla. `TablaDeLexemas` es esa tabla, y expone las dos
+direcciones — lexema → tipo, para emitir; tipo → lexema, para el `$` del `EOF`, que no se lee del
+fuente.
+
+**Lo único que la tabla no puede resolver es el *maximal munch*.** No sabe si un `>` es `op_mayor` o
+el principio de un `op_mayorIgual`: eso lo decide el autómata mirando el carácter siguiente, y recién
+cuando terminó de consumir consulta la tabla. El reparto es nítido: **el autómata delimita, la tabla
+nombra.**
+
+Es exactamente la técnica que la cátedra recomienda para las palabras clave (Clase 02, slides 62-63),
+generalizada a los 49. Para las 21 reservadas el mecanismo es el mismo de siempre: se reconocen como
+un `idMV` común y, antes de emitir, se consulta la tabla; si el lexema coincide, se emite la palabra
+clave. Modelarlas con estados dedicados exigiría casi un estado por letra de cada palabra, fusionados
+con los estados de identificador — decenas de estados frágiles para algo que una tabla resuelve en
+tiempo constante.
 
 **`float` está en la lista aunque no figure en ningún PDF de la cátedra**: se agrega por confirmación
 directa del profesor. **`double` no está**: MiniJava tiene un único tipo de punto flotante, pero eso
@@ -257,8 +310,24 @@ no convierte a la palabra `double` en reservada — sigue siendo un `idMV` comú
 
 ## 8. El token `EOF`
 
-Es un token más, con lexema `$`. Su ER es trivial: un solo símbolo sobre el carácter centinela que
-devuelve el manejador de archivo cuando se acabó el contenido.
+Es un token más, con lexema `$` — literal de Aspectos Léxicos §2.5: *"El End of File es un token mas,
+su y lexema es `$`"*. Su ER es trivial: un solo símbolo sobre la condición de fin de contenido.
+
+**El `$` y el centinela son dos cosas distintas**, y conviene separarlas porque el nombre las
+confunde:
+
+- El **centinela** es `SourceManager.END_OF_FILE = (char) 26`, valor que fija la interfaz provista.
+  Es el valor que `getNextChar()` devuelve cuando ya no queda contenido.
+- El **`$`** es el lexema que se imprime para el token `EOF`. No se lee del fuente y no tiene ninguna
+  relación con el centinela. Un `$` **escrito en el fuente** es un símbolo inválido y produce un error
+  léxico, por §3.3 (*"cualquier otra entrada que no comforme con las reglas anteriormente presentadas
+  debe generar un error"*).
+
+De ahí una decisión del manejador de archivo: **el fin de archivo se detecta por posición, no
+comparando el carácter leído contra el centinela.** `0x1A` es un byte legítimo dentro de un archivo
+—en un binario aparece a menudo—, y compararlo contra el centinela cortaría el análisis ahí en
+silencio, informando `[SinErrores]` sobre un fuente que nunca se terminó de leer. Por eso
+`ManejadorDeArchivo` agrega `estaEnFinDeArchivo()`.
 
 ```mermaid
 stateDiagram-v2
@@ -271,16 +340,14 @@ Lo único distinto respecto de cualquier otro token es un detalle del **driver**
 transición **no avanza la posición de lectura**. No tendría sentido "consumir" el fin de archivo, y
 además el Módulo Principal podría pedir otro token después.
 
-**La línea del EOF** es `cantidad de saltos de línea consumidos + 1`. Suena obvio y no lo es: es la
-regla que la implementación de referencia de la cátedra viola, y la razón por la que hubo que
-reemplazarla — ver [`manejador-de-archivo.md`](manejador-de-archivo.md) §2.1.
+**La línea del EOF** es `cantidad de saltos de línea consumidos + 1`. Vale la pena enunciarla porque
+es la regla que fija el resultado en los tres casos de ejemplo de la cátedra, incluido el archivo que
+no termina en salto de línea — ver [`manejador-de-archivo.md`](manejador-de-archivo.md) §2.
 
 ## 9. Sobre la regularidad de los tres casos "especiales"
 
-En una versión anterior de esta documentación se afirmó, **incorrectamente**, que el EOF, el
-comentario multilínea y el límite de 9 dígitos "no eran expresables con precisión" como expresión
-regular o autómata finito. Es falso, y queda corregido acá porque el error de concepto vale la pena
-señalarlo:
+El EOF, el comentario multilínea y el límite de 9 dígitos parecen, a primera vista, escaparse de lo
+que una expresión regular puede describir. Los tres son regulares, y vale la pena mostrar por qué:
 
 - **El EOF** es una ER de un solo símbolo (§8). Lo especial es del driver, no del lenguaje.
 - **El comentario multilínea** tiene la ER exacta de §6.2, que no es una aproximación.

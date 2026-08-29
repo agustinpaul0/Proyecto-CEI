@@ -17,7 +17,7 @@ interruptor de configuración y el comportamiento base que pide la consigna sigu
 | 3. Multi-detección de Errores Léxicos | cambia la política ante errores | implementado, con interruptor |
 | 4. Reporte de Error Elegante | agrega salida | implementado, con interruptor |
 | 5. Manejador de Archivos Eficiente | reemplaza una pieza | implementado — y es un requisito, no un extra |
-| 6. Imbatibilidad Léxica | consecuencia de la suite | los 142 casos y los 2 testers de la cátedra pasan |
+| 6. Imbatibilidad Léxica | consecuencia de la suite | los 156 casos de fuente y los 2 testers de la cátedra pasan |
 | 7. Good Job! I | consecuencia de lo anterior | — |
 | 8. Entrega Anticipada Léxica | hito de calendario | — |
 
@@ -227,7 +227,7 @@ subconjunto de lo ya cubierto.
 
 Los instrumentos que apuntan específicamente a esto:
 
-- **142 archivos de caso** (65 sin errores, 77 con errores) contra los 5 de ejemplo provistos.
+- **156 archivos de caso** (75 sin errores, 81 con errores) contra los 5 de ejemplo provistos.
 - Un **tester estricto propio** que verifica la salida completa de cada caso con error —todos los
   errores y todos los tokens intercalados—, donde el de la cátedra sólo busca el primer código.
 - **Tests basados en propiedades** que verifican invariantes sobre entradas generadas, no sobre casos

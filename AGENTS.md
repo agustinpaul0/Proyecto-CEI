@@ -63,7 +63,6 @@ estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica 
 | Verificar qué es negociable y qué no lo es (contrato de salida, invariantes duras) | [`agents/convenciones-catedra.md`](agents/convenciones-catedra.md) |
 | Compilar, correr, empaquetar, o preparar la entrega | [`agents/comandos-y-entrega.md`](agents/comandos-y-entrega.md) |
 | Explicarle el proyecto a alguien sin que lea código (onboarding) | todo `documentacion/*.md` — son autocontenidos, no dependen de `agents/` |
-| Saber qué falta | [`todos/todos.md`](todos/todos.md) |
 
 ## 3. Índice completo de `agents/` (referencia)
 
@@ -102,6 +101,5 @@ compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
   invariantes que sostiene.
 - [`documentacion/logros.md`](documentacion/logros.md) — los 8 logros, dónde está cada uno y cómo
   verificarlo.
-- [`todos/todos.md`](todos/todos.md) — qué queda pendiente de verificar o implementar ahora mismo.
 
 El historial de decisiones vive en `git log`, no en estos documentos.

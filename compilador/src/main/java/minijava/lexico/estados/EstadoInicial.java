@@ -16,8 +16,8 @@ import minijava.lexico.estados.literales.EstadoStringAbierto;
 import minijava.lexico.estados.numeros.EstadoEntero;
 import minijava.lexico.estados.operadores.EstadoOperadorConSufijoOpcional;
 import minijava.lexico.estados.operadores.EstadoOperadorDoble;
+import minijava.tokens.TablaDeLexemas;
 import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
 
 import java.util.Map;
 
@@ -25,28 +25,20 @@ public final class EstadoInicial implements EstadoLexico {
 
     public static final EstadoInicial INSTANCIA = new EstadoInicial();
 
-    private static final Map<Character, TipoDeToken> PUNTUACION = Map.of(
-            '(', TipoDeToken.PAREN_A, ')', TipoDeToken.PAREN_C,
-            '{', TipoDeToken.LLAVE_A, '}', TipoDeToken.LLAVE_C,
-            '[', TipoDeToken.CORCHETE_A, ']', TipoDeToken.CORCHETE_C,
-            ';', TipoDeToken.PUNTO_Y_COMA, ',', TipoDeToken.COMA,
-            '.', TipoDeToken.PUNTO, ':', TipoDeToken.DOS_PUNTOS);
+    // Los que ya forman un token completos ellos solos: se emiten sin lookahead.
+    // Puntuación (10) más '%' y '*'; el tipo lo resuelve la tabla por su lexema.
+    private static final String SIMBOLOS_DE_UN_CARACTER = "(){}[];,.:%*";
 
+    // Sólo dicen a qué estado ir: el tipo del token ya no vive acá.
     private static final Map<Character, EstadoOperadorConSufijoOpcional> OPERADORES_CON_SUFIJO = Map.of(
-            '>', EstadoOperadorConSufijoOpcional.MAYOR,
-            '<', EstadoOperadorConSufijoOpcional.MENOR,
-            '!', EstadoOperadorConSufijoOpcional.NEGACION,
-            '=', EstadoOperadorConSufijoOpcional.ASIGNACION,
-            '+', EstadoOperadorConSufijoOpcional.SUMA,
-            '-', EstadoOperadorConSufijoOpcional.RESTA);
+            '>', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,
+            '<', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,
+            '!', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,
+            '=', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,
+            '+', EstadoOperadorConSufijoOpcional.SUFIJO_MAS,
+            '-', EstadoOperadorConSufijoOpcional.SUFIJO_MENOS);
 
-    private static final Map<Character, EstadoOperadorDoble> OPERADORES_DOBLES = Map.of(
-            '&', EstadoOperadorDoble.AND,
-            '|', EstadoOperadorDoble.OR);
-
-    private static final Map<Character, TipoDeToken> SIMBOLOS_SIMPLES = Map.of(
-            '%', TipoDeToken.OP_MODULO,
-            '*', TipoDeToken.OP_MULT);
+    private static final String OPERADORES_DOBLES = "&|";
 
     private EstadoInicial() {
     }
@@ -56,16 +48,18 @@ public final class EstadoInicial implements EstadoLexico {
         char actual = contexto.getCaracterActual();
 
         if (contexto.esFinDeArchivo()) {
-            return new Emitir(new Token(TipoDeToken.EOF, "$", contexto.getLinea()));
+            // El lexema no se lee del fuente: el fin de archivo no consume nada.
+            return Emitir.porLexemaFijo(TablaDeLexemas.lexemaFijoDe(TipoDeToken.EOF).orElseThrow(),
+                    contexto.getLinea());
         }
         if (esBlanco(actual)) {
             contexto.descartar();
             return new Continuar(INSTANCIA);
         }
-        if (PUNTUACION.containsKey(actual)) {
+        if (SIMBOLOS_DE_UN_CARACTER.indexOf(actual) >= 0) {
             int linea = contexto.getLinea();
             contexto.avanzar();
-            return new Emitir(new Token(PUNTUACION.get(actual), contexto.getLexema(), linea));
+            return Emitir.porLexemaFijo(contexto.getLexema(), linea);
         }
         if (Character.isLowerCase(actual)) {
             contexto.avanzar();
@@ -83,14 +77,9 @@ public final class EstadoInicial implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(OPERADORES_CON_SUFIJO.get(actual));
         }
-        if (OPERADORES_DOBLES.containsKey(actual)) {
+        if (OPERADORES_DOBLES.indexOf(actual) >= 0) {
             contexto.avanzar();
-            return new Continuar(OPERADORES_DOBLES.get(actual));
-        }
-        if (SIMBOLOS_SIMPLES.containsKey(actual)) {
-            int linea = contexto.getLinea();
-            contexto.avanzar();
-            return new Emitir(new Token(SIMBOLOS_SIMPLES.get(actual), contexto.getLexema(), linea));
+            return new Continuar(EstadoOperadorDoble.INSTANCIA);
         }
         if (actual == '/') {
             contexto.avanzar();

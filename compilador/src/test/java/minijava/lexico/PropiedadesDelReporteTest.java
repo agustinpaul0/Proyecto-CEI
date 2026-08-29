@@ -133,12 +133,12 @@ class PropiedadesDelReporteTest {
         throw new AssertionError("no llego a EOF: " + fuente);
     }
 
-    // Los dos que resincronizan. El unicode sólo dentro de un litString; en un
-    // charLiteral el lexema empieza con comilla simple.
+    // El único que resincroniza, y sólo dentro de un litString: en un
+    // charLiteral el lexema empieza con comilla simple y la recuperación es
+    // estructural.
     private static boolean resincronizoElLitString(ExcepcionLexica excepcion) {
-        return excepcion.getTipo() == TipoDeErrorLexico.STRING_ESCAPE_INVALIDO
-                || (excepcion.getTipo() == TipoDeErrorLexico.UNICODE_MAL_FORMADO
-                        && excepcion.getLexemaOfensivo().startsWith("\""));
+        return excepcion.getTipo() == TipoDeErrorLexico.UNICODE_MAL_FORMADO
+                && excepcion.getLexemaOfensivo().startsWith("\"");
     }
 
     // La regla de RecuperacionDeLitString reescrita a propósito: si el léxico deja

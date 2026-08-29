@@ -132,15 +132,21 @@ regulares, corregido en
 - **`/*` sin cerrar → error**, con lexema `/*` y la línea de **apertura** del comentario.
 - **`1abc` → dos tokens**: `intLiteral(1)` seguido de `idMV(abc)` (maximal munch estándar, igual que
   el lexer de Java).
-- **Un escape mal formado dentro de un `litString` descarta el literal hasta su comilla de cierre**:
-  se reporta el primero y no se emite token. Vale igual para un escape inválido (`"a\q`) y para un
-  escape unicode sin sus 4 hex dígitos (`"a\u12G4"`) — un solo criterio, sin casos especiales.
-  Criterio fijado por el **profesor**, no por `javac` (que sigue leyendo el literal): es el único
-  punto del proyecto donde la indicación de la cátedra pisa a la regla "ante la duda, como en Java".
-  En `charLiteral` no aplica: `'\x'` es válido por permiso explícito, y ahí el unicode mal formado
-  conserva la recuperación estructural. Es además el único error cuyo encabezado nombra dos cosas
-  —la secuencia ofensiva (`\q`) y el lexema armado que exige Pautas (`"a\q`)— porque ahí el lexema
-  es más grande que lo que está mal; ver [`manejo-de-errores.md`](manejo-de-errores.md).
+- **En un `litString` NO hay conjunto de escapes válidos.** Aspectos Léxicos §2.3.3 no da una
+  producción con barra; da una regla **posicional**: *"la comilla doble que marca el final de un
+  string correcto nunca estará antecedida por [`\`]"*. Cierra la primera `"` no antecedida por `\`,
+  y punto. Consecuencias: `"hola \q"` es válido, `"di \"hola\" chau"` es UN solo litString, y
+  **`"a\\"` queda sin cerrar** (una barra no cancela a la anterior; es la única divergencia con Java
+  que sale de acá). El autómata lo implementa con dos estados —`EstadoStringAbierto` y
+  `EstadoStringTrasBarra`—, que es el bit de memoria del lookbehind.
+  **Ojo con la asimetría respecto de `charLiteral`, que es intencional y viene de la forma de cada
+  regla**: §2.3.2 sí da una producción con dos alternativas (`'x'` y `'\y'`, variables
+  independientes), o sea una regla de **apareamiento**, y por eso `'\\'` y `'\''` son válidos.
+- **Un escape unicode mal formado dentro de un `litString` descarta el literal hasta su comilla de
+  cierre**, sin emitir token. Es el ÚNICO error de contenido que queda dentro de un litString.
+  Criterio fijado por el **profesor**, no por `javac` (que sigue leyendo el literal). En
+  `charLiteral` no aplica: no hay contenido de largo arbitrario que descartar, la recuperación es
+  estructural. Ver [`manejo-de-errores.md`](manejo-de-errores.md).
 - **`unicodeHabilitado` gatea sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
   literales: gatear eso exigiría clasificadores ASCII-only en todo el autómata, y el logro se puede
   demostrar igual con el escape.

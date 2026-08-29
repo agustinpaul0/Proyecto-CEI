@@ -73,15 +73,34 @@ apareciera un tercer tipo de resultado el código seguiría compilando y fallar�
 ejecución con un `ClassCastException`. Con el `switch` sellado, directamente no compila hasta cubrir
 el caso nuevo.
 
-### 2.4. Las palabras clave se resuelven con una tabla, no con estados
+### 2.4. Los 49 tokens de lexema fijo se nombran con una tabla, no con estados
 
-**Fuente**: cátedra (Clase 02, slides 62-63), que recomienda explícitamente esta técnica.
+**Fuente**: cátedra (Clase 02, slides 62-63), que recomienda explícitamente esta técnica para las
+palabras clave. Acá se generaliza al resto de los tokens que están en la misma situación.
 
-**Decisión**: se reconoce un identificador común y, antes de emitir el token, se consulta
-`TablaDePalabrasClave`. Si el lexema coincide con una de las 21 palabras reservadas, se emite esa
-palabra clave en vez del identificador.
+**El punto de partida**: de los 56 tokens, **49 tienen lexema fijo** —las 21 palabras clave, los 10
+símbolos de puntuación, los 17 operadores y `EOF`—, en el sentido de que el tipo y el lexema se
+determinan mutuamente. Los otros 7 (`idClase`, `idGen`, `idMV` y los cuatro literales) leen su
+lexema del fuente.
 
-**Descartado**: un autómata dedicado por palabra. Requeriría casi un estado por letra de cada
+**Decisión**: una única tabla, `TablaDeLexemas`, con las dos direcciones — lexema → tipo para emitir,
+tipo → lexema para el `$` del `EOF`, que no se lee del fuente. Ningún estado del autómata lleva un
+`TipoDeToken` encima: delimita el lexema y consulta la tabla. Las palabras clave son un subconjunto
+de esa tabla y siguen funcionando igual que siempre: se reconoce un identificador común y, antes de
+emitir, se consulta.
+
+**Lo que la tabla no puede hacer, y por eso el autómata sigue haciendo falta**: el *maximal munch*.
+La tabla no sabe si un `>` es `op_mayor` o el principio de un `op_mayorIgual`; eso lo decide el
+autómata mirando el carácter siguiente, y recién cuando terminó de consumir consulta. El reparto es
+**el autómata delimita, la tabla nombra**.
+
+**Qué se gana**: la correspondencia tipo ↔ lexema deja de estar repetida en seis lugares. Como
+efecto concreto, `EstadoOperadorConSufijoOpcional` pasa de seis instancias a tres —lo único que
+distinguía a `>` de `<` era el tipo de token— y `EstadoOperadorDoble` de dos a una. Y habilita dos
+tests que antes no eran expresables: que ningún tipo de token quede sin entrada en la tabla, y que
+cada uno de los 49 lexemas, suelto en un fuente, produzca exactamente el tipo que la tabla promete.
+
+**Descartado**: un autómata dedicado por palabra clave. Requeriría casi un estado por letra de cada
 palabra, fusionados con los estados de identificador — decenas de estados frágiles para algo que una
 tabla resuelve en tiempo constante.
 
@@ -146,28 +165,49 @@ cualquier carácter.
 **Decisión**: `'\q'` es un `charLiteral` válido, con valor `q`. Es una **permisividad explícita** de
 la cátedra, más laxa que Java.
 
-### 3.5. Escapes en `litString`: sólo los válidos de Java
+### 3.5. Escapes en `litString`: no hay lista de escapes, hay una regla posicional
 
-**Fuente**: JLS §3.10.7, verificado contra la especificación.
+**Fuente**: `Aspectos Lexicos MiniJava 2026.pdf` §2.3.3, textual. Es un caso de manual de la Regla 1:
+la cátedra **sí** especifica esto, así que no hay que ir a buscar a Java.
 
-**El razonamiento**, que es el caso de manual de la Regla 2: a diferencia de `charLiteral`, la
-cátedra **no** autoriza "cualquier carácter" para `litString` — §2.3.3 sólo cita a Java para el caso
-puntual de `\"`. Ante esa falta de especificación se aplica "ante la duda, como en Java", y el
-conjunto de escapes válidos es el del JLS: `b s t n f r " ' \` o un dígito octal `0`-`7`, más el
-escape Unicode.
+**Lo que dice la consigna**, y conviene citarlo entero porque cada palabra cuenta:
 
-**Consecuencia**: `"a\q"` es un error léxico, mientras que `'\q'` es válido. La asimetría es
-intencional y viene de que la cátedra especificó una de las dos y no la otra.
+> *"es posible que en la secuencia de caracteres aparezca una comilla doble siempre y cuando se la
+> anteceda por el caracter `\`. Por esto último la comilla doble que marca el final de un string
+> correcto nunca estará antecedida por ese caracter."*
 
-### 3.6. La barra invertida consume el carácter siguiente dentro de un string
+**La diferencia de forma con `charLiteral`, que es la clave.** §2.3.2 le da al `charLiteral` una
+**producción con dos alternativas** (`'x'` y `'\y'`, con `x` e `y` variables independientes): eso es
+una regla de **apareamiento**, la barra y el carácter siguiente forman una unidad, y de ahí sale que
+`'\\'` y `'\''` sean válidos. §2.3.3 no da ninguna producción: da un **lookbehind de un carácter**
+sobre el texto crudo. Son dos mecanismos distintos, y copiarle al `charLiteral` su apareamiento sería
+agregarle al `litString` una regla que la consigna no le dio.
 
-**Fuente**: semántica estándar de Java (Regla 2).
+**Decisión**: cierra la primera `"` que no esté inmediatamente antecedida por una `\`. No existe un
+conjunto de escapes válidos: `"hola \q"` es un `litString` común, con una barra y una `q` como dos
+caracteres cualesquiera.
 
-**El conflicto**: la lectura literal de la consigna ("la comilla final nunca estará antecedida por
-`\`") daría que `"a\\"` es un string sin cerrar. Con la semántica de Java, la primera barra escapa a
-la segunda y la comilla cierra correctamente.
+**Consecuencias**:
 
-**Decisión**: gana la regla "ante la duda, como en Java". `"a\\"` es un `litString` válido.
+| Fuente | Resultado |
+|---|---|
+| `"hola \q"` | `litString` válido |
+| `"di \"hola\" chau"` | **un solo** `litString` |
+| `"a\\"` | `litString sin cerrar` — la `"` final está antecedida por `\` |
+| `"a\\\""` | `litString` válido — la primera `"` no cierra, la segunda sí |
+| `"barra \\ al medio"` | `litString` válido |
+
+La tercera fila es la única divergencia con Java que sale de esto: en Java `"a\\"` es la barra
+invertida, porque ahí la primera barra escapa a la segunda. Acá una barra no "cancela" a la anterior
+— la regla no habla de pares, habla de qué carácter antecede a la comilla. Está en §7.
+
+**Descartado**: extenderle al `litString` el apareamiento de §2.3.2, que haría válido `"a\\"` y lo
+alinearía con Java. Se descarta porque contradice la frase citada arriba, que es explícita: *"la
+comilla doble que marca el final de un string correcto **nunca** estará antecedida por ese
+caracter"*. Donde la cátedra habla, no se aplica "como en Java" (Regla 1).
+
+**Lo único que sí se valida dentro del literal** es el escape Unicode `\uXXXX`, que es un logro
+aparte (§3.9) y cuyo criterio de error confirmó el profesor.
 
 ### 3.7. `&` y `|` sueltos son error
 
@@ -281,42 +321,42 @@ fuente no es ni la consigna escrita ni Java: el profesor revisó la salida del c
 criterio explícitamente. Por eso pisa a la Regla 2 — donde la cátedra habla, no se aplica "como en
 Java".
 
-**Decisión**: al primer escape mal formado dentro de un `litString` se reporta el error y se
-**descarta lo que queda del literal hasta su comilla de cierre**, sin emitir token. Vale tanto para
-un escape inválido (`"a\q`, `"a\8`) como para un escape Unicode sin sus cuatro dígitos
-hexadecimales (`"a\u12G4"`): son el mismo defecto y tienen la misma recuperación.
+**Decisión**: ante un escape Unicode sin sus cuatro dígitos hexadecimales dentro de un `litString`
+(`"a\u12G4"`) se reporta el error y se **descarta lo que queda del literal hasta su comilla de
+cierre**, sin emitir token.
 
-**Qué reemplaza**: la primera versión copiaba a `javac` — reportaba el escape como error **no fatal**
-y seguía leyendo el literal hasta emitirlo entero como token. Con `"a\q b\z c"` eso imprimía dos
-errores y después el `litString` completo. El profesor consideró esa salida incorrecta: el compilador
-afirma haber reconocido un literal cuyo contenido no supo interpretar, y el ruido crece con cada
-escape roto.
+**Por qué es el único caso**: desde §3.5, una barra seguida de cualquier otra cosa no es un error
+dentro de un `litString`, así que el escape Unicode es el único contenido del literal que puede
+estar mal formado. Los otros dos errores posibles —sin cerrar por salto de línea o por fin de
+archivo— no necesitan recuperación: ya consumieron hasta el final de la línea.
+
+**La alternativa que se descartó**: reportar el escape como error **no fatal** y seguir leyendo el
+literal hasta emitirlo entero como token, que es lo que hace `javac`. El profesor consideró esa
+salida incorrecta: el compilador afirmaría haber reconocido un literal cuyo contenido no supo
+interpretar.
 
 **Por qué el criterio nuevo se sostiene**, más allá de la indicación: es **recuperación en modo
 pánico con token de sincronización**, la técnica clásica ante un error de análisis — se descarta
 entrada hasta un delimitador que devuelve al analizador a un estado conocido. El delimitador natural
 de un `litString` es su comilla de cierre.
 
-**Descartado**: reportar el primer escape y dejar que la recuperación estructural de §4.2 siga su
-curso, sin descartar nada. Sobre `"a\q b\z c" + v1` eso produce `idMV(b)`, un error por la barra
-suelta, `idMV(z)`, `idMV(c)`, y —lo decisivo— la comilla de **cierre** abre un literal nuevo que se
-come ` + v1` y muere sin cerrar: tres tokens fantasma, dos errores inventados, y dos tokens legítimos
-(`+` y `v1`) perdidos. Descartar hasta el cierre los conserva.
+**También descartado**: dejar que la recuperación estructural de §4.2 siga su curso, sin descartar
+nada. Sobre `"a\u12G4" + v1` eso produce `idMV(G4)` y —lo decisivo— la comilla de **cierre** abre un
+literal nuevo que se come ` + v1` y muere sin cerrar: tokens fantasma, errores inventados, y dos
+tokens legítimos (`+` y `v1`) perdidos. Descartar hasta el cierre los conserva.
 
 **Consecuencia sobre §4.2**: es la única excepción a "se consume exactamente lo que se reporta". El
-lexema reportado sigue siendo el armado hasta el error (`"a\q`, como exige §4.1); lo descartado es
-recuperación y no aparece en ningún lexema. La excepción está documentada y verificada en la
-propiedad de reconstrucción del fuente.
+lexema reportado sigue siendo el armado hasta el error (`"a\u12`, como exige §4.1); lo descartado es
+recuperación y no aparece en ningún lexema. La excepción está verificada en la propiedad de
+reconstrucción del fuente.
 
-**Qué queda afuera**: dentro de un mismo literal sólo se reporta el primer error, porque el segundo
-es un defecto derivado de un literal que ya se descartó. Entre literales distintos la multi-detección
-sigue intacta: `"a\q" "b\z"` reporta dos errores. En `charLiteral` la decisión no aplica — `'\x'`
-con cualquier `x` es válido por permiso explícito de la cátedra (§3.4), y un escape Unicode mal
-formado ahí conserva la recuperación estructural, porque no hay literal delimitado que descartar.
+**Qué queda afuera**: dentro de un mismo literal sólo se reporta el primer error, porque el resto ya
+se descartó. Entre literales distintos la multi-detección sigue intacta: `"a\u12G4" "b\u34Z6"`
+reporta dos errores. En `charLiteral` la resincronización no aplica: no hay contenido de largo
+arbitrario que descartar, así que la recuperación es estructural.
 
-**Divergencia con Java, asumida**: `javac` sobre `"a\q b\z c"` da dos `illegal escape character` y
-ningún `unclosed string literal` — sigue leyendo el literal. MiniJava da un solo error y no emite el
-literal. Está en la tabla de §7.
+**Divergencia con Java, asumida**: `javac` sobre un escape Unicode roto sigue leyendo el literal.
+MiniJava no lo emite. Está en la tabla de §7.
 
 ### 4.4. Dónde apunta el `^`: el criterio de `javac`
 
@@ -467,7 +507,9 @@ propósito, y todas tienen su razón.
 | `3.5e38f`, `1e999` | `floating-point number too large` | `floatLiteral` válido | el rango es un chequeo semántico, no léxico (§3.3) |
 | `.5` | `floatLiteral` válido | `punto` + `intLiteral` | la consigna exige que un float empiece con dígito |
 | `'\q'` | `illegal escape character` | `charLiteral` válido | permisividad explícita de la cátedra (§3.4) |
-| `"a\q b\z c"` | dos `illegal escape character`, y el literal se sigue leyendo | **un** error, y el literal se descarta hasta su comilla de cierre sin emitir token | criterio fijado por el profesor (§4.3) |
+| `"a\q"` | `illegal escape character` | `litString` válido | §2.3.3 no define un conjunto de escapes: define qué comilla cierra (§3.5) |
+| `"a\\"` | la barra invertida — la primera `\` escapa a la segunda | `litString sin cerrar` | §2.3.3 es una regla **posicional**: la comilla de cierre nunca está antecedida por `\`, y una barra no cancela a la anterior (§3.5) |
+| `"a\u12G4"` | `illegal unicode escape`, y el literal se sigue leyendo | un error, y el literal se descarta hasta su comilla de cierre sin emitir token | criterio fijado por el profesor (§4.3) |
 | Dígitos árabe-índicos (`١٢٣`) | no valen en un literal numérico | son un `intLiteral` | `Character.isDigit` los acepta; restringir a ASCII contradiría el logro Unicodes |
 | Dígitos no ASCII en `\uXXXX` | inválidos | aceptados | `Character.digit(c,16)` los acepta |
 | `中` al empezar un identificador | válido | error — aunque **sí** puede continuar un identificador | la ER de la cátedra dice "letra mayúscula" / "letra minúscula", y `中` no es ninguna de las dos |

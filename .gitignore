@@ -16,6 +16,11 @@ out/
 # IDE — VS Code
 .vscode/
 
+# IDE — Metals / Bloop (language server de VS Code)
+.metals/
+.bloop/
+.ammonite/
+
 # Sistema operativo
 .DS_Store
 Thumbs.db

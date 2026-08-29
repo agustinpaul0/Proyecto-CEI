@@ -2,9 +2,12 @@ package minijava.io;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -217,5 +220,76 @@ class ManejadorDeArchivoEficienteTest {
 
         assertEquals('\n', primero);
         assertEquals("", manejador.getCurrentLineText());
+    }
+
+    // --- Costo de ubicar el error (logro Manejador de Archivos Eficiente) ---
+    //
+    // La cátedra pidió que informar la columna del error no obligue a releer el
+    // archivo. Acá no hay ni relectura ni buffer de últimas N líneas: la columna y
+    // el inicio de la línea actual son contadores que getNextChar() actualiza, así
+    // que getColumnNumber() es O(1) y getCurrentLineText() recorre sólo la línea
+    // actual. Estos tests fijan esa propiedad donde más se notaría: el error en el
+    // último carácter de un archivo grande.
+
+    @Test
+    void ubicarElErrorEnLaUltimaLineaDeUnArchivoGrandeNoDependeDelTamanoDelArchivo(
+            @TempDir Path dir) throws IOException {
+        int lineas = 200_000;
+        StringBuilder fuente = new StringBuilder();
+        for (int i = 0; i < lineas; i++) {
+            fuente.append("var v").append(i).append(" = ").append(i).append(";\n");
+        }
+        fuente.append("var ultima = 1;");
+        Path archivo = escribir(dir, "grande.mjava", fuente.toString());
+
+        assertTimeoutPreemptively(Duration.ofSeconds(20), () -> {
+            manejador.open(archivo.toString());
+            while (manejador.getNextChar() != SourceManager.END_OF_FILE) {
+                // Recorrer entero: interesa el estado al llegar al final.
+            }
+            assertEquals(lineas + 1, manejador.getLineNumber());
+            assertEquals("var ultima = 1;", manejador.getCurrentLineText());
+        });
+    }
+
+    // Una sola línea enorme: getCurrentLineText() es O(largo de la línea), y ese
+    // largo es el del texto que el reporte va a imprimir de todos modos.
+    @Test
+    void unaLineaDeUnMillonDeCaracteresSeDevuelveEntera(@TempDir Path dir) throws IOException {
+        String linea = "a".repeat(1_000_000);
+        manejador.open(escribir(dir, "larga.mjava", linea).toString());
+
+        assertTimeoutPreemptively(Duration.ofSeconds(20), () -> {
+            manejador.getNextChar();
+            assertEquals(1, manejador.getColumnNumber());
+            assertEquals(linea.length(), manejador.getCurrentLineText().length());
+        });
+    }
+
+    // Aspectos Léxicos §3.1: LF, CR y CRLF son cada uno UN salto de línea, y dos
+    // fuentes que difieren sólo en eso tienen que dar los mismos números de línea.
+    @ParameterizedTest
+    @ValueSource(strings = {"\n", "\r", "\r\n"})
+    void losTresFinalesDeLineaDanLaMismaNumeracion(String finDeLinea, @TempDir Path dir)
+            throws IOException {
+        manejador.open(escribir(dir, "f.txt",
+                "uno" + finDeLinea + "dos" + finDeLinea + "tres").toString());
+
+        int linea = 1;
+        char leido;
+        StringBuilder ultimaLinea = new StringBuilder();
+        while ((leido = manejador.getNextChar()) != SourceManager.END_OF_FILE) {
+            if (leido == '\n') {
+                linea++;
+                ultimaLinea.setLength(0);
+            } else {
+                ultimaLinea.append(leido);
+            }
+            // Nunca aparece un '\r' crudo: los tres se normalizan a un solo '\n'.
+            assertEquals(false, leido == '\r', "quedó un retorno de carro sin normalizar");
+        }
+        assertEquals(3, linea);
+        assertEquals(3, manejador.getLineNumber());
+        assertEquals("tres", ultimaLinea.toString());
     }
 }

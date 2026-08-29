@@ -66,9 +66,8 @@ class EscapadorDeNoImprimiblesTest {
         assertEquals(texto, EscapadorDeNoImprimibles.escapar(texto));
     }
 
-    // La fábrica le pasa el fragmento ofensivo, que es null en diez de los once
-    // tipos de error: propagarlo tal cual es lo que hace que describir() se
-    // degrade al mensaje de un solo dato en vez de imprimir "null".
+    // Nada del compilador le pasa null hoy, pero el escapador es de uso general y
+    // envolver un null en la cadena "null" ensuciaría el mensaje del error.
     @Test
     void unTextoNuloSePropagaSinEnvolverloEnLaCadenaNull() {
         assertNull(EscapadorDeNoImprimibles.escapar(null));

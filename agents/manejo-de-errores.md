@@ -19,24 +19,24 @@ lexema ya construido es el que está mal), no lo toques. Dónde apunta el `^` en
 `agregarCaracterOfensivo()` ya no existe: era justamente el método que rompía la correspondencia
 entre lo que se reporta y lo que se consume, y por eso la recuperación se comía tokens válidos.
 
-**La única excepción: el escape mal formado dentro de un `litString`.** Ahí, además de reportar, se
-descarta lo que queda del literal hasta su comilla de cierre (`RecuperacionDeLitString
-.descartarHastaElCierre()`) y no se emite token. Cubre los dos errores que pueden aparecer tras la
-barra: `STRING_ESCAPE_INVALIDO` y `UNICODE_MAL_FORMADO` — este último sólo cuando ocurre dentro de un
-`litString`, que es lo que le dice el flag `dentroDeLitString` que arrastran `EstadoMarcadorUnicode`
-y `EstadoEscapeUnicode`. Criterio del **profesor**, no de `javac`; justificación completa en
+**La única excepción: el escape unicode mal formado dentro de un `litString`.** Ahí, además de
+reportar, se descarta lo que queda del literal hasta su comilla de cierre (`RecuperacionDeLitString
+.descartarHastaElCierre()`) y no se emite token. Es `UNICODE_MAL_FORMADO`, y sólo cuando ocurre
+dentro de un `litString` — que es lo que le dice el flag `dentroDeLitString` que arrastran
+`EstadoMarcadorUnicode` y `EstadoEscapeUnicode`. Desde que §2.3.3 se lee como regla posicional, una
+barra seguida de cualquier otra cosa NO es un error, así que éste es el único error de contenido que
+puede tener un litString. Criterio del **profesor**, no de `javac`; justificación completa en
 `documentacion/decisiones.md` §4.3.
 
 **Regla para código nuevo**: la excepción se construye **antes** de resincronizar. El lexema
-reportado tiene que ser el armado hasta el error (`"a\q`), no lo que se descartó después; y el
+reportado tiene que ser el armado hasta el error (`"a\u12`), no lo que se descartó después; y el
 descarte usa `descartar()`, nunca `avanzar()`. Ya no existen errores no fatales: `registrarError()` y
 `tomarErroresNoFatales()` fueron eliminados.
 
 ## El contrato de `ExcepcionLexica`
 
-Cada `ExcepcionLexica` lleva cinco datos obligatorios: tipo (`TipoDeErrorLexico`), lexema, línea,
-columna y la línea fuente completa (para el Reporte de Error Elegante), más uno opcional, el
-**fragmento ofensivo**. Los tres datos de posición viajan juntos en una `PosicionLexica`, que es lo
+Cada `ExcepcionLexica` lleva cinco datos: tipo (`TipoDeErrorLexico`), lexema, línea, columna y la
+línea fuente completa (para el Reporte de Error Elegante). Los tres datos de posición viajan juntos en una `PosicionLexica`, que es lo
 que `ExcepcionLexica` guarda: mezclar la línea de un carácter con la línea-fuente de otro deja el
 `^` señalando texto ajeno. `FabricaDeExcepcionesLexicas` es el punto único de construcción — ningún
 estado arma una `ExcepcionLexica` a mano, siempre pasa por ahí, para que los campos sean
@@ -47,16 +47,8 @@ consistentes entre sí; el escapado de invisibles vive aparte, en
 `Pautas Etapa 1.pdf` slide 24 (*"Deberá reportarse un mensaje adecuado a la naturaleza del error
 indicando el lexema armado hasta el momento del error y en qué número de línea del fuente MiniJava se
 produjo"*), y el `[Error:Lexema|NroLinea]` tiene que llevar ese mismo lexema. De ahí que un escape
-inválido en `"a\q b\z c"` reporte `"a\q` y no el literal entero, aunque el estado haya consumido el
-literal completo para resincronizar.
-
-**El fragmento ofensivo existe justamente por eso.** Cuando el lexema armado es más grande que la
-parte que está mal, el encabezado se lee al revés (`secuencia de escape inválida: "a\q` da a entender
-que `"a\q` es la secuencia). El fragmento viaja aparte, desde el estado que lo detecta, y sólo se usa
-en el encabezado legible: `litString con secuencia de escape inválida \q: "a\q`. El código de
-contrato de la cátedra no lo ve. Hoy lo usa un único tipo, `STRING_ESCAPE_INVALIDO`, y es el único
-con una segunda plantilla en `TipoDeErrorLexico`; los demás lo dejan en `null` y `describir()` se
-degrada solo al mensaje de un dato.
+unicode roto en `"a\u12G4" + v1` reporte `"a\u12` y no el literal entero, aunque el estado haya
+consumido hasta la comilla de cierre para resincronizar.
 
 **Invariante de la cátedra** (`convenciones-catedra.md`): el código de contrato
 `[Error:Lexema|NroLinea]` **no lleva columna** — la columna sólo aparece en el mensaje legible que lo
@@ -105,13 +97,13 @@ de consumir, cuando línea, columna y línea fuente todavía describen ese cará
 
 | Ancla | Cuándo | Quién la usa |
 |---|---|---|
-| `ULTIMO_CONSUMIDO` | el carácter ofensivo ya se consumió y **es** el problema | `EstadoInicial` (carácter desconocido), `EstadoStringEscapado` (escape inválido, que además nombra el fragmento) |
-| `INICIO_DEL_LEXEMA` | el mensaje habla de la construcción entera | los cuatro estados de char, `EstadoStringAbierto`, `EstadoStringEscapado` (string sin cerrar), `EstadoEntero`, los dos de exponente, `EstadoOperadorDoble` |
+| `ULTIMO_CONSUMIDO` | el carácter ofensivo ya se consumió y **es** el problema | `EstadoInicial` (carácter desconocido) |
+| `INICIO_DEL_LEXEMA` | el mensaje habla de la construcción entera | los cuatro estados de char, `EstadoStringAbierto` y `EstadoStringTrasBarra` (string sin cerrar), `EstadoEntero`, los dos de exponente, `EstadoOperadorDoble` |
 | `LOOKAHEAD` | el carácter ofensivo es el lookahead y **todavía no** se consumió | `EstadoEscapeUnicode` |
 
-La fábrica queda entonces en tres métodos: `crearExcepcionLexica(tipo, ancla)`, el mismo con
-`fragmentoOfensivo`, y `crearExcepcionLexicaEn(tipo, lexema, posicion)` — la única con posición
-explícita, para `EstadoComentarioMultilinea`.
+La fábrica queda entonces en dos métodos: `crearExcepcionLexica(tipo, ancla)` y
+`crearExcepcionLexicaEn(tipo, lexema, posicion)` — la única con posición explícita, para
+`EstadoComentarioMultilinea`.
 
 Las dos degradaciones viven en `BuilderDeLexema.posicionDe()` y no repartidas en la fábrica:
 `INICIO_DEL_LEXEMA` sin lexema armado todavía cae en `LOOKAHEAD`, y `LOOKAHEAD` sobre un EOF o un
@@ -136,7 +128,7 @@ línea real reporta una posición ambiente (`getColumna()`) que apunta a un car�
 `getLineaFuente()` ni siquiera incluye (esa función corta el texto antes del `\n`). El resultado: un
 `^` una posición más allá del último carácter imprimible de la línea, señalando el aire. Afectaba a
 `EstadoCharAbierto`, `EstadoStringAbierto`, `EstadoCharCerrando`, `EstadoCharEscapado`,
-`EstadoStringEscapado`, `EstadoEscapeUnicode`, `EstadoFloatExponenteInicio` y
+`EstadoStringTrasBarra`, `EstadoEscapeUnicode`, `EstadoFloatExponenteInicio` y
 `EstadoFloatExponenteRequiereDigito` — prácticamente cualquier estado que puede toparse con un EOF o
 un `\n` inesperado.
 
@@ -171,12 +163,12 @@ lexema se construye sin él.
 
 ## `FormateadorDeError` y el Reporte de Error Elegante
 
-`FormateadorDeError.formatear(ExcepcionLexica)` arma las cuatro líneas de salida: el encabezado
-legible (línea + columna + motivo, vía `TipoDeErrorLexico.describir(lexema, fragmento)`), la línea
-fuente completa, el `^` posicionado con `" ".repeat("Detalle: ".length() + columna - 1)`, y el código
-de contrato `[Error:Lexema|NroLinea]`. La columna es un agregado del usuario más allá de lo que pide
-la cátedra (que sólo exige línea) — ver `especificacion-lexica.md`. Las cuatro líneas para un escape
-inválido, que es el caso que ejercita todo junto:
+`FormateadorDeError.formatear(ExcepcionLexica)` arma las líneas de salida: el encabezado legible
+(línea + columna + motivo, vía `TipoDeErrorLexico.describir(lexema)`), la línea fuente completa, el
+`^` posicionado con `" ".repeat("Detalle: ".length() + columna - 1)`, un **renglón en blanco** y el
+código de contrato `[Error:Lexema|NroLinea]`. El renglón en blanco es el del ejemplo de Pautas slide
+25, y el de éxito antes de `[SinErrores]` es el de la slide 26. La columna es un agregado del usuario
+más allá de lo que pide la cátedra (que sólo exige línea) — ver `especificacion-lexica.md`.
 
 ```text
 Error Léxico en línea 7, columna 4: litString con secuencia de escape inválida \q: "a\q

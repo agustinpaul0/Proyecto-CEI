@@ -17,7 +17,7 @@ sale cada decisión.
 | 2 | [`especificacion-lexica.md`](especificacion-lexica.md) | La expresión regular exacta de los 56 tokens, sus autómatas, y qué queda deliberadamente afuera del lenguaje. |
 | 3 | [`patron-state.md`](patron-state.md) | Cómo se implementó la técnica *Método por Estado* que exige la cátedra, pieza por pieza, con trazados completos. |
 | 4 | [`manejo-de-errores.md`](manejo-de-errores.md) | Cómo se detecta un error, cómo se recupera el análisis, y los dos formatos de reporte. |
-| 5 | [`manejador-de-archivo.md`](manejador-de-archivo.md) | Por qué el manejador provisto por la cátedra no alcanza, y qué hace el reemplazo. |
+| 5 | [`manejador-de-archivo.md`](manejador-de-archivo.md) | Los requisitos del *Manejador de Archivos Eficiente* y cómo los resuelve el diseño, incluido el costo de ubicar un error. |
 | 6 | [`decisiones.md`](decisiones.md) | **El catálogo completo de decisiones**: cada caso ambiguo, la alternativa descartada, la fuente que lo resuelve y la justificación. |
 | 7 | [`testing.md`](testing.md) | Qué garantiza cada suite de tests, cómo están organizados y cómo correrlos. |
 | 8 | [`logros.md`](logros.md) | Los 8 logros de la Etapa 1: qué exige cada uno, dónde está implementado y cómo verificarlo. |
@@ -39,6 +39,7 @@ $ java -jar Compilador.jar programa1.java
 (puntoYComa,;,2)
 ...
 (EOF,$,22)
+
 [SinErrores]
 ```
 
@@ -51,13 +52,16 @@ $ java -jar Compilador.jar conErrores.java
 Error Léxico en línea 2, columna 4: # no es un símbolo válido
 Detalle: v1 # v2
             ^
+
 [Error:#|2]
 (idMV,v2,2)
 (EOF,$,3)
 ```
 
 Las tres primeras líneas del reporte son un agregado propio (logro *Reporte de Error Elegante*); la
-cuarta, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los testers de la cátedra.
+última, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los testers de la cátedra. Los
+renglones en blanco antes de `[SinErrores]` y de `[Error:...]` son los de los ejemplos de Pautas
+Etapa 1 (slides 25 y 26).
 
 ### Datos del proyecto
 
@@ -66,10 +70,10 @@ cuarta, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los teste
 | Lenguaje reconocido | MiniJava — subconjunto estricto de Java, sin excepciones ni hilos |
 | Técnica de implementación | Método por Estado (patrón State), **sin generadores automáticos** |
 | Tokens reconocidos | 56 (21 palabras clave, 3 familias de identificadores, 4 de literales, 10 símbolos de puntuación, 17 operadores, EOF) |
-| Estados del autómata | 21 clases en `minijava.lexico.estados`, una por estado |
-| Clases de producción | 47 |
-| Suites de test | 20 (18 propias + los 2 testers de la cátedra), con **519 casos** ejecutables |
-| Casos de fuente | 65 sin errores + 77 con errores + 1 de regresión de fuzzing |
+| Estados del autómata | 22 clases en `minijava.lexico.estados`, una por estado |
+| Clases de producción | 49 |
+| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **620 casos** ejecutables |
+| Casos de fuente | 75 sin errores + 81 con errores + 1 de regresión de fuzzing |
 | Logros perseguidos | los 8 de la Etapa 1 |
 | Java | 25 (`maven.compiler.release=25`) |
 | Build | Maven; `mvn package` genera `target/Compilador.jar` |

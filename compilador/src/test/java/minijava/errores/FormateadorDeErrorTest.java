@@ -20,8 +20,10 @@ class FormateadorDeErrorTest {
         List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
                 .formatear(excepcionDeEjemplo());
 
-        assertEquals(4, lineas.size());
-        assertEquals("[Error:#|2]", lineas.get(3));
+        // Cuatro del reporte elegante más el renglón en blanco de la slide 25.
+        assertEquals(5, lineas.size());
+        assertEquals("", lineas.get(3));
+        assertEquals("[Error:#|2]", lineas.get(4));
     }
 
     // Para CARACTER_DESCONOCIDO el texto es el de la slide 43 y no puede cambiar;
@@ -43,26 +45,10 @@ class FormateadorDeErrorTest {
                                 new PosicionLexica(1, 3, "'ab'"))).get(0));
     }
 
-    // Pautas slide 24 obliga al "lexema armado hasta el error", que no ES la
-    // secuencia: sin nombrarla aparte el mensaje se lee al revés. El encabezado
-    // lleva las dos; el código de contrato, sólo el lexema.
-    @Test
-    void elEncabezadoDeUnEscapeInvalidoNombraLaSecuenciaYElLexemaArmado() {
-        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
-        var excepcion = new ExcepcionLexica(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, "\"a\\q",
-                new PosicionLexica(7, 4, "\"a\\q b\\z c\""), "\\q");
-
-        List<String> lineas = formateador.formatear(excepcion);
-
-        assertEquals("Error Léxico en línea 7, columna 4: "
-                + "litString con secuencia de escape inválida \\q: \"a\\q", lineas.get(0));
-        assertEquals("[Error:\"a\\q|7]", lineas.get(3));
-    }
-
-    // Los otros diez no tienen fragmento: el lexema entero ES lo ofensivo, y el
+    // El lexema entero ES lo ofensivo en los diez tipos que quedan, y el
     // encabezado no puede degenerar en un "null".
     @Test
-    void unErrorSinFragmentoConservaElEncabezadoDeUnSoloDato() {
+    void todoTipoDeErrorConservaElEncabezadoDeUnSoloDato() {
         var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
 
         for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {

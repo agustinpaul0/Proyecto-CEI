@@ -11,8 +11,12 @@ import minijava.lexico.contexto.ContextoLexico;
 import minijava.tokens.TipoDeToken;
 import minijava.tokens.Token;
 
-// Terminal, se cierra con la comilla doble. '\' escapa el siguiente (permite \"
-// embebida); un salto de línea antes del cierre es error (Aspectos Léxicos §2.3.3).
+// Terminal: se cierra con la comilla doble. Aspectos Léxicos §2.3.3 no da una
+// producción para el string, da una regla POSICIONAL: "la comilla doble que
+// marca el final de un string correcto nunca estará antecedida por [\]". O sea
+// un lookbehind de un carácter, y este par de estados es ese bit de memoria —
+// acá el anterior NO fue barra, en EstadoStringTrasBarra sí.
+// Un salto de línea antes del cierre es error, también por §2.3.3.
 public final class EstadoStringAbierto implements EstadoLexico {
 
     public static final EstadoStringAbierto INSTANCIA = new EstadoStringAbierto();
@@ -32,11 +36,7 @@ public final class EstadoStringAbierto implements EstadoLexico {
             contexto.avanzar();
             return new Emitir(new Token(TipoDeToken.LIT_STRING, contexto.getLexema(), linea));
         }
-        if (actual == '\\') {
-            contexto.avanzar();
-            return new Continuar(EstadoStringEscapado.INSTANCIA);
-        }
         contexto.avanzar();
-        return new Continuar(INSTANCIA);
+        return new Continuar(actual == '\\' ? EstadoStringTrasBarra.INSTANCIA : INSTANCIA);
     }
 }

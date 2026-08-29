@@ -1,0 +1,78 @@
+% Preámbulo: tipografía, paleta monocromática y macros de notación.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage[spanish,es-noquoting,es-noshorthands,es-tabla]{babel}
+\usepackage[a4paper,margin=2.6cm,headsep=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta,calc}
+\usepackage[hidelinks,bookmarks=true]{hyperref}
+
+% --- Paleta monocromática: sólo grises, con un único acento. -----------------
+\definecolor{tinta}{gray}{0.13}
+\definecolor{grisMedio}{gray}{0.42}
+\definecolor{grisSuave}{gray}{0.70}
+\definecolor{grisFondo}{gray}{0.955}
+\definecolor{acento}{HTML}{2F4858}
+
+\color{tinta}
+
+% --- Títulos ----------------------------------------------------------------
+\titleformat{\section}{\Large\bfseries\color{acento}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{tinta}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\bfseries\color{grisMedio}}{\thesubsubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+% --- Encabezado y pie -------------------------------------------------------
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{grisSuave}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize\color{grisMedio}Compiladores e Intérpretes — Etapa 1}
+\fancyhead[R]{\footnotesize\color{grisMedio}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\color{grisMedio}\thepage}
+
+% --- Bloques de código ------------------------------------------------------
+\DefineVerbatimEnvironment{codigo}{Verbatim}%
+  {fontsize=\small,xleftmargin=1.1em,commandchars=\\\{\}}
+\DefineVerbatimEnvironment{codigoLlano}{Verbatim}%
+  {fontsize=\small,xleftmargin=1.1em}
+
+% --- Macros de notación -----------------------------------------------------
+\newcommand{\bs}{\textbackslash}
+\newcommand{\caret}{\textasciicircum}
+\newcommand{\lex}[1]{\texttt{#1}}
+\newcommand{\tok}[1]{\textnormal{\textsf{\small #1}}}
+% --- Cardinalidad como exponente propiamente dicho -------------------------
+% \sups{c}    exponente suelto:  ( ... )^*
+% \ere{X}{c}  símbolo con su exponente:  Digito^{1-9}
+\newcommand{\sups}[1]{\textsuperscript{\normalfont\texttt{\footnotesize #1}}}
+\newcommand{\ere}[2]{\texttt{#1}\sups{#2}}
+\newcommand{\rep}[2]{\sups{#1--#2}}
+\newcommand{\alt}{\ensuremath{\;|\;}}
+
+% Nota al pie de notación, repetible: se recuerda la convención donde aparece.
+\newcommand{\notaKleene}{\footnote{\textbf{Notación.} \ere{X}{*} = cero o más
+repeticiones de \lex{X} (estrella de Kleene); \ere{X}{+} = una o más;
+\ere{X}{?} = cero o una; \ere{X}{1--9} = entre 1 y 9 repeticiones, \emph{ambos
+extremos inclusive}; \lex{A | B} = alternativa. La tabla completa está en la
+sección~\ref{sec:notacion}.}}
+
+\newenvironment{er}{%
+  \par\smallskip\begingroup\ttfamily\small\parindent=0pt
+  \leftskip=1.2em\obeylines}{\par\endgroup\smallskip}
+
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.25ex,topsep=0.5ex}
+\setlist[description]{leftmargin=1.3em,itemsep=0.35ex,topsep=0.6ex}
+\renewcommand{\arraystretch}{1.25}

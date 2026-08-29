@@ -55,7 +55,7 @@ minijava/
 │                     (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
 ├── errores/         ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError, PosicionLexica
 │                     (las coordenadas del reporte), EscapadorDeNoImprimibles
-├── tokens/          Token (record inmutable), TipoDeToken, TablaDePalabrasClave
+├── tokens/          Token (record inmutable), TipoDeToken, TablaDeLexemas
 ├── salida/          interfaz Salida + implementaciones (real / en memoria para tests)
 └── lexico/          AnalizadorLexico (el driver)
     ├── automata/       EstadoLexico, ResultadoDeTransicion + Continuar/Emitir
@@ -69,8 +69,8 @@ minijava/
 
 **Criterio de ubicación, para no volver a discutirlo caso por caso**: `PosicionLexica` vive en
 `errores/` porque línea + columna + línea fuente son las coordenadas del reporte, no del autómata;
-`TablaDePalabrasClave` en `tokens/` porque su única razón de existir es decidir qué `TipoDeToken`
-corresponde a un lexema; `RecuperacionDeLitString` fuera de `estados/` porque no es un estado del AF.
+`TablaDeLexemas` en `tokens/` porque su única razón de existir es decidir qué `TipoDeToken`
+corresponde a un lexema —cubre los 49 tokens de lexema fijo, no sólo las 21 palabras clave—; `RecuperacionDeLitString` fuera de `estados/` porque no es un estado del AF.
 `FabricaDeExcepcionesLexicas` se queda del lado de `lexico/` a propósito: moverla a `errores/`
 invertiría la dirección de la dependencia entre los dos paquetes.
 

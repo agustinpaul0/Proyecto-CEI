@@ -5,8 +5,6 @@ import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
 
 public final class EstadoBarra implements EstadoLexico {
 
@@ -31,6 +29,6 @@ public final class EstadoBarra implements EstadoLexico {
             contexto.descartar();
             return new Continuar(new EstadoComentarioMultilinea(posicionDeApertura, false));
         }
-        return new Emitir(new Token(TipoDeToken.OP_DIV, contexto.getLexema(), linea));
+        return Emitir.porLexemaFijo(contexto.getLexema(), linea);
     }
 }

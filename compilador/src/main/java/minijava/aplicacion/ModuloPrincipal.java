@@ -54,6 +54,8 @@ public final class ModuloPrincipal {
             manejador.close();
         }
         if (!huboErrores) {
+            // El renglón en blanco de separación es el del ejemplo de Pautas, slide 26.
+            salida.imprimir("");
             salida.imprimir("[SinErrores]");
         }
     }

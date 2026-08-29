@@ -29,8 +29,10 @@ class ReporteDeErrorEleganteTest {
 
         List<String> lineas = salida.getLineas();
         int i = lineas.indexOf("[Error:#|2]");
-        assertEquals("Error Léxico en línea 2, columna 6: # no es un símbolo válido", lineas.get(i - 3));
-        assertEquals("Detalle: v1 + # chau", lineas.get(i - 2));
-        assertEquals("              ^", lineas.get(i - 1));
+        assertEquals("Error Léxico en línea 2, columna 6: # no es un símbolo válido", lineas.get(i - 4));
+        assertEquals("Detalle: v1 + # chau", lineas.get(i - 3));
+        assertEquals("              ^", lineas.get(i - 2));
+        // El renglón de separación antes del código, como en la slide 25.
+        assertEquals("", lineas.get(i - 1));
     }
 }

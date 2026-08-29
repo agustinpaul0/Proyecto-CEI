@@ -19,10 +19,10 @@ public final class FormateadorDeError {
         }
         String encabezado = "Error Léxico en línea " + excepcion.getLinea()
                 + ", columna " + excepcion.getColumna() + ": "
-                + excepcion.getTipo().describir(excepcion.getLexemaOfensivo(),
-                        excepcion.getFragmentoOfensivo());
+                + excepcion.getTipo().describir(excepcion.getLexemaOfensivo());
         String detalle = "Detalle: " + excepcion.getLineaFuente();
         String caret = " ".repeat("Detalle: ".length() + excepcion.getColumna() - 1) + "^";
-        return List.of(encabezado, detalle, caret, codigo);
+        // El renglón en blanco antes del código es el de Pautas, slide 25.
+        return List.of(encabezado, detalle, caret, "", codigo);
     }
 }

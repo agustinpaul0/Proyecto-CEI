@@ -40,8 +40,7 @@ class TipoDeErrorLexicoTest {
             Map.entry(TipoDeErrorLexico.COMENTARIO_SIN_CERRAR, new Caso("/* sin cerrar", 1, 1)),
             Map.entry(TipoDeErrorLexico.ENTERO_DEMASIADO_LARGO, new Caso("1234567890 ", 1, 1)),
             Map.entry(TipoDeErrorLexico.OPERADOR_INCOMPLETO, new Caso("a & b", 1, 3)),
-            Map.entry(TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS, new Caso("1e ", 1, 1)),
-            Map.entry(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, new Caso("\"a\\q\"", 1, 4))));
+            Map.entry(TipoDeErrorLexico.EXPONENTE_SIN_DIGITOS, new Caso("1e ", 1, 1))));
 
     private AnalizadorLexico crear(Path dir, String fuente) throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
@@ -90,41 +89,29 @@ class TipoDeErrorLexicoTest {
         assertEquals(TipoDeErrorLexico.CHAR_SIN_CERRAR, sinCerrarPorEof.getTipo());
     }
 
-    // Aborta el literal: se reporta el primero y se descarta hasta la comilla de
-    // cierre, sin emitir token. Criterio indicado por el profesor.
+    // Aborta el literal: se descarta hasta la comilla de cierre, sin emitir
+    // token. Es el único error de escape que queda dentro de un litString.
     @Test
-    void escapeInvalidoDeStringDescartaElLiteralYNoEmiteToken(@TempDir Path dir) throws Exception {
-        AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
+    void unicodeMalFormadoEnStringDescartaElLiteralYNoEmiteToken(@TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crear(dir, "\"hola \\" + "u12G4 mundo\"");
 
         var excepcion = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(TipoDeErrorLexico.STRING_ESCAPE_INVALIDO, excepcion.getTipo());
-        assertEquals("\"hola \\q", excepcion.getLexemaOfensivo());
+        assertEquals(TipoDeErrorLexico.UNICODE_MAL_FORMADO, excepcion.getTipo());
+        assertEquals("\"hola \\" + "u12", excepcion.getLexemaOfensivo());
         assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // El fragmento viaja desde el estado que detecta el error: es el único que sabe
-    // qué carácter venía tras la barra.
+    // Una barra seguida de cualquier otra cosa no es un error: §2.3.3 no define
+    // un conjunto de escapes válidos, sólo dice qué comilla cierra.
     @Test
-    void elEscapeInvalidoViajaConLaSecuenciaOfensivaAdemasDelLexemaArmado(@TempDir Path dir)
-            throws Exception {
+    void unaBarraSeguidaDeCualquierCosaNoEsErrorEnUnString(@TempDir Path dir) throws Exception {
         AnalizadorLexico analizador = crear(dir, "\"hola \\q mundo\"");
 
-        var error = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
-
-        // Lo que exige Pautas: el lexema es el armado hasta el error.
-        assertEquals("\"hola \\q", error.getLexemaOfensivo());
-        // Lo que agrega el reporte elegante: cuál de sus caracteres está mal.
-        assertEquals("\\q", error.getFragmentoOfensivo());
+        assertEquals("\"hola \\q mundo\"", analizador.proximoToken().lexema());
+        assertEquals(TipoDeToken.EOF, analizador.proximoToken().tipo());
     }
 
-    // Sin fragmento, describir() de dos argumentos da lo mismo que el de uno.
-    @Test
-    void describirSinFragmentoEsIgualAlMensajeDeUnSoloDato() {
-        for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
-            assertEquals(tipo.describir("x"), tipo.describir("x", null), tipo::name);
-        }
-    }
 
     // El de CARACTER_DESCONOCIDO es el de la slide 43 y no puede cambiar; el resto
     // tiene que nombrar su construcción.
