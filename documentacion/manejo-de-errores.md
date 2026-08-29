@@ -129,9 +129,10 @@ líneas, así que `"a\q` seguido de un fin de línea reporta su error y deja la 
 
 ## 2.2. Los tipos de error
 
-`TipoDeErrorLexico` tiene un valor por punto de falla, cada uno con su propia razón. Antes había una
-sola frase para los catorce, así que el reporte no podía decir qué construcción había fallado y los
-tests no podían validar por tipo, que es la regla del proyecto (ver [`testing.md`](testing.md) §1).
+`TipoDeErrorLexico` tiene actualmente diez valores, uno por punto de falla, cada uno con su propia
+razón. En una versión anterior se utilizaba una sola frase para todos los errores, por lo que el
+reporte no podía decir qué construcción había fallado y los tests no podían validar por tipo, que es
+la regla del proyecto (ver [`testing.md`](testing.md) §1).
 
 | Valor | Razón que imprime |
 |---|---|

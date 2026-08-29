@@ -10,7 +10,8 @@ Estas NO son negociables, están tomadas literal de `Pautas Etapa 1.pdf` (slides
 - Salida de un token reconocido, una línea por token: `(NombreToken,Lexema,NroLinea)`.
   Ejemplo real de las slides: `(litString,"hola",1)`, `(idMV,v1,2)`, `(op+,+,2)`, `(pr_if,if,3)`.
 - Análisis exitoso → última línea `[SinErrores]`.
-- Error léxico → mensaje legible + código de error `[Error:Lexema|NroLinea]` como última línea.
+- Error léxico → mensaje legible + código de error `[Error:Lexema|NroLinea]` como última línea de
+  cada reporte de error.
   El código de error usa exactamente el lexema armado hasta el momento del error y la línea del
   fuente MiniJava donde se produjo. Ejemplo: `[Error:#|2]`.
 - **Toda** la salida por `System.out` (nada de `System.err`, loggers, etc.).

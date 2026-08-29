@@ -160,11 +160,14 @@ salida entera del compilador y un pie con los conteos; cada suite cierra con
 salida que ya tiene en la mano. Los que capturan `System.out` —los dos de la cátedra— tienen que
 pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
 
-## Mutation testing (PIT) — score actual y por qué ciertos sobrevivientes no se cazan
+## Mutation testing (PIT) — referencia y por qué ciertos sobrevivientes no se cazan
 
-Última corrida: **94% de mutantes matados** (306/327), *test strength* 97%. Comando:
+La última corrida con resultado registrado alcanzó **94% de mutantes matados** (306/327), *test
+strength* 97%. Este valor es una referencia histórica, no un resultado de la auditoría actual.
+Comando:
 `mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (el goal no está bindeado a ninguna fase
-del profile, hay que invocarlo explícito).
+del profile, hay que invocarlo explícito). En la auditoría del 29/08/2026 la ejecución quedó en
+*timeout* antes de producir un nuevo score.
 
 **Patrón recurrente de mutante equivalente en este código base**: varios estados hacen
 `contexto.avanzar(); return new Continuar(SiguienteEstado);` justo antes de pasarle el control a un

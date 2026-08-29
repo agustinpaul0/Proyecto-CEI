@@ -155,7 +155,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `TipoDeTokenTest` | 22 | Que los nombres impresos coincidan con los que fija la cátedra. |
 | `PosicionDelCaretTest` | 21 | Dónde apunta el `^`, con el diagnóstico de `javac` citado en cada caso. |
 | `CriterioDeRecuperacionTest` | 14 | Que tras cada error el análisis retome en el carácter correcto. |
-| `TipoDeErrorLexicoTest` | 14 | Un caso por cada tipo de error, validado por tipo y localización. |
+| `TipoDeErrorLexicoTest` | 14 | Diez casos parametrizados, uno por tipo de error, más cuatro pruebas adicionales de tipo y localización. |
 | `EscapadorDeNoImprimiblesTest` | 15 | Que ningún carácter invisible llegue crudo al mensaje de un error ni parta el formato de una línea por elemento. |
 | `LimitesNumericosTest` | 12 | El límite de 9 dígitos y su interacción con los floats. |
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
