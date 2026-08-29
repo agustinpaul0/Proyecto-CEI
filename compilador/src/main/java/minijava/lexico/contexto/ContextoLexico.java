@@ -30,7 +30,8 @@ public final class ContextoLexico {
         return lexema.getCaracterActual();
     }
 
-    // Por posición y no contra el centinela: un 0x1A embebido es un carácter común.
+    // Recibir el centinela es condición necesaria pero no suficiente —un 0x1A
+    // embebido también lo es—, así que el fin de archivo se confirma por posición.
     public boolean esFinDeArchivo() {
         return manejador.estaEnFinDeArchivo();
     }

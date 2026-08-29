@@ -8,7 +8,15 @@ public interface ManejadorDeArchivo extends SourceManager {
 
     String getCurrentLineText();
 
-    // Responde por POSICIÓN, no comparando contra END_OF_FILE: (char) 26 es un
-    // byte legítimo en un fuente y truncaba el análisis en silencio.
+    // La confirmación del fin de archivo. El centinela END_OF_FILE sigue siendo la
+    // señal, pero solo no alcanza: (char) 26 es un byte legítimo dentro de un
+    // fuente, así que recibirlo es condición necesaria y no suficiente. Esto
+    // responde la otra mitad —si la posición de lectura se pasó del contenido—, y
+    // el fin de archivo es la conjunción de las dos.
+    //
+    // El AND queda implícito en los call sites porque este método ya implica al
+    // otro conjunto: el manejador devuelve el centinela SOLO en la misma rama en
+    // que lo prende. Un (char) 26 embebido llega con esto en false y cae donde
+    // corresponde, en el carácter desconocido.
     boolean estaEnFinDeArchivo();
 }

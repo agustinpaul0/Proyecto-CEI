@@ -358,8 +358,9 @@ requisitos que el resto del compilador da por sentados:
 
 - **La línea del EOF** es `cantidad de saltos consumidos + 1`, incluido el caso del archivo que
   termina en salto de línea — es lo que esperan los oráculos de los tres casos de ejemplo.
-- **El fin de archivo se detecta por posición**, no comparando el carácter leído contra el centinela
-  `(char) 26`, que es un byte legítimo dentro de un fuente.
+- **El fin de archivo es una conjunción**: que llegue el centinela `(char) 26` **y** que la posición
+  de lectura confirme que se acabó el contenido. Sólo la primera no alcanza, porque ese byte es
+  legítimo dentro de un fuente; si llega sin la segunda, es un símbolo inválido.
 - **La posición del error se obtiene sin una segunda pasada**: la columna es un contador O(1) y el
   texto de la línea se recorre sólo desde su inicio, nunca desde el principio del archivo.
 

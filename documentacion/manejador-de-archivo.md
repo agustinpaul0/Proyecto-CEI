@@ -58,18 +58,36 @@ y *"el analizador léxico de MiniJava tiene que ser capaz de reconocer correctam
 estas convenciones y reportar números de línea equivalentes para archivos fuente que difieran
 únicamente en la forma de representar sus saltos de línea"*.
 
-### 2.4. El fin de archivo se detecta por posición, no por valor
+### 2.4. El fin de archivo son dos condiciones, no una
 
 El centinela `END_OF_FILE` es el ASCII 26 (`0x1A`, *substitute*), pero `0x1A` es también un byte
 perfectamente legítimo **dentro** de un archivo — aparece, por ejemplo, en un binario pasado por
-error o en un fuente guardado por una herramienta vieja de DOS. Si el fin de archivo se detectara
-comparando el carácter leído contra el centinela, un `0x1A` embebido truncaría el análisis ahí **en
-silencio**: sin error, sin aviso, informando `[SinErrores]` sobre un fuente que nunca se terminó de
-leer.
+error o en un fuente guardado por una herramienta vieja de DOS. La interfaz provista transporta por
+un mismo canal dos cosas de naturaleza distinta: los caracteres del fuente y la señal de que los
+caracteres se terminaron. Recibir el centinela es entonces condición **necesaria pero no
+suficiente**.
 
-Por eso la interfaz se extiende con `estaEnFinDeArchivo()`, que responde **por posición**: es `true`
-sólo si la última lectura se pasó del final real del contenido. Con eso un `0x1A` embebido llega al
-léxico como cualquier otro carácter y se reporta como el error léxico que corresponde.
+Si el fin de archivo se decidiera sólo con esa condición, un `0x1A` embebido truncaría el análisis
+ahí **en silencio**: sin error, sin aviso, informando `[SinErrores]` sobre un fuente que nunca se
+terminó de leer.
+
+Por eso la interfaz se extiende con `estaEnFinDeArchivo()`, que aporta la segunda condición: es
+`true` sólo si la última lectura se pasó del final real del contenido. El fin de archivo es la
+**conjunción** de las dos:
+
+```text
+fin de archivo  ⇔  llegó el centinela  ∧  la posición confirma que se acabó el contenido
+```
+
+**Por qué en el código aparece un solo chequeo.** El manejador devuelve el centinela en una única
+rama, que es exactamente la misma en la que prende la bandera. Es decir que la segunda condición
+**implica** a la primera, y la conjunción se colapsa: escribir
+`c == END_OF_FILE && estaEnFinDeArchivo()` da lo mismo que escribir `estaEnFinDeArchivo()` a secas.
+El `AND` queda implícito, y en los estados sólo se testea el conjunto que discrimina.
+
+La implicación no vale al revés, y ahí está todo el asunto: un `0x1A` embebido cumple la primera
+condición y no la segunda. Como no hay ninguna rama que lo atrape, cae hasta el final de
+`EstadoInicial` y se reporta como carácter desconocido, que es lo que corresponde.
 
 ### 2.5. Ubicar el error no puede costar una segunda pasada
 

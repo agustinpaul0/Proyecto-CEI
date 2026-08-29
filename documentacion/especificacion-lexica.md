@@ -323,11 +323,24 @@ confunde:
   léxico, por §3.3 (*"cualquier otra entrada que no comforme con las reglas anteriormente presentadas
   debe generar un error"*).
 
-De ahí una decisión del manejador de archivo: **el fin de archivo se detecta por posición, no
-comparando el carácter leído contra el centinela.** `0x1A` es un byte legítimo dentro de un archivo
-—en un binario aparece a menudo—, y compararlo contra el centinela cortaría el análisis ahí en
-silencio, informando `[SinErrores]` sobre un fuente que nunca se terminó de leer. Por eso
-`ManejadorDeArchivo` agrega `estaEnFinDeArchivo()`.
+De ahí una decisión del manejador de archivo: **el fin de archivo son dos condiciones unidas por un
+`AND`, no una sola.** El centinela sigue siendo la señal, pero recibirlo es condición *necesaria y no
+suficiente*, porque `0x1A` es un byte legítimo dentro de un archivo —en un binario aparece a menudo—.
+La segunda condición la aporta `estaEnFinDeArchivo()`, que confirma que la posición de lectura se
+pasó del contenido:
+
+```text
+fin de archivo  ⇔  llegó el centinela  ∧  la posición confirma que se acabó el contenido
+```
+
+Si llega el centinela pero la posición dice que todavía queda archivo, entonces **no era** un fin de
+archivo: es un carácter del fuente, y se reporta como símbolo inválido. Sin esa segunda condición, un
+`0x1A` embebido cortaría el análisis ahí en silencio, informando `[SinErrores]` sobre un fuente que
+nunca se terminó de leer.
+
+En el código se testea un solo conjunto porque el segundo implica al primero: el manejador devuelve
+el centinela únicamente en la misma rama en que prende la bandera. El `AND` queda implícito. El
+detalle está en [`manejador-de-archivo.md`](manejador-de-archivo.md) §2.4.
 
 ```mermaid
 stateDiagram-v2

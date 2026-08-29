@@ -279,11 +279,12 @@ naturaleza: en este proyecto cualquier otra excepción es un defecto (ver
 entrada, y las dos están fijadas por `DefectosDeRobustezTest`:
 
 - **El byte `0x1A`**: el centinela `SourceManager.END_OF_FILE` es `(char) 26`, que también es un byte
-  perfectamente legítimo dentro de un archivo. Si el fin de archivo se detectara comparando el
-  carácter devuelto contra el centinela, un `0x1A` embebido **truncaría el análisis en silencio** —el
-  resto del archivo desaparecería y encima se imprimiría `[SinErrores]`—. Por eso
-  `ManejadorDeArchivo.estaEnFinDeArchivo()` responde por **posición** y no por valor, y ese byte
-  llega al léxico como un carácter desconocido más.
+  perfectamente legítimo dentro de un archivo, así que recibirlo no alcanza para concluir que el
+  fuente se terminó. El fin de archivo exige además que la posición de lectura lo confirme
+  (`ManejadorDeArchivo.estaEnFinDeArchivo()`). Un `0x1A` embebido cumple la primera condición y no la
+  segunda: no es fin de archivo, es un carácter desconocido más. Sin esa segunda condición el byte
+  **truncaría el análisis en silencio** —el resto del archivo desaparecería y encima se imprimiría
+  `[SinErrores]`—.
 - **Bytes que no son UTF-8 válido**: `Files.readString` lanza `MalformedInputException`, que saldría
   como un `UncheckedIOException` sin atrapar. Se usa `new String(bytes, UTF_8)`, que sustituye las
   secuencias mal formadas por `U+FFFD`; los bytes basura llegan al léxico y se reportan como errores

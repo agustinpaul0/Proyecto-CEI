@@ -87,6 +87,11 @@ regulares, corregido en
 
 - El EOF es una ER trivial de un símbolo sobre el carácter centinela (`SourceManager.END_OF_FILE`);
   lo único especial es que esa transición no avanza la lectura (detalle del driver, no del lenguaje).
+  **Ojo con la condición de disparo**: recibir el centinela es necesario pero NO suficiente, porque
+  `(char) 26` es un byte legítimo dentro de un fuente. El fin de archivo es un AND — centinela Y
+  `estaEnFinDeArchivo()`, que confirma por posición—; en el código se testea sólo el segundo porque
+  implica al primero (el manejador devuelve el centinela en la misma rama en que prende la bandera).
+  Un centinela sin fin de archivo cae en el `throw` final de `EstadoInicial`: símbolo inválido.
 - El comentario multilínea tiene una ER exacta y estándar (la misma que usa `lex`/`flex` para
   comentarios de C): `/\*([^*]|\*+[^*/])*\*+/`. No es una aproximación.
 - El límite de 9 dígitos es trivialmente regular (toda repetición acotada lo es): una cadena lineal

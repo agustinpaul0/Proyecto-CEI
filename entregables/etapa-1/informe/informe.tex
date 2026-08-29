@@ -430,13 +430,61 @@ interfaz \lex{SourceManager}. El \lex{\$} es solamente el lexema que se \emph{im
 \tok{EOF}: no se lee del fuente y no tiene ninguna relación con el centinela. Un \lex{\$} escrito en
 el fuente es un símbolo inválido y produce un error léxico.
 
-De esa distinción sale una decisión del manejador de archivo: \textbf{el fin de archivo se detecta
-por posición, no comparando el carácter leído contra el centinela}. El byte \lex{0x1A} es legítimo
-dentro de un archivo, y compararlo contra el centinela truncaría el análisis ahí en silencio,
-informando \lex{[SinErrores]} sobre un fuente que nunca se terminó de leer.
+\subsubsection{Cuándo se da por terminado el archivo}
 
-Por último, la línea del \tok{EOF} es \emph{cantidad de saltos de línea consumidos $+$ 1}, lo que
-incluye el caso del archivo que termina en salto de línea.
+\lex{SourceManager} transporta por un mismo canal dos cosas de naturaleza distinta: los caracteres
+del fuente y la señal de que los caracteres se terminaron, porque \lex{getNextChar()} devuelve un
+\lex{char} y el centinela también es un \lex{char}. Eso funcionaría si el valor centinela nunca
+pudiera aparecer como dato, pero \lex{0x1A} es un byte perfectamente legítimo dentro de un archivo.
+Recibir el centinela es, entonces, condición \textbf{necesaria pero no suficiente}.
+
+Por eso el fin de archivo se decide con una \textbf{conjunción}, y la interfaz se extiende con
+\lex{estaEnFinDeArchivo()} para aportar el segundo término:
+
+\begin{quote}
+fin de archivo \quad$\Longleftrightarrow$\quad llegó el centinela \quad$\wedge$\quad la posición de
+lectura confirma que se acabó el contenido
+\end{quote}
+
+Si llega el centinela pero la posición dice que todavía queda archivo, entonces no era un fin de
+archivo: es un carácter del fuente y se reporta como símbolo inválido. Sin ese segundo término, un
+\lex{0x1A} embebido cortaría el análisis en silencio, informando \lex{[SinErrores]} sobre un fuente
+que nunca se terminó de leer.
+
+En la implementación aparece un solo chequeo, porque el segundo término \emph{implica} al primero: el
+manejador devuelve el centinela en una única rama, que es exactamente la misma en la que registra que
+se pasó del final. La conjunción se colapsa y el $\wedge$ queda implícito; en los estados se
+testea sólo el término que discrimina. La implicación no vale al revés, y ahí está todo el asunto: un
+\lex{0x1A} embebido cumple el primer término y no el segundo.
+
+\subsubsection{En qué línea cae el \tok{EOF}}
+
+\begin{quote}
+línea del \tok{EOF} \;=\; cantidad de saltos de línea consumidos \;$+$\; 1
+\end{quote}
+
+Dicho de manera más operativa: se arranca en la línea 1 y se suma 1 cada vez que se consume un
+\lex{\bs n}; la línea en la que se queda parado al agotar el contenido es la del \tok{EOF}.
+
+El caso que conviene mirar dos veces es el del archivo que \textbf{termina} en salto de línea. Un
+\lex{\bs n} no es ``el final de una línea'' sino un \emph{separador}, así que después del último
+salto hay una línea más ---vacía, pero existe--- y es ahí donde cae el \tok{EOF}. La consecuencia
+práctica es que ese salto final tiene que entregarse al léxico como cualquier otro carácter: un
+manejador que lo omita reporta el \tok{EOF} una línea antes de lo que corresponde.
+
+La fórmula es una sola y cubre los dos casos, como muestran los tres archivos de ejemplo provistos:
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Archivo} & \textbf{Saltos} & \textbf{¿Termina en salto?} & \textbf{Línea del \tok{EOF}} \\
+\midrule
+\lex{lexSinErrores01.java} & 21 & sí & 22 \\
+\lex{lexSinErrores02.java} & 12 & no & 13 \\
+\lex{lexSinErrores03.java} & 12 & sí & 13 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \subsection{Lo que no es un token}
 

@@ -52,6 +52,8 @@ public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
 
     @Override
     public char getNextChar() {
+        // Única rama que devuelve el centinela, y la única que prende la bandera:
+        // de ahí que la bandera implique al centinela, pero no al revés.
         if (posicion >= contenido.length) {
             fotografiarPosicion();
             devolvioFinDeArchivo = true;

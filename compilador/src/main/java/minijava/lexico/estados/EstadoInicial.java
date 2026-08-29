@@ -47,6 +47,9 @@ public final class EstadoInicial implements EstadoLexico {
     public ResultadoDeTransicion procesar(ContextoLexico contexto) throws ExcepcionLexica {
         char actual = contexto.getCaracterActual();
 
+        // Fin de archivo = llegó el centinela Y la posición confirma que se acabó
+        // el contenido. El primer conjunto no se testea porque el segundo ya lo
+        // implica; un centinela sin fin de archivo cae en el throw del final.
         if (contexto.esFinDeArchivo()) {
             // El lexema no se lee del fuente: el fin de archivo no consume nada.
             return Emitir.porLexemaFijo(TablaDeLexemas.lexemaFijoDe(TipoDeToken.EOF).orElseThrow(),
