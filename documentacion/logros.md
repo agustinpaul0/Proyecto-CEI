@@ -241,7 +241,7 @@ Los instrumentos que apuntan específicamente a esto:
 **Cómo verificarlo:**
 
 ```bash
-mvn -o verify          # 627 tests + umbral de cobertura
+mvn -o verify          # 631 tests + umbral de cobertura
 mvn -o -Pmutacion test # los mutantes sobrevivientes son tests faltantes
 ```
 

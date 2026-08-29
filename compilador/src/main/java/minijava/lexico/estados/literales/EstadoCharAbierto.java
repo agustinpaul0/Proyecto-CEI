@@ -26,7 +26,7 @@ public final class EstadoCharAbierto implements EstadoLexico {
         if (actual == '\'') {
             contexto.avanzar();
             throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_VACIO,
-                    AnclaDeError.INICIO_DEL_LEXEMA);
+                    AnclaDeError.ULTIMO_CONSUMIDO);
         }
         if (actual == '\\') {
             contexto.avanzar();

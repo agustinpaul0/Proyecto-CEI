@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Dónde apunta el '^', caso por caso. El criterio es el de javac: un carácter
 // ofensivo puntual lleva el '^' encima; una construcción entera, a su primer
-// carácter. Cada caso cita el diagnóstico de javac que lo respalda, obtenido
-// ejecutándolo. Es el test que impide que el criterio vuelva a divergir por partes.
+// carácter, salvo charLiteral vacío, que señala su comilla de cierre. Cada caso
+// cita el diagnóstico de javac que lo respalda, obtenido ejecutándolo.
 class PosicionDelCaretTest {
 
     private record Caso(String descripcion, String fuente, int columna, String segunJavac) {
@@ -38,9 +38,9 @@ class PosicionDelCaretTest {
                 new Caso("escape unicode con hexadecimal inválido", "'\\u12G4'", 6,
                         "illegal unicode escape — señala la 'G'"),
 
-                // --- El mensaje habla de la construcción entera: el '^' va a su inicio ---
-                new Caso("charLiteral vacío", "''", 1,
-                        "empty character literal — señala la comilla de apertura"),
+                // --- El carácter de cierre es el que hace vacío al charLiteral ---
+                new Caso("charLiteral vacío", "''", 2,
+                        "empty character literal — señala la comilla de cierre"),
                 new Caso("charLiteral sin cerrar", "'a", 1,
                         "unclosed character literal — señala la comilla de apertura"),
                 new Caso("charLiteral con más de un carácter", "'ab'", 1,

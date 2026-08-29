@@ -27,8 +27,7 @@ public final class FormateadorDeError {
         String detalle = "Detalle: " + renderizarLineaFuente(lineaFuente, indiceDelError);
         int columnaVisual = columnaVisualAntesDe(lineaFuente, indiceDelError);
         String caret = " ".repeat("Detalle: ".length() + Math.max(0, columnaVisual)) + "^";
-        // El renglón en blanco antes del código es el de Pautas, slide 25.
-        return List.of(encabezado, detalle, caret, "", codigo);
+        return List.of(encabezado, detalle, caret, codigo);
     }
 
     private static String renderizarLineaFuente(String texto, int indiceDelError) {
@@ -40,22 +39,42 @@ public final class FormateadorDeError {
                 int espacios = ANCHO_DE_TABULACION - columna % ANCHO_DE_TABULACION;
                 resultado.append(" ".repeat(espacios));
                 columna += espacios;
-            } else if (i == indiceDelError && debeEscaparseEnDetalle(caracter)) {
-                resultado.append(String.format("\\u%04x", (int) caracter));
-                columna += 6;
+            } else if (esParObjetivo(texto, i, indiceDelError)) {
+                char bajo = texto.charAt(i + 1);
+                resultado.append(representacionVisible(caracter));
+                resultado.append(representacionVisible(bajo));
+                columna += representacionVisible(caracter).length()
+                        + representacionVisible(bajo).length();
+                i++;
+            } else if (debeEscaparseEnDetalle(texto, i)) {
+                String representacion = representacionVisible(caracter);
+                resultado.append(representacion);
+                columna += representacion.length();
             } else {
                 resultado.append(caracter);
-                columna += anchoVisual(caracter);
+                columna += anchoVisual(texto, i);
             }
         }
         return resultado.toString();
     }
 
-    private static boolean debeEscaparseEnDetalle(char caracter) {
+    private static String representacionVisible(char caracter) {
+        return switch (caracter) {
+            case '\n' -> "\\n";
+            case '\r' -> "\\r";
+            case '\f' -> "\\f";
+            case '\b' -> "\\b";
+            default -> String.format("\\u%04x", (int) caracter);
+        };
+    }
+
+    private static boolean debeEscaparseEnDetalle(String texto, int indice) {
+        char caracter = texto.charAt(indice);
         return esMarcaCombinante(caracter)
                 || Character.isISOControl(caracter)
                 || Character.getType(caracter) == Character.FORMAT
-                || (Character.isSpaceChar(caracter) && caracter != ' ');
+                || (Character.isSpaceChar(caracter) && caracter != ' ')
+                || (Character.isSurrogate(caracter) && !esParteDeParSurrogado(texto, indice));
     }
 
     private static int columnaVisualAntesDe(String texto, int indice) {
@@ -64,18 +83,47 @@ public final class FormateadorDeError {
             char caracter = texto.charAt(i);
             if (caracter == '\t') {
                 columna += ANCHO_DE_TABULACION - columna % ANCHO_DE_TABULACION;
+            } else if (esParObjetivo(texto, i, indice)) {
+                columna += representacionVisible(caracter).length();
+            } else if (debeEscaparseEnDetalle(texto, i)) {
+                columna += representacionVisible(caracter).length();
             } else {
-                columna += anchoVisual(caracter);
+                columna += anchoVisual(texto, i);
             }
         }
         return columna;
     }
 
-    private static int anchoVisual(char caracter) {
-        if (esMarcaCombinante(caracter) || Character.isISOControl(caracter)) {
+    private static boolean esParObjetivo(String texto, int indice, int indiceDelError) {
+        return Character.isHighSurrogate(texto.charAt(indice))
+                && indice + 1 < texto.length()
+                && Character.isLowSurrogate(texto.charAt(indice + 1))
+                && (indice == indiceDelError || indice + 1 == indiceDelError);
+    }
+
+    private static int anchoVisual(String texto, int indice) {
+        char caracter = texto.charAt(indice);
+        if (esParteDeParSurrogado(texto, indice)) {
+            if (Character.isLowSurrogate(caracter)) {
+                return 0;
+            }
+            return 2;
+        }
+        if (esMarcaCombinante(caracter) || Character.isISOControl(caracter)
+                || Character.getType(caracter) == Character.FORMAT) {
             return 0;
         }
         return esCaracterAnchoDoble(caracter) ? 2 : 1;
+    }
+
+    private static boolean esParteDeParSurrogado(String texto, int indice) {
+        char caracter = texto.charAt(indice);
+        return Character.isHighSurrogate(caracter)
+                && indice + 1 < texto.length()
+                && Character.isLowSurrogate(texto.charAt(indice + 1))
+                || Character.isLowSurrogate(caracter)
+                && indice > 0
+                && Character.isHighSurrogate(texto.charAt(indice - 1));
     }
 
     private static boolean esMarcaCombinante(char caracter) {

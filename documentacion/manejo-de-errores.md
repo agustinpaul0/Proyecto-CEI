@@ -166,11 +166,15 @@ Cuando hay error, se imprimen dos cosas:
    [Error:#|2]
    ```
 
-El detalle del reporte expande los tabuladores a tabulaciones de ocho columnas y calcula el `^`
-según el ancho visual del texto. Si el carácter señalado no tiene una celda visible propia —por
-ejemplo, una marca combinante como U+20CC— se muestra en notación `\uXXXX`, y el `^` se ubica sobre
-el inicio de esa representación. La columna del encabezado sigue siendo la columna lógica del
-fuente.
+El detalle del reporte expande los tabuladores a tabulaciones de ocho columnas, representa los
+caracteres de control, de formato, las marcas combinantes y los espacios no convencionales con una
+forma visible, y calcula el `^` según el ancho visual del texto ya renderizado. Si el carácter
+señalado no tiene una celda visible propia —por ejemplo, una marca combinante como U+20CC— se
+muestra en notación `\uXXXX`, y el `^` se ubica sobre el inicio de esa representación. Los pares
+surrogate bien formados se conservan como un único carácter visible; si el error cae sobre una de
+sus unidades UTF-16, el par se muestra excepcionalmente como `\udddd\udddd` para que el `^` pueda
+señalar la unidad exacta sin quedar dentro del emoji. La columna del encabezado sigue siendo la
+columna lógica del fuente.
 
 2. Un **código de error** de una sola línea, `[Error:Lexema|NroLinea]` — este es el contrato exacto
    que verifican los testers de la cátedra, y **no lleva columna** (la columna es sólo parte del
@@ -181,7 +185,7 @@ fuente.
 La cátedra no pide columna — sólo línea. La columna, y el `^` que la acompaña, son un agregado propio
 del logro *Reporte de Error Elegante*. Como no está especificada, aplica la regla de "ante la duda,
 como en Java", y el criterio se tomó de `javac` verificándolo contra el compilador real, un caso por
-diagnóstico. `javac` sigue **una sola regla**:
+diagnóstico. La regla general es:
 
 > Si el mensaje habla de un **carácter ofensivo puntual**, el `^` va a ese carácter. Si habla de la
 > **construcción entera** que falló, el `^` va a donde esa construcción **empieza**.
@@ -190,19 +194,20 @@ diagnóstico. `javac` sigue **una sola regla**:
 |---|---|---|
 | `v1 # v2` | `illegal character` | el `#` |
 | `'\u12G4'` | `illegal unicode escape` | la `G` — no la barra ni la `u` |
-| `''` | `empty character literal` | la comilla de apertura |
+| `''` | `empty character literal` | la comilla de cierre |
 | `'a` / `'ab'` | `unclosed character literal` | la comilla de apertura |
 | `"hola sin cerrar` | `unclosed string literal` | la comilla de apertura |
 | `1234567890123` | `integer number too large` | el primer dígito |
 | `1e` | `malformed floating-point literal` | el primer carácter del literal |
 | `/* sin cerrar` | `unclosed comment` | la barra de apertura |
 
-Tiene sentido más allá de imitar a Java: en `"hola sin cerrar`, lo que hay que corregir es la comilla
+La única divergencia deliberada respecto de `javac` es `charLiteral vacío`: se señala la segunda
+comilla, porque es el carácter que confirma que el literal está vacío. Tiene sentido más allá de
+imitar a Java: en `"hola sin cerrar`, lo que hay que corregir es la comilla
 de apertura (falta su par), no la última letra que se alcanzó a leer; en `1234567890`, el problema es
 el número entero, y su primer dígito es donde empieza a leerse.
 
-La tabla describe **dónde pone `javac` el `^`**, que es lo único que se le copió. Cuántos errores
-reporta es una decisión aparte: en `"a\u12G4 b\u34Z6"` MiniJava señala la `G` igual que `javac`,
+Cuántos errores reporta es una decisión aparte: en `"a\u12G4 b\u34Z6"` MiniJava señala la `G` igual que `javac`,
 pero reporta un solo error y no dos, porque al primero descarta el literal entero (§2.1).
 
 ### Cómo se implementa
@@ -214,8 +219,8 @@ posición, ambas tomadas dentro de `avanzar()` justo antes de consumir —cuando
 - `posicionPrimerConsumido`: el **primer** carácter del lexema en curso. Es la que usan los errores
   que hablan de la construcción entera, con el ancla `INICIO_DEL_LEXEMA`.
 - `posicionUltimoConsumido`: el **último** carácter que quedó en el lexema. Es la que usan los
-  errores cuyo carácter ofensivo ya fue consumido antes del `throw` —un símbolo desconocido, por
-  ejemplo—, con el ancla `ULTIMO_CONSUMIDO`.
+  errores cuyo carácter ofensivo ya fue consumido antes del `throw` —un símbolo desconocido o la
+  segunda comilla de un `charLiteral vacío`, por ejemplo—, con el ancla `ULTIMO_CONSUMIDO`.
 
 La distinción importa porque en el momento del `throw` el lookahead actual puede haber avanzado más
 allá del lexema: puede ser un espacio, un EOF o la letra siguiente, sin ninguna relación con el
@@ -269,10 +274,10 @@ leía `Error Léxico en línea 1, columna 4:   no es un símbolo válido`. Es la
 ejecutándolo). Un par surrogado bien formado —un emoji— se deja crudo: se ve perfecto y escaparlo
 sólo haría el mensaje más difícil de leer.
 
-Esto vale **sólo** para el lexema de un error y, en el detalle, para el carácter señalado cuando no
-posee una celda visible propia. El lexema de un **token** se imprime crudo, porque el contrato de la
-cátedra es que sea el texto exacto del fuente — un tabulador dentro de un `litString` sale como
-tabulador (ver `resources/sinErrores/stringConTabuladorInterior.java`).
+Esto vale **sólo** para el lexema de un error y para la representación de la línea en el detalle.
+El lexema de un **token** se imprime crudo, porque el contrato de la cátedra es que sea el texto
+exacto del fuente — un tabulador dentro de un `litString` sale como tabulador (ver
+`resources/sinErrores/stringConTabuladorInterior.java`).
 
 Aparte de eso, los estados que siguen a una barra invertida (`EstadoCharEscapado`,
 `EstadoStringTrasBarra`) rechazan explícitamente el salto de línea en vez de consumirlo: una barra al

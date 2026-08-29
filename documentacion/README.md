@@ -52,16 +52,15 @@ $ java -jar Compilador.jar conErrores.java
 Error Léxico en línea 2, columna 4: # no es un símbolo válido
 Detalle: v1 # v2
             ^
-
 [Error:#|2]
 (idMV,v2,2)
 (EOF,$,3)
 ```
 
-Las tres primeras líneas del reporte son un agregado propio (logro *Reporte de Error Elegante*); la
-última, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los testers de la cátedra. Los
-renglones en blanco antes de `[SinErrores]` y de `[Error:...]` son los de los ejemplos de Pautas
-Etapa 1 (slides 25 y 26).
+Las tres primeras líneas de cada reporte son un agregado propio (logro *Reporte de Error Elegante*);
+la cuarta, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los testers de la cátedra. El
+renglón en blanco antes de `[SinErrores]` conserva la separación mostrada en las Pautas Etapa 1
+(slide 26); no se agrega una línea vacía antes de `[Error:...]`.
 
 ### Datos del proyecto
 
@@ -72,7 +71,7 @@ Etapa 1 (slides 25 y 26).
 | Tokens reconocidos | 56 (21 palabras clave, 3 familias de identificadores, 4 de literales, 10 símbolos de puntuación, 17 operadores, EOF) |
 | Estados del autómata | 22 clases en `minijava.lexico.estados`, una por estado |
 | Clases de producción | 49 |
-| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **627 casos** ejecutables |
+| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **631 casos** ejecutables |
 | Casos de fuente | 76 sin errores + 82 con errores + 1 de regresión de fuzzing |
 | Logros perseguidos | los 8 de la Etapa 1 |
 | Java | 25 (`maven.compiler.release=25`) |

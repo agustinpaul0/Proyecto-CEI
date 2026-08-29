@@ -78,8 +78,8 @@ $ java -jar Compilador.jar programa1.java
 [SinErrores]
 \end{codigoLlano}
 
-El renglón en blanco antes de \lex{[SinErrores]} --- y el equivalente antes de
-\lex{[Error:\ldots]} --- son los de los ejemplos de \emph{Pautas Etapa 1}. El archivo fuente puede
+El renglón en blanco antes de \lex{[SinErrores]} conserva la separación del ejemplo de
+\emph{Pautas Etapa 1}; no se agrega una línea vacía antes de \lex{[Error:\ldots]}. El archivo fuente puede
 tener cualquier extensión: el compilador no inspecciona el nombre, sólo abre la ruta que recibe.
 
 \subsection{Cómo compilarlo y ejecutarlo}
@@ -806,16 +806,15 @@ la especificación acota dígitos, no magnitud \\
 
 \subsection{Formato del reporte}
 
-Ante un error, el léxico lanza una excepción que el Módulo Principal captura y formatea. La última
-línea es siempre el código de contrato \lex{[Error:Lexema|NroLinea]}; las anteriores son el reporte
-legible, que es uno de los logros perseguidos.
+Ante un error, el léxico lanza una excepción que el Módulo Principal captura y formatea. Cada reporte
+de error termina con el código de contrato \lex{[Error:Lexema|NroLinea]}; las tres líneas anteriores
+son el reporte legible, que es uno de los logros perseguidos.
 
 \begin{codigoLlano}
 (idMV,v1,2)
 Error Léxico en línea 2, columna 6: # no es un símbolo válido
 Detalle: v1 + # chau
               ^
-
 [Error:#|2]
 (idMV,chau,2)
 \end{codigoLlano}
@@ -831,10 +830,14 @@ partiría la línea del reporte en dos y rompería el formato de un elemento por
 con su escape (\lex{\bs n}, \lex{\bs t}, \lex{\bs u00a0}).
 
 Para que el puntero conserve su alineación en una terminal, el detalle expande cada tabulador a la
-siguiente posición de una tabulación de ocho columnas. El puntero se calcula con el ancho visual de
-los caracteres precedentes; por ello también conserva la alineación ante caracteres de ancho doble.
-Si el carácter señalado no posee una celda visible propia, como ocurre con una marca combinante, se
-lo muestra en notación \lex{\\uXXXX} y el puntero se ubica sobre el inicio de esa representación.
+siguiente posición de una tabulación de ocho columnas y transforma los controles, formatos, marcas
+combinantes y espacios no convencionales en representaciones visibles. El puntero se calcula con el
+ancho visual del detalle ya renderizado; por ello también conserva la alineación ante caracteres de
+ancho doble. Si el carácter señalado no posee una celda visible propia, como ocurre con una marca
+combinante, se lo muestra en notación \lex{\bs uXXXX} y el puntero se ubica sobre el inicio de esa
+representación. Los pares surrogate bien formados se conservan como una figura visible; si el error
+corresponde a una de sus unidades UTF-16, el par se representa excepcionalmente como
+\lex{\bs udddd\bs udddd} para que el puntero señale la unidad exacta sin quedar dentro de la figura.
 La columna del encabezado mantiene, en cambio, el índice lógico del fuente.
 
 \subsection{Criterio de recuperación}
@@ -887,19 +890,6 @@ De ahí salen tres consecuencias concretas:
   quedó sobre el carácter ofensivo y el análisis retoma ahí sin ningún paso adicional.
 \end{description}
 
-\paragraph{El costo, asumido a propósito.} Un \lex{'abc'} produce \emph{dos} errores y un
-\tok{idMV(bc)} de más, en vez de un único error limpio:
-
-\begin{codigoLlano}
-'ab'; var x = 1;
-  -> Error Léxico en línea 1, columna 1: charLiteral mal formado, contiene más de un carácter: 'a
-     [Error:'a|1]
-     (idMV,b,1)
-     Error Léxico en línea 1, columna 4: charLiteral mal formado, contiene más de un carácter: ';
-     [Error:';|1]
-     (pr_var,var,1) (idMV,x,1) (op_asignacion,=,1) (intLiteral,1,1) (puntoYComa,;,1)
-\end{codigoLlano}
-
 \paragraph{Es idéntico a lo que hace \lex{javac}.} No es una analogía: sobre el mismo caso, la
 recuperación de \lex{javac} coincide token por token con la de este compilador. Su salida real,
 verificada ejecutándolo:
@@ -950,7 +940,9 @@ diagnóstico de todo lo que viene después.
 
 \subsection{Dónde apunta el \lex{\caret}}
 
-Se adoptó el criterio de \lex{javac}, verificado ejecutándolo sobre cada caso:
+Se adoptó el criterio de \lex{javac}, verificado ejecutándolo sobre cada caso, con una excepción
+deliberada para el \tok{charLiteral} vacío: el puntero señala la segunda comilla, que es el carácter
+que concreta que el literal no tiene contenido:
 
 \begin{quote}
 Si el mensaje habla de un \textbf{carácter ofensivo puntual}, el \lex{\caret} va a ese carácter. Si habla

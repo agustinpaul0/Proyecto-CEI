@@ -185,7 +185,7 @@ mencionarlas en el informe.
 |---|---|
 | Manejador de Archivos Eficiente | **Requisito, no un extra**: ver [`arquitectura.md`](arquitectura.md) "por qué el manejador de la cátedra está roto". Char a char sobre buffer de bloques, sólo `java.io`. |
 | Multi-detección de Errores | recuperación en el Módulo Principal; invariante a testear con property-based: cada recuperación consume ≥1 carácter o llega a EOF (garantiza terminación). |
-| Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. Dónde apunta el `^` sigue el criterio de `javac`, verificado ejecutándolo: ver [`manejo-de-errores.md`](manejo-de-errores.md). |
+| Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. Dónde apunta el `^` sigue el criterio de `javac`, salvo `charLiteral vacío`, que señala la comilla de cierre: ver [`manejo-de-errores.md`](manejo-de-errores.md). |
 | Floats I | activable/testeable por flag, ver `ConfiguracionDelCompilador`. |
 | Unicodes | caracteres no-ASCII crudos dentro de literales char/string + escape `\uXXXX` (marcador repetible). |
 | Imbatibilidad Léxica | consecuencia de la suite masiva + corpus de `resources/`. |

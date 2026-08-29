@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TipoDeErrorLexicoTest {
 
     // fuente -> (tipo, línea, columna del carácter señalado por el ^). Criterio de
-    // javac: un carácter puntual lleva el ^ encima; una construcción entera, a su
-    // primer carácter.
+    // javac, salvo charLiteral vacío: su comilla de cierre es el carácter que lo
+    // vuelve vacío.
     private record Caso(String fuente, int linea, int columna) {
     }
 
     private static final Map<TipoDeErrorLexico, Caso> CASOS = new EnumMap<>(Map.ofEntries(
             Map.entry(TipoDeErrorLexico.CARACTER_DESCONOCIDO, new Caso("v1 # v2", 1, 4)),
-            Map.entry(TipoDeErrorLexico.CHAR_VACIO, new Caso("''", 1, 1)),
+            Map.entry(TipoDeErrorLexico.CHAR_VACIO, new Caso("''", 1, 2)),
             Map.entry(TipoDeErrorLexico.CHAR_MAL_FORMADO, new Caso("'ab'", 1, 1)),
             Map.entry(TipoDeErrorLexico.CHAR_SIN_CERRAR, new Caso("'a\n", 1, 1)),
             Map.entry(TipoDeErrorLexico.STRING_SIN_CERRAR, new Caso("\"hola\n", 1, 1)),

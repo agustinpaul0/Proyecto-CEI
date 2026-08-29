@@ -20,10 +20,9 @@ class FormateadorDeErrorTest {
         List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
                 .formatear(excepcionDeEjemplo());
 
-        // Cuatro del reporte elegante más el renglón en blanco de la slide 25.
-        assertEquals(5, lineas.size());
-        assertEquals("", lineas.get(3));
-        assertEquals("[Error:#|2]", lineas.get(4));
+        // Encabezado, detalle, caret y código de contrato.
+        assertEquals(4, lineas.size());
+        assertEquals("[Error:#|2]", lineas.get(3));
     }
 
     // Para CARACTER_DESCONOCIDO el texto es el de la slide 43 y no puede cambiar;
@@ -84,7 +83,37 @@ class FormateadorDeErrorTest {
 
         assertEquals("Detalle: (\\u20cc>%", lineas.get(1));
         assertEquals("Detalle: ".length() + 1, lineas.get(2).indexOf('^'));
-        assertEquals("[Error:\\u20cc|1]", lineas.get(4));
+        assertEquals("[Error:\\u20cc|1]", lineas.get(3));
+    }
+
+    @Test
+    void elCaretNoSeUbicaDentroDeUnParSurrogado() {
+        List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
+                .formatear(new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\udf1f",
+                        new PosicionLexica(1, 3, "'🌟'")));
+
+        assertEquals("Detalle: '\\ud83c\\udf1f'", lineas.get(1));
+        // La columna 3 es la segunda unidad UTF-16 del emoji: al expandir el par
+        // se puede señalar exactamente la representación de esa unidad.
+        assertEquals("Detalle: ".length() + 1 + 6, lineas.get(2).indexOf('^'));
+    }
+
+    @Test
+    void elDetalleEscapaTodosLosControlesParaConservarSuFormato() {
+        String fuente = "v1 \f \u000b v2";
+        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+
+        List<String> lineaDelPrimerError = formateador.formatear(
+                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\f",
+                        new PosicionLexica(1, 4, fuente)));
+        List<String> lineaDelSegundoError = formateador.formatear(
+                new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\u000b",
+                        new PosicionLexica(1, 6, fuente)));
+
+        assertEquals("Detalle: v1 \\f \\u000b v2", lineaDelPrimerError.get(1));
+        assertEquals("Detalle: v1 \\f \\u000b v2", lineaDelSegundoError.get(1));
+        assertEquals("Detalle: ".length() + 3, lineaDelPrimerError.get(2).indexOf('^'));
+        assertEquals("Detalle: ".length() + 6, lineaDelSegundoError.get(2).indexOf('^'));
     }
 
     private int columnaDelCaret(List<String> lineas) {

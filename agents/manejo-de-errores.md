@@ -71,7 +71,7 @@ impide que esto vuelva a divergir por partes):
 | `v1 # v2` | `illegal character` | el `#` |
 | `"a\q b\z c"` | `illegal escape character` (dos veces) | la `q` y la `z` — **no** la barra |
 | `'\u12G4'` | `illegal unicode escape` | la `G` |
-| `''` | `empty character literal` | la comilla de **apertura** |
+| `''` | `empty character literal` | la comilla de **cierre** |
 | `'a` / `'ab'` | `unclosed character literal` | la comilla de **apertura** |
 | `"hola sin cerrar` | `unclosed string literal` | la comilla de **apertura** |
 | `1234567890123` | `integer number too large` | el **primer** dígito |
@@ -84,8 +84,9 @@ señala la `q` igual que él, pero reporta un solo error porque al primero desca
 Este criterio corrige un bug real: la mitad de los errores señalaba el inicio de la construcción y la
 otra mitad el último carácter consumido, porque `posicionUltimoConsumido()` —introducido para
 arreglar carets que colgaban en el aire, ver la sección siguiente— quedó aplicado también donde
-correspondía la apertura. Un `charLiteral vacío: ''` señalaba la comilla de cierre; un `litString sin
-cerrar` de veinte caracteres señalaba el vigésimo.
+correspondía la apertura. Para `charLiteral vacío`, la segunda comilla es el carácter que hace vacío
+al literal y se señala esa comilla; los demás errores de construcción mantienen el inicio como punto
+de diagnóstico.
 
 ### El ancla, y cuál usar
 
@@ -97,8 +98,8 @@ de consumir, cuando línea, columna y línea fuente todavía describen ese cará
 
 | Ancla | Cuándo | Quién la usa |
 |---|---|---|
-| `ULTIMO_CONSUMIDO` | el carácter ofensivo ya se consumió y **es** el problema | `EstadoInicial` (carácter desconocido) |
-| `INICIO_DEL_LEXEMA` | el mensaje habla de la construcción entera | los cuatro estados de char, `EstadoStringAbierto` y `EstadoStringTrasBarra` (string sin cerrar), `EstadoEntero`, los dos de exponente, `EstadoOperadorDoble` |
+| `ULTIMO_CONSUMIDO` | el carácter ofensivo ya se consumió y **es** el problema | `EstadoInicial` (carácter desconocido), `EstadoCharAbierto` (`CHAR_VACIO`) |
+| `INICIO_DEL_LEXEMA` | el mensaje habla de la construcción entera | `EstadoCharCerrando`, `EstadoCharEscapado`, `EstadoStringAbierto` y `EstadoStringTrasBarra` (string sin cerrar), `EstadoEntero`, los dos de exponente, `EstadoOperadorDoble` |
 | `LOOKAHEAD` | el carácter ofensivo es el lookahead y **todavía no** se consumió | `EstadoEscapeUnicode` |
 
 La fábrica queda entonces en dos métodos: `crearExcepcionLexica(tipo, ancla)` y
@@ -165,11 +166,15 @@ lexema se construye sin él.
 
 `FormateadorDeError.formatear(ExcepcionLexica)` arma las líneas de salida: el encabezado legible
 (línea + columna + motivo, vía `TipoDeErrorLexico.describir(lexema)`), el detalle con tabs
-expandidos a tabulaciones de ocho columnas, el `^` alineado con el ancho visual del carácter, un
-**renglón en blanco** y el código de contrato `[Error:Lexema|NroLinea]`. Si el carácter señalado no
-tiene una celda visible propia —por ejemplo, una marca combinante— se lo representa como `\uXXXX`
-en el detalle y el `^` se ubica sobre el inicio de esa representación. El renglón en blanco es el
-del ejemplo de Pautas slide 25, y el de éxito antes de `[SinErrores]` es el de la slide 26. La
+expandidos a tabulaciones de ocho columnas, todos los controles, formatos, marcas combinantes y
+espacios no convencionales convertidos a representaciones visibles, el `^` alineado con el ancho
+visual del detalle y, a continuación, el código de contrato `[Error:Lexema|NroLinea]`. Si
+el carácter señalado no tiene una celda visible propia —por ejemplo, una marca combinante— se lo
+representa como `\uXXXX` en el detalle y el `^` se ubica sobre el inicio de esa representación. Los
+pares surrogate bien formados se mantienen como una figura visible; si el error cae en una de sus
+unidades UTF-16, el par se representa excepcionalmente como `\udddd\udddd` para que el puntero señale
+la unidad exacta sin quedar dentro de la figura. El reporte de éxito conserva el renglón en blanco
+antes de `[SinErrores]`, como en la slide 26. La
 columna es un agregado del usuario más allá
 de lo que pide la cátedra (que sólo exige línea) — ver `especificacion-lexica.md`.
 

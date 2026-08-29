@@ -371,7 +371,7 @@ arbitrario que descartar, así que la recuperación es estructural.
 **Divergencia con Java, asumida**: `javac` sobre un escape Unicode roto sigue leyendo el literal.
 MiniJava no lo emite. Está en la tabla de §7.
 
-### 4.4. Dónde apunta el `^`: el criterio de `javac`
+### 4.4. Dónde apunta el `^`: criterio de `javac` con excepción para `charLiteral vacío`
 
 **Fuente**: `javac`, verificado ejecutándolo caso por caso. La cátedra **no pide columna** — es un
 agregado propio del logro *Reporte de Error Elegante* —, así que aplica la Regla 2.
@@ -385,17 +385,20 @@ carácter; si habla de la **construcción entera** que falló, el `^` va a donde
 | `v1 # v2` | `illegal character` | el `#` |
 | `"a\q b\z c"` | `illegal escape character` (dos veces) | la `q` y la `z` — **no** la barra |
 | `'\u12G4'` | `illegal unicode escape` | la `G` |
-| `''` | `empty character literal` | la comilla de **apertura** |
+| `''` | `empty character literal` | la comilla de **cierre** |
 | `'a` / `'ab'` | `unclosed character literal` | la comilla de **apertura** |
 | `"hola sin cerrar` | `unclosed string literal` | la comilla de **apertura** |
 | `1234567890123` | `integer number too large` | el **primer** dígito |
 | `1e` | `malformed floating-point literal` | el **primer** carácter |
 | `/* sin cerrar` | `unclosed comment` | la barra de **apertura** |
 
-Además de imitar a Java, tiene sentido propio: en `"hola sin cerrar` lo que hay que corregir es la
+Para `''`, el proyecto se aparta deliberadamente de `javac`: se señala la segunda comilla porque es
+el carácter que confirma que el literal está vacío. En los restantes casos tiene sentido más allá de
+imitar a Java: en `"hola sin cerrar` lo que hay que corregir es la
 comilla de apertura (le falta el par), no la última letra que se alcanzó a leer.
 
-Fijado caso por caso en `PosicionDelCaretTest`, con el diagnóstico de `javac` citado en cada uno.
+Fijado caso por caso en `PosicionDelCaretTest`, con el diagnóstico de `javac` citado en cada caso
+comparable y la excepción de `charLiteral vacío` documentada explícitamente.
 
 ### 4.5. El lexema de un error nunca lleva un carácter invisible crudo
 
@@ -414,8 +417,13 @@ literalmente `illegal character: '\u00a0'` — con el escape, no con el carácte
 separadores de espacio que no son el espacio común, y los surrogados sueltos. Un par surrogado bien
 formado (un emoji) se deja crudo, porque se ve perfecto y escaparlo empeoraría el mensaje.
 
-**Alcance**: vale **sólo** para el lexema de un error. El de un token se imprime crudo, porque el
-contrato de la cátedra es que sea el texto exacto del fuente.
+**Alcance**: vale **sólo** para el lexema de un error y para la representación de la línea en el
+detalle del reporte. En este último también se expanden los tabuladores, se escapan los controles,
+formatos, marcas combinantes y espacios no convencionales, y se mide un par surrogate bien formado
+como la figura visible completa. Si el error cae sobre una de sus unidades UTF-16, el par se
+representa excepcionalmente como `\udddd\udddd` para que el `^` señale la unidad exacta sin quedar
+dentro del emoji. El lexema de un token se imprime crudo, porque
+el contrato de la cátedra es que sea el texto exacto del fuente.
 
 ### 4.6. Un tipo de error por punto de falla
 

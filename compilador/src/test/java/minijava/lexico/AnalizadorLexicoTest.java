@@ -794,6 +794,28 @@ class AnalizadorLexicoTest {
     }
 
     @Test
+    void escapeUnicode20ccConsumeSusCuatroDigitosComoUnSoloLiteral(@TempDir Path dir)
+            throws Exception {
+        String fuente = "'\\" + "u20cc'";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void escapeUnicodeMalFormadoNoConsumeElPrimerCaracterNoHexadecimal(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u20cG'");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("'\\" + "u20c", excepcion.getLexemaOfensivo());
+        assertEquals(7, excepcion.getColumna());
+    }
+
+    @Test
     void stringLiteralAceptaEscapeUnicodeEmbebido(@TempDir Path dir) throws Exception {
         String fuente = "\"letra \\" + "u00F1 final\"";
         Token token = crearAnalizador(dir, fuente).proximoToken();

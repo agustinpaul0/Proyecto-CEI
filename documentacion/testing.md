@@ -146,7 +146,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 
 | Suite | Casos | Qué cubre |
 |---|---|---|
-| `AnalizadorLexicoTest` | 163 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
+| `AnalizadorLexicoTest` | 165 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
 | `TesterDeCasosConErroresEstricto` | 82 | Los **mismos** archivos, pero verificando la salida completa. |
 | `catedra.TesterDeCasosConErrores` | 82 | El tester original de la cátedra sobre `resources/conErrores/`. |
 | `catedra.TesterDeCasosSinErrores` | 76 | El tester original de la cátedra sobre `resources/sinErrores/`. |
@@ -161,7 +161,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
 | `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
 | `AnalizadorLexicoPropiedadesTest` | 6 | Las invariantes de §3.1 y §3.3. |
-| `FormateadorDeErrorTest` | 6 | Las líneas del reporte elegante, y el `^` con tabs, caracteres CJK y marcas combinantes. |
+| `FormateadorDeErrorTest` | 8 | Las líneas del reporte elegante, y el `^` con tabs, caracteres CJK, marcas combinantes, controles y pares surrogate. |
 | `PropiedadesDelReporteTest` | 5 | Las invariantes de §3.2, §3.4 y §3.6 sobre entradas generadas. |
 | `AnalizadorLexicoFuzzTest` | 3 | Bytes UTF-8 arbitrarios con semilla fija. |
 | `DefectosDeRobustezTest` | 3 | Caracteres de control e invisibles en lexemas y mensajes. |
@@ -169,7 +169,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
 | `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
 
-**Total: 627 casos ejecutables, en 22 suites.**
+**Total: 631 casos ejecutables, en 22 suites.**
 
 ## 6. Cómo correr
 
