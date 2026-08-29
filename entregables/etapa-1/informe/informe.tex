@@ -249,6 +249,7 @@ continuación. Por eso \lex{1234567890.5} es un float válido con diez dígitos 
 mientras que \lex{1234567890} solo es un error.
 
 \subsection{\tok{charLiteral}}
+\label{sec:char}
 
 \begin{er}
 charLiteral = ' X '\quad|\quad' \bs\ Y '\quad|\quad' \bs\ U '
@@ -264,7 +265,15 @@ formen una \emph{unidad}: de ahí que \lex{'\bs\bs'} y \lex{'\bs''} sean literal
 vacío \lex{''} no está en ninguna alternativa y es un error.
 
 Como \lex{Y} es ``cualquier carácter'', \lex{'\bs q'} es válido, con valor \lex{q}: una permisividad
-explícita de la especificación, más laxa que Java.
+explícita de la especificación, más laxa que Java. Y ``cualquier carácter'' se toma al pie de la
+letra: valen las letras acentuadas, la eñe y los alfabetos no latinos igual que las de ASCII. Las dos
+únicas excepciones no son restricciones del juego de caracteres sino estructurales ---un salto de
+línea o un fin de archivo dejan el literal sin cerrar---, y la \lex{u} es el único carácter que no se
+consume como común, porque abre el escape Unicode.
+
+Ésta es la primera de \textbf{dos} asimetrías entre el \tok{charLiteral} y el \tok{litString}. La
+segunda, la de recuperación ante un error, está en la sección~\ref{sec:asimetria}, y las dos salen
+del mismo lugar: la especificación describe cada literal con una clase de regla distinta.
 
 \subsection{\tok{litString}}
 \label{sec:string}
@@ -808,6 +817,98 @@ lo que queda del literal hasta su comilla de cierre. Es recuperación en modo p�
 sincronización: el delimitador es la comilla de cierre, y el estado conocido al que se vuelve es
 ``fuera de todo literal''. Sin resincronizar, la comilla de \emph{cierre} abriría un literal nuevo
 que se comería el resto de la línea.
+
+\subsection{Por qué el \tok{charLiteral} no resincroniza}
+\label{sec:asimetria}
+
+Que el \tok{litString} descarte hasta su comilla de cierre y el \tok{charLiteral} no descarte nada no
+es una inconsistencia: es que el error deja al analizador en lugares distintos.
+
+\begin{quote}
+Cuando un \tok{litString} falla, el análisis sigue \textbf{adentro} del literal, y lo que viene es
+contenido de largo desconocido ---texto, no código---. Descartarlo descarta contenido.
+
+Cuando un \tok{charLiteral} falla, el análisis está en un punto donde el literal \textbf{ya debería
+haber terminado}: su contenido es exactamente un carácter. Lo que sigue no hay razón para creer que
+sea contenido del literal. Descartarlo descartaría código.
+\end{quote}
+
+De ahí salen tres consecuencias concretas:
+
+\begin{description}
+\item[No hay nada que descartar.] El modo pánico existe para saltear una corrida de basura de largo
+  arbitrario. En un \tok{charLiteral} esa corrida tiene largo a lo sumo uno: al detectar el error se
+  consumieron la comilla de apertura y un carácter.
+\item[La comilla simple no es un delimitador confiable.] En un \tok{litString} la \lex{"} de cierre
+  es inequívoca, porque todo lo que está entre comillas es contenido. En un \tok{charLiteral}, una
+  \lex{'} posterior puede ser tanto el cierre de éste como la apertura del siguiente ---y muchas
+  veces no hay ninguna: en \lex{'a; x = 1;} no aparece una segunda comilla en toda la línea, así que
+  descartar hasta el cierre se comería cinco tokens legítimos.
+\item[La recuperación estructural ya alcanza.] Como el literal es acotado, el criterio general
+  ---consumir exactamente lo que se reporta--- basta por sí solo: al reportar \lex{'a} la lectura
+  quedó sobre el carácter ofensivo y el análisis retoma ahí sin ningún paso adicional.
+\end{description}
+
+\paragraph{El costo, asumido a propósito.} Un \lex{'abc'} produce \emph{dos} errores y un
+\tok{idMV(bc)} de más, en vez de un único error limpio:
+
+\begin{codigoLlano}
+'ab'; var x = 1;
+  -> Error Léxico en línea 1, columna 1: charLiteral mal formado, contiene más de un carácter: 'a
+     [Error:'a|1]
+     (idMV,b,1)
+     Error Léxico en línea 1, columna 4: charLiteral mal formado, contiene más de un carácter: ';
+     [Error:';|1]
+     (pr_var,var,1) (idMV,x,1) (op_asignacion,=,1) (intLiteral,1,1) (puntoYComa,;,1)
+\end{codigoLlano}
+
+\paragraph{Es idéntico a lo que hace \lex{javac}.} No es una analogía: sobre el mismo caso, la
+recuperación de \lex{javac} coincide token por token con la de este compilador. Su salida real,
+verificada ejecutándolo:
+
+\begin{codigoLlano}
+$ javac T.java
+T.java:1: error: unclosed character literal
+class T { void m() { char c = 'ab'; int x = 1; } }
+                              ^
+T.java:1: error: unclosed character literal
+class T { void m() { char c = 'ab'; int x = 1; } }
+                                 ^
+T.java:1: error: not a statement
+class T { void m() { char c = 'ab'; int x = 1; } }
+                                ^
+3 errors
+\end{codigoLlano}
+
+\noindent
+La correspondencia es exacta en las cuatro decisiones que definen la recuperación:
+
+\begin{center}
+\begin{tabular}{@{}p{6.1cm}ll@{}}
+\toprule
+\textbf{Decisión} & \lex{javac} & \textbf{este compilador} \\
+\midrule
+Errores léxicos sobre \lex{'ab'} & 2 & 2 \\
+Dónde caen & en las dos comillas & en las dos comillas \\
+Qué pasa con la \lex{b} del medio & identificador & \tok{idMV(b)} \\
+Qué pasa con el código posterior & sobrevive entero & sobrevive entero \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+En \lex{javac} la tercera línea ---\emph{not a statement}, con el \lex{\caret} sobre la \lex{b}--- es
+ya un error del análisis sintáctico, y es justamente la prueba de que su léxico entregó la \lex{b}
+como un identificador en vez de descartarla. La única diferencia está en el \emph{texto} del
+diagnóstico, no en la recuperación: \lex{javac} usa un mismo mensaje para los dos errores, mientras
+que acá se distingue \emph{sin cerrar} ---lo cortó un fin de línea o de archivo--- de \emph{mal
+formado} ---contiene más de un carácter---, que son dos problemas distintos y ayudan distinto.
+
+\paragraph{Por qué se acepta ese costo.} Porque la alternativa es peor. Lo que se ve en la última
+línea del ejemplo es que todo el código posterior al literal roto sobrevive intacto; si se descartara
+hasta la comilla de cierre, se perdería. Se prefiere un error de más antes que un token legítimo de
+menos: un error extra el lector lo ignora, mientras que un token que desaparece arruina el
+diagnóstico de todo lo que viene después.
 
 \subsection{Dónde apunta el \lex{\caret}}
 
