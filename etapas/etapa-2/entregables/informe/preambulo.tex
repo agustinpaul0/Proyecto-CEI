@@ -6,10 +6,10 @@
 % terminales). `lmodern` es Latin Modern, la reimplementación Unicode del mismo
 % diseño.
 %
-% Color: el azul de los terminales es el de la cátedra, muestreado del PDF de
-% las reglas de sintaxis: #4C4CB2, o sea rgb(0.3, 0.3, 0.7). Los no terminales
-% van en negro, como ahí. Nada de grises: el texto es negro y los filetes y los
-% títulos usan el mismo azul.
+% Color: se usa UN solo color, y sólo para los terminales de la gramática. Es el
+% azul de la cátedra, muestreado del PDF de las reglas de sintaxis: #4C4CB2, o
+% sea rgb(0.3, 0.3, 0.7). Todo lo demás —cuerpo, títulos, filetes, encabezado—
+% va en negro. Nada de grises.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -36,15 +36,13 @@
 % --- Paleta ------------------------------------------------------------------
 \definecolor{tinta}{rgb}{0,0,0}
 \definecolor{terminal}{rgb}{0.3,0.3,0.7}   % el azul de la cátedra, #4C4CB2
-\definecolor{acento}{rgb}{0.3,0.3,0.7}
-\definecolor{filete}{rgb}{0.62,0.62,0.85}  % el mismo azul, aclarado
 
 \color{tinta}
 
 % --- Títulos ------------------------------------------------------------------
-\titleformat{\section}{\Large\bfseries\color{acento}}{\thesection}{0.7em}{}
+\titleformat{\section}{\Large\bfseries\color{tinta}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{tinta}}{\thesubsection}{0.7em}{}
-\titleformat{\subsubsection}{\bfseries\color{acento}}{\thesubsubsection}{0.7em}{}
+\titleformat{\subsubsection}{\bfseries\color{tinta}}{\thesubsubsection}{0.7em}{}
 \titlespacing*{\section}{0pt}{2.4ex plus 1ex minus .2ex}{1.3ex plus .2ex}
 
 % --- Encabezado y pie ---------------------------------------------------------
@@ -52,10 +50,10 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{filete}\leaders\hrule height \headrulewidth\hfill}}
-\fancyhead[L]{\footnotesize\color{acento}Compiladores e Intérpretes — Etapa 2}
-\fancyhead[R]{\footnotesize\color{acento}\nouppercase{\leftmark}}
-\fancyfoot[C]{\footnotesize\color{acento}\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{tinta}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize\color{tinta}Compiladores e Intérpretes — Etapa 2}
+\fancyhead[R]{\footnotesize\color{tinta}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\color{tinta}\thepage}
 
 % ==============================================================================
 % Notación de la gramática — la convención tipográfica de la cátedra
@@ -90,27 +88,27 @@
 \newcommand{\regla}[2]{\nt{#1} \deriva{} #2}
 % Marca de logro: va al final y en línea. Con bandera a la izquierda un \hfill
 % no empuja al margen, así que se pone pegada en vez de alineada a la derecha.
-\newcommand{\marca}[2]{\quad{\footnotesize\color{acento}[#1\,\texttt{#2}]}}
+\newcommand{\marca}[2]{\quad{\footnotesize[#1\,\texttt{#2}]}}
 
 % --- Bloques de consola --------------------------------------------------------
 \DefineVerbatimEnvironment{consola}{Verbatim}%
   {fontsize=\small,xleftmargin=1.1em,formatcom=\color{tinta}}
 
 % --- Cajas ---------------------------------------------------------------------
-% Sin fondos: un filete azul al costado, que separa sin ensuciar la página.
+% Sin fondos: un filete al costado, que separa sin ensuciar la página.
 \newenvironment{destacado}[2]{%
   \par\smallskip\begingroup
   \setlength{\leftskip}{1.1em}%
-  \noindent\llap{\textcolor{filete}{\vrule width 2pt height 1.6ex depth 0pt}\hspace{0.7em}}%
+  \noindent\llap{\textcolor{tinta}{\vrule width 1.5pt height 1.6ex depth 0pt}\hspace{0.7em}}%
   {\bfseries\color{#1}#2}\par\nobreak\smallskip\ignorespaces
 }{\par\endgroup\smallskip}
 
-\newenvironment{conflicto}[1]{\begin{destacado}{acento}{Conflicto LL(1) --- #1}}{\end{destacado}}
+\newenvironment{conflicto}[1]{\begin{destacado}{tinta}{Conflicto LL(1) --- #1}}{\end{destacado}}
 \newenvironment{ambiguedad}[1]{\begin{destacado}{tinta}{Ambigüedad --- #1}}{\end{destacado}}
-\newenvironment{decision}[1]{\begin{destacado}{acento}{Decisión --- #1}}{\end{destacado}}
+\newenvironment{decision}[1]{\begin{destacado}{tinta}{Decisión --- #1}}{\end{destacado}}
 
 % --- Los cuatro pasos de cada transformación ------------------------------------
-\newcommand{\paso}[1]{\par\smallskip\noindent\textbf{\color{acento}#1}\quad\ignorespaces}
+\newcommand{\paso}[1]{\par\smallskip\noindent\textbf{#1}\quad\ignorespaces}
 
 % Los nombres largos de no terminales no se parten, así que se le da al
 % justificado un margen de maniobra en vez de dejar renglones desbordados.
