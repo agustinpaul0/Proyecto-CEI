@@ -28,8 +28,8 @@
 
 \begin{producciones}
 \regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{visibilidad}]}
-\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
+\regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}}
 \regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}
@@ -54,6 +54,12 @@
 \begin{producciones}
 \regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{atrinit}]}
 \regla{InicializacionDeAtributo}{\eps}
+\end{producciones}
+
+\noindent{\small\color{grisMedio}\nt{Metodo} sobrevive como no terminal propio y lo comparten la rama static y la rama void, así que el semántico tiene UN solo lugar donde construir el nodo de método para esas dos formas. La tercera forma (tipo de referencia) ya consumió el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.\par}
+
+\begin{producciones}
+\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}
 \end{producciones}
 
 \noindent{\small\color{grisMedio}Se comparte a propósito: es la misma construcción en método, método static y constructor.\par}

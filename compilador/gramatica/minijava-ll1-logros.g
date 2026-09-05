@@ -56,8 +56,8 @@ VisibilidadOpcional -> public | private | EPSILON             @+visibilidad
 # distingue del resto de los miembros: es la regla original de la cátedra.
 Constructor -> public idClase CuerpoDeMetodo                  @-visibilidad
 
-MiembroSinVisibilidad -> static TipoMetodo idMetVar CuerpoDeMetodo
-MiembroSinVisibilidad -> void idMetVar CuerpoDeMetodo
+MiembroSinVisibilidad -> static TipoMetodo Metodo
+MiembroSinVisibilidad -> void Metodo
 MiembroSinVisibilidad -> TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
 MiembroSinVisibilidad -> idGen DimensionesOpcionales idMetVar AtributoOMetodo
 MiembroSinVisibilidad -> idClase MiembroDesdeIdClase
@@ -76,6 +76,12 @@ AtributoOMetodo -> CuerpoDeMetodo
 # una variable local, y tienen que poder prenderse por separado.
 InicializacionDeAtributo -> = ExpresionCompuesta               @+atrinit
 InicializacionDeAtributo -> EPSILON
+
+# <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
+# rama void, así que el semántico tiene UN solo lugar donde construir el nodo de
+# método para esas dos formas. La tercera forma (tipo de referencia) ya consumió
+# el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.
+Metodo -> idMetVar CuerpoDeMetodo
 
 # Se comparte a propósito: es la misma construcción en método, método static y
 # constructor.

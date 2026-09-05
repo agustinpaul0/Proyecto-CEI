@@ -86,8 +86,8 @@ Estado actual:
 
 <Constructor> ::= **public** **idClase** <CuerpoDeMetodo>  *[sólo sin `visibilidad`]*  
 
-<MiembroSinVisibilidad> ::= **static** <TipoMetodo> **idMetVar** <CuerpoDeMetodo>  
-<MiembroSinVisibilidad> ::= **void** **idMetVar** <CuerpoDeMetodo>  
+<MiembroSinVisibilidad> ::= **static** <TipoMetodo> <Metodo>  
+<MiembroSinVisibilidad> ::= **void** <Metodo>  
 <MiembroSinVisibilidad> ::= <TipoPrimitivo> <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
 <MiembroSinVisibilidad> ::= **idGen** <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
 <MiembroSinVisibilidad> ::= **idClase** <MiembroDesdeIdClase>  
@@ -109,6 +109,13 @@ Estado actual:
 
 <InicializacionDeAtributo> ::= `=` <ExpresionCompuesta>  *[sólo con `atrinit`]*  
 <InicializacionDeAtributo> ::= ε  
+
+> <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
+> rama void, así que el semántico tiene UN solo lugar donde construir el nodo de
+> método para esas dos formas. La tercera forma (tipo de referencia) ya consumió
+> el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.
+
+<Metodo> ::= **idMetVar** <CuerpoDeMetodo>  
 
 > Se comparte a propósito: es la misma construcción en método, método static y
 > constructor.

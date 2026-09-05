@@ -26,8 +26,8 @@
 \regla{VisibilidadOpcional}{\tl{private}} & \{ \tl{private} \} \\
 \regla{VisibilidadOpcional}{\eps} & \{ \eps \} \\
 \regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}} & \{ \tl{public} \} \\
-\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}} & \{ \tl{static} \} \\
-\regla{MiembroSinVisibilidad}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}} & \{ \tl{void} \} \\
+\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}} & \{ \tl{static} \} \\
+\regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}} & \{ \tl{void} \} \\
 \regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
 \regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}} & \{ \tl{idGen} \} \\
 \regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}} & \{ \tl{idClase} \} \\
@@ -37,6 +37,7 @@
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}} & \{ \tl{(} \} \\
 \regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}} & \{ \tl{=} \} \\
 \regla{InicializacionDeAtributo}{\eps} & \{ \eps \} \\
+\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}} & \{ \tl{idMetVar} \} \\
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}} & \{ \tl{(} \} \\
 \regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \} \\
 \regla{TipoMetodo}{\nt{Tipo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\

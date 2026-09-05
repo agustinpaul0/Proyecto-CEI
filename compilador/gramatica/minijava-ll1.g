@@ -31,14 +31,17 @@ ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
 # Miembro y se factoriza. Constructor sobrevive como NT propio porque `public`
 # lo distingue solo.
 Miembro -> Tipo idMetVar AtributoOMetodo
-Miembro -> static TipoMetodo idMetVar CuerpoDeMetodo
-Miembro -> void idMetVar CuerpoDeMetodo
+Miembro -> static TipoMetodo Metodo
+Miembro -> void Metodo
 Miembro -> Constructor
 
 # El NT insertado ES el punto de decisión: acá el semántico sabe si construye
 # un nodo de atributo o uno de método.
 AtributoOMetodo -> ;                 # cola de <Atributo>
 AtributoOMetodo -> CuerpoDeMetodo    # cola de <Metodo>
+
+# <Metodo> sobrevive como NT propio, compartido por la rama static y la void.
+Metodo -> idMetVar CuerpoDeMetodo
 
 # <CuerpoDeMetodo> se comparte a propósito: es literalmente la misma
 # construcción en método, constructor y método con static.

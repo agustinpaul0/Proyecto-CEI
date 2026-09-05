@@ -464,15 +464,17 @@ Ahora el prefijo común `α = <Tipo> idMetVar` sí es directo, entre la 1ª y la
 **4 — Resultado**
 
 ```
-<Miembro> ::= <Tipo> idMetVar <RestoAtributoOMetodo>
-            | static <TipoMetodo> idMetVar <ArgsFormales> <Bloque>
-            | void idMetVar <ArgsFormales> <Bloque>
+<Miembro> ::= <Tipo> idMetVar <AtributoOMetodo>
+            | static <TipoMetodo> <Metodo>
+            | void <Metodo>
             | <Constructor>
 
-<RestoAtributoOMetodo> ::= ;                          (era <Atributo>)
-                         | <ArgsFormales> <Bloque>    (era <Metodo>)
+<AtributoOMetodo> ::= ;                   (era <Atributo>)
+                    | <CuerpoDeMetodo>    (era <Metodo>)
 
-<Constructor> ::= public idClase <ArgsFormales> <Bloque>
+<Metodo> ::= idMetVar <CuerpoDeMetodo>
+<CuerpoDeMetodo> ::= <ArgsFormales> <Bloque>
+<Constructor> ::= public idClase <CuerpoDeMetodo>
 ```
 
 Primeros de `<Miembro>`: `{boolean, char, int, idClase, idGen}`, `{static}`, `{void}`,
@@ -480,8 +482,14 @@ Primeros de `<Miembro>`: `{boolean, char, int, idClase, idGen}`, `{static}`, `{v
 Primeros de `<RestoAtributoOMetodo>`: `{;}` vs `{(}`. Disjuntos. ✔
 
 > `<Constructor>` **sobrevive como no terminal propio** porque `public` lo distingue solo: no
-> hizo falta fusionarlo. `<Atributo>` y `<Metodo>`, en cambio, se fusionan hasta el token que
-> los separa, y esa decisión queda visible en el nombre `<RestoAtributoOMetodo>`.
+> hizo falta fusionarlo. `<Atributo>`, en cambio, se fusiona con `<Metodo>` hasta el token que los
+> separa, y esa decisión queda visible en el nombre `<AtributoOMetodo>`.
+>
+> Se extraen dos NT compartidos: `<CuerpoDeMetodo>` (argumentos + bloque), que es la misma
+> construcción en método, método `static` y constructor; y **`<Metodo>`, que sobrevive** compartido
+> por la rama `static` y la `void`, así que el semántico tiene un único lugar donde construir el
+> nodo de método para esas dos formas. La tercera forma ya consumió el `idMetVar` al factorizar
+> contra el atributo y llega por `<AtributoOMetodo>`.
 
 ### F7. `<Primario>` — el prefijo `idMetVar`
 

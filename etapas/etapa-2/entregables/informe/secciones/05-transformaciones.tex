@@ -258,10 +258,11 @@ Ahora el prefijo \nt{Tipo} \tl{idMetVar} sí es directo, entre la primera y la t
 \paso{4. Resultado}
 \begin{producciones}
 \regla{Miembro}{\nt{Tipo} \tl{idMetVar} \nt{AtributoOMetodo}}
-\regla{Miembro}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}}
-\regla{Miembro}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{Miembro}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
+\regla{Miembro}{\tl{void} \nt{Metodo}}
 \regla{Miembro}{\nt{Constructor}}
 \regla{AtributoOMetodo}{\tl{;} \alt{} \nt{CuerpoDeMetodo}}
+\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
 \regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}
 \end{producciones}
@@ -270,8 +271,12 @@ $\{$\tl{void}$\}$, $\{$\tl{public}$\}$: disjuntos. Y en \nt{AtributoOMetodo}, $\
 contra $\{$\tl{(}$\}$: disjuntos.
 
 \nt{Constructor} \textbf{sobrevive como no terminal propio} porque \tl{public} lo distingue solo.
-\nt{CuerpoDeMetodo} se extrae y se comparte en los tres lugares donde aparece porque es
-literalmente la misma construcción.
+Se extraen además dos no terminales compartidos: \nt{CuerpoDeMetodo} (argumentos formales más
+bloque), que es literalmente la misma construcción en método, método \tl{static} y constructor; y
+\nt{Metodo}, que comparten la rama \tl{static} y la rama \tl{void}, de modo que el analizador
+semántico tiene un único lugar donde construir el nodo de método para esas dos formas. La tercera
+forma --- la de tipo de referencia --- ya consumió el \tl{idMetVar} al factorizar contra el
+atributo, y por eso llega por \nt{AtributoOMetodo}.
 
 \subsubsection{F7 --- \nt{Primario}: el prefijo \tl{idMetVar}}
 
