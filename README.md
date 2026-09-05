@@ -12,14 +12,23 @@ configuración adicional (click derecho sobre `src/test/java` → `Run 'All Test
 ## Estructura del repositorio
 
 ```
-AGENTS.md            memoria operativa del proyecto: convenciones, arquitectura, estrategia
+AGENTS.md             memoria operativa del proyecto: convenciones, arquitectura, estrategia
                       de testing y workflow — punto de partida para entender cualquier decisión
+CLAUDE.md             importa AGENTS.md para que Claude Code lo cargue solo en cada sesión
+guias/                las guías normativas que AGENTS.md indexa: qué hacer y qué no, para quien
+                      escribe código (humano o agente)
 documentacion/        documentación técnica autocontenida (arquitectura, especificación léxica,
                       decisiones, testing, logros) — para explicar el proyecto sin leer código
 etapas/               consignas originales, material y entregables de la cátedra, una carpeta por etapa
 vendor/               copia de referencia intacta de los zips originales de la cátedra
 compilador/           proyecto Maven — el código fuente y los tests
+.claude/              configuración de Claude Code: permisos, hook de tests, comandos y skills
 ```
+
+`guias/` y `documentacion/` comparten cuatro nombres de archivo (`arquitectura.md`,
+`especificacion-lexica.md`, `testing.md`, `manejo-de-errores.md`) porque cubren los mismos temas
+desde dos ángulos: `guias/` es **normativo** (qué hacer), `documentacion/` es **explicativo** (por
+qué). Al citar uno de esos archivos, incluir siempre la carpeta.
 
 ## Ante la duda, como en Java
 
@@ -46,7 +55,7 @@ java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
 
 ## Más información
 
-- [`AGENTS.md`](AGENTS.md) — memoria operativa del proyecto e índice hacia `agents/` (convenciones
+- [`AGENTS.md`](AGENTS.md) — memoria operativa del proyecto e índice hacia `guias/` (convenciones
   de la cátedra, protocolo de investigación, arquitectura, testing, workflow).
 - [`documentacion/README.md`](documentacion/README.md) — la documentación técnica completa: cómo
   funciona el compilador componente por componente, la especificación léxica formal, el catálogo de

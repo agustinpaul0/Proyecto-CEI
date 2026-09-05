@@ -10,10 +10,10 @@ el usuario antes de implementar. Esta sección existe para que no vuelva a pasar
 ## El procedimiento, en orden, sin saltearse pasos
 
 Ante **cualquier** pregunta de comportamiento léxico (o, en etapas futuras, sintáctico/semántico) que
-no esté ya resuelta en `agents/convenciones-catedra.md` o `agents/especificacion-lexica.md`:
+no esté ya resuelta en `guias/convenciones-catedra.md` o `guias/especificacion-lexica.md`:
 
 1. **Primero, ¿hay una regla escrita para esto en MiniJava?** Buscar explícitamente en los PDFs de la
-   cátedra (como imágenes, `AGENTS.md` §0) y en las decisiones ya tomadas en `agents/*.md`. Si la hay,
+   cátedra (como imágenes, `AGENTS.md` §0) y en las decisiones ya tomadas en `guias/*.md`. Si la hay,
    se usa esa regla — punto, no se sigue investigando Java.
 2. **Si no la hay, investigar a fondo cómo lo hace Java real** — no recordar de memoria, **verificar
    contra una fuente primaria**: la especificación (JLS, `docs.oracle.com/javase/specs/`) vía
@@ -54,7 +54,7 @@ Este protocolo es la forma operativa de aplicar la regla que la cátedra escribi
 defecto igual al de Java"*. Esa frase por sí sola no dice *cómo* averiguar el comportamiento de Java
 con precisión — este documento fija el procedimiento para hacerlo bien, en vez de asumir.
 
-## Casos ya resueltos con este protocolo (ver `agents/especificacion-lexica.md` para el detalle completo)
+## Casos ya resueltos con este protocolo (ver `guias/especificacion-lexica.md` para el detalle completo)
 
 - Escape Unicode: marcador `u` repetible (JLS §3.3).
 - `float` como palabra reservada: **no** se resuelve por este protocolo — es una respuesta directa

@@ -43,7 +43,7 @@ Ninguna tarea se considera terminada hasta que se cumplen **las tres** condicion
    implementaciones a medias, sin código muerto dejado "por las dudas". Si algo queda pendiente a
    propósito (por alcance, no por falta de tiempo), se anota explícitamente en el issue o el commit, no
    se deja implícito en el código.
-2. **Documentación actualizada**: `AGENTS.md`, los archivos de `agents/` y
+2. **Documentación actualizada**: `AGENTS.md`, los archivos de `guias/` y
    `documentacion/*.md` reflejan el estado real del código en ese momento — ninguno puede describir
    algo que ya cambió o algo que todavía no existe. Esto se verifica en cada sesión antes de dar una
    tarea por cerrada, no sólo al final del proyecto.

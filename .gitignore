@@ -16,9 +16,6 @@ out/
 # IDE — VS Code
 .vscode/
 
-# Configuración local de agentes
-.agents/
-
 # IDE — Metals / Bloop (language server de VS Code)
 .metals/
 .bloop/
@@ -32,3 +29,6 @@ Thumbs.db
 *.log
 *.tmp
 __pycache__/
+
+# Claude Code — overrides personales (la config compartida sí se versiona)
+.claude/settings.local.json

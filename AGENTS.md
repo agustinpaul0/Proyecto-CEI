@@ -1,7 +1,7 @@
 # AGENTS.md — Compilador MiniJava
 
 Memoria operativa del proyecto entre sesiones. Léase antes de tocar código. Este documento (y los
-archivos que enlaza bajo `agents/`) fija **decisiones nuevas** tomadas para este proyecto — no
+archivos que enlaza bajo `guias/`) fija **decisiones nuevas** tomadas para este proyecto — no
 reemplaza las consignas de la cátedra (`etapas/etapa-N/*.pdf`), las complementa.
 
 ## 0. Convención de lectura de material de la cátedra
@@ -23,8 +23,8 @@ que NO esté especificado para MiniJava tiene comportamiento por defecto igual a
 
 **El procedimiento completo y obligatorio para aplicar esta regla — primero chequear si MiniJava ya
 lo resuelve, si no investigar la especificación real de Java (no de memoria), e informar antes de
-implementar — está en [`agents/investigacion.md`](agents/investigacion.md). Léase entero antes de
-tomar cualquier decisión de comportamiento no cubierta explícitamente en los archivos de `agents/`.**
+implementar — está en [`guias/investigacion.md`](guias/investigacion.md). Léase entero antes de
+tomar cualquier decisión de comportamiento no cubierta explícitamente en los archivos de `guias/`.**
 
 ## 1. Contexto y alcance
 
@@ -42,7 +42,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso).
 
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por
-clase — sin límite numérico de líneas, ver [`agents/arquitectura.md`](agents/arquitectura.md)),
+clase — sin límite numérico de líneas, ver [`guias/arquitectura.md`](guias/arquitectura.md)),
 identificadores/comentarios en español, apuntar a **todos los logros desde el día 1** (no MVP primero
 y logros después), **los tests son más importantes que el código** — máxima cobertura de líneas y de
 ramas, máxima cantidad de casos, happy paths y edge cases siempre. Desarrollo pensado para abrirse y
@@ -50,32 +50,32 @@ correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`, donde está el `p
 
 ## 2. Qué leer según la tarea
 
-**Siempre, para cualquier tarea**: [`agents/workflow.md`](agents/workflow.md) (workflow paso a paso,
+**Siempre, para cualquier tarea**: [`guias/workflow.md`](guias/workflow.md) (workflow paso a paso,
 estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica sin excepción.
 
 | Si la tarea es... | Leer |
 |---|---|
-| Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `agents/` | [`agents/investigacion.md`](agents/investigacion.md) — **antes** de escribir código |
-| Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`agents/especificacion-lexica.md`](agents/especificacion-lexica.md) + [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) (ER formal) |
-| Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`agents/arquitectura.md`](agents/arquitectura.md) + [`documentacion/patron-state.md`](documentacion/patron-state.md) |
-| Tocar `ExcepcionLexica`, el reporte de error, o el posicionamiento línea/columna | [`agents/manejo-de-errores.md`](agents/manejo-de-errores.md) |
-| Escribir o revisar tests, decidir qué tipo de test corresponde | [`agents/testing.md`](agents/testing.md) |
-| Verificar qué es negociable y qué no lo es (contrato de salida, invariantes duras) | [`agents/convenciones-catedra.md`](agents/convenciones-catedra.md) |
-| Compilar, correr, empaquetar, o preparar la entrega | [`agents/comandos-y-entrega.md`](agents/comandos-y-entrega.md) |
-| Explicarle el proyecto a alguien sin que lea código (onboarding) | todo `documentacion/*.md` — son autocontenidos, no dependen de `agents/` |
+| Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `guias/` | [`guias/investigacion.md`](guias/investigacion.md) — **antes** de escribir código |
+| Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`guias/especificacion-lexica.md`](guias/especificacion-lexica.md) + [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) (ER formal) |
+| Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`guias/arquitectura.md`](guias/arquitectura.md) + [`documentacion/patron-state.md`](documentacion/patron-state.md) |
+| Tocar `ExcepcionLexica`, el reporte de error, o el posicionamiento línea/columna | [`guias/manejo-de-errores.md`](guias/manejo-de-errores.md) |
+| Escribir o revisar tests, decidir qué tipo de test corresponde | [`guias/testing.md`](guias/testing.md) |
+| Verificar qué es negociable y qué no lo es (contrato de salida, invariantes duras) | [`guias/convenciones-catedra.md`](guias/convenciones-catedra.md) |
+| Compilar, correr, empaquetar, o preparar la entrega | [`guias/comandos-y-entrega.md`](guias/comandos-y-entrega.md) |
+| Explicarle el proyecto a alguien sin que lea código (onboarding) | todo `documentacion/*.md` — son autocontenidos, no dependen de `guias/` |
 
-## 3. Índice completo de `agents/` (referencia)
+## 3. Índice completo de `guias/` (referencia)
 
 | Archivo | Contenido |
 |---|---|
-| [`agents/investigacion.md`](agents/investigacion.md) | Protocolo obligatorio ante cualquier duda de comportamiento no resuelta explícitamente: MiniJava primero, Java verificado contra la especificación después, informar siempre. |
-| [`agents/convenciones-catedra.md`](agents/convenciones-catedra.md) | Convenciones no negociables de la cátedra + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
-| [`agents/arquitectura.md`](agents/arquitectura.md) | Método por Estado (obligatorio), driver iterativo, `sealed interface` + `switch`, estructura de paquetes, por qué `Salida` es interfaz, por qué el `SourceManagerImpl` de la cátedra no sirve tal cual. |
-| [`agents/manejo-de-errores.md`](agents/manejo-de-errores.md) | `ExcepcionLexica`, `PosicionLexica` (cuándo un error reporta el lookahead actual vs. una posición capturada antes), `FormateadorDeError`. |
-| [`agents/especificacion-lexica.md`](agents/especificacion-lexica.md) | Tabla de tokens, decisiones ambiguas resueltas (con su fuente), los 8 logros y su estrategia. |
-| [`agents/testing.md`](agents/testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
-| [`agents/workflow.md`](agents/workflow.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
-| [`agents/comandos-y-entrega.md`](agents/comandos-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
+| [`guias/investigacion.md`](guias/investigacion.md) | Protocolo obligatorio ante cualquier duda de comportamiento no resuelta explícitamente: MiniJava primero, Java verificado contra la especificación después, informar siempre. |
+| [`guias/convenciones-catedra.md`](guias/convenciones-catedra.md) | Convenciones no negociables de la cátedra + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
+| [`guias/arquitectura.md`](guias/arquitectura.md) | Método por Estado (obligatorio), driver iterativo, `sealed interface` + `switch`, estructura de paquetes, por qué `Salida` es interfaz, por qué el `SourceManagerImpl` de la cátedra no sirve tal cual. |
+| [`guias/manejo-de-errores.md`](guias/manejo-de-errores.md) | `ExcepcionLexica`, `PosicionLexica` (cuándo un error reporta el lookahead actual vs. una posición capturada antes), `FormateadorDeError`. |
+| [`guias/especificacion-lexica.md`](guias/especificacion-lexica.md) | Tabla de tokens, decisiones ambiguas resueltas (con su fuente), los 8 logros y su estrategia. |
+| [`guias/testing.md`](guias/testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
+| [`guias/workflow.md`](guias/workflow.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
+| [`guias/comandos-y-entrega.md`](guias/comandos-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
 
 ## 4. Documentación de onboarding (para explicar el proyecto sin leer código)
 
