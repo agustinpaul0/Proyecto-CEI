@@ -50,7 +50,7 @@
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz}}\nobreak\par
-{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \}\par}
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{public}, \tl{void} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ListaMetodosInterfaz}{\eps}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
@@ -115,8 +115,14 @@
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}\nobreak\par
-{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \}\par}
+\regla{MetodoInterfaz}{\nt{PublicOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{public}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PublicOpcional}{\tl{public}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{public} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PublicOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{TipoMetodo}{\nt{Tipo}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}

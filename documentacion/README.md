@@ -1,8 +1,17 @@
 # Compilador MiniJava — Documentación técnica
 
 Documentación del proyecto de la materia **Compiladores e Intérpretes** (Departamento de Ciencias e
-Ingeniería de la Computación, Universidad Nacional del Sur, 2° cuatrimestre 2026). Cubre la
-**Etapa 1: Analizador Léxico + Módulo Principal**.
+Ingeniería de la Computación, Universidad Nacional del Sur, 2° cuatrimestre 2026). El proyecto son
+**cinco etapas**; esta carpeta cubre las que están hechas:
+
+- **Etapa 1 — Analizador Léxico + Módulo Principal**: documentos 1 a 8.
+- **Etapa 2 — Analizador Sintáctico** (en curso): documentos 9 a 12, más los PDF del lenguaje en
+  [`minijava-tecnico/`](minijava-tecnico/).
+- Etapas 3 a 5: sin especificación todavía.
+
+El estado y el plan de la etapa activa **no** están acá sino en
+[`../guias/plan-etapa-2.md`](../guias/plan-etapa-2.md), porque son documentos de trabajo y no de
+explicación.
 
 Toda esta carpeta es **autocontenida**: se puede leer entera sin abrir una sola línea de código y sin
 consultar ningún otro archivo del repositorio. Está escrita para que un lector externo entienda no
@@ -21,6 +30,19 @@ sale cada decisión.
 | 6 | [`decisiones.md`](decisiones.md) | **El catálogo completo de decisiones**: cada caso ambiguo, la alternativa descartada, la fuente que lo resuelve y la justificación. |
 | 7 | [`testing.md`](testing.md) | Qué garantiza cada suite de tests, cómo están organizados y cómo correrlos. |
 | 8 | [`logros.md`](logros.md) | Los 8 logros de la Etapa 1: qué exige cada uno, dónde está implementado y cómo verificarlo. |
+
+### Etapa 2 — Analizador Sintáctico
+
+| # | Documento | Qué responde |
+|---|---|---|
+| 9 | [`guia-de-la-gramatica.md`](guia-de-la-gramatica.md) | La gramática original de MiniJava explicada **regla por regla**: para qué sirve cada una, por qué está escrita así y dónde está rota. **Empezar acá.** |
+| 10 | [`gramatica-base-minijava.md`](gramatica-base-minijava.md) | Transcripción fiel del documento de la cátedra, sin corregir nada. Es la fuente de verdad contra la que se verifica el resto. |
+| 11 | [`transformacion-gramatica.md`](transformacion-gramatica.md) | El paso a paso **atómico** de cada corrección a LL(1) y de cada extensión por logro: regla original, defecto, transformación y resultado verificado. |
+| 12 | [`gramatica-minijava.md`](gramatica-minijava.md) | La gramática final. **Se genera** desde `compilador/gramatica/minijava-ll1-logros.g`; no se edita a mano. |
+
+Los PDF del lenguaje que la cátedra publica aparte de las etapas —«Aspectos Léxicos MiniJava 2026»
+y «Reglas de Sintaxis MiniJava 2026»— viven en [`minijava-tecnico/`](minijava-tecnico/), porque no
+pertenecen a una etapa sino al lenguaje.
 
 ## Resumen en una página
 
@@ -102,8 +124,8 @@ Dos reglas gobiernan todo el proyecto, y explican la mayoría de las decisiones 
 
 1. **Lo que la cátedra especifica, se respeta al pie de la letra.** El formato de salida, el código
    de error, la técnica de implementación y las expresiones regulares de los tokens salen de
-   `Aspectos Lexicos MiniJava 2026.pdf`, `Pautas Etapa 1.pdf` y las clases 01 y 02. Cuando este
-   documento afirma algo de la cátedra, cita la fuente.
+   `Aspectos Lexicos MiniJava 2026.pdf`, `Reglas de Sintaxis MiniJava 2026.pdf`, las `Pautas` de
+   cada etapa y las clases. Cuando este documento afirma algo de la cátedra, cita la fuente.
 2. **Lo que la cátedra no especifica, se resuelve como en Java** — regla escrita explícitamente por
    la cátedra: *"todo lo que NO esté especificado para MiniJava tiene comportamiento por defecto
    igual al de Java"*. Y "como en Java" nunca se resolvió de memoria: se verificó contra la

@@ -35,15 +35,15 @@ No terminal inicial: `<Inicial>`.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # las 1024 config.
-bash herramientas/casos-gramatica.sh                                              # 54 casos
+bash herramientas/casos-gramatica.sh                                              # 59 casos
 ```
 
 Estado actual:
 
-- **96 no terminales, 201 producciones, 60 terminales.**
+- **98 no terminales, 204 producciones, 60 terminales.**
 - **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros. Ningún logro depende
   de que otro esté prendido: eso es lo que hace que se puedan prender y apagar de a uno.
-- **54 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
+- **59 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
   la sintaxis que debe rechazar cuando está apagado.
 
 ## Producciones
@@ -122,10 +122,16 @@ Estado actual:
 
 <CuerpoDeMetodo> ::= <ArgsFormales> <Bloque>  
 
-> Los métodos de interfaz no llevan visibilidad: el logro habla de Métodos,
-> Atributos y Constructores, que son los <Miembro> de una clase.
+> Los métodos de interfaz admiten `public` pero no `private`, que es lo que
+> hace Java: verificado con javac, un método de interfaz `private` exige cuerpo
+> («missing method body, or declare abstract»), y MiniJava no tiene forma de
+> escribir ese cuerpo —<MetodoInterfaz> termina en `;` en la especificación
+> original y ningún logro lo cambia—. O sea que un `private` acá sería siempre
+> la forma que Java rechaza.
 
-<MetodoInterfaz> ::= <TipoMetodo> **idMetVar** <ArgsFormales> `;`  
+<MetodoInterfaz> ::= <PublicOpcional> <TipoMetodo> **idMetVar** <ArgsFormales> `;`  
+<PublicOpcional> ::= **public**  *[sólo con `visibilidad`]*  
+<PublicOpcional> ::= ε  
 
 <TipoMetodo> ::= <Tipo> | **void**  
 

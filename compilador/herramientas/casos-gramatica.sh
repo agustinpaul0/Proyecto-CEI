@@ -42,6 +42,13 @@ probar SI varclasica "C.m() ; sigue andando"    "$C void idMetVar ( ) { idClase 
 probar NO ninguno    "int x ; sin el logro"     "$C void idMetVar ( ) { int idMetVar ; } } eof"
 probar SI visibilidad "private int x ;"         "$C private int idMetVar ; } eof"
 probar SI visibilidad "constructor sin public"  "$C idClase ( ) { } } eof"
+probar SI visibilidad "interfaz: public int m() ;"      "interface idClase { public int idMetVar ( ) ; } eof"
+probar NO visibilidad "interfaz: private int m() ;  (Java lo rechaza sin cuerpo)" \
+                                                        "interface idClase { private int idMetVar ( ) ; } eof"
+probar NO todos       "interfaz: metodo con cuerpo (MiniJava no los tiene)" \
+                                                        "interface idClase { int idMetVar ( ) { } } eof"
+probar SI ninguno     "interfaz: firma sola sin el logro" "interface idClase { int idMetVar ( ) ; } eof"
+probar NO ninguno     "interfaz: public sin el logro"     "interface idClase { public int idMetVar ( ) ; } eof"
 probar NO ninguno     "private sin el logro"    "$C private int idMetVar ; } eof"
 probar SI atrinit     "int x = 5 ;"             "$C int idMetVar = intLiteral ; } eof"
 probar NO ninguno     "atributo inicializado sin logro" "$C int idMetVar = intLiteral ; } eof"

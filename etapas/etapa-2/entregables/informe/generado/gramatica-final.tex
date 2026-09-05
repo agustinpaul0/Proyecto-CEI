@@ -68,10 +68,12 @@
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
 \end{producciones}
 
-\noindent{\small Los métodos de interfaz no llevan visibilidad: el logro habla de Métodos, Atributos y Constructores, que son los \nt{Miembro} de una clase.\par}
+\noindent{\small Los métodos de interfaz admiten \texttt{public} pero no \texttt{private}, que es lo que hace Java: verificado con javac, un método de interfaz \texttt{private} exige cuerpo («missing method body, or declare abstract»), y MiniJava no tiene forma de escribir ese cuerpo —\nt{MetodoInterfaz} termina en \texttt{;} en la especificación original y ningún logro lo cambia—. O sea que un \texttt{private} acá sería siempre la forma que Java rechaza.\par}
 
 \begin{producciones}
-\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{MetodoInterfaz}{\nt{PublicOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{PublicOpcional}{\tl{public}}\marca{+}{visibilidad}
+\regla{PublicOpcional}{\eps}
 \regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
 \regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
 \regla{TipoBase}{\nt{TipoPrimitivo} \alt{} \nt{TipoReferencia} \alt{} \tl{idGen}}

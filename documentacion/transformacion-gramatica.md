@@ -763,9 +763,18 @@ desempate es el token que sigue: `(` es constructor, cualquier otro abre un tipo
 con `<Constructor> ::= public idClase <CuerpoDeMetodo>`), y `<MiembroDesdeIdClase>` se queda con
 una sola producción.
 
-> **Decisión:** `<MetodoInterfaz>` **no** lleva visibilidad. El logro habla de «Métodos, Atributos
-> y Constructores», que son los `<Miembro>` de una clase; los métodos de interfaz son un no
-> terminal aparte y en Java son implícitamente públicos.
+> **Decisión: en `<MetodoInterfaz>` se admite `public` y no `private`.** El logro habla de
+> «Métodos, Atributos y Constructores», y `<MetodoInterfaz>` es un no terminal aparte de
+> `<Miembro>`, así que el caso cae bajo la regla general: lo no especificado se comporta como en
+> Java. Verificado con `javac`: `interface C { private int m(); }` es un error —*missing method
+> body, or declare abstract*—, mientras que `public int m();` compila. Como en MiniJava los métodos
+> de interfaz **son siempre abstractos** (terminan en `;` y ningún logro les agrega cuerpo), un
+> `private` ahí sería por construcción siempre la forma que Java rechaza.
+>
+> ```
+> <MetodoInterfaz> ::= <PublicOpcional> <TipoMetodo> idMetVar <ArgsFormales> ;
+> <PublicOpcional> ::= public | ε
+> ```
 
 ### 5.2 Atributos Inicializados y Variables locales Clásicas E2
 
@@ -1005,16 +1014,16 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # 1024/1024
-bash herramientas/casos-gramatica.sh                                              # 54/54
+bash herramientas/casos-gramatica.sh                                              # 59/59
 ```
 
-- **96 no terminales, 201 producciones, 60 terminales.**
+- **98 no terminales, 204 producciones, 60 terminales.**
 - **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros.
-- **54 casos** de aceptación y rechazo, cubriendo por cada logro su propia sintaxis y la que debe
+- **59 casos** de aceptación y rechazo, cubriendo por cada logro su propia sintaxis y la que debe
   rechazar cuando está apagado. Entre ellos, los que fijan las decisiones difíciles:
   `a = b = c` se rechaza, `( a ) + 1` se acepta como expresión parentizada y `( a ) -> a` como
   lambda, `List<> x;` se rechaza y `new List<>()` se acepta.
 
 El costo total de la corrección más los 9 logros, respecto de la gramática base de la cátedra:
-**de 60 a 96 no terminales y de 126 a 201 producciones**, sin ninguna ambigüedad y sin ningún
+**de 60 a 98 no terminales y de 126 a 204 producciones**, sin ninguna ambigüedad y sin ningún
 conflicto de predicción.

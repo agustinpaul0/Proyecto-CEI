@@ -87,9 +87,15 @@ Metodo -> idMetVar CuerpoDeMetodo
 # constructor.
 CuerpoDeMetodo -> ArgsFormales Bloque
 
-# Los métodos de interfaz no llevan visibilidad: el logro habla de Métodos,
-# Atributos y Constructores, que son los <Miembro> de una clase.
-MetodoInterfaz -> TipoMetodo idMetVar ArgsFormales ;
+# Los métodos de interfaz admiten `public` pero no `private`, que es lo que
+# hace Java: verificado con javac, un método de interfaz `private` exige cuerpo
+# («missing method body, or declare abstract»), y MiniJava no tiene forma de
+# escribir ese cuerpo —<MetodoInterfaz> termina en `;` en la especificación
+# original y ningún logro lo cambia—. O sea que un `private` acá sería siempre
+# la forma que Java rechaza.
+MetodoInterfaz -> PublicOpcional TipoMetodo idMetVar ArgsFormales ;
+PublicOpcional -> public                                      @+visibilidad
+PublicOpcional -> EPSILON
 
 TipoMetodo -> Tipo | void
 

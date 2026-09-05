@@ -844,10 +844,38 @@ contra $\{$\tl{<}, \tl{[}, \tl{idMetVar}$\}$: disjuntos.
 Con el logro apagado vuelve la forma del núcleo y \nt{MiembroDesdeIdClase} se queda con una sola
 producción.
 
-\begin{decision}{los métodos de interfaz no llevan visibilidad}
-El enunciado habla de «Métodos, Atributos y Constructores», que son los \nt{Miembro} de una clase.
-\nt{MetodoInterfaz} es un no terminal aparte y en Java los métodos de interfaz son implícitamente
-públicos, así que se deja como está.
+\begin{decision}{en los métodos de interfaz se admite \tl{public} y no \tl{private}}
+El enunciado del logro habla de «Métodos, Atributos y Constructores», y \nt{MetodoInterfaz} es un
+no terminal aparte de \nt{Miembro}, así que la visibilidad de los métodos de interfaz cae bajo la
+regla general de la cátedra: lo que no está especificado se comporta como en Java. Verificado
+contra \texttt{javac}:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{En Java} & \textbf{Resultado} \\
+\midrule
+\texttt{interface A \{ int m(); \}}                    & compila \\
+\texttt{interface B \{ public int m(); \}}             & compila --- redundante, pero legal \\
+\texttt{interface C \{ private int m(); \}}            & \textbf{error}: \emph{missing method body} \\
+\texttt{interface D \{ private int m() \{\dots\} \}}   & compila \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+O sea que en Java un método de interfaz \tl{private} \textbf{exige cuerpo}. Y en MiniJava no hay
+forma de escribirlo: \nt{MetodoInterfaz} termina en \tl{;} en la especificación original y
+\textbf{ningún logro de esta etapa lo cambia}, así que los métodos de interfaz son siempre
+abstractos. Un \tl{private} ahí sería, por construcción, siempre la forma que Java rechaza.
+
+De ahí la asimetría, que no es una preferencia sino una consecuencia:
+
+\begin{producciones}
+\regla{MetodoInterfaz}{\nt{PublicOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{PublicOpcional}{\tl{public} \alt{} \eps}
+\end{producciones}
+
+$\{$\tl{public}$\}$ contra los Primeros de \nt{TipoMetodo}: disjuntos.
 \end{decision}
 
 \subsection{Atributos Inicializados y Variables locales Clásicas E2}
@@ -998,6 +1026,13 @@ que esa expresión tiene que ser un identificador suelto, lo que es un chequeo s
 misma clase de permisividad que la gramática original ya tiene con \texttt{5 = x;}. Lo mismo vale,
 como se anticipó en la sección~\ref{sec:alcance-chequeos}, para la prohibición de capturar
 variables.
+
+El uso de \tl{this} dentro de una lambda, que el logro también prohíbe, \emph{sí} sería detectable
+por el analizador sintáctico, porque \tl{this} es un token. Hacerlo exigiría que el analizador
+llevara un indicador de contexto «estoy dentro de una lambda», es decir un chequeo de contexto y no
+de forma. \textbf{Se delega al analizador semántico}, junto con la prohibición de capturar
+variables: las dos son restricciones sobre qué nombres pueden usarse en un alcance, y conviene que
+vivan en la etapa que resuelve alcances en lugar de repartirse entre dos.
 \end{decision}
 
 \subsection{Inicializacion de Arreglos E2}
@@ -1132,7 +1167,7 @@ $ python3 herramientas/primeros.py gramatica/minijava-base.g
 NO ES LL(1): 16 conflicto(s)
 
 $ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
---- 96 no terminales, 201 producciones, 60 terminales ---
+--- 98 no terminales, 204 producciones, 60 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
 \end{consola}
 
@@ -1172,7 +1207,7 @@ entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
 La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
 tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
 hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
-verifican \textbf{54 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
+verifican \textbf{59 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
 cuando está apagado.
 
 \begin{consola}
@@ -1244,8 +1279,8 @@ reconoce el lenguaje correcto: falla donde tiene que fallar.
 \toprule
  & \textbf{Gramática base} & \textbf{Gramática final} \\
 \midrule
-No terminales            & 60  & 96  \\
-Producciones             & 126 & 201 \\
+No terminales            & 60  & 98  \\
+Producciones             & 126 & 204 \\
 Terminales               & 51  & 60  \\
 Ambigüedades             & 2   & 0   \\
 Conflictos LL(1)& 16  & 0   \\
@@ -1293,7 +1328,7 @@ concreto:
 \begin{itemize}
   \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
         elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
-        independiente con \texttt{primeros.py} y con los 54 casos de aceptación y rechazo. Ninguna
+        independiente con \texttt{primeros.py} y con los 59 casos de aceptación y rechazo. Ninguna
         afirmación de este informe descansa únicamente en la salida del modelo.
   \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
   \item La \textbf{verificación} es mecánica y reproducible con los comandos de la
