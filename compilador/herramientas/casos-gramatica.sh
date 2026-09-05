@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# Casos de aceptación/rechazo de la gramática de MiniJava.
+#
+# Simula el parser LL(1) (Esquema Simple) sobre secuencias de tokens, sin
+# necesidad de que exista todavía el analizador sintáctico en Java. Verifica
+# dos cosas por cada logro: que la gramática ACEPTE lo que el logro pide, y que
+# lo RECHACE cuando el logro está apagado.
+#
+# Uso, desde compilador/:
+#     bash herramientas/casos-gramatica.sh
+set -uo pipefail
+cd "$(dirname "$0")/.."
+
+G=gramatica/minijava-ll1-logros.g
+fallos=0
+
+probar() { # $1=esperado(SI/NO) $2=logros $3=descripcion $4=tokens
+  out=$(python3 herramientas/primeros.py "$G" --logros "$2" --aceptar "$4" 2>&1 | tail -1)
+  case "$out" in ACEPTADA*) got=SI;; *) got=NO;; esac
+  if [ "$got" = "$1" ]; then printf "  ok    %s\n" "$3"
+  else printf "  FALLA %s\n        esperado=%s obtuvo=%s -- %s\n" "$3" "$1" "$got" "$out"
+       fallos=$((fallos+1)); fi
+}
+
+C="class idClase {"
+C="class idClase {"
+M="$C void idMetVar ( ) {"
+echo "--- nucleo (sin ningun logro) ---"
+probar SI ninguno "clase vacia"                 "class idClase { } eof"
+probar SI ninguno "atributo"                    "$C int idMetVar ; } eof"
+probar SI ninguno "metodo con cuerpo"           "$C void idMetVar ( ) { } } eof"
+probar SI ninguno "constructor"                 "$C public idClase ( ) { } } eof"
+probar SI ninguno "var local + llamada estatica" "$C void idMetVar ( ) { var idMetVar = intLiteral ; idClase . idMetVar ( ) ; } } eof"
+probar SI ninguno "if/else anidado"             "$C void idMetVar ( ) { if ( true ) if ( false ) ; else ; } } eof"
+probar SI ninguno "encadenamiento"              "$C void idMetVar ( ) { this . idMetVar . idMetVar ( ) [ intLiteral ] ; } } eof"
+probar NO ninguno "a = b = c NO es valido"      "$C void idMetVar ( ) { idMetVar = idMetVar = idMetVar ; } } eof"
+
+echo "--- cada logro contra su propia sintaxis ---"
+probar SI varclasica "int x , y = 10 ;"         "$C void idMetVar ( ) { int idMetVar , idMetVar = intLiteral ; } } eof"
+probar SI varclasica "C x ;  (decl de referencia)" "$C void idMetVar ( ) { idClase idMetVar ; } } eof"
+probar SI varclasica "C.m() ; sigue andando"    "$C void idMetVar ( ) { idClase . idMetVar ( ) ; } } eof"
+probar NO ninguno    "int x ; sin el logro"     "$C void idMetVar ( ) { int idMetVar ; } } eof"
+probar SI visibilidad "private int x ;"         "$C private int idMetVar ; } eof"
+probar SI visibilidad "constructor sin public"  "$C idClase ( ) { } } eof"
+probar NO ninguno     "private sin el logro"    "$C private int idMetVar ; } eof"
+probar SI atrinit     "int x = 5 ;"             "$C int idMetVar = intLiteral ; } eof"
+probar NO ninguno     "atributo inicializado sin logro" "$C int idMetVar = intLiteral ; } eof"
+probar SI for         "for estandar"            "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ) ; } } eof"
+probar SI for,posfijo "for con i++"             "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ++ ) ; } } eof"
+probar SI for         "for de iteradores"       "$C void idMetVar ( ) { for ( var idMetVar : idMetVar ) ; } } eof"
+probar SI for,varclasica "for ( int i = 0 ; ; )" "$C void idMetVar ( ) { for ( int idMetVar = intLiteral ; ; ) ; } } eof"
+probar SI ternario    "c ? a : b"               "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
+probar SI ternario    "ternario anidado a derecha" "$C void idMetVar ( ) { idMetVar = true ? intLiteral : false ? intLiteral : intLiteral ; } } eof"
+probar NO ninguno     "ternario sin el logro"   "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
+probar SI posfijo     "x ++"                    "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
+probar NO ninguno     "x ++ sin el logro"       "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
+
+echo "--- MiniLambdas (el caso que parecia necesitar lookahead ilimitado) ---"
+probar SI lambda "x -> x            (1 param sin parentesis)" "$M var idMetVar = idMetVar -> idMetVar ; } } eof"
+probar SI lambda "( ) -> 1          (0 params)"               "$M var idMetVar = ( ) -> intLiteral ; } } eof"
+probar SI lambda "( a ) -> a        (1 param con parentesis)" "$M var idMetVar = ( idMetVar ) -> idMetVar ; } } eof"
+probar SI lambda "( a , b ) -> a    (2 params)"               "$M var idMetVar = ( idMetVar , idMetVar ) -> idMetVar ; } } eof"
+probar SI lambda "( a ) + 1         (parentizada, NO lambda)" "$M var idMetVar = ( idMetVar ) + intLiteral ; } } eof"
+probar SI lambda "( a + b )         (parentizada compleja)"   "$M var idMetVar = ( idMetVar + idMetVar ) ; } } eof"
+probar SI lambda "lambda como argumento"                      "$M idMetVar ( idMetVar -> idMetVar ) ; } } eof"
+probar NO lambda "cuerpo con llaves NO se permite"            "$M var idMetVar = idMetVar -> { } ; } } eof"
+probar NO lambda "parametro con tipo NO se permite"           "$M var idMetVar = ( int idMetVar ) -> idMetVar ; } } eof"
+probar NO ninguno "lambda sin el logro"                       "$M var idMetVar = idMetVar -> idMetVar ; } } eof"
+probar SI ninguno "( a ) sigue andando sin el logro"          "$M var idMetVar = ( idMetVar ) ; } } eof"
+
+echo "--- Inicializacion de Arreglos ---"
+probar SI arrinit "new int [ ] { 1 , 2 }"        "$M var idMetVar = new int [ ] { intLiteral , intLiteral } ; } } eof"
+probar SI arrinit "new int [ ] { }  (vacio)"     "$M var idMetVar = new int [ ] { } ; } } eof"
+probar SI ninguno "new int [ 3 ] sigue andando"  "$M var idMetVar = new int [ intLiteral ] ; } } eof"
+probar SI ninguno "new int [ 3 ] [ 4 ]"          "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] ; } } eof"
+probar NO ninguno "new int [ ] { } sin el logro" "$M var idMetVar = new int [ ] { } ; } } eof"
+
+echo "--- Genericidad Avanzada ---"
+probar SI generico "List < List < Persona > > x ;  (anidado)" "$C idClase < idClase < idClase > > idMetVar ; } eof"
+probar SI generico "new List < > ( )              (diamante)" "$M var idMetVar = new idClase < > ( ) ; } } eof"
+probar NO generico "List < > x ;   diamante en posicion de TIPO" "$C idClase < > idMetVar ; } eof"
+probar NO generico "new List < > [ 3 ]  diamante con arreglo"    "$M var idMetVar = new idClase < > [ intLiteral ] ; } } eof"
+probar SI generico "new List < Persona > [ 3 ]"                  "$M var idMetVar = new idClase < idClase > [ intLiteral ] ; } } eof"
+probar SI ninguno  "List < Persona > x ; sin el logro"           "$C idClase < idClase > idMetVar ; } eof"
+probar NO ninguno  "anidado sin el logro"                        "$C idClase < idClase < idClase > > idMetVar ; } eof"
+
+echo "--- float (carry-over Etapa 1) ---"
+probar SI float   "float x ;"            "$C float idMetVar ; } eof"
+probar SI float   "floatLiteral"         "$M idMetVar = floatLiteral ; } } eof"
+probar NO ninguno "float sin el logro"   "$C float idMetVar ; } eof"
+
+echo "--- combinaciones ---"
+probar SI visibilidad,atrinit,varclasica,generico,arrinit "todo junto en un atributo" \
+  "$C private idClase < idClase > idMetVar = new idClase < > ( ) ; } eof"
+probar SI for,varclasica,posfijo,ternario "for + ternario + posfijo" \
+  "$M for ( int idMetVar = intLiteral ; true ; idMetVar ++ ) idMetVar = true ? intLiteral : intLiteral ; } } eof"
+
+echo
+if [ "$fallos" -eq 0 ]; then echo "TODOS LOS CASOS PASAN."; else echo "$fallos CASO(S) FALLAN."; fi
+exit "$fallos"
