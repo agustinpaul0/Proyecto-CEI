@@ -52,7 +52,7 @@
 \noindent{\small NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de una variable local, y tienen que poder prenderse por separado.\par}
 
 \begin{producciones}
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\marca{+}{atrinit}
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicional}}\marca{+}{atrinit}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
@@ -137,7 +137,7 @@
 \regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\marca{+}{varclasica}
 \regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\marca{+}{varclasica}
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional}}
 \end{producciones}
 
 \noindent{\small Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
@@ -146,7 +146,7 @@
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
 \regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
 \regla{RestoListaDeclaradores}{\eps}\marca{+}{varclasica}
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\marca{+}{varclasica}
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}\marca{+}{varclasica}
 \regla{Return}{\tl{return} \nt{ExpresionOpcional}}
 \regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
 \regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
@@ -172,10 +172,10 @@
 
 \begin{producciones}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\marca{+}{for}
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}\marca{+}{for}
 \regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\marca{+}{for}
 \regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\marca{+}{for}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\marca{+}{for}
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}\marca{+}{for}
 \end{producciones}
 
 \noindent{\small Una sola expresión por separador, como pide el logro.\par}
@@ -184,7 +184,7 @@
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional.\par}
+\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicional} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido. Y como con el logro de ternario apagado \nt{ExpresionCondicional} es un alias de \nt{ExpresionCompuesta}, el lenguaje base queda idéntico al de la cátedra.\par}
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}

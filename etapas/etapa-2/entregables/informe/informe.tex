@@ -961,8 +961,22 @@ Asociativo a \textbf{derecha} --- \texttt{a ? b : c ? d : e} es \texttt{a ? b : 
 porque la rama del \tl{:} vuelve a \nt{ExpresionCondicional}, que puede tener su propio
 \nt{RestoCondicional}. Con el logro apagado, \nt{RestoCondicional} queda en sólo \eps{} y
 \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta}: la capa desaparece sin
-dejar rastro. Nótese que \nt{RestoExpresion} conserva \nt{ExpresionCondicional} y no
-\nt{Expresion} a la derecha, preservando la no asociatividad de la asignación.
+dejar rastro.
+
+\begin{decision}{dónde alcanza el ternario}
+La gramática original usa \nt{ExpresionCompuesta} como lado derecho de un \tl{=} en \emph{los seis
+lugares} donde aparece uno: la asignación y los cinco inicializadores (variable local con
+\tl{var}, atributo, declarador clásico, y los dos del encabezado del \tl{for}). Lo hace para
+impedir la asignación encadenada: \texttt{a = b = c} no es un programa \textsc{MiniJava} válido.
+
+Al insertar la capa del ternario \emph{por encima} de \nt{ExpresionCompuesta}, esos seis lugares
+quedarían sin acceso al operador, y \texttt{var x = c ? a : b;} sería inválido aunque
+\texttt{x = c ? a : b;} no lo fuera --- una asimetría sin ninguna justificación. Los seis pasan
+entonces a \nt{ExpresionCondicional}, que es exactamente un escalón más arriba: sigue sin admitir
+un \tl{=} y por lo tanto sigue impidiendo la asignación encadenada, pero admite el ternario. Y
+como con el logro apagado \nt{ExpresionCondicional} es un alias de \nt{ExpresionCompuesta}, el
+lenguaje base queda \textbf{idéntico} al de la cátedra.
+\end{decision}
 
 Este logro requiere el token \tl{?}, que \textbf{no existe en el léxico de la Etapa 1}.
 
@@ -1207,7 +1221,7 @@ entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
 La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
 tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
 hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
-verifican \textbf{59 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
+verifican \textbf{69 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
 cuando está apagado.
 
 \begin{consola}
@@ -1328,7 +1342,7 @@ concreto:
 \begin{itemize}
   \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
         elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
-        independiente con \texttt{primeros.py} y con los 59 casos de aceptación y rechazo. Ninguna
+        independiente con \texttt{primeros.py} y con los 69 casos de aceptación y rechazo. Ninguna
         afirmación de este informe descansa únicamente en la salida del modelo.
   \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
   \item La \textbf{verificación} es mecánica y reproducible con los comandos de la

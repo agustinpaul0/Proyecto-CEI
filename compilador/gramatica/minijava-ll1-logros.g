@@ -74,7 +74,7 @@ AtributoOMetodo -> CuerpoDeMetodo
 
 # NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de
 # una variable local, y tienen que poder prenderse por separado.
-InicializacionDeAtributo -> = ExpresionCompuesta               @+atrinit
+InicializacionDeAtributo -> = ExpresionCondicional             @+atrinit
 InicializacionDeAtributo -> EPSILON
 
 # <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
@@ -169,7 +169,7 @@ Sentencia -> idClase SentenciaDesdeIdClase                    @+varclasica
 SentenciaDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales ListaDeclaradores ;   @+varclasica
 SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;           @+varclasica
 
-VarLocal -> var idMetVar = ExpresionCompuesta
+VarLocal -> var idMetVar = ExpresionCondicional
 
 # Varias variables por sentencia, cada una con inicialización opcional:
 # `int x,y,z = 10;`
@@ -177,7 +177,7 @@ ListaDeclaradores -> idMetVar InicializacionDeDeclarador RestoListaDeclaradores 
 RestoListaDeclaradores -> , idMetVar InicializacionDeDeclarador RestoListaDeclaradores    @+varclasica
 RestoListaDeclaradores -> EPSILON                                                         @+varclasica
 
-InicializacionDeDeclarador -> = ExpresionCompuesta | EPSILON                              @+varclasica
+InicializacionDeDeclarador -> = ExpresionCondicional | EPSILON                            @+varclasica
 
 Return -> return ExpresionOpcional
 
@@ -209,12 +209,12 @@ EncabezadoForDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimari
 
 # El `:` distingue el for de iteradores del estándar, y está a un solo token.
 EncabezadoForTrasVar -> : Expresion                                                       @+for
-EncabezadoForTrasVar -> = ExpresionCompuesta ClausulasFinalesFor                          @+for
+EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor                        @+for
 
 EncabezadoForTrasDeclarador -> : Expresion                                                @+for
 EncabezadoForTrasDeclarador -> InicializacionDeDeclaradorFor ClausulasFinalesFor          @+for
 
-InicializacionDeDeclaradorFor -> = ExpresionCompuesta | EPSILON                           @+for
+InicializacionDeDeclaradorFor -> = ExpresionCondicional | EPSILON                         @+for
 
 # Una sola expresión por separador, como pide el logro.
 ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional                            @+for
@@ -229,6 +229,12 @@ ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional                  
 # operadores unarios prefijos; y <Operando> un literal, o una referencia con
 # posfijo opcional.
 
+# Todo lado derecho de un `=` —el de la asignación y el de los cinco
+# inicializadores— es una <ExpresionCondicional> y no una <Expresion>. Eso
+# preserva lo que la regla original conseguía usando <ExpresionCompuesta>: que
+# `a = b = c` no sea válido. Y como con el logro de ternario apagado
+# <ExpresionCondicional> es un alias de <ExpresionCompuesta>, el lenguaje base
+# queda idéntico al de la cátedra.
 Expresion -> ExpresionCondicional RestoExpresion
 
 # El lado derecho es ExpresionCondicional y NO Expresion: la gramática original

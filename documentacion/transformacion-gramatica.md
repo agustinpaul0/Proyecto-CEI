@@ -1014,12 +1014,12 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # 1024/1024
-bash herramientas/casos-gramatica.sh                                              # 59/59
+bash herramientas/casos-gramatica.sh                                              # 69/69
 ```
 
 - **98 no terminales, 204 producciones, 60 terminales.**
 - **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros.
-- **59 casos** de aceptación y rechazo, cubriendo por cada logro su propia sintaxis y la que debe
+- **69 casos** de aceptación y rechazo, cubriendo por cada logro su propia sintaxis y la que debe
   rechazar cuando está apagado. Entre ellos, los que fijan las decisiones difíciles:
   `a = b = c` se rechaza, `( a ) + 1` se acepta como expresión parentizada y `( a ) -> a` como
   lambda, `List<> x;` se rechaza y `new List<>()` se acepta.

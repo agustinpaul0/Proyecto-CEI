@@ -103,7 +103,7 @@
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeAtributo}{\eps}\nobreak\par
@@ -253,7 +253,7 @@
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{var} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\nobreak\par
@@ -265,7 +265,7 @@
 \regla{RestoListaDeclaradores}{\eps}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeDeclarador}{\eps}\nobreak\par
@@ -322,7 +322,7 @@
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{:} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}\nobreak\par
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\nobreak\par
@@ -331,7 +331,7 @@
 \regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;}, \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeDeclaradorFor}{\eps}\nobreak\par

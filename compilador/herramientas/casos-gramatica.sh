@@ -59,6 +59,13 @@ probar SI for,varclasica "for ( int i = 0 ; ; )" "$C void idMetVar ( ) { for ( i
 probar SI ternario    "c ? a : b"               "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
 probar SI ternario    "ternario anidado a derecha" "$C void idMetVar ( ) { idMetVar = true ? intLiteral : false ? intLiteral : intLiteral ; } } eof"
 probar NO ninguno     "ternario sin el logro"   "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
+# El ternario tiene que llegar a TODO lado derecho de un '=', no solo al de la
+# asignacion: los cinco inicializadores tambien.
+probar SI ternario "var x = c ? a : b ;"        "$C void idMetVar ( ) { var idMetVar = true ? intLiteral : intLiteral ; } } eof"
+probar SI ternario,atrinit "atributo: int x = c ? a : b ;"  "$C int idMetVar = true ? intLiteral : intLiteral ; } eof"
+probar SI ternario,varclasica "local clasica: int x = c ? a : b ;" "$C void idMetVar ( ) { int idMetVar = true ? intLiteral : intLiteral ; } } eof"
+probar SI ternario,for "for ( var i = c ? a : b ; ; )"      "$C void idMetVar ( ) { for ( var idMetVar = true ? intLiteral : intLiteral ; ; ) ; } } eof"
+probar NO ninguno  "a = b = c sigue prohibido sin logros"   "$C void idMetVar ( ) { idMetVar = idMetVar = idMetVar ; } } eof"
 probar SI posfijo     "x ++"                    "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
 probar NO ninguno     "x ++ sin el logro"       "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
 
@@ -70,6 +77,11 @@ probar SI lambda "( a , b ) -> a    (2 params)"               "$M var idMetVar =
 probar SI lambda "( a ) + 1         (parentizada, NO lambda)" "$M var idMetVar = ( idMetVar ) + intLiteral ; } } eof"
 probar SI lambda "( a + b )         (parentizada compleja)"   "$M var idMetVar = ( idMetVar + idMetVar ) ; } } eof"
 probar SI lambda "lambda como argumento"                      "$M idMetVar ( idMetVar -> idMetVar ) ; } } eof"
+probar SI lambda "x -> y -> e   (currificada)"                "$M var idMetVar = idMetVar -> idMetVar -> intLiteral ; } } eof"
+probar SI lambda,ternario "c ? x->e : y->e   (en un ternario)" "$M var idMetVar = true ? idMetVar -> intLiteral : idMetVar -> intLiteral ; } } eof"
+probar SI lambda "( ) -> e   con cero parametros"             "$M var idMetVar = ( ) -> intLiteral ; } } eof"
+probar NO lambda "(a, int b) -> e   2do parametro con tipo"   "$M var idMetVar = ( idMetVar , int idMetVar ) -> intLiteral ; } } eof"
+probar NO lambda "(a, b+1) -> e   2do parametro no es id"     "$M var idMetVar = ( idMetVar , idMetVar + intLiteral ) -> intLiteral ; } } eof"
 probar NO lambda "cuerpo con llaves NO se permite"            "$M var idMetVar = idMetVar -> { } ; } } eof"
 probar NO lambda "parametro con tipo NO se permite"           "$M var idMetVar = ( int idMetVar ) -> idMetVar ; } } eof"
 probar NO ninguno "lambda sin el logro"                       "$M var idMetVar = idMetVar -> idMetVar ; } } eof"

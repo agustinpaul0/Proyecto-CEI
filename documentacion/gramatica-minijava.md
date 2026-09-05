@@ -35,7 +35,7 @@ No terminal inicial: `<Inicial>`.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # las 1024 config.
-bash herramientas/casos-gramatica.sh                                              # 59 casos
+bash herramientas/casos-gramatica.sh                                              # 69 casos
 ```
 
 Estado actual:
@@ -43,7 +43,7 @@ Estado actual:
 - **98 no terminales, 204 producciones, 60 terminales.**
 - **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros. Ningún logro depende
   de que otro esté prendido: eso es lo que hace que se puedan prender y apagar de a uno.
-- **59 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
+- **69 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
   la sintaxis que debe rechazar cuando está apagado.
 
 ## Producciones
@@ -107,7 +107,7 @@ Estado actual:
 > NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de
 > una variable local, y tienen que poder prenderse por separado.
 
-<InicializacionDeAtributo> ::= `=` <ExpresionCompuesta>  *[sólo con `atrinit`]*  
+<InicializacionDeAtributo> ::= `=` <ExpresionCondicional>  *[sólo con `atrinit`]*  
 <InicializacionDeAtributo> ::= ε  
 
 > <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
@@ -206,7 +206,7 @@ Estado actual:
 <SentenciaDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> <ListaDeclaradores> `;`  *[sólo con `varclasica`]*  
 <SentenciaDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> `;`  *[sólo con `varclasica`]*  
 
-<VarLocal> ::= **var** **idMetVar** `=` <ExpresionCompuesta>  
+<VarLocal> ::= **var** **idMetVar** `=` <ExpresionCondicional>  
 
 > Varias variables por sentencia, cada una con inicialización opcional:
 > `int x,y,z = 10;`
@@ -215,7 +215,7 @@ Estado actual:
 <RestoListaDeclaradores> ::= `,` **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  *[sólo con `varclasica`]*  
 <RestoListaDeclaradores> ::= ε  *[sólo con `varclasica`]*  
 
-<InicializacionDeDeclarador> ::= `=` <ExpresionCompuesta> | ε  *[sólo con `varclasica`]*  
+<InicializacionDeDeclarador> ::= `=` <ExpresionCondicional> | ε  *[sólo con `varclasica`]*  
 
 <Return> ::= **return** <ExpresionOpcional>  
 
@@ -246,12 +246,12 @@ Estado actual:
 > El `:` distingue el for de iteradores del estándar, y está a un solo token.
 
 <EncabezadoForTrasVar> ::= `:` <Expresion>  *[sólo con `for`]*  
-<EncabezadoForTrasVar> ::= `=` <ExpresionCompuesta> <ClausulasFinalesFor>  *[sólo con `for`]*  
+<EncabezadoForTrasVar> ::= `=` <ExpresionCondicional> <ClausulasFinalesFor>  *[sólo con `for`]*  
 
 <EncabezadoForTrasDeclarador> ::= `:` <Expresion>  *[sólo con `for`]*  
 <EncabezadoForTrasDeclarador> ::= <InicializacionDeDeclaradorFor> <ClausulasFinalesFor>  *[sólo con `for`]*  
 
-<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCompuesta> | ε  *[sólo con `for`]*  
+<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCondicional> | ε  *[sólo con `for`]*  
 
 > Una sola expresión por separador, como pide el logro.
 
@@ -264,6 +264,13 @@ Estado actual:
 > binarios, en un solo nivel como en el original; <ExpresionBasica> los
 > operadores unarios prefijos; y <Operando> un literal, o una referencia con
 > posfijo opcional.
+
+> Todo lado derecho de un `=` —el de la asignación y el de los cinco
+> inicializadores— es una <ExpresionCondicional> y no una <Expresion>. Eso
+> preserva lo que la regla original conseguía usando <ExpresionCompuesta>: que
+> `a = b = c` no sea válido. Y como con el logro de ternario apagado
+> <ExpresionCondicional> es un alias de <ExpresionCompuesta>, el lenguaje base
+> queda idéntico al de la cátedra.
 
 <Expresion> ::= <ExpresionCondicional> <RestoExpresion>  
 

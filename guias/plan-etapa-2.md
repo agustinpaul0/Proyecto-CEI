@@ -59,7 +59,7 @@ En concreto, para cada construcción hay que buscar y cubrir:
   larguísimas, el error en el primer token y el error en el último.
 
 La estrategia completa y la taxonomía de tipos de test están en [`testing.md`](testing.md). La
-Etapa 1 dejó 159 casos de corpus y fuzzing con jqwik; **la Etapa 2 tiene que llegar a un nivel de
+Etapa 1 dejó 169 casos de corpus y fuzzing con jqwik; **la Etapa 2 tiene que llegar a un nivel de
 cobertura equivalente o mejor**.
 
 ### 3. Cada logro es un interruptor independiente, de punta a punta
@@ -110,14 +110,14 @@ Todo verificado; los comandos están en [Verificación](#verificación-permanent
 - `compilador/herramientas/`: `primeros.py` (vaciables, Primeros, LL(1), combinatoria de logros,
   rangos de longitud derivable, simulador del Esquema Simple), `aceptar_fuente.py` (tokeniza un
   fuente real con el léxico de la Etapa 1 y lo corre contra la gramática),
-  `casos-gramatica.sh` (59 casos), `gramatica_a_markdown.py` y `gramatica_a_latex.py`.
+  `casos-gramatica.sh` (69 casos), `gramatica_a_markdown.py` y `gramatica_a_latex.py`.
 - **Documentación**: `documentacion/gramatica-base-minijava.md`, `guia-de-la-gramatica.md`
   (la gramática original explicada regla por regla), `transformacion-gramatica.md` (el paso a
   paso atómico) y `gramatica-minijava.md` (la final, **generada** desde el `.g`).
 - **Informe** en `etapas/etapa-2/entregables/informe/`, 44 páginas, compila sin desbordes ni
   avisos de fuente. Tipografía y color de la cátedra: Computer Modern a 12pt, y el azul `#4C4CB2`
   usado **sólo** en los terminales.
-- **59 casos** de aceptación y rechazo propios, más los **8 de la cátedra**, que además fallan en
+- **69 casos** de aceptación y rechazo propios, más los **8 de la cátedra**, que además fallan en
   el token exacto que declara la expectativa de cada uno.
 
 ---
@@ -307,7 +307,7 @@ Todo esto tiene que pasar al cerrar cualquier sesión:
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria # 1024/1024
-bash herramientas/casos-gramatica.sh                                            # 59/59
+bash herramientas/casos-gramatica.sh                                            # 69/69
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java  # 8/8
 mvn verify                                                                      # suite + cobertura
 ```
