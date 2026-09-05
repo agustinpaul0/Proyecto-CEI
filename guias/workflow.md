@@ -35,6 +35,42 @@ código hace lo que hace, o una invariante que rompería silenciosamente si algu
 saberlo. Ante la duda, no comentar — un comentario que sólo repite lo que ya dice el nombre de la
 variable o el método es ruido, no documentación.
 
+## Tres reglas que aplican a todas las etapas
+
+### Todo lo que no esté especificado se comporta como en Java
+
+Regla explícita de la cátedra, repetida en el README de cada etapa. Vale para el léxico, para la
+sintaxis y para lo que venga: si algo no está resuelto por la consigna, por el material técnico
+del lenguaje ni por un logro, **el desempate es replicar lo que hace Java** — nunca inventar una
+regla propia ni elegir «lo que parezca razonable». El procedimiento obligatorio está en
+[`investigacion.md`](investigacion.md): chequear MiniJava primero, verificar la especificación
+real de Java después (no de memoria), **informar al usuario antes de implementar**.
+
+### La robustez del testing es lo primero
+
+**Los tests importan más que el código.** No alcanza con que ande en los casos felices: la
+implementación tiene que cumplir el requisito **en los casos más extremos**, y buscar activamente
+casos raros y de borde es parte del trabajo, no un extra. Para cada construcción hay que cubrir el
+caso vacío y el de un solo elemento, el anidamiento profundo, los límites del contrato de salida,
+lo que la construcción **debe rechazar** además de lo que debe aceptar, las combinaciones entre
+logros, y las entradas degeneradas (archivo vacío, un único token, el error en el primer carácter
+y en el último). La estrategia completa está en [`testing.md`](testing.md).
+
+### En los entregables no se deja constancia de los errores del desarrollo
+
+El informe y la documentación describen **el estado final y por qué es así**. No se narran los
+errores cometidos durante el desarrollo, ni las versiones intermedias descartadas por
+equivocadas, ni las correcciones que hubo que hacer sobre el propio trabajo.
+
+Sí se documenta, porque es contenido técnico legítimo: los defectos **del material de la cátedra**
+y cómo se resolvieron, las **alternativas de diseño evaluadas y descartadas** con su razón, y las
+**decisiones** tomadas donde la especificación admitía más de una lectura. La distinción es entre
+«acá había un problema en el material y así lo resolví» —que va— y «yo me equivoqué y después lo
+arreglé» —que no va—.
+
+Esto vale para el informe, para `documentacion/` y para cualquier cosa que vea la cátedra. En los
+mensajes de commit y en `git log`, en cambio, el historial real sí es bienvenido.
+
 ## Regla vital al terminar cualquier feature
 
 Ninguna tarea se considera terminada hasta que se cumplen **las tres** condiciones:
@@ -43,8 +79,9 @@ Ninguna tarea se considera terminada hasta que se cumplen **las tres** condicion
    implementaciones a medias, sin código muerto dejado "por las dudas". Si algo queda pendiente a
    propósito (por alcance, no por falta de tiempo), se anota explícitamente en el issue o el commit, no
    se deja implícito en el código.
-2. **Documentación actualizada**: `AGENTS.md`, los archivos de `guias/` y
-   `documentacion/*.md` reflejan el estado real del código en ese momento — ninguno puede describir
+2. **Documentación actualizada**: `AGENTS.md`, los archivos de `guias/` —incluido el plan de la
+   etapa activa, con su estado y su backlog— y `documentacion/*.md` reflejan el estado real del
+   código en ese momento — ninguno puede describir
    algo que ya cambió o algo que todavía no existe. Esto se verifica en cada sesión antes de dar una
    tarea por cerrada, no sólo al final del proyecto.
 3. **El usuario fue informado** de cualquier decisión tomada por el [protocolo de

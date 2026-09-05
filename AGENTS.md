@@ -31,11 +31,16 @@ tomar cualquier decisión de comportamiento no cubierta explícitamente en los a
 Materia **Compiladores e Intérpretes** (UNS, 2do cuatrimestre 2026). Proyecto: compilador completo
 para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos — a lo largo de 5 etapas.
 
-- **Etapa 1** (activa): Analizador Léxico + Módulo Principal cliente por consola.
-- Etapas 2-5: sin especificación todavía (aparecerán en `etapas/etapa-2/` etc. cuando se publiquen).
-- Consignas de Etapa 1: `etapas/etapa-1/README.md`, `Pautas Etapa 1.pdf`,
-  `Aspectos Lexicos MiniJava 2026.pdf`, `Clase 01 - Lex1 - Introduccion.pdf`,
-  `Clase 02 - Lex2 - Implementacion Lexico.pdf`.
+- **Etapa 1** (entregada, pendiente de corrección): Analizador Léxico + Módulo Principal cliente
+  por consola. Tiene que seguir siendo ejecutable y testeable de forma aislada.
+- **Etapa 2** (activa): Analizador Sintáctico Descendente Recursivo Predictivo LL(1). Entrega
+  23/09/2026. **El plan, el estado y el backlog están en
+  [`guias/plan-etapa-2.md`](guias/plan-etapa-2.md) — leerlo antes que nada.**
+- Etapas 3-5: sin especificación todavía (aparecerán en `etapas/etapa-3/` etc. cuando se publiquen).
+- Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
+- Material técnico del lenguaje, común a todas las etapas:
+  `documentacion/minijava-tecnico/Aspectos Lexicos MiniJava 2026.pdf` y
+  `documentacion/minijava-tecnico/Reglas de Sintaxis MiniJava 2026.pdf`.
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
@@ -50,11 +55,18 @@ correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`, donde está el `p
 
 ## 2. Qué leer según la tarea
 
-**Siempre, para cualquier tarea**: [`guias/workflow.md`](guias/workflow.md) (workflow paso a paso,
-estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica sin excepción.
+**Siempre, para cualquier tarea**, dos archivos:
+
+1. [`guias/plan-etapa-2.md`](guias/plan-etapa-2.md) — el plan, el estado y el backlog de la etapa
+   **activa**. Dice qué se hizo, qué falta, qué material leer, qué explicarle al usuario antes de
+   ejecutar y qué consultarle. Se actualiza al cerrar cada sesión de trabajo.
+2. [`guias/workflow.md`](guias/workflow.md) — workflow paso a paso, estilo de comentarios, regla
+   de deuda-cero.
 
 | Si la tarea es... | Leer |
 |---|---|
+| Retomar la etapa activa después de un tiempo, o arrancar una sesión nueva | [`guias/plan-etapa-2.md`](guias/plan-etapa-2.md) — **primero, siempre** |
+| Tocar la gramática, el parser, los Primeros o el informe de la Etapa 2 | [`guias/plan-etapa-2.md`](guias/plan-etapa-2.md) + [`documentacion/guia-de-la-gramatica.md`](documentacion/guia-de-la-gramatica.md) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `guias/` | [`guias/investigacion.md`](guias/investigacion.md) — **antes** de escribir código |
 | Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`guias/especificacion-lexica.md`](guias/especificacion-lexica.md) + [`documentacion/especificacion-lexica.md`](documentacion/especificacion-lexica.md) (ER formal) |
 | Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`guias/arquitectura.md`](guias/arquitectura.md) + [`documentacion/patron-state.md`](documentacion/patron-state.md) |
@@ -76,6 +88,7 @@ estilo de comentarios, regla de deuda-cero) — es el único archivo que aplica 
 | [`guias/testing.md`](guias/testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
 | [`guias/workflow.md`](guias/workflow.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
 | [`guias/comandos-y-entrega.md`](guias/comandos-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
+| [`guias/plan-etapa-2.md`](guias/plan-etapa-2.md) | Plan, estado y backlog de la etapa activa; las cuatro reglas que la gobiernan; qué leer y qué consultar en cada sesión. |
 
 ## 4. Documentación de onboarding (para explicar el proyecto sin leer código)
 
@@ -99,7 +112,16 @@ compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
   decisiones**, cada una con su fuente, la alternativa descartada y su justificación.
 - [`documentacion/testing.md`](documentacion/testing.md) — qué garantiza cada suite y las
   invariantes que sostiene.
-- [`documentacion/logros.md`](documentacion/logros.md) — los 8 logros, dónde está cada uno y cómo
-  verificarlo.
+- [`documentacion/logros.md`](documentacion/logros.md) — los 8 logros de la Etapa 1, dónde está
+  cada uno y cómo verificarlo.
+- [`documentacion/guia-de-la-gramatica.md`](documentacion/guia-de-la-gramatica.md) — la gramática
+  original de MiniJava explicada regla por regla: para qué sirve cada una, por qué está escrita
+  así y dónde está rota.
+- [`documentacion/gramatica-base-minijava.md`](documentacion/gramatica-base-minijava.md) —
+  transcripción fiel del documento de la cátedra, la fuente de verdad.
+- [`documentacion/transformacion-gramatica.md`](documentacion/transformacion-gramatica.md) — el
+  paso a paso atómico de la corrección a LL(1) y de las extensiones por logro.
+- [`documentacion/gramatica-minijava.md`](documentacion/gramatica-minijava.md) — la gramática
+  final. **Se genera** desde `compilador/gramatica/minijava-ll1-logros.g`; no se edita a mano.
 
 El historial de decisiones vive en `git log`, no en estos documentos.

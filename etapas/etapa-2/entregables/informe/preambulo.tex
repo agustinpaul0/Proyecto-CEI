@@ -1,12 +1,15 @@
 % Preámbulo del informe de la Etapa 2.
 %
-% Tipografía: Computer Modern a 12pt, que es exactamente la que usa la cátedra
-% en «Reglas de Sintaxis de MiniJava» (pdffonts sobre ese PDF reporta CMR12 para
-% el cuerpo, CMCSC10 para las versalitas, CMTT10 para las producciones y
-% CMSSBX10 para los terminales). `lmodern` es Latin Modern, la reimplementación
-% Unicode del mismo diseño.
+% Tipografía: Computer Modern a 12pt, la misma que usa la cátedra en «Reglas de
+% Sintaxis de MiniJava» (pdffonts sobre ese PDF reporta CMR12 para el cuerpo,
+% CMCSC10 para las versalitas, CMTT10 para las producciones y CMSSBX10 para los
+% terminales). `lmodern` es Latin Modern, la reimplementación Unicode del mismo
+% diseño.
 %
-% Paleta monocromática y estructura heredadas del informe de la Etapa 1.
+% Color: el azul de los terminales es el de la cátedra, muestreado del PDF de
+% las reglas de sintaxis: #4C4CB2, o sea rgb(0.3, 0.3, 0.7). Los no terminales
+% van en negro, como ahí. Nada de grises: el texto es negro y los filetes y los
+% títulos usan el mismo azul.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -22,7 +25,6 @@
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{fancyvrb}
-\usepackage{framed}
 \usepackage[hidelinks,bookmarks=true]{hyperref}
 
 % Caracteres que aparecen en los comentarios de los archivos de gramática y
@@ -31,93 +33,87 @@
 \DeclareUnicodeCharacter{2014}{---}
 \DeclareUnicodeCharacter{2026}{\ldots}
 
-% --- Paleta monocromática: sólo grises, con un único acento. -----------------
-\definecolor{tinta}{gray}{0.13}
-\definecolor{grisMedio}{gray}{0.42}
-\definecolor{grisSuave}{gray}{0.70}
-\definecolor{grisFondo}{gray}{0.955}
-\definecolor{acento}{HTML}{2F4858}
+% --- Paleta ------------------------------------------------------------------
+\definecolor{tinta}{rgb}{0,0,0}
+\definecolor{terminal}{rgb}{0.3,0.3,0.7}   % el azul de la cátedra, #4C4CB2
+\definecolor{acento}{rgb}{0.3,0.3,0.7}
+\definecolor{filete}{rgb}{0.62,0.62,0.85}  % el mismo azul, aclarado
 
 \color{tinta}
 
-% --- Títulos ----------------------------------------------------------------
+% --- Títulos ------------------------------------------------------------------
 \titleformat{\section}{\Large\bfseries\color{acento}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{tinta}}{\thesubsection}{0.7em}{}
-\titleformat{\subsubsection}{\bfseries\color{grisMedio}}{\thesubsubsection}{0.7em}{}
+\titleformat{\subsubsection}{\bfseries\color{acento}}{\thesubsubsection}{0.7em}{}
 \titlespacing*{\section}{0pt}{2.4ex plus 1ex minus .2ex}{1.3ex plus .2ex}
 
-% --- Encabezado y pie -------------------------------------------------------
+% --- Encabezado y pie ---------------------------------------------------------
 \setlength{\headheight}{14pt}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{grisSuave}\leaders\hrule height \headrulewidth\hfill}}
-\fancyhead[L]{\footnotesize\color{grisMedio}Compiladores e Intérpretes — Etapa 2}
-\fancyhead[R]{\footnotesize\color{grisMedio}\nouppercase{\leftmark}}
-\fancyfoot[C]{\footnotesize\color{grisMedio}\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{filete}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize\color{acento}Compiladores e Intérpretes — Etapa 2}
+\fancyhead[R]{\footnotesize\color{acento}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\color{acento}\thepage}
 
-% ===========================================================================
-% Notación de la gramática — la misma convención tipográfica de la cátedra
-% ===========================================================================
-% \nt{X}   no terminal   -> \texttt, como <X> en el PDF de la cátedra
-% \tl{x}   terminal      -> sans-serif negrita, como los terminales del PDF
-% \eps     la cadena vacía
-% \deriva  el ::= de las producciones
-\newcommand{\nt}[1]{\texttt{<#1>}}
-\newcommand{\tl}[1]{\textsf{\bfseries #1}}
+% ==============================================================================
+% Notación de la gramática — la convención tipográfica de la cátedra
+% ==============================================================================
+% \nt{X}  no terminal: máquina de escribir, negro, como <X> en el PDF original
+% \tl{x}  terminal:    sans-serif negrita, azul, como los terminales del PDF
+%
+% Los dos van en \mbox: un símbolo de la gramática no se parte nunca a mitad de
+% renglón. Sin esto, LaTeX corta `while` en «whi-le» y `intLiteral` en
+% «intLite-ral», que en una gramática es ilegible.
+\newcommand{\nt}[1]{\mbox{\texttt{<#1>}}}
+\newcommand{\tl}[1]{\mbox{\textsf{\bfseries\color{terminal}#1}}}
 \newcommand{\eps}{\ensuremath{\epsilon}}
-\newcommand{\deriva}{\texttt{::=}}
-\newcommand{\alt}{\ensuremath{\;\mid\;}}
+\newcommand{\deriva}{\mbox{\texttt{::=}}}
+\newcommand{\alt}{\mbox{\ensuremath{\;\mid\;}}}
 \newcommand{\prim}[1]{\textup{Primeros}(#1)}
 
-% Bloque de producciones: sangrado, interlineado propio, sin justificar.
+% Bloque de producciones. Bandera a la izquierda (nunca justificado: justificar
+% una secuencia de símbolos que no se pueden partir abre huecos enormes) y
+% sangría francesa, para que la continuación de una producción larga se vea
+% como continuación y no como una producción nueva.
 \newenvironment{producciones}{%
   \par\smallskip\begingroup
-  \parindent=0pt \leftskip=1.2em
-  % Elasticidad acotada: evita estirar los espacios de una producción larga,
-  % pero no tanta como para que el \hfill de la etiqueta de logro no empuje.
-  \rightskip=0pt plus 2em
-  \parfillskip=0pt plus 1fil
-  \setlength{\parskip}{0.35ex}%
+  \setlength{\parindent}{0pt}%
+  \setlength{\leftskip}{1.2em}%
+  \setlength{\parskip}{0.45ex}%
+  \raggedright
+  \hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000
+  \everypar{\hangindent=2.2em\hangafter=1}%
   \obeylines}{\par\endgroup\smallskip}
 
-% Una producción con su nombre a la izquierda, para las tablas de Primeros.
 \newcommand{\regla}[2]{\nt{#1} \deriva{} #2}
+% Marca de logro: va al final y en línea. Con bandera a la izquierda un \hfill
+% no empuja al margen, así que se pone pegada en vez de alineada a la derecha.
+\newcommand{\marca}[2]{\quad{\footnotesize\color{acento}[#1\,\texttt{#2}]}}
 
-% --- Bloques de código y de consola -----------------------------------------
+% --- Bloques de consola --------------------------------------------------------
 \DefineVerbatimEnvironment{consola}{Verbatim}%
   {fontsize=\small,xleftmargin=1.1em,formatcom=\color{tinta}}
-\DefineVerbatimEnvironment{codigo}{Verbatim}%
-  {fontsize=\small,xleftmargin=1.1em,commandchars=\\\{\}}
 
-% --- Cajas de defecto -------------------------------------------------------
-% Dos clases de defecto que NO hay que confundir; van con marcas distintas.
-\newenvironment{conflicto}[1]{%
+% --- Cajas ---------------------------------------------------------------------
+% Sin fondos: un filete azul al costado, que separa sin ensuciar la página.
+\newenvironment{destacado}[2]{%
   \par\smallskip\begingroup
-  \setlength{\fboxsep}{0.7em}%
-  \definecolor{shadecolor}{gray}{0.955}%
-  \begin{shaded}\noindent{\bfseries\color{acento}Conflicto LL(1) --- #1}\par\smallskip
-}{\end{shaded}\endgroup\smallskip}
+  \setlength{\leftskip}{1.1em}%
+  \noindent\llap{\textcolor{filete}{\vrule width 2pt height 1.6ex depth 0pt}\hspace{0.7em}}%
+  {\bfseries\color{#1}#2}\par\nobreak\smallskip\ignorespaces
+}{\par\endgroup\smallskip}
 
-\newenvironment{ambiguedad}[1]{%
-  \par\smallskip\begingroup
-  \setlength{\fboxsep}{0.7em}%
-  \definecolor{shadecolor}{gray}{0.90}%
-  \begin{shaded}\noindent{\bfseries\color{tinta}Ambigüedad --- #1}\par\smallskip
-}{\end{shaded}\endgroup\smallskip}
+\newenvironment{conflicto}[1]{\begin{destacado}{acento}{Conflicto LL(1) --- #1}}{\end{destacado}}
+\newenvironment{ambiguedad}[1]{\begin{destacado}{tinta}{Ambigüedad --- #1}}{\end{destacado}}
+\newenvironment{decision}[1]{\begin{destacado}{acento}{Decisión --- #1}}{\end{destacado}}
 
-\newenvironment{decision}[1]{%
-  \par\smallskip\begingroup
-  \setlength{\fboxsep}{0.7em}%
-  \definecolor{shadecolor}{gray}{0.975}%
-  \begin{shaded}\noindent{\bfseries\color{grisMedio}Decisión --- #1}\par\smallskip
-}{\end{shaded}\endgroup\smallskip}
+% --- Los cuatro pasos de cada transformación ------------------------------------
+\newcommand{\paso}[1]{\par\smallskip\noindent\textbf{\color{acento}#1}\quad\ignorespaces}
 
-% --- Los cuatro pasos de cada transformación --------------------------------
-\newcommand{\paso}[1]{\par\smallskip\noindent\textbf{\color{grisMedio}#1}\quad\ignorespaces}
-
-% Los nombres largos de no terminales van en \texttt y no se parten, así que se
-% le da al justificado un margen de maniobra en vez de dejar renglones desbordados.
+% Los nombres largos de no terminales no se parten, así que se le da al
+% justificado un margen de maniobra en vez de dejar renglones desbordados.
 \setlength{\emergencystretch}{2.5em}
 
 \setlist[itemize]{leftmargin=1.3em,itemsep=0.25ex,topsep=0.5ex}

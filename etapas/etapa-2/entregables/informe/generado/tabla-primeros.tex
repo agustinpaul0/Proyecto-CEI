@@ -1,214 +1,630 @@
-\begin{longtable}{@{}p{0.30\textwidth}p{0.63\textwidth}@{}}
-\toprule
-\textbf{Producción} & \textbf{Primeros} \\
-\midrule\endhead
-\regla{Inicial}{\nt{ListaClases} \tl{eof}} & \{ \tl{class}, \tl{eof}, \tl{interface} \} \\
-\regla{ListaClases}{\nt{Clase} \nt{ListaClases}} & \{ \tl{class} \} \\
-\regla{ListaClases}{\nt{Interfaz} \nt{ListaClases}} & \{ \tl{interface} \} \\
-\regla{ListaClases}{\eps} & \{ \eps \} \\
-\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}} & \{ \tl{class} \} \\
-\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}} & \{ \tl{interface} \} \\
-\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>}} & \{ \tl{<} \} \\
-\regla{GenericidadOpcional}{\eps} & \{ \eps \} \\
-\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia}} & \{ \tl{extends} \} \\
-\regla{HerenciaOpcional}{\tl{implements} \nt{TipoReferencia}} & \{ \tl{implements} \} \\
-\regla{HerenciaOpcional}{\eps} & \{ \eps \} \\
-\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia}} & \{ \tl{extends} \} \\
-\regla{ExtensionOpcional}{\eps} & \{ \eps \} \\
-\regla{ListaMiembros}{\nt{Miembro} \nt{ListaMiembros}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{private}, \tl{public}, \tl{static}, \tl{void} \} \\
-\regla{ListaMiembros}{\eps} & \{ \eps \} \\
-\regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \} \\
-\regla{ListaMetodosInterfaz}{\eps} & \{ \eps \} \\
-\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{private}, \tl{public}, \tl{static}, \tl{void} \} \\
-\regla{Miembro}{\nt{MiembroSinVisibilidad}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{static}, \tl{void} \} \\
-\regla{Miembro}{\nt{Constructor}} & \{ \tl{public} \} \\
-\regla{VisibilidadOpcional}{\tl{public}} & \{ \tl{public} \} \\
-\regla{VisibilidadOpcional}{\tl{private}} & \{ \tl{private} \} \\
-\regla{VisibilidadOpcional}{\eps} & \{ \eps \} \\
-\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}} & \{ \tl{public} \} \\
-\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}} & \{ \tl{static} \} \\
-\regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}} & \{ \tl{void} \} \\
-\regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
-\regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}} & \{ \tl{idGen} \} \\
-\regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}} & \{ \tl{idClase} \} \\
-\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}} & \{ \tl{(} \} \\
-\regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}} & \{ \tl{<}, \tl{[}, \tl{idMetVar} \} \\
-\regla{AtributoOMetodo}{\nt{InicializacionDeAtributo} \tl{;}} & \{ \tl{;}, \tl{=} \} \\
-\regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}} & \{ \tl{(} \} \\
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}} & \{ \tl{=} \} \\
-\regla{InicializacionDeAtributo}{\eps} & \{ \eps \} \\
-\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}} & \{ \tl{idMetVar} \} \\
-\regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}} & \{ \tl{(} \} \\
-\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \} \\
-\regla{TipoMetodo}{\nt{Tipo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\
-\regla{TipoMetodo}{\tl{void}} & \{ \tl{void} \} \\
-\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\
-\regla{TipoBase}{\nt{TipoPrimitivo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
-\regla{TipoBase}{\nt{TipoReferencia}} & \{ \tl{idClase} \} \\
-\regla{TipoBase}{\tl{idGen}} & \{ \tl{idGen} \} \\
-\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales}} & \{ \tl{[} \} \\
-\regla{DimensionesOpcionales}{\eps} & \{ \eps \} \\
-\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}} & \{ \tl{idClase} \} \\
-\regla{TipoPrimitivo}{\tl{boolean}} & \{ \tl{boolean} \} \\
-\regla{TipoPrimitivo}{\tl{char}} & \{ \tl{char} \} \\
-\regla{TipoPrimitivo}{\tl{int}} & \{ \tl{int} \} \\
-\regla{TipoPrimitivo}{\tl{float}} & \{ \tl{float} \} \\
-\regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>}} & \{ \tl{<} \} \\
-\regla{TipoGenericoOpcional}{\eps} & \{ \eps \} \\
-\regla{ArgumentoDeTipo}{\tl{idGen}} & \{ \tl{idGen} \} \\
-\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}} & \{ \tl{idClase} \} \\
-\regla{ArgumentoDeTipo}{\tl{idClase}} & \{ \tl{idClase} \} \\
-\regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}} & \{ \tl{(} \} \\
-\regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\
-\regla{ListaArgsFormalesOpcional}{\eps} & \{ \eps \} \\
-\regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\
-\regla{RestoListaArgsFormales}{\tl{,} \nt{ArgFormal} \nt{RestoListaArgsFormales}} & \{ \tl{,} \} \\
-\regla{RestoListaArgsFormales}{\eps} & \{ \eps \} \\
-\regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \} \\
-\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}} & \{ \tl{\{} \} \\
-\regla{ListaSentencias}{\nt{Sentencia} \nt{ListaSentencias}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{;}, \tl{boolean}, \tl{char}, \tl{charLiteral}, \tl{false}, \tl{float}, \tl{floatLiteral}, \tl{for}, \tl{idClase}, \tl{idGen}, \tl{idMetVar}, \tl{if}, \tl{int}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{return}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{var}, \tl{while}, \tl{\{} \} \\
-\regla{ListaSentencias}{\eps} & \{ \eps \} \\
-\regla{Sentencia}{\tl{;}} & \{ \tl{;} \} \\
-\regla{Sentencia}{\nt{VarLocal} \tl{;}} & \{ \tl{var} \} \\
-\regla{Sentencia}{\nt{Return} \tl{;}} & \{ \tl{return} \} \\
-\regla{Sentencia}{\nt{If}} & \{ \tl{if} \} \\
-\regla{Sentencia}{\nt{While}} & \{ \tl{while} \} \\
-\regla{Sentencia}{\nt{Bloque}} & \{ \tl{\{} \} \\
-\regla{Sentencia}{\nt{For}} & \{ \tl{for} \} \\
-\regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
-\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}} & \{ \tl{idGen} \} \\
-\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}} & \{ \tl{idClase} \} \\
-\regla{SentenciaExpresion}{\nt{Expresion}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}} & \{ \tl{<}, \tl{[}, \tl{idMetVar} \} \\
-\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}} & \{ \tl{.} \} \\
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}} & \{ \tl{var} \} \\
-\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}} & \{ \tl{idMetVar} \} \\
-\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}} & \{ \tl{,} \} \\
-\regla{RestoListaDeclaradores}{\eps} & \{ \eps \} \\
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta}} & \{ \tl{=} \} \\
-\regla{InicializacionDeDeclarador}{\eps} & \{ \eps \} \\
-\regla{Return}{\tl{return} \nt{ExpresionOpcional}} & \{ \tl{return} \} \\
-\regla{ExpresionOpcional}{\nt{Expresion}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{ExpresionOpcional}{\eps} & \{ \eps \} \\
-\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}} & \{ \tl{if} \} \\
-\regla{ElseOpcional}{\tl{else} \nt{Sentencia}} & \{ \tl{else} \} \\
-\regla{ElseOpcional}{\eps} & \{ \eps \} \\
-\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}} & \{ \tl{while} \} \\
-\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}} & \{ \tl{for} \} \\
-\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}} & \{ \tl{;} \} \\
-\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}} & \{ \tl{var} \} \\
-\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
-\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}} & \{ \tl{idGen} \} \\
-\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}} & \{ \tl{idClase} \} \\
-\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}} & \{ \tl{<}, \tl{[}, \tl{idMetVar} \} \\
-\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}} & \{ \tl{.} \} \\
-\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}} & \{ \tl{:} \} \\
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}} & \{ \tl{=} \} \\
-\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}} & \{ \tl{:} \} \\
-\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}} & \{ \tl{;}, \tl{=} \} \\
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta}} & \{ \tl{=} \} \\
-\regla{InicializacionDeDeclaradorFor}{\eps} & \{ \eps \} \\
-\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}} & \{ \tl{;} \} \\
-\regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional}} & \{ \tl{=} \} \\
-\regla{RestoExpresion}{\eps} & \{ \eps \} \\
-\regla{OperadorAsignacion}{\tl{=}} & \{ \tl{=} \} \\
-\regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}} & \{ \tl{?} \} \\
-\regla{RestoCondicional}{\eps} & \{ \eps \} \\
-\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta}} & \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{||} \} \\
-\regla{RestoExpresionCompuesta}{\eps} & \{ \eps \} \\
-\regla{OperadorBinario}{\tl{||}} & \{ \tl{||} \} \\
-\regla{OperadorBinario}{\tl{\&\&}} & \{ \tl{\&\&} \} \\
-\regla{OperadorBinario}{\tl{==}} & \{ \tl{==} \} \\
-\regla{OperadorBinario}{\tl{!=}} & \{ \tl{!=} \} \\
-\regla{OperadorBinario}{\tl{<}} & \{ \tl{<} \} \\
-\regla{OperadorBinario}{\tl{>}} & \{ \tl{>} \} \\
-\regla{OperadorBinario}{\tl{<=}} & \{ \tl{<=} \} \\
-\regla{OperadorBinario}{\tl{>=}} & \{ \tl{>=} \} \\
-\regla{OperadorBinario}{\tl{+}} & \{ \tl{+} \} \\
-\regla{OperadorBinario}{\tl{-}} & \{ \tl{-} \} \\
-\regla{OperadorBinario}{\tl{*}} & \{ \tl{*} \} \\
-\regla{OperadorBinario}{\tl{/}} & \{ \tl{/} \} \\
-\regla{OperadorBinario}{\tl{\%}} & \{ \tl{\%} \} \\
-\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando}} & \{ \tl{!}, \tl{+}, \tl{-} \} \\
-\regla{ExpresionBasica}{\nt{Operando}} & \{ \tl{(}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{OperadorUnario}{\tl{+}} & \{ \tl{+} \} \\
-\regla{OperadorUnario}{\tl{-}} & \{ \tl{-} \} \\
-\regla{OperadorUnario}{\tl{!}} & \{ \tl{!} \} \\
-\regla{Operando}{\nt{Primitivo}} & \{ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} \} \\
-\regla{Operando}{\nt{Referencia} \nt{PosfijoOpcional}} & \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \} \\
-\regla{PosfijoOpcional}{\tl{++}} & \{ \tl{++} \} \\
-\regla{PosfijoOpcional}{\tl{-{}-}} & \{ \tl{-{}-} \} \\
-\regla{PosfijoOpcional}{\eps} & \{ \eps \} \\
-\regla{Primitivo}{\tl{true}} & \{ \tl{true} \} \\
-\regla{Primitivo}{\tl{false}} & \{ \tl{false} \} \\
-\regla{Primitivo}{\tl{intLiteral}} & \{ \tl{intLiteral} \} \\
-\regla{Primitivo}{\tl{charLiteral}} & \{ \tl{charLiteral} \} \\
-\regla{Primitivo}{\tl{null}} & \{ \tl{null} \} \\
-\regla{Primitivo}{\tl{floatLiteral}} & \{ \tl{floatLiteral} \} \\
-\regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}} & \{ \tl{!}, \tl{+}, \tl{-} \} \\
-\regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}} & \{ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} \} \\
-\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}} & \{ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \} \\
-\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \nt{RestoExpresion}} & \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps \} \\
-\regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}} & \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \} \\
-\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}} & \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \} \\
-\regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia}} & \{ \tl{.} \} \\
-\regla{RestoReferencia}{\nt{AccesoArreglo} \nt{RestoReferencia}} & \{ \tl{[} \} \\
-\regla{RestoReferencia}{\eps} & \{ \eps \} \\
-\regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}} & \{ \tl{.} \} \\
-\regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales}} & \{ \tl{(} \} \\
-\regla{EncadenadoAtributoOMetodo}{\eps} & \{ \eps \} \\
-\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}} & \{ \tl{[} \} \\
-\regla{Primario}{\nt{LlamadaMetodoEstatico}} & \{ \tl{idClase} \} \\
-\regla{Primario}{\nt{PrimarioSinIdClase}} & \{ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \} \\
-\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}} & \{ \tl{idClase} \} \\
-\regla{PrimarioSinIdClase}{\tl{this}} & \{ \tl{this} \} \\
-\regla{PrimarioSinIdClase}{\tl{stringLiteral}} & \{ \tl{stringLiteral} \} \\
-\regla{PrimarioSinIdClase}{\nt{ParentizadaOLambda}} & \{ \tl{(} \} \\
-\regla{PrimarioSinIdClase}{\nt{AccesoVarLlamadaOLambda}} & \{ \tl{idMetVar} \} \\
-\regla{PrimarioSinIdClase}{\nt{Creacion}} & \{ \tl{new} \} \\
-\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}} & \{ \tl{idMetVar} \} \\
-\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales}} & \{ \tl{(} \} \\
-\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}} & \{ \tl{->} \} \\
-\regla{AccesoLlamadaOLambda}{\eps} & \{ \eps \} \\
-\regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}} & \{ \tl{(} \} \\
-\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}} & \{ \tl{)} \} \\
-\regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}} & \{ \tl{)} \} \\
-\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}} & \{ \tl{,} \} \\
-\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}} & \{ \tl{->} \} \\
-\regla{FinDeParentizadaOLambda}{\eps} & \{ \eps \} \\
-\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}} & \{ \tl{idMetVar} \} \\
-\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda}} & \{ \tl{,} \} \\
-\regla{RestoListaParametrosLambda}{\eps} & \{ \eps \} \\
-\regla{CuerpoLambda}{\nt{Expresion}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{Creacion}{\tl{new} \nt{ArregloOInstancia}} & \{ \tl{new} \} \\
-\regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{CreacionDeArreglo}} & \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \} \\
-\regla{ArregloOInstancia}{\tl{idGen} \nt{CreacionDeArreglo}} & \{ \tl{idGen} \} \\
-\regla{ArregloOInstancia}{\tl{idClase} \nt{CreacionDesdeIdClase}} & \{ \tl{idClase} \} \\
-\regla{CreacionDesdeIdClase}{\tl{<} \nt{GenericoDeCreacion}} & \{ \tl{<} \} \\
-\regla{CreacionDesdeIdClase}{\nt{CreacionDeArreglo}} & \{ \tl{[} \} \\
-\regla{CreacionDesdeIdClase}{\nt{ArgsActuales}} & \{ \tl{(} \} \\
-\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}} & \{ \tl{>} \} \\
-\regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}} & \{ \tl{idClase}, \tl{idGen} \} \\
-\regla{ArregloOInstanciaDeClase}{\nt{CreacionDeArreglo}} & \{ \tl{[} \} \\
-\regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}} & \{ \tl{(} \} \\
-\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}} & \{ \tl{[} \} \\
-\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}} & \{ \tl{]} \} \\
-\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}} & \{ \tl{[} \} \\
-\regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio}} & \{ \tl{[} \} \\
-\regla{DimensionesConTamanioOpcional}{\eps} & \{ \eps \} \\
-\regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}} & \{ \tl{(} \} \\
-\regla{ListaExpsOpcional}{\nt{ListaExps}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{ListaExpsOpcional}{\eps} & \{ \eps \} \\
-\regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}} & \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \} \\
-\regla{RestoListaExps}{\tl{,} \nt{Expresion} \nt{RestoListaExps}} & \{ \tl{,} \} \\
-\regla{RestoListaExps}{\eps} & \{ \eps \} \\
-\bottomrule
-\end{longtable}
+\begingroup\small
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7ex}
+\raggedright
+\hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000
+\par\hangindent=2.2em\hangafter=1
+\regla{Inicial}{\nt{ListaClases} \tl{eof}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{class}, \tl{eof}, \tl{interface} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaClases}{\nt{Clase} \nt{ListaClases}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{class} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaClases}{\nt{Interfaz} \nt{ListaClases}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{interface} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaClases}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{class} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{interface} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{GenericidadOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{extends} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{HerenciaOpcional}{\tl{implements} \nt{TipoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{implements} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{HerenciaOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{extends} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExtensionOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaMiembros}{\nt{Miembro} \nt{ListaMiembros}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{private}, \tl{public}, \tl{static}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaMiembros}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaMetodosInterfaz}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{private}, \tl{public}, \tl{static}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Miembro}{\nt{MiembroSinVisibilidad}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{static}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Miembro}{\nt{Constructor}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{public} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{VisibilidadOpcional}{\tl{public}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{public} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{VisibilidadOpcional}{\tl{private}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{private} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{VisibilidadOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{public} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{static} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<}, \tl{[}, \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AtributoOMetodo}{\nt{InicializacionDeAtributo} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;}, \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeAtributo}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int}, \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoMetodo}{\nt{Tipo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoMetodo}{\tl{void}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{void} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoBase}{\nt{TipoPrimitivo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoBase}{\nt{TipoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoBase}{\tl{idGen}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesOpcionales}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoPrimitivo}{\tl{boolean}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoPrimitivo}{\tl{char}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{char} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoPrimitivo}{\tl{int}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoPrimitivo}{\tl{float}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{float} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{TipoGenericoOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgumentoDeTipo}{\tl{idGen}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgumentoDeTipo}{\tl{idClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaArgsFormalesOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaArgsFormales}{\tl{,} \nt{ArgFormal} \nt{RestoListaArgsFormales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaArgsFormales}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{idClase}, \tl{idGen}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaSentencias}{\nt{Sentencia} \nt{ListaSentencias}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{;}, \tl{boolean}, \tl{char}, \tl{charLiteral}, \tl{false}, \tl{float}, \tl{floatLiteral}, \tl{for}, \tl{idClase}, \tl{idGen}, \tl{idMetVar}, \tl{if}, \tl{int}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{return}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{var}, \tl{while}, \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaSentencias}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{VarLocal} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{var} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{Return} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{return} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{If}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{if} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{While}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{while} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{Bloque}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{For}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{for} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{SentenciaExpresion}{\nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<}, \tl{[}, \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{var} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaDeclaradores}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeDeclarador}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Return}{\tl{return} \nt{ExpresionOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{return} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionOpcional}{\nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{if} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ElseOpcional}{\tl{else} \nt{Sentencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{else} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ElseOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{while} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{for} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{var} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<}, \tl{[}, \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{:} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{:} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;}, \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializacionDeDeclaradorFor}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoExpresion}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorAsignacion}{\tl{=}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{?} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoCondicional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{||} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoExpresionCompuesta}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{||}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{||} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{\&\&}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\&\&} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{==}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{==} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{!=}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{<}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{>}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{>} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{<=}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{>=}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{>=} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{+}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{+} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{-}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{*}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{*} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{/}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{/} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorBinario}{\tl{\%}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\%} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{+}, \tl{-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionBasica}{\nt{Operando}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorUnario}{\tl{+}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{+} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorUnario}{\tl{-}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{OperadorUnario}{\tl{!}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Operando}{\nt{Primitivo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Operando}{\nt{Referencia} \nt{PosfijoOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PosfijoOpcional}{\tl{++}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{++} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PosfijoOpcional}{\tl{-{}-}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{-{}-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PosfijoOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{true}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{false}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{false} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{intLiteral}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{intLiteral} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{charLiteral}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{charLiteral} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{null}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{null} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primitivo}{\tl{floatLiteral}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{floatLiteral} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{+}, \tl{-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \nt{RestoExpresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoReferencia}{\nt{AccesoArreglo} \nt{RestoReferencia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoReferencia}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{EncadenadoAtributoOMetodo}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primario}{\nt{LlamadaMetodoEstatico}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Primario}{\nt{PrimarioSinIdClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PrimarioSinIdClase}{\tl{this}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PrimarioSinIdClase}{\tl{stringLiteral}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{stringLiteral} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PrimarioSinIdClase}{\nt{ParentizadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PrimarioSinIdClase}{\nt{AccesoVarLlamadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{PrimarioSinIdClase}{\nt{Creacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{new} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{->} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoLlamadaOLambda}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{)} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{)} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{->} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{FinDeParentizadaOLambda}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaParametrosLambda}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CuerpoLambda}{\nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{new} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{CreacionDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{boolean}, \tl{char}, \tl{float}, \tl{int} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArregloOInstancia}{\tl{idGen} \nt{CreacionDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArregloOInstancia}{\tl{idClase} \nt{CreacionDesdeIdClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CreacionDesdeIdClase}{\tl{<} \nt{GenericoDeCreacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{<} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CreacionDesdeIdClase}{\nt{CreacionDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CreacionDesdeIdClase}{\nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{>} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase}, \tl{idGen} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArregloOInstanciaDeClase}{\nt{CreacionDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{]} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesConTamanioOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaExpsOpcional}{\nt{ListaExps}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaExpsOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaExps}{\tl{,} \nt{Expresion} \nt{RestoListaExps}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaExps}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\endgroup

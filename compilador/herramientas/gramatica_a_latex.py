@@ -115,7 +115,7 @@ def producciones(ruta):
     for clase, contenido in bloques:
         if clase == "comentario":
             prosa = texto_comentario(" ".join(contenido), nts)
-            print(r"\noindent{\small\color{grisMedio}%s\par}" % prosa)
+            print(r"\noindent{\small %s\par}" % prosa)
             print()
             continue
         print(r"\begin{producciones}")
@@ -134,8 +134,7 @@ def producciones(ruta):
             )
             etiqueta = ""
             if marca:
-                etiqueta = (r"\hfill\mbox{\footnotesize\color{grisMedio}"
-                            r"[%s\,\texttt{%s}]}" % (marca[0], escapar(marca[1:])))
+                etiqueta = r"\marca{%s}{%s}" % (marca[0], escapar(marca[1:]))
             print(r"\regla{%s}{%s}%s" % (izq.strip(), derecha, etiqueta))
         print(r"\end{producciones}")
         print()
@@ -145,10 +144,15 @@ def tabla_primeros(ruta):
     _, g, _ = leer(ruta)
     vaciables, primeros_nt, _ = analizar(g)
     nts = g.no_terminales
-    print(r"\begin{longtable}{@{}p{0.30\textwidth}p{0.63\textwidth}@{}}")
-    print(r"\toprule")
-    print(r"\textbf{Producción} & \textbf{Primeros} \\")
-    print(r"\midrule\endhead")
+    # Dos columnas angostas no alcanzan: un no terminal como
+    # <InicializacionDeDeclarador> no se puede partir y desborda sobre la
+    # columna de al lado. Se usa una sola columna a lo ancho de la caja, con la
+    # producción en un renglón y sus Primeros sangrados debajo.
+    print(r"\begingroup\small")
+    print(r"\setlength{\parindent}{0pt}")
+    print(r"\setlength{\parskip}{0.7ex}")
+    print(r"\raggedright")
+    print(r"\hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000")
     for nt in nts:
         for cuerpo in g.por_izquierda[nt]:
             conjunto = primeros_de_secuencia(g, primeros_nt, vaciables, cuerpo)
@@ -157,9 +161,13 @@ def tabla_primeros(ruta):
             texto = ", ".join(r"\tl{%s}" % escapar(c) for c in items)
             if EPSILON in conjunto:
                 texto = (texto + ", " if texto else "") + r"\eps"
-            print(r"\regla{%s}{%s} & \{ %s \} \\" % (nt, derecha, texto))
-    print(r"\bottomrule")
-    print(r"\end{longtable}")
+            print(r"\par\hangindent=2.2em\hangafter=1")
+            print(r"\regla{%s}{%s}\nobreak\par" % (nt, derecha))
+            # Los Primeros van en su propio bloque sangrado, para que al cortarse
+            # la continuación no vuelva al margen y se confunda con una producción.
+            print(r"{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ %s \}\par}"
+                  % texto)
+    print(r"\endgroup")
 
 
 if __name__ == "__main__":

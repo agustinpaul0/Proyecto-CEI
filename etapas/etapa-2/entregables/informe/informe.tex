@@ -11,34 +11,34 @@
 \raggedright
 \vspace*{2.2cm}
 
-{\color{grisMedio}\footnotesize\sffamily
+{\color{acento}\footnotesize\sffamily
 UNIVERSIDAD NACIONAL DEL SUR\\
 Departamento de Ciencias e Ingeniería de la Computación\\
 Compiladores e Intérpretes --- Segundo Cuatrimestre de 2026\par}
 
 \vspace{2.4cm}
-{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+{\color{filete}\rule{\textwidth}{0.6pt}}
 \vspace{1.1cm}
 
 {\Huge\bfseries\color{acento} Compilador de MiniJava\par}
 \vspace{0.5cm}
 {\LARGE\color{tinta} Etapa 2 --- Analizador Sintáctico\\[0.25cm]
-\large\color{grisMedio} Descendente Recursivo Predictivo\par}
+\large\color{acento} Descendente Recursivo Predictivo\par}
 
 \vspace{1.1cm}
-{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+{\color{filete}\rule{\textwidth}{0.6pt}}
 
 \vspace{2.6cm}
 {\large\color{tinta} Agustín Paul\par}
 \vspace{0.35cm}
-{\color{grisMedio} Informe de entrega\par}
+{\color{acento} Informe de entrega\par}
 
 \vfill
-{\color{grisMedio}\footnotesize
+{\color{tinta}\footnotesize
 Transformación de la gramática a LL(1), paso a paso.\\
 Las nueve extensiones por logro y su verificación.\par}
 \vspace{0.6cm}
-{\color{grisMedio}\footnotesize \today\par}
+{\color{tinta}\footnotesize \today\par}
 \end{titlepage}
 
 % ===========================================================================
@@ -47,14 +47,1256 @@ Las nueve extensiones por logro y su verificación.\par}
 \newpage
 \setcounter{page}{1}
 
-\input{secciones/01-alcance}
-\input{secciones/02-notacion}
-\input{secciones/03-gramatica-original}
-\input{secciones/04-diagnostico}
-\input{secciones/05-transformaciones}
-\input{secciones/06-logros}
-\input{secciones/07-gramatica-final}
-\input{secciones/08-verificacion}
-\input{secciones/09-herramientas-ia}
+
+% ===========================================================================
+\section{Alcance}
+% ===========================================================================
+
+Este informe documenta la Etapa 2 del compilador de \textsc{MiniJava}: el \textbf{Analizador
+Sintáctico Descendente Recursivo Predictivo}. Su objeto central es la \textbf{gramática}: se
+parte de la que publica la cátedra, se la diagnostica, se la corrige a LL(1) paso a
+paso, se la extiende con los nueve logros perseguidos y se verifica el resultado.
+
+El criterio de exposición es que \textbf{cada corrección quede localizada en un paso concreto}.
+Por eso las transformaciones no se presentan como un salto de la gramática vieja a la nueva, sino
+en cuatro pasos:
+
+\begin{enumerate}
+  \item la \textbf{regla original}, tal cual el documento de la cátedra;
+  \item el \textbf{defecto} detectado, con los conjuntos de Primeros que se solapan;
+  \item la \textbf{transformación} aplicada, citando el esquema de la teoría que la justifica;
+  \item el \textbf{resultado} y la verificación de que los Primeros quedan disjuntos.
+\end{enumerate}
+
+\subsection{Qué está y qué no está en este informe}
+
+Está la gramática y su tratamiento. No está la implementación en Java del analizador, que se
+describe en la documentación técnica del repositorio; sí está, en cambio, todo lo que la
+implementación necesita decidir antes de escribirse: qué producción elegir ante cada token, dónde
+la gramática es ambigua y con qué criterio se resuelve, y qué construcciones quedan deliberadamente
+fuera del alcance del análisis sintáctico.
+
+\subsection{Qué chequea y qué no chequea un analizador sintáctico}
+\label{sec:alcance-chequeos}
+
+Conviene fijarlo desde el principio, porque delimita todo lo que sigue.
+
+El analizador sintáctico verifica que la secuencia de tokens esté en un orden que la gramática
+pueda generar: la estructura de clases, interfaces, miembros, bloques y sentencias; que los
+delimitadores abran y cierren; que una expresión esté bien formada; que un método tenga cuerpo y
+un método de interfaz no.
+
+No verifica nada que dependa del \emph{significado} de los nombres. Todo lo siguiente atraviesa el
+análisis sintáctico sin objeción y corresponde al analizador semántico:
+
+\begin{center}
+\begin{tabular}{@{}p{0.46\textwidth}p{0.44\textwidth}@{}}
+\toprule
+\textbf{Pasa el análisis sintáctico} & \textbf{Por qué es semántico} \\
+\midrule
+\texttt{int x = "hola";}                    & compatibilidad de tipos \\
+\texttt{noDeclarada = 5;}                   & declaración y alcance de nombres \\
+\texttt{5 = x;}                             & que el lado izquierdo sea asignable \\
+\texttt{class A extends UnaInterfaz \{\}}   & que el padre sea realmente una clase \\
+\texttt{m(1,2,3)} con \texttt{m} de un argumento & aridad contra la declaración \\
+\texttt{int x; int x;}                      & declaraciones duplicadas \\
+\texttt{return;} en un método \texttt{int}  & compatibilidad del valor de retorno \\
+una lambda que usa una variable de afuera   & captura de variables \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El último caso merece atención porque afecta a un logro. El enunciado de \emph{MiniLambdas E2}
+prohíbe la captura de variables locales y de parámetros, pero eso \textbf{no es decidible
+sintácticamente}: el analizador no sabe qué nombres están en alcance en cada punto. Lo único de
+ese logro que la gramática puede imponer es la \emph{forma} --- parámetros sin tipo, cuerpo de una
+única expresión, sin llaves --- y así se hace. La restricción sobre la captura queda anotada como
+responsabilidad del analizador semántico.
+
+% ===========================================================================
+\section{Notación}
+\label{sec:notacion}
+% ===========================================================================
+
+Se usa la misma notación BNF-extendida del documento \emph{Reglas de Sintaxis de MiniJava} de la cátedra, con la misma convención tipográfica, para que las reglas de este
+informe se puedan comparar renglón a renglón con las de aquél.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Elemento} & \textbf{Significado} \\
+\midrule
+\tl{terminal}            & símbolo terminal \\
+\nt{Clase}               & símbolo no terminal (primera letra mayúscula) \\
+\eps                     & la cadena vacía \\
+\nt{X} \deriva{} $\alpha$              & una producción, con $\alpha$ una secuencia de terminales y no terminales \\
+\nt{X} \deriva{} $\alpha$ \alt{} $\beta$ & abreviación de \nt{X} \deriva{} $\alpha$ y \nt{X} \deriva{} $\beta$ \\
+$\prim{\beta}$           & conjunto de terminales que pueden aparecer primeros en $\beta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El no terminal inicial es \nt{Inicial}.
+
+\subsection{El criterio LL(1)}
+
+Una gramática es LL(1) si, para todo no terminal $A$ con producciones
+$A \to \beta_1 \mid \beta_2 \mid \dots \mid \beta_n$, se cumple para todo $i \neq j$:
+
+\[ \prim{\beta_i} \cap \prim{\beta_j} = \varnothing \]
+
+Sólo con esa condición un único token de anticipación alcanza para elegir la producción correcta
+sin necesidad de \emph{backtracking}. Cuando la condición no se cumple, la gramática debe
+adaptarse \textbf{sin cambiar el lenguaje que genera}, que es la restricción que gobierna todas
+las transformaciones de este informe.
+
+\subsection{Dos defectos distintos que conviene no confundir}
+\label{sec:dos-defectos}
+
+Buena parte del trabajo consistió en separar dos cosas que se parecen y no son lo mismo.
+
+\begin{ambiguedad}{el lenguaje está mal descripto}
+Existe una cadena con \textbf{dos árboles de derivación distintos}. No queda determinado qué
+significa el programa. No siempre se puede arreglar reescribiendo: a veces hay que \emph{elegir}
+cuál de los dos significados vale.
+\end{ambiguedad}
+
+\begin{conflicto}{el analizador no puede predecir}
+Dos producciones del mismo no terminal comparten Primeros. La cadena sigue teniendo \textbf{un
+solo} árbol; lo que falla es que el analizador no puede saber cuál producción aplicar mirando un
+token. Se corrige factorizando o eliminando recursión, y el lenguaje generado \textbf{no cambia}.
+\end{conflicto}
+
+Todo par de producciones que comparte prefijo izquierdo produce un conflicto LL(1); no
+todo par que comparte prefijo izquierdo es ambiguo. Si los dos lados derivan lenguajes disjuntos,
+no hay ninguna cadena con dos árboles.
+
+Un criterio suficiente y barato para probar esa disyunción es comparar los \textbf{rangos de
+longitud derivable}: si no se solapan, los lenguajes son disjuntos y no puede haber ambigüedad.
+Se aplica en la sección~\ref{sec:diagnostico} y decide varios de los casos.
+
+% ===========================================================================
+\section{La gramática original, comentada}
+% ===========================================================================
+
+Antes de tocar nada, un recorrido por la gramática de la cátedra explicando qué modela cada regla
+y \textbf{por qué está escrita así}. Varias decisiones de forma que parecen arbitrarias son en
+realidad restricciones del lenguaje impuestas por la gramática, y perderlas al transformar sería
+cambiar \textsc{MiniJava}.
+
+\subsection{Estructura del programa}
+
+\begin{producciones}
+\regla{Inicial}{\nt{ListaClases} \tl{eof}}
+\regla{ListaClases}{\nt{Clase} \nt{ListaClases} \alt{} \nt{Interfaz} \nt{ListaClases} \alt{} \eps}
+\end{producciones}
+
+El \tl{eof} no es decoración: cumple la función del \tl{\$} de la teoría y obliga al analizador a
+consumir \emph{todo} el archivo. Sin él, un programa con símbolos sobrantes después de la última
+clase se aceptaría, porque \nt{ListaClases} puede derivar a vacío y el análisis terminaría dejando
+tokens sin leer. En el léxico de la Etapa 1, \tl{eof} es un token con lexema \texttt{\$}.
+
+\nt{ListaClases} usa \textbf{recursión a derecha}, que es la forma natural de expresar «cero o
+más» en una gramática destinada al análisis descendente. La variante con recursión a izquierda
+generaría el mismo lenguaje y sería inservible.
+
+\begin{producciones}
+\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}}
+\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
+\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
+\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements} \nt{TipoReferencia} \alt{} \eps}
+\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \eps}
+\end{producciones}
+
+Clase e interfaz son casi simétricas, con tres diferencias deliberadas. Primero, la interfaz sólo
+admite \tl{extends} y la clase admite \tl{extends} o \tl{implements}: por eso hay dos no terminales
+distintos en vez de uno compartido, y la restricción queda impuesta \emph{por la gramática} en
+lugar de delegarse al análisis semántico. Segundo, la interfaz sólo contiene métodos. Tercero,
+\nt{HerenciaOpcional} tiene tres alternativas y no una combinación, lo que impide
+\texttt{extends A implements B} --- válido en Java, no en \textsc{MiniJava}.
+
+\nt{GenericidadOpcional} admite un \textbf{único} \tl{idGen}, no una lista: \textsc{MiniJava}
+limita a un solo parámetro de tipo, y el logro \emph{Genericidad Avanzada E2} confirma que esa
+limitación se mantiene.
+
+\subsection{Miembros}
+
+\begin{producciones}
+\regla{Miembro}{\nt{Atributo} \alt{} \nt{Metodo} \alt{} \nt{Constructor}}
+\regla{Atributo}{\nt{Tipo} \tl{idMetVar} \tl{;}}
+\regla{Metodo}{\nt{ModificadorOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
+\regla{ModificadorOpcional}{\tl{static} \alt{} \eps}
+\regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
+\end{producciones}
+
+El \tl{public} del constructor \textbf{no es un modificador de visibilidad}: es lo que
+sintácticamente lo distingue de todo lo demás. Por eso ni el atributo ni el método lo llevan. Este
+detalle importa: el logro \emph{Visibilidad Mejorada E2} le saca esa función al \tl{public} y con
+eso crea un conflicto nuevo (sección~\ref{sec:logro-visibilidad}).
+
+\nt{Tipo} y \nt{TipoMetodo} están separados sólo para que \tl{void} sea un tipo de retorno válido
+y no un tipo de variable válido: así \texttt{void x;} es imposible sin ningún chequeo adicional.
+
+\nt{MetodoInterfaz} termina en \tl{;} y no tiene cuerpo. La diferencia con \nt{Metodo} está en el
+último símbolo, y como se usan desde no terminales distintos nunca compiten.
+
+\subsection{Tipos}
+
+\begin{producciones}
+\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
+\regla{TipoBase}{\nt{TipoPrimitivo} \alt{} \nt{TipoReferencia} \alt{} \tl{idGen}}
+\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales} \alt{} \eps}
+\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
+\regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
+\regla{TipoGenericoOpcional}{\tl{<} \nt{InstanciadoOParametrico} \tl{>} \alt{} \eps}
+\regla{InstanciadoOParametrico}{\tl{idGen} \alt{} \tl{idClase}}
+\end{producciones}
+
+Las tres familias de \nt{TipoBase} se distinguen con un solo token porque \textbf{el léxico ya
+separó} \tl{idClase} de \tl{idGen} --- un \tl{idGen} es una única letra mayúscula. Es un buen
+ejemplo de una decisión léxica que le simplifica la vida al analizador sintáctico.
+
+\nt{InstanciadoOParametrico} nombra los dos usos de los ángulos: \emph{instanciado}
+(\texttt{Lista<Persona>}, se fija un tipo concreto) y \emph{paramétrico} (\texttt{Lista<T>} dentro
+de una clase genérica, se propaga el parámetro). No admite anidamiento ni notación diamante: las
+dos cosas las agrega un logro.
+
+\begin{decision}{transcripción de \texttt{[]}}
+El documento de la cátedra escribe \tl{[]} como si fuera un símbolo, pero léxicamente son
+\textbf{dos} tokens: \emph{Aspectos Léxicos de MiniJava} no define ningún token
+\texttt{[]}. En este informe se escribe \tl{[} \tl{]}, que es lo que el analizador tiene que
+reconocer. Es la única desviación deliberada de la literalidad del documento original.
+\end{decision}
+
+\subsection{Sentencias}
+
+\begin{producciones}
+\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
+\regla{Sentencia}{\tl{;} \alt{} \nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;} \alt{} \nt{VarLocal} \tl{;} \alt{} \nt{Return} \tl{;}}
+\regla{Sentencia}{\nt{If} \alt{} \nt{While} \alt{} \nt{Bloque}}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
+\regla{Return}{\tl{return} \nt{ExpresionOpcional}}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \tl{else} \nt{Sentencia}}
+\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\end{producciones}
+
+Las cuatro primeras alternativas de \nt{Sentencia} llevan el \tl{;} explícito para que quede
+visible en la regla; las tres últimas no lo llevan porque terminan en \tl{\}} o en otra sentencia.
+La alternativa \tl{;} sola es la sentencia vacía.
+
+\nt{VarLocal} declara \textbf{sólo con} \tl{var} y \textbf{siempre} con inicialización: en la
+\textsc{MiniJava} base no existe \texttt{int x;}. Además usa \nt{ExpresionCompuesta} y no
+\nt{Expresion} a la derecha del \tl{=}, lo que impide \texttt{var x = y = 3;}. Es una regla más
+restrictiva a propósito.
+
+\subsection{Expresiones}
+
+Conviene leerlas como una pila de capas, cada una llamando a la de abajo. Ese encadenamiento es lo
+que fija qué se agrupa con qué.
+
+\begin{producciones}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{OperadorAsignacion} \nt{ExpresionCompuesta}}
+\regla{Expresion}{\nt{ExpresionCompuesta}}
+\regla{OperadorAsignacion}{\tl{=}}
+\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
+\regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
+\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando} \alt{} \nt{Operando}}
+\regla{OperadorUnario}{\tl{+} \alt{} \tl{-} \alt{} \tl{!}}
+\regla{Operando}{\nt{Primitivo} \alt{} \nt{Referencia}}
+\regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
+\end{producciones}
+
+Dos observaciones que condicionan todo lo que sigue.
+
+\textbf{La asignación no es asociativa.} El lado derecho del \tl{=} es una \nt{ExpresionCompuesta},
+no una \nt{Expresion}. En consecuencia \texttt{a = b = c} \textbf{no es un programa
+MiniJava válido}. Es fácil pasarlo por alto y «mejorarlo» al transformar; hacerlo
+agrandaría el lenguaje.
+
+\textbf{No hay niveles de precedencia entre operadores binarios.} Los trece operadores están en una
+única alternancia plana, sin la jerarquía habitual de un no terminal por nivel. Por lo tanto
+\texttt{a + b * c} y \texttt{a * b + c} se derivan con la misma forma: la precedencia y la
+asociatividad no están en la gramática de \textsc{MiniJava}, y darles lugar sería cambiar el
+lenguaje. Como corolario, eliminar la recursión a izquierda de \nt{ExpresionCompuesta} no pierde
+nada, porque no había precedencia que perder.
+
+\subsection{Referencias y primarios}
+
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \alt{} \nt{Referencia} \nt{VarEncadenada} \alt{} \nt{Referencia} \nt{MetodoEncadenado} \alt{} \nt{Referencia} \nt{AccesoArreglo}}
+\regla{Primario}{\tl{this} \alt{} \tl{stringLiteral} \alt{} \nt{AccesoVar} \alt{} \nt{CrearArreglo}}
+\regla{Primario}{\nt{LlamadaConstructor} \alt{} \nt{LlamadaMetodo} \alt{} \nt{LlamadaMetodoEstatico} \alt{} \nt{ExpresionParentizada}}
+\regla{AccesoVar}{\tl{idMetVar}}
+\regla{LlamadaMetodo}{\tl{idMetVar} \nt{ArgsActuales}}
+\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{CrearArreglo}{\tl{new} \nt{TipoBase} \nt{DimensionesConTamanio}}
+\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
+\regla{VarEncadenada}{\tl{.} \tl{idMetVar}}
+\regla{MetodoEncadenado}{\tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}
+\end{producciones}
+
+\nt{Referencia} modela una cadena como \texttt{this.lista.get(3).nombre[0]}: se arranca de un
+\nt{Primario} y se le cuelgan eslabones. La recursión a izquierda expresa que la cadena se asocia
+hacia la izquierda, que es lo correcto: \texttt{a.b.c} es \texttt{(a.b).c}.
+
+\tl{stringLiteral} está en \nt{Primario} y no en \nt{Primitivo} \textbf{a propósito}: de un
+\emph{String} se pueden colgar eslabones (\texttt{"hola".length()}) y de un \tl{intLiteral} no.
+Por el mismo motivo está \nt{ExpresionParentizada}, que habilita \texttt{(a + b).metodo()}.
+
+Ningún \nt{Primario} deriva un \tl{idClase} suelto: no existe la referencia a una clase por sí
+sola, siempre tiene que ser \texttt{C.metodo(\dots)}. Ese hecho se usa más adelante.
+
+\subsection{Construcciones que faltan}
+
+Tres ausencias, que no son errores sino el espacio que dejan los logros:
+
+\begin{itemize}
+  \item \tl{++} y \tl{-{}-} son tokens del léxico --- \emph{Aspectos Léxicos} \S2.4.2 los lista ---
+        pero \textbf{no aparecen en ninguna regla}. \nt{OperadorUnario} es sólo
+        \tl{+} \alt{} \tl{-} \alt{} \tl{!}. Son tokens sin lugar hasta el logro
+        \emph{Operadores Posifijos E2}.
+  \item \tl{float} y \tl{floatLiteral} tampoco tienen lugar, y el léxico de la Etapa 1 los emite
+        por un logro de aquella etapa. Sin extender la gramática, ese logro queda inutilizable.
+  \item \tl{for}, \tl{private}, \tl{?} y \tl{->} no están \textbf{ni en la gramática ni en el
+        léxico}: los agregan cuatro de los logros de esta etapa, y por lo tanto exigen tocar
+        también el analizador léxico.
+\end{itemize}
+
+% ===========================================================================
+\section{Diagnóstico}
+\label{sec:diagnostico}
+% ===========================================================================
+
+La gramática de la cátedra \textbf{no es LL(1)}. Verificando la condición
+$\prim{\beta_i} \cap \prim{\beta_j} = \varnothing$ sobre todas las producciones aparecen
+\textbf{dieciséis conflictos} repartidos en \textbf{diez no terminales}.
+
+\begin{center}
+\begin{longtable}{@{}clp{0.30\textwidth}p{0.30\textwidth}@{}}
+\toprule
+\textbf{\#} & \textbf{No terminal} & \textbf{Defecto} & \textbf{Intersección} \\
+\midrule\endhead
+1     & \nt{Miembro}               & prefijo común profundo      & \tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen} \\
+2     & \nt{ListaArgsFormales}     & recursión a izquierda       & ídem \\
+3     & \nt{Sentencia}             & \textbf{ambigüedad}         & todos los de \nt{Expresion} \\
+4     & \nt{If}                    & prefijo común               & \tl{if} \\
+5     & \nt{Expresion}             & prefijo común               & todos los de \nt{ExpresionCompuesta} \\
+6     & \nt{ExpresionCompuesta}    & recursión a izquierda       & todos los de \nt{ExpresionBasica} \\
+7--12 & \nt{Referencia}            & recursión a izquierda, tres alternativas (seis pares) & todos los de \nt{Primario} \\
+13    & \nt{Primario}              & prefijo común               & \tl{idMetVar} \\
+14    & \nt{Primario}              & prefijo común a dos niveles & \tl{new} \\
+15    & \nt{DimensionesConTamanio} & prefijo común               & \tl{[} \\
+16    & \nt{ListaExps}             & prefijo común               & todos los de \nt{Expresion} \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Cuántos de esos dieciséis son ambigüedades}
+
+Siguiendo el criterio de la sección~\ref{sec:dos-defectos}, se clasificó cada par. El resultado es
+que \textbf{sólo dos} de los dieciséis son ambigüedades reales; los otros catorce son conflictos
+de predicción que se corrigen mecánicamente sin alterar el lenguaje.
+
+\begin{center}
+\begin{tabular}{@{}llp{0.30\textwidth}@{}}
+\toprule
+\textbf{Par} & \textbf{Longitudes derivables} & \textbf{Veredicto} \\
+\midrule
+\nt{VarEncadenada} / \nt{MetodoEncadenado}   & $2..2$ vs.\ $4..\infty$ & no ambiguo \\
+\nt{AccesoVar} / \nt{LlamadaMetodo}          & $1..1$ vs.\ $3..\infty$ & no ambiguo \\
+\nt{CrearArreglo} / \nt{LlamadaConstructor}  & se solapan              & no ambiguo (argumento posicional) \\
+\nt{Atributo} / \nt{Metodo}                  & se solapan              & no ambiguo (argumento posicional) \\
+\nt{Asignacion} / \nt{Llamada}               & se solapan              & \textbf{ambiguo} \\
+las dos producciones de \nt{If}              & se solapan              & \textbf{ambiguo} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El caso de \nt{VarEncadenada} y \nt{MetodoEncadenado} es el más ilustrativo y el que más se
+confunde. \nt{VarEncadenada} deriva \textbf{exactamente} la cadena \tl{.} \tl{idMetVar}: dos
+tokens, sin alternativas. \nt{MetodoEncadenado} es \tl{.} \tl{idMetVar} \nt{ArgsActuales}, y
+\nt{ArgsActuales} \textbf{no es vaciable} --- siempre aporta al menos \tl{(} y \tl{)} --- de modo
+que deriva cuatro tokens como mínimo. Los rangos no se solapan, \textbf{ninguna cadena puede estar
+en los dos lenguajes} y por lo tanto ninguna cadena tiene dos árboles. Comparten prefijo
+izquierdo; eso rompe LL(1) y se arregla factorizando, pero no es ambigüedad.
+
+Para los dos pares cuyos rangos sí se solapan el argumento es posicional en lugar de por longitud:
+\nt{CrearArreglo} y \nt{LlamadaConstructor} comparten \tl{new} y el tipo, pero
+\nt{DimensionesConTamanio} siempre arranca con \tl{[} y \nt{ArgsActuales} siempre con \tl{(}, así
+que las cadenas difieren en el token inmediatamente posterior al tipo; \nt{Atributo} y \nt{Metodo}
+comparten \nt{Tipo} \tl{idMetVar} y siguen con \tl{;} y con \tl{(} respectivamente.
+
+\subsection{Las dos ambigüedades}
+
+\begin{ambiguedad}{\nt{Asignacion} y \nt{Llamada} son la misma producción}
+\begin{producciones}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\end{producciones}
+Los cuerpos son \textbf{idénticos}, y \nt{Sentencia} los usa en dos alternativas también
+idénticas. En consecuencia \emph{toda} sentencia-expresión tiene dos árboles de derivación --- uno
+por \nt{Asignacion} y otro por \nt{Llamada} --- y la gramática no ofrece ningún criterio para
+elegir. Presumiblemente están así para documentar la intención: en una sentencia-expresión uno
+espera una asignación o una llamada. Pero sintácticamente \texttt{x = 5} y \texttt{f()} son las
+dos una \nt{Expresion}, y la gramática no puede distinguirlas.
+\end{ambiguedad}
+
+\begin{ambiguedad}{el \emph{dangling else}}
+En \texttt{if (a) if (b) s1; else s2;} el \tl{else} puede ligar al \tl{if} interno o al externo:
+dos árboles para la misma cadena. Es la ambigüedad clásica, presente tal cual en la gramática.
+\end{ambiguedad}
+
+Ambas se resuelven en la sección~\ref{sec:transformaciones}, y en los dos casos hay que
+\emph{decidir} un significado, no sólo reescribir.
+
+% ===========================================================================
+\section{Transformaciones}
+\label{sec:transformaciones}
+% ===========================================================================
+
+\subsection{Orden de trabajo y criterios}
+
+\textbf{Primero eliminar la recursión a izquierda, después factorizar.} El orden importa porque
+eliminar la recursión genera producciones nuevas sin factorizar; la
+sección~\ref{sec:r3} es el caso concreto donde eso ocurre.
+
+\textbf{No factorizar de más.} Las reglas originales tienen significado y el analizador semántico
+de la Etapa 3 lo va a necesitar. En la práctica eso se tradujo en cuatro criterios:
+
+\begin{itemize}
+  \item se conserva el nombre original siempre que la regla sobreviva;
+  \item los no terminales nuevos llevan \textbf{nombres semánticos en español}
+        (\nt{RestoExpresionCompuesta}, no \nt{ExpresionCompuesta'});
+  \item cuando dos no terminales originales se fusionan a la fuerza, se dice cuáles y por qué;
+  \item ante la disyuntiva entre fusionar y \textbf{insertar un no terminal}, se inserta.
+\end{itemize}
+
+\begin{decision}{insertar el no terminal, no fusionar}
+Al factorizar un prefijo hay dos caminos. \emph{Fusionar} es meter los cuerpos de los no terminales
+involucrados dentro del padre y borrarlos: quedan menos no terminales, pero el punto donde se
+decide \emph{qué construcción era} pierde el nombre, y el analizador semántico pierde el lugar
+donde colgar el nodo del árbol. \emph{Insertar un no terminal} es factorizar el prefijo y poner la
+disyuntiva restante en un no terminal nuevo y dedicado, cuyo nombre dice qué se está decidiendo:
+un no terminal más, pero se traduce a un método del analizador que \textbf{es} el punto de decisión
+semántica.
+
+Se adopta siempre la segunda, con dos corolarios. \textbf{Un no terminal de decisión por contexto,
+aunque la forma coincida}: dos disyuntivas con la misma pinta pero distinto significado no se
+comparten. Y \textbf{compartir sí cuando es literalmente la misma construcción}: \nt{CuerpoDeMetodo}
+se usa desde método, constructor y método \tl{static} porque en los tres casos es lo mismo.
+\end{decision}
+
+\subsection{Eliminación de recursión a izquierda}
+
+El esquema general:
+\[ A \to A\alpha_1 \mid \dots \mid A\alpha_n \mid \beta_1 \mid \dots \mid \beta_m
+\quad\Longrightarrow\quad
+\begin{cases} A \to \beta_1 R \mid \dots \mid \beta_m R \\ R \to \alpha_1 R \mid \dots \mid \alpha_n R \mid \epsilon \end{cases} \]
+
+\subsubsection{R1 --- \nt{ListaArgsFormales}}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{ListaArgsFormales}{\nt{ArgFormal}}
+\regla{ListaArgsFormales}{\nt{ListaArgsFormales} \tl{,} \nt{ArgFormal}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda directa. Ambas alternativas tienen
+$\prim{\nt{ArgFormal}} = \prim{\nt{Tipo}} = \{$\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase},
+\tl{idGen}$\}$. Un analizador recursivo que intentara la segunda producción se llamaría a sí mismo
+sin haber consumido ningún token: recursión infinita.
+
+\paso{3. Transformación} Esquema directo, con $\alpha_1 =$ \tl{,} \nt{ArgFormal} y
+$\beta_1 =$ \nt{ArgFormal}.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}
+\regla{RestoListaArgsFormales}{\tl{,} \nt{ArgFormal} \nt{RestoListaArgsFormales} \alt{} \eps}
+\end{producciones}
+$\{$\tl{,}$\}$ contra $\{\epsilon\}$: disjuntos.
+
+\subsubsection{R2 --- \nt{ExpresionCompuesta}}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda directa; es el caso canónico $E \to E + T \mid T$.
+
+\paso{3. Transformación} Esquema directo.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
+\regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
+\end{producciones}
+Los trece operadores binarios contra $\{\epsilon\}$: disjuntos. Como se señaló, la gramática
+original ya era plana en precedencia, así que la transformación no pierde nada.
+
+\subsubsection{R3 --- \nt{Referencia}, y el conflicto que la transformación genera}
+\label{sec:r3}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{Referencia}{\nt{Primario}}
+\regla{Referencia}{\nt{Referencia} \nt{VarEncadenada}}
+\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
+\regla{Referencia}{\nt{Referencia} \nt{AccesoArreglo}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda con \emph{tres} alternativas recursivas: las cuatro
+producciones tienen los Primeros de \nt{Primario}, lo que da los seis pares en conflicto.
+
+\paso{3. Transformación} Esquema directo con $\beta_1 = $ \nt{Primario} y los tres eslabones como
+$\alpha_i$.
+
+\paso{4. Resultado intermedio, con un defecto nuevo}
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
+\regla{RestoReferencia}{\nt{VarEncadenada} \nt{RestoReferencia} \alt{} \nt{MetodoEncadenado} \nt{RestoReferencia} \alt{} \nt{AccesoArreglo} \nt{RestoReferencia} \alt{} \eps}
+\end{producciones}
+$\prim{\nt{VarEncadenada}} = \prim{\nt{MetodoEncadenado}} = \{$\tl{.}$\}$: \textbf{siguen
+chocando}. Es exactamente el fenómeno que obliga a hacer la recursión antes que la factorización.
+
+\paso{5. Factorización del defecto nuevo} Los dos comparten \emph{todo} el prefijo y sólo se
+distinguen por si después viene un \tl{(}. Se fusionan, y la disyuntiva va a un no terminal
+dedicado.
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
+\regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia} \alt{} \nt{AccesoArreglo} \nt{RestoReferencia} \alt{} \eps}
+\regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}}
+\regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales} \alt{} \eps}
+\end{producciones}
+$\{$\tl{.}$\}$, $\{$\tl{[}$\}$, $\{\epsilon\}$: disjuntos.
+
+\begin{decision}{costo semántico de R3, declarado}
+Se pierde la distinción entre \nt{VarEncadenada} (acceso a un atributo de otro objeto) y
+\nt{MetodoEncadenado} (llamada encadenada). Es una pérdida \textbf{inevitable}: sintácticamente son
+indistinguibles hasta ver el token siguiente. Queda mitigada por el no terminal insertado:
+\nt{EncadenadoAtributoOMetodo} \emph{es} el punto donde el analizador decide cuál de las dos era,
+según haya derivado a vacío o no. El nombre lo dice.
+\end{decision}
+
+\subsection{Factorización a izquierda}
+
+\[ X \to \alpha\beta_1 \mid \dots \mid \alpha\beta_n \mid \gamma_1 \mid \dots \mid \gamma_m
+\quad\Longrightarrow\quad
+\begin{cases} X \to \alpha R \mid \gamma_1 \mid \dots \mid \gamma_m \\ R \to \beta_1 \mid \dots \mid \beta_n \end{cases} \]
+
+\subsubsection{F1 --- \nt{Expresion}}
+
+\paso{1--2} Prefijo común $\alpha = $ \nt{ExpresionCompuesta}: viendo \texttt{x}, el analizador no
+sabe si va a aparecer un \tl{=}, y puede estar arbitrariamente lejos.
+
+\paso{3--4. Resultado}
+\begin{producciones}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{RestoExpresion}}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCompuesta} \alt{} \eps}
+\end{producciones}
+
+\begin{decision}{la transformación «natural» de F1 agranda el lenguaje}
+La versión que sale sola al escribirla, y que además queda más prolija, es
+\nt{RestoExpresion} \deriva{} \nt{OperadorAsignacion} \nt{Expresion} \alt{} \eps. \textbf{Es
+incorrecta}: la regla original tiene \nt{ExpresionCompuesta} a la derecha del \tl{=}, o sea que la
+asignación no es asociativa y \texttt{a = b = c} no pertenece al lenguaje. Poner \nt{Expresion}
+la volvería asociativa a derecha y aceptaría programas que la cátedra no define.
+
+Una transformación sólo es válida si \textbf{preserva exactamente} el lenguaje generado. El mismo
+cuidado se aplicó en F4.
+\end{decision}
+
+\subsubsection{F2 --- \nt{Sentencia}: resolver la ambigüedad}
+
+\paso{1--2} No es un prefijo común sino la ambigüedad descripta en la
+sección~\ref{sec:diagnostico}: \nt{Asignacion} y \nt{Llamada} tienen cuerpos idénticos.
+
+\paso{3. Transformación} No hay factorización que lo arregle: hay que \emph{elegir}. Se colapsan
+en una única alternativa, con un nombre que dice lo que efectivamente es.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{Sentencia}{\tl{;} \alt{} \nt{SentenciaExpresion} \tl{;} \alt{} \nt{VarLocal} \tl{;} \alt{} \nt{Return} \tl{;} \alt{} \nt{If} \alt{} \nt{While} \alt{} \nt{Bloque}}
+\regla{SentenciaExpresion}{\nt{Expresion}}
+\end{producciones}
+
+\begin{decision}{distinguir asignación de llamada es trabajo del semántico}
+Colapsar las dos alternativas \textbf{no achica el lenguaje}: lo genera exactamente igual, con un
+árbol por sentencia en lugar de dos. Determinar si la expresión es una asignación válida, una
+llamada válida o ninguna de las dos --- \texttt{5 = x;} atraviesa el análisis sintáctico ---
+requiere conocer el significado de la expresión, y eso es análisis semántico.
+\end{decision}
+
+\subsubsection{F3 --- \nt{If}: factorizar, y después resolver el \emph{dangling else}}
+
+\paso{1--2} Prefijo común larguísimo: \tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}. El
+analizador debería atravesar una condición y una sentencia entera antes de saber qué producción
+eligió.
+
+\paso{3--4. Resultado}
+\begin{producciones}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
+\regla{ElseOpcional}{\tl{else} \nt{Sentencia} \alt{} \eps}
+\end{producciones}
+$\{$\tl{else}$\}$ contra $\{\epsilon\}$: disjuntos.
+
+\paso{5. Lo que la factorización no arregla} La ambigüedad del \emph{dangling else} sigue ahí,
+escondida en que \nt{ElseOpcional} puede derivar a \eps{} \emph{y} tener un \tl{else} en lo que le
+sigue.
+
+\begin{decision}{el \emph{dangling else} se resuelve con una regla de implementación}
+Es la segunda de las dos soluciones posibles ante una ambigüedad: en lugar de reescribir la
+gramática, se agrega una regla en la implementación del analizador. El esquema de traducción toma
+la rama \tl{else} apenas ve el token, y como el \tl{if} que se está ejecutando en ese momento es el
+más interno, el \tl{else} liga al \tl{if} más cercano --- \textbf{que es exactamente la regla de
+Java}. No hace falta tocar la gramática: alcanza con dejar constancia de que el orden de las ramas
+en el método de \nt{ElseOpcional} es significativo.
+\end{decision}
+
+\subsubsection{F4 --- \nt{DimensionesConTamanio}}
+
+\paso{1--2} Prefijo común \tl{[} \nt{Expresion} \tl{]}.
+
+\paso{3. Transformación} \textbf{Con cuidado}: la regla original exige \emph{al menos una}
+dimensión. La versión \nt{DimensionesConTamanio} \deriva{} \tl{[} \nt{Expresion} \tl{]}
+\nt{DimensionesConTamanio} \alt{} \eps{} permitiría cero y agrandaría el lenguaje. La parte
+repetible va a un no terminal opcional aparte.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
+\regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
+\end{producciones}
+
+\subsubsection{F5 --- \nt{ListaExps}}
+
+Prefijo común \nt{Expresion}. Se factoriza con la misma forma que R1, para que las dos listas de la
+gramática se lean igual.
+\begin{producciones}
+\regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}}
+\regla{RestoListaExps}{\tl{,} \nt{Expresion} \nt{RestoListaExps} \alt{} \eps}
+\end{producciones}
+
+\subsubsection{F6 --- \nt{Miembro}: factorización profunda}
+
+\paso{1. Original} Ver sección~\ref{sec:transformaciones}; las tres alternativas son
+\nt{Atributo}, \nt{Metodo} y \nt{Constructor}.
+
+\paso{2. Defecto} Prefijo común \textbf{no directo}: mirando sólo las tres alternativas de
+\nt{Miembro} no se ve nada compartido, pero al bajar a sus producciones aparece que \nt{Atributo}
+y \nt{Metodo} empiezan los dos con \nt{Tipo}.
+\begin{align*}
+\prim{\nt{Atributo}} &= \prim{\nt{Tipo}} = \{\text{\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen}}\}\\
+\prim{\nt{Metodo}} &= \{\text{\tl{static}, \tl{void}}\} \cup \prim{\nt{Tipo}}
+\end{align*}
+Ante \texttt{int x} el analizador no sabe si sigue un \tl{;} o un \tl{(}, y eso está dos tokens
+más adelante.
+
+\paso{3. Transformación} Factorización \textbf{profunda}: subir las producciones de \nt{Atributo} y
+\nt{Metodo} hasta \nt{Miembro}, expandir \nt{ModificadorOpcional} y \nt{TipoMetodo} para exponer el
+prefijo, y recién ahí hacer factor común. Expandiendo:
+\begin{producciones}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \tl{;}}
+\regla{Miembro}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\tl{void} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
+\end{producciones}
+Ahora el prefijo \nt{Tipo} \tl{idMetVar} sí es directo, entre la primera y la tercera.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{Miembro}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
+\regla{Miembro}{\tl{void} \nt{Metodo}}
+\regla{Miembro}{\nt{Constructor}}
+\regla{AtributoOMetodo}{\tl{;} \alt{} \nt{CuerpoDeMetodo}}
+\regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}
+\end{producciones}
+$\{$\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen}$\}$, $\{$\tl{static}$\}$,
+$\{$\tl{void}$\}$, $\{$\tl{public}$\}$: disjuntos. Y en \nt{AtributoOMetodo}, $\{$\tl{;}$\}$
+contra $\{$\tl{(}$\}$: disjuntos.
+
+\nt{Constructor} \textbf{sobrevive como no terminal propio} porque \tl{public} lo distingue solo.
+Se extraen además dos no terminales compartidos: \nt{CuerpoDeMetodo} (argumentos formales más
+bloque), que es literalmente la misma construcción en método, método \tl{static} y constructor; y
+\nt{Metodo}, que comparten la rama \tl{static} y la rama \tl{void}, de modo que el analizador
+semántico tiene un único lugar donde construir el nodo de método para esas dos formas. La tercera
+forma --- la de tipo de referencia --- ya consumió el \tl{idMetVar} al factorizar contra el
+atributo, y por eso llega por \nt{AtributoOMetodo}.
+
+\subsubsection{F7 --- \nt{Primario}: el prefijo \tl{idMetVar}}
+
+\nt{AccesoVar} (\tl{idMetVar}) y \nt{LlamadaMetodo} (\tl{idMetVar} \nt{ArgsActuales}) comparten
+todo el prefijo. Misma situación que en R3 y misma resolución, con un no terminal de decisión
+\textbf{dedicado a este contexto}:
+\begin{producciones}
+\regla{AccesoVarOLlamadaMetodo}{\tl{idMetVar} \nt{AccesoOLlamada}}
+\regla{AccesoOLlamada}{\nt{ArgsActuales} \alt{} \eps}
+\end{producciones}
+
+\begin{decision}{un punto de decisión por contexto, aunque la forma coincida}
+Una versión anterior de esta transformación resolvía R3 y F7 con el \emph{mismo} no terminal
+\nt{ArgsActualesOpcional}, y se había justificado como una buena abstracción. Es al revés: su
+\eps{} significa dos cosas distintas según quién lo llame --- desde \nt{Encadenado} era un
+\nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde \nt{AccesoVarOLlamadaMetodo}
+era un \nt{AccesoVar}, acceso a una variable local, un parámetro o un atributo propio. Son dos
+nodos distintos, con reglas de resolución de nombres distintas, y un único método del analizador
+tendría que preguntarse quién lo llamó para saber cuál construir. Se separaron en
+\nt{EncadenadoAtributoOMetodo} y \nt{AccesoOLlamada}: cuesta un no terminal más y deja los cuatro
+no terminales originales recuperables desde el nombre del método que decide.
+\end{decision}
+
+\subsubsection{F8 --- \nt{Primario}: el prefijo \tl{new}, a dos niveles}
+
+\paso{2. Defecto} \nt{CrearArreglo} y \nt{LlamadaConstructor} comparten \tl{new}, y no alcanza con
+factorizarlo porque \nt{TipoBase} puede derivar a \nt{TipoReferencia}: \texttt{new C} sigue sin
+decidirse. El token que desempata es el que viene \emph{después} del tipo.
+
+\paso{3--4. Resultado} Se factoriza \tl{new}, se expande \nt{TipoBase} para separar los casos que
+sí se deciden con un token, y se factoriza una segunda vez el caso \tl{idClase}.
+\begin{producciones}
+\regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
+\regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{DimensionesConTamanio}}
+\regla{ArregloOInstancia}{\tl{idGen} \nt{DimensionesConTamanio}}
+\regla{ArregloOInstancia}{\tl{idClase} \nt{TipoGenericoOpcional} \nt{ArregloOInstanciaDeClase}}
+\regla{ArregloOInstanciaDeClase}{\nt{DimensionesConTamanio} \alt{} \nt{ArgsActuales}}
+\end{producciones}
+\texttt{new int[3]} y \texttt{new T[3]} se resuelven en el primer token después de \tl{new};
+sólo \texttt{new C\dots} necesita el segundo nivel. La factorización se hizo \textbf{sólo donde
+hacía falta}.
+
+\subsection{Estado del núcleo}
+
+Con R1--R3 y F1--F8, el núcleo de la gramática --- sin logros --- es LL(1). El costo
+respecto de la base fue de \textbf{seis no terminales y ocho producciones}, concentrado en los
+\nt{Resto\dots} y en los puntos de decisión insertados, que el esquema de traducción convierte en
+un \texttt{if/else} cada uno.
+
+% ===========================================================================
+\section{Extensiones por logro}
+\label{sec:logros}
+% ===========================================================================
+
+Se persiguen \textbf{los nueve logros de la Etapa 2 que afectan al analizador}, más el
+\emph{carry-over} de los floats de la Etapa 1. Cada uno se transforma con el mismo procedimiento
+de cuatro pasos; la diferencia con el núcleo es que acá los conflictos \textbf{no vienen de la
+gramática de la cátedra: los crea el logro}.
+
+\subsection{La condición de atomicidad}
+\label{sec:atomicidad}
+
+El compilador debe poder ejecutarse y probarse con cualquier subconjunto de logros, incluido el
+vacío. A nivel de gramática eso se traduce en una condición dura:
+
+\begin{quote}
+\textbf{Para todo subconjunto de logros, la gramática resultante debe ser LL(1).}
+\end{quote}
+
+No alcanza con que lo sea con todos prendidos. La condición tiene una consecuencia de diseño
+concreta: \textbf{ningún logro puede apoyarse en un no terminal que introdujo otro}. Cuando dos
+logros necesitan una construcción parecida, cada uno lleva la suya --- ver
+sección~\ref{sec:logro-inicializaciones}.
+
+Como técnica, conviene que \textbf{desactivar un logro sea quitar alternativas y no cambiar de
+estructura}. Los logros de ternario y de operadores posfijos son el ejemplo limpio: apagados,
+sus no terminales quedan en sólo \eps{} y la capa desaparece sin tocar ninguna otra regla.
+
+\subsection{Visibilidad Mejorada E2}
+\label{sec:logro-visibilidad}
+
+\paso{Defecto que crea} \tl{public} y \tl{private} pasan a poder encabezar cualquier miembro. El
+\tl{public} del \nt{Constructor} original queda absorbido, el constructor se vuelve \tl{idClase}
+\nt{CuerpoDeMetodo} y \textbf{empieza a competir} con el atributo o método de tipo referencia por
+el token \tl{idClase}: \texttt{C()\{\}} contra \texttt{C x;}.
+
+\paso{Transformación} Factorizar la visibilidad al frente y, adentro, factorizar el \tl{idClase}.
+El desempate es el token que sigue: \tl{(} es constructor, cualquier otro abre un tipo.
+\begin{producciones}
+\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}
+\regla{VisibilidadOpcional}{\tl{public} \alt{} \tl{private} \alt{} \eps}
+\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{MiembroSinVisibilidad}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}
+\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}
+\regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\end{producciones}
+$\{$\tl{static}$\}$, $\{$\tl{void}$\}$, $\{$\tl{boolean}, \tl{char}, \tl{int}, \tl{float}$\}$,
+$\{$\tl{idGen}$\}$, $\{$\tl{idClase}$\}$: disjuntos. Y en \nt{MiembroDesdeIdClase}, $\{$\tl{(}$\}$
+contra $\{$\tl{<}, \tl{[}, \tl{idMetVar}$\}$: disjuntos.
+
+Con el logro apagado vuelve la forma del núcleo y \nt{MiembroDesdeIdClase} se queda con una sola
+producción.
+
+\begin{decision}{los métodos de interfaz no llevan visibilidad}
+El enunciado habla de «Métodos, Atributos y Constructores», que son los \nt{Miembro} de una clase.
+\nt{MetodoInterfaz} es un no terminal aparte y en Java los métodos de interfaz son implícitamente
+públicos, así que se deja como está.
+\end{decision}
+
+\subsection{Atributos Inicializados y Variables locales Clásicas E2}
+\label{sec:logro-inicializaciones}
+
+Los dos agregan un \tl{=} \nt{ExpresionCompuesta} opcional, y la tentación es usar un único no
+terminal compartido. \textbf{Está mal} por la condición de atomicidad: son logros distintos, y con
+\emph{atrinit} apagado y \emph{varclasica} prendido las variables locales tienen que poder
+inicializarse igual. Van dos no terminales dedicados, \nt{InicializacionDeAtributo} e
+\nt{InicializacionDeDeclarador}, con el mismo cuerpo y distinta marca de logro.
+
+\paso{Defecto que crea \emph{varclasica}} Una declaración local pasa a poder empezar con
+\tl{idClase} (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}, por
+\nt{LlamadaMetodoEstatico}). Chocan.
+
+\paso{Transformación} Factorizar el \tl{idClase} en \nt{Sentencia}: \tl{.} significa expresión,
+cualquier otro token significa declaración.
+\begin{producciones}
+\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}
+\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}
+\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}
+\end{producciones}
+
+La rama de expresión tiene que retomar una expresión \emph{ya empezada}. Escribirla a mano
+duplicaría media jerarquía de expresiones; en su lugar se insertan tres no terminales que capturan
+las colas compartidas:
+\begin{producciones}
+\regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
+\regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}}
+\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}
+\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \nt{RestoExpresion}}
+\regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}
+\regla{Primario}{\nt{LlamadaMetodoEstatico} \alt{} \nt{PrimarioSinIdClase}}
+\end{producciones}
+\nt{LlamadaMetodoEstatico} es la única forma de \nt{Primario} que empieza con \tl{idClase}, lo que
+hace que la partición sea exacta. \textbf{Sólo se duplican las cabezas}: todas las colas se
+comparten con la jerarquía normal, de modo que no hay lógica repetida y un cambio futuro en las
+expresiones no hay que espejarlo.
+
+\begin{decision}{alternativa descartada: dos tokens de anticipación}
+El mismo conflicto se resuelve dándole al analizador \emph{dos} tokens de anticipación sólo en este
+punto --- mirar si después del \tl{idClase} viene un \tl{.} --- con cero no terminales nuevos. Se
+descartó porque despega la implementación del esquema de traducción visto en clase, que es de un
+único token, y ese esquema es la garantía de correctitud que se está siguiendo. El costo de la
+solución LL(1) pura son tres no terminales sin lógica duplicada, que es barato.
+\end{decision}
+
+\subsection{Fors! E2}
+
+Un \nt{For} nuevo como alternativa de \nt{Sentencia}. El encabezado tiene el mismo problema de
+\tl{idClase} que la sentencia y se resuelve igual, reutilizando \nt{ExpresionSinIdClase} y
+\nt{ColaDeExpresionDesdePrimario}. El desempate entre el \tl{for} estándar y el de iteradores es de
+un solo token y está justo después del declarador: \tl{:} es de iteradores, \tl{=} o \tl{;} es
+estándar.
+\begin{producciones}
+\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
+\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
+\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
+\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
+\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
+\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}
+\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}
+\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}
+\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
+\end{producciones}
+\nt{ClausulasFinalesFor} con una sola \nt{ExpresionOpcional} por separador es la lectura literal de
+«se restringe a una sola sentencia o expresión por separador».
+
+\subsection{Operador Ternario E2}
+
+Una capa nueva entre la asignación y los operadores binarios, con la precedencia de Java.
+\begin{producciones}
+\regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional} \alt{} \eps}
+\regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
+\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional} \alt{} \eps}
+\end{producciones}
+Asociativo a \textbf{derecha} --- \texttt{a ? b : c ? d : e} es \texttt{a ? b : (c ? d : e)} ---
+porque la rama del \tl{:} vuelve a \nt{ExpresionCondicional}, que puede tener su propio
+\nt{RestoCondicional}. Con el logro apagado, \nt{RestoCondicional} queda en sólo \eps{} y
+\nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta}: la capa desaparece sin
+dejar rastro. Nótese que \nt{RestoExpresion} conserva \nt{ExpresionCondicional} y no
+\nt{Expresion} a la derecha, preservando la no asociatividad de la asignación.
+
+Este logro requiere el token \tl{?}, que \textbf{no existe en el léxico de la Etapa 1}.
+
+\subsection{Operadores Posifijos E2}
+
+\begin{producciones}
+\regla{Operando}{\nt{Primitivo} \alt{} \nt{Referencia} \nt{PosfijoOpcional}}
+\regla{PosfijoOpcional}{\tl{++} \alt{} \tl{-{}-} \alt{} \eps}
+\end{producciones}
+El posfijo va sobre \nt{Referencia} y \textbf{no} sobre \nt{Operando}: \texttt{5++} no tiene
+sentido. Misma técnica de desactivación que el ternario. Es el único logro que \textbf{no}
+requiere tocar el léxico: \tl{++} y \tl{-{}-} ya son tokens desde la Etapa 1 y no tenían dónde
+usarse.
+
+\subsection{MiniLambdas E2}
+
+\paso{Defecto que crea} El \tl{(} abre tanto una expresión parentizada como la lista de parámetros
+de una lambda, y \tl{idMetVar} abre tanto un acceso a variable como una lambda de un parámetro.
+A primera vista \texttt{(a, b, c) -> x} contra \texttt{(a + b)} exige escanear hasta el \tl{)}
+para decidir, o sea anticipación ilimitada.
+
+\paso{Análisis} \textbf{No la exige.} Los casos se separan solos:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Decisión} & \textbf{Tokens} \\
+\midrule
+\tl{(} \tl{)}            & sólo puede ser lambda de cero parámetros & 1 (el \tl{)}) \\
+\tl{(} $e$ \tl{,} \dots  & sólo puede ser lambda: no hay operador coma & 1 (la \tl{,}) \\
+\tl{(} $e$ \tl{)}        & lo decide el token \emph{posterior} al \tl{)} & 1 (el \tl{->}) \\
+\tl{idMetVar} \tl{->}    & lo decide el token posterior al identificador & 1 (el \tl{->}) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La clave es que el \tl{->} viene \emph{inmediatamente} después del \tl{)}, así que en el momento
+de decidir sigue siendo un token de anticipación.
+
+\paso{Resultado}
+\begin{producciones}
+\regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
+\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda} \alt{} \nt{Expresion} \nt{RestoDeParentesis}}
+\regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
+\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}
+\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda} \alt{} \eps}
+\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
+\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales} \alt{} \tl{->} \nt{CuerpoLambda} \alt{} \eps}
+\regla{CuerpoLambda}{\nt{Expresion}}
+\end{producciones}
+\nt{CuerpoLambda} \deriva{} \nt{Expresion} es la lectura literal de «el cuerpo debe estar formado
+por una única expresión, no se permiten cuerpos delimitados por llaves»: como no hay alternativa
+con \tl{\{}, la gramática \textbf{rechaza} \texttt{x -> \{ \dots \}} sin ningún chequeo adicional.
+
+Requiere el token \tl{->}, que no existe en el léxico de la Etapa 1.
+
+\begin{decision}{permisividad declarada de las lambdas}
+En \texttt{( a , b ) -> x} el \texttt{a} se deriva como \nt{Expresion}, no como parámetro, de modo
+que \texttt{( a + 1 , b ) -> x} \textbf{atraviesa el análisis sintáctico}. Rechazarlo exige saber
+que esa expresión tiene que ser un identificador suelto, lo que es un chequeo semántico. Es la
+misma clase de permisividad que la gramática original ya tiene con \texttt{5 = x;}. Lo mismo vale,
+como se anticipó en la sección~\ref{sec:alcance-chequeos}, para la prohibición de capturar
+variables.
+\end{decision}
+
+\subsection{Inicializacion de Arreglos E2}
+
+Después del \tl{[} de una creación de arreglo, o viene una expresión de tamaño o viene el \tl{]}
+seguido del inicializador. Un token de desempate.
+\begin{producciones}
+\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
+\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
+\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}
+\end{producciones}
+Se reutiliza \nt{ListaExpsOpcional}, que ya existe para los argumentos actuales, porque es la misma
+construcción. La restricción «sólo se permite como parte de una expresión de creación utilizando
+\tl{new}» queda impuesta por la gramática: \nt{CreacionDeArreglo} sólo es alcanzable desde
+\nt{Creacion}.
+
+\subsection{Genericidad Avanzada E2}
+
+Dos cosas distintas. El \textbf{anidamiento} sale de una sola recursión:
+\begin{producciones}
+\regla{ArgumentoDeTipo}{\tl{idGen} \alt{} \tl{idClase} \nt{TipoGenericoOpcional}}
+\end{producciones}
+Con el logro apagado la segunda alternativa es \tl{idClase} a secas. (\texttt{List<List<Persona>>}
+cierra con dos \tl{>} separados: el léxico no define ningún token \texttt{>>}, así que la regla de
+\emph{maximal munch} entrega dos \tl{>} y no hay nada que resolver del lado sintáctico.)
+
+El \textbf{diamante} exige más cuidado, porque el enunciado dice que «sólo puede utilizarse al
+instanciar una Clase Genérica». Se impone \textbf{por gramática}, separando el genérico en posición
+de tipo del genérico bajo \tl{new}:
+\begin{producciones}
+\regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
+\regla{CreacionDesdeIdClase}{\tl{<} \nt{GenericoDeCreacion} \alt{} \nt{CreacionDeArreglo} \alt{} \nt{ArgsActuales}}
+\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}
+\regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}
+\end{producciones}
+La primera alternativa de \nt{GenericoDeCreacion} \emph{es} el diamante, y va sólo hacia
+\nt{ArgsActuales}. Resultado:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Veredicto} \\
+\midrule
+\texttt{List<Persona> x;}        & acepta \\
+\texttt{List<List<Persona>> x;}  & acepta \\
+\texttt{new List<>()}            & acepta \\
+\texttt{new List<Persona>[3]}    & acepta \\
+\texttt{List<> x;}               & \textbf{rechaza} (diamante en posición de tipo) \\
+\texttt{new List<>[3]}           & \textbf{rechaza} (diamante con arreglo) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{decision}{compartir un no terminal puede volverse incorrecto más adelante}
+En la gramática original, \nt{TipoGenericoOpcional} se usa desde \nt{TipoReferencia} y desde
+\nt{LlamadaConstructor}, y compartirlo es correcto: son la misma construcción. \textbf{Deja de
+serlo con este logro}, porque el diamante vale en una posición y no en la otra. Compartiéndolo
+habría que aceptar \texttt{List<> x;} y rechazarlo después en el análisis semántico. Separarlos
+cuesta un no terminal y mueve la restricción al lugar donde se puede verificar sin conocer el
+significado de nada.
+\end{decision}
+
+\subsection{Floats (\emph{carry-over} de la Etapa 1)}
+
+\begin{producciones}
+\regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int} \alt{} \tl{float}}
+\regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{floatLiteral} \alt{} \tl{null}}
+\end{producciones}
+Dos alternativas nuevas, cero conflictos. Sin ellas, el logro de floats de la Etapa 1 queda
+inutilizable en la Etapa 2: el léxico emite \tl{float} y \tl{floatLiteral} y el analizador
+sintáctico los rechazaría.
+
+\subsection{Impacto sobre el analizador léxico}
+
+Cuatro de los logros exigen elementos léxicos que \textbf{no figuran en \emph{Aspectos Léxicos de
+\textsc{MiniJava}}}: la lista de palabras clave de \S2.1 llega hasta \tl{false} y la de operadores
+de \S2.4.2 hasta \tl{++} y \tl{-{}-}.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Elemento} & \textbf{Logro} & \textbf{Estado en la Etapa 1} \\
+\midrule
+\tl{for}     & Fors! E2                 & se reconoce como \tl{idMetVar} \\
+\tl{private} & Visibilidad Mejorada E2  & se reconoce como \tl{idMetVar} \\
+\tl{?}       & Operador Ternario E2     & es un error léxico \\
+\tl{->}      & MiniLambdas E2           & se reconoce como \tl{-} seguido de \tl{>} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Se incorporan al analizador léxico \textbf{condicionados al interruptor de su logro}: con el logro
+apagado, \tl{?} vuelve a ser un error léxico y \tl{for} y \tl{private} vuelven a ser
+identificadores, exactamente como especifica la cátedra. De ese modo el comportamiento léxico base
+de la Etapa 1 se conserva íntegro y verificable, que es lo que exige la condición de atomicidad de
+la sección~\ref{sec:atomicidad}. Los tokens \tl{:}, \tl{++} y \tl{-{}-}, en cambio, ya existían.
+
+% ===========================================================================
+\section{Gramática final}
+\label{sec:gramatica-final}
+% ===========================================================================
+
+La gramática completa resultante: núcleo corregido más los nueve logros de la Etapa 2 y el
+\emph{carry-over} de floats. Las producciones marcadas con \textit{[sólo con \texttt{logro}]}
+existen únicamente cuando ese interruptor está prendido; las marcadas \textit{[sólo sin
+\texttt{logro}]}, únicamente cuando está apagado. Las que no llevan marca existen siempre.
+
+\begin{decision}{este listado se genera, no se transcribe}
+El texto que sigue se produce automáticamente a partir del mismo archivo que verifica la
+herramienta de la sección~\ref{sec:verificacion}, de modo que el informe y lo que se comprueba no
+puedan divergir. Cualquier corrección se hace sobre la gramática y se regenera el informe, nunca al
+revés.
+\end{decision}
+
+\input{generado/gramatica-final}
+
+% ===========================================================================
+\section{Verificación}
+\label{sec:verificacion}
+% ===========================================================================
+
+Los conjuntos de Primeros se calcularon a mano y se contrastaron con una herramienta escrita para
+este trabajo, \texttt{herramientas/primeros.py}. La herramienta existe para \textbf{contrastar} la
+cuenta manual, no para reemplazarla: cuando las dos difirieron, se resolvió primero cuál de las dos
+estaba equivocada.
+
+\subsection{Condición LL(1)}
+
+\begin{consola}
+$ python3 herramientas/primeros.py gramatica/minijava-base.g
+--- 60 no terminales, 126 producciones, 51 terminales ---
+NO ES LL(1): 16 conflicto(s)
+
+$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
+--- 96 no terminales, 201 producciones, 60 terminales ---
+ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
+\end{consola}
+
+\subsection{Atomicidad de los logros}
+
+La condición de la sección~\ref{sec:atomicidad} exige que la gramática sea LL(1) para
+\emph{todo} subconjunto de logros, no sólo con todos prendidos. Cada producción lleva su marca y la
+herramienta recorre las $2^{10} = 1024$ configuraciones:
+
+\begin{consola}
+$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria
+10 logros -> 1024 configuraciones
+
+LAS 1024 CONFIGURACIONES SON LL(1).
+Cada logro se puede prender y apagar de forma independiente.
+\end{consola}
+
+\subsection{Ambigüedad frente a conflicto de predicción}
+
+Para distinguir los dos defectos de la sección~\ref{sec:dos-defectos} se comparan los rangos de
+longitud derivable: si no se solapan, los lenguajes son disjuntos y no puede haber ambigüedad.
+
+\begin{consola}
+$ python3 herramientas/primeros.py gramatica/minijava-base.g \
+      --longitudes VarEncadenada MetodoEncadenado
+<VarEncadenada>: entre 2 y 2 tokens
+<MetodoEncadenado>: entre 4 y inf tokens
+
+Los rangos NO se solapan: ninguna cadena puede estar en los dos
+lenguajes, asi que <VarEncadenada> y <MetodoEncadenado> NO son ambiguos
+entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
+(LL(1)), no de ambiguedad, y se arregla factorizando.
+\end{consola}
+
+\subsection{Casos de aceptación y rechazo}
+
+La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
+tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
+hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
+verifican \textbf{54 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
+cuando está apagado.
+
+\begin{consola}
+$ bash herramientas/casos-gramatica.sh
+--- nucleo (sin ningun logro) ---
+  ok    clase vacia
+  ok    if/else anidado
+  ok    encadenamiento
+  ok    a = b = c NO es valido
+--- MiniLambdas ---
+  ok    x -> x            (1 param sin parentesis)
+  ok    ( ) -> 1          (0 params)
+  ok    ( a ) -> a        (1 param con parentesis)
+  ok    ( a , b ) -> a    (2 params)
+  ok    ( a ) + 1         (parentizada, NO lambda)
+  ok    cuerpo con llaves NO se permite
+  ok    parametro con tipo NO se permite
+--- Genericidad Avanzada ---
+  ok    List < List < Persona > > x ;  (anidado)
+  ok    new List < > ( )               (diamante)
+  ok    List < > x ;    diamante en posicion de TIPO
+  ok    new List < > [ 3 ]  diamante con arreglo
+...
+TODOS LOS CASOS PASAN.
+\end{consola}
+
+Los casos que fijan las decisiones difíciles de este informe son, entre otros: \texttt{a = b = c}
+se rechaza (no asociatividad de la asignación); \texttt{( a ) + 1} se acepta como expresión
+parentizada y \texttt{( a ) -> a} como lambda, decidiéndose con un solo token; \texttt{List<> x;}
+se rechaza y \texttt{new List<>()} se acepta.
+
+\subsection{Validación contra los casos de la cátedra}
+
+La verificación más fuerte no usa casos propios. La herramienta
+\texttt{aceptar\_fuente.py} tokeniza un fuente \textbf{real} con el analizador léxico de la
+Etapa 1 y le pasa la secuencia de tokens al simulador, de modo que la gramática se puede probar
+contra los ocho casos entregados con los testers de esta etapa antes de que exista el analizador
+sintáctico.
+
+\begin{consola}
+$ python3 herramientas/aceptar_fuente.py \
+      ../vendor/testersSintactico/resources/*/*.java
+  ok    sintCorrecto01.java      acepta
+  ok    sintCorrecto02.java      acepta
+  ok    sintCorrecto03.java      acepta
+  ok    sintCorrecto04.java      acepta
+  ok    sintError01.java         rechaza  [Error:,|3] ==
+        se esperaba `{` y se encontro `,`
+  ok    sintError02.java         rechaza  [Error:clasesita|3] ==
+        se esperaba `idClase` y se encontro `idMetVar`
+  ok    sintError03.java         rechaza  [Error:hola|5] ==
+        se esperaba `;` y se encontro `idMetVar`
+  ok    sintError04.java         rechaza  [Error:else|7] ==
+        se esperaba `}` y se encontro `else`
+
+TODOS LOS CASOS PASAN.
+\end{consola}
+
+Los cuatro casos válidos se aceptan y los cuatro inválidos se rechazan. Además ---y esto es lo
+que importa para la corrección--- el rechazo se produce \textbf{en el token exacto} que declara la
+expectativa de cada caso: el \texttt{==} indica que el código \texttt{[Error:lexema|línea]}
+derivado de la gramática coincide con el que la cátedra espera en los cuatro. La gramática no sólo
+reconoce el lenguaje correcto: falla donde tiene que fallar.
+
+\subsection{Resumen}
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+ & \textbf{Gramática base} & \textbf{Gramática final} \\
+\midrule
+No terminales            & 60  & 96  \\
+Producciones             & 126 & 201 \\
+Terminales               & 51  & 60  \\
+Ambigüedades             & 2   & 0   \\
+Conflictos LL(1)& 16  & 0   \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El crecimiento se reparte entre la corrección del núcleo (seis no terminales) y las nueve
+extensiones por logro. Ninguna ambigüedad y ningún conflicto de predicción quedan pendientes, en
+ninguna de las 1024 configuraciones.
+
+\subsection{Tabla de Primeros}
+
+Conjunto de Primeros de cada producción de la gramática final, con todos los logros prendidos.
+
+\input{generado/tabla-primeros}
+
+% ===========================================================================
+\section{Herramientas y uso de inteligencia artificial}
+% ===========================================================================
+
+\subsection{Herramientas desarrolladas}
+
+Para este informe se escribieron dos utilidades, que no forman parte del compilador y viven en
+\texttt{compilador/herramientas/}:
+
+\begin{description}
+  \item[\texttt{primeros.py}] Calcula símbolos vaciables y conjuntos de Primeros por punto fijo,
+        verifica la condición LL(1), recorre todas las combinaciones de logros, compara
+        rangos de longitud derivable para distinguir ambigüedad de conflicto de predicción, y
+        simula el esquema de traducción sobre una secuencia de tokens.
+  \item[\texttt{gramatica\_a\_latex.py}] Genera el listado de producciones y la tabla de Primeros
+        de este informe desde el mismo archivo de gramática que verifica la herramienta anterior.
+\end{description}
+
+La gramática se mantiene en texto plano en \texttt{compilador/gramatica/}, en tres versiones: la
+base transcripta del documento de la cátedra, el núcleo corregido y la final con los logros.
+
+\subsection{Uso de inteligencia artificial}
+
+Este trabajo se desarrolló con asistencia de un modelo de lenguaje (Claude, de Anthropic), en
+línea con la política de la cátedra que acepta y fomenta su uso. Se deja constancia del reparto
+concreto:
+
+\begin{itemize}
+  \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
+        elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
+        independiente con \texttt{primeros.py} y con los 54 casos de aceptación y rechazo. Ninguna
+        afirmación de este informe descansa únicamente en la salida del modelo.
+  \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
+  \item La \textbf{verificación} es mecánica y reproducible con los comandos de la
+        sección~\ref{sec:verificacion}, de modo que cualquier error es localizable en un paso
+        concreto y no depende de confiar en el proceso.
+\end{itemize}
 
 \end{document}

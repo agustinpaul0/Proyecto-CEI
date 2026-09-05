@@ -139,7 +139,7 @@ Estado actual:
 
 <TipoReferencia> ::= **idClase** <TipoGenericoOpcional>  
 
-> [L:float] — `float` es token del léxico desde la Etapa 1 pero no estaba en la
+> `float` es token del léxico desde la Etapa 1 pero no estaba en la
 > gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.
 
 <TipoPrimitivo> ::= **boolean** | **char** | **int**  
@@ -149,7 +149,7 @@ Estado actual:
 
 <TipoGenericoOpcional> ::= `<` <ArgumentoDeTipo> `>` | ε  
 
-> [L:generico] — la recursión por TipoGenericoOpcional es la que habilita el
+> la recursión por <TipoGenericoOpcional> es la que habilita el
 > anidamiento `List<List<Persona>>`. Sin el logro: `ArgumentoDeTipo -> idGen | idClase`.
 
 <ArgumentoDeTipo> ::= **idGen**  
@@ -166,7 +166,7 @@ Estado actual:
 <ArgFormal> ::= <Tipo> **idMetVar**  
 
 > SENTENCIAS
-> Con [L:varclasica] una declaración local puede empezar con idClase (`C x;`), y
+> Con el logro de variables locales clásicas una declaración local puede empezar con idClase (`C x;`), y
 > una sentencia-expresión también (`C.m();`). Se factoriza ese idClase y el
 > desempate lo hace el token siguiente: `.` es expresión, cualquier otro es
 > declaración. La rama de expresión reusa <ColaDeExpresionDesdePrimario> para no
@@ -220,7 +220,7 @@ Estado actual:
 
 <While> ::= **while** `(` <Expresion> `)` <Sentencia>  
 
-> [L:for] — Fors! E2
+> Fors! E2
 > Una sola sentencia/expresión por separador. El `:` distingue el for de
 > iteradores del estándar, y aparece justo después del declarador, así que el
 > desempate es de un solo token.
@@ -252,12 +252,12 @@ Estado actual:
 <ClausulasFinalesFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  *[sólo con `for`]*  
 
 > EXPRESIONES
-> Capas, de menor a mayor precedencia:
-> Expresion            asignación (NO asociativa, como en la gramática original)
-> ExpresionCondicional ternario [L:ternario]
-> ExpresionCompuesta   operadores binarios (un solo nivel, como el original)
-> ExpresionBasica      operadores unarios prefijos
-> Operando             literal, o referencia con posfijo opcional [L:posfijo]
+> Las expresiones se organizan en capas, de menor a mayor precedencia:
+> <Expresion> es la asignación (no asociativa, como en la gramática original);
+> <ExpresionCondicional> el ternario; <ExpresionCompuesta> los operadores
+> binarios, en un solo nivel como en el original; <ExpresionBasica> los
+> operadores unarios prefijos; y <Operando> un literal, o una referencia con
+> posfijo opcional.
 
 <Expresion> ::= <ExpresionCondicional> <RestoExpresion>  
 
@@ -296,7 +296,7 @@ Estado actual:
 <PosfijoOpcional> ::= `--`  *[sólo con `posfijo`]*  
 <PosfijoOpcional> ::= ε  
 
-> [L:float] — floatLiteral
+> floatLiteral
 
 <Primitivo> ::= **true** | **false** | **intLiteral** | **charLiteral** | **null**  
 <Primitivo> ::= **floatLiteral**  *[sólo con `float`]*  
@@ -350,7 +350,7 @@ Estado actual:
 <AccesoLlamadaOLambda> ::= `->` <CuerpoLambda>  *[sólo con `lambda`]*  
 <AccesoLlamadaOLambda> ::= ε  
 
-> [L:lambda] — MiniLambdas E2
+> MiniLambdas E2
 > `(` abre tanto una expresión parentizada como la lista de parámetros de una
 > lambda. Parece necesitar lookahead ilimitado (`(a,b,c) ->` vs `(a+b)`), pero
 > NO lo necesita:
@@ -390,7 +390,7 @@ Estado actual:
 <CreacionDesdeIdClase> ::= <CreacionDeArreglo>  
 <CreacionDesdeIdClase> ::= <ArgsActuales>  
 
-> [L:generico] — el diamante `<>` sólo se admite acá, en la rama que va a
+> el diamante `<>` sólo se admite acá, en la rama que va a
 > ArgsActuales: `new C<>()` es válido y `new C<>[3]` no. La restricción del
 > logro queda impuesta por la gramática, no delegada al semántico.
 
@@ -400,7 +400,7 @@ Estado actual:
 <ArregloOInstanciaDeClase> ::= <CreacionDeArreglo>  
 <ArregloOInstanciaDeClase> ::= <ArgsActuales>  
 
-> [L:arrinit] — `new int[]{1,2,3}`. Sin el logro:
+> `new int[]{1,2,3}`. Sin el logro:
 > CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional
 
 <CreacionDeArreglo> ::= `[` <RestoCreacionDeArreglo>  

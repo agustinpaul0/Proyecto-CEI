@@ -105,7 +105,7 @@ DimensionesOpcionales -> [ ] DimensionesOpcionales | EPSILON
 
 TipoReferencia -> idClase TipoGenericoOpcional
 
-# [L:float] — `float` es token del léxico desde la Etapa 1 pero no estaba en la
+# `float` es token del léxico desde la Etapa 1 pero no estaba en la
 # gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.
 TipoPrimitivo -> boolean | char | int
 TipoPrimitivo -> float                                        @+float
@@ -113,7 +113,7 @@ TipoPrimitivo -> float                                        @+float
 # En POSICIÓN DE TIPO no se admite el diamante: `List<> x;` es inválido.
 TipoGenericoOpcional -> < ArgumentoDeTipo > | EPSILON
 
-# [L:generico] — la recursión por TipoGenericoOpcional es la que habilita el
+# la recursión por <TipoGenericoOpcional> es la que habilita el
 # anidamiento `List<List<Persona>>`. Sin el logro: `ArgumentoDeTipo -> idGen | idClase`.
 ArgumentoDeTipo -> idGen
 ArgumentoDeTipo -> idClase TipoGenericoOpcional               @+generico
@@ -131,7 +131,7 @@ ArgFormal -> Tipo idMetVar
 # ===========================================================================
 # SENTENCIAS
 # ===========================================================================
-# Con [L:varclasica] una declaración local puede empezar con idClase (`C x;`), y
+# Con el logro de variables locales clásicas una declaración local puede empezar con idClase (`C x;`), y
 # una sentencia-expresión también (`C.m();`). Se factoriza ese idClase y el
 # desempate lo hace el token siguiente: `.` es expresión, cualquier otro es
 # declaración. La rama de expresión reusa <ColaDeExpresionDesdePrimario> para no
@@ -183,7 +183,7 @@ ElseOpcional -> else Sentencia | EPSILON
 While -> while ( Expresion ) Sentencia
 
 # ===========================================================================
-# [L:for] — Fors! E2
+# Fors! E2
 # ===========================================================================
 # Una sola sentencia/expresión por separador. El `:` distingue el for de
 # iteradores del estándar, y aparece justo después del declarador, así que el
@@ -216,12 +216,12 @@ ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional                  
 # ===========================================================================
 # EXPRESIONES
 # ===========================================================================
-# Capas, de menor a mayor precedencia:
-#   Expresion            asignación (NO asociativa, como en la gramática original)
-#   ExpresionCondicional ternario [L:ternario]
-#   ExpresionCompuesta   operadores binarios (un solo nivel, como el original)
-#   ExpresionBasica      operadores unarios prefijos
-#   Operando             literal, o referencia con posfijo opcional [L:posfijo]
+# Las expresiones se organizan en capas, de menor a mayor precedencia:
+# <Expresion> es la asignación (no asociativa, como en la gramática original);
+# <ExpresionCondicional> el ternario; <ExpresionCompuesta> los operadores
+# binarios, en un solo nivel como en el original; <ExpresionBasica> los
+# operadores unarios prefijos; y <Operando> un literal, o una referencia con
+# posfijo opcional.
 
 Expresion -> ExpresionCondicional RestoExpresion
 
@@ -257,7 +257,7 @@ PosfijoOpcional -> ++                                                           
 PosfijoOpcional -> --                                                                     @+posfijo
 PosfijoOpcional -> EPSILON
 
-# [L:float] — floatLiteral
+# floatLiteral
 Primitivo -> true | false | intLiteral | charLiteral | null
 Primitivo -> floatLiteral                                     @+float
 
@@ -311,7 +311,7 @@ AccesoLlamadaOLambda -> -> CuerpoLambda                                         
 AccesoLlamadaOLambda -> EPSILON
 
 # ===========================================================================
-# [L:lambda] — MiniLambdas E2
+# MiniLambdas E2
 # ===========================================================================
 # `(` abre tanto una expresión parentizada como la lista de parámetros de una
 # lambda. Parece necesitar lookahead ilimitado (`(a,b,c) ->` vs `(a+b)`), pero
@@ -353,7 +353,7 @@ CreacionDesdeIdClase -> < GenericoDeCreacion
 CreacionDesdeIdClase -> CreacionDeArreglo
 CreacionDesdeIdClase -> ArgsActuales
 
-# [L:generico] — el diamante `<>` sólo se admite acá, en la rama que va a
+# el diamante `<>` sólo se admite acá, en la rama que va a
 # ArgsActuales: `new C<>()` es válido y `new C<>[3]` no. La restricción del
 # logro queda impuesta por la gramática, no delegada al semántico.
 GenericoDeCreacion -> > ArgsActuales                                                      @+generico
@@ -362,7 +362,7 @@ GenericoDeCreacion -> ArgumentoDeTipo > ArregloOInstanciaDeClase
 ArregloOInstanciaDeClase -> CreacionDeArreglo
 ArregloOInstanciaDeClase -> ArgsActuales
 
-# [L:arrinit] — `new int[]{1,2,3}`. Sin el logro:
+# `new int[]{1,2,3}`. Sin el logro:
 #   CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional
 CreacionDeArreglo -> [ RestoCreacionDeArreglo
 RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional

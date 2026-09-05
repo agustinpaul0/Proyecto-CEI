@@ -5,7 +5,7 @@
 \regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con el logro de genericidad avanzada.\par}
+\noindent{\small Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con el logro de genericidad avanzada.\par}
 
 \begin{producciones}
 \regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
@@ -15,19 +15,19 @@
 \regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace que el \texttt{public} del \nt{Constructor} original quede absorbido por \nt{VisibilidadOpcional}, y que \nt{Constructor} pase a competir con \nt{Tipo} por el token idClase: \texttt{C()\{\}} (constructor) vs \texttt{C x;} (atributo de tipo C).\par}
+\noindent{\small La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace que el \texttt{public} del \nt{Constructor} original quede absorbido por \nt{VisibilidadOpcional}, y que \nt{Constructor} pase a competir con \nt{Tipo} por el token idClase: \texttt{C()\{\}} (constructor) vs \texttt{C x;} (atributo de tipo C).\par}
 
 \begin{producciones}
-\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{visibilidad}]}
-\regla{Miembro}{\nt{MiembroSinVisibilidad}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{visibilidad}]}
-\regla{Miembro}{\nt{Constructor}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{visibilidad}]}
-\regla{VisibilidadOpcional}{\tl{public} \alt{} \tl{private} \alt{} \eps}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{visibilidad}]}
+\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}\marca{+}{visibilidad}
+\regla{Miembro}{\nt{MiembroSinVisibilidad}}\marca{-}{visibilidad}
+\regla{Miembro}{\nt{Constructor}}\marca{-}{visibilidad}
+\regla{VisibilidadOpcional}{\tl{public} \alt{} \tl{private} \alt{} \eps}\marca{+}{visibilidad}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Sin el logro, el \texttt{public} sólo aparece en el constructor y es lo que lo distingue del resto de los miembros: es la regla original de la cátedra.\par}
+\noindent{\small Sin el logro, el \texttt{public} sólo aparece en el constructor y es lo que lo distingue del resto de los miembros: es la regla original de la cátedra.\par}
 
 \begin{producciones}
-\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{visibilidad}]}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}\marca{-}{visibilidad}
 \regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
 \regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}}
 \regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
@@ -35,40 +35,40 @@
 \regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}El NT insertado que decide entre constructor y miembro con tipo de referencia. Con visibilidad el constructor ya no lleva \texttt{public} propio, así que compite con el atributo/método de tipo referencia por el token idClase.\par}
+\noindent{\small El NT insertado que decide entre constructor y miembro con tipo de referencia. Con visibilidad el constructor ya no lleva \texttt{public} propio, así que compite con el atributo/método de tipo referencia por el token idClase.\par}
 
 \begin{producciones}
-\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{visibilidad}]}
+\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}\marca{+}{visibilidad}
 \regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}El NT insertado que decide entre atributo y método.\par}
+\noindent{\small El NT insertado que decide entre atributo y método.\par}
 
 \begin{producciones}
 \regla{AtributoOMetodo}{\nt{InicializacionDeAtributo} \tl{;}}
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de una variable local, y tienen que poder prenderse por separado.\par}
+\noindent{\small NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de una variable local, y tienen que poder prenderse por separado.\par}
 
 \begin{producciones}
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{atrinit}]}
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCompuesta}}\marca{+}{atrinit}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}\nt{Metodo} sobrevive como no terminal propio y lo comparten la rama static y la rama void, así que el semántico tiene UN solo lugar donde construir el nodo de método para esas dos formas. La tercera forma (tipo de referencia) ya consumió el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.\par}
+\noindent{\small \nt{Metodo} sobrevive como no terminal propio y lo comparten la rama static y la rama void, así que el semántico tiene UN solo lugar donde construir el nodo de método para esas dos formas. La tercera forma (tipo de referencia) ya consumió el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.\par}
 
 \begin{producciones}
 \regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Se comparte a propósito: es la misma construcción en método, método static y constructor.\par}
+\noindent{\small Se comparte a propósito: es la misma construcción en método, método static y constructor.\par}
 
 \begin{producciones}
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Los métodos de interfaz no llevan visibilidad: el logro habla de Métodos, Atributos y Constructores, que son los \nt{Miembro} de una clase.\par}
+\noindent{\small Los métodos de interfaz no llevan visibilidad: el logro habla de Métodos, Atributos y Constructores, que son los \nt{Miembro} de una clase.\par}
 
 \begin{producciones}
 \regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
@@ -79,25 +79,25 @@
 \regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:float] — \texttt{float} es token del léxico desde la Etapa 1 pero no estaba en la gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.\par}
+\noindent{\small \texttt{float} es token del léxico desde la Etapa 1 pero no estaba en la gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.\par}
 
 \begin{producciones}
 \regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
-\regla{TipoPrimitivo}{\tl{float}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{float}]}
+\regla{TipoPrimitivo}{\tl{float}}\marca{+}{float}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}En POSICIÓN DE TIPO no se admite el diamante: \texttt{List<> x;} es inválido.\par}
+\noindent{\small En POSICIÓN DE TIPO no se admite el diamante: \texttt{List<> x;} es inválido.\par}
 
 \begin{producciones}
 \regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:generico] — la recursión por TipoGenericoOpcional es la que habilita el anidamiento \texttt{List<List<Persona>>}. Sin el logro: \texttt{ArgumentoDeTipo -> idGen | idClase}.\par}
+\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>>}. Sin el logro: \texttt{ArgumentoDeTipo -> idGen | idClase}.\par}
 
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen}}
-\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{generico}]}
-\regla{ArgumentoDeTipo}{\tl{idClase}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{generico}]}
+\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}\marca{+}{generico}
+\regla{ArgumentoDeTipo}{\tl{idClase}}\marca{-}{generico}
 \regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}}
 \regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales} \alt{} \eps}
 \regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}
@@ -105,7 +105,7 @@
 \regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Con [L:varclasica] una declaración local puede empezar con idClase (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}). Se factoriza ese idClase y el desempate lo hace el token siguiente: \texttt{.} es expresión, cualquier otro es declaración. La rama de expresión reusa \nt{ColaDeExpresionDesdePrimario} para no duplicar la jerarquía de expresiones.\par}
+\noindent{\small Con el logro de variables locales clásicas una declaración local puede empezar con idClase (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}). Se factoriza ese idClase y el desempate lo hace el token siguiente: \texttt{.} es expresión, cualquier otro es declaración. La rama de expresión reusa \nt{ColaDeExpresionDesdePrimario} para no duplicar la jerarquía de expresiones.\par}
 
 \begin{producciones}
 \regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
@@ -116,35 +116,35 @@
 \regla{Sentencia}{\nt{If}}
 \regla{Sentencia}{\nt{While}}
 \regla{Sentencia}{\nt{Bloque}}
-\regla{Sentencia}{\nt{For}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
+\regla{Sentencia}{\nt{For}}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Sin variables locales clásicas, una sentencia-expresión puede empezar con idClase sin competir con nada: es la regla original.\par}
+\noindent{\small Sin variables locales clásicas, una sentencia-expresión puede empezar con idClase sin competir con nada: es la regla original.\par}
 
 \begin{producciones}
-\regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{varclasica}]}
-\regla{SentenciaExpresion}{\nt{Expresion}}\hfill\mbox{\footnotesize\color{grisMedio}[-\,\texttt{varclasica}]}
+\regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}}\marca{-}{varclasica}
+\regla{SentenciaExpresion}{\nt{Expresion}}\marca{-}{varclasica}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Con el logro, \texttt{C x;} y \texttt{C.m();} compiten por idClase y hay que factorizarlo.\par}
+\noindent{\small Con el logro, \texttt{C x;} y \texttt{C.m();} compiten por idClase y hay que factorizarlo.\par}
 
 \begin{producciones}
-\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
+\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}\marca{+}{varclasica}
+\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
+\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
+\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\marca{+}{varclasica}
+\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
+\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\marca{+}{varclasica}
 \regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
+\noindent{\small Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
 
 \begin{producciones}
-\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{RestoListaDeclaradores}{\eps}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{varclasica}]}
+\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
+\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
+\regla{RestoListaDeclaradores}{\eps}\marca{+}{varclasica}
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\marca{+}{varclasica}
 \regla{Return}{\tl{return} \nt{ExpresionOpcional}}
 \regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
 \regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
@@ -152,43 +152,43 @@
 \regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:for] — Fors! E2 Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
+\noindent{\small Fors! E2 Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
 
 \begin{producciones}
-\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
+\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}\marca{+}{for}
+\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
+\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}\marca{+}{for}
+\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
+\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
+\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}\marca{+}{for}
+\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
+\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}El \texttt{:} distingue el for de iteradores del estándar, y está a un solo token.\par}
+\noindent{\small El \texttt{:} distingue el for de iteradores del estándar, y está a un solo token.\par}
 
 \begin{producciones}
-\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
+\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\marca{+}{for}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\marca{+}{for}
+\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCompuesta} \alt{} \eps}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Una sola expresión por separador, como pide el logro.\par}
+\noindent{\small Una sola expresión por separador, como pide el logro.\par}
 
 \begin{producciones}
-\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{for}]}
+\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Capas, de menor a mayor precedencia: Expresion            asignación (NO asociativa, como en la gramática original) ExpresionCondicional ternario [L:ternario] ExpresionCompuesta   operadores binarios (un solo nivel, como el original) ExpresionBasica      operadores unarios prefijos Operando             literal, o referencia con posfijo opcional [L:posfijo]\par}
+\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional.\par}
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}El lado derecho es ExpresionCondicional y NO Expresion: la gramática original pone \nt{ExpresionCompuesta} ahí, o sea que \texttt{a = b = c} NO es válido en MiniJava.\par}
+\noindent{\small El lado derecho es ExpresionCondicional y NO Expresion: la gramática original pone \nt{ExpresionCompuesta} ahí, o sea que \texttt{a = b = c} NO es válido en MiniJava.\par}
 
 \begin{producciones}
 \regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional} \alt{} \eps}
@@ -196,10 +196,10 @@
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java.\par}
+\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java.\par}
 
 \begin{producciones}
-\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{ternario}]}
+\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}}\marca{+}{ternario}
 \regla{RestoCondicional}{\eps}
 \regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
@@ -211,22 +211,22 @@
 \regla{Operando}{\nt{Referencia} \nt{PosfijoOpcional}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Va sobre \nt{Referencia} y no sobre \nt{Operando}: \texttt{5++} no tiene sentido.\par}
+\noindent{\small Va sobre \nt{Referencia} y no sobre \nt{Operando}: \texttt{5++} no tiene sentido.\par}
 
 \begin{producciones}
-\regla{PosfijoOpcional}{\tl{++}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{posfijo}]}
-\regla{PosfijoOpcional}{\tl{-{}-}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{posfijo}]}
+\regla{PosfijoOpcional}{\tl{++}}\marca{+}{posfijo}
+\regla{PosfijoOpcional}{\tl{-{}-}}\marca{+}{posfijo}
 \regla{PosfijoOpcional}{\eps}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:float] — floatLiteral\par}
+\noindent{\small floatLiteral\par}
 
 \begin{producciones}
 \regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
-\regla{Primitivo}{\tl{floatLiteral}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{float}]}
+\regla{Primitivo}{\tl{floatLiteral}}\marca{+}{float}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}--- Expresión que no puede empezar con idClase ---------------------------- Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida.\par}
+\noindent{\small --- Expresión que no puede empezar con idClase ---------------------------- Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida.\par}
 
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
@@ -241,7 +241,7 @@
 \regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Dedicado a este contexto: vacío = era <VarEncadenada>, con argumentos = era <MetodoEncadenado>.\par}
+\noindent{\small Dedicado a este contexto: vacío = era <VarEncadenada>, con argumentos = era <MetodoEncadenado>.\par}
 
 \begin{producciones}
 \regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales} \alt{} \eps}
@@ -256,33 +256,33 @@
 \regla{PrimarioSinIdClase}{\nt{Creacion}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>, con flecha = lambda de un parámetro sin paréntesis.\par}
+\noindent{\small Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>, con flecha = lambda de un parámetro sin paréntesis.\par}
 
 \begin{producciones}
 \regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
 \regla{AccesoLlamadaOLambda}{\nt{ArgsActuales}}
-\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
+\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
 \regla{AccesoLlamadaOLambda}{\eps}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:lambda] — MiniLambdas E2 \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto.\par}
+\noindent{\small MiniLambdas E2 \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto.\par}
 
 \begin{producciones}
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
-\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
+\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
 \regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}}
 \regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
-\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
-\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
+\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
+\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
 \regla{FinDeParentizadaOLambda}{\eps}
-\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
-\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
+\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\marca{+}{lambda}
+\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}\marca{+}{lambda}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}Una única expresión, sin llaves.\par}
+\noindent{\small Una única expresión, sin llaves.\par}
 
 \begin{producciones}
-\regla{CuerpoLambda}{\nt{Expresion}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{lambda}]}
+\regla{CuerpoLambda}{\nt{Expresion}}\marca{+}{lambda}
 \regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
 \regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{CreacionDeArreglo}}
 \regla{ArregloOInstancia}{\tl{idGen} \nt{CreacionDeArreglo}}
@@ -292,21 +292,21 @@
 \regla{CreacionDesdeIdClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:generico] — el diamante \texttt{<>} sólo se admite acá, en la rama que va a ArgsActuales: \texttt{new C<>()} es válido y \texttt{new C<>[3]} no. La restricción del logro queda impuesta por la gramática, no delegada al semántico.\par}
+\noindent{\small el diamante \texttt{<>} sólo se admite acá, en la rama que va a ArgsActuales: \texttt{new C<>()} es válido y \texttt{new C<>[3]} no. La restricción del logro queda impuesta por la gramática, no delegada al semántico.\par}
 
 \begin{producciones}
-\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{generico}]}
+\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}\marca{+}{generico}
 \regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}
 \regla{ArregloOInstanciaDeClase}{\nt{CreacionDeArreglo}}
 \regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small\color{grisMedio}[L:arrinit] — \texttt{new int[]\{1,2,3\}}. Sin el logro: CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional\par}
+\noindent{\small \texttt{new int[]\{1,2,3\}}. Sin el logro: CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional\par}
 
 \begin{producciones}
 \regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
 \regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
-\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}\hfill\mbox{\footnotesize\color{grisMedio}[+\,\texttt{arrinit}]}
+\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}\marca{+}{arrinit}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
 \regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}
