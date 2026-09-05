@@ -274,6 +274,91 @@ def longitudes_derivables(g):
     return minimo, maximo
 
 
+def calcular_siguientes(g, vaciables, primeros_nt):
+    """Siguientes de cada NT. **HERRAMIENTA DE DIAGNÓSTICO, NO PARTE DEL MÉTODO.**
+
+    Los Siguientes NO se ven en la materia y NO intervienen en nada de lo que se
+    entrega: ni en la gramática, ni en la elección de producciones, ni en una
+    sola línea del analizador sintáctico. El compilador se implementa con el
+    Esquema Simple de Clase 5, que decide **sólo con Primeros**: una cadena de
+    `if` sobre Primeros de cada alternativa y, si ninguna coincide, o bien no
+    hace nada —cuando el no terminal es anulable, slides 52-54— o bien lanza el
+    error —slide 36—.
+
+    Esta función existe únicamente para poder auditar, desde afuera y una sola
+    vez, un ítem del checklist de Clase 4 slide 41: que la gramática «no sea
+    ambigua, o sea arreglable». Detectar una ambigüedad requiere mirar qué puede
+    seguir a un no terminal anulable; una vez detectada, se resuelve con una
+    regla de implementación (slide 49) y los Siguientes no vuelven a aparecer.
+    """
+    siguientes = {nt: set() for nt in g.no_terminales}
+    siguientes[g.inicial].add("$")
+    cambio = True
+    while cambio:
+        cambio = False
+        for izquierda, cuerpo in g.producciones:
+            for i, simbolo in enumerate(cuerpo):
+                if not g.es_no_terminal(simbolo):
+                    continue
+                resto = cuerpo[i + 1:]
+                aporte = primeros_de_secuencia(g, primeros_nt, vaciables, resto)
+                nuevo = aporte - {EPSILON}
+                if EPSILON in aporte or not resto:
+                    nuevo |= siguientes[izquierda]
+                if not nuevo <= siguientes[simbolo]:
+                    siguientes[simbolo] |= nuevo
+                    cambio = True
+    return siguientes
+
+
+def ambiguedades(g, vaciables, primeros_nt, siguientes):
+    """Alternativas anulables cuyo Siguientes pisa los Primeros de otra
+    alternativa del mismo NT. Es la condición LL(1) *fuerte*; cada choque acá
+    es una cadena con dos árboles de derivación."""
+    encontradas = []
+    for nt, cuerpos in g.por_izquierda.items():
+        if len(cuerpos) < 2:
+            continue
+        conjuntos = [
+            (c, primeros_de_secuencia(g, primeros_nt, vaciables, c)) for c in cuerpos
+        ]
+        for i, (anulable, pri_a) in enumerate(conjuntos):
+            if EPSILON not in pri_a:
+                continue
+            for j, (otra, pri_o) in enumerate(conjuntos):
+                if i == j:
+                    continue
+                choque = siguientes[nt] & (pri_o - {EPSILON})
+                if choque:
+                    encontradas.append((nt, anulable, otra, choque))
+    return encontradas
+
+
+# Ambigüedades conocidas de la gramática, cada una con la regla de
+# implementación que la resuelve. El verificador exige que las que detecta sean
+# EXACTAMENTE éstas: si aparece una nueva, falla; si una desaparece, avisa. Así
+# el informe puede afirmar con evidencia «éstas son todas, y así se resuelve
+# cada una» en vez de con una revisión a ojo.
+AMBIGUEDADES_DECLARADAS = {
+    "ElseOpcional":
+        "dangling else — se liga al `if` más cercano tomando la rama `else` apenas se ve "
+        "el token, que es la regla de Java",
+    "DimensionesConTamanioOpcional":
+        "`new int[3][4]` — heredada de la gramática de la cátedra; se resuelve voraz, "
+        "consumiendo el `[` como otra dimensión de la creación, que es lo que hace Java",
+    "RestoExpresion":
+        "cuerpo de lambda voraz — `x -> a = b` es `x -> (a = b)`",
+    "RestoExpresionCompuesta":
+        "cuerpo de lambda voraz — `x -> a + b` es `x -> (a + b)`",
+    "RestoReferencia":
+        "cuerpo de lambda voraz — `x -> a.m()` es `x -> (a.m())`",
+    "RestoCondicional":
+        "cuerpo de lambda voraz — `x -> a ? b : c` es `x -> (a ? b : c)`",
+    "PosfijoOpcional":
+        "cuerpo de lambda voraz — `x -> a++` es `x -> (a++)`",
+}
+
+
 def formatear(conjunto):
     if not conjunto:
         return "∅"
@@ -346,6 +431,45 @@ def aceptar_detallado(g, vaciables, primeros_nt, tokens):
     return True, "aceptada", i
 
 
+def informar_ambiguedades(texto, disponibles):
+    """Recorre las 2^n configuraciones juntando toda ambigüedad que aparezca y
+    la contrasta con AMBIGUEDADES_DECLARADAS."""
+    total = 1 << len(disponibles)
+    detectadas = {}
+    for mascara in range(total):
+        encendidos = {n for i, n in enumerate(disponibles) if mascara & (1 << i)}
+        g = parsear(texto, encendidos)
+        vac = calcular_vaciables(g)
+        pri = calcular_primeros_nt(g, vac)
+        sig = calcular_siguientes(g, vac, pri)
+        for nt, _, _, choque in ambiguedades(g, vac, pri, sig):
+            detectadas.setdefault(nt, set()).update(choque)
+
+    print("DIAGNOSTICO OFFLINE — no forma parte del metodo de implementacion.")
+    print("El analizador sintactico decide SOLO con Primeros (Esquema Simple,")
+    print("Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item")
+    print("«no es ambigua o es arreglable» del checklist de Clase 4 slide 41.\n")
+    print(f"Ambiguedades detectadas en las {total} configuraciones: {len(detectadas)}\n")
+    for nt in sorted(detectadas):
+        estado = "declarada" if nt in AMBIGUEDADES_DECLARADAS else "*** NO DECLARADA ***"
+        print(f"  <{nt}>  pisado por {formatear(detectadas[nt])}   [{estado}]")
+        if nt in AMBIGUEDADES_DECLARADAS:
+            print(f"      resolucion: {AMBIGUEDADES_DECLARADAS[nt]}")
+        print()
+
+    nuevas = set(detectadas) - set(AMBIGUEDADES_DECLARADAS)
+    sobrantes = set(AMBIGUEDADES_DECLARADAS) - set(detectadas)
+    if nuevas:
+        print(f"FALLA: {len(nuevas)} ambiguedad(es) sin declarar: {', '.join(sorted(nuevas))}")
+        print("Hay que resolverlas o agregarlas a AMBIGUEDADES_DECLARADAS con su regla.")
+        return 1
+    if sobrantes:
+        print(f"AVISO: declaradas pero ya no presentes: {', '.join(sorted(sobrantes))}")
+        print("Si la gramatica dejo de tenerlas, sacarlas de la lista y del informe.")
+    print("Todas las ambiguedades detectadas estan declaradas con su regla de resolucion.")
+    return 0
+
+
 def verificar_combinatoria(texto, disponibles):
     """LL(1) en las 2^n configuraciones de logros. Es la garantía de atomicidad:
     ningún logro puede depender de que otro esté prendido."""
@@ -390,6 +514,12 @@ def main():
         help="simula el parser LL(1) sobre una secuencia de tokens separados por espacios",
     )
     parser.add_argument(
+        "--ambiguedades",
+        action="store_true",
+        help="DIAGNOSTICO: detecta ambiguedades y las contrasta con las declaradas. "
+             "Usa Siguientes, que NO son parte del metodo de implementacion.",
+    )
+    parser.add_argument(
         "--combinatoria",
         action="store_true",
         help="verifica LL(1) en TODA combinacion de logros (2^n configuraciones)",
@@ -428,6 +558,9 @@ def main():
     g = parsear(texto, encendidos if disponibles else None)
 
     vaciables, primeros_nt, conflictos = analizar(g)
+
+    if args.ambiguedades:
+        return informar_ambiguedades(texto, disponibles)
 
     if args.aceptar is not None:
         ok, motivo = aceptar(g, vaciables, primeros_nt, args.aceptar.split())

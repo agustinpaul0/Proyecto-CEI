@@ -114,6 +114,32 @@ probar SI visibilidad,atrinit,varclasica,generico,arrinit "todo junto en un atri
 probar SI for,varclasica,posfijo,ternario "for + ternario + posfijo" \
   "$M for ( int idMetVar = intLiteral ; true ; idMetVar ++ ) idMetVar = true ? intLiteral : intLiteral ; } } eof"
 
+echo "--- ambiguedades conocidas: la gramatica las acepta, la resolucion es voraz ---"
+# No se puede comprobar CUAL arbol elige la gramatica —eso lo fija el orden de
+# las ramas en el parser—, pero si que la cadena sea aceptada. El arbol elegido
+# se fija con los casos del corpus cuando exista el analizador.
+probar SI ninguno "dangling else: if(a) if(b) s; else t;" \
+  "$M if ( true ) if ( false ) ; else ; } } eof"
+probar SI ninguno "new int[3][4]  (heredada de la catedra)" \
+  "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] ; } } eof"
+probar SI lambda           "x -> a + b     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar + idMetVar ; } } eof"
+probar SI lambda           "x -> a.m()     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar . idMetVar ( ) ; } } eof"
+probar SI lambda           "x -> a[0]      (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar [ intLiteral ] ; } } eof"
+probar SI lambda           "x -> a = b     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar = idMetVar ; } } eof"
+probar SI lambda,ternario  "x -> a ? b : c (cuerpo voraz)"  "$M var idMetVar = idMetVar -> true ? intLiteral : intLiteral ; } } eof"
+probar SI lambda,posfijo   "x -> a++       (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar ++ ; } } eof"
+
+echo "--- inicializacion de arreglos multidimensional (como en Java) ---"
+probar SI arrinit "new int[]{1,2}"             "$M var idMetVar = new int [ ] { intLiteral , intLiteral } ; } } eof"
+probar SI arrinit "new int[][]{{1},{2}}"       "$M var idMetVar = new int [ ] [ ] { { intLiteral } , { intLiteral } } ; } } eof"
+probar SI arrinit "new int[][][]{{{1}}}"       "$M var idMetVar = new int [ ] [ ] [ ] { { { intLiteral } } } ; } } eof"
+probar SI arrinit "new int[]{}   vacio"        "$M var idMetVar = new int [ ] { } ; } } eof"
+probar NO ninguno "sin el logro"               "$M var idMetVar = new int [ ] { intLiteral } ; } } eof"
+
+echo "--- orden de modificadores: fiel a la gramatica original ---"
+probar SI visibilidad "public static void f(){}"  "$C public static void idMetVar ( ) { } } eof"
+probar NO visibilidad "static public void f(){}"  "$C static public void idMetVar ( ) { } } eof"
+
 echo
 if [ "$fallos" -eq 0 ]; then echo "TODOS LOS CASOS PASAN."; else echo "$fallos CASO(S) FALLAN."; fi
 exit "$fallos"

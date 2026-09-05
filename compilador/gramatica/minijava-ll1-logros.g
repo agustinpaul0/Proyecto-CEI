@@ -378,7 +378,18 @@ ArregloOInstanciaDeClase -> ArgsActuales
 #   CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional
 CreacionDeArreglo -> [ RestoCreacionDeArreglo
 RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional
-RestoCreacionDeArreglo -> ] { ListaExpsOpcional }                                         @+arrinit
+
+# El logro dice «como en Java» y sólo restringe DÓNDE (dentro de un `new`), no
+# cuántas dimensiones. Java admite `new int[][]{{1,2},{3,4}}`, así que el
+# inicializador es anidable: un elemento puede ser una expresión o, a su vez,
+# otro inicializador.
+RestoCreacionDeArreglo -> ] DimensionesVaciasOpcional InicializadorDeArreglo              @+arrinit
+DimensionesVaciasOpcional -> [ ] DimensionesVaciasOpcional | EPSILON                      @+arrinit
+InicializadorDeArreglo -> { ListaElementosOpcional }                                      @+arrinit
+ListaElementosOpcional -> ListaElementos | EPSILON                                        @+arrinit
+ListaElementos -> ElementoInicializador RestoListaElementos                               @+arrinit
+RestoListaElementos -> , ElementoInicializador RestoListaElementos | EPSILON              @+arrinit
+ElementoInicializador -> Expresion | InicializadorDeArreglo                               @+arrinit
 
 DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
 DimensionesConTamanioOpcional -> DimensionesConTamanio | EPSILON
