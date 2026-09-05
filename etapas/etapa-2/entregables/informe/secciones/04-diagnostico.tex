@@ -1,0 +1,86 @@
+% ===========================================================================
+\section{Diagnóstico}
+\label{sec:diagnostico}
+% ===========================================================================
+
+La gramática de la cátedra \textbf{no es LL(1)}. Verificando la condición
+$\prim{\beta_i} \cap \prim{\beta_j} = \varnothing$ sobre todas las producciones aparecen
+\textbf{dieciséis conflictos} repartidos en \textbf{diez no terminales}.
+
+\begin{center}
+\begin{longtable}{@{}clp{0.30\textwidth}p{0.30\textwidth}@{}}
+\toprule
+\textbf{\#} & \textbf{No terminal} & \textbf{Defecto} & \textbf{Intersección} \\
+\midrule\endhead
+1     & \nt{Miembro}               & prefijo común profundo      & \tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen} \\
+2     & \nt{ListaArgsFormales}     & recursión a izquierda       & ídem \\
+3     & \nt{Sentencia}             & \textbf{ambigüedad}         & todos los de \nt{Expresion} \\
+4     & \nt{If}                    & prefijo común               & \tl{if} \\
+5     & \nt{Expresion}             & prefijo común               & todos los de \nt{ExpresionCompuesta} \\
+6     & \nt{ExpresionCompuesta}    & recursión a izquierda       & todos los de \nt{ExpresionBasica} \\
+7--12 & \nt{Referencia}            & recursión a izquierda, tres alternativas (seis pares) & todos los de \nt{Primario} \\
+13    & \nt{Primario}              & prefijo común               & \tl{idMetVar} \\
+14    & \nt{Primario}              & prefijo común a dos niveles & \tl{new} \\
+15    & \nt{DimensionesConTamanio} & prefijo común               & \tl{[} \\
+16    & \nt{ListaExps}             & prefijo común               & todos los de \nt{Expresion} \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Cuántos de esos dieciséis son ambigüedades}
+
+Siguiendo el criterio de la sección~\ref{sec:dos-defectos}, se clasificó cada par. El resultado es
+que \textbf{sólo dos} de los dieciséis son ambigüedades reales; los otros catorce son conflictos
+de predicción que se corrigen mecánicamente sin alterar el lenguaje.
+
+\begin{center}
+\begin{tabular}{@{}llp{0.30\textwidth}@{}}
+\toprule
+\textbf{Par} & \textbf{Longitudes derivables} & \textbf{Veredicto} \\
+\midrule
+\nt{VarEncadenada} / \nt{MetodoEncadenado}   & $2..2$ vs.\ $4..\infty$ & no ambiguo \\
+\nt{AccesoVar} / \nt{LlamadaMetodo}          & $1..1$ vs.\ $3..\infty$ & no ambiguo \\
+\nt{CrearArreglo} / \nt{LlamadaConstructor}  & se solapan              & no ambiguo (argumento posicional) \\
+\nt{Atributo} / \nt{Metodo}                  & se solapan              & no ambiguo (argumento posicional) \\
+\nt{Asignacion} / \nt{Llamada}               & se solapan              & \textbf{ambiguo} \\
+las dos producciones de \nt{If}              & se solapan              & \textbf{ambiguo} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El caso de \nt{VarEncadenada} y \nt{MetodoEncadenado} es el más ilustrativo y el que más se
+confunde. \nt{VarEncadenada} deriva \textbf{exactamente} la cadena \tl{.} \tl{idMetVar}: dos
+tokens, sin alternativas. \nt{MetodoEncadenado} es \tl{.} \tl{idMetVar} \nt{ArgsActuales}, y
+\nt{ArgsActuales} \textbf{no es vaciable} --- siempre aporta al menos \tl{(} y \tl{)} --- de modo
+que deriva cuatro tokens como mínimo. Los rangos no se solapan, \textbf{ninguna cadena puede estar
+en los dos lenguajes} y por lo tanto ninguna cadena tiene dos árboles. Comparten prefijo
+izquierdo; eso rompe LL(1) y se arregla factorizando, pero no es ambigüedad.
+
+Para los dos pares cuyos rangos sí se solapan el argumento es posicional en lugar de por longitud:
+\nt{CrearArreglo} y \nt{LlamadaConstructor} comparten \tl{new} y el tipo, pero
+\nt{DimensionesConTamanio} siempre arranca con \tl{[} y \nt{ArgsActuales} siempre con \tl{(}, así
+que las cadenas difieren en el token inmediatamente posterior al tipo; \nt{Atributo} y \nt{Metodo}
+comparten \nt{Tipo} \tl{idMetVar} y siguen con \tl{;} y con \tl{(} respectivamente.
+
+\subsection{Las dos ambigüedades}
+
+\begin{ambiguedad}{\nt{Asignacion} y \nt{Llamada} son la misma producción}
+\begin{producciones}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\end{producciones}
+Los cuerpos son \textbf{idénticos}, y \nt{Sentencia} los usa en dos alternativas también
+idénticas. En consecuencia \emph{toda} sentencia-expresión tiene dos árboles de derivación --- uno
+por \nt{Asignacion} y otro por \nt{Llamada} --- y la gramática no ofrece ningún criterio para
+elegir. Presumiblemente están así para documentar la intención: en una sentencia-expresión uno
+espera una asignación o una llamada. Pero sintácticamente \texttt{x = 5} y \texttt{f()} son las
+dos una \nt{Expresion}, y la gramática no puede distinguirlas.
+\end{ambiguedad}
+
+\begin{ambiguedad}{el \emph{dangling else}}
+En \texttt{if (a) if (b) s1; else s2;} el \tl{else} puede ligar al \tl{if} interno o al externo:
+dos árboles para la misma cadena. Es la ambigüedad clásica, presente tal cual en la gramática.
+\end{ambiguedad}
+
+Ambas se resuelven en la sección~\ref{sec:transformaciones}, y en los dos casos hay que
+\emph{decidir} un significado, no sólo reescribir.

@@ -1,0 +1,43 @@
+% ===========================================================================
+\section{Herramientas y uso de inteligencia artificial}
+% ===========================================================================
+
+\subsection{Herramientas desarrolladas}
+
+Para este informe se escribieron dos utilidades, que no forman parte del compilador y viven en
+\texttt{compilador/herramientas/}:
+
+\begin{description}
+  \item[\texttt{primeros.py}] Calcula símbolos vaciables y conjuntos de Primeros por punto fijo,
+        verifica la condición LL(1), recorre todas las combinaciones de logros, compara
+        rangos de longitud derivable para distinguir ambigüedad de conflicto de predicción, y
+        simula el esquema de traducción sobre una secuencia de tokens.
+  \item[\texttt{gramatica\_a\_latex.py}] Genera el listado de producciones y la tabla de Primeros
+        de este informe desde el mismo archivo de gramática que verifica la herramienta anterior.
+\end{description}
+
+La gramática se mantiene en texto plano en \texttt{compilador/gramatica/}, en tres versiones: la
+base transcripta del documento de la cátedra, el núcleo corregido y la final con los logros.
+
+\subsection{Uso de inteligencia artificial}
+
+Este trabajo se desarrolló con asistencia de un modelo de lenguaje (Claude, de Anthropic), en
+línea con la política de la cátedra que acepta y fomenta su uso. Se deja constancia del reparto
+concreto:
+
+\begin{itemize}
+  \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
+        elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
+        independiente con \texttt{primeros.py} y con los 54 casos de aceptación y rechazo. Ninguna
+        afirmación de este informe descansa únicamente en la salida del modelo.
+  \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
+  \item La \textbf{verificación} es mecánica y reproducible con los comandos de la
+        sección~\ref{sec:verificacion}, de modo que cualquier error es localizable en un paso
+        concreto y no depende de confiar en el proceso.
+\end{itemize}
+
+Dos correcciones concretas surgidas de ese ida y vuelta quedaron registradas en el informe porque
+ilustran el tipo de error que el método detecta: la fusión indebida de dos puntos de decisión con
+la misma forma y distinto significado (sección~\ref{sec:transformaciones}, F7), y la
+transformación «natural» de \nt{Expresion} que habría agrandado el lenguaje al volver asociativa
+la asignación (sección~\ref{sec:transformaciones}, F1).

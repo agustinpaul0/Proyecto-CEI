@@ -1,0 +1,194 @@
+% ===========================================================================
+\section{La gramática original, comentada}
+% ===========================================================================
+
+Antes de tocar nada, un recorrido por la gramática de la cátedra explicando qué modela cada regla
+y \textbf{por qué está escrita así}. Varias decisiones de forma que parecen arbitrarias son en
+realidad restricciones del lenguaje impuestas por la gramática, y perderlas al transformar sería
+cambiar \textsc{MiniJava}.
+
+\subsection{Estructura del programa}
+
+\begin{producciones}
+\regla{Inicial}{\nt{ListaClases} \tl{eof}}
+\regla{ListaClases}{\nt{Clase} \nt{ListaClases} \alt{} \nt{Interfaz} \nt{ListaClases} \alt{} \eps}
+\end{producciones}
+
+El \tl{eof} no es decoración: cumple la función del \tl{\$} de la teoría y obliga al analizador a
+consumir \emph{todo} el archivo. Sin él, un programa con símbolos sobrantes después de la última
+clase se aceptaría, porque \nt{ListaClases} puede derivar a vacío y el análisis terminaría dejando
+tokens sin leer. En el léxico de la Etapa 1, \tl{eof} es un token con lexema \texttt{\$}.
+
+\nt{ListaClases} usa \textbf{recursión a derecha}, que es la forma natural de expresar «cero o
+más» en una gramática destinada al análisis descendente. La variante con recursión a izquierda
+generaría el mismo lenguaje y sería inservible.
+
+\begin{producciones}
+\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}}
+\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
+\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
+\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements} \nt{TipoReferencia} \alt{} \eps}
+\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \eps}
+\end{producciones}
+
+Clase e interfaz son casi simétricas, con tres diferencias deliberadas. Primero, la interfaz sólo
+admite \tl{extends} y la clase admite \tl{extends} o \tl{implements}: por eso hay dos no terminales
+distintos en vez de uno compartido, y la restricción queda impuesta \emph{por la gramática} en
+lugar de delegarse al análisis semántico. Segundo, la interfaz sólo contiene métodos. Tercero,
+\nt{HerenciaOpcional} tiene tres alternativas y no una combinación, lo que impide
+\texttt{extends A implements B} --- válido en Java, no en \textsc{MiniJava}.
+
+\nt{GenericidadOpcional} admite un \textbf{único} \tl{idGen}, no una lista: \textsc{MiniJava}
+limita a un solo parámetro de tipo, y el logro \emph{Genericidad Avanzada E2} confirma que esa
+limitación se mantiene.
+
+\subsection{Miembros}
+
+\begin{producciones}
+\regla{Miembro}{\nt{Atributo} \alt{} \nt{Metodo} \alt{} \nt{Constructor}}
+\regla{Atributo}{\nt{Tipo} \tl{idMetVar} \tl{;}}
+\regla{Metodo}{\nt{ModificadorOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
+\regla{ModificadorOpcional}{\tl{static} \alt{} \eps}
+\regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
+\end{producciones}
+
+El \tl{public} del constructor \textbf{no es un modificador de visibilidad}: es lo que
+sintácticamente lo distingue de todo lo demás. Por eso ni el atributo ni el método lo llevan. Este
+detalle importa: el logro \emph{Visibilidad Mejorada E2} le saca esa función al \tl{public} y con
+eso crea un conflicto nuevo (sección~\ref{sec:logro-visibilidad}).
+
+\nt{Tipo} y \nt{TipoMetodo} están separados sólo para que \tl{void} sea un tipo de retorno válido
+y no un tipo de variable válido: así \texttt{void x;} es imposible sin ningún chequeo adicional.
+
+\nt{MetodoInterfaz} termina en \tl{;} y no tiene cuerpo. La diferencia con \nt{Metodo} está en el
+último símbolo, y como se usan desde no terminales distintos nunca compiten.
+
+\subsection{Tipos}
+
+\begin{producciones}
+\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
+\regla{TipoBase}{\nt{TipoPrimitivo} \alt{} \nt{TipoReferencia} \alt{} \tl{idGen}}
+\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales} \alt{} \eps}
+\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
+\regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
+\regla{TipoGenericoOpcional}{\tl{<} \nt{InstanciadoOParametrico} \tl{>} \alt{} \eps}
+\regla{InstanciadoOParametrico}{\tl{idGen} \alt{} \tl{idClase}}
+\end{producciones}
+
+Las tres familias de \nt{TipoBase} se distinguen con un solo token porque \textbf{el léxico ya
+separó} \tl{idClase} de \tl{idGen} --- un \tl{idGen} es una única letra mayúscula. Es un buen
+ejemplo de una decisión léxica que le simplifica la vida al analizador sintáctico.
+
+\nt{InstanciadoOParametrico} nombra los dos usos de los ángulos: \emph{instanciado}
+(\texttt{Lista<Persona>}, se fija un tipo concreto) y \emph{paramétrico} (\texttt{Lista<T>} dentro
+de una clase genérica, se propaga el parámetro). No admite anidamiento ni notación diamante: las
+dos cosas las agrega un logro.
+
+\begin{decision}{transcripción de \texttt{[]}}
+El documento de la cátedra escribe \tl{[]} como si fuera un símbolo, pero léxicamente son
+\textbf{dos} tokens: \emph{Aspectos Léxicos de MiniJava} no define ningún token
+\texttt{[]}. En este informe se escribe \tl{[} \tl{]}, que es lo que el analizador tiene que
+reconocer. Es la única desviación deliberada de la literalidad del documento original.
+\end{decision}
+
+\subsection{Sentencias}
+
+\begin{producciones}
+\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
+\regla{Sentencia}{\tl{;} \alt{} \nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;} \alt{} \nt{VarLocal} \tl{;} \alt{} \nt{Return} \tl{;}}
+\regla{Sentencia}{\nt{If} \alt{} \nt{While} \alt{} \nt{Bloque}}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
+\regla{Return}{\tl{return} \nt{ExpresionOpcional}}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \tl{else} \nt{Sentencia}}
+\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\end{producciones}
+
+Las cuatro primeras alternativas de \nt{Sentencia} llevan el \tl{;} explícito para que quede
+visible en la regla; las tres últimas no lo llevan porque terminan en \tl{\}} o en otra sentencia.
+La alternativa \tl{;} sola es la sentencia vacía.
+
+\nt{VarLocal} declara \textbf{sólo con} \tl{var} y \textbf{siempre} con inicialización: en la
+\textsc{MiniJava} base no existe \texttt{int x;}. Además usa \nt{ExpresionCompuesta} y no
+\nt{Expresion} a la derecha del \tl{=}, lo que impide \texttt{var x = y = 3;}. Es una regla más
+restrictiva a propósito.
+
+\subsection{Expresiones}
+
+Conviene leerlas como una pila de capas, cada una llamando a la de abajo. Ese encadenamiento es lo
+que fija qué se agrupa con qué.
+
+\begin{producciones}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{OperadorAsignacion} \nt{ExpresionCompuesta}}
+\regla{Expresion}{\nt{ExpresionCompuesta}}
+\regla{OperadorAsignacion}{\tl{=}}
+\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
+\regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
+\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando} \alt{} \nt{Operando}}
+\regla{OperadorUnario}{\tl{+} \alt{} \tl{-} \alt{} \tl{!}}
+\regla{Operando}{\nt{Primitivo} \alt{} \nt{Referencia}}
+\regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
+\end{producciones}
+
+Dos observaciones que condicionan todo lo que sigue.
+
+\textbf{La asignación no es asociativa.} El lado derecho del \tl{=} es una \nt{ExpresionCompuesta},
+no una \nt{Expresion}. En consecuencia \texttt{a = b = c} \textbf{no es un programa
+MiniJava válido}. Es fácil pasarlo por alto y «mejorarlo» al transformar; hacerlo
+agrandaría el lenguaje.
+
+\textbf{No hay niveles de precedencia entre operadores binarios.} Los trece operadores están en una
+única alternancia plana, sin la jerarquía habitual de un no terminal por nivel. Por lo tanto
+\texttt{a + b * c} y \texttt{a * b + c} se derivan con la misma forma: la precedencia y la
+asociatividad no están en la gramática de \textsc{MiniJava}, y darles lugar sería cambiar el
+lenguaje. Como corolario, eliminar la recursión a izquierda de \nt{ExpresionCompuesta} no pierde
+nada, porque no había precedencia que perder.
+
+\subsection{Referencias y primarios}
+
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \alt{} \nt{Referencia} \nt{VarEncadenada} \alt{} \nt{Referencia} \nt{MetodoEncadenado} \alt{} \nt{Referencia} \nt{AccesoArreglo}}
+\regla{Primario}{\tl{this} \alt{} \tl{stringLiteral} \alt{} \nt{AccesoVar} \alt{} \nt{CrearArreglo}}
+\regla{Primario}{\nt{LlamadaConstructor} \alt{} \nt{LlamadaMetodo} \alt{} \nt{LlamadaMetodoEstatico} \alt{} \nt{ExpresionParentizada}}
+\regla{AccesoVar}{\tl{idMetVar}}
+\regla{LlamadaMetodo}{\tl{idMetVar} \nt{ArgsActuales}}
+\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{CrearArreglo}{\tl{new} \nt{TipoBase} \nt{DimensionesConTamanio}}
+\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
+\regla{VarEncadenada}{\tl{.} \tl{idMetVar}}
+\regla{MetodoEncadenado}{\tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}
+\end{producciones}
+
+\nt{Referencia} modela una cadena como \texttt{this.lista.get(3).nombre[0]}: se arranca de un
+\nt{Primario} y se le cuelgan eslabones. La recursión a izquierda expresa que la cadena se asocia
+hacia la izquierda, que es lo correcto: \texttt{a.b.c} es \texttt{(a.b).c}.
+
+\tl{stringLiteral} está en \nt{Primario} y no en \nt{Primitivo} \textbf{a propósito}: de un
+\emph{String} se pueden colgar eslabones (\texttt{"hola".length()}) y de un \tl{intLiteral} no.
+Por el mismo motivo está \nt{ExpresionParentizada}, que habilita \texttt{(a + b).metodo()}.
+
+Ningún \nt{Primario} deriva un \tl{idClase} suelto: no existe la referencia a una clase por sí
+sola, siempre tiene que ser \texttt{C.metodo(\dots)}. Ese hecho se usa más adelante.
+
+\subsection{Construcciones que faltan}
+
+Tres ausencias, que no son errores sino el espacio que dejan los logros:
+
+\begin{itemize}
+  \item \tl{++} y \tl{-{}-} son tokens del léxico --- \emph{Aspectos Léxicos} \S2.4.2 los lista ---
+        pero \textbf{no aparecen en ninguna regla}. \nt{OperadorUnario} es sólo
+        \tl{+} \alt{} \tl{-} \alt{} \tl{!}. Son tokens sin lugar hasta el logro
+        \emph{Operadores Posifijos E2}.
+  \item \tl{float} y \tl{floatLiteral} tampoco tienen lugar, y el léxico de la Etapa 1 los emite
+        por un logro de aquella etapa. Sin extender la gramática, ese logro queda inutilizable.
+  \item \tl{for}, \tl{private}, \tl{?} y \tl{->} no están \textbf{ni en la gramática ni en el
+        léxico}: los agregan cuatro de los logros de esta etapa, y por lo tanto exigen tocar
+        también el analizador léxico.
+\end{itemize}

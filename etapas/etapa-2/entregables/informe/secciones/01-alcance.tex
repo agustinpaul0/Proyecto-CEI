@@ -1,0 +1,64 @@
+% ===========================================================================
+\section{Alcance}
+% ===========================================================================
+
+Este informe documenta la Etapa 2 del compilador de \textsc{MiniJava}: el \textbf{Analizador
+Sintáctico Descendente Recursivo Predictivo}. Su objeto central es la \textbf{gramática}: se
+parte de la que publica la cátedra, se la diagnostica, se la corrige a LL(1) paso a
+paso, se la extiende con los nueve logros perseguidos y se verifica el resultado.
+
+El criterio de exposición es que \textbf{cada corrección quede localizada en un paso concreto}.
+Por eso las transformaciones no se presentan como un salto de la gramática vieja a la nueva, sino
+en cuatro pasos:
+
+\begin{enumerate}
+  \item la \textbf{regla original}, tal cual el documento de la cátedra;
+  \item el \textbf{defecto} detectado, con los conjuntos de Primeros que se solapan;
+  \item la \textbf{transformación} aplicada, citando el esquema de la teoría que la justifica;
+  \item el \textbf{resultado} y la verificación de que los Primeros quedan disjuntos.
+\end{enumerate}
+
+\subsection{Qué está y qué no está en este informe}
+
+Está la gramática y su tratamiento. No está la implementación en Java del analizador, que se
+describe en la documentación técnica del repositorio; sí está, en cambio, todo lo que la
+implementación necesita decidir antes de escribirse: qué producción elegir ante cada token, dónde
+la gramática es ambigua y con qué criterio se resuelve, y qué construcciones quedan deliberadamente
+fuera del alcance del análisis sintáctico.
+
+\subsection{Qué chequea y qué no chequea un analizador sintáctico}
+\label{sec:alcance-chequeos}
+
+Conviene fijarlo desde el principio, porque delimita todo lo que sigue.
+
+El analizador sintáctico verifica que la secuencia de tokens esté en un orden que la gramática
+pueda generar: la estructura de clases, interfaces, miembros, bloques y sentencias; que los
+delimitadores abran y cierren; que una expresión esté bien formada; que un método tenga cuerpo y
+un método de interfaz no.
+
+No verifica nada que dependa del \emph{significado} de los nombres. Todo lo siguiente atraviesa el
+análisis sintáctico sin objeción y corresponde al analizador semántico:
+
+\begin{center}
+\begin{tabular}{@{}p{0.46\textwidth}p{0.44\textwidth}@{}}
+\toprule
+\textbf{Pasa el análisis sintáctico} & \textbf{Por qué es semántico} \\
+\midrule
+\texttt{int x = "hola";}                    & compatibilidad de tipos \\
+\texttt{noDeclarada = 5;}                   & declaración y alcance de nombres \\
+\texttt{5 = x;}                             & que el lado izquierdo sea asignable \\
+\texttt{class A extends UnaInterfaz \{\}}   & que el padre sea realmente una clase \\
+\texttt{m(1,2,3)} con \texttt{m} de un argumento & aridad contra la declaración \\
+\texttt{int x; int x;}                      & declaraciones duplicadas \\
+\texttt{return;} en un método \texttt{int}  & compatibilidad del valor de retorno \\
+una lambda que usa una variable de afuera   & captura de variables \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El último caso merece atención porque afecta a un logro. El enunciado de \emph{MiniLambdas E2}
+prohíbe la captura de variables locales y de parámetros, pero eso \textbf{no es decidible
+sintácticamente}: el analizador no sabe qué nombres están en alcance en cada punto. Lo único de
+ese logro que la gramática puede imponer es la \emph{forma} --- parámetros sin tipo, cuerpo de una
+única expresión, sin llaves --- y así se hace. La restricción sobre la captura queda anotada como
+responsabilidad del analizador semántico.

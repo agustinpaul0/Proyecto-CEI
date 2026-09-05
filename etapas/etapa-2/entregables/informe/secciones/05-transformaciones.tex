@@ -1,0 +1,322 @@
+% ===========================================================================
+\section{Transformaciones}
+\label{sec:transformaciones}
+% ===========================================================================
+
+\subsection{Orden de trabajo y criterios}
+
+\textbf{Primero eliminar la recursión a izquierda, después factorizar.} El orden importa porque
+eliminar la recursión genera producciones nuevas sin factorizar; la
+sección~\ref{sec:r3} es el caso concreto donde eso ocurre.
+
+\textbf{No factorizar de más.} Las reglas originales tienen significado y el analizador semántico
+de la Etapa 3 lo va a necesitar. En la práctica eso se tradujo en cuatro criterios:
+
+\begin{itemize}
+  \item se conserva el nombre original siempre que la regla sobreviva;
+  \item los no terminales nuevos llevan \textbf{nombres semánticos en español}
+        (\nt{RestoExpresionCompuesta}, no \nt{ExpresionCompuesta'});
+  \item cuando dos no terminales originales se fusionan a la fuerza, se dice cuáles y por qué;
+  \item ante la disyuntiva entre fusionar y \textbf{insertar un no terminal}, se inserta.
+\end{itemize}
+
+\begin{decision}{insertar el no terminal, no fusionar}
+Al factorizar un prefijo hay dos caminos. \emph{Fusionar} es meter los cuerpos de los no terminales
+involucrados dentro del padre y borrarlos: quedan menos no terminales, pero el punto donde se
+decide \emph{qué construcción era} pierde el nombre, y el analizador semántico pierde el lugar
+donde colgar el nodo del árbol. \emph{Insertar un no terminal} es factorizar el prefijo y poner la
+disyuntiva restante en un no terminal nuevo y dedicado, cuyo nombre dice qué se está decidiendo:
+un no terminal más, pero se traduce a un método del analizador que \textbf{es} el punto de decisión
+semántica.
+
+Se adopta siempre la segunda, con dos corolarios. \textbf{Un no terminal de decisión por contexto,
+aunque la forma coincida}: dos disyuntivas con la misma pinta pero distinto significado no se
+comparten. Y \textbf{compartir sí cuando es literalmente la misma construcción}: \nt{CuerpoDeMetodo}
+se usa desde método, constructor y método \tl{static} porque en los tres casos es lo mismo.
+\end{decision}
+
+\subsection{Eliminación de recursión a izquierda}
+
+El esquema general:
+\[ A \to A\alpha_1 \mid \dots \mid A\alpha_n \mid \beta_1 \mid \dots \mid \beta_m
+\quad\Longrightarrow\quad
+\begin{cases} A \to \beta_1 R \mid \dots \mid \beta_m R \\ R \to \alpha_1 R \mid \dots \mid \alpha_n R \mid \epsilon \end{cases} \]
+
+\subsubsection{R1 --- \nt{ListaArgsFormales}}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{ListaArgsFormales}{\nt{ArgFormal}}
+\regla{ListaArgsFormales}{\nt{ListaArgsFormales} \tl{,} \nt{ArgFormal}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda directa. Ambas alternativas tienen
+$\prim{\nt{ArgFormal}} = \prim{\nt{Tipo}} = \{$\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase},
+\tl{idGen}$\}$. Un analizador recursivo que intentara la segunda producción se llamaría a sí mismo
+sin haber consumido ningún token: recursión infinita.
+
+\paso{3. Transformación} Esquema directo, con $\alpha_1 =$ \tl{,} \nt{ArgFormal} y
+$\beta_1 =$ \nt{ArgFormal}.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}
+\regla{RestoListaArgsFormales}{\tl{,} \nt{ArgFormal} \nt{RestoListaArgsFormales} \alt{} \eps}
+\end{producciones}
+$\{$\tl{,}$\}$ contra $\{\epsilon\}$: disjuntos.
+
+\subsubsection{R2 --- \nt{ExpresionCompuesta}}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda directa; es el caso canónico $E \to E + T \mid T$.
+
+\paso{3. Transformación} Esquema directo.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
+\regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
+\end{producciones}
+Los trece operadores binarios contra $\{\epsilon\}$: disjuntos. Como se señaló, la gramática
+original ya era plana en precedencia, así que la transformación no pierde nada.
+
+\subsubsection{R3 --- \nt{Referencia}, y el conflicto que la transformación genera}
+\label{sec:r3}
+
+\paso{1. Original}
+\begin{producciones}
+\regla{Referencia}{\nt{Primario}}
+\regla{Referencia}{\nt{Referencia} \nt{VarEncadenada}}
+\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
+\regla{Referencia}{\nt{Referencia} \nt{AccesoArreglo}}
+\end{producciones}
+
+\paso{2. Defecto} Recursión a izquierda con \emph{tres} alternativas recursivas: las cuatro
+producciones tienen los Primeros de \nt{Primario}, lo que da los seis pares en conflicto.
+
+\paso{3. Transformación} Esquema directo con $\beta_1 = $ \nt{Primario} y los tres eslabones como
+$\alpha_i$.
+
+\paso{4. Resultado intermedio, con un defecto nuevo}
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
+\regla{RestoReferencia}{\nt{VarEncadenada} \nt{RestoReferencia} \alt{} \nt{MetodoEncadenado} \nt{RestoReferencia} \alt{} \nt{AccesoArreglo} \nt{RestoReferencia} \alt{} \eps}
+\end{producciones}
+$\prim{\nt{VarEncadenada}} = \prim{\nt{MetodoEncadenado}} = \{$\tl{.}$\}$: \textbf{siguen
+chocando}. Es exactamente el fenómeno que obliga a hacer la recursión antes que la factorización.
+
+\paso{5. Factorización del defecto nuevo} Los dos comparten \emph{todo} el prefijo y sólo se
+distinguen por si después viene un \tl{(}. Se fusionan, y la disyuntiva va a un no terminal
+dedicado.
+\begin{producciones}
+\regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
+\regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia} \alt{} \nt{AccesoArreglo} \nt{RestoReferencia} \alt{} \eps}
+\regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}}
+\regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales} \alt{} \eps}
+\end{producciones}
+$\{$\tl{.}$\}$, $\{$\tl{[}$\}$, $\{\epsilon\}$: disjuntos.
+
+\begin{decision}{costo semántico de R3, declarado}
+Se pierde la distinción entre \nt{VarEncadenada} (acceso a un atributo de otro objeto) y
+\nt{MetodoEncadenado} (llamada encadenada). Es una pérdida \textbf{inevitable}: sintácticamente son
+indistinguibles hasta ver el token siguiente. Queda mitigada por el no terminal insertado:
+\nt{EncadenadoAtributoOMetodo} \emph{es} el punto donde el analizador decide cuál de las dos era,
+según haya derivado a vacío o no. El nombre lo dice.
+\end{decision}
+
+\subsection{Factorización a izquierda}
+
+\[ X \to \alpha\beta_1 \mid \dots \mid \alpha\beta_n \mid \gamma_1 \mid \dots \mid \gamma_m
+\quad\Longrightarrow\quad
+\begin{cases} X \to \alpha R \mid \gamma_1 \mid \dots \mid \gamma_m \\ R \to \beta_1 \mid \dots \mid \beta_n \end{cases} \]
+
+\subsubsection{F1 --- \nt{Expresion}}
+
+\paso{1--2} Prefijo común $\alpha = $ \nt{ExpresionCompuesta}: viendo \texttt{x}, el analizador no
+sabe si va a aparecer un \tl{=}, y puede estar arbitrariamente lejos.
+
+\paso{3--4. Resultado}
+\begin{producciones}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{RestoExpresion}}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCompuesta} \alt{} \eps}
+\end{producciones}
+
+\begin{decision}{la transformación «natural» de F1 agranda el lenguaje}
+La versión que sale sola al escribirla, y que además queda más prolija, es
+\nt{RestoExpresion} \deriva{} \nt{OperadorAsignacion} \nt{Expresion} \alt{} \eps. \textbf{Es
+incorrecta}: la regla original tiene \nt{ExpresionCompuesta} a la derecha del \tl{=}, o sea que la
+asignación no es asociativa y \texttt{a = b = c} no pertenece al lenguaje. Poner \nt{Expresion}
+la volvería asociativa a derecha y aceptaría programas que la cátedra no define.
+
+Una transformación sólo es válida si \textbf{preserva exactamente} el lenguaje generado. El mismo
+cuidado se aplicó en F4.
+\end{decision}
+
+\subsubsection{F2 --- \nt{Sentencia}: resolver la ambigüedad}
+
+\paso{1--2} No es un prefijo común sino la ambigüedad descripta en la
+sección~\ref{sec:diagnostico}: \nt{Asignacion} y \nt{Llamada} tienen cuerpos idénticos.
+
+\paso{3. Transformación} No hay factorización que lo arregle: hay que \emph{elegir}. Se colapsan
+en una única alternativa, con un nombre que dice lo que efectivamente es.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{Sentencia}{\tl{;} \alt{} \nt{SentenciaExpresion} \tl{;} \alt{} \nt{VarLocal} \tl{;} \alt{} \nt{Return} \tl{;} \alt{} \nt{If} \alt{} \nt{While} \alt{} \nt{Bloque}}
+\regla{SentenciaExpresion}{\nt{Expresion}}
+\end{producciones}
+
+\begin{decision}{distinguir asignación de llamada es trabajo del semántico}
+Colapsar las dos alternativas \textbf{no achica el lenguaje}: lo genera exactamente igual, con un
+árbol por sentencia en lugar de dos. Determinar si la expresión es una asignación válida, una
+llamada válida o ninguna de las dos --- \texttt{5 = x;} atraviesa el análisis sintáctico ---
+requiere conocer el significado de la expresión, y eso es análisis semántico.
+\end{decision}
+
+\subsubsection{F3 --- \nt{If}: factorizar, y después resolver el \emph{dangling else}}
+
+\paso{1--2} Prefijo común larguísimo: \tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}. El
+analizador debería atravesar una condición y una sentencia entera antes de saber qué producción
+eligió.
+
+\paso{3--4. Resultado}
+\begin{producciones}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
+\regla{ElseOpcional}{\tl{else} \nt{Sentencia} \alt{} \eps}
+\end{producciones}
+$\{$\tl{else}$\}$ contra $\{\epsilon\}$: disjuntos.
+
+\paso{5. Lo que la factorización no arregla} La ambigüedad del \emph{dangling else} sigue ahí,
+escondida en que \nt{ElseOpcional} puede derivar a \eps{} \emph{y} tener un \tl{else} en lo que le
+sigue.
+
+\begin{decision}{el \emph{dangling else} se resuelve con una regla de implementación}
+Es la segunda de las dos soluciones posibles ante una ambigüedad: en lugar de reescribir la
+gramática, se agrega una regla en la implementación del analizador. El esquema de traducción toma
+la rama \tl{else} apenas ve el token, y como el \tl{if} que se está ejecutando en ese momento es el
+más interno, el \tl{else} liga al \tl{if} más cercano --- \textbf{que es exactamente la regla de
+Java}. No hace falta tocar la gramática: alcanza con dejar constancia de que el orden de las ramas
+en el método de \nt{ElseOpcional} es significativo.
+\end{decision}
+
+\subsubsection{F4 --- \nt{DimensionesConTamanio}}
+
+\paso{1--2} Prefijo común \tl{[} \nt{Expresion} \tl{]}.
+
+\paso{3. Transformación} \textbf{Con cuidado}: la regla original exige \emph{al menos una}
+dimensión. La versión \nt{DimensionesConTamanio} \deriva{} \tl{[} \nt{Expresion} \tl{]}
+\nt{DimensionesConTamanio} \alt{} \eps{} permitiría cero y agrandaría el lenguaje. La parte
+repetible va a un no terminal opcional aparte.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
+\regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
+\end{producciones}
+
+\subsubsection{F5 --- \nt{ListaExps}}
+
+Prefijo común \nt{Expresion}. Se factoriza con la misma forma que R1, para que las dos listas de la
+gramática se lean igual.
+\begin{producciones}
+\regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}}
+\regla{RestoListaExps}{\tl{,} \nt{Expresion} \nt{RestoListaExps} \alt{} \eps}
+\end{producciones}
+
+\subsubsection{F6 --- \nt{Miembro}: factorización profunda}
+
+\paso{1. Original} Ver sección~\ref{sec:transformaciones}; las tres alternativas son
+\nt{Atributo}, \nt{Metodo} y \nt{Constructor}.
+
+\paso{2. Defecto} Prefijo común \textbf{no directo}: mirando sólo las tres alternativas de
+\nt{Miembro} no se ve nada compartido, pero al bajar a sus producciones aparece que \nt{Atributo}
+y \nt{Metodo} empiezan los dos con \nt{Tipo}.
+\begin{align*}
+\prim{\nt{Atributo}} &= \prim{\nt{Tipo}} = \{\text{\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen}}\}\\
+\prim{\nt{Metodo}} &= \{\text{\tl{static}, \tl{void}}\} \cup \prim{\nt{Tipo}}
+\end{align*}
+Ante \texttt{int x} el analizador no sabe si sigue un \tl{;} o un \tl{(}, y eso está dos tokens
+más adelante.
+
+\paso{3. Transformación} Factorización \textbf{profunda}: subir las producciones de \nt{Atributo} y
+\nt{Metodo} hasta \nt{Miembro}, expandir \nt{ModificadorOpcional} y \nt{TipoMetodo} para exponer el
+prefijo, y recién ahí hacer factor común. Expandiendo:
+\begin{producciones}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \tl{;}}
+\regla{Miembro}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\tl{void} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{Miembro}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
+\end{producciones}
+Ahora el prefijo \nt{Tipo} \tl{idMetVar} sí es directo, entre la primera y la tercera.
+
+\paso{4. Resultado}
+\begin{producciones}
+\regla{Miembro}{\nt{Tipo} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{Miembro}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{Miembro}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}}
+\regla{Miembro}{\nt{Constructor}}
+\regla{AtributoOMetodo}{\tl{;} \alt{} \nt{CuerpoDeMetodo}}
+\regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}
+\end{producciones}
+$\{$\tl{boolean}, \tl{char}, \tl{int}, \tl{idClase}, \tl{idGen}$\}$, $\{$\tl{static}$\}$,
+$\{$\tl{void}$\}$, $\{$\tl{public}$\}$: disjuntos. Y en \nt{AtributoOMetodo}, $\{$\tl{;}$\}$
+contra $\{$\tl{(}$\}$: disjuntos.
+
+\nt{Constructor} \textbf{sobrevive como no terminal propio} porque \tl{public} lo distingue solo.
+\nt{CuerpoDeMetodo} se extrae y se comparte en los tres lugares donde aparece porque es
+literalmente la misma construcción.
+
+\subsubsection{F7 --- \nt{Primario}: el prefijo \tl{idMetVar}}
+
+\nt{AccesoVar} (\tl{idMetVar}) y \nt{LlamadaMetodo} (\tl{idMetVar} \nt{ArgsActuales}) comparten
+todo el prefijo. Misma situación que en R3 y misma resolución, con un no terminal de decisión
+\textbf{dedicado a este contexto}:
+\begin{producciones}
+\regla{AccesoVarOLlamadaMetodo}{\tl{idMetVar} \nt{AccesoOLlamada}}
+\regla{AccesoOLlamada}{\nt{ArgsActuales} \alt{} \eps}
+\end{producciones}
+
+\begin{decision}{un punto de decisión por contexto, aunque la forma coincida}
+Una versión anterior de esta transformación resolvía R3 y F7 con el \emph{mismo} no terminal
+\nt{ArgsActualesOpcional}, y se había justificado como una buena abstracción. Es al revés: su
+\eps{} significa dos cosas distintas según quién lo llame --- desde \nt{Encadenado} era un
+\nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde \nt{AccesoVarOLlamadaMetodo}
+era un \nt{AccesoVar}, acceso a una variable local, un parámetro o un atributo propio. Son dos
+nodos distintos, con reglas de resolución de nombres distintas, y un único método del analizador
+tendría que preguntarse quién lo llamó para saber cuál construir. Se separaron en
+\nt{EncadenadoAtributoOMetodo} y \nt{AccesoOLlamada}: cuesta un no terminal más y deja los cuatro
+no terminales originales recuperables desde el nombre del método que decide.
+\end{decision}
+
+\subsubsection{F8 --- \nt{Primario}: el prefijo \tl{new}, a dos niveles}
+
+\paso{2. Defecto} \nt{CrearArreglo} y \nt{LlamadaConstructor} comparten \tl{new}, y no alcanza con
+factorizarlo porque \nt{TipoBase} puede derivar a \nt{TipoReferencia}: \texttt{new C} sigue sin
+decidirse. El token que desempata es el que viene \emph{después} del tipo.
+
+\paso{3--4. Resultado} Se factoriza \tl{new}, se expande \nt{TipoBase} para separar los casos que
+sí se deciden con un token, y se factoriza una segunda vez el caso \tl{idClase}.
+\begin{producciones}
+\regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
+\regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{DimensionesConTamanio}}
+\regla{ArregloOInstancia}{\tl{idGen} \nt{DimensionesConTamanio}}
+\regla{ArregloOInstancia}{\tl{idClase} \nt{TipoGenericoOpcional} \nt{ArregloOInstanciaDeClase}}
+\regla{ArregloOInstanciaDeClase}{\nt{DimensionesConTamanio} \alt{} \nt{ArgsActuales}}
+\end{producciones}
+\texttt{new int[3]} y \texttt{new T[3]} se resuelven en el primer token después de \tl{new};
+sólo \texttt{new C\dots} necesita el segundo nivel. La factorización se hizo \textbf{sólo donde
+hacía falta}.
+
+\subsection{Estado del núcleo}
+
+Con R1--R3 y F1--F8, el núcleo de la gramática --- sin logros --- es LL(1). El costo
+respecto de la base fue de \textbf{seis no terminales y ocho producciones}, concentrado en los
+\nt{Resto\dots} y en los puntos de decisión insertados, que el esquema de traducción convierte en
+un \texttt{if/else} cada uno.

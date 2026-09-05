@@ -1,0 +1,60 @@
+\documentclass[12pt,a4paper]{article}
+\input{preambulo}
+
+\begin{document}
+
+% ===========================================================================
+% Portada
+% ===========================================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\raggedright
+\vspace*{2.2cm}
+
+{\color{grisMedio}\footnotesize\sffamily
+UNIVERSIDAD NACIONAL DEL SUR\\
+Departamento de Ciencias e Ingeniería de la Computación\\
+Compiladores e Intérpretes --- Segundo Cuatrimestre de 2026\par}
+
+\vspace{2.4cm}
+{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+\vspace{1.1cm}
+
+{\Huge\bfseries\color{acento} Compilador de MiniJava\par}
+\vspace{0.5cm}
+{\LARGE\color{tinta} Etapa 2 --- Analizador Sintáctico\\[0.25cm]
+\large\color{grisMedio} Descendente Recursivo Predictivo\par}
+
+\vspace{1.1cm}
+{\color{grisSuave}\rule{\textwidth}{0.6pt}}
+
+\vspace{2.6cm}
+{\large\color{tinta} Agustín Paul\par}
+\vspace{0.35cm}
+{\color{grisMedio} Informe de entrega\par}
+
+\vfill
+{\color{grisMedio}\footnotesize
+Transformación de la gramática a LL(1), paso a paso.\\
+Las nueve extensiones por logro y su verificación.\par}
+\vspace{0.6cm}
+{\color{grisMedio}\footnotesize \today\par}
+\end{titlepage}
+
+% ===========================================================================
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\input{secciones/01-alcance}
+\input{secciones/02-notacion}
+\input{secciones/03-gramatica-original}
+\input{secciones/04-diagnostico}
+\input{secciones/05-transformaciones}
+\input{secciones/06-logros}
+\input{secciones/07-gramatica-final}
+\input{secciones/08-verificacion}
+\input{secciones/09-herramientas-ia}
+
+\end{document}

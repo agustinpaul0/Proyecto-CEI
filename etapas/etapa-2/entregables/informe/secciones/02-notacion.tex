@@ -1,0 +1,61 @@
+% ===========================================================================
+\section{Notación}
+\label{sec:notacion}
+% ===========================================================================
+
+Se usa la misma notación BNF-extendida del documento \emph{Reglas de Sintaxis de MiniJava} de la cátedra, con la misma convención tipográfica, para que las reglas de este
+informe se puedan comparar renglón a renglón con las de aquél.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Elemento} & \textbf{Significado} \\
+\midrule
+\tl{terminal}            & símbolo terminal \\
+\nt{Clase}               & símbolo no terminal (primera letra mayúscula) \\
+\eps                     & la cadena vacía \\
+\nt{X} \deriva{} $\alpha$              & una producción, con $\alpha$ una secuencia de terminales y no terminales \\
+\nt{X} \deriva{} $\alpha$ \alt{} $\beta$ & abreviación de \nt{X} \deriva{} $\alpha$ y \nt{X} \deriva{} $\beta$ \\
+$\prim{\beta}$           & conjunto de terminales que pueden aparecer primeros en $\beta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El no terminal inicial es \nt{Inicial}.
+
+\subsection{El criterio LL(1)}
+
+Una gramática es LL(1) si, para todo no terminal $A$ con producciones
+$A \to \beta_1 \mid \beta_2 \mid \dots \mid \beta_n$, se cumple para todo $i \neq j$:
+
+\[ \prim{\beta_i} \cap \prim{\beta_j} = \varnothing \]
+
+Sólo con esa condición un único token de anticipación alcanza para elegir la producción correcta
+sin necesidad de \emph{backtracking}. Cuando la condición no se cumple, la gramática debe
+adaptarse \textbf{sin cambiar el lenguaje que genera}, que es la restricción que gobierna todas
+las transformaciones de este informe.
+
+\subsection{Dos defectos distintos que conviene no confundir}
+\label{sec:dos-defectos}
+
+Buena parte del trabajo consistió en separar dos cosas que se parecen y no son lo mismo.
+
+\begin{ambiguedad}{el lenguaje está mal descripto}
+Existe una cadena con \textbf{dos árboles de derivación distintos}. No queda determinado qué
+significa el programa. No siempre se puede arreglar reescribiendo: a veces hay que \emph{elegir}
+cuál de los dos significados vale.
+\end{ambiguedad}
+
+\begin{conflicto}{el analizador no puede predecir}
+Dos producciones del mismo no terminal comparten Primeros. La cadena sigue teniendo \textbf{un
+solo} árbol; lo que falla es que el analizador no puede saber cuál producción aplicar mirando un
+token. Se corrige factorizando o eliminando recursión, y el lenguaje generado \textbf{no cambia}.
+\end{conflicto}
+
+Todo par de producciones que comparte prefijo izquierdo produce un conflicto LL(1); no
+todo par que comparte prefijo izquierdo es ambiguo. Si los dos lados derivan lenguajes disjuntos,
+no hay ninguna cadena con dos árboles.
+
+Un criterio suficiente y barato para probar esa disyunción es comparar los \textbf{rangos de
+longitud derivable}: si no se solapan, los lenguajes son disjuntos y no puede haber ambigüedad.
+Se aplica en la sección~\ref{sec:diagnostico} y decide varios de los casos.

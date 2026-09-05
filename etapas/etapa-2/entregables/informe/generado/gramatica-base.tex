@@ -1,0 +1,87 @@
+\begin{producciones}
+\regla{Inicial}{\nt{ListaClases} \tl{eof}}
+\regla{ListaClases}{\nt{Clase} \nt{ListaClases} \alt{} \nt{Interfaz} \nt{ListaClases} \alt{} \eps}
+\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}}
+\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
+\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
+\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements} \nt{TipoReferencia} \alt{} \eps}
+\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \eps}
+\regla{ListaMiembros}{\nt{Miembro} \nt{ListaMiembros} \alt{} \eps}
+\regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz} \alt{} \eps}
+\regla{Miembro}{\nt{Atributo} \alt{} \nt{Metodo} \alt{} \nt{Constructor}}
+\regla{Atributo}{\nt{Tipo} \tl{idMetVar} \tl{;}}
+\regla{Metodo}{\nt{ModificadorOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
+\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
+\regla{Constructor}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
+\regla{ModificadorOpcional}{\tl{static} \alt{} \eps}
+\regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
+\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
+\regla{TipoBase}{\nt{TipoPrimitivo} \alt{} \nt{TipoReferencia} \alt{} \tl{idGen}}
+\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales} \alt{} \eps}
+\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
+\regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
+\regla{TipoGenericoOpcional}{\tl{<} \nt{InstanciadoOParametrico} \tl{>} \alt{} \eps}
+\regla{InstanciadoOParametrico}{\tl{idGen} \alt{} \tl{idClase}}
+\regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}}
+\regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales} \alt{} \eps}
+\regla{ListaArgsFormales}{\nt{ArgFormal}}
+\regla{ListaArgsFormales}{\nt{ListaArgsFormales} \tl{,} \nt{ArgFormal}}
+\regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}}
+\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
+\regla{ListaSentencias}{\nt{Sentencia} \nt{ListaSentencias} \alt{} \eps}
+\regla{Sentencia}{\tl{;}}
+\regla{Sentencia}{\nt{Asignacion} \tl{;}}
+\regla{Sentencia}{\nt{Llamada} \tl{;}}
+\regla{Sentencia}{\nt{VarLocal} \tl{;}}
+\regla{Sentencia}{\nt{Return} \tl{;}}
+\regla{Sentencia}{\nt{If}}
+\regla{Sentencia}{\nt{While}}
+\regla{Sentencia}{\nt{Bloque}}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
+\regla{Return}{\tl{return} \nt{ExpresionOpcional}}
+\regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \tl{else} \nt{Sentencia}}
+\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{OperadorAsignacion} \nt{ExpresionCompuesta}}
+\regla{Expresion}{\nt{ExpresionCompuesta}}
+\regla{OperadorAsignacion}{\tl{=}}
+\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
+\regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
+\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando}}
+\regla{ExpresionBasica}{\nt{Operando}}
+\regla{OperadorUnario}{\tl{+} \alt{} \tl{-} \alt{} \tl{!}}
+\regla{Operando}{\nt{Primitivo}}
+\regla{Operando}{\nt{Referencia}}
+\regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
+\regla{Referencia}{\nt{Primario}}
+\regla{Referencia}{\nt{Referencia} \nt{VarEncadenada}}
+\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
+\regla{Referencia}{\nt{Referencia} \nt{AccesoArreglo}}
+\regla{Primario}{\tl{this}}
+\regla{Primario}{\tl{stringLiteral}}
+\regla{Primario}{\nt{AccesoVar}}
+\regla{Primario}{\nt{CrearArreglo}}
+\regla{Primario}{\nt{LlamadaConstructor}}
+\regla{Primario}{\nt{LlamadaMetodo}}
+\regla{Primario}{\nt{LlamadaMetodoEstatico}}
+\regla{Primario}{\nt{ExpresionParentizada}}
+\regla{AccesoVar}{\tl{idMetVar}}
+\regla{CrearArreglo}{\tl{new} \nt{TipoBase} \nt{DimensionesConTamanio}}
+\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
+\regla{LlamadaMetodo}{\tl{idMetVar} \nt{ArgsActuales}}
+\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanio} \alt{} \tl{[} \nt{Expresion} \tl{]}}
+\regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}
+\regla{ListaExpsOpcional}{\nt{ListaExps} \alt{} \eps}
+\regla{ListaExps}{\nt{Expresion}}
+\regla{ListaExps}{\nt{Expresion} \tl{,} \nt{ListaExps}}
+\regla{VarEncadenada}{\tl{.} \tl{idMetVar}}
+\regla{MetodoEncadenado}{\tl{.} \tl{idMetVar} \nt{ArgsActuales}}
+\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}
+\end{producciones}
+
