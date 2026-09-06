@@ -1,6 +1,6 @@
 # El patrón State del Analizador Léxico
 
-Documento autocontenido: profundiza el §4 de [`arquitectura.md`](arquitectura.md) con el detalle
+Documento autocontenido: profundiza el §4 de [`arquitectura.md`](arquitectura-del-analizador-lexico.md) con el detalle
 completo de cómo están conectadas las piezas — qué es cada tipo, quién lo crea, cuándo se reutiliza
 una instancia y cuándo se construye una nueva. Pensado para poder explicar el mecanismo entero sin
 leer código.
@@ -26,7 +26,7 @@ canónica.
 | Pieza | Tipo | Rol |
 |---|---|---|
 | `EstadoLexico` | interfaz | El contrato común a todo estado: un único método `procesar(contexto)`. |
-| `ContextoLexico` | clase (fachada) | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. Delega en dos piezas internas, `BuilderDeLexema` y `FabricaDeExcepcionesLexicas` (ver [`arquitectura.md`](arquitectura.md) §5.2.1); los estados sólo ven la fachada. |
+| `ContextoLexico` | clase (fachada) | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. Delega en dos piezas internas, `BuilderDeLexema` y `FabricaDeExcepcionesLexicas` (ver [`arquitectura.md`](arquitectura-del-analizador-lexico.md) §5.2.1); los estados sólo ven la fachada. |
 | `ResultadoDeTransicion` | **interfaz sellada** | Lo que devuelve `procesar()`: sólo puede ser una de dos cosas, nunca una tercera. |
 | `Continuar` | `record` | "Todavía no hay token completo — el próximo estado a consultar es este otro." |
 | `Emitir` | `record` | "El token ya está completo — acá está." |
@@ -49,7 +49,7 @@ public record Emitir(Token token) implements ResultadoDeTransicion {}
 
 La distinción parece menor y es central: el criterio de recuperación ante errores se apoya
 enteramente en ella, porque garantiza que lo que se consumió y lo que se reporta sean lo mismo. Ver
-[`manejo-de-errores.md`](manejo-de-errores.md) §2.
+[`manejo-de-errores.md`](../compartido/manejo-de-errores.md) §2.
 
 ### Por qué `sealed`
 
@@ -233,13 +233,13 @@ El procedimiento completo, como demostración de que la estructura es extensible
    `EstadoInicial`. **Listo** — no hace falta ninguna clase nueva.
 3. Si necesita más de un carácter, crear una clase por cada estado nuevo del autómata, y agregar en
    `EstadoInicial` la transición que lo dispara.
-4. Agregar la ER a [`especificacion-lexica.md`](especificacion-lexica.md) y los casos a
+4. Agregar la ER a [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) y los casos a
    `resources/`.
 
 Ningún estado existente cambia salvo `EstadoInicial`, y sólo para conocer el punto de entrada.
 
 ## 8. Ver también
 
-- [`arquitectura.md`](arquitectura.md) — la visión de conjunto y dónde encaja el driver.
-- [`especificacion-lexica.md`](especificacion-lexica.md) — los autómatas que estos estados implementan.
-- [`manejo-de-errores.md`](manejo-de-errores.md) — qué hace un estado cuando ninguna transición aplica.
+- [`arquitectura.md`](arquitectura-del-analizador-lexico.md) — la visión de conjunto y dónde encaja el driver.
+- [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) — los autómatas que estos estados implementan.
+- [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — qué hace un estado cuando ninguna transición aplica.

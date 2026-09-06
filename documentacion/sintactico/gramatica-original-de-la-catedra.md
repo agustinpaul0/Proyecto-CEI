@@ -1,8 +1,8 @@
 # Gramática base de MiniJava (transcripción fiel)
 
-Transcripción literal de `documentacion/minijava-tecnico/Reglas de Sintaxis MiniJava 2026.pdf`,
+Transcripción literal de `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf`,
 leído como imágenes. **Este documento no corrige nada**: es la fuente de verdad contra la cual se
-verifica cada paso de [`transformacion-gramatica.md`](transformacion-gramatica.md). Si algo acá
+verifica cada paso de [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md). Si algo acá
 no coincide con el PDF, es un error de transcripción y hay que arreglarlo acá, no río abajo.
 
 ## Notación (sección 2 del PDF)
@@ -212,7 +212,7 @@ Se registran acá, no se corrigen acá.
    `<AccesoVar>`/`<LlamadaMetodo>`, `<CrearArreglo>`/`<LlamadaConstructor>`,
    `<Atributo>`/`<Metodo>` — pero derivan lenguajes **disjuntos**, así que rompen LL(1) sin ser
    ambiguos. La demostración está en
-   [`transformacion-gramatica.md` §0.4](transformacion-gramatica.md).
+   [`transformacion-gramatica.md` §0.4](transformacion-a-ll1-paso-a-paso.md).
 3. **No hay niveles de precedencia entre operadores binarios.** `<OperadorBinario>` es una única
    alternancia plana de los 13 operadores, así que `a + b * c` y `a * b + c` se derivan con la
    misma forma. La precedencia y la asociatividad no están en la gramática: son responsabilidad

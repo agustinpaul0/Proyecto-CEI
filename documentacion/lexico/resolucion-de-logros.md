@@ -46,7 +46,7 @@ exponente con signo opcional y sufijo `f`/`F`/`d`/`D`.
 **El desafío real no fue la gramática, fue derivarla.** `Aspectos Lexicos MiniJava 2026.pdf` **no
 menciona floats en absoluto** — no están entre sus "cinco tipos de literales". Toda la ER se derivó
 de esa única frase de Pautas, verificando contra `javac` qué significa "la misma estructura que los
-floats de Java". Ver [`decisiones.md`](decisiones.md) §3.2 y §3.3.
+floats de Java". Ver [`decisiones.md`](decisiones-de-logica.md) §3.2 y §3.3.
 
 **Detalles que salieron de esa verificación:**
 
@@ -85,7 +85,7 @@ aparecer.
 
 Además, el escape se lee **dentro** de dos construcciones distintas, así que los dos estados del
 escape necesitan saber a cuál volver al terminar — es una de las tres razones por las que existen
-estados construidos con `new` en vez de singletones. Ver [`patron-state.md`](patron-state.md) §6.
+estados construidos con `new` en vez de singletones. Ver [`patron-state.md`](patron-state-metodo-por-estado.md) §6.
 
 **Qué controla el interruptor**: sólo la secuencia escapada, **no** los caracteres crudos. Gatear los
 crudos exigiría meter clasificadores "sólo ASCII" en todo el autómata, ensuciando el léxico entero
@@ -134,7 +134,7 @@ tokens y errores reconstruye el fuente completo".
 más de lo que reporta — se resincroniza en la comilla de cierre del literal. Es lo contrario de una
 excepción a la multi-detección: sin ese descarte, el resto del literal se re-tokenizaría y la comilla
 de cierre abriría un literal nuevo, inventando errores que ocultarían a los reales. El detalle, con
-los números, está en [`decisiones.md`](decisiones.md) §4.3.
+los números, está en [`decisiones.md`](decisiones-de-logica.md) §4.3.
 
 **Cómo verificarlo:**
 
@@ -171,7 +171,7 @@ ejemplo de la cátedra, porque es el único que ella fija — con la tilde de "v
 **Dónde apunta el `^`** fue la parte que más trabajo dio, y también se resolvió verificando `javac`
 caso por caso. La regla: si el mensaje habla de un carácter puntual, señala ese carácter; si habla de
 la construcción entera que falló, señala dónde empieza. Los nueve diagnósticos comparables coinciden
-con `javac`. Ver [`manejo-de-errores.md`](manejo-de-errores.md) §4.
+con `javac`. Ver [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) §4.
 
 **Tres bugs reales que este logro obligó a arreglar**, todos de la misma familia:
 
@@ -209,7 +209,7 @@ autoriza explícitamente— con los dos datos que el Reporte de Error Elegante n
 de una sola vez y recién después sirve carácter por carácter. Cumple con no leer de a líneas y con
 entregar de a caracteres, pero una lectura estricta de la consigna podría pedir que la lectura física
 también sea incremental. Está desarrollado, con sus argumentos a favor y en contra, en
-[`manejador-de-archivo.md`](manejador-de-archivo.md) §5.
+[`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) §5.
 
 **Cómo verificarlo:**
 
@@ -263,7 +263,7 @@ Hito de calendario, sin implicancia de código.
 
 ## Ver también
 
-- [`decisiones.md`](decisiones.md) — el razonamiento detrás de cada logro que exigió una decisión.
-- [`manejo-de-errores.md`](manejo-de-errores.md) — los logros 3 y 4 en detalle.
-- [`manejador-de-archivo.md`](manejador-de-archivo.md) — el logro 5 en detalle.
-- [`testing.md`](testing.md) — la maquinaria detrás de los logros 6 y 7.
+- [`decisiones.md`](decisiones-de-logica.md) — el razonamiento detrás de cada logro que exigió una decisión.
+- [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — los logros 3 y 4 en detalle.
+- [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) — el logro 5 en detalle.
+- [`testing.md`](../compartido/estrategia-de-testing.md) — la maquinaria detrás de los logros 6 y 7.

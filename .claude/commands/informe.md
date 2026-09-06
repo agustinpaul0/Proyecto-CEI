@@ -10,7 +10,7 @@ Etapa: $1 (si está vacío, 1).
    el PDF por bueno.
 3. Copiá el resultado al nombre de entrega que ya usa la carpeta
    (`etapas/etapa-$1/entregables/Informe-Etapa$1-*.pdf`).
-4. Confirmá que el PDF respeta lo que fija `guias/comandos-y-entrega.md`: paleta monocromática,
+4. Confirmá que el PDF respeta lo que fija `documentacion/proyecto/comandos-compilacion-y-entrega.md`: paleta monocromática,
    portada minimalista, índice.
 
 No commitees los auxiliares de LaTeX (`.aux`, `.log`, `.fls`, `.fdb_latexmk`, `.out`, `.toc`) —

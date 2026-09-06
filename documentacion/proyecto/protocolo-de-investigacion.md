@@ -10,10 +10,10 @@ el usuario antes de implementar. Esta sección existe para que no vuelva a pasar
 ## El procedimiento, en orden, sin saltearse pasos
 
 Ante **cualquier** pregunta de comportamiento léxico (o, en etapas futuras, sintáctico/semántico) que
-no esté ya resuelta en `guias/convenciones-catedra.md` o `guias/especificacion-lexica.md`:
+no esté ya resuelta en `convenciones-de-la-catedra.md` o `../lexico/especificacion-lexica-de-minijava.md`:
 
 1. **Primero, ¿hay una regla escrita para esto en MiniJava?** Buscar explícitamente en los PDFs de la
-   cátedra (como imágenes, `AGENTS.md` §0) y en las decisiones ya tomadas en `guias/*.md`. Si la hay,
+   cátedra (como imágenes, `AGENTS.md` §0) y en las decisiones ya tomadas en `documentacion/proyecto/*.md`. Si la hay,
    se usa esa regla — punto, no se sigue investigando Java.
 2. **Si no la hay, investigar a fondo cómo lo hace Java real** — no recordar de memoria, **verificar
    contra una fuente primaria**: la especificación (JLS, `docs.oracle.com/javase/specs/`) vía
@@ -54,7 +54,7 @@ Este protocolo es la forma operativa de aplicar la regla que la cátedra escribi
 defecto igual al de Java"*. Esa frase por sí sola no dice *cómo* averiguar el comportamiento de Java
 con precisión — este documento fija el procedimiento para hacerlo bien, en vez de asumir.
 
-## Casos ya resueltos con este protocolo (ver `guias/especificacion-lexica.md` para el detalle completo)
+## Casos ya resueltos con este protocolo (ver `../lexico/especificacion-lexica-de-minijava.md` para el detalle completo)
 
 - Escape Unicode: marcador `u` repetible (JLS §3.3).
 - `float` como palabra reservada: **no** se resuelve por este protocolo — es una respuesta directa
@@ -67,7 +67,7 @@ con precisión — este documento fija el procedimiento para hacerlo bien, en ve
 
 ## Ver también
 
-- [`convenciones-catedra.md`](convenciones-catedra.md) — qué SÍ está explícitamente resuelto por la
+- [`convenciones-catedra.md`](convenciones-de-la-catedra.md) — qué SÍ está explícitamente resuelto por la
   cátedra (paso 1 de este protocolo).
-- [`especificacion-lexica.md`](especificacion-lexica.md) — todas las decisiones léxicas ya tomadas,
+- [`especificacion-lexica.md`](../lexico/especificacion-lexica-de-minijava.md) — todas las decisiones léxicas ya tomadas,
   incluidas las resueltas con este protocolo.

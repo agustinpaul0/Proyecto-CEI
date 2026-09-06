@@ -1,6 +1,6 @@
 # Comandos y formato de entrega
 
-Índice: [`../AGENTS.md`](../AGENTS.md).
+Índice: [`../AGENTS.md`](../../AGENTS.md).
 
 ## Comandos
 

@@ -14,9 +14,9 @@ Por último, todo lo que NO esté especificado para MiniJava tiene comportamient
 
 **Nota del proyecto (no es parte de la consigna original de la cátedra):** el plan de trabajo de
 esta etapa, su estado y lo que hay que leer antes de retomarla están en
-[`guias/plan-etapa-2.md`](../../guias/plan-etapa-2.md). El punto de partida general del repositorio
+[`documentacion/proyecto/plan-de-accion-etapa-2.md`](../../documentacion/proyecto/plan-de-accion-etapa-2.md). El punto de partida general del repositorio
 sigue siendo [`AGENTS.md`](../../AGENTS.md).
 
 Material técnico del lenguaje (no específico de esta etapa, se movió para compartirlo entre todas):
-[`documentacion/minijava-tecnico/`](../../documentacion/minijava-tecnico/) — «Reglas de Sintaxis
+[`documentacion/minijava/`](../../documentacion/minijava) — «Reglas de Sintaxis
 MiniJava 2026» y «Aspectos Léxicos MiniJava 2026».

@@ -5,10 +5,10 @@ qué está escrita así, y dónde está rota**. Está pensada para leerse de cor
 transformaciones, así que no supone nada previo más allá de saber qué es un terminal y un no
 terminal.
 
-- La gramática literal está en [`gramatica-base-minijava.md`](gramatica-base-minijava.md).
-- Las correcciones, paso a paso, en [`transformacion-gramatica.md`](transformacion-gramatica.md).
+- La gramática literal está en [`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md).
+- Las correcciones, paso a paso, en [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md).
 - La gramática final LL(1) con los logros, en
-  [`gramatica-minijava.md`](gramatica-minijava.md).
+  [`gramatica-minijava.md`](gramatica-ll1-final.md).
 
 Los defectos van marcados así a medida que aparecen:
 

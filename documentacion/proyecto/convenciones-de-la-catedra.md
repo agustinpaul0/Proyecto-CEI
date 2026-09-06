@@ -1,7 +1,7 @@
 # Convenciones de la cátedra e invariantes técnicas duras
 
-Índice: [`../AGENTS.md`](../AGENTS.md). Protocolo si algo no está cubierto acá:
-[`investigacion.md`](investigacion.md).
+Índice: [`../AGENTS.md`](../../AGENTS.md). Protocolo si algo no está cubierto acá:
+[`investigacion.md`](protocolo-de-investigacion.md).
 
 ## Convenciones de la cátedra — romperlas desaprueba la entrega
 
@@ -39,7 +39,7 @@ Estas NO son negociables, están tomadas literal de `Pautas Etapa 1.pdf` (slides
 - **El carácter ofensivo va incluido en el lexema reportado del error.** Confirmado en Clase 02,
   slide 43: el código de ejemplo llama `actualizarLexema()` (que agrega el carácter actual al lexema)
   **inmediatamente antes** de `throw new ExcepcionLexica(lexema, nroLinea)`.
-- `Main` vive en `minijava.aplicacion.Main` (ver [`arquitectura.md`](arquitectura.md)). El FQN exacto
+- `Main` vive en `minijava.aplicacion.Main` (ver [`arquitectura.md`](../lexico/arquitectura-del-analizador-lexico.md)). El FQN exacto
   **no** es un requisito de la cátedra: la guía de testers autoriza explícitamente editar el `import`
   y el tipo de la variable `init` en los testers para apuntar a cualquier clase con
   `public static void main` — se aprovechó esa libertad para evitar el nesting `main/java/main/`.
@@ -47,5 +47,5 @@ Estas NO son negociables, están tomadas literal de `Pautas Etapa 1.pdf` (slides
   testers usan paths relativos duros: `resources/sinErrores/`, `resources/conErrores/`.
 - **El código de error `[Error:Lexema|NroLinea]` no lleva columna** — es el contrato exacto de la
   cátedra y el tester lo compara literal. La columna (Reporte de Error Elegante,
-  [`especificacion-lexica.md`](especificacion-lexica.md)) va sólo en el mensaje legible que antecede
+  [`especificacion-lexica.md`](../lexico/especificacion-lexica-de-minijava.md)) va sólo en el mensaje legible que antecede
   a ese código, nunca dentro de él.

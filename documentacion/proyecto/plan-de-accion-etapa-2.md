@@ -1,6 +1,6 @@
 # Plan de acción — Etapa 2: Analizador Sintáctico
 
-Índice: [`../AGENTS.md`](../AGENTS.md).
+Índice: [`../AGENTS.md`](../../AGENTS.md).
 
 **Este archivo es el estado vivo de la etapa.** Una sesión que arranca en cero lee esto y sabe
 qué se hizo, qué falta y qué tiene que leer antes de tocar nada. **Se actualiza al cerrar cada
@@ -29,7 +29,7 @@ Java»*.
 Vale para la sintaxis igual que valía para el léxico: si una construcción no está resuelta por las
 *Reglas de Sintaxis*, por las *Pautas* ni por un logro, **el desempate es replicar lo que hace
 Java** — nunca inventar una regla propia, nunca elegir «lo que parezca razonable». El procedimiento
-completo y obligatorio está en [`investigacion.md`](investigacion.md): chequear primero si MiniJava
+completo y obligatorio está en [`investigacion.md`](protocolo-de-investigacion.md): chequear primero si MiniJava
 ya lo resuelve, si no verificar la especificación real de Java (no de memoria), **informar al
 usuario antes de implementar**. Si la cátedra publica después una regla explícita que diga otra
 cosa, esa regla gana.
@@ -58,7 +58,7 @@ En concreto, para cada construcción hay que buscar y cubrir:
 - entradas degeneradas: archivo vacío, archivo con sólo comentarios, un único token, secuencias
   larguísimas, el error en el primer token y el error en el último.
 
-La estrategia completa y la taxonomía de tipos de test están en [`testing.md`](testing.md). La
+La estrategia completa y la taxonomía de tipos de test están en [`testing.md`](../compartido/estrategia-de-testing.md). La
 Etapa 1 dejó 169 casos de corpus y fuzzing con jqwik; **la Etapa 2 tiene que llegar a un nivel de
 cobertura equivalente o mejor**.
 
@@ -102,23 +102,51 @@ para pulido.
 ### Lo que dejó la S1
 
 Todo verificado; los comandos están en [Verificación](#verificación-permanente).
+**Hoy no hay ni una línea de analizador sintáctico en Java**: la S1 fue enteramente gramática,
+herramientas y documentación.
 
 - **Gramática LL(1) final y completa**, con los 9 logros de Etapa 2 y el *carry-over* de floats.
-  98 no terminales, 204 producciones. **No queda gramática por diseñar en las sesiones siguientes.**
-- `compilador/gramatica/` con tres versiones: `minijava-base.g` (transcripción del PDF, 16
-  conflictos), `minijava-ll1.g` (núcleo corregido) y `minijava-ll1-logros.g` (la final).
+  104 no terminales, 214 producciones. **No queda gramática por diseñar en las sesiones
+  siguientes.**
+- `compilador/gramatica/` con tres versiones y su
+  [`README.md`](../../compilador/gramatica/README.md): `minijava-base.g` (transcripción del PDF,
+  16 conflictos), `minijava-ll1.g` (núcleo corregido) y `minijava-ll1-logros.g` (la vigente).
 - `compilador/herramientas/`: `primeros.py` (vaciables, Primeros, LL(1), combinatoria de logros,
-  rangos de longitud derivable, simulador del Esquema Simple), `aceptar_fuente.py` (tokeniza un
-  fuente real con el léxico de la Etapa 1 y lo corre contra la gramática),
-  `casos-gramatica.sh` (69 casos), `gramatica_a_markdown.py` y `gramatica_a_latex.py`.
-- **Documentación**: `documentacion/gramatica-base-minijava.md`, `guia-de-la-gramatica.md`
-  (la gramática original explicada regla por regla), `transformacion-gramatica.md` (el paso a
-  paso atómico) y `gramatica-minijava.md` (la final, **generada** desde el `.g`).
-- **Informe** en `etapas/etapa-2/entregables/informe/`, 44 páginas, compila sin desbordes ni
-  avisos de fuente. Tipografía y color de la cátedra: Computer Modern a 12pt, y el azul `#4C4CB2`
-  usado **sólo** en los terminales.
-- **69 casos** de aceptación y rechazo propios, más los **8 de la cátedra**, que además fallan en
+  registro de ambigüedades, rangos de longitud derivable, simulador del Esquema Simple),
+  `aceptar_fuente.py` (tokeniza un fuente real con el léxico de la Etapa 1 y lo corre contra la
+  gramática), `casos-gramatica.sh` (84 casos), `gramatica_a_markdown.py` y `gramatica_a_latex.py`.
+- **Documentación reorganizada por fase**: `documentacion/{lexico,sintactico,compartido,proyecto,minijava}/`,
+  cada carpeta con su README. Los cuatro documentos de gramática y los cinco del sintáctico están
+  en [`../sintactico/`](../sintactico/README.md).
+- **Informe** en `etapas/etapa-2/entregables/informe/`, compila sin desbordes ni avisos de fuente.
+  Tipografía y color de la cátedra: Computer Modern a 12pt, y el azul `#4C4CB2` sólo en los
+  terminales.
+- **84 casos** de aceptación y rechazo propios, más los **8 de la cátedra**, que además fallan en
   el token exacto que declara la expectativa de cada uno.
+
+### Estado de la Etapa 1
+
+Entregada, **pendiente de corrección**. Tiene que seguir siendo ejecutable y testeable de forma
+aislada mientras la Etapa 2 avanza: `--etapa=1` en el `Main` y `mvn test -Pfase-lexico`.
+
+### Resultado de la revisión externa de la gramática
+
+Se hizo una auditoría independiente del trabajo de la S1 y sus hallazgos se reprodujeron con el
+verificador antes de actuar. Resultado:
+
+- La transcripción de la gramática base es fiel al PDF, las transformaciones canónicas están bien
+  aplicadas y en el orden correcto, y con los logros apagados el lenguaje coincide con el de la
+  cátedra en cada punto verificado.
+- **Se encontraron tres ambigüedades**, de las cuales dos no estaban documentadas: `new int[3][4]`
+  —heredada de la gramática de la cátedra— y la del cuerpo de la lambda, que sí introduce el
+  proyecto y contagia a cinco no terminales. Las tres quedaron documentadas y resueltas voraz.
+- **Se agregó al verificador un registro de ambigüedades declaradas** (`--ambiguedades`): recorre
+  las 1024 configuraciones y falla si aparece una que no esté en la lista con su regla de
+  resolución. Son siete y todas están declaradas.
+- **Se extendió el inicializador de arreglos a multidimensional**, porque el logro dice «como en
+  Java» y sólo restringe dónde, no cuántas dimensiones.
+- El orden de los modificadores se mantiene fiel a la gramática original: `static public` se
+  rechaza.
 
 ---
 
@@ -127,7 +155,7 @@ Todo verificado; los comandos están en [Verificación](#verificación-permanent
 Antes de escribir una línea de código, en este orden:
 
 1. **Leer este archivo entero**, y en particular [Estado](#estado) y [Backlog](#backlog).
-2. **Leer [`workflow.md`](workflow.md)** — aplica sin excepción a cualquier tarea.
+2. **Leer [`workflow.md`](flujo-de-trabajo.md)** — aplica sin excepción a cualquier tarea.
 3. **Leer la sección de la sesión que corresponde**, más abajo, y el material que ahí se indica.
 4. **Releer los PDFs de la etapa como imágenes** si la sesión toca un tema que no se leyó todavía.
    Regla de `AGENTS.md` §0: **como imágenes, página por página, nunca con extracción de texto**.
@@ -161,14 +189,14 @@ Independientemente de la sesión:
 | Factorizar, eliminar recursión, tratar ambigüedad | `etapas/etapa-2/Clase 4 - Sint2 - Ambiguedad, Factorizacion y Recursion a Izquierda.pdf` |
 | **Implementar el parser** (el esquema, `match`, los métodos por NT) | `etapas/etapa-2/Clase 5 - Sint3 - Parser Implementacion Recursiva.pdf`, slides 33-62 |
 | Contrato de salida, logros, formato de error, invocación | `etapas/etapa-2/Pautas Etapa 2.pdf` (errores en 25-26, invocación 28, logros 34-44) |
-| Consultar una regla de la gramática original | `documentacion/minijava-tecnico/Reglas de Sintaxis MiniJava 2026.pdf` |
-| Consultar un token o una regla léxica | `documentacion/minijava-tecnico/Aspectos Lexicos MiniJava 2026.pdf` |
-| Entender qué hace cada regla y qué estaba roto | `documentacion/guia-de-la-gramatica.md` |
-| Ver cómo se corrigió una regla puntual | `documentacion/transformacion-gramatica.md` |
-| Consultar la gramática vigente | `documentacion/gramatica-minijava.md` o el `.g` |
-| Escribir o revisar tests | [`testing.md`](testing.md) |
-| Una duda de comportamiento no resuelta en ningún lado | [`investigacion.md`](investigacion.md), **antes** de escribir código |
-| Compilar, correr, empaquetar, entregar | [`comandos-y-entrega.md`](comandos-y-entrega.md) |
+| Consultar una regla de la gramática original | `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf` |
+| Consultar un token o una regla léxica | `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf` |
+| Entender qué hace cada regla y qué estaba roto | [`../sintactico/defectos-de-la-gramatica-original.md`](../sintactico/defectos-de-la-gramatica-original.md) |
+| Ver cómo se corrigió una regla puntual | [`../sintactico/transformacion-a-ll1-paso-a-paso.md`](../sintactico/transformacion-a-ll1-paso-a-paso.md) |
+| Consultar la gramática vigente | [`../sintactico/gramatica-ll1-final.md`](../sintactico/gramatica-ll1-final.md) o el `.g` |
+| Escribir o revisar tests | [`testing.md`](../compartido/estrategia-de-testing.md) |
+| Una duda de comportamiento no resuelta en ningún lado | [`investigacion.md`](protocolo-de-investigacion.md), **antes** de escribir código |
+| Compilar, correr, empaquetar, entregar | [`comandos-y-entrega.md`](comandos-compilacion-y-entrega.md) |
 
 ---
 
@@ -242,7 +270,7 @@ simulador de la gramática.
    válidos** para los tests del sintáctico, así que el corpus no repite casos léxicos. Se reusa la
    mecánica de expectativas y volcado que ya existe (`herramientas/README.md`,
    `casos/VolcadoDeCasos.java`), y **las expectativas se predicen a mano antes de correr**.
-3. Actualizar `guias/*.md` y `documentacion/*.md`, y cerrar el informe.
+3. Actualizar `documentacion/proyecto/*.md` y `documentacion/*.md`, y cerrar el informe.
 
 ### S5 — Reserva
 
@@ -255,13 +283,19 @@ Colchón. Si no se usa, se dedica a subir cobertura y a buscar más casos raros.
 Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de resolverlo.
 
 - [ ] **Explicar al arrancar la S2, antes de codear.** El flujo `match` ↔ métodos por no terminal,
-      con un fuente MiniJava chico corrido paso a paso. Es un pedido explícito del usuario y
-      quedó pendiente de la S1.
-- [ ] **Revisar.** El usuario va a revisar la gramática antes de la S2. Si de esa revisión sale
-      alguna corrección, se aplica sobre el `.g`, se regeneran los documentos y el informe, y se
-      vuelve a correr la verificación completa.
-- [ ] **Atender cuando llegue.** La corrección del léxico de la Etapa 1. Si aparecen fallos, hay
-      que poder arreglarlos y reprobar el léxico aislado, sin tocar el sintáctico.
+      con un fuente MiniJava chico corrido paso a paso. Pedido explícito del usuario, pendiente
+      desde la S1.
+- [ ] **Implementar en la S3.** Los chequeos del analizador que la gramática no puede expresar: el
+      indicador `dentroDeLambda` para el `this` explícito e implícito, el conjunto de parámetros
+      para la captura de variables, y la verificación de que el contenido entre paréntesis de una
+      lambda de un parámetro sea un `idMetVar` pelado. Todo está especificado en
+      [`../sintactico/decisiones-de-deteccion-de-errores.md`](../sintactico/decisiones-de-deteccion-de-errores.md).
+- [ ] **Considerar para la S4.** Una prueba diferencial de equivalencia de lenguajes: un
+      reconocedor de Earley que corra `minijava-base.g` y `minijava-ll1-logros.g` con cero logros
+      sobre el mismo corpus y exija veredictos idénticos. Hoy la equivalencia está sostenida por
+      84 casos elegidos a mano; esto la volvería verificable, y responde de frente a Clase 3
+      slide 42, que exige preservar el lenguaje pero no da método para demostrarlo.
+- [ ] **Atender cuando llegue.** La corrección del léxico de la Etapa 1.
 - [ ] Los logros de la Etapa 1 que sigan siendo alcanzables se mantienen; los de Etapa 2 no
       implementables por código son *Entrega Anticipada*, *Imbatibilidad* y *Well Done!*.
 
@@ -279,6 +313,13 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
       `etapas/etapa-1/`.
 - [x] `documentacion/README.md` describía el proyecto como si fuera sólo la Etapa 1 y no indexaba
       los documentos de gramática.
+- [x] La revisión de la gramática por parte del usuario, con auditoría externa incluida. Resultado
+      arriba.
+- [x] `this` y captura de variables en lambdas: **los rechaza el analizador**, con un indicador de
+      contexto y un conjunto con los parámetros. No es expresable en la gramática, pero sí
+      verificable con información que el analizador acaba de leer.
+- [x] Inicializadores de arreglo multidimensionales, como en Java.
+- [x] Orden de `static` y la visibilidad: fiel a la gramática original.
 
 ## Decisiones ya tomadas que no hay que volver a discutir
 
@@ -295,7 +336,12 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
   `else` va primero, y liga al `if` más cercano.
 - Los métodos de interfaz admiten `public` y no `private`, y **son siempre abstractos**: ningún
   logro de esta etapa les agrega cuerpo.
-- El `this` dentro de una lambda lo rechaza el semántico, no el sintáctico.
+- El `this` dentro de una lambda —explícito e implícito— y la captura de variables **los rechaza el
+  analizador sintáctico**, con un indicador de contexto y un conjunto con los parámetros de la
+  lambda. No son expresables en la gramática, pero sí verificables con información local.
+- Las siete ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
+  están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
+- El inicializador de arreglos es anidable; el orden `static public` se rechaza.
 
 ---
 

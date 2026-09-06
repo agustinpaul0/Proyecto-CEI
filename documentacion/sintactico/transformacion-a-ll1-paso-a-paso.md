@@ -1,7 +1,7 @@
 # Transformación de la gramática de MiniJava a LL(1)
 
 Paso a paso **atómico** de cada corrección aplicada a la gramática de la cátedra
-([`gramatica-base-minijava.md`](gramatica-base-minijava.md)) para volverla LL(1) y poder
+([`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md)) para volverla LL(1) y poder
 implementar el Analizador Sintáctico Descendente Recursivo con el Esquema Simple de Clase 5.
 
 Cada transformación se registra con cuatro pasos:

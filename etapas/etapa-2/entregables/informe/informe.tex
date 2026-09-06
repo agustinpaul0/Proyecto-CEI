@@ -459,6 +459,61 @@ dos árboles para la misma cadena. Es la ambigüedad clásica, presente tal cual
 Ambas se resuelven en la sección~\ref{sec:transformaciones}, y en los dos casos hay que
 \emph{decidir} un significado, no sólo reescribir.
 
+\subsection{Una tercera ambigüedad heredada, y cinco que agrega un logro}
+\label{sec:mas-ambiguedades}
+
+El criterio LL(1) de la cátedra ---disjunción de Primeros--- es el que decide si el analizador
+puede predecir, y es el único que interviene en la implementación. Pero el checklist de aceptación
+de Clase 4, slide 41, tiene un ítem más: que la gramática \textbf{no sea ambigua, o sea
+arreglable}. Verificarlo requiere mirar, además, qué puede seguir a un no terminal anulable. Se
+hizo esa verificación una vez, sobre las 1024 configuraciones, y aparecieron cinco ambigüedades más
+además de las dos anteriores.
+
+\begin{decision}{los Siguientes son un diagnóstico, no parte del método}
+Detectar una ambigüedad exige mirar el contexto en que aparece un no terminal anulable. Ese
+cálculo se hizo \textbf{una sola vez y fuera del compilador}, con la herramienta descripta en la
+sección~\ref{sec:verificacion}, con el único fin de auditar el ítem del checklist.
+
+\textbf{El analizador decide sólo con Primeros}, como enseña la cátedra: los Siguientes no
+aparecen en la gramática, ni en la elección de producciones, ni en una línea del código. Una vez
+detectada, cada ambigüedad se resuelve con una regla de implementación ---la vía que autoriza
+Clase 4, slide 49--- y no vuelven a intervenir.
+\end{decision}
+
+\textbf{Tercera ambigüedad: \texttt{new int[3][4]}, heredada de la cátedra.} Después de crear un
+arreglo, un \tl{[} puede ser otra dimensión de la creación o un acceso al arreglo recién creado.
+Las dos derivaciones existen ya en la gramática original, con producciones que están todas en el
+documento:
+
+\begin{producciones}
+\textit{Creación 2-D:}\quad \nt{CrearArreglo} $\Rightarrow$ \tl{new} \nt{TipoBase} \nt{DimensionesConTamanio} $\Rightarrow$ \tl{new} \tl{int} \tl{[}3\tl{]} \tl{[}4\tl{]}
+\textit{Creación 1-D indexada:}\quad \nt{Referencia} $\Rightarrow$ \nt{Referencia} \nt{AccesoArreglo} $\Rightarrow$ \nt{Primario} \tl{[}4\tl{]} $\Rightarrow$ \tl{new} \tl{int} \tl{[}3\tl{]} \tl{[}4\tl{]}
+\end{producciones}
+
+\textbf{Las otras cinco: el cuerpo de la lambda.} \texttt{x -> a + b} puede leerse
+\texttt{x -> (a + b)} o \texttt{(x -> a) + b}. La causa es dónde vive la lambda: se produce a nivel
+\nt{Primario}, o sea que ocupa una ranura de operando, y entonces la cola de la expresión que la
+contiene compite con la cola de su cuerpo. Contagia a \nt{RestoExpresion} (\tl{=}),
+\nt{RestoExpresionCompuesta} (los trece binarios), \nt{RestoReferencia} (\tl{.} y \tl{[}),
+\nt{RestoCondicional} (\tl{?}) y \nt{PosfijoOpcional} (\tl{++}, \tl{-{}-}). Java no la tiene porque
+el JLS pone la lambda como alternativa de \emph{AssignmentExpression}, nunca como \emph{Primary}:
+al vivir en el nivel más alto de la jerarquía, no hay cola externa con la que competir.
+
+\begin{decision}{las siete se resuelven voraz, no reescribiendo}
+En los siete casos la regla es la misma ---consumir todo lo que se pueda--- y coincide con Java. Es
+además lo que un analizador descendente recursivo hace \textbf{por construcción}: el método del
+cuerpo llama a \nt{Expresion} y ésta avanza mientras pueda.
+
+Para la lambda existía la alternativa de subirla al nivel de \nt{Expresion} como hace el JLS, lo
+que eliminaría la ambigüedad de raíz. Se descartó porque exigiría factorizar \tl{idMetVar} y \tl{(}
+contra toda la cola de expresión ---unas quince producciones nuevas--- \textbf{para producir
+exactamente el mismo analizador}: las dos salidas se comportan igual, lo que cambia es cuántas
+reglas hay que leer para entenderlo.
+
+Lo que sí exige la slide 49 es \emph{declararlo}, y de ahí el registro de la
+sección~\ref{sec:verificacion}.
+\end{decision}
+
 % ===========================================================================
 \section{Transformaciones}
 \label{sec:transformaciones}
@@ -1041,12 +1096,44 @@ misma clase de permisividad que la gramática original ya tiene con \texttt{5 = 
 como se anticipó en la sección~\ref{sec:alcance-chequeos}, para la prohibición de capturar
 variables.
 
-El uso de \tl{this} dentro de una lambda, que el logro también prohíbe, \emph{sí} sería detectable
-por el analizador sintáctico, porque \tl{this} es un token. Hacerlo exigiría que el analizador
-llevara un indicador de contexto «estoy dentro de una lambda», es decir un chequeo de contexto y no
-de forma. \textbf{Se delega al analizador semántico}, junto con la prohibición de capturar
-variables: las dos son restricciones sobre qué nombres pueden usarse en un alcance, y conviene que
-vivan en la etapa que resuelve alcances en lugar de repartirse entre dos.
+\end{decision}
+
+\begin{decision}{\tl{this} y la captura los rechaza el analizador, no la gramática}
+Las otras dos cláusulas del logro ---«no se permite la captura de variables locales, parámetros, ni
+el uso de \tl{this}»--- \textbf{no son expresables en una gramática libre de contexto}: no hay
+forma de escribir «\tl{this} es un \nt{Primario} válido, salvo debajo de un \nt{CuerpoLambda}», ni
+de condicionar un identificador a una lista que se leyó unas producciones antes. Escribirlo
+exigiría duplicar la jerarquía de expresiones en variantes «sin \tl{this}» y «sólo con estos
+nombres».
+
+Pero \textbf{sí son verificables en el analizador}, y con información puramente local:
+
+\begin{itemize}
+  \item \textbf{\tl{this} explícito}: un indicador booleano que se prende al entrar al cuerpo de
+        una lambda y se apaga al salir. El analizador sabe dónde está porque acaba de entrar.
+  \item \textbf{\tl{this} implícito}: llamar a un método propio sin escribirlo ---
+        \texttt{x -> metodo(x)}--- es un uso de \tl{this} igual. Y dentro de una lambda de
+        \textsc{MiniJava} una llamada sin punto \emph{sólo} puede ser un método de la clase: no hay
+        funciones sueltas y un parámetro es un valor, no se lo puede llamar. Mismo indicador.
+  \item \textbf{captura de variables}: el conjunto de nombres legales dentro del cuerpo es
+        exactamente el de los parámetros de la lambda, que el analizador acaba de leer. Como el
+        cuerpo es \emph{una única expresión}, adentro no se puede declarar nada, así que el
+        conjunto es cerrado. Y las lambdas anidadas no necesitan una pila de alcances: usar el
+        parámetro de la lambda de afuera también está prohibido, de modo que alcanza con el
+        conjunto de la más interna.
+\end{itemize}
+
+La gramática ya distingue los tres usos de un \tl{idMetVar} ---acceso a variable, llamada, y campo
+después de un \tl{.}---, así que se sabe cuál hay que chequear contra los parámetros y cuál no:
+\texttt{x -> x.campo} y \texttt{x -> C.metodo(x)} son válidos, \texttt{x -> x + n} no.
+
+Se hace en el analizador y no se posterga al semántico porque el logro es de esta etapa, porque el
+costo es un booleano y un conjunto de cadenas ---no hay tabla de símbolos ni alcances anidados---,
+y porque no toca ninguna producción: es un chequeo sobre lo ya parseado, del mismo tipo que la
+regla que resuelve el \emph{dangling else}, y Clase 4 slide 49 lo autoriza expresamente.
+
+Lo que sí queda para el analizador semántico es todo lo que exija resolver un nombre contra una
+declaración: que exista, que el tipo cierre, que la aridad coincida.
 \end{decision}
 
 \subsection{Inicializacion de Arreglos E2}
@@ -1058,9 +1145,20 @@ seguido del inicializador. Un token de desempate.
 \regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}
 \end{producciones}
-Se reutiliza \nt{ListaExpsOpcional}, que ya existe para los argumentos actuales, porque es la misma
-construcción. La restricción «sólo se permite como parte de una expresión de creación utilizando
-\tl{new}» queda impuesta por la gramática: \nt{CreacionDeArreglo} sólo es alcanzable desde
+El logro dice «como en Java» y la única restricción que enuncia es \emph{dónde} ---dentro de un
+\tl{new}---, no cuántas dimensiones. Como Java admite \texttt{new int[][]\{\{1,2\},\{3,4\}\}}, el
+inicializador es \textbf{anidable}: un elemento puede ser una expresión o, a su vez, otro
+inicializador.
+
+\begin{producciones}
+\regla{DimensionesVaciasOpcional}{\tl{[} \tl{]} \nt{DimensionesVaciasOpcional} \alt{} \eps}
+\regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}
+\regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
+\end{producciones}
+
+$\prim{\nt{Expresion}}$ no contiene \tl{\{}, así que las dos alternativas de
+\nt{ElementoInicializador} son disjuntas. La restricción de que sólo valga como parte de un
+\tl{new} queda impuesta por la gramática: \nt{CreacionDeArreglo} sólo es alcanzable desde
 \nt{Creacion}.
 
 \subsection{Genericidad Avanzada E2}
@@ -1215,6 +1313,36 @@ lenguajes, asi que <VarEncadenada> y <MetodoEncadenado> NO son ambiguos
 entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
 (LL(1)), no de ambiguedad, y se arregla factorizando.
 \end{consola}
+
+\subsection{Registro de ambigüedades}
+
+La condición LL(1) que verifica el apartado anterior es la de la cátedra: disjunción de Primeros.
+El ítem «no es ambigua, o es arreglable» del checklist de Clase 4, slide 41, es otro, y se audita
+aparte. La herramienta recorre las 1024 configuraciones, junta toda ambigüedad que aparezca y
+\textbf{exige que cada una esté declarada con su regla de resolución}: si aparece una nueva, falla.
+
+\begin{consola}
+$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades
+DIAGNOSTICO OFFLINE - no forma parte del metodo de implementacion.
+El analizador sintactico decide SOLO con Primeros (Esquema Simple,
+Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item
+"no es ambigua o es arreglable" del checklist de Clase 4 slide 41.
+
+Ambiguedades detectadas en las 1024 configuraciones: 7
+
+  <DimensionesConTamanioOpcional>  ...  [declarada]
+  <ElseOpcional>                   ...  [declarada]
+  <PosfijoOpcional>                ...  [declarada]
+  <RestoCondicional>               ...  [declarada]
+  <RestoExpresion>                 ...  [declarada]
+  <RestoExpresionCompuesta>        ...  [declarada]
+  <RestoReferencia>                ...  [declarada]
+
+Todas las ambiguedades detectadas estan declaradas con su regla de resolucion.
+\end{consola}
+
+Eso permite afirmar, con evidencia y no por revisión a ojo, que \textbf{éstas son todas las
+ambigüedades de la gramática} y que cada una tiene una resolución explícita.
 
 \subsection{Casos de aceptación y rechazo}
 

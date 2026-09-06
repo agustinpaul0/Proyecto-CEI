@@ -215,7 +215,7 @@ contenía puede haberse descartado.
 
 ## 6. Ver también
 
-- [`arquitectura.md`](arquitectura.md) §2 y §7 — dónde encaja esta pieza en el conjunto.
+- [`arquitectura.md`](../lexico/arquitectura-del-analizador-lexico.md) §2 y §7 — dónde encaja esta pieza en el conjunto.
 - [`manejo-de-errores.md`](manejo-de-errores.md) — quién consume `getColumnNumber()` y
   `getCurrentLineText()`, y para qué.
-- [`decisiones.md`](decisiones.md) — el catálogo completo de decisiones del proyecto.
+- [`decisiones.md`](../lexico/decisiones-de-logica.md) — el catálogo completo de decisiones del proyecto.

@@ -1,137 +1,57 @@
-# Compilador MiniJava — Documentación técnica
+# Documentación del Compilador MiniJava
 
-Documentación del proyecto de la materia **Compiladores e Intérpretes** (Departamento de Ciencias e
-Ingeniería de la Computación, Universidad Nacional del Sur, 2° cuatrimestre 2026). El proyecto son
-**cinco etapas**; esta carpeta cubre las que están hechas:
+Proyecto de la materia **Compiladores e Intérpretes** (Departamento de Ciencias e Ingeniería de la
+Computación, Universidad Nacional del Sur, 2° cuatrimestre 2026). El compilador se desarrolla en
+**cinco etapas**.
 
-- **Etapa 1 — Analizador Léxico + Módulo Principal**: documentos 1 a 8.
-- **Etapa 2 — Analizador Sintáctico** (en curso): documentos 9 a 12, más los PDF del lenguaje en
-  [`minijava-tecnico/`](minijava-tecnico/).
-- Etapas 3 a 5: sin especificación todavía.
+Toda esta carpeta es **autocontenida**: se puede leer entera sin abrir una sola línea de código.
+Está escrita para que un lector externo entienda no sólo *qué* hace el compilador, sino **por qué
+hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
-El estado y el plan de la etapa activa **no** están acá sino en
-[`../guias/plan-etapa-2.md`](../guias/plan-etapa-2.md), porque son documentos de trabajo y no de
-explicación.
+## Cómo está organizada
 
-Toda esta carpeta es **autocontenida**: se puede leer entera sin abrir una sola línea de código y sin
-consultar ningún otro archivo del repositorio. Está escrita para que un lector externo entienda no
-sólo *qué* hace el compilador, sino **por qué hace cada cosa de la forma en que la hace**, y de dónde
-sale cada decisión.
-
-## Guía de lectura
-
-| # | Documento | Qué responde |
-|---|---|---|
-| 1 | [`arquitectura.md`](arquitectura.md) | Qué hace el proyecto, qué piezas lo componen, cómo se comunican, qué pasa de punta a punta cuando se lo ejecuta. **Empezar acá.** |
-| 2 | [`especificacion-lexica.md`](especificacion-lexica.md) | La expresión regular exacta de los 56 tokens, sus autómatas, y qué queda deliberadamente afuera del lenguaje. |
-| 3 | [`patron-state.md`](patron-state.md) | Cómo se implementó la técnica *Método por Estado* que exige la cátedra, pieza por pieza, con trazados completos. |
-| 4 | [`manejo-de-errores.md`](manejo-de-errores.md) | Cómo se detecta un error, cómo se recupera el análisis, y los dos formatos de reporte. |
-| 5 | [`manejador-de-archivo.md`](manejador-de-archivo.md) | Los requisitos del *Manejador de Archivos Eficiente* y cómo los resuelve el diseño, incluido el costo de ubicar un error. |
-| 6 | [`decisiones.md`](decisiones.md) | **El catálogo completo de decisiones**: cada caso ambiguo, la alternativa descartada, la fuente que lo resuelve y la justificación. |
-| 7 | [`testing.md`](testing.md) | Qué garantiza cada suite de tests, cómo están organizados y cómo correrlos. |
-| 8 | [`logros.md`](logros.md) | Los 8 logros de la Etapa 1: qué exige cada uno, dónde está implementado y cómo verificarlo. |
-
-### Etapa 2 — Analizador Sintáctico
-
-| # | Documento | Qué responde |
-|---|---|---|
-| 9 | [`guia-de-la-gramatica.md`](guia-de-la-gramatica.md) | La gramática original de MiniJava explicada **regla por regla**: para qué sirve cada una, por qué está escrita así y dónde está rota. **Empezar acá.** |
-| 10 | [`gramatica-base-minijava.md`](gramatica-base-minijava.md) | Transcripción fiel del documento de la cátedra, sin corregir nada. Es la fuente de verdad contra la que se verifica el resto. |
-| 11 | [`transformacion-gramatica.md`](transformacion-gramatica.md) | El paso a paso **atómico** de cada corrección a LL(1) y de cada extensión por logro: regla original, defecto, transformación y resultado verificado. |
-| 12 | [`gramatica-minijava.md`](gramatica-minijava.md) | La gramática final. **Se genera** desde `compilador/gramatica/minijava-ll1-logros.g`; no se edita a mano. |
-
-Los PDF del lenguaje que la cátedra publica aparte de las etapas —«Aspectos Léxicos MiniJava 2026»
-y «Reglas de Sintaxis MiniJava 2026»— viven en [`minijava-tecnico/`](minijava-tecnico/), porque no
-pertenecen a una etapa sino al lenguaje.
-
-## Resumen en una página
-
-El programa toma un archivo fuente MiniJava y produce, por consola, la secuencia de sus componentes
-léxicos, un token por línea, en el formato exacto que fija la cátedra:
-
-```console
-$ java -jar Compilador.jar programa1.java
-(pr_class,class,1)
-(idClase,Alpha,1)
-(llaveA,{,1)
-(pr_var,var,2)
-(idMV,texto,2)
-(op_asignacion,=,2)
-(litString,"hola, mundo",2)
-(puntoYComa,;,2)
-...
-(EOF,$,22)
-
-[SinErrores]
-```
-
-Si el fuente tiene errores léxicos, en lugar de `[SinErrores]` aparece un reporte por cada error, y
-el análisis **no se detiene en el primero** (logro *Multi-detección de Errores*):
-
-```console
-$ java -jar Compilador.jar conErrores.java
-(idMV,v1,2)
-Error Léxico en línea 2, columna 4: # no es un símbolo válido
-Detalle: v1 # v2
-            ^
-[Error:#|2]
-(idMV,v2,2)
-(EOF,$,3)
-```
-
-Las tres primeras líneas de cada reporte son un agregado propio (logro *Reporte de Error Elegante*);
-la cuarta, `[Error:Lexema|NroLinea]`, es el contrato exacto que verifican los testers de la cátedra. El
-renglón en blanco antes de `[SinErrores]` conserva la separación mostrada en las Pautas Etapa 1
-(slide 26); no se agrega una línea vacía antes de `[Error:...]`.
-
-### Datos del proyecto
-
-| | |
+| Carpeta | Qué hay adentro |
 |---|---|
-| Lenguaje reconocido | MiniJava — subconjunto estricto de Java, sin excepciones ni hilos |
-| Técnica de implementación | Método por Estado (patrón State), **sin generadores automáticos** |
-| Tokens reconocidos | 56 (21 palabras clave, 3 familias de identificadores, 4 de literales, 10 símbolos de puntuación, 17 operadores, EOF) |
-| Estados del autómata | 22 clases en `minijava.lexico.estados`, una por estado |
-| Clases de producción | 49 |
-| Suites de test | 22 (20 propias + los 2 testers de la cátedra), con **631 casos** ejecutables |
-| Casos de fuente | 76 sin errores + 82 con errores + 1 de regresión de fuzzing |
-| Logros perseguidos | los 8 de la Etapa 1 |
-| Java | 25 (`maven.compiler.release=25`) |
-| Build | Maven; `mvn package` genera `target/Compilador.jar` |
+| [`lexico/`](lexico/README.md) | **Etapa 1 — Analizador Léxico.** Arquitectura, especificación de los tokens, decisiones y logros. |
+| [`sintactico/`](sintactico/README.md) | **Etapa 2 — Analizador Sintáctico.** La gramática (original, transformación y final), arquitectura, decisiones y logros. |
+| [`compartido/`](compartido/README.md) | Lo que **no pertenece a una sola etapa**: la estrategia de testing, el manejo de errores y el manejador de archivo. |
+| [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el **plan de la etapa activa**, el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
+| [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos y reglas de sintaxis. |
 
-### Cómo correrlo
+## Por dónde empezar
 
-```bash
-cd compilador
-mvn package                 # genera target/Compilador.jar
-java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
+**Si querés entender el compilador**, en este orden:
 
-mvn test                    # suite propia + los 2 testers de la cátedra, en la misma pasada
-mvn verify                  # además exige el umbral de cobertura JaCoCo
-mvn -Pmutacion test         # análisis de mutación con PIT (no corre en cada cambio)
-```
+1. [`lexico/arquitectura-del-analizador-lexico.md`](lexico/arquitectura-del-analizador-lexico.md)
+   — qué hace el proyecto y cómo está construido.
+2. [`sintactico/README.md`](sintactico/README.md) — la etapa en curso.
+3. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
 
-El archivo fuente puede tener **cualquier extensión** (`.java`, `.mjava`, `.txt`, ninguna): el
-compilador no inspecciona el nombre, sólo abre la ruta que recibe.
+**Si vas a escribir código**, primero:
 
-Desde IntelliJ IDEA: abrir la carpeta `compilador/`, que es donde está el `pom.xml`. El *working
-directory* de los tests debe ser esa misma carpeta, porque los testers de la cátedra usan rutas
-relativas duras (`resources/sinErrores/`, `resources/conErrores/`).
+1. [`proyecto/plan-de-accion-etapa-2.md`](proyecto/plan-de-accion-etapa-2.md) — el estado, el
+   backlog y qué hay que leer antes de tocar nada.
+2. [`proyecto/flujo-de-trabajo.md`](proyecto/flujo-de-trabajo.md) — las reglas que aplican sin
+   excepción.
 
-## Cómo se tomaron las decisiones
+## Estado de las etapas
 
-Dos reglas gobiernan todo el proyecto, y explican la mayoría de las decisiones documentadas acá:
+| Etapa | Qué es | Estado |
+|---|---|---|
+| 1 | Analizador Léxico + Módulo Principal | entregada, pendiente de corrección |
+| 2 | Analizador Sintáctico Descendente Recursivo | **en curso** — gramática terminada, analizador pendiente |
+| 3 a 5 | Semántico y siguientes | sin especificación todavía |
 
-1. **Lo que la cátedra especifica, se respeta al pie de la letra.** El formato de salida, el código
-   de error, la técnica de implementación y las expresiones regulares de los tokens salen de
-   `Aspectos Lexicos MiniJava 2026.pdf`, `Reglas de Sintaxis MiniJava 2026.pdf`, las `Pautas` de
-   cada etapa y las clases. Cuando este documento afirma algo de la cátedra, cita la fuente.
+## Las dos reglas que gobiernan todas las decisiones
+
+1. **Lo que la cátedra especifica, se respeta al pie de la letra.** Cuando un documento de acá
+   afirma algo de la cátedra, cita la fuente: el PDF y la slide.
 2. **Lo que la cátedra no especifica, se resuelve como en Java** — regla escrita explícitamente por
-   la cátedra: *"todo lo que NO esté especificado para MiniJava tiene comportamiento por defecto
-   igual al de Java"*. Y "como en Java" nunca se resolvió de memoria: se verificó contra la
-   especificación (JLS) o **ejecutando `javac`** sobre el caso concreto, y el resultado de esa
-   ejecución quedó registrado en el documento y fijado en un test.
+   ellos. Y «como en Java» nunca se resuelve de memoria: se verifica contra la especificación o
+   **ejecutando `javac`** sobre el caso concreto, y el resultado queda registrado y fijado en un
+   test.
 
-Las dos reglas dejan un residuo: casos donde MiniJava **diverge** de Java a propósito, porque la
-cátedra especificó algo distinto. Están todos enumerados en [`decisiones.md`](decisiones.md) §7,
-porque son exactamente los casos que un evaluador querría revisar.
+Las dos reglas dejan un residuo: los casos donde MiniJava **diverge** de Java a propósito, porque
+la cátedra especificó algo distinto. Están enumerados en
+[`lexico/decisiones-de-logica.md`](lexico/decisiones-de-logica.md), porque son exactamente los que
+un evaluador querría revisar.

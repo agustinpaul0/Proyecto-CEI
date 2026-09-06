@@ -5,7 +5,7 @@ argument-hint: "[completo | resumen | off | mutacion | cobertura]"
 
 Modo pedido: $1 (si está vacío, usá `completo`).
 
-Corré, desde `compilador/`, el comando que corresponda según `guias/comandos-y-entrega.md`:
+Corré, desde `compilador/`, el comando que corresponda según `documentacion/proyecto/comandos-compilacion-y-entrega.md`:
 
 - `completo` → `mvn test`
 - `resumen`  → `mvn test -Dvolcado=resumen`
@@ -15,4 +15,4 @@ Corré, desde `compilador/`, el comando que corresponda según `guias/comandos-y
 
 Después reportá el resultado sin adornarlo: si algo falla, mostrá la salida real del fallo e
 investigá la causa antes de proponer un fix. Una regresión sin explicar no cuenta como suite
-verde (`guias/workflow.md`).
+verde (`documentacion/proyecto/flujo-de-trabajo.md`).

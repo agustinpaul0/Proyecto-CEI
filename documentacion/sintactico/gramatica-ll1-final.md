@@ -4,9 +4,9 @@ Gramática corregida y **verificada** de MiniJava, en la notación BNF-extendida
 cátedra. Incluye el núcleo más los 9 logros de la Etapa 2 y el carry-over de `float` de la
 Etapa 1.
 
-- El origen, sin tocar, está en [`gramatica-base-minijava.md`](gramatica-base-minijava.md).
-- Para entender qué hace cada regla y qué estaba roto: [`guia-de-la-gramatica.md`](guia-de-la-gramatica.md).
-- El paso a paso de cada corrección: [`transformacion-gramatica.md`](transformacion-gramatica.md).
+- El origen, sin tocar, está en [`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md).
+- Para entender qué hace cada regla y qué estaba roto: [`guia-de-la-gramatica.md`](defectos-de-la-gramatica-original.md).
+- El paso a paso de cada corrección: [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md).
 
 **Este documento se genera** desde `compilador/gramatica/minijava-ll1-logros.g`, que es el mismo
 archivo que verifica el script — no se edita a mano, para que no puedan divergir:
