@@ -2,6 +2,7 @@ package minijava.lexico.errores;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.config.Logro;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@Tag("lexico")
 class FormateadorDeErrorTest {
 
     private ExcepcionLexica excepcionDeEjemplo() {

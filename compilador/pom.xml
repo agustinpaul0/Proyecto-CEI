@@ -17,6 +17,11 @@
         <!-- Volcado a consola de la salida del compilador por cada caso del corpus:
              completo (default) | resumen | off. Ver VolcadoDeCasos. -->
         <volcado>completo</volcado>
+        <!-- Logros con los que corre la suite: ninguno | todos | etapaN | a,b,c.
+             Vacío = todos. Ver ConfiguracionDeLaCorrida y @RequiereLogro. -->
+        <logros/>
+        <!-- Etiquetas JUnit a correr; lo fijan los perfiles fase-*. -->
+        <fases/>
     </properties>
 
     <dependencyManagement>
@@ -72,7 +77,10 @@
                          al JVM forkeado: es un interruptor que se usa a mano. -->
                     <systemPropertyVariables>
                         <volcado>${volcado}</volcado>
+                        <logros>${logros}</logros>
                     </systemPropertyVariables>
+                    <!-- Vacío por defecto: sin -Pfase-* corre la suite entera. -->
+                    <groups>${fases}</groups>
                 </configuration>
             </plugin>
 
@@ -143,6 +151,23 @@
     </build>
 
     <profiles>
+        <!-- Cada etapa se corrige por separado, así que su suite tiene que poder
+             correrse sola. Los tests de comun/ van en las dos: son el piso de
+             las dos fases. -->
+        <profile>
+            <id>fase-lexico</id>
+            <properties>
+                <fases>lexico,comun</fases>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>fase-sintactico</id>
+            <properties>
+                <fases>sintactico,comun</fases>
+            </properties>
+        </profile>
+
         <profile>
             <id>mutacion</id>
             <build>

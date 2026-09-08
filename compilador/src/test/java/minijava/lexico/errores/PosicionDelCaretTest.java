@@ -3,6 +3,7 @@ package minijava.lexico.errores;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // ofensivo puntual lleva el '^' encima; una construcción entera, a su primer
 // carácter, salvo charLiteral vacío, que señala su comilla de cierre. Cada caso
 // cita el diagnóstico de javac que lo respalda, obtenido ejecutándolo.
+@Tag("lexico")
 class PosicionDelCaretTest {
 
     private record Caso(String descripcion, String fuente, int columna, String segunJavac) {

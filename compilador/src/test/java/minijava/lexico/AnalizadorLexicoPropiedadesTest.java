@@ -14,11 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Tag;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 // Invariantes de robustez que deben sostenerse para CUALQUIER entrada, no
 // sólo para los casos concretos de AnalizadorLexicoTest (agents/testing.md).
+@Tag("lexico")
 class AnalizadorLexicoPropiedadesTest {
 
     private static final int LIMITE_DE_SEGURIDAD = 100_000;

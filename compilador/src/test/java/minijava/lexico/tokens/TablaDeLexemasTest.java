@@ -3,6 +3,7 @@ package minijava.lexico.tokens;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // La tabla es la ÚNICA fuente de la correspondencia tipo <-> lexema para los 53
 // tokens que la tienen fija. Estos dos tests la cierran por los dos lados: que no
 // falte ninguno, y que el autómata emita para cada uno lo que la tabla promete.
+@Tag("lexico")
 class TablaDeLexemasTest {
 
     // Los 7 que leen su lexema del fuente y por eso NO están en la tabla.

@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.jupiter.api.Tag;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -21,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 // secuencia impresa contra las expectativas //#lexema,nroLinea del propio caso.
 // Sólo lexema y línea: la cátedra no fija los nombres internos de cada proyecto.
 @RunWith(Parameterized.class)
+@Tag("lexico")
 public class TesterDeCasosSinErrores {
 
     private static final String MSG_EXITO = "[SinErrores]";

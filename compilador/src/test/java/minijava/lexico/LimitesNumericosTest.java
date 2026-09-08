@@ -6,6 +6,7 @@ import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // Tres reglas distintas que conviene no mezclar: intLiteral se acota a nueve
 // DÍGITOS (no a un valor, por eso 0000000001 es error); floatLiteral no tiene
 // límite de dígitos ni de valor, porque el rango en Java es semántico.
+@Tag("lexico")
 class LimitesNumericosTest {
 
     private AnalizadorLexico crear(Path dir, String fuente) throws IOException {

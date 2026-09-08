@@ -6,6 +6,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Puntos donde MiniJava se aparta de Java a propósito. Están todos en la tabla de
 // agents/especificacion-lexica.md y van en el informe.
+@Tag("lexico")
 class DivergenciasConJavaTest {
 
     private AnalizadorLexico crear(Path dir, String fuente) throws IOException {

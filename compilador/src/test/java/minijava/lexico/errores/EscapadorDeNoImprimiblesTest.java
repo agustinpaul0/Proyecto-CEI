@@ -1,5 +1,6 @@
 package minijava.lexico.errores;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 //
 // Los invisibles se escriben acá con escapes y nunca crudos: un archivo de test
 // con un NUL o un BOM adentro es justamente lo que este código existe para evitar.
+@Tag("lexico")
 class EscapadorDeNoImprimiblesTest {
 
     @Test

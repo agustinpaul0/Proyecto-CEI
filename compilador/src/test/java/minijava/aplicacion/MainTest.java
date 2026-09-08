@@ -1,5 +1,6 @@
 package minijava.aplicacion;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Main es delgado y toca System.out real, pero sus modos de falla tienen que estar
 // cubiertos: una excepción sin atrapar mata la corrida entera de los testers.
+@Tag("lexico")
 class MainTest {
 
     private String capturarSalidaDe(String... args) {

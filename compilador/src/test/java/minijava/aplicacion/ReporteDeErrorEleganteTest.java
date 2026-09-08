@@ -1,6 +1,7 @@
 package minijava.aplicacion;
 
 import minijava.comun.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("lexico")
 class ReporteDeErrorEleganteTest {
 
     private Path escribir(Path dir, String contenido) throws IOException {

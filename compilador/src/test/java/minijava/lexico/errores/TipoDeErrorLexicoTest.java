@@ -4,6 +4,7 @@ import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.tokens.TipoDeToken;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Un caso por cada TipoDeErrorLexico, validado por tipo y localización y nunca por
 // el texto del mensaje, como pide agents/testing.md.
+@Tag("lexico")
 class TipoDeErrorLexicoTest {
 
     // fuente -> (tipo, línea, columna del carácter señalado por el ^). Criterio de

@@ -6,6 +6,7 @@ import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("lexico")
 class AnalizadorLexicoTest {
 
     private AnalizadorLexico crearAnalizador(Path dir, String fuente) throws IOException {

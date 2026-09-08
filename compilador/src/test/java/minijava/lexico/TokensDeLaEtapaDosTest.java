@@ -9,6 +9,7 @@ import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.lexico.tokens.TablaDeLexemas;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // existen sólo porque un logro de la Etapa 2 los necesita. Cada uno se prueba
 // por los dos lados: con el logro prendido tiene que reconocerse, y con el logro
 // apagado tiene que volver EXACTAMENTE al comportamiento de la Etapa 1.
+@Tag("lexico")
 class TokensDeLaEtapaDosTest {
 
     private static final ConfiguracionDelCompilador ETAPA_UNO =

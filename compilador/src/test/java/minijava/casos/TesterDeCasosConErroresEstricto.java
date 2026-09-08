@@ -4,6 +4,7 @@ import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //   // [Completo]                  exige de acá en más la secuencia EXACTA
 //
 // La línea 1 siempre un `// [Error:...]`: el tester de la cátedra le hace substring(3).
+@Tag("lexico")
 class TesterDeCasosConErroresEstricto {
 
     private static final Path DIRECTORIO = Path.of("resources", "lexico", "conErrores");

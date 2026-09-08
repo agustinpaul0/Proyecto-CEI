@@ -5,6 +5,7 @@ import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.tokens.Token;
 import minijava.lexico.tokens.TipoDeToken;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 // Fuzzing con semilla fija: el único contrato es que el compilador termine y que
 // todo fallo sea ExcepcionLexica, nunca un crash sin controlar.
+@Tag("lexico")
 class AnalizadorLexicoFuzzTest {
 
     private static final long SEMILLA = 20260824L;

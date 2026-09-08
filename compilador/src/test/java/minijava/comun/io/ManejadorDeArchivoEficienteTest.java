@@ -1,5 +1,6 @@
 package minijava.comun.io;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("comun")
 class ManejadorDeArchivoEficienteTest {
 
     private final ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();

@@ -2,6 +2,7 @@ package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.comun.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Regresiones de tres defectos de robustez encontrados auditando el léxico: todo
 // fallo que no sea una ExcepcionLexica controlada es un defecto, no comportamiento.
+@Tag("lexico")
 class DefectosDeRobustezTest {
 
     private List<String> ejecutar(Path archivo) throws IOException {

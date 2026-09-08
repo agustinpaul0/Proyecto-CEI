@@ -2,6 +2,7 @@ package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.comun.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // El criterio de recuperación: todo estado que lanza un error consume exactamente
 // lo que reporta en el lexema, ni uno más. La cátedra no dice cómo recuperarse, así
 // que aplica AGENTS.md §0.1; cada test cita la salida real de javac.
+@Tag("lexico")
 class CriterioDeRecuperacionTest {
 
     private List<String> ejecutar(Path dir, String fuente) throws IOException {

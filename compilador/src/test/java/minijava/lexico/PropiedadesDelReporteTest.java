@@ -19,6 +19,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.junit.jupiter.api.Tag;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // Invariantes del reporte y de la recuperación para cualquier entrada. A
 // diferencia de AnalizadorLexicoPropiedadesTest, acá se mira la salida completa
 // del Módulo Principal, que es lo que ve la cátedra.
+@Tag("lexico")
 class PropiedadesDelReporteTest {
 
     private static final String PREFIJO_DETALLE = "Detalle: ";

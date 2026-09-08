@@ -1,11 +1,13 @@
 package minijava.lexico.tokens;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("lexico")
 class TipoDeTokenTest {
 
     // Copiada de la especificación y no derivada del enum: detecta errores de
