@@ -5,6 +5,8 @@ import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.sintactico.errores.ExcepcionSintactica;
 
+import java.util.List;
+
 // Analizador Descendente Recursivo Predictivo LL(1), Esquema Simple de la
 // Clase 5 (slides 33-62): un método por no terminal, `match` para los terminales,
 // y la producción se elige mirando si el token actual está en los Primeros del
@@ -25,10 +27,25 @@ public final class AnalizadorSintactico {
     }
 
     // Se carga el primer token y se arranca por el símbolo inicial de la
-    // gramática (Clase 5, slide 61). Que retorne sin excepción y con el eof
-    // consumido significa que el programa es sintácticamente válido.
-    public void analizar() throws ExcepcionLexica, ExcepcionSintactica {
+    // gramática (Clase 5, slide 61). Devuelve los errores encontrados: una lista
+    // vacía significa que el programa es sintácticamente válido.
+    //
+    // Sin Modo Pánico la lista tiene a lo sumo un elemento, porque la primera
+    // excepción sube sin que nadie la recupere; con el logro prendido el
+    // analizador sigue y los junta todos, en el orden en que aparecen.
+    public List<ExcepcionSintactica> analizar() throws ExcepcionLexica {
         entrada.cargarPrimerToken();
-        sintaxis.clases().inicial();
+        try {
+            sintaxis.clases().inicial();
+        } catch (ExcepcionSintactica error) {
+            if (!sintaxis.recuperador().habilitado()) {
+                return List.of(error);
+            }
+            // Con el logro prendido, un error que nadie recuperó igual se suma a
+            // los que ya se habían encontrado: es el último de la lista, no el
+            // único.
+            sintaxis.recuperador().registrar(error);
+        }
+        return sintaxis.recuperador().errores();
     }
 }

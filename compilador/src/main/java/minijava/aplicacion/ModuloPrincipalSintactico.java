@@ -12,6 +12,7 @@ import minijava.sintactico.AnalizadorSintactico;
 import minijava.sintactico.errores.ExcepcionSintactica;
 
 import java.io.IOException;
+import java.util.List;
 
 public final class ModuloPrincipalSintactico {
 
@@ -34,12 +35,14 @@ public final class ModuloPrincipalSintactico {
                 new AnalizadorLexico(new ContextoLexico(manejador, configuracion)), configuracion);
 
         try {
-            analizador.analizar();
-            salida.imprimir(MENSAJE_DE_EXITO);
-            salida.imprimir("");
-            salida.imprimir("[SinErrores]");
-        } catch (ExcepcionSintactica excepcion) {
-            reportar(excepcion.getMessage(), excepcion.getLexemaOfensivo(), excepcion.getLinea());
+            List<ExcepcionSintactica> errores = analizador.analizar();
+            if (errores.isEmpty()) {
+                salida.imprimir(MENSAJE_DE_EXITO);
+                salida.imprimir("");
+                salida.imprimir("[SinErrores]");
+            } else {
+                errores.forEach(this::reportar);
+            }
         } catch (ExcepcionLexica excepcion) {
             formateadorDeError.formatear(excepcion).forEach(salida::imprimir);
         } finally {
@@ -48,10 +51,12 @@ public final class ModuloPrincipalSintactico {
     }
 
     // El renglón en blanco entre el mensaje y el código es el del ejemplo de
-    // Pautas Etapa 2, slide 25.
-    private void reportar(String mensaje, String lexema, int linea) {
-        salida.imprimir(mensaje);
+    // Pautas Etapa 2, slide 25. Con Modo Pánico se repite el reporte entero por
+    // cada error, que es el mismo formato con el que la Etapa 1 reporta varios
+    // errores léxicos.
+    private void reportar(ExcepcionSintactica excepcion) {
+        salida.imprimir(excepcion.getMessage());
         salida.imprimir("");
-        salida.imprimir("[Error:" + lexema + "|" + linea + "]");
+        salida.imprimir("[Error:" + excepcion.getLexemaOfensivo() + "|" + excepcion.getLinea() + "]");
     }
 }

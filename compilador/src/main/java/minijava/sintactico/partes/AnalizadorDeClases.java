@@ -5,6 +5,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeClases;
+import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
 
 // Las unidades de compilación: clases, interfaces y sus cabeceras.
 public final class AnalizadorDeClases extends ParteDelAnalizador {
@@ -22,10 +23,10 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // ListaClases -> Clase ListaClases | Interfaz ListaClases | EPSILON
     private void listaClases() throws ExcepcionLexica, ExcepcionSintactica {
         while (estaEn(PrimerosDeClases.LISTA_CLASES_CLASE) || estaEn(PrimerosDeClases.LISTA_CLASES_INTERFAZ)) {
-            if (estaEn(PrimerosDeClases.LISTA_CLASES_CLASE)) {
-                clase();
-            } else {
-                interfaz();
+            boolean sigue = reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_CLASES,
+                    estaEn(PrimerosDeClases.LISTA_CLASES_CLASE) ? this::clase : this::interfaz);
+            if (!sigue) {
+                return;
             }
         }
     }
@@ -86,14 +87,20 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // ListaMiembros -> Miembro ListaMiembros | EPSILON
     private void listaMiembros() throws ExcepcionLexica, ExcepcionSintactica {
         while (estaEn(PrimerosDeClases.LISTA_MIEMBROS_MIEMBRO)) {
-            sintaxis.miembros().miembro();
+            if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
+                    sintaxis.miembros()::miembro)) {
+                return;
+            }
         }
     }
 
     // ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
     private void listaMetodosInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
         while (estaEn(PrimerosDeClases.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
-            sintaxis.miembros().metodoInterfaz();
+            if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
+                    sintaxis.miembros()::metodoInterfaz)) {
+                return;
+            }
         }
     }
 }

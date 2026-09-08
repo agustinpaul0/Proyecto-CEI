@@ -72,6 +72,12 @@ public final class EntradaDeTokens {
         return new ExcepcionSintactica(actual, esperados.habilitadosEn(configuracion).describir());
     }
 
+    // Consume el token actual sin verificar nada. Lo usa el Modo Pánico, que
+    // descarta entrada justamente porque no coincide con lo que se esperaba.
+    public void descartar() throws ExcepcionLexica {
+        avanzar();
+    }
+
     private void avanzar() throws ExcepcionLexica {
         actual = analizadorLexico.proximoToken();
         consumidos++;

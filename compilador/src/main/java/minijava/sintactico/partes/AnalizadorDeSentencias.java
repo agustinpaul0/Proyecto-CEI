@@ -6,6 +6,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeSentencias;
+import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
 
 // Bloques y sentencias. Con el logro de variables locales clásicas una
 // declaración puede empezar con idClase (`C x;`) y una sentencia-expresión
@@ -22,7 +23,9 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     public void bloque() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.LLAVE_A);
         while (estaEn(PrimerosDeSentencias.LISTA_SENTENCIAS_SENTENCIA)) {
-            sentencia();
+            if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_SENTENCIAS, this::sentencia)) {
+                break;
+            }
         }
         match(TipoDeToken.LLAVE_C);
     }

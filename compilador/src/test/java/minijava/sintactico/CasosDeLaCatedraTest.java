@@ -1,6 +1,8 @@
 package minijava.sintactico;
 
 import minijava.aplicacion.ModuloPrincipalSintactico;
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
 import minijava.logros.ConfiguracionDeLaCorrida;
 import org.junit.jupiter.api.Tag;
@@ -24,10 +26,20 @@ class CasosDeLaCatedraTest {
 
     private static final Path RAIZ = Path.of("..", "vendor", "testersSintactico", "resources");
 
+    private static final List<String> CASOS = List.of(
+            "sinErrores/sintCorrecto01.java", "sinErrores/sintCorrecto02.java",
+            "sinErrores/sintCorrecto03.java", "sinErrores/sintCorrecto04.java",
+            "conErrores/sintError01.java", "conErrores/sintError02.java",
+            "conErrores/sintError03.java", "conErrores/sintError04.java");
+
     private List<String> ejecutar(String caso) throws IOException {
+        return ejecutar(caso, ConfiguracionDeLaCorrida.actual());
+    }
+
+    private List<String> ejecutar(String caso, ConfiguracionDelCompilador configuracion)
+            throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalSintactico(salida, ConfiguracionDeLaCorrida.actual())
-                .ejecutar(RAIZ.resolve(caso).toString());
+        new ModuloPrincipalSintactico(salida, configuracion).ejecutar(RAIZ.resolve(caso).toString());
         return salida.getLineas();
     }
 
@@ -47,7 +59,24 @@ class CasosDeLaCatedraTest {
             "conErrores/sintError04.java",
     })
     void cadaCasoDaExactamenteElCodigoQueLaCatedraDeclara(String caso) throws Exception {
-        assertEquals(codigoDeclarado(caso), ejecutar(caso).getLast());
+        assertEquals(codigoDeclarado(caso), primerCodigo(ejecutar(caso)));
+    }
+
+    // El primero, y no el último: con Modo Pánico el análisis sigue después del
+    // primer error y puede reportar los que arrastra. El que la cátedra declara
+    // es el primero, y tiene que ser el mismo esté el logro prendido o apagado.
+    private String primerCodigo(List<String> salida) {
+        return salida.stream().filter(linea -> linea.startsWith("[")).findFirst()
+                .orElseThrow(() -> new AssertionError("no se emitio ningun codigo: " + salida));
+    }
+
+    @Test
+    void elPrimerCodigoEsElMismoConModoPanicoYSinEl() throws Exception {
+        var base = ConfiguracionDeLaCorrida.actual();
+        for (String caso : CASOS) {
+            assertEquals(primerCodigo(ejecutar(caso, base.sin(Logro.MODO_PANICO))),
+                    primerCodigo(ejecutar(caso, base.con(Logro.MODO_PANICO))), caso);
+        }
     }
 
     @Test

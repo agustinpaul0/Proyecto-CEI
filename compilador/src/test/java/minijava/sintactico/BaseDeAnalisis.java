@@ -9,6 +9,7 @@ import minijava.sintactico.errores.ExcepcionSintactica;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,17 +18,28 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // los logros de la corrida y afirmar que acepta o que rechaza.
 abstract class BaseDeAnalisis {
 
-    protected void analizar(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
+    protected List<ExcepcionSintactica> erroresDe(Path dir, String fuente,
+                                                  ConfiguracionDelCompilador configuracion)
             throws Exception {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
         try {
-            new AnalizadorSintactico(new AnalizadorLexico(manejador, configuracion), configuracion)
-                    .analizar();
+            return new AnalizadorSintactico(
+                    new AnalizadorLexico(manejador, configuracion), configuracion).analizar();
         } finally {
             manejador.close();
+        }
+    }
+
+    // Analizar y dejar que el primer error suba como excepción: es lo que espera
+    // la mayoría de los tests, que ejercitan una construcción por vez.
+    protected void analizar(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
+            throws Exception {
+        List<ExcepcionSintactica> errores = erroresDe(dir, fuente, configuracion);
+        if (!errores.isEmpty()) {
+            throw errores.getFirst();
         }
     }
 

@@ -7,6 +7,8 @@ import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.ConjuntoDePrimeros;
+import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
+import minijava.sintactico.recuperacion.RecuperadorDePanico;
 
 // Lo que toda sección de la gramática necesita: el token actual, el match, los
 // logros y el acceso a las demás secciones. No aporta ninguna regla propia.
@@ -49,6 +51,37 @@ public abstract class ParteDelAnalizador {
 
     protected final boolean estaEn(ConjuntoDePrimeros primeros) {
         return sintaxis.entrada().estaEn(primeros);
+    }
+
+    // Corre un elemento de una lista y, si falla, o deja subir el error (sin el
+    // logro: cortar en el primero, Pautas slide 25) o lo registra y sincroniza
+    // para seguir con el elemento siguiente. Devuelve si la lista puede seguir.
+    protected final boolean reanudaTrasError(ContextoDeSincronizacion contexto,
+                                             ElementoDeLista elemento)
+            throws ExcepcionLexica, ExcepcionSintactica {
+        RecuperadorDePanico recuperador = sintaxis.recuperador();
+        int antes = marca();
+        try {
+            elemento.analizar();
+            return true;
+        } catch (ExcepcionSintactica error) {
+            if (!recuperador.habilitado()) {
+                throw error;
+            }
+            recuperador.registrar(error);
+            boolean sigue = recuperador.sincronizar(contexto);
+            // Invariante del bucle: cada vuelta consume al menos un token, o el
+            // analizador no terminaría nunca.
+            if (sigue && marca() == antes) {
+                recuperador.forzarProgreso();
+            }
+            return sigue;
+        }
+    }
+
+    @FunctionalInterface
+    protected interface ElementoDeLista {
+        void analizar() throws ExcepcionLexica, ExcepcionSintactica;
     }
 
     protected final boolean hayLogro(Logro logro) {

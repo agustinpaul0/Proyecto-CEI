@@ -1,8 +1,8 @@
 package minijava.sintactico;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.sintactico.partes.AnalizadorDeClases;
 import minijava.sintactico.partes.AnalizadorDeArgumentos;
+import minijava.sintactico.partes.AnalizadorDeClases;
 import minijava.sintactico.partes.AnalizadorDeCreacion;
 import minijava.sintactico.partes.AnalizadorDeExpresiones;
 import minijava.sintactico.partes.AnalizadorDeFors;
@@ -11,6 +11,7 @@ import minijava.sintactico.partes.AnalizadorDeMiembros;
 import minijava.sintactico.partes.AnalizadorDeReferencias;
 import minijava.sintactico.partes.AnalizadorDeSentencias;
 import minijava.sintactico.partes.AnalizadorDeTipos;
+import minijava.sintactico.recuperacion.RecuperadorDePanico;
 
 // Las nueve secciones de la gramática, cableadas.
 //
@@ -25,6 +26,7 @@ public final class Sintaxis {
     private final ConfiguracionDelCompilador configuracion;
     private final EntradaDeTokens entrada;
     private final RestriccionesDeLambda restriccionesDeLambda;
+    private final RecuperadorDePanico recuperador;
 
     private final AnalizadorDeClases clases;
     private final AnalizadorDeMiembros miembros;
@@ -41,6 +43,7 @@ public final class Sintaxis {
         this.entrada = entrada;
         this.configuracion = configuracion;
         this.restriccionesDeLambda = new RestriccionesDeLambda();
+        this.recuperador = new RecuperadorDePanico(entrada, configuracion);
 
         this.clases = new AnalizadorDeClases(this);
         this.miembros = new AnalizadorDeMiembros(this);
@@ -64,6 +67,10 @@ public final class Sintaxis {
 
     public RestriccionesDeLambda restriccionesDeLambda() {
         return restriccionesDeLambda;
+    }
+
+    public RecuperadorDePanico recuperador() {
+        return recuperador;
     }
 
     public AnalizadorDeClases clases() {
