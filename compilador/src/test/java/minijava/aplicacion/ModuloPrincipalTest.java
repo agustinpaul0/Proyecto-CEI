@@ -1,6 +1,7 @@
 package minijava.aplicacion;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -96,7 +97,7 @@ class ModuloPrincipalTest {
     void conMultiDeteccionDesactivadaSeDetieneEnElPrimerError(@TempDir Path dir) throws IOException {
         Path archivo = escribir(dir, "v1 # v2 @ v3");
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = new ConfiguracionDelCompilador(true, true, true, false);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.MULTI_DETECCION);
 
         new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
 
@@ -111,7 +112,7 @@ class ModuloPrincipalTest {
             throws IOException {
         Path archivo = escribir(dir, "v1 # v2");
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = new ConfiguracionDelCompilador(true, true, false, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.REPORTE_ELEGANTE);
 
         new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
 
@@ -129,7 +130,7 @@ class ModuloPrincipalTest {
             throws IOException {
         Path archivo = escribir(dir, "1.5");
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
 
         new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
 
@@ -151,7 +152,7 @@ class ModuloPrincipalTest {
         // escape de 6 caracteres y el literal queda con más de un carácter.
         Path archivo = escribir(dir, "'\\" + "u0041'");
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
 
         new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
 

@@ -1,6 +1,7 @@
 package minijava.lexico.errores;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -122,7 +123,7 @@ class FormateadorDeErrorTest {
 
     @Test
     void conReporteEleganteDeshabilitadoSoloImprimeElCodigoDeContrato() {
-        var configuracion = new ConfiguracionDelCompilador(true, true, false, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.REPORTE_ELEGANTE);
 
         List<String> lineas = new FormateadorDeError(configuracion).formatear(excepcionDeEjemplo());
 

@@ -1,6 +1,7 @@
 package minijava.lexico;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.tokens.TipoDeToken;
@@ -966,7 +967,7 @@ class AnalizadorLexicoTest {
     // Sin el logro Floats I, '.' y 'e'/'E' terminan el intLiteral.
     @Test
     void conFloatsDeshabilitadosElPuntoNoContinuaElEntero(@TempDir Path dir) throws Exception {
-        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
         AnalizadorLexico analizador = crearAnalizador(dir, "1.5", configuracion);
 
         Token primero = analizador.proximoToken();
@@ -982,7 +983,7 @@ class AnalizadorLexicoTest {
 
     @Test
     void conFloatsDeshabilitadosLaEYaNoIniciaUnExponente(@TempDir Path dir) throws Exception {
-        var configuracion = new ConfiguracionDelCompilador(false, true, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
         AnalizadorLexico analizador = crearAnalizador(dir, "1e5", configuracion);
 
         Token primero = analizador.proximoToken();
@@ -1001,7 +1002,7 @@ class AnalizadorLexicoTest {
     @Test
     void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsUnCaracterComun(@TempDir Path dir)
             throws Exception {
-        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
         String fuente = "\"a\\" + "u0041\"";
         Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
 
@@ -1013,7 +1014,7 @@ class AnalizadorLexicoTest {
     @Test
     void conUnicodeDeshabilitadoUnEscapeUnicodeRotoTampocoEsError(@TempDir Path dir)
             throws Exception {
-        var configuracion = new ConfiguracionDelCompilador(true, false, true, true);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
         String fuente = "\"a\\" + "u12G4\"";
         Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
 
