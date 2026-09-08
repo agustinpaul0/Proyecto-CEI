@@ -3,11 +3,10 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La gramática está terminada y verificada, y el núcleo del analizador está
-> implementado: `Inicial`, `ListaClases`, `Clase`, `Interfaz`, `GenericidadOpcional`,
-> `HerenciaOpcional`, `ExtensionOpcional`, `TipoReferencia`, `TipoGenericoOpcional` y
-> `ArgumentoDeTipo`. Los miembros y las sentencias llegan en la Sesión 3; hasta entonces el
-> compilador acepta clases e interfaces **sin miembros**. El plan está en
+> **Estado.** La gramática está terminada y verificada, y el analizador está **completo**: los 104
+> no terminales implementados, los 8 casos de la cátedra pasando con el token exacto, y las tres
+> restricciones de MiniLambdas que la gramática no puede expresar. Falta el Modo Pánico, que es la
+> Sesión 4. El plan está en
 > [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
@@ -114,14 +113,49 @@ static final ConjuntoDePrimeros PRIMEROS_EXPRESION_BASICA = de(
 ```
 
 El motivo es que el código se pueda leer contra la gramática del informe renglón por renglón, y que
-un cambio en la gramática tenga un único lugar donde reflejarse. Viven en
-`sintactico/primeros/PrimerosDelNucleo`, sobre el tipo `ConjuntoDePrimeros`, y un test los contrasta
-con lo que calcula
-`python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g`.
+un cambio en la gramática tenga un único lugar donde reflejarse.
+
+Las 220 constantes —una por producción— **se generan**, no se escriben:
+
+```bash
+python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g
+```
+
+Generarlas es lo único que garantiza que lo que el analizador usa para elegir producción sea
+exactamente lo que el verificador calcula sobre la gramática. `Primeros.java` no se edita a mano; si
+la gramática cambia, se regenera.
 
 `ConjuntoDePrimeros` además **filtra por logro** antes de describir lo esperado en un mensaje de
 error: prometer un token que un logro apagado sacó del lenguaje sería ofrecer una entrada que el
 compilador igual rechazaría.
+
+## 5.1. Cómo se divide el analizador
+
+Un analizador descendente recursivo tiene un método por no terminal, y con 104 no terminales una
+sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
+por sección:
+
+```
+sintactico/
+  AnalizadorSintactico    el arranque y el contrato de uso
+  EntradaDeTokens         el lookahead y el único punto que consume entrada
+  RestriccionesDeLambda   el estado de los chequeos extra-gramaticales
+  Sintaxis                cablea las nueve partes
+  errores/                ExcepcionSintactica
+  primeros/               ConjuntoDePrimeros + Primeros (generado)
+  partes/                 AnalizadorDeClases, DeMiembros, DeTipos, DeSentencias,
+                          DeFors, DeExpresiones, DeReferencias, DeLambdas, DeCreacion
+```
+
+**Por qué hay una fachada `Sintaxis` y no inyección directa.** La gramática tiene recursión mutua
+entre secciones: una sentencia contiene expresiones, una expresión contiene lambdas, y el cuerpo de
+una lambda vuelve a ser una expresión. Con inyección por constructor eso es un ciclo que no se puede
+construir. Cada parte recibe la fachada y le pide el colaborador **en el momento de usarlo**, que es
+cuando ya está construido; así no hacen falta setters ni construcción en dos fases.
+
+**Por qué `EntradaDeTokens` está separada.** Es el único objeto con estado de posición —el token
+actual y cuántos se consumieron—. Sacarlo de las reglas deja a cada parte sin más estado que el que
+necesita para decidir, y concentra en un solo lugar la invariante de que sólo `match` avanza.
 
 ## 6. Organización del código
 
@@ -157,6 +191,24 @@ mvn test -Pfase-lexico      # sólo léxico
 mvn test -Pfase-sintactico  # sólo sintáctico
 ```
 
+## 6.1. Que el analizador y la gramática no se separen
+
+Que el analizador esté escrito a mano contra una gramática verificada deja una pregunta abierta:
+¿reconoce el mismo lenguaje, o uno parecido? La respuesta es verificable:
+
+```bash
+python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
+```
+
+Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre 2250 fuentes —válidos y
+mutados— coinciden en todos.
+
+Las únicas divergencias posibles son las de los chequeos que una gramática libre de contexto no
+puede expresar, donde el analizador es deliberadamente más restrictivo, y van **declaradas** en la
+herramienta con su motivo: una divergencia sin declarar la hace fallar. Es el mismo criterio que el
+registro de ambigüedades del verificador.
+
 ## 7. Los logros son interruptores independientes
 
 El compilador tiene que poder ejecutarse y testearse con **0, 1 o N logros en cualquier
@@ -175,8 +227,9 @@ un logro apagado estaría fallando por algo que el compilador no tiene que hacer
 lo mismo en `resources/lexico/requisitos-de-logros.txt`, y un test verifica que cada requisito
 declarado corresponda a una dependencia real.
 
-A nivel gramática esa condición está verificada en las 1024 combinaciones; a nivel código, en 11
-configuraciones de la suite.
+A nivel gramática esa condición está verificada en las 1024 combinaciones; a nivel código, en 16
+configuraciones de la suite. Por cada logro hay el par completo de tests: el caso que pasa con el
+logro prendido y el que verifica el comportamiento base con el logro apagado.
 
 ## 8. Impacto sobre el Analizador Léxico
 

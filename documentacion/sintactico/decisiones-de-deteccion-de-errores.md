@@ -77,26 +77,21 @@ desaconseja (Clase 4, slide 40).
 
 **Sí es verificable en el analizador, y de la forma más barata posible: con un booleano.** El
 analizador sabe si está dentro de una lambda porque acaba de entrar; alcanza con prender un
-indicador al empezar el cuerpo y apagarlo al salir.
+indicador al empezar el cuerpo y apagarlo al salir. Está implementado en
+`sintactico/RestriccionesDeLambda`, que guarda ese estado y expone los tres chequeos; el alcance se
+abre y se cierra alrededor del cuerpo:
 
 ```java
-private boolean dentroDeLambda = false;
-
-private void cuerpoLambda() {
-    boolean anterior = dentroDeLambda;   // anidadas: x -> y -> …
-    dentroDeLambda = true;
-    expresion();
-    dentroDeLambda = anterior;
-}
-
-private void primario() {
-    if (tokenActual.tipo() == PR_THIS) {
-        if (dentroDeLambda) throw new ExcepcionSintactica(tokenActual, "no se permite this dentro de una lambda");
-        match(PR_THIS);
-    }
-    …
+RestriccionesDeLambda.Alcance anterior = restricciones.entrar(parametros);
+try {
+    expresiones().expresion();
+} finally {
+    restricciones.salir(anterior);
 }
 ```
+
+Se restaura al salir y no simplemente se apaga, porque después de la lambda el código vuelve a poder
+usar `this`.
 
 **Hay un segundo caso, implícito.** Llamar a un método propio sin escribir `this` es un uso de
 `this` igual: `x -> metodo(x)` es `x -> this.metodo(x)`. Y adentro de una lambda de MiniJava, una
@@ -121,14 +116,12 @@ variable y cuál no:
 | `.campo` | `Encadenado → . idMetVar …` | no: es un campo de otro objeto, no una variable |
 | `C.m(…)` | `LlamadaMetodoEstatico` | no: es estático, no captura nada |
 
-```java
-private Set<String> parametrosDeLaLambda = null;   // null = no estamos en una lambda
-```
-
 Las lambdas anidadas no necesitan una pila de alcances: como usar el parámetro de la lambda de
 afuera **también** está prohibido, alcanza con el conjunto de la más interna.
 
 Ejemplos:
+
+Todo esto está verificado en `LambdasTest`, con el par completo por caso.
 
 | Entrada | Veredicto | Por qué |
 |---|---|---|
@@ -140,6 +133,20 @@ Ejemplos:
 | `x -> this.campo` | **rechaza** | `this` explícito |
 | `x -> metodo(x)` | **rechaza** | `this` implícito |
 | `x -> y -> x + y` | **rechaza** | la interna usa `x`, que es de la externa |
+| `(a + 1) -> a` | **rechaza** | el parámetro no es un identificador pelado |
+| `(a, a) -> a` | **rechaza** | el parámetro está repetido |
+
+### 3.2.1. El parámetro tiene que ser un identificador pelado
+
+Hay un tercer chequeo, que sale del mismo lugar. `(a) -> a` es una lambda y `(a + 1) -> a` no lo es,
+pero hasta ver el `->` los dos son una `<Expresion>` entre paréntesis: la gramática no puede
+distinguirlos sin un lookahead ilimitado.
+
+El analizador lee el contenido como expresión y **recuerda si consumió exactamente un `idMetVar`**;
+si al ver el `->` resulta que no, lo rechaza. Es la única información extra que hace falta, y sale
+de contar los tokens que ya se consumieron (`EntradaDeTokens.consumidos()`).
+
+Se rechaza también el parámetro repetido, `(a, a) -> a`, por la misma vía.
 
 ### 3.3. Por qué no se posterga al semántico
 
@@ -171,7 +178,9 @@ ofrece Clase 4, slide 49. En los siete casos la regla es la misma —**voraz**�
 | `new int[3][4]` | consumir el `[` como otra dimensión de la creación | es una creación 2-D, no un acceso |
 | cuerpo de lambda (×5) | dejar que `Expresion()` consuma todo lo que pueda | `x -> a + b` es `x -> (a + b)` |
 
-El detalle de cada una, con las derivaciones que las exhiben, está en
+Las tres están implementadas: el `else` en `AnalizadorDeSentencias`, el `new int[3][4]` en
+`AnalizadorDeCreacion` y el cuerpo de la lambda en `AnalizadorDeLambdas`. El detalle de cada una,
+con las derivaciones que las exhiben, está en
 [`transformacion-a-ll1-paso-a-paso.md`](transformacion-a-ll1-paso-a-paso.md). El listado se
 mantiene verificado: `python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
 --ambiguedades` recorre las 1024 configuraciones de logros y **falla** si aparece una ambigüedad

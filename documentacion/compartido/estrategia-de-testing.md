@@ -218,6 +218,18 @@ mvn test -Dlogros=etapa1     # con los de la Etapa 1
 mvn test -Dlogros=ternario,lambda
 ```
 
+### La verificación diferencial contra la gramática
+
+El analizador sintáctico está escrito a mano contra una gramática verificada, lo que deja una
+pregunta abierta: ¿reconoce el mismo lenguaje, o uno parecido? `herramientas/comparar_con_gramatica.py`
+la responde corriendo el analizador en Java y el simulador del Esquema Simple sobre los mismos
+fuentes, y exigiendo el mismo veredicto y el mismo token de rechazo.
+
+Es la prueba más fuerte de la suite del sintáctico: no depende de que a alguien se le ocurra el caso
+correcto, sino de que dos implementaciones independientes coincidan. Las divergencias deliberadas
+—los chequeos que la gramática no puede expresar— van declaradas en la herramienta; una sin declarar
+la hace fallar.
+
 ### Los tests corren en función de los logros prendidos
 
 `-Dlogros` fija la configuración de **toda la corrida** (`ConfiguracionDeLaCorrida`), y llega tanto a

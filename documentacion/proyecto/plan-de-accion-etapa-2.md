@@ -92,7 +92,7 @@ equivoqué y después lo arreglé» —que no va—.
 |---|---|---|
 | **S1** | Conceptos + gramática | **Terminada** |
 | **S2** | Cimientos + arranque del parser | **Terminada** |
-| **S3** | Parser completo | Pendiente |
+| **S3** | Parser completo | **Terminada** |
 | **S4** | Robustez, testing y entrega | Pendiente |
 | **S5** | Reserva | Pendiente |
 
@@ -147,6 +147,24 @@ Primer código de la Etapa 2. `mvn verify` verde, 889 tests.
   `sintactico/primeros/`. El logro de genericidad ya funciona de punta a punta.
 - **El contrato de salida de la Etapa 2** completo: `Compilacion Exitosa` + `[SinErrores]`, y
   `Error Sintactico en linea N: ...` + `[Error:Y|N]`, con `$` de lexema para el `eof`.
+
+### Lo que dejó la S3
+
+El analizador sintáctico **completo**. `mvn verify` verde, 1117 tests.
+
+- **Los 104 no terminales implementados**, divididos en una clase por sección de la gramática
+  (`sintactico/partes/`, de 99 a 172 líneas cada una) más `EntradaDeTokens`, `Sintaxis` y
+  `RestriccionesDeLambda`. Una sola clase habría llegado a 1176 líneas y 89 métodos.
+- **Los 8 casos de la cátedra pasan con el compilador real**, cada error en el token exacto.
+- **Los 10 logros funcionan como interruptores** de punta a punta, verificado en 16 configuraciones.
+- **Las tres restricciones de MiniLambdas** que la gramática no puede expresar: `this` explícito,
+  `this` implícito (toda llamada sin punto dentro de una lambda) y la captura de variables, más que
+  el parámetro sea un identificador pelado y no se repita.
+- **Los Primeros se generan** desde la gramática con `herramientas/primeros_a_java.py`: 220
+  constantes, una por producción.
+- **Verificación diferencial** con `herramientas/comparar_con_gramatica.py`: el analizador en Java y
+  el simulador de la gramática dan el mismo veredicto y el mismo token de rechazo sobre 2250
+  fuentes, con las divergencias deliberadas declaradas.
 
 ### Estado de la Etapa 1
 
@@ -267,7 +285,7 @@ prender y apagar de a uno de punta a punta, y que exista el esqueleto del parser
 `mvn test -Pfase-lexico` corre sólo el léxico; el corpus de Etapa 1 pasa **sin modificar un solo
 caso**; `--etapa=1` sigue volcando tokens.
 
-### S3 — El parser completo
+### S3 — El parser completo — **terminada**
 
 **Objetivo.** Todos los no terminales de la gramática final implementados.
 
@@ -282,7 +300,7 @@ según Pautas slide 25: `Error Sintactico en linea N: se esperaba X se encontro 
 `[Error:Y|N]`; el lexema de EOF es `$`.
 
 **Terminada cuando.** Los 8 casos de la cátedra pasan con el compilador real, no sólo con el
-simulador de la gramática.
+simulador de la gramática. ✅
 
 ### S4 — Robustez, testing y entrega
 
@@ -309,23 +327,22 @@ Colchón. Si no se usa, se dedica a subir cobertura y a buscar más casos raros.
 
 Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de resolverlo.
 
-- [ ] **Implementar en la S3.** Los chequeos del analizador que la gramática no puede expresar: el
-      indicador `dentroDeLambda` para el `this` explícito e implícito, el conjunto de parámetros
-      para la captura de variables, y la verificación de que el contenido entre paréntesis de una
-      lambda de un parámetro sea un `idMetVar` pelado. Todo está especificado en
-      [`../sintactico/decisiones-de-deteccion-de-errores.md`](../sintactico/decisiones-de-deteccion-de-errores.md).
-- [ ] **Considerar para la S4.** Una prueba diferencial de equivalencia de lenguajes: un
-      reconocedor de Earley que corra `minijava-base.g` y `minijava-ll1-logros.g` con cero logros
-      sobre el mismo corpus y exija veredictos idénticos. Hoy la equivalencia está sostenida por
-      84 casos elegidos a mano; esto la volvería verificable, y responde de frente a Clase 3
-      slide 42, que exige preservar el lenguaje pero no da método para demostrarlo.
-- [ ] **Terminar en la S3.** `ListaMiembros` y `ListaMetodosInterfaz` cubren hoy sólo su producción
-      vacía: el compilador acepta clases e interfaces **sin miembros** y rechaza el resto en la
-      llave de cierre. Es un pendiente por alcance, declarado en el propio `AnalizadorSintactico` y
-      cubierto por `CasosDeLaCatedraTest`, que fija en qué línea frena hoy cada uno de los 5 casos
-      de la cátedra con miembros.
+- [ ] **Hacer en la S4.** Llevar la comparación diferencial al corpus fijo: hoy
+      `herramientas/comparar_con_gramatica.py` corre sobre fuentes generados al momento, y debería
+      correr sobre `resources/sintactico/` como parte de la verificación permanente.
+- [ ] **Considerar para la S4.** La otra prueba diferencial, la de equivalencia de LENGUAJES entre
+      `minijava-base.g` y `minijava-ll1-logros.g` con cero logros, con un reconocedor de Earley.
+      Es distinta de la que ya existe —ésa compara el analizador contra la gramática final, no las
+      dos gramáticas entre sí— y responde de frente a Clase 3 slide 42.
 - [ ] Los logros de la Etapa 1 que sigan siendo alcanzables se mantienen; los de Etapa 2 no
       implementables por código son *Entrega Anticipada*, *Imbatibilidad* y *Well Done!*.
+
+### Cerrado en la S3
+
+- [x] Los chequeos del analizador que la gramática no puede expresar: el indicador de lambda, el
+      conjunto de parámetros, y que el contenido entre paréntesis de una lambda de un parámetro sea
+      un `idMetVar` pelado.
+- [x] `ListaMiembros` y `ListaMetodosInterfaz`, que en la S2 cubrían sólo su producción vacía.
 
 ### Cerrado en la S2
 

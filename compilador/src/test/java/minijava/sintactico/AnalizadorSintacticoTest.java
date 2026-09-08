@@ -1,6 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.config.Logro;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
