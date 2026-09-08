@@ -1,7 +1,7 @@
 package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipal;
-import minijava.salida.SalidaEnMemoria;
+import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // La línea 1 siempre un `// [Error:...]`: el tester de la cátedra le hace substring(3).
 class TesterDeCasosConErroresEstricto {
 
-    private static final Path DIRECTORIO = Path.of("resources", "conErrores");
+    private static final Path DIRECTORIO = Path.of("resources", "lexico", "conErrores");
     private static final String MARCA_ESTRICTA = "[Completo]";
 
     static Stream<Path> casos() throws IOException {

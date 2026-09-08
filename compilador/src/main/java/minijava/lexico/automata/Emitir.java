@@ -1,7 +1,7 @@
 package minijava.lexico.automata;
 
-import minijava.tokens.TablaDeLexemas;
-import minijava.tokens.Token;
+import minijava.lexico.tokens.TablaDeLexemas;
+import minijava.lexico.tokens.Token;
 
 public record Emitir(Token token) implements ResultadoDeTransicion {
 

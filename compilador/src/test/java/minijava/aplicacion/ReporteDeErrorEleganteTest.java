@@ -1,6 +1,6 @@
 package minijava.aplicacion;
 
-import minijava.salida.SalidaEnMemoria;
+import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

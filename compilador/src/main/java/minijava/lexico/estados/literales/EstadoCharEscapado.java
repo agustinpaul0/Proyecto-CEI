@@ -1,7 +1,7 @@
 package minijava.lexico.estados.literales;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.TipoDeErrorLexico;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.lexico.automata.Continuar;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;

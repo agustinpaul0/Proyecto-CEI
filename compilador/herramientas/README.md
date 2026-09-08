@@ -1,7 +1,7 @@
 # Generadores del corpus de `resources/`
 
-Andamiaje, no parte del compilador. Los casos de `resources/conErrores/` y
-`resources/sinErrores/` son archivos comunes y corrientes que se pueden editar
+Andamiaje, no parte del compilador. Los casos de `resources/lexico/conErrores/` y
+`resources/lexico/sinErrores/` son archivos comunes y corrientes que se pueden editar
 a mano; estos scripts existen sólo para poder escribirlos en lote sin
 equivocarse con dos cuentas tediosas y fáciles de errar:
 

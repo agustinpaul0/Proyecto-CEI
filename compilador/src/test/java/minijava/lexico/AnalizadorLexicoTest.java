@@ -1,10 +1,10 @@
 package minijava.lexico;
 
-import minijava.config.ConfiguracionDelCompilador;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -216,7 +216,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "1234567890");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("1234567890", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
@@ -286,7 +286,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "&x");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("&", excepcion.getLexemaOfensivo());
         // Al '&' mismo, no al carácter que viene después: ése no tiene nada que ver.
@@ -298,7 +298,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "|x");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("|", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getColumna());
@@ -349,7 +349,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "/* nunca cierra");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("/*", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
@@ -363,7 +363,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "v1\n/* abre aca\n\n\n");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, () -> {
+                minijava.lexico.errores.ExcepcionLexica.class, () -> {
                     analizador.proximoToken();
                     analizador.proximoToken();
                 });
@@ -428,7 +428,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "/*");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("/*", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
@@ -441,7 +441,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "/* \u001a sigue abierto\n\n");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("/*", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getLinea());
@@ -507,7 +507,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'a");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
     @Test
@@ -515,7 +515,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "''");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("''", excepcion.getLexemaOfensivo());
     }
@@ -528,7 +528,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'\nv1");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'", excepcion.getLexemaOfensivo());
     }
@@ -539,7 +539,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'", excepcion.getLexemaOfensivo());
     }
@@ -576,9 +576,9 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\\\\"");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
+        assertEquals(minijava.lexico.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
         assertEquals("\"a\\\\\"", excepcion.getLexemaOfensivo());
     }
 
@@ -607,9 +607,9 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"abc\\\"");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
+        assertEquals(minijava.lexico.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
     }
 
     @Test
@@ -617,7 +617,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"hola\nchau\"");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals(1, excepcion.getLinea());
     }
@@ -627,7 +627,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"sin cerrar");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
     @Test
@@ -707,7 +707,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "1e");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("1e", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getColumna());
@@ -720,7 +720,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'a\nv1");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'a", excepcion.getLexemaOfensivo());
         assertEquals(1, excepcion.getColumna());
@@ -747,7 +747,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "#v1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
         Token token = analizador.proximoToken();
 
         assertEquals(TipoDeToken.ID_MV, token.tipo());
@@ -759,7 +759,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "#");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
         Token token = analizador.proximoToken();
 
         assertEquals(TipoDeToken.EOF, token.tipo());
@@ -809,7 +809,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u20cG'");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'\\" + "u20c", excepcion.getLexemaOfensivo());
         assertEquals(7, excepcion.getColumna());
@@ -829,7 +829,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u04'");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
     @Test
@@ -837,7 +837,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u00G1'");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
     }
 
     // JLS §3.3 permite repetir el marcador 'u'; heredado tal cual ante la falta de
@@ -893,7 +893,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"x\\" + "u12G4\" + v1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals(TipoDeToken.OP_SUMA, analizador.proximoToken().tipo());
         Token identificador = analizador.proximoToken();
@@ -911,9 +911,9 @@ class AnalizadorLexicoTest {
                 "\"a\\" + "u12G4\" \"b\\" + "u34Z6\"");
 
         var primero = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
         var segundo = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("\"a\\" + "u12", primero.getLexemaOfensivo());
         assertEquals("\"b\\" + "u34", segundo.getLexemaOfensivo());
@@ -927,7 +927,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\" + "u12G4\nv1");
 
         org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         Token identificador = analizador.proximoToken();
         assertEquals(TipoDeToken.ID_MV, identificador.tipo());
@@ -942,9 +942,9 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "\"a\\" + "u12G4\" + v1");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(minijava.errores.TipoDeErrorLexico.UNICODE_MAL_FORMADO, excepcion.getTipo());
+        assertEquals(minijava.lexico.errores.TipoDeErrorLexico.UNICODE_MAL_FORMADO, excepcion.getTipo());
         assertEquals("\"a\\" + "u12", excepcion.getLexemaOfensivo());
         assertEquals(TipoDeToken.OP_SUMA, analizador.proximoToken().tipo());
     }
@@ -956,7 +956,7 @@ class AnalizadorLexicoTest {
         AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u12G4'");
 
         var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
-                minijava.errores.ExcepcionLexica.class, analizador::proximoToken);
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
 
         assertEquals("'\\" + "u12", excepcion.getLexemaOfensivo());
         Token siguiente = analizador.proximoToken();

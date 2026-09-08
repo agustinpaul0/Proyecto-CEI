@@ -1,9 +1,9 @@
 package minijava.lexico.contexto;
 
-import minijava.errores.EscapadorDeNoImprimibles;
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.PosicionLexica;
-import minijava.errores.TipoDeErrorLexico;
+import minijava.lexico.errores.EscapadorDeNoImprimibles;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.PosicionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
 
 // Punto único de construcción de ExcepcionLexica: ningún estado la arma a mano,
 // para que lexema y posición sean siempre consistentes entre sí. Lo único que

@@ -1,10 +1,10 @@
 package minijava.lexico;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
-import minijava.tokens.Token;
-import minijava.tokens.TipoDeToken;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.lexico.tokens.Token;
+import minijava.lexico.tokens.TipoDeToken;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
 
@@ -154,7 +154,7 @@ class AnalizadorLexicoPropiedadesTest {
 
         ExcepcionLexica excepcion = assertThrows(ExcepcionLexica.class, analizador::proximoToken);
 
-        assertEquals(minijava.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
+        assertEquals(minijava.lexico.errores.TipoDeErrorLexico.STRING_SIN_CERRAR, excepcion.getTipo());
         assertEquals(fuente, excepcion.getLexemaOfensivo());
     }
 

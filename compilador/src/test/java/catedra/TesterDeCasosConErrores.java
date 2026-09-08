@@ -28,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TesterDeCasosConErrores {
 
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/lexico/conErrores/";
     // La primera línea es "// [Error:Lexema|NroLinea]": se saltea el "// ".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
 

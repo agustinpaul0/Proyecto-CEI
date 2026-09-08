@@ -1,15 +1,15 @@
 package minijava.aplicacion;
 
-import minijava.config.ConfiguracionDelCompilador;
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.FormateadorDeError;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.FormateadorDeError;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.salida.Salida;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.comun.salida.Salida;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 
 import java.io.IOException;
 

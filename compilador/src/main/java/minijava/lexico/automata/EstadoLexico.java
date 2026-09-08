@@ -1,6 +1,6 @@
 package minijava.lexico.automata;
 
-import minijava.errores.ExcepcionLexica;
+import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.contexto.ContextoLexico;
 
 // Un componente por estado del AF: la técnica "Método por Estado" que exige la cátedra.

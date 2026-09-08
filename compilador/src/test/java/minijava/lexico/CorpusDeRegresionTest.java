@@ -2,7 +2,7 @@ package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipal;
 import minijava.casos.VolcadoDeCasos;
-import minijava.salida.SalidaEnMemoria;
+import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // que se verifica el contrato general: termina, no crashea, y respeta el formato.
 class CorpusDeRegresionTest {
 
-    private static final Path DIRECTORIO = Path.of("resources", "regresion");
+    private static final Path DIRECTORIO = Path.of("resources", "lexico", "regresion");
 
     static Stream<Path> casos() throws IOException {
         if (!Files.isDirectory(DIRECTORIO)) {

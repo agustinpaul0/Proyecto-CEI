@@ -1,15 +1,15 @@
 package minijava.lexico.estados.numeros;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.TipoDeErrorLexico;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.lexico.automata.Continuar;
 import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;
 import minijava.lexico.contexto.AnclaDeError;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 
 // Terminal: intLiteral, salvo que la corrida siga hacia un floatLiteral. El
 // límite de 9 dígitos se valida tras consumirla entera, por '1234567890.5'.

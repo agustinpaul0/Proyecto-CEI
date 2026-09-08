@@ -1,11 +1,11 @@
 package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipal;
-import minijava.salida.SalidaEnMemoria;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
+import minijava.comun.salida.SalidaEnMemoria;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

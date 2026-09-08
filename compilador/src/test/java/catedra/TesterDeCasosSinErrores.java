@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TesterDeCasosSinErrores {
 
     private static final String MSG_EXITO = "[SinErrores]";
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/lexico/sinErrores/";
     private static final String EXPECTED_TOKEN_PREFIX = "//#";
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

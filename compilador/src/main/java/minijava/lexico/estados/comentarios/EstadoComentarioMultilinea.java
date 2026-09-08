@@ -1,8 +1,8 @@
 package minijava.lexico.estados.comentarios;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.PosicionLexica;
-import minijava.errores.TipoDeErrorLexico;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.PosicionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.lexico.automata.Continuar;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;

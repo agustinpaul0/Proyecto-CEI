@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera casos de resources/sinErrores y resources/conErrores.
+"""Genera casos de resources/lexico/sinErrores y resources/lexico/conErrores.
 
 sinErrores: fuente + linea en blanco + expectativas //#lexema,linea. La linea
 del EOF se calcula sola: es "saltos de linea consumidos + 1", y como las
@@ -21,8 +21,8 @@ primera linea de codigo) y el generador les suma el tamano de la cabecera.
 import io
 import os
 
-SIN = "resources/sinErrores"
-CON = "resources/conErrores"
+SIN = "resources/lexico/sinErrores"
+CON = "resources/lexico/conErrores"
 
 
 def E(lexema, linea):

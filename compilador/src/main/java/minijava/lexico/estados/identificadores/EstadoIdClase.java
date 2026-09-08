@@ -5,8 +5,8 @@ import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 
 // Terminal: idClase, ya con al menos 2 caracteres.
 public final class EstadoIdClase implements EstadoLexico {

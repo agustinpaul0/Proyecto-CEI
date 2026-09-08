@@ -1,13 +1,13 @@
 package minijava.lexico;
 
 import minijava.aplicacion.ModuloPrincipal;
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.TipoDeErrorLexico;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
-import minijava.salida.SalidaEnMemoria;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.comun.salida.SalidaEnMemoria;
 import net.jqwik.api.Arbitraries;
 import net.jqwik.api.Arbitrary;
 import net.jqwik.api.ForAll;

@@ -1,6 +1,6 @@
 package minijava.aplicacion;
 
-import minijava.salida.SalidaEstandar;
+import minijava.comun.salida.SalidaEstandar;
 
 import java.io.IOException;
 

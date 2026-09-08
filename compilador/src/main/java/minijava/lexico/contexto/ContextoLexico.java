@@ -1,10 +1,10 @@
 package minijava.lexico.contexto;
 
-import minijava.config.ConfiguracionDelCompilador;
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.PosicionLexica;
-import minijava.errores.TipoDeErrorLexico;
-import minijava.io.ManejadorDeArchivo;
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.PosicionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
+import minijava.comun.io.ManejadorDeArchivo;
 
 // Fachada: lo único que ven los estados. Construye sus dos piezas internas —son
 // partes suyas, no dependencias externas.

@@ -1,7 +1,7 @@
 package minijava.lexico.contexto;
 
-import minijava.errores.PosicionLexica;
-import minijava.io.ManejadorDeArchivo;
+import minijava.lexico.errores.PosicionLexica;
+import minijava.comun.io.ManejadorDeArchivo;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

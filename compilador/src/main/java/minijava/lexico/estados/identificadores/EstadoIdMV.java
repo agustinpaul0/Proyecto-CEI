@@ -5,9 +5,9 @@ import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
 import minijava.lexico.automata.ResultadoDeTransicion;
 import minijava.lexico.contexto.ContextoLexico;
-import minijava.tokens.TablaDeLexemas;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.lexico.tokens.TablaDeLexemas;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 
 // Terminal: idMV, o la palabra clave si el lexema figura en la tabla de lexemas.
 // Consultarla entera es seguro: un lexema de identificador nunca puede ser "(" ni ">=".

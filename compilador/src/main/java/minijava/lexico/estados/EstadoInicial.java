@@ -1,7 +1,7 @@
 package minijava.lexico.estados;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.TipoDeErrorLexico;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.lexico.automata.Continuar;
 import minijava.lexico.automata.Emitir;
 import minijava.lexico.automata.EstadoLexico;
@@ -16,8 +16,8 @@ import minijava.lexico.estados.literales.EstadoStringAbierto;
 import minijava.lexico.estados.numeros.EstadoEntero;
 import minijava.lexico.estados.operadores.EstadoOperadorConSufijoOpcional;
 import minijava.lexico.estados.operadores.EstadoOperadorDoble;
-import minijava.tokens.TablaDeLexemas;
-import minijava.tokens.TipoDeToken;
+import minijava.lexico.tokens.TablaDeLexemas;
+import minijava.lexico.tokens.TipoDeToken;
 
 import java.util.Map;
 

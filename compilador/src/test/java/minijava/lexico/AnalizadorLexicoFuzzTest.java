@@ -1,10 +1,10 @@
 package minijava.lexico;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
-import minijava.tokens.Token;
-import minijava.tokens.TipoDeToken;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.lexico.tokens.Token;
+import minijava.lexico.tokens.TipoDeToken;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ class AnalizadorLexicoFuzzTest {
             try {
                 tokenizarConRecuperacion(archivo);
             } catch (AssertionError | RuntimeException fallo) {
-                Path caso = Path.of("resources", "regresion",
+                Path caso = Path.of("resources", "lexico", "regresion",
                         "fuzz-semilla-" + SEMILLA + "-corrida-" + corrida + ".mjava");
                 Files.createDirectories(caso.getParent());
                 Files.write(caso, fuente.getBytes(StandardCharsets.UTF_8));
@@ -82,7 +82,7 @@ class AnalizadorLexicoFuzzTest {
             try {
                 tokenizarConRecuperacion(archivo);
             } catch (AssertionError | RuntimeException fallo) {
-                Path caso = Path.of("resources", "regresion",
+                Path caso = Path.of("resources", "lexico", "regresion",
                         "fuzz-bytes-semilla-" + SEMILLA + "-corrida-" + corrida + ".mjava");
                 Files.createDirectories(caso.getParent());
                 Files.write(caso, bytes);
@@ -112,7 +112,7 @@ class AnalizadorLexicoFuzzTest {
             try {
                 tokenizarConRecuperacion(archivo);
             } catch (AssertionError | RuntimeException fallo) {
-                Path caso = Path.of("resources", "regresion",
+                Path caso = Path.of("resources", "lexico", "regresion",
                         "fuzz-abiertos-semilla-" + SEMILLA + "-corrida-" + corrida + ".mjava");
                 Files.createDirectories(caso.getParent());
                 Files.write(caso, fuente.toString().getBytes(StandardCharsets.UTF_8));

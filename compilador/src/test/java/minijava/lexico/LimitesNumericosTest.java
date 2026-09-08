@@ -1,11 +1,11 @@
 package minijava.lexico;
 
-import minijava.errores.ExcepcionLexica;
-import minijava.errores.TipoDeErrorLexico;
-import minijava.io.ManejadorDeArchivo;
-import minijava.io.ManejadorDeArchivoEficiente;
-import minijava.tokens.TipoDeToken;
-import minijava.tokens.Token;
+import minijava.lexico.errores.ExcepcionLexica;
+import minijava.lexico.errores.TipoDeErrorLexico;
+import minijava.comun.io.ManejadorDeArchivo;
+import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
