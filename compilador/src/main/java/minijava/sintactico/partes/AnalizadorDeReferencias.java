@@ -42,9 +42,9 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
     private void primario() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.PRIMARIO_LLAMADA_METODO_ESTATICO)) {
-            entrada().match(TipoDeToken.ID_CLASE);
-            entrada().match(TipoDeToken.PUNTO);
-            entrada().match(TipoDeToken.ID_MV);
+            match(TipoDeToken.ID_CLASE);
+            match(TipoDeToken.PUNTO);
+            match(TipoDeToken.ID_MV);
             sintaxis.creacion().argsActuales();
         } else {
             primarioSinIdClase();
@@ -55,10 +55,10 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     //                     | AccesoVarLlamadaOLambda | Creacion
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_THIS)) {
-            sintaxis.restriccionesDeLambda().verificarThisExplicito(entrada().actual());
-            entrada().match(TipoDeToken.PR_THIS);
+            sintaxis.restriccionesDeLambda().verificarThisExplicito(actual());
+            match(TipoDeToken.PR_THIS);
         } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
-            entrada().match(TipoDeToken.LIT_STRING);
+            match(TipoDeToken.LIT_STRING);
         } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
             sintaxis.lambdas().parentizadaOLambda();
         } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA)) {
@@ -66,7 +66,7 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_CREACION)) {
             sintaxis.creacion().creacion();
         } else {
-            throw entrada().errorEsperando(Primeros.PRIMARIO_SIN_ID_CLASE_THIS,
+            throw errorEsperando(Primeros.PRIMARIO_SIN_ID_CLASE_THIS,
                     Primeros.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
                     Primeros.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA,
                     Primeros.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA,
@@ -81,15 +81,19 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     //
     // El no terminal dedicado distingue los tres usos de un idMetVar, que es lo
     // que permite chequear la captura de variables sólo donde corresponde.
+    //
+    // La llamada sin punto NO se chequea: `x -> ayuda(x)` es `this.ayuda(x)` sólo
+    // si `ayuda` es un método de instancia, y si es `static` de la misma clase no
+    // hay ningún `this` y Java lo acepta. Distinguirlos exige resolver el nombre
+    // contra una declaración, que es trabajo del analizador semántico.
     private void accesoVarLlamadaOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        Token nombre = entrada().actual();
-        entrada().match(TipoDeToken.ID_MV);
+        Token nombre = actual();
+        match(TipoDeToken.ID_MV);
 
         if (estaEn(Primeros.ACCESO_LLAMADA_OLAMBDA_ARGS_ACTUALES)) {
-            sintaxis.restriccionesDeLambda().verificarThisImplicito(nombre);
             sintaxis.creacion().argsActuales();
         } else if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
-            entrada().match(TipoDeToken.OP_FLECHA);
+            match(TipoDeToken.OP_FLECHA);
             sintaxis.lambdas().cuerpoLambda(Set.of(nombre.lexema()));
         } else {
             sintaxis.restriccionesDeLambda().verificarQueNoCaptura(nombre);
@@ -99,8 +103,8 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // Encadenado -> . idMetVar EncadenadoAtributoOMetodo
     // EncadenadoAtributoOMetodo -> ArgsActuales | EPSILON
     private void encadenado() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PUNTO);
-        entrada().match(TipoDeToken.ID_MV);
+        match(TipoDeToken.PUNTO);
+        match(TipoDeToken.ID_MV);
         if (estaEn(Primeros.ENCADENADO_ATRIBUTO_OMETODO_ARGS_ACTUALES)) {
             sintaxis.creacion().argsActuales();
         }
@@ -108,8 +112,8 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
 
     // AccesoArreglo -> [ Expresion ]
     private void accesoArreglo() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.CORCHETE_A);
+        match(TipoDeToken.CORCHETE_A);
         sintaxis.expresiones().expresion();
-        entrada().match(TipoDeToken.CORCHETE_C);
+        match(TipoDeToken.CORCHETE_C);
     }
 }

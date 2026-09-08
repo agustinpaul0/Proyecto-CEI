@@ -59,6 +59,12 @@ probar SI for,varclasica "for ( int i = 0 ; ; )" "$C void idMetVar ( ) { for ( i
 probar SI ternario    "c ? a : b"               "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
 probar SI ternario    "ternario anidado a derecha" "$C void idMetVar ( ) { idMetVar = true ? intLiteral : false ? intLiteral : intLiteral ; } } eof"
 probar NO ninguno     "ternario sin el logro"   "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
+# JLS 15.25: el operando del MEDIO es una Expression completa y el de la derecha
+# una ConditionalExpression, o sea que en Java `a ? b = 1 : c` es valido y
+# `a ? b : c = d` no lo es. Regla «lo no especificado es igual a Java».
+probar SI ternario    "asignacion en el operando del medio"  "$C void idMetVar ( ) { idMetVar = true ? idMetVar = intLiteral : intLiteral ; } } eof"
+probar NO ternario    "asignacion en el operando derecho"    "$C void idMetVar ( ) { idMetVar = true ? intLiteral : idMetVar = intLiteral ; } } eof"
+probar SI ternario    "el medio admite otro ternario"        "$C void idMetVar ( ) { idMetVar = true ? false ? intLiteral : intLiteral : intLiteral ; } } eof"
 # El ternario tiene que llegar a TODO lado derecho de un '=', no solo al de la
 # asignacion: los cinco inicializadores tambien.
 probar SI ternario "var x = c ? a : b ;"        "$C void idMetVar ( ) { var idMetVar = true ? intLiteral : intLiteral ; } } eof"

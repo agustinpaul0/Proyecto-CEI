@@ -29,11 +29,11 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     // ContenidoDeParentesis -> ) -> CuerpoLambda   [+lambda]
     // ContenidoDeParentesis -> Expresion RestoDeParentesis
     public void parentizadaOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PAREN_A);
+        match(TipoDeToken.PAREN_A);
 
         if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.CONTENIDO_DE_PARENTESIS_PAREN_C)) {
-            entrada().match(TipoDeToken.PAREN_C);
-            entrada().match(TipoDeToken.OP_FLECHA);
+            match(TipoDeToken.PAREN_C);
+            match(TipoDeToken.OP_FLECHA);
             cuerpoLambda(Set.of());
             return;
         }
@@ -42,7 +42,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.RESTO_DE_PARENTESIS_COMA)) {
             lambdaDeVariosParametros(primero);
         } else {
-            entrada().match(TipoDeToken.PAREN_C);
+            match(TipoDeToken.PAREN_C);
             finDeParentizadaOLambda(primero);
         }
     }
@@ -69,13 +69,13 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         Set<String> parametros = new HashSet<>();
         exigirParametro(primero, parametros);
         while (estaEn(Primeros.RESTO_DE_PARENTESIS_COMA)) {
-            entrada().match(TipoDeToken.COMA);
-            Token siguiente = entrada().actual();
-            entrada().match(TipoDeToken.ID_MV);
+            match(TipoDeToken.COMA);
+            Token siguiente = actual();
+            match(TipoDeToken.ID_MV);
             exigirParametro(new Candidato(siguiente, true), parametros);
         }
-        entrada().match(TipoDeToken.PAREN_C);
-        entrada().match(TipoDeToken.OP_FLECHA);
+        match(TipoDeToken.PAREN_C);
+        match(TipoDeToken.OP_FLECHA);
         cuerpoLambda(parametros);
     }
 
@@ -88,7 +88,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         }
         Set<String> parametros = new HashSet<>();
         exigirParametro(primero, parametros);
-        entrada().match(TipoDeToken.OP_FLECHA);
+        match(TipoDeToken.OP_FLECHA);
         cuerpoLambda(parametros);
     }
 
@@ -96,11 +96,11 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     // parámetro de una lambda o una expresión parentizada, así que se lee como
     // expresión y se recuerda si fue exactamente un idMetVar.
     private Candidato leerCandidatoAParametro() throws ExcepcionLexica, ExcepcionSintactica {
-        Token primero = entrada().actual();
-        int antes = entrada().consumidos();
+        Token primero = actual();
+        int antes = marca();
         sintaxis.expresiones().expresion();
         boolean fueUnIdMetVarPelado =
-                primero.tipo() == TipoDeToken.ID_MV && entrada().consumidos() == antes + 1;
+                primero.tipo() == TipoDeToken.ID_MV && consumioUnSoloTokenDesde(antes);
         return new Candidato(primero, fueUnIdMetVarPelado);
     }
 

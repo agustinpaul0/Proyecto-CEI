@@ -138,6 +138,31 @@ class ExpresionesTest extends BaseDeAnalisis {
         assertEquals(";", rechazarExpresion(dir, "a ? b"));
     }
 
+    // JLS 15.25: el operando del medio es una Expression completa y el de la
+    // derecha una ConditionalExpression. O sea que la asignación entra en el
+    // medio y no a la derecha, que es exactamente lo que hace javac.
+    @Test
+    @RequiereLogro(Logro.TERNARIO)
+    void laAsignacionEntraEnElOperandoDelMedio(@TempDir Path dir) {
+        aceptar(dir, envolverEnMetodo("var y = a ? b = 1 : c;"));
+        aceptar(dir, envolverEnMetodo("var y = a ? b = c + 1 : d;"));
+    }
+
+    // Una sola asignación, no una cadena: el lado derecho de un `=` sigue siendo
+    // una ExpresionCondicional, así que `a = b = c` no vale ni dentro del medio
+    // del ternario. Es la regla de la gramática original, que el logro no cambia.
+    @Test
+    @RequiereLogro(Logro.TERNARIO)
+    void elOperandoDelMedioNoEncadenaAsignaciones(@TempDir Path dir) {
+        assertEquals("=", rechazarExpresion(dir, "a ? b = c = 1 : d"));
+    }
+
+    @Test
+    @RequiereLogro(Logro.TERNARIO)
+    void laAsignacionNoEntraEnElOperandoDerecho(@TempDir Path dir) {
+        assertEquals("=", rechazarExpresion(dir, "a ? b : c = 1"));
+    }
+
     // -------------------------------------------------------------- posfijos ---
 
     @Test

@@ -16,7 +16,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // Inicial -> ListaClases eof
     public void inicial() throws ExcepcionLexica, ExcepcionSintactica {
         listaClases();
-        entrada().match(TipoDeToken.EOF);
+        match(TipoDeToken.EOF);
     }
 
     // ListaClases -> Clase ListaClases | Interfaz ListaClases | EPSILON
@@ -32,24 +32,24 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // Clase -> class idClase GenericidadOpcional HerenciaOpcional { ListaMiembros }
     private void clase() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PR_CLASS);
-        entrada().match(TipoDeToken.ID_CLASE);
+        match(TipoDeToken.PR_CLASS);
+        match(TipoDeToken.ID_CLASE);
         genericidadOpcional();
         herenciaOpcional();
-        entrada().match(TipoDeToken.LLAVE_A);
+        match(TipoDeToken.LLAVE_A);
         listaMiembros();
-        entrada().match(TipoDeToken.LLAVE_C);
+        match(TipoDeToken.LLAVE_C);
     }
 
     // Interfaz -> interface idClase GenericidadOpcional ExtensionOpcional { ListaMetodosInterfaz }
     private void interfaz() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PR_INTERFACE);
-        entrada().match(TipoDeToken.ID_CLASE);
+        match(TipoDeToken.PR_INTERFACE);
+        match(TipoDeToken.ID_CLASE);
         genericidadOpcional();
         extensionOpcional();
-        entrada().match(TipoDeToken.LLAVE_A);
+        match(TipoDeToken.LLAVE_A);
         listaMetodosInterfaz();
-        entrada().match(TipoDeToken.LLAVE_C);
+        match(TipoDeToken.LLAVE_C);
     }
 
     // GenericidadOpcional -> < idGen > | EPSILON
@@ -58,19 +58,19 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // logro de genericidad avanzada.
     private void genericidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.GENERICIDAD_OPCIONAL_MENOR)) {
-            entrada().match(TipoDeToken.OP_MENOR);
-            entrada().match(TipoDeToken.ID_GEN);
-            entrada().match(TipoDeToken.OP_MAYOR);
+            match(TipoDeToken.OP_MENOR);
+            match(TipoDeToken.ID_GEN);
+            match(TipoDeToken.OP_MAYOR);
         }
     }
 
     // HerenciaOpcional -> extends TipoReferencia | implements TipoReferencia | EPSILON
     private void herenciaOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.HERENCIA_OPCIONAL_EXTENDS)) {
-            entrada().match(TipoDeToken.PR_EXTENDS);
+            match(TipoDeToken.PR_EXTENDS);
             sintaxis.tipos().tipoReferencia();
         } else if (estaEn(Primeros.HERENCIA_OPCIONAL_IMPLEMENTS)) {
-            entrada().match(TipoDeToken.PR_IMPLEMENTS);
+            match(TipoDeToken.PR_IMPLEMENTS);
             sintaxis.tipos().tipoReferencia();
         }
     }
@@ -78,7 +78,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // ExtensionOpcional -> extends TipoReferencia | EPSILON
     private void extensionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.EXTENSION_OPCIONAL_EXTENDS)) {
-            entrada().match(TipoDeToken.PR_EXTENDS);
+            match(TipoDeToken.PR_EXTENDS);
             sintaxis.tipos().tipoReferencia();
         }
     }

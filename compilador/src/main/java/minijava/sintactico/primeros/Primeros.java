@@ -436,7 +436,7 @@ public final class Primeros {
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // RestoCondicional -> ? ExpresionCondicional : ExpresionCondicional
+    // RestoCondicional -> ? Expresion : ExpresionCondicional
     public static final ConjuntoDePrimeros RESTO_CONDICIONAL_SIGNO_PREGUNTA = de(TipoDeToken.SIGNO_PREGUNTA);
 
     // RestoCondicional -> EPSILON

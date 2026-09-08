@@ -248,7 +248,12 @@ ExpresionCondicional -> ExpresionCompuesta RestoCondicional
 # Con el logro apagado <RestoCondicional> queda en solo ε, o sea que
 # <ExpresionCondicional> se vuelve un alias de <ExpresionCompuesta> y la capa
 # desaparece sin dejar rastro. Asociativo a derecha, como en Java.
-RestoCondicional -> ? ExpresionCondicional : ExpresionCondicional                         @+ternario
+#
+# El operando del MEDIO es una <Expresion> y el de la derecha una
+# <ExpresionCondicional>, tal cual el JLS 15.25: en Java `a ? b = 1 : c` es
+# válido y `a ? b : c = d` no lo es. Es la regla «lo no especificado es igual a
+# Java», y no rompe LL(1) porque Primeros(Expresion) no contiene `:`.
+RestoCondicional -> ? Expresion : ExpresionCondicional                                    @+ternario
 RestoCondicional -> EPSILON
 
 ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta

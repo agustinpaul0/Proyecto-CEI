@@ -40,10 +40,10 @@ bash herramientas/casos-gramatica.sh                                            
 
 Estado actual:
 
-- **98 no terminales, 204 producciones, 60 terminales.**
+- **104 no terminales, 214 producciones, 60 terminales.**
 - **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros. Ningún logro depende
   de que otro esté prendido: eso es lo que hace que se puedan prender y apagar de a uno.
-- **69 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
+- **87 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
   la sintaxis que debe rechazar cuando está apagado.
 
 ## Producciones
@@ -287,7 +287,12 @@ Estado actual:
 > <ExpresionCondicional> se vuelve un alias de <ExpresionCompuesta> y la capa
 > desaparece sin dejar rastro. Asociativo a derecha, como en Java.
 
-<RestoCondicional> ::= `?` <ExpresionCondicional> `:` <ExpresionCondicional>  *[sólo con `ternario`]*  
+> El operando del MEDIO es una <Expresion> y el de la derecha una
+> <ExpresionCondicional>, tal cual el JLS 15.25: en Java `a ? b = 1 : c` es
+> válido y `a ? b : c = d` no lo es. Es la regla «lo no especificado es igual a
+> Java», y no rompe LL(1) porque Primeros(Expresion) no contiene `:`.
+
+<RestoCondicional> ::= `?` <Expresion> `:` <ExpresionCondicional>  *[sólo con `ternario`]*  
 <RestoCondicional> ::= ε  
 
 <ExpresionCompuesta> ::= <ExpresionBasica> <RestoExpresionCompuesta>  
@@ -418,7 +423,19 @@ Estado actual:
 
 <CreacionDeArreglo> ::= `[` <RestoCreacionDeArreglo>  
 <RestoCreacionDeArreglo> ::= <Expresion> `]` <DimensionesConTamanioOpcional>  
-<RestoCreacionDeArreglo> ::= `]` `{` <ListaExpsOpcional> `}`  *[sólo con `arrinit`]*  
+
+> El logro dice «como en Java» y sólo restringe DÓNDE (dentro de un `new`), no
+> cuántas dimensiones. Java admite `new int[][]{{1,2},{3,4}}`, así que el
+> inicializador es anidable: un elemento puede ser una expresión o, a su vez,
+> otro inicializador.
+
+<RestoCreacionDeArreglo> ::= `]` <DimensionesVaciasOpcional> <InicializadorDeArreglo>  *[sólo con `arrinit`]*  
+<DimensionesVaciasOpcional> ::= `[` `]` <DimensionesVaciasOpcional> | ε  *[sólo con `arrinit`]*  
+<InicializadorDeArreglo> ::= `{` <ListaElementosOpcional> `}`  *[sólo con `arrinit`]*  
+<ListaElementosOpcional> ::= <ListaElementos> | ε  *[sólo con `arrinit`]*  
+<ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>  *[sólo con `arrinit`]*  
+<RestoListaElementos> ::= `,` <ElementoInicializador> <RestoListaElementos> | ε  *[sólo con `arrinit`]*  
+<ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>  *[sólo con `arrinit`]*  
 
 <DimensionesConTamanio> ::= `[` <Expresion> `]` <DimensionesConTamanioOpcional>  
 <DimensionesConTamanioOpcional> ::= <DimensionesConTamanio> | ε  

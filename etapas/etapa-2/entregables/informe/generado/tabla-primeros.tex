@@ -355,7 +355,7 @@
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}}\nobreak\par
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{?} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{RestoCondicional}{\eps}\nobreak\par
@@ -604,8 +604,38 @@
 \regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}\nobreak\par
+\regla{RestoCreacionDeArreglo}{\tl{]} \nt{DimensionesVaciasOpcional} \nt{InicializadorDeArreglo}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{]} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesVaciasOpcional}{\tl{[} \tl{]} \nt{DimensionesVaciasOpcional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{DimensionesVaciasOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaElementosOpcional}{\nt{ListaElementos}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaElementosOpcional}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{\{} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{,} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoListaElementos}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ElementoInicializador}{\nt{Expresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ElementoInicializador}{\nt{InicializadorDeArreglo}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{\{} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{[} \}\par}

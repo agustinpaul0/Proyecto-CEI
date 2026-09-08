@@ -28,7 +28,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // original pone ExpresionCompuesta ahí, o sea que `a = b = c` no es válido.
     private void restoExpresion() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
-            entrada().match(TipoDeToken.OP_ASIGNACION);
+            match(TipoDeToken.OP_ASIGNACION);
             expresionCondicional();
         }
     }
@@ -39,17 +39,18 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         restoCondicional();
     }
 
-    // RestoCondicional -> ? ExpresionCondicional : ExpresionCondicional   [+ternario]
+    // RestoCondicional -> ? Expresion : ExpresionCondicional   [+ternario]
     // RestoCondicional -> EPSILON
     //
-    // La recursión sobre ExpresionCondicional en las dos ramas es lo que lo hace
-    // asociativo a derecha, como en Java. Con el logro apagado esta capa
-    // desaparece sin dejar rastro y el lenguaje base queda idéntico.
+    // La recursión sobre ExpresionCondicional en la rama derecha es lo que lo
+    // hace asociativo a derecha. El operando del medio es una Expresion completa,
+    // como en el JLS 15.25: `a ? b = 1 : c` es válido y `a ? b : c = d` no.
+    // Con el logro apagado esta capa desaparece sin dejar rastro.
     private void restoCondicional() throws ExcepcionLexica, ExcepcionSintactica {
         if (hayLogro(Logro.TERNARIO) && estaEn(Primeros.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
-            entrada().match(TipoDeToken.SIGNO_PREGUNTA);
-            expresionCondicional();
-            entrada().match(TipoDeToken.DOS_PUNTOS);
+            match(TipoDeToken.SIGNO_PREGUNTA);
+            expresion();
+            match(TipoDeToken.DOS_PUNTOS);
             expresionCondicional();
         }
     }
@@ -64,7 +65,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     //                          | EPSILON
     private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
         while (estaEn(Primeros.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
-            entrada().matchDelActual();
+            matchDelActual();
             expresionBasica();
         }
     }
@@ -72,7 +73,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // ExpresionBasica -> OperadorUnario Operando | Operando
     private void expresionBasica() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.EXPRESION_BASICA_OPERADOR_UNARIO)) {
-            entrada().matchDelActual();
+            matchDelActual();
         }
         operando();
     }
@@ -85,7 +86,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             sintaxis.referencias().referencia();
             posfijoOpcional();
         } else {
-            throw entrada().errorEsperando(Primeros.OPERANDO_PRIMITIVO,
+            throw errorEsperando(Primeros.OPERANDO_PRIMITIVO,
                     Primeros.OPERANDO_REFERENCIA);
         }
     }
@@ -99,9 +100,9 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             return;
         }
         if (estaEn(Primeros.POSFIJO_OPCIONAL_INCREMENTO)) {
-            entrada().match(TipoDeToken.OP_INCREMENTO);
+            match(TipoDeToken.OP_INCREMENTO);
         } else if (estaEn(Primeros.POSFIJO_OPCIONAL_DECREMENTO)) {
-            entrada().match(TipoDeToken.OP_DECREMENTO);
+            match(TipoDeToken.OP_DECREMENTO);
         }
     }
 
@@ -109,9 +110,9 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // Primitivo -> floatLiteral   [+float]
     private void primitivo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.PRIMITIVO_FLOAT_LITERAL) && !hayLogro(Logro.FLOATS)) {
-            throw entrada().errorEsperando(Primeros.OPERANDO_PRIMITIVO);
+            throw errorEsperando(Primeros.OPERANDO_PRIMITIVO);
         }
-        entrada().matchDelActual();
+        matchDelActual();
     }
 
     // ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
@@ -123,7 +124,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // normal, así que no hay lógica repetida.
     public void expresionSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
-            entrada().matchDelActual();
+            matchDelActual();
             operando();
             colaTrasOperando();
         } else if (estaEn(Primeros.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
@@ -133,7 +134,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             sintaxis.referencias().primarioSinIdClase();
             colaDeExpresionDesdePrimario();
         } else {
-            throw entrada().errorEsperando(Primeros.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
+            throw errorEsperando(Primeros.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
                     Primeros.EXPRESION_SIN_ID_CLASE_PRIMITIVO,
                     Primeros.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE);
         }

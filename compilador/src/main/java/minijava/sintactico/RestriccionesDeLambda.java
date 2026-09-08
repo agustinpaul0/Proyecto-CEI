@@ -41,16 +41,6 @@ public final class RestriccionesDeLambda {
         }
     }
 
-    // Una llamada sin punto sólo puede ser a un método de la clase, o sea un
-    // `this` implícito: MiniJava no tiene funciones sueltas, y un parámetro es un
-    // valor, no se lo puede llamar.
-    public void verificarThisImplicito(Token nombre) throws ExcepcionSintactica {
-        if (dentroDeLambda) {
-            throw ExcepcionSintactica.porRestriccion(nombre,
-                    "no se permite this implicito dentro de una lambda");
-        }
-    }
-
     // El cuerpo de una lambda es UNA expresión, así que adentro no se declara
     // nada: los únicos nombres válidos son sus propios parámetros.
     public void verificarQueNoCaptura(Token nombre) throws ExcepcionSintactica {

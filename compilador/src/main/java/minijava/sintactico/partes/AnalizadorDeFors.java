@@ -17,10 +17,10 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
 
     // For -> for ( EncabezadoFor ) Sentencia
     public void sentenciaFor() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PR_FOR);
-        entrada().match(TipoDeToken.PAREN_A);
+        match(TipoDeToken.PR_FOR);
+        match(TipoDeToken.PAREN_A);
         encabezadoFor();
-        entrada().match(TipoDeToken.PAREN_C);
+        match(TipoDeToken.PAREN_C);
         sintaxis.sentencias().sentencia();
     }
 
@@ -34,17 +34,17 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
         if (estaEn(Primeros.ENCABEZADO_FOR_PUNTO_Y_COMA)) {
             clausulasFinalesFor();
         } else if (estaEn(Primeros.ENCABEZADO_FOR_VAR)) {
-            entrada().match(TipoDeToken.PR_VAR);
-            entrada().match(TipoDeToken.ID_MV);
+            match(TipoDeToken.PR_VAR);
+            match(TipoDeToken.ID_MV);
             encabezadoForTrasVar();
         } else if (estaEn(Primeros.ENCABEZADO_FOR_TIPO_PRIMITIVO)) {
             sintaxis.tipos().tipoPrimitivo();
             declaradorDelFor();
         } else if (estaEn(Primeros.ENCABEZADO_FOR_ID_GEN)) {
-            entrada().match(TipoDeToken.ID_GEN);
+            match(TipoDeToken.ID_GEN);
             declaradorDelFor();
         } else if (estaEn(Primeros.ENCABEZADO_FOR_ID_CLASE)) {
-            entrada().match(TipoDeToken.ID_CLASE);
+            match(TipoDeToken.ID_CLASE);
             encabezadoForDesdeIdClase();
         } else {
             sintaxis.expresiones().expresionSinIdClase();
@@ -54,7 +54,7 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
 
     private void declaradorDelFor() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.tipos().dimensionesOpcionales();
-        entrada().match(TipoDeToken.ID_MV);
+        match(TipoDeToken.ID_MV);
         encabezadoForTrasDeclarador();
     }
 
@@ -64,8 +64,8 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
     //                              ClausulasFinalesFor
     private void encabezadoForDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(Primeros.ENCABEZADO_FOR_DESDE_ID_CLASE_PUNTO)) {
-            entrada().match(TipoDeToken.PUNTO);
-            entrada().match(TipoDeToken.ID_MV);
+            match(TipoDeToken.PUNTO);
+            match(TipoDeToken.ID_MV);
             sintaxis.creacion().argsActuales();
             sintaxis.expresiones().colaDeExpresionDesdePrimario();
             clausulasFinalesFor();
@@ -81,11 +81,11 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
         if (estaEn(Primeros.ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS)) {
             recorridoDeIterador();
         } else if (estaEn(Primeros.ENCABEZADO_FOR_TRAS_VAR_ASIGNACION)) {
-            entrada().match(TipoDeToken.OP_ASIGNACION);
+            match(TipoDeToken.OP_ASIGNACION);
             sintaxis.expresiones().expresionCondicional();
             clausulasFinalesFor();
         } else {
-            throw entrada().errorEsperando(Primeros.ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS,
+            throw errorEsperando(Primeros.ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS,
                     Primeros.ENCABEZADO_FOR_TRAS_VAR_ASIGNACION);
         }
     }
@@ -102,15 +102,15 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
     }
 
     private void recorridoDeIterador() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.DOS_PUNTOS);
+        match(TipoDeToken.DOS_PUNTOS);
         sintaxis.expresiones().expresion();
     }
 
     // ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
     private void clausulasFinalesFor() throws ExcepcionLexica, ExcepcionSintactica {
-        entrada().match(TipoDeToken.PUNTO_Y_COMA);
+        match(TipoDeToken.PUNTO_Y_COMA);
         sintaxis.sentencias().expresionOpcional();
-        entrada().match(TipoDeToken.PUNTO_Y_COMA);
+        match(TipoDeToken.PUNTO_Y_COMA);
         sintaxis.sentencias().expresionOpcional();
     }
 }

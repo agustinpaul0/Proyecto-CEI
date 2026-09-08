@@ -108,15 +108,23 @@ class LambdasTest extends BaseDeAnalisis {
         assertTrue(excepcion.getMessage().contains("this"), excepcion.getMessage());
     }
 
-    // Llamar a un método propio sin escribir `this` es un uso de `this` igual: en
-    // MiniJava no hay funciones sueltas y un parámetro no se puede llamar, así que
-    // toda llamada sin punto dentro de una lambda es un `this` implícito.
+    // Una llamada sin punto NO se rechaza. Sería `this.metodo(x)` sólo si `metodo`
+    // es de instancia; si es `static` de la misma clase no hay ningún `this` y
+    // Java lo acepta. Distinguirlos exige resolver el nombre contra su
+    // declaración, o sea la tabla de símbolos de la Etapa 3.
     @Test
-    void elThisImplicitoDentroDeUnaLambdaSeRechaza(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> metodo(x)");
+    void unaLlamadaSinPuntoDentroDeUnaLambdaSeAcepta(@TempDir Path dir) {
+        aceptarLambda(dir, "x -> metodo(x)");
+        aceptarLambda(dir, "() -> arrancar()");
+    }
 
-        assertEquals("metodo", excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("implicito"), excepcion.getMessage());
+    // Pero el argumento sí se sigue chequeando: `n` no es parámetro de la lambda.
+    @Test
+    void elArgumentoDeUnaLlamadaSinPuntoSigueSiendoUnaCaptura(@TempDir Path dir) {
+        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> metodo(n)");
+
+        assertEquals("n", excepcion.getLexemaOfensivo());
+        assertTrue(excepcion.getMessage().contains("capturar"), excepcion.getMessage());
     }
 
     // Una llamada CON punto sí se permite: es un método de otro objeto.

@@ -34,11 +34,16 @@ public final class EntradaDeTokens {
         return actual;
     }
 
-    // Cuántos tokens se consumieron hasta ahora. Lo usa el chequeo de que el
-    // contenido entre paréntesis de una lambda sea un identificador pelado, que
-    // necesita saber cuánto consumió la expresión que acaba de leer.
-    public int consumidos() {
+    // Una marca opaca de posición en la entrada, para poder preguntar después
+    // cuánto consumió lo que se acaba de analizar.
+    public int marca() {
         return consumidos;
+    }
+
+    // Lo usa el chequeo de que el contenido entre paréntesis de una lambda sea un
+    // identificador pelado: `(a) -> a` es una lambda y `(a + 1) -> a` no lo es.
+    public boolean consumioUnSoloTokenDesde(int marca) {
+        return consumidos == marca + 1;
     }
 
     public boolean estaEn(ConjuntoDePrimeros primeros) {

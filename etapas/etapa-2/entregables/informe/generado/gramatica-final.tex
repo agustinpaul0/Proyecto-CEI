@@ -198,10 +198,10 @@
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
-\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java.\par}
+\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicional}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido y \texttt{a ? b : c = d} no lo es. Es la regla «lo no especificado es igual a Java», y no rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
 
 \begin{producciones}
-\regla{RestoCondicional}{\tl{?} \nt{ExpresionCondicional} \tl{:} \nt{ExpresionCondicional}}\marca{+}{ternario}
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional}}\marca{+}{ternario}
 \regla{RestoCondicional}{\eps}
 \regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
@@ -308,7 +308,18 @@
 \begin{producciones}
 \regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
 \regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
-\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}\marca{+}{arrinit}
+\end{producciones}
+
+\noindent{\small El logro dice «como en Java» y sólo restringe DÓNDE (dentro de un \texttt{new}), no cuántas dimensiones. Java admite \texttt{new int[][]\{\{1,2\},\{3,4\}\}}, así que el inicializador es anidable: un elemento puede ser una expresión o, a su vez, otro inicializador.\par}
+
+\begin{producciones}
+\regla{RestoCreacionDeArreglo}{\tl{]} \nt{DimensionesVaciasOpcional} \nt{InicializadorDeArreglo}}\marca{+}{arrinit}
+\regla{DimensionesVaciasOpcional}{\tl{[} \tl{]} \nt{DimensionesVaciasOpcional} \alt{} \eps}\marca{+}{arrinit}
+\regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}\marca{+}{arrinit}
+\regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \eps}\marca{+}{arrinit}
+\regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}\marca{+}{arrinit}
+\regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}\marca{+}{arrinit}
+\regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}\marca{+}{arrinit}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
 \regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}
