@@ -14,11 +14,25 @@ public final class ExcepcionSintactica extends Exception {
     private final String esperado;
 
     public ExcepcionSintactica(Token encontrado, String esperado) {
-        super("Error Sintactico en linea " + encontrado.linea()
+        this(encontrado, esperado, "Error Sintactico en linea " + encontrado.linea()
                 + ": se esperaba " + esperado
                 + " se encontro \"" + encontrado.lexema() + "\"");
+    }
+
+    private ExcepcionSintactica(Token encontrado, String esperado, String mensaje) {
+        super(mensaje);
         this.encontrado = encontrado;
         this.esperado = esperado;
+    }
+
+    // Los chequeos que la gramática no puede expresar —el `this` y la captura de
+    // variables dentro de una lambda— no rechazan por «se esperaba otro token»,
+    // así que declaran el motivo en prosa. El código [Error:lexema|linea] es el
+    // mismo, que es lo que la cátedra compara.
+    public static ExcepcionSintactica porRestriccion(Token encontrado, String motivo) {
+        return new ExcepcionSintactica(encontrado, motivo,
+                "Error Sintactico en linea " + encontrado.linea() + ": " + motivo
+                        + ", se encontro \"" + encontrado.lexema() + "\"");
     }
 
     public ExcepcionSintactica(Token encontrado, List<String> alternativas) {

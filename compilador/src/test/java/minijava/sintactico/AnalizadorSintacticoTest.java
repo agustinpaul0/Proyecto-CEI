@@ -20,36 +20,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("sintactico")
-class AnalizadorSintacticoTest {
-
-    private void analizar(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
-            throws Exception {
-        Path archivo = dir.resolve("fuente.mjava");
-        Files.writeString(archivo, fuente);
-        ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
-        manejador.open(archivo.toString());
-        try {
-            new AnalizadorSintactico(new AnalizadorLexico(manejador, configuracion), configuracion)
-                    .analizar();
-        } finally {
-            manejador.close();
-        }
-    }
-
-    private void aceptar(Path dir, String fuente) {
-        assertDoesNotThrow(() -> analizar(dir, fuente, ConfiguracionDeLaCorrida.actual()), fuente);
-    }
-
-    private ExcepcionSintactica rechazar(Path dir, String fuente) {
-        return assertThrows(ExcepcionSintactica.class,
-                () -> analizar(dir, fuente, ConfiguracionDeLaCorrida.actual()), fuente);
-    }
+class AnalizadorSintacticoTest extends BaseDeAnalisis {
 
     // --------------------------------------------------------- lo que acepta ---
 
@@ -203,18 +179,6 @@ class AnalizadorSintacticoTest {
         assertEquals("9", excepcion.getLexemaOfensivo());
         assertTrue(excepcion.getEsperado().contains("idGen"), excepcion.getEsperado());
         assertTrue(excepcion.getEsperado().contains("idClase"), excepcion.getEsperado());
-    }
-
-    // ----------------------------------------------- todavía no son miembros ---
-
-    // La Sesión 2 deja el núcleo: los miembros llegan en la Sesión 3, y hasta
-    // entonces el analizador los rechaza en la llave de cierre que espera.
-    @Test
-    void unMiembroTodaviaSeRechazaEnLaLlaveDeCierre(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazar(dir, "class C1 { int x; }");
-
-        assertEquals("int", excepcion.getLexemaOfensivo());
-        assertEquals("}", excepcion.getEsperado());
     }
 
     // ------------------------------------------------------------- el léxico ---

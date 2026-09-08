@@ -17,15 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Los 8 fuentes que la cátedra adjunta en testersSintactico. Cada uno declara en
-// su primera línea el código que espera.
-//
-// La Sesión 2 implementa el núcleo de la gramática, no los miembros, así que hoy
-// sólo se puede exigir el veredicto de los casos que se resuelven antes de
-// entrar a un miembro. Los otros cinco quedan cubiertos cuando la Sesión 3
-// complete <Miembro>; hasta entonces se verifica lo único que corresponde: que
-// el análisis llegue hasta donde el núcleo alcanza y falle en un miembro, no
-// antes. Contra la gramática los 8 ya dan el token exacto:
-//     python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java
+// su primera línea el código que espera, y el compilador tiene que darlo exacto:
+// no alcanza con aceptar o rechazar, el error tiene que caer en el mismo token.
 @Tag("sintactico")
 class CasosDeLaCatedraTest {
 
@@ -45,27 +38,16 @@ class CasosDeLaCatedraTest {
     @ParameterizedTest
     @CsvSource({
             "sinErrores/sintCorrecto01.java",
+            "sinErrores/sintCorrecto02.java",
+            "sinErrores/sintCorrecto03.java",
+            "sinErrores/sintCorrecto04.java",
             "conErrores/sintError01.java",
             "conErrores/sintError02.java",
+            "conErrores/sintError03.java",
+            "conErrores/sintError04.java",
     })
-    void losCasosQueElNucleoResuelveDanElVeredictoQueLaCatedraDeclara(String caso) throws Exception {
+    void cadaCasoDaExactamenteElCodigoQueLaCatedraDeclara(String caso) throws Exception {
         assertEquals(codigoDeclarado(caso), ejecutar(caso).getLast());
-    }
-
-    // El núcleo consume la cabecera de la clase y frena en su primer miembro: si
-    // fallara antes, el defecto estaría en lo que la Sesión 2 sí implementa.
-    @ParameterizedTest
-    @CsvSource({
-            "sinErrores/sintCorrecto02.java, 7",
-            "sinErrores/sintCorrecto03.java, 6",
-            "sinErrores/sintCorrecto04.java, 6",
-            "conErrores/sintError03.java,    4",
-            "conErrores/sintError04.java,    4",
-    })
-    void losCasosConMiembrosFrenanReciénEnElPrimerMiembro(String caso, int linea) throws Exception {
-        List<String> salida = ejecutar(caso);
-
-        assertTrue(salida.getLast().endsWith("|" + linea + "]"), caso + " -> " + salida.getLast());
     }
 
     @Test

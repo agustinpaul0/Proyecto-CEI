@@ -113,18 +113,28 @@ class ConjuntoDePrimerosTest {
                 .con(Logro.LAMBDA)).getTokens().isEmpty());
     }
 
-    // Las constantes tienen que coincidir con lo que calcula el verificador de la
-    // gramática: si divergen, el código deja de leerse contra el informe.
+    // Primeros.java lo genera herramientas/primeros_a_java.py desde la gramática.
+    // Estas comprobaciones son el ancla: si el generador o la gramática cambian de
+    // forma que rompa la correspondencia, se ve acá y no en un caso suelto.
     @Test
-    void lasConstantesDelNucleoCoincidenConLaGramatica() {
-        assertEquals(Set.of(TipoDeToken.PR_CLASS), PrimerosDelNucleo.CLASE.getTokens());
-        assertEquals(Set.of(TipoDeToken.PR_INTERFACE), PrimerosDelNucleo.INTERFAZ.getTokens());
-        assertEquals(Set.of(TipoDeToken.OP_MENOR), PrimerosDelNucleo.GENERICIDAD.getTokens());
-        assertEquals(Set.of(TipoDeToken.OP_MENOR), PrimerosDelNucleo.TIPO_GENERICO.getTokens());
-        assertEquals(Set.of(TipoDeToken.PR_EXTENDS), PrimerosDelNucleo.HERENCIA_POR_EXTENDS.getTokens());
+    void lasConstantesGeneradasCoincidenConLaGramatica() {
+        assertEquals(Set.of(TipoDeToken.PR_CLASS), Primeros.LISTA_CLASES_CLASE.getTokens());
+        assertEquals(Set.of(TipoDeToken.PR_INTERFACE), Primeros.LISTA_CLASES_INTERFAZ.getTokens());
+        assertEquals(Set.of(TipoDeToken.OP_MENOR), Primeros.GENERICIDAD_OPCIONAL_MENOR.getTokens());
+        assertEquals(Set.of(TipoDeToken.PR_EXTENDS), Primeros.HERENCIA_OPCIONAL_EXTENDS.getTokens());
         assertEquals(Set.of(TipoDeToken.PR_IMPLEMENTS),
-                PrimerosDelNucleo.HERENCIA_POR_IMPLEMENTS.getTokens());
-        assertEquals(Set.of(TipoDeToken.ID_GEN, TipoDeToken.ID_CLASE),
-                PrimerosDelNucleo.ARGUMENTO_DE_TIPO.getTokens());
+                Primeros.HERENCIA_OPCIONAL_IMPLEMENTS.getTokens());
+        assertEquals(Set.of(TipoDeToken.ID_GEN), Primeros.ARGUMENTO_DE_TIPO_ID_GEN.getTokens());
+        assertEquals(Set.of(TipoDeToken.ID_CLASE), Primeros.ARGUMENTO_DE_TIPO_ID_CLASE.getTokens());
+        assertEquals(Set.of(TipoDeToken.SIGNO_PREGUNTA),
+                Primeros.RESTO_CONDICIONAL_SIGNO_PREGUNTA.getTokens());
+        assertEquals(Set.of(TipoDeToken.OP_FLECHA), Primeros.ACCESO_LLAMADA_OLAMBDA_FLECHA.getTokens());
+    }
+
+    // Los trece operadores binarios van en un solo nivel de precedencia, como en
+    // la gramática original de la cátedra.
+    @Test
+    void losTreceOperadoresBinariosEstanEnUnSoloConjunto() {
+        assertEquals(13, Primeros.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO.getTokens().size());
     }
 }
