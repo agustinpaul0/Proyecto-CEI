@@ -1,6 +1,7 @@
 package minijava.casos;
 
-import minijava.aplicacion.ModuloPrincipal;
+import minijava.aplicacion.ModuloPrincipalLexico;
+import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -81,7 +82,7 @@ class TesterDeCasosConErroresEstricto {
 
     private List<String> ejecutar(Path caso) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipal(salida).ejecutar(caso.toString());
+        new ModuloPrincipalLexico(salida, ConfiguracionDelCompilador.soloEtapa(1)).ejecutar(caso.toString());
         List<String> lineas = salida.getLineas();
         VolcadoDeCasos.volcar(caso.toString(), lineas);
         return lineas;

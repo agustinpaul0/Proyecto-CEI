@@ -1,6 +1,6 @@
 package minijava.lexico;
 
-import minijava.aplicacion.ModuloPrincipal;
+import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.casos.VolcadoDeCasos;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
@@ -42,7 +42,7 @@ class CorpusDeRegresionTest {
     void elCasoPersistidoSigueSiendoProcesableSinFallosNoControlados(Path caso) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(caso.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(caso.toString());
 
         List<String> lineas = salida.getLineas();
         VolcadoDeCasos.volcar(caso.toString(), lineas);

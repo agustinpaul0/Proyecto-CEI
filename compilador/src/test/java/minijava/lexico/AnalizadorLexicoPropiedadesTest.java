@@ -44,7 +44,7 @@ class AnalizadorLexicoPropiedadesTest {
         return new AnalizadorLexico(manejador);
     }
 
-    // Como ModuloPrincipal. Corta con AssertionError si supera el límite: eso sería
+    // Como ModuloPrincipalLexico. Corta con AssertionError si supera el límite: eso sería
     // un ciclo infinito real.
     private List<Token> tokenizarConRecuperacion(String fuente) throws IOException {
         AnalizadorLexico analizador = crear(fuente);

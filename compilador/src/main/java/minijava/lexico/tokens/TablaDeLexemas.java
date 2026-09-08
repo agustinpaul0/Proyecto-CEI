@@ -1,12 +1,16 @@
 package minijava.lexico.tokens;
 
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
+
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-// 49 de los 56 tokens tienen lexema FIJO: el tipo y el lexema se determinan
+// 53 de los 60 tokens tienen lexema FIJO: el tipo y el lexema se determinan
 // mutuamente. Los 7 restantes —los identificadores y los cuatro literales— leen
 // su lexema del fuente y no entran acá.
 //
@@ -19,6 +23,7 @@ public final class TablaDeLexemas {
     private static final Set<String> PALABRAS_CLAVE;
     private static final Map<String, TipoDeToken> POR_LEXEMA;
     private static final Map<TipoDeToken, String> POR_TIPO;
+    private static final Map<TipoDeToken, Logro> LOGRO_QUE_LO_HABILITA;
 
     static {
         Map<String, TipoDeToken> palabrasClave = new LinkedHashMap<>();
@@ -45,6 +50,10 @@ public final class TablaDeLexemas {
         // No figura en Aspectos Léxicos: se agrega por confirmación directa del
         // profesor. 'double' NO es reservada (decisiones.md §3.1).
         palabrasClave.put("float", TipoDeToken.PR_FLOAT);
+        // Tampoco figuran en Aspectos Léxicos: las trae la Etapa 2. Con su logro
+        // apagado vuelven a ser idMetVar, que es lo que la Etapa 1 reconocía.
+        palabrasClave.put("for", TipoDeToken.PR_FOR);
+        palabrasClave.put("private", TipoDeToken.PR_PRIVATE);
 
         Map<String, TipoDeToken> porLexema = new LinkedHashMap<>(palabrasClave);
 
@@ -77,6 +86,11 @@ public final class TablaDeLexemas {
         porLexema.put("++", TipoDeToken.OP_INCREMENTO);
         porLexema.put("--", TipoDeToken.OP_DECREMENTO);
 
+        // Los otros dos de la Etapa 2. Con su logro apagado, '?' vuelve a ser un
+        // símbolo inválido y "->" vuelve a leerse como op- seguido de op_mayor.
+        porLexema.put("->", TipoDeToken.OP_FLECHA);
+        porLexema.put("?", TipoDeToken.SIGNO_PREGUNTA);
+
         // Aspectos Léxicos §2.5: "El End of File es un token mas, su y lexema es $".
         // No es un carácter del fuente ni el centinela de fin de archivo: un '$'
         // escrito en el fuente es un símbolo inválido (§3.3).
@@ -85,9 +99,19 @@ public final class TablaDeLexemas {
         Map<TipoDeToken, String> porTipo = new LinkedHashMap<>();
         porLexema.forEach((lexema, tipo) -> porTipo.put(tipo, lexema));
 
+        // Sólo los cuatro de la Etapa 2. Los de floats NO van acá: el logro
+        // Floats I gobierna la FORMA del literal desde los estados numéricos, y
+        // `float` es palabra reservada aun con el logro apagado.
+        Map<TipoDeToken, Logro> logroQueLoHabilita = new EnumMap<>(TipoDeToken.class);
+        logroQueLoHabilita.put(TipoDeToken.PR_FOR, Logro.FOR);
+        logroQueLoHabilita.put(TipoDeToken.PR_PRIVATE, Logro.VISIBILIDAD);
+        logroQueLoHabilita.put(TipoDeToken.SIGNO_PREGUNTA, Logro.TERNARIO);
+        logroQueLoHabilita.put(TipoDeToken.OP_FLECHA, Logro.LAMBDA);
+
         PALABRAS_CLAVE = Collections.unmodifiableSet(palabrasClave.keySet());
         POR_LEXEMA = Collections.unmodifiableMap(porLexema);
         POR_TIPO = Collections.unmodifiableMap(porTipo);
+        LOGRO_QUE_LO_HABILITA = Collections.unmodifiableMap(logroQueLoHabilita);
     }
 
     private TablaDeLexemas() {
@@ -108,6 +132,17 @@ public final class TablaDeLexemas {
 
     public static Optional<String> lexemaFijoDe(TipoDeToken tipo) {
         return Optional.ofNullable(POR_TIPO.get(tipo));
+    }
+
+    // Vacío si el token existe siempre. Con valor, el token sólo se reconoce si
+    // ese logro está prendido; apagado, el punto de reconocimiento lo trata como
+    // lo trataba la Etapa 1 (idMV, dos operadores sueltos, o error léxico).
+    public static Optional<Logro> logroQueLoHabilita(TipoDeToken tipo) {
+        return Optional.ofNullable(LOGRO_QUE_LO_HABILITA.get(tipo));
+    }
+
+    public static boolean estaHabilitado(TipoDeToken tipo, ConfiguracionDelCompilador configuracion) {
+        return logroQueLoHabilita(tipo).map(configuracion::tiene).orElse(true);
     }
 
     public static Set<String> palabrasClave() {

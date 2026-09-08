@@ -13,17 +13,17 @@ import minijava.lexico.tokens.Token;
 
 import java.io.IOException;
 
-public final class ModuloPrincipal {
+public final class ModuloPrincipalLexico {
 
     private final Salida salida;
     private final ConfiguracionDelCompilador configuracion;
     private final FormateadorDeError formateadorDeError;
 
-    public ModuloPrincipal(Salida salida) {
+    public ModuloPrincipalLexico(Salida salida) {
         this(salida, ConfiguracionDelCompilador.DEFAULT);
     }
 
-    public ModuloPrincipal(Salida salida, ConfiguracionDelCompilador configuracion) {
+    public ModuloPrincipalLexico(Salida salida, ConfiguracionDelCompilador configuracion) {
         this.salida = salida;
         this.configuracion = configuracion;
         this.formateadorDeError = new FormateadorDeError(configuracion);

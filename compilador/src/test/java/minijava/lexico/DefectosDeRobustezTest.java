@@ -1,6 +1,6 @@
 package minijava.lexico;
 
-import minijava.aplicacion.ModuloPrincipal;
+import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -20,7 +20,7 @@ class DefectosDeRobustezTest {
 
     private List<String> ejecutar(Path archivo) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
         return salida.getLineas();
     }
 

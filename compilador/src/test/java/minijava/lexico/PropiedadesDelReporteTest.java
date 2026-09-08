@@ -1,6 +1,6 @@
 package minijava.lexico;
 
-import minijava.aplicacion.ModuloPrincipal;
+import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.errores.TipoDeErrorLexico;
 import minijava.comun.io.ManejadorDeArchivo;
@@ -45,7 +45,7 @@ class PropiedadesDelReporteTest {
     private List<String> ejecutar(String fuente) throws IOException {
         Files.writeString(ARCHIVO, fuente);
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipal(salida).ejecutar(ARCHIVO.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(ARCHIVO.toString());
         return salida.getLineas();
     }
 

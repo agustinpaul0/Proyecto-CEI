@@ -111,7 +111,7 @@ public class TesterDeCasosConErrores {
 
     // Invocado in-process una vez por caso. Si el main se muda, se ajusta acá.
     private void invocarCompilador(String rutaDelFuente) {
-        Main.main(new String[] { rutaDelFuente });
+        Main.main(new String[] { "--etapa=1", rutaDelFuente });
     }
 
     /*

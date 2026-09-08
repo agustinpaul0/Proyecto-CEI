@@ -27,8 +27,9 @@ class TipoDeTokenTest {
         assertEquals(nombreEsperado, tipo.getNombre());
     }
 
+    // 56 de la Etapa 1 más los 4 que traen los logros de la Etapa 2.
     @Test
-    void tieneExactamenteCincuentaYCincoTipos() {
-        assertEquals(56, TipoDeToken.values().length);
+    void tieneExactamenteSesentaTipos() {
+        assertEquals(60, TipoDeToken.values().length);
     }
 }

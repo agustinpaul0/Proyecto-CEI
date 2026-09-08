@@ -1,6 +1,6 @@
 package minijava.lexico;
 
-import minijava.aplicacion.ModuloPrincipal;
+import minijava.aplicacion.ModuloPrincipalLexico;
 import minijava.comun.salida.SalidaEnMemoria;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
@@ -33,7 +33,7 @@ class DivergenciasConJavaTest {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
         return salida.getLineas();
     }
 

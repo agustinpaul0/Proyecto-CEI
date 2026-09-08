@@ -25,7 +25,7 @@ class ReporteDeErrorEleganteTest {
         Path archivo = escribir(dir, "\"hola\"\nv1 + # chau\nif class}");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         int i = lineas.indexOf("[Error:#|2]");

@@ -1,7 +1,8 @@
 package minijava.lexico.tokens;
 
-// Los 56 tokens. El String de cada valor es el nombre que se imprime en
-// (NombreToken,Lexema,NroLinea): cambiarlo cambia la salida del compilador.
+// Los 56 tokens de la Etapa 1, más los 4 que introducen los logros de la Etapa 2.
+// El String de cada valor es el nombre que se imprime en (NombreToken,Lexema,
+// NroLinea): cambiarlo cambia la salida del compilador.
 public enum TipoDeToken {
     PR_CLASS("pr_class"), PR_EXTENDS("pr_extends"), PR_INTERFACE("pr_interface"),
     PR_IMPLEMENTS("pr_implements"), PR_STATIC("pr_static"), PR_BOOLEAN("pr_boolean"),
@@ -9,6 +10,11 @@ public enum TipoDeToken {
     PR_IF("pr_if"), PR_ELSE("pr_else"), PR_WHILE("pr_while"), PR_RETURN("pr_return"),
     PR_VAR("pr_var"), PR_THIS("pr_this"), PR_NEW("pr_new"), PR_NULL("pr_null"),
     PR_TRUE("pr_true"), PR_FALSE("pr_false"), PR_FLOAT("pr_float"),
+
+    // Los cuatro que NO figuran en «Aspectos Léxicos de MiniJava»: existen sólo
+    // porque un logro de la Etapa 2 los necesita, y cada uno se reconoce
+    // únicamente con su logro prendido (TablaDeLexemas.logroQueLoHabilita).
+    PR_FOR("pr_for"), PR_PRIVATE("pr_private"),
 
     ID_CLASE("idClase"), ID_GEN("idGen"), ID_MV("idMV"),
 
@@ -24,7 +30,9 @@ public enum TipoDeToken {
     OP_MENOR_IGUAL("op_menorIgual"), OP_DISTINTO("op_distinto"), OP_AND("op_and"),
     OP_OR("op_or"), OP_MODULO("op_modulo"), OP_SUMA("op+"), OP_RESTA("op-"),
     OP_MULT("op_mult"), OP_DIV("op_div"), OP_INCREMENTO("op_incremento"),
-    OP_DECREMENTO("op_decremento"),
+    OP_DECREMENTO("op_decremento"), OP_FLECHA("op_flecha"),
+
+    SIGNO_PREGUNTA("signoPregunta"),
 
     EOF("EOF");
 

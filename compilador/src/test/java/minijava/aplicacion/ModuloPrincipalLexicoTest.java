@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ModuloPrincipalTest {
+class ModuloPrincipalLexicoTest {
 
     private Path escribir(Path dir, String contenido) throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
@@ -28,7 +28,7 @@ class ModuloPrincipalTest {
         Path archivo = escribir(dir, "\"hola\"\nv1 + chau\nif class}");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertEquals(List.of(
@@ -51,7 +51,7 @@ class ModuloPrincipalTest {
         Path archivo = escribir(dir, "\"hola\"\nv1 + # chau\nif class}");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.contains("[Error:#|2]"));
@@ -63,7 +63,7 @@ class ModuloPrincipalTest {
         Path archivo = escribir(dir, "v1 # v2 @ v3");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.contains("[Error:#|1]"));
@@ -75,7 +75,7 @@ class ModuloPrincipalTest {
         Path archivo = escribir(dir, "#");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         assertTrue(salida.getLineas().stream().noneMatch("[SinErrores]"::equals));
     }
@@ -85,7 +85,7 @@ class ModuloPrincipalTest {
         Path archivo = escribir(dir, "v1 # v2");
         SalidaEnMemoria salida = new SalidaEnMemoria();
 
-        new ModuloPrincipal(salida).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.stream().anyMatch(l -> l.contains("idMV,v1,")));
@@ -99,7 +99,7 @@ class ModuloPrincipalTest {
         SalidaEnMemoria salida = new SalidaEnMemoria();
         var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.MULTI_DETECCION);
 
-        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.contains("[Error:#|1]"));
@@ -114,7 +114,7 @@ class ModuloPrincipalTest {
         SalidaEnMemoria salida = new SalidaEnMemoria();
         var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.REPORTE_ELEGANTE);
 
-        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.contains("[Error:#|1]"));
@@ -122,7 +122,7 @@ class ModuloPrincipalTest {
         assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Detalle:")));
     }
 
-    // Regresión: la configuración no llegaba al léxico, porque ModuloPrincipal usaba
+    // Regresión: la configuración no llegaba al léxico, porque ModuloPrincipalLexico usaba
     // el constructor que asume DEFAULT. Los tests de arriba no lo detectaban: sus
     // dos flags se resuelven fuera del léxico. Estos ejercitan los que sí lee el AF.
     @Test
@@ -132,7 +132,7 @@ class ModuloPrincipalTest {
         SalidaEnMemoria salida = new SalidaEnMemoria();
         var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
 
-        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertEquals(List.of(
@@ -154,7 +154,7 @@ class ModuloPrincipalTest {
         SalidaEnMemoria salida = new SalidaEnMemoria();
         var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
 
-        new ModuloPrincipal(salida, configuracion).ejecutar(archivo.toString());
+        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
 
         List<String> lineas = salida.getLineas();
         assertTrue(lineas.stream().anyMatch(l -> l.startsWith("[Error:")));
