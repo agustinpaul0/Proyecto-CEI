@@ -193,6 +193,21 @@ verificador antes de actuar. Resultado:
 
 ---
 
+## Estado en una línea, para arrancar rápido
+
+El compilador **está completo salvo el Modo Pánico**. Lo que existe y anda hoy:
+
+```bash
+cd compilador
+mvn verify                    # 1117 tests, cobertura sobre el umbral
+java -jar target/Compilador.jar programa1.java             # analiza sintácticamente
+java -jar target/Compilador.jar --etapa=1 programa1.java   # vuelca tokens (Etapa 1)
+java -jar target/Compilador.jar --logros=ninguno prog.java # sin ningún logro
+```
+
+Lo que **falta** para cerrar la etapa: el Modo Pánico, el corpus de `resources/sintactico/` —hoy
+vacío—, y las cuatro secciones del informe que pide Pautas slide 33. Todo eso es la S4.
+
 ## Protocolo de arranque de sesión
 
 Antes de escribir una línea de código, en este orden:
@@ -304,18 +319,48 @@ simulador de la gramática. ✅
 
 ### S4 — Robustez, testing y entrega
 
-**Objetivo.** Modo pánico, el corpus de tests, la documentación y el informe final.
+**Objetivo.** Modo pánico, el corpus de tests, la documentación y el informe final. **Es lo único
+que queda de la etapa**: el analizador está completo y verificado.
+
+**Leer antes.** `Pautas Etapa 2.pdf` slide 40 (Modo Pánico) y la sección 5 de
+[`../sintactico/decisiones-de-deteccion-de-errores.md`](../sintactico/decisiones-de-deteccion-de-errores.md).
 
 **Trabajo.**
 1. **Recuperación en Modo Pánico** (logro): al detectar un error, descartar tokens hasta un token
    de sincronización —`;`, `}` o `{` según el contexto, Pautas slide 40— y reanudar. Detrás de su
-   flag: apagado, el compilador corta en el primer error como pide la convención base.
-2. **Corpus** en `compilador/resources/sintactico/{sinErrores,conErrores}/`, con el criterio de
-   robustez de la regla 2 de este documento. El profesor autorizó **asumir programas léxicamente
-   válidos** para los tests del sintáctico, así que el corpus no repite casos léxicos. Se reusa la
-   mecánica de expectativas y volcado que ya existe (`herramientas/README.md`,
-   `casos/VolcadoDeCasos.java`), y **las expectativas se predicen a mano antes de correr**.
-3. Actualizar `documentacion/proyecto/*.md` y `documentacion/*.md`, y cerrar el informe.
+   flag `MODO_PANICO`, que ya existe en el enum: apagado, el compilador corta en el primer error
+   como pide la convención base. **Es el único logro de la etapa sin implementar.**
+2. **Corpus** en `compilador/resources/sintactico/{sinErrores,conErrores}/`, que **hoy están
+   vacíos**, con el criterio de robustez de la regla 2 de este documento. El profesor autorizó
+   **asumir programas léxicamente válidos** para los tests del sintáctico, así que el corpus no
+   repite casos léxicos. Se reusa la mecánica que ya existe: el formato de expectativas
+   (`//#lexema,linea` y `// [Error:lexema|linea]`), `casos/VolcadoDeCasos`,
+   `RequisitosDeLogrosDelCaso` con su manifiesto, y los tres testers. **Las expectativas se predicen
+   a mano antes de correr.**
+3. **Integrar la suite de tests de un compañero** para ampliar el corpus. El usuario la trae al
+   arrancar la sesión. Cuidado: los casos ajenos pueden asumir logros distintos de los nuestros, así
+   que cada uno entra con sus requisitos declarados en el manifiesto, y **cualquier divergencia de
+   veredicto se investiga antes de aceptarla como propia** —puede ser un defecto nuestro o una
+   lectura distinta de la especificación, y las dos cosas hay que resolverlas, no taparlas—.
+4. **Llevar `comparar_con_gramatica.py` al corpus fijo**, para que la equivalencia entre el
+   analizador y la gramática quede en la verificación permanente y no dependa de fuentes generados
+   al momento.
+5. Actualizar `documentacion/proyecto/*.md` y `documentacion/*.md`.
+6. **Cerrar el informe.** Hoy cubre entera la gramática —alcance, notación, la original comentada,
+   diagnóstico, transformaciones, extensiones por logro, gramática final y verificación— pero
+   **nada de lo que produjeron la S2 y la S3**. Pautas slide 33 pide explícitamente cuatro cosas que
+   todavía no están:
+   - **cómo compilar el código entregado y cómo correrlo** (`mvn package`, `java -jar`, `--etapa`,
+     `--logros`);
+   - los **tipos de errores sintácticos** que el analizador puede detectar —los dos puntos del
+     Esquema Simple más los tres chequeos de lambda—;
+   - la **documentación usual de un proyecto de software**: decisiones de diseño y clases
+     utilizadas, o sea la división en `sintactico/partes/`, `EntradaDeTokens`, la fachada `Sintaxis`
+     y por qué;
+   - **qué logros se intentan alcanzar** en la etapa.
+
+   Y conviene sumar la verificación diferencial contra la gramática, que es el argumento más fuerte
+   de corrección que tiene el trabajo.
 
 ### S5 — Reserva
 
@@ -327,6 +372,8 @@ Colchón. Si no se usa, se dedica a subir cobertura y a buscar más casos raros.
 
 Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de resolverlo.
 
+- [ ] **Traer al arrancar la S4.** La suite de tests de un compañero, para ampliar el corpus. Ver
+      el punto 3 de la S4.
 - [ ] **Hacer en la S4.** Llevar la comparación diferencial al corpus fijo: hoy
       `herramientas/comparar_con_gramatica.py` corre sobre fuentes generados al momento, y debería
       correr sobre `resources/sintactico/` como parte de la verificación permanente.
