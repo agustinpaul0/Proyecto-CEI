@@ -1,7 +1,7 @@
 package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipalLexico;
-import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Los MISMOS archivos que catedra.TesterDeCasosConErrores, que sólo verifica el
@@ -44,6 +45,12 @@ class TesterDeCasosConErroresEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casos")
     void elCasoProduceExactamenteLosErroresYTokensDeclarados(Path caso) throws IOException {
+        var requisitos = RequisitosDeLogrosDelCaso.de(caso);
+        var configuracion = ConfiguracionDeLaCorrida.actual();
+        assumeTrue(requisitos.seCumplenEn(configuracion),
+                () -> caso + ": no aplica a esta configuracion de logros ("
+                        + requisitos.describirIncumplidos(configuracion) + ")");
+
         Cabecera cabecera = leerCabecera(caso);
         List<String> salida = ejecutar(caso);
         List<String> obtenido = soloErroresYTokens(salida);
@@ -84,7 +91,7 @@ class TesterDeCasosConErroresEstricto {
 
     private List<String> ejecutar(Path caso) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalLexico(salida, ConfiguracionDelCompilador.soloEtapa(1)).ejecutar(caso.toString());
+        new ModuloPrincipalLexico(salida, ConfiguracionDeLaCorrida.actual()).ejecutar(caso.toString());
         List<String> lineas = salida.getLineas();
         VolcadoDeCasos.volcar(caso.toString(), lineas);
         return lineas;

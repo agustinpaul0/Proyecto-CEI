@@ -6,13 +6,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import minijava.aplicacion.Main;
+import minijava.casos.RequisitosDeLogrosDelCaso;
+import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.casos.VolcadoDeCasos;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +33,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 @Tag("lexico")
 public class TesterDeCasosConErrores {
+
+    private static final String ARGUMENTO_DE_LOGROS =
+            ConfiguracionDeLaCorrida.comoArgumentoDeLinea();
 
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/lexico/conErrores/";
     // La primera línea es "// [Error:Lexema|NroLinea]": se saltea el "// ".
@@ -93,6 +100,8 @@ public class TesterDeCasosConErrores {
 
     private void probarFallo(String name) {
         String path = TEST_FILES_DIRECTORY_PATH + name;
+        saltearSiNoAplicaAEstaCorrida(path);
+
         String errorCode = getErrorCode(path);
 
         invocarCompilador(path);
@@ -113,7 +122,18 @@ public class TesterDeCasosConErrores {
 
     // Invocado in-process una vez por caso. Si el main se muda, se ajusta acá.
     private void invocarCompilador(String rutaDelFuente) {
-        Main.main(new String[] { "--etapa=1", rutaDelFuente });
+        Main.main(new String[] { "--etapa=1", ARGUMENTO_DE_LOGROS, rutaDelFuente });
+    }
+
+    // Un caso cuyos requisitos de logros no se cumplen en esta corrida se SALTEA
+    // (JUnit 4 lo hace con Assume), no falla. Ver RequisitosDeLogrosDelCaso.
+    private void saltearSiNoAplicaAEstaCorrida(String rutaDelFuente) {
+        var requisitos = RequisitosDeLogrosDelCaso.de(Path.of(rutaDelFuente));
+        var configuracion = ConfiguracionDeLaCorrida.actual();
+        Assume.assumeTrue(
+                rutaDelFuente + ": no aplica a esta configuracion de logros ("
+                        + requisitos.describirIncumplidos(configuracion) + ")",
+                requisitos.seCumplenEn(configuracion));
     }
 
     /*

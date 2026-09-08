@@ -50,8 +50,18 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 clase — sin límite numérico de líneas, ver [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)),
 identificadores/comentarios en español, apuntar a **todos los logros desde el día 1** (no MVP primero
 y logros después), **los tests son más importantes que el código** — máxima cobertura de líneas y de
-ramas, máxima cantidad de casos, happy paths y edge cases siempre. Desarrollo pensado para abrirse y
-correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`, donde está el `pom.xml`).
+ramas, máxima cantidad de casos, happy paths y edge cases siempre.
+
+**Comentarios: cero por defecto.** El objetivo es que el código se explique solo; un comentario se
+escribe **únicamente** cuando el código no puede decir lo que hace falta por sí mismo — una decisión
+no obvia, el motivo de un workaround, una referencia externa que justifica el comportamiento (slide
+de la cátedra, sección del JLS), o una invariante que se rompería en silencio si alguien la tocara
+sin saberla. Un comentario que repite el nombre del método o de la variable es ruido: siempre que se
+pueda, en lugar de comentar hay que renombrar o extraer. Ante la duda, no comentar. El detalle está
+en [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md).
+
+Desarrollo pensado para abrirse y correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`,
+donde está el `pom.xml`).
 
 ## 2. Qué leer según la tarea
 

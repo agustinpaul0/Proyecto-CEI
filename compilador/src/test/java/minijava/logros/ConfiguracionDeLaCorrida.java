@@ -21,4 +21,15 @@ public final class ConfiguracionDeLaCorrida {
     public static ConfiguracionDelCompilador actual() {
         return ACTUAL;
     }
+
+    // La misma configuración, escrita como la espera --logros. Para los testers
+    // que ejercitan el compilador invocando Main y no construyéndolo a mano.
+    public static String comoArgumentoDeLinea() {
+        if (ACTUAL.getLogros().isEmpty()) {
+            return "--logros=ninguno";
+        }
+        return "--logros=" + ACTUAL.getLogros().stream()
+                .map(minijava.comun.config.Logro::getNombre)
+                .collect(java.util.stream.Collectors.joining(","));
+    }
 }

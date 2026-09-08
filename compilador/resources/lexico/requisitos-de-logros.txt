@@ -1,0 +1,108 @@
+# A qué configuración de logros aplica cada caso del corpus léxico.
+#
+# La expectativa de un caso depende de los logros: `//#1.5,3` sólo se cumple con
+# Floats I prendido, y `[Error:?|2]` sólo con el Ternario apagado. Un caso cuyos
+# requisitos no se cumplen en la corrida se SALTEA, no falla: que un logro esté
+# apagado es una configuración legítima del compilador, no un defecto.
+#
+# Formato, un caso por línea:
+#
+#     <directorio>/<archivo> | <logros que deben estar PRENDIDOS> | <APAGADOS>
+#
+# Los requisitos viven acá y no adentro de cada caso porque las expectativas del
+# corpus son posicionales (`//#lexema,linea`, y la línea del EOF sale de cuántos
+# saltos tiene el archivo): agregar un renglón de metadatos a un caso correría
+# todas sus líneas y lo rompería.
+#
+# Un caso que no figura acá aplica a cualquier configuración.
+
+sinErrores/dotVsFloat.java                         | floats |
+sinErrores/doubleEsUnIdentificadorComun.java       | floats |
+sinErrores/enteroDeCuatroDigitosPegadoALetras.java | floats |
+sinErrores/enteroLargoDentroDeUnFloat.java         | floats |
+sinErrores/exponentesExtremos.java                 | floats |
+sinErrores/exponentesLargos.java                   | floats |
+sinErrores/floatFueraDelRangoDeJava.java           | floats |
+sinErrores/floatSinLimiteDeDigitos.java            | floats |
+sinErrores/floats.java                             | floats |
+sinErrores/floatsContraintuitivos.java             | floats |
+sinErrores/nueveDigitosEsElLimiteExacto.java       | floats |
+sinErrores/puntoSeguidoDeSufijoDeFloat.java        | floats |
+sinErrores/sufijosFloatSinPunto.java               | floats |
+
+sinErrores/escapeUnicodeConDigitosNoAscii.java     | unicodes |
+sinErrores/escapesUnicodeValidos.java              | unicodes |
+
+# `a -> b` son cuatro tokens sin MiniLambdas y tres con él.
+sinErrores/secuenciasQueNoSonUnOperador.java       |          | lambda
+
+conErrores/exponenteConSignoSeguidoDePuntoYComa.java    | floats,multideteccion |
+conErrores/exponenteConSignoSinDigitos.java             | floats |
+conErrores/exponenteSeguidoDeLetra.java                 | floats,multideteccion |
+conErrores/exponenteSinDigitos.java                     | floats |
+conErrores/exponenteSinDigitosSeguidoDeParentesis.java  | floats,multideteccion |
+conErrores/exponenteSinDigitosSeguidoDePuntoYComa.java  | floats,multideteccion |
+
+conErrores/escapeUnicodeConCuartoDigitoInvalido.java            | unicodes,multideteccion |
+conErrores/escapeUnicodeConDigitoInvalido.java                  | unicodes |
+conErrores/escapeUnicodeConMarcadorRepetidoYDigitoInvalido.java | unicodes,multideteccion |
+conErrores/escapeUnicodeEnStringConDigitoInvalido.java          | unicodes,multideteccion |
+conErrores/escapeUnicodeIncompleto.java                         | unicodes |
+conErrores/stringConUnicodeMalFormadoYCodigoValidoDespues.java  | unicodes,multideteccion |
+
+# El '?' deja de ser un error léxico cuando el Ternario está prendido.
+conErrores/preguntaSuelta.java                     |          | ternario
+conErrores/erroresEnLasTresPrimerasLineas.java     | multideteccion | ternario
+
+# Estos declaran más de un elemento después del primer error, y sin
+# Multi-detección el compilador corta ahí: la secuencia queda truncada.
+# Generados corriendo la suite con -Dlogros=ninguno,multideteccion.
+
+conErrores/ampersandPegadoAlIdentificador.java                    | multideteccion |
+conErrores/ampersandTriple.java                                   | multideteccion |
+conErrores/caracteresDeControlNulos.java                          | multideteccion |
+conErrores/centinelaEofEmbebido.java                              | multideteccion |
+conErrores/charConBarraInvertidaYSaltoDeLinea.java                | multideteccion |
+conErrores/charConEmojiFueraDelBmp.java                           | multideteccion |
+conErrores/charConTresCaracteres.java                             | multideteccion |
+conErrores/charMalFormadoSeguidoDeCodigoValido.java               | multideteccion |
+conErrores/charSinCerrarConOtraComillaEnLaLinea.java              | multideteccion |
+conErrores/circunflejo.java                                       | multideteccion |
+conErrores/comentarioBarraAsteriscoBarraNoCierra.java             | multideteccion |
+conErrores/comentarioDeLineaDespuesDeUnError.java                 | multideteccion |
+conErrores/comentarioSinCerrarConCierreDentroDeStringPrevio.java  | multideteccion |
+conErrores/comentarioSinCerrarConSaltoInmediato.java              | multideteccion |
+conErrores/comentarioSinCerrarSoloAsteriscos.java                 | multideteccion |
+conErrores/comentarioSinCerrarVacio.java                          | multideteccion |
+conErrores/comillaDobleTriple.java                                | multideteccion |
+conErrores/diezCerosConValorUno.java                              | multideteccion |
+conErrores/diezDigitosSinContinuacionDeFloat.java                 | multideteccion |
+conErrores/digitosArabeIndicosDeDiez.java                         | multideteccion |
+conErrores/dolarComoPrimerCaracter.java                           | multideteccion |
+conErrores/dolarEntreTokensValidos.java                           | multideteccion |
+conErrores/dolarSuelto.java                                       | multideteccion |
+conErrores/enteroDeVeinteDigitos.java                             | multideteccion |
+conErrores/enteroLargoPegadoAIdentificador.java                   | multideteccion |
+conErrores/enteroLargoSeguidoDeOperador.java                      | multideteccion |
+conErrores/enteroLargoSeguidoDePuntoYComa.java                    | multideteccion |
+conErrores/errorAntesYDespuesDeComentario.java                    | multideteccion |
+conErrores/errorEnLaUltimaColumnaSinSaltoFinal.java               | multideteccion |
+conErrores/errorEntreLiteralesValidos.java                        | multideteccion |
+conErrores/escapeUnicodeConEspacio.java                           | multideteccion |
+conErrores/espacioNoRompible.java                                 | multideteccion |
+conErrores/formFeedYTabuladorVertical.java                        | multideteccion |
+conErrores/guionBajoSuelto.java                                   | multideteccion |
+conErrores/identificadorQueEmpiezaConGuionBajo.java               | multideteccion |
+conErrores/letraSinCajaAlEmpezarIdentificador.java                | multideteccion |
+conErrores/marcaDeOrdenDeBytes.java                               | multideteccion |
+conErrores/pipePegadoAlIdentificador.java                         | multideteccion |
+conErrores/pipeSuelto.java                                        | multideteccion |
+conErrores/pipeTriple.java                                        | multideteccion |
+conErrores/separadorDeMilesDeJava.java                            | multideteccion |
+conErrores/stringConBarraAlFinalDeLinea.java                      | multideteccion |
+conErrores/stringConBarraAntesDeLaComillaDeCierre.java            | multideteccion |
+conErrores/stringConBarraInvertidaYSaltoDeLinea.java              | multideteccion |
+conErrores/stringTerminadoEnComillaEscapada.java                  | multideteccion |
+conErrores/tresComillasSimples.java                               | multideteccion |
+conErrores/veinteCaracteresDesconocidosSeguidos.java              | multideteccion |
+conErrores/virgulilla.java                                        | multideteccion |
