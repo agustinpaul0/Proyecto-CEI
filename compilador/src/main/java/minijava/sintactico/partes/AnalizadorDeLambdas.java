@@ -7,7 +7,7 @@ import minijava.lexico.tokens.Token;
 import minijava.sintactico.RestriccionesDeLambda;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeLambdas;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,10 +28,11 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     // ParentizadaOLambda -> ( ContenidoDeParentesis
     // ContenidoDeParentesis -> ) -> CuerpoLambda   [+lambda]
     // ContenidoDeParentesis -> Expresion RestoDeParentesis
+    // RestoDeParentesis -> ) FinDeParentizadaOLambda
     public void parentizadaOLambda() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
 
-        if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.CONTENIDO_DE_PARENTESIS_PAREN_C)) {
+        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.CONTENIDO_DE_PARENTESIS_PAREN_C)) {
             match(TipoDeToken.PAREN_C);
             match(TipoDeToken.OP_FLECHA);
             cuerpoLambda(Set.of());
@@ -39,7 +40,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         }
 
         Candidato primero = leerCandidatoAParametro();
-        if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.RESTO_DE_PARENTESIS_COMA)) {
+        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
             lambdaDeVariosParametros(primero);
         } else {
             match(TipoDeToken.PAREN_C);
@@ -68,7 +69,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
             throws ExcepcionLexica, ExcepcionSintactica {
         Set<String> parametros = new HashSet<>();
         exigirParametro(primero, parametros);
-        while (estaEn(Primeros.RESTO_DE_PARENTESIS_COMA)) {
+        while (estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
             match(TipoDeToken.COMA);
             Token siguiente = actual();
             match(TipoDeToken.ID_MV);
@@ -83,7 +84,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     // FinDeParentizadaOLambda -> EPSILON
     private void finDeParentizadaOLambda(Candidato primero)
             throws ExcepcionLexica, ExcepcionSintactica {
-        if (!hayLogro(Logro.LAMBDA) || !estaEn(Primeros.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
+        if (!hayLogro(Logro.LAMBDA) || !estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
             return;
         }
         Set<String> parametros = new HashSet<>();

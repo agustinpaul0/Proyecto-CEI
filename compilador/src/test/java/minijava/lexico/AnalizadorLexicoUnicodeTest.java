@@ -1,0 +1,140 @@
+package minijava.lexico;
+
+import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.comun.config.Logro;
+import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@Tag("lexico")
+class AnalizadorLexicoUnicodeTest extends BaseDeAnalisisLexico {
+
+    // Caracteres Unicode crudos y escapes \\uXXXX, con y sin el logro.
+
+    // Logro Unicodes: no-ASCII crudos en literales, y el escape de 4 hex dígitos.
+    @Test
+    void stringLiteralAceptaCaracteresUnicodeCrudos(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "\"ñoño 中文 café\"").proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals("\"ñoño 中文 café\"", token.lexema());
+    }
+
+    @Test
+    void charLiteralAceptaUnCaracterUnicodeCrudo(@TempDir Path dir) throws Exception {
+        Token token = crearAnalizador(dir, "'ñ'").proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals("'ñ'", token.lexema());
+    }
+
+    // Se concatena en vez de escribir la secuencia de corrido: javac la decodificaría
+    // como escape Unicode de ESTE archivo antes de tokenizar (JLS §3.3).
+    @Test
+    void charLiteralAceptaEscapeUnicodeDeCuatroHexDigitos(@TempDir Path dir) throws Exception {
+        String fuente = "'\\" + "u0041'";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void escapeUnicode20ccConsumeSusCuatroDigitosComoUnSoloLiteral(@TempDir Path dir)
+            throws Exception {
+        String fuente = "'\\" + "u20cc'";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void escapeUnicodeMalFormadoNoConsumeElPrimerCaracterNoHexadecimal(@TempDir Path dir)
+            throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u20cG'");
+
+        var excepcion = org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
+
+        assertEquals("'\\" + "u20c", excepcion.getLexemaOfensivo());
+        assertEquals(7, excepcion.getColumna());
+    }
+
+    @Test
+    void stringLiteralAceptaEscapeUnicodeEmbebido(@TempDir Path dir) throws Exception {
+        String fuente = "\"letra \\" + "u00F1 final\"";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void escapeUnicodeConMenosDeCuatroHexDigitosEsError(@TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u04'");
+
+        org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
+    }
+
+    @Test
+    void escapeUnicodeConCaracterNoHexEsError(@TempDir Path dir) throws Exception {
+        AnalizadorLexico analizador = crearAnalizador(dir, "'\\" + "u00G1'");
+
+        org.junit.jupiter.api.Assertions.assertThrows(
+                minijava.lexico.errores.ExcepcionLexica.class, analizador::proximoToken);
+    }
+
+    // JLS §3.3 permite repetir el marcador 'u'; heredado tal cual ante la falta de
+    // especificación propia de la cátedra.
+    @Test
+    void charLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
+        String fuente = "'\\" + "uu0041'";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.CHAR_LITERAL, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    @Test
+    void stringLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
+        String fuente = "\"letra \\" + "uuuu00F1 final\"";
+        Token token = crearAnalizador(dir, fuente).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    // Sin el logro Unicodes la 'u' deja de ser marcador y pasa a ser un carácter
+    // como cualquier otro, así que el literal es válido y no se valida nada.
+    // Ojo: no escribir la secuencia literal acá, javac la decodifica hasta en los
+    // comentarios (JLS §3.3) y falla sin 4 hex dígitos detrás.
+    @Test
+    void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsUnCaracterComun(@TempDir Path dir)
+            throws Exception {
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
+        String fuente = "\"a\\" + "u0041\"";
+        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+    // Y un Unicode mal formado tampoco es error sin el logro: nada lo valida.
+    @Test
+    void conUnicodeDeshabilitadoUnEscapeUnicodeRotoTampocoEsError(@TempDir Path dir)
+            throws Exception {
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
+        String fuente = "\"a\\" + "u12G4\"";
+        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
+
+        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
+        assertEquals(fuente, token.lexema());
+    }
+
+}

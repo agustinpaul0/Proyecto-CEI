@@ -222,17 +222,42 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
-    // El declarador tipado del encabezado es del logro de variables clásicas.
+    // El declarador tipado del encabezado es del logro de FORS, no del de variables
+    // clásicas: el logro dice «for similar a como es en java», y en Java el for
+    // clásico declara su propia variable. Por eso el encabezado tiene su propio
+    // <InicializacionDeDeclaradorFor> en vez de reusar el de las variables locales.
     @ParameterizedTest
-    @RequiereLogro({Logro.FOR, Logro.VARCLASICA})
+    @RequiereLogro(Logro.FOR)
+    @RequiereLogroApagado(Logro.VARCLASICA)
     @ValueSource(strings = {
             "for(int i = 0; i < 10; ) ;",
             "for(int i = 0; ; ) ;",
+            "for(int[] v = null; ; ) ;",
             "for(Persona p = null; ; ) ;",
+            "for(T t = null; ; ) ;",
+            "for(Persona p : personas) ;",
     })
-    void elForConDeclaradorTipadoNecesitaTambienLasVariablesClasicas(String sentencia,
-                                                                    @TempDir Path dir) {
+    void elDeclaradorTipadoDelForNoNecesitaLasVariablesClasicas(String sentencia,
+                                                                @TempDir Path dir) {
         aceptar(dir, envolverEnMetodo(sentencia));
+    }
+
+    // Y la contracara: esa misma declaración COMO SENTENCIA sigue necesitando el
+    // logro de variables locales clásicas. Los dos logros son independientes.
+    @Test
+    @RequiereLogro(Logro.FOR)
+    @RequiereLogroApagado(Logro.VARCLASICA)
+    void laMismaDeclaracionComoSentenciaSigueNecesitandoLasVariablesClasicas(@TempDir Path dir) {
+        assertEquals("int", rechazar(dir, envolverEnMetodo("int i = 0;")).getLexemaOfensivo());
+    }
+
+    // El declarador del for es un tipo de MiniJava: las dimensiones van pegadas al
+    // tipo (`int[] v`) y no al nombre, que es la forma que la gramática admite.
+    @Test
+    @RequiereLogro(Logro.FOR)
+    void elForNoAdmiteLasDimensionesAlEstiloC(@TempDir Path dir) {
+        assertEquals("[", rechazar(dir, envolverEnMetodo("for(int v[] = null; ; ) ;"))
+                .getLexemaOfensivo());
     }
 
     // Y el `i++` del incremento es del logro de posfijos.

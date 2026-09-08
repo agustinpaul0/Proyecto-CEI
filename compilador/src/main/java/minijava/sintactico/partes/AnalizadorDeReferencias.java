@@ -6,7 +6,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeReferencias;
 
 import java.util.Set;
 
@@ -28,9 +28,9 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     //                  | AccesoArreglo RestoReferencia
     //                  | EPSILON
     public void restoReferencia() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.RESTO_REFERENCIA_ENCADENADO)
-                || estaEn(Primeros.RESTO_REFERENCIA_ACCESO_ARREGLO)) {
-            if (estaEn(Primeros.RESTO_REFERENCIA_ENCADENADO)) {
+        while (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ENCADENADO)
+                || estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ACCESO_ARREGLO)) {
+            if (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ENCADENADO)) {
                 encadenado();
             } else {
                 accesoArreglo();
@@ -41,11 +41,11 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // Primario -> LlamadaMetodoEstatico | PrimarioSinIdClase
     // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
     private void primario() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.PRIMARIO_LLAMADA_METODO_ESTATICO)) {
+        if (estaEn(PrimerosDeReferencias.PRIMARIO_LLAMADA_METODO_ESTATICO)) {
             match(TipoDeToken.ID_CLASE);
             match(TipoDeToken.PUNTO);
             match(TipoDeToken.ID_MV);
-            sintaxis.creacion().argsActuales();
+            sintaxis.argumentos().argsActuales();
         } else {
             primarioSinIdClase();
         }
@@ -54,23 +54,23 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // PrimarioSinIdClase -> this | stringLiteral | ParentizadaOLambda
     //                     | AccesoVarLlamadaOLambda | Creacion
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_THIS)) {
+        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
             sintaxis.restriccionesDeLambda().verificarThisExplicito(actual());
             match(TipoDeToken.PR_THIS);
-        } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
             match(TipoDeToken.LIT_STRING);
-        } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
             sintaxis.lambdas().parentizadaOLambda();
-        } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA)) {
             accesoVarLlamadaOLambda();
-        } else if (estaEn(Primeros.PRIMARIO_SIN_ID_CLASE_CREACION)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION)) {
             sintaxis.creacion().creacion();
         } else {
-            throw errorEsperando(Primeros.PRIMARIO_SIN_ID_CLASE_THIS,
-                    Primeros.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
-                    Primeros.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA,
-                    Primeros.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA,
-                    Primeros.PRIMARIO_SIN_ID_CLASE_CREACION);
+            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION);
         }
     }
 
@@ -90,9 +90,9 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         Token nombre = actual();
         match(TipoDeToken.ID_MV);
 
-        if (estaEn(Primeros.ACCESO_LLAMADA_OLAMBDA_ARGS_ACTUALES)) {
-            sintaxis.creacion().argsActuales();
-        } else if (hayLogro(Logro.LAMBDA) && estaEn(Primeros.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
+        if (estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_OLAMBDA_ARGS_ACTUALES)) {
+            sintaxis.argumentos().argsActuales();
+        } else if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
             match(TipoDeToken.OP_FLECHA);
             sintaxis.lambdas().cuerpoLambda(Set.of(nombre.lexema()));
         } else {
@@ -105,8 +105,8 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     private void encadenado() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PUNTO);
         match(TipoDeToken.ID_MV);
-        if (estaEn(Primeros.ENCADENADO_ATRIBUTO_OMETODO_ARGS_ACTUALES)) {
-            sintaxis.creacion().argsActuales();
+        if (estaEn(PrimerosDeReferencias.ENCADENADO_ATRIBUTO_OMETODO_ARGS_ACTUALES)) {
+            sintaxis.argumentos().argsActuales();
         }
     }
 

@@ -5,7 +5,7 @@ import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeSentencias;
 
 // Bloques y sentencias. Con el logro de variables locales clásicas una
 // declaración puede empezar con idClase (`C x;`) y una sentencia-expresión
@@ -21,7 +21,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // ListaSentencias -> Sentencia ListaSentencias | EPSILON
     public void bloque() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.LLAVE_A);
-        while (estaEn(Primeros.LISTA_SENTENCIAS_SENTENCIA)) {
+        while (estaEn(PrimerosDeSentencias.LISTA_SENTENCIAS_SENTENCIA)) {
             sentencia();
         }
         match(TipoDeToken.LLAVE_C);
@@ -30,26 +30,27 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // Sentencia -> ; | VarLocal ; | Return ; | If | While | Bloque
     // Sentencia -> For                                                        [+for]
     // Sentencia -> SentenciaExpresion ;                                       [-varclasica]
+    // SentenciaExpresion -> Expresion                                          [-varclasica]
     // Sentencia -> ExpresionSinIdClase ;                                      [+varclasica]
     // Sentencia -> TipoPrimitivo DimensionesOpcionales ListaDeclaradores ;    [+varclasica]
     // Sentencia -> idGen DimensionesOpcionales ListaDeclaradores ;            [+varclasica]
     // Sentencia -> idClase SentenciaDesdeIdClase                              [+varclasica]
     public void sentencia() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.SENTENCIA_PUNTO_Y_COMA)) {
+        if (estaEn(PrimerosDeSentencias.SENTENCIA_PUNTO_Y_COMA)) {
             match(TipoDeToken.PUNTO_Y_COMA);
-        } else if (estaEn(Primeros.SENTENCIA_VAR_LOCAL)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_VAR_LOCAL)) {
             varLocal();
             match(TipoDeToken.PUNTO_Y_COMA);
-        } else if (estaEn(Primeros.SENTENCIA_RETURN)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_RETURN)) {
             sentenciaReturn();
             match(TipoDeToken.PUNTO_Y_COMA);
-        } else if (estaEn(Primeros.SENTENCIA_IF)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_IF)) {
             sentenciaIf();
-        } else if (estaEn(Primeros.SENTENCIA_WHILE)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_WHILE)) {
             sentenciaWhile();
-        } else if (estaEn(Primeros.SENTENCIA_BLOQUE)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_BLOQUE)) {
             bloque();
-        } else if (hayLogro(Logro.FOR) && estaEn(Primeros.SENTENCIA_FOR)) {
+        } else if (hayLogro(Logro.FOR) && estaEn(PrimerosDeSentencias.SENTENCIA_FOR)) {
             sintaxis.fors().sentenciaFor();
         } else if (!hayLogro(Logro.VARCLASICA)) {
             sintaxis.expresiones().expresion();
@@ -61,7 +62,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
 
     // ExpresionOpcional -> Expresion | EPSILON
     public void expresionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.EXPRESION_OPCIONAL_EXPRESION)) {
+        if (estaEn(PrimerosDeSentencias.EXPRESION_OPCIONAL_EXPRESION)) {
             sintaxis.expresiones().expresion();
         }
     }
@@ -75,7 +76,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     public void listaDeclaradores() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.ID_MV);
         inicializacionDeDeclarador();
-        while (estaEn(Primeros.RESTO_LISTA_DECLARADORES_COMA)) {
+        while (estaEn(PrimerosDeSentencias.RESTO_LISTA_DECLARADORES_COMA)) {
             match(TipoDeToken.COMA);
             match(TipoDeToken.ID_MV);
             inicializacionDeDeclarador();
@@ -83,21 +84,21 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     }
 
     // InicializacionDeDeclarador -> = ExpresionCondicional | EPSILON
-    public void inicializacionDeDeclarador() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.INICIALIZACION_DE_DECLARADOR_ASIGNACION)) {
+    private void inicializacionDeDeclarador() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeSentencias.INICIALIZACION_DE_DECLARADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
             sintaxis.expresiones().expresionCondicional();
         }
     }
 
     private void sentenciaODeclaracionLocal() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.SENTENCIA_TIPO_PRIMITIVO)) {
+        if (estaEn(PrimerosDeSentencias.SENTENCIA_TIPO_PRIMITIVO)) {
             sintaxis.tipos().tipoPrimitivo();
             declaracionLocalTrasTipo();
-        } else if (estaEn(Primeros.SENTENCIA_ID_GEN)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
             declaracionLocalTrasTipo();
-        } else if (estaEn(Primeros.SENTENCIA_ID_CLASE)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
             sentenciaDesdeIdClase();
         } else {
@@ -115,10 +116,10 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // SentenciaDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales ListaDeclaradores ;
     // SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;
     private void sentenciaDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.SENTENCIA_DESDE_ID_CLASE_PUNTO)) {
+        if (estaEn(PrimerosDeSentencias.SENTENCIA_DESDE_ID_CLASE_PUNTO)) {
             match(TipoDeToken.PUNTO);
             match(TipoDeToken.ID_MV);
-            sintaxis.creacion().argsActuales();
+            sintaxis.argumentos().argsActuales();
             sintaxis.expresiones().colaDeExpresionDesdePrimario();
             match(TipoDeToken.PUNTO_Y_COMA);
         } else {
@@ -151,7 +152,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         match(TipoDeToken.PR_IF);
         condicionEntreParentesis();
         sentencia();
-        if (estaEn(Primeros.ELSE_OPCIONAL_ELSE)) {
+        if (estaEn(PrimerosDeSentencias.ELSE_OPCIONAL_ELSE)) {
             match(TipoDeToken.PR_ELSE);
             sentencia();
         }

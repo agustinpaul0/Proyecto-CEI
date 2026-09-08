@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Tag;
 
 // Invariantes de robustez que deben sostenerse para CUALQUIER entrada, no
 // sólo para los casos concretos de AnalizadorLexicoTest (agents/testing.md).

@@ -4,7 +4,7 @@ import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeClases;
 
 // Las unidades de compilación: clases, interfaces y sus cabeceras.
 public final class AnalizadorDeClases extends ParteDelAnalizador {
@@ -21,8 +21,8 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // ListaClases -> Clase ListaClases | Interfaz ListaClases | EPSILON
     private void listaClases() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.LISTA_CLASES_CLASE) || estaEn(Primeros.LISTA_CLASES_INTERFAZ)) {
-            if (estaEn(Primeros.LISTA_CLASES_CLASE)) {
+        while (estaEn(PrimerosDeClases.LISTA_CLASES_CLASE) || estaEn(PrimerosDeClases.LISTA_CLASES_INTERFAZ)) {
+            if (estaEn(PrimerosDeClases.LISTA_CLASES_CLASE)) {
                 clase();
             } else {
                 interfaz();
@@ -57,7 +57,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // Una clase o interfaz sigue limitada a UN parámetro de tipo, también con el
     // logro de genericidad avanzada.
     private void genericidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.GENERICIDAD_OPCIONAL_MENOR)) {
+        if (estaEn(PrimerosDeClases.GENERICIDAD_OPCIONAL_MENOR)) {
             match(TipoDeToken.OP_MENOR);
             match(TipoDeToken.ID_GEN);
             match(TipoDeToken.OP_MAYOR);
@@ -66,10 +66,10 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // HerenciaOpcional -> extends TipoReferencia | implements TipoReferencia | EPSILON
     private void herenciaOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.HERENCIA_OPCIONAL_EXTENDS)) {
+        if (estaEn(PrimerosDeClases.HERENCIA_OPCIONAL_EXTENDS)) {
             match(TipoDeToken.PR_EXTENDS);
             sintaxis.tipos().tipoReferencia();
-        } else if (estaEn(Primeros.HERENCIA_OPCIONAL_IMPLEMENTS)) {
+        } else if (estaEn(PrimerosDeClases.HERENCIA_OPCIONAL_IMPLEMENTS)) {
             match(TipoDeToken.PR_IMPLEMENTS);
             sintaxis.tipos().tipoReferencia();
         }
@@ -77,7 +77,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // ExtensionOpcional -> extends TipoReferencia | EPSILON
     private void extensionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.EXTENSION_OPCIONAL_EXTENDS)) {
+        if (estaEn(PrimerosDeClases.EXTENSION_OPCIONAL_EXTENDS)) {
             match(TipoDeToken.PR_EXTENDS);
             sintaxis.tipos().tipoReferencia();
         }
@@ -85,14 +85,14 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // ListaMiembros -> Miembro ListaMiembros | EPSILON
     private void listaMiembros() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.LISTA_MIEMBROS_MIEMBRO)) {
+        while (estaEn(PrimerosDeClases.LISTA_MIEMBROS_MIEMBRO)) {
             sintaxis.miembros().miembro();
         }
     }
 
     // ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
     private void listaMetodosInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
+        while (estaEn(PrimerosDeClases.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
             sintaxis.miembros().metodoInterfaz();
         }
     }

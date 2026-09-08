@@ -2,6 +2,7 @@ package minijava.sintactico;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.sintactico.partes.AnalizadorDeClases;
+import minijava.sintactico.partes.AnalizadorDeArgumentos;
 import minijava.sintactico.partes.AnalizadorDeCreacion;
 import minijava.sintactico.partes.AnalizadorDeExpresiones;
 import minijava.sintactico.partes.AnalizadorDeFors;
@@ -34,6 +35,7 @@ public final class Sintaxis {
     private final AnalizadorDeReferencias referencias;
     private final AnalizadorDeLambdas lambdas;
     private final AnalizadorDeCreacion creacion;
+    private final AnalizadorDeArgumentos argumentos;
 
     public Sintaxis(EntradaDeTokens entrada, ConfiguracionDelCompilador configuracion) {
         this.entrada = entrada;
@@ -49,6 +51,7 @@ public final class Sintaxis {
         this.referencias = new AnalizadorDeReferencias(this);
         this.lambdas = new AnalizadorDeLambdas(this);
         this.creacion = new AnalizadorDeCreacion(this);
+        this.argumentos = new AnalizadorDeArgumentos(this);
     }
 
     public EntradaDeTokens entrada() {
@@ -97,5 +100,9 @@ public final class Sintaxis {
 
     public AnalizadorDeCreacion creacion() {
         return creacion;
+    }
+
+    public AnalizadorDeArgumentos argumentos() {
+        return argumentos;
     }
 }

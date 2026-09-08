@@ -6,7 +6,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.ConjuntoDePrimeros;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeTipos;
 
 // Tipos, dimensiones, genéricos y argumentos formales.
 public final class AnalizadorDeTipos extends ParteDelAnalizador {
@@ -23,21 +23,21 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
 
     // TipoBase -> TipoPrimitivo | TipoReferencia | idGen
     private void tipoBase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.TIPO_BASE_TIPO_PRIMITIVO)) {
+        if (estaEn(PrimerosDeTipos.TIPO_BASE_TIPO_PRIMITIVO)) {
             tipoPrimitivo();
-        } else if (estaEn(Primeros.TIPO_BASE_TIPO_REFERENCIA)) {
+        } else if (estaEn(PrimerosDeTipos.TIPO_BASE_TIPO_REFERENCIA)) {
             tipoReferencia();
-        } else if (estaEn(Primeros.TIPO_BASE_ID_GEN)) {
+        } else if (estaEn(PrimerosDeTipos.TIPO_BASE_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
         } else {
-            throw errorEsperando(Primeros.TIPO_BASE_TIPO_PRIMITIVO,
-                    Primeros.TIPO_BASE_TIPO_REFERENCIA, Primeros.TIPO_BASE_ID_GEN);
+            throw errorEsperando(PrimerosDeTipos.TIPO_BASE_TIPO_PRIMITIVO,
+                    PrimerosDeTipos.TIPO_BASE_TIPO_REFERENCIA, PrimerosDeTipos.TIPO_BASE_ID_GEN);
         }
     }
 
     // DimensionesOpcionales -> [ ] DimensionesOpcionales | EPSILON
     public void dimensionesOpcionales() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.DIMENSIONES_OPCIONALES_CORCHETE_A)) {
+        while (estaEn(PrimerosDeTipos.DIMENSIONES_OPCIONALES_CORCHETE_A)) {
             match(TipoDeToken.CORCHETE_A);
             match(TipoDeToken.CORCHETE_C);
         }
@@ -55,18 +55,18 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     // `float` es token del léxico desde la Etapa 1 pero no estaba en la gramática
     // de la cátedra; sin esta alternativa el logro de Etapa 1 queda inutilizable.
     public void tipoPrimitivo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.TIPO_PRIMITIVO_BOOLEAN)) {
+        if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN)) {
             match(TipoDeToken.PR_BOOLEAN);
-        } else if (estaEn(Primeros.TIPO_PRIMITIVO_CHAR)) {
+        } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_CHAR)) {
             match(TipoDeToken.PR_CHAR);
-        } else if (estaEn(Primeros.TIPO_PRIMITIVO_INT)) {
+        } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_INT)) {
             match(TipoDeToken.PR_INT);
-        } else if (hayLogro(Logro.FLOATS) && estaEn(Primeros.TIPO_PRIMITIVO_FLOAT)) {
+        } else if (hayLogro(Logro.FLOATS) && estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
             match(TipoDeToken.PR_FLOAT);
         } else {
-            throw errorEsperando(Primeros.TIPO_PRIMITIVO_BOOLEAN,
-                    Primeros.TIPO_PRIMITIVO_CHAR, Primeros.TIPO_PRIMITIVO_INT,
-                    hayLogro(Logro.FLOATS) ? Primeros.TIPO_PRIMITIVO_FLOAT : ConjuntoDePrimeros.de());
+            throw errorEsperando(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN,
+                    PrimerosDeTipos.TIPO_PRIMITIVO_CHAR, PrimerosDeTipos.TIPO_PRIMITIVO_INT,
+                    hayLogro(Logro.FLOATS) ? PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT : ConjuntoDePrimeros.de());
         }
     }
 
@@ -74,7 +74,7 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     //
     // En POSICIÓN DE TIPO no se admite el diamante: `List<> x;` es inválido.
     public void tipoGenericoOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.TIPO_GENERICO_OPCIONAL_MENOR)) {
+        if (estaEn(PrimerosDeTipos.TIPO_GENERICO_OPCIONAL_MENOR)) {
             match(TipoDeToken.OP_MENOR);
             argumentoDeTipo();
             match(TipoDeToken.OP_MAYOR);
@@ -88,27 +88,28 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     // La recursión por TipoGenericoOpcional es la que habilita el anidamiento
     // `List<List<Persona>>`, y es todo lo que el logro agrega.
     public void argumentoDeTipo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.ARGUMENTO_DE_TIPO_ID_GEN)) {
+        if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
-        } else if (estaEn(Primeros.ARGUMENTO_DE_TIPO_ID_CLASE)) {
+        } else if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
             if (hayLogro(Logro.GENERICO)) {
                 tipoGenericoOpcional();
             }
         } else {
-            throw errorEsperando(Primeros.ARGUMENTO_DE_TIPO_ID_GEN,
-                    Primeros.ARGUMENTO_DE_TIPO_ID_CLASE);
+            throw errorEsperando(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN,
+                    PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE);
         }
     }
 
     // ArgsFormales -> ( ListaArgsFormalesOpcional )
+    // ListaArgsFormalesOpcional -> ListaArgsFormales | EPSILON
     // ListaArgsFormales -> ArgFormal RestoListaArgsFormales
     // RestoListaArgsFormales -> , ArgFormal RestoListaArgsFormales | EPSILON
     public void argsFormales() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
-        if (estaEn(Primeros.LISTA_ARGS_FORMALES_OPCIONAL_LISTA_ARGS_FORMALES)) {
+        if (estaEn(PrimerosDeTipos.LISTA_ARGS_FORMALES_OPCIONAL_LISTA_ARGS_FORMALES)) {
             argFormal();
-            while (estaEn(Primeros.RESTO_LISTA_ARGS_FORMALES_COMA)) {
+            while (estaEn(PrimerosDeTipos.RESTO_LISTA_ARGS_FORMALES_COMA)) {
                 match(TipoDeToken.COMA);
                 argFormal();
             }

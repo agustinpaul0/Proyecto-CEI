@@ -5,7 +5,7 @@ import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.Primeros;
+import minijava.sintactico.primeros.PrimerosDeExpresiones;
 
 // Las capas de expresión, de menor a mayor precedencia: la asignación, el
 // ternario, los operadores binarios —en un solo nivel, como en la gramática
@@ -23,11 +23,12 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     }
 
     // RestoExpresion -> OperadorAsignacion ExpresionCondicional | EPSILON
+    // OperadorAsignacion -> =
     //
     // El lado derecho es ExpresionCondicional y NO Expresion: la gramática
     // original pone ExpresionCompuesta ahí, o sea que `a = b = c` no es válido.
     private void restoExpresion() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
+        if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
             expresionCondicional();
         }
@@ -47,7 +48,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // como en el JLS 15.25: `a ? b = 1 : c` es válido y `a ? b : c = d` no.
     // Con el logro apagado esta capa desaparece sin dejar rastro.
     private void restoCondicional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.TERNARIO) && estaEn(Primeros.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
+        if (hayLogro(Logro.TERNARIO) && estaEn(PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
             match(TipoDeToken.SIGNO_PREGUNTA);
             expresion();
             match(TipoDeToken.DOS_PUNTOS);
@@ -63,16 +64,23 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta
     //                          | EPSILON
+    // OperadorBinario -> || | && | == | != | < | > | <= | >= | + | - | * | / | %
+    //
+    // La recursión a derecha se traduce en un while y no en una llamada, para que
+    // una cadena larguísima de operadores no dependa de la pila de la JVM. Es la
+    // única libertad que se toma respecto del esquema de Clase 5 slide 59, y no
+    // cambia qué se reconoce: el bucle deriva exactamente la misma cadena.
     private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(Primeros.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
+        while (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
             matchDelActual();
             expresionBasica();
         }
     }
 
     // ExpresionBasica -> OperadorUnario Operando | Operando
+    // OperadorUnario -> + | - | !
     private void expresionBasica() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.EXPRESION_BASICA_OPERADOR_UNARIO)) {
+        if (estaEn(PrimerosDeExpresiones.EXPRESION_BASICA_OPERADOR_UNARIO)) {
             matchDelActual();
         }
         operando();
@@ -80,14 +88,14 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // Operando -> Primitivo | Referencia PosfijoOpcional
     private void operando() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.OPERANDO_PRIMITIVO)) {
+        if (estaEn(PrimerosDeExpresiones.OPERANDO_PRIMITIVO)) {
             primitivo();
-        } else if (estaEn(Primeros.OPERANDO_REFERENCIA)) {
+        } else if (estaEn(PrimerosDeExpresiones.OPERANDO_REFERENCIA)) {
             sintaxis.referencias().referencia();
             posfijoOpcional();
         } else {
-            throw errorEsperando(Primeros.OPERANDO_PRIMITIVO,
-                    Primeros.OPERANDO_REFERENCIA);
+            throw errorEsperando(PrimerosDeExpresiones.OPERANDO_PRIMITIVO,
+                    PrimerosDeExpresiones.OPERANDO_REFERENCIA);
         }
     }
 
@@ -99,9 +107,9 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         if (!hayLogro(Logro.POSFIJO)) {
             return;
         }
-        if (estaEn(Primeros.POSFIJO_OPCIONAL_INCREMENTO)) {
+        if (estaEn(PrimerosDeExpresiones.POSFIJO_OPCIONAL_INCREMENTO)) {
             match(TipoDeToken.OP_INCREMENTO);
-        } else if (estaEn(Primeros.POSFIJO_OPCIONAL_DECREMENTO)) {
+        } else if (estaEn(PrimerosDeExpresiones.POSFIJO_OPCIONAL_DECREMENTO)) {
             match(TipoDeToken.OP_DECREMENTO);
         }
     }
@@ -109,8 +117,8 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // Primitivo -> true | false | intLiteral | charLiteral | null
     // Primitivo -> floatLiteral   [+float]
     private void primitivo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.PRIMITIVO_FLOAT_LITERAL) && !hayLogro(Logro.FLOATS)) {
-            throw errorEsperando(Primeros.OPERANDO_PRIMITIVO);
+        if (estaEn(PrimerosDeExpresiones.PRIMITIVO_FLOAT_LITERAL) && !hayLogro(Logro.FLOATS)) {
+            throw errorEsperando(PrimerosDeExpresiones.OPERANDO_PRIMITIVO);
         }
         matchDelActual();
     }
@@ -123,20 +131,20 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // Sólo duplica las CABEZAS: todas las colas se comparten con la jerarquía
     // normal, así que no hay lógica repetida.
     public void expresionSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(Primeros.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
+        if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
             matchDelActual();
             operando();
             colaTrasOperando();
-        } else if (estaEn(Primeros.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
             primitivo();
             colaTrasOperando();
-        } else if (estaEn(Primeros.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE)) {
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE)) {
             sintaxis.referencias().primarioSinIdClase();
             colaDeExpresionDesdePrimario();
         } else {
-            throw errorEsperando(Primeros.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
-                    Primeros.EXPRESION_SIN_ID_CLASE_PRIMITIVO,
-                    Primeros.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE);
+            throw errorEsperando(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO,
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE);
         }
     }
 

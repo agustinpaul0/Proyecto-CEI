@@ -399,6 +399,13 @@ ElementoInicializador -> Expresion | InicializadorDeArreglo                     
 DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
 DimensionesConTamanioOpcional -> DimensionesConTamanio | EPSILON
 
+# ===========================================================================
+# ARGUMENTOS ACTUALES
+# ===========================================================================
+# Sección propia y no parte de la creación: la lista de argumentos de una
+# llamada la usan por igual el `new`, el encadenado, la llamada estática y el
+# encabezado del for.
+
 ArgsActuales -> ( ListaExpsOpcional )
 
 ListaExpsOpcional -> ListaExps | EPSILON
