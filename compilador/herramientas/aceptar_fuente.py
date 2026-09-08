@@ -17,6 +17,9 @@ from primeros import aceptar_detallado, analizar, parsear  # noqa: E402
 
 GRAMATICA = "gramatica/minijava-ll1-logros.g"
 JAR = "target/Compilador.jar"
+# --etapa=1 porque el jar corre el sintáctico por defecto y acá se lo quiere sólo
+# como tokenizador; --logros=todos porque la gramática de esta herramienta es la
+# de todos los logros, y sin ellos faltarían `->`, `?`, `for` y `private`.
 
 # Los tokens de lexema fijo se identifican por su propio lexema, que es el
 # terminal de la gramática. Sólo los de lexema variable necesitan traducción.
@@ -35,7 +38,9 @@ LINEA = re.compile(r"^\((?P<tipo>[^,]+),(?P<lexema>.*),(?P<linea>\d+)\)$")
 
 def tokenizar(ruta):
     salida = subprocess.run(
-        ["java", "-jar", JAR, ruta], capture_output=True, text=True
+        ["java", "-jar", JAR, "--etapa=1", "--logros=todos", ruta],
+        capture_output=True,
+        text=True,
     ).stdout
     tokens, errores = [], []
     for renglon in salida.splitlines():

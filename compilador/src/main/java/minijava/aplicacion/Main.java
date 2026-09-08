@@ -23,7 +23,11 @@ public final class Main {
         }
         String ruta = opciones.rutaFuente().get();
         try {
-            new ModuloPrincipalLexico(salida, opciones.configuracion()).ejecutar(ruta);
+            if (opciones.etapa() == 1) {
+                new ModuloPrincipalLexico(salida, opciones.configuracion()).ejecutar(ruta);
+            } else {
+                new ModuloPrincipalSintactico(salida, opciones.configuracion()).ejecutar(ruta);
+            }
         } catch (IOException excepcion) {
             salida.imprimir("No se pudo leer el archivo fuente: " + ruta);
         }
