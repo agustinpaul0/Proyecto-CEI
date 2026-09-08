@@ -53,7 +53,7 @@ flotante. Verificado ejecutando `javac`:
 Lo que Java rechaza es un literal no nulo que **se redondee** a infinito o a cero: un chequeo de
 **valor**, hecho al convertir el literal, no al tokenizarlo. **MiniJava no lo implementa**, y es
 deliberado: la consigna pidió la misma *estructura*, y un chequeo de rango es semántico, no léxico —
-no corresponde a la Etapa 1. Fijado en `resources/sinErrores/floatFueraDelRangoDeJava.java`, donde
+no corresponde a la Etapa 1. Fijado en `resources/lexico/sinErrores/floatFueraDelRangoDeJava.java`, donde
 `3.5e38f`, `1e-46f`, `1.8e308` y `1e999` son todos `floatLiteral` válidos.
 
 **Asimetría que conviene tener presente**: el chequeo de 9 dígitos corre **sólo si la corrida de
@@ -141,7 +141,7 @@ La ER es `'x'` con `x ≠ \, '` o bien `'\x'`. La cadena vacía no está en ning
 alternativas, así que no hay ambigüedad por el lado de la cátedra. `javac` coincide:
 `empty character literal`.
 
-Fijado en `resources/conErrores/tresComillasSimples.java`, que además ejercita la cascada: sobre
+Fijado en `resources/lexico/conErrores/tresComillasSimples.java`, que además ejercita la cascada: sobre
 `'''`, las dos primeras comillas dan el error de char vacío y la tercera abre un `charLiteral` que
 nunca cierra.
 

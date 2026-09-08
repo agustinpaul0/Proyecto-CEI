@@ -13,10 +13,6 @@ import java.util.Set;
 // Los Primeros del cuerpo de UNA producción. Es lo único que el Esquema Simple
 // necesita para elegir qué producción aplicar (Clase 5, slide 34): el analizador
 // decide sólo con Primeros, nunca con Siguientes.
-//
-// Va como constante con nombre y no escrito dentro de cada `if` para que el
-// código se pueda leer contra la gramática del informe renglón por renglón, y
-// para que un cambio en la gramática tenga un único lugar donde reflejarse.
 public final class ConjuntoDePrimeros {
 
     private final Set<TipoDeToken> tokens;

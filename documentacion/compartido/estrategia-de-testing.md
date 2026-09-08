@@ -36,7 +36,7 @@ etapas más adelante.
 | **Data-driven** | Muchas entradas evaluadas con la misma lógica: fuente → stream de tokens esperado. | `AnalizadorLexicoTest`, `LimitesNumericosTest`, `PosicionDelCaretTest` |
 | **De integración** | Interacción entre piezas: manejador → analizador, analizador → módulo principal. | `ModuloPrincipalTest`, `ReporteDeErrorEleganteTest` |
 | **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 2 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `MainTest` |
-| **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/conErrores/` |
+| **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/lexico/conErrores/` |
 | **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest` |
 | **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest` |
 
@@ -102,10 +102,37 @@ oráculo escrito en las primeras líneas, en el formato que definen los testers 
 
 ```
 resources/
-├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
-├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
-└── regresion/                    entradas que rompieron una corrida de fuzzing
+├── lexico/
+│   ├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
+│   ├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
+│   ├── regresion/                    entradas que rompieron una corrida de fuzzing
+│   └── requisitos-de-logros.txt      a qué configuración de logros aplica cada caso
+└── sintactico/                       el corpus de la Etapa 2
 ```
+
+### A qué configuración de logros aplica cada caso
+
+La expectativa de un caso **depende de los logros prendidos**: `//#1.5,3` sólo se cumple con Floats I
+prendido, y `[Error:?|2]` sólo con el Ternario apagado. Si eso queda implícito pasan las dos cosas
+malas a la vez: la suite da verde en cualquier `-Dlogros` sin haber probado nada distinto, y un caso
+puede fallar por un logro que el compilador ni siquiera tiene que soportar en esa corrida.
+
+Por eso cada caso declara sus requisitos en `resources/lexico/requisitos-de-logros.txt`, con la
+misma semántica que `@RequiereLogro` sobre un test: **el caso que no aplica se saltea, no falla**.
+
+```
+sinErrores/floats.java                  | floats |
+conErrores/preguntaSuelta.java          |        | ternario
+conErrores/lexConErrores01.java         | multideteccion |
+```
+
+Los requisitos viven en un manifiesto y no adentro de cada caso porque las expectativas del corpus
+son **posicionales** (`//#lexema,linea`, y la línea del `eof` sale de cuántos saltos tiene el
+archivo): agregarle un renglón de metadatos a un caso correría todas sus líneas y lo rompería.
+
+Dos tests sostienen el manifiesto: uno falla si declara un caso que ya no existe, y otro si un
+requisito declarado **no corresponde a una dependencia real** —es decir, si con ese logro apagado la
+salida del compilador es la misma—.
 
 ### El tester estricto, y por qué hubo que escribirlo
 
@@ -148,9 +175,9 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 |---|---|---|
 | `AnalizadorLexicoTest` | 165 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
 | `TesterDeCasosConErroresEstricto` | 82 | Los **mismos** archivos, pero verificando la salida completa. |
-| `catedra.TesterDeCasosConErrores` | 82 | El tester original de la cátedra sobre `resources/conErrores/`. |
-| `catedra.TesterDeCasosSinErrores` | 76 | El tester original de la cátedra sobre `resources/sinErrores/`. |
-| `TablaDeLexemasTest` | 53 | Que los 56 tipos de token estén cubiertos y que cada uno de los 49 lexemas fijos, suelto, produzca su propio tipo. |
+| `catedra.TesterDeCasosConErrores` | 82 | El tester original de la cátedra sobre `resources/lexico/conErrores/`. |
+| `catedra.TesterDeCasosSinErrores` | 76 | El tester original de la cátedra sobre `resources/lexico/sinErrores/`. |
+| `TablaDeLexemasTest` | 57 | Que los 60 tipos de token estén cubiertos y que cada uno de los 53 lexemas fijos, suelto, produzca su propio tipo. |
 | `ManejadorDeArchivoEficienteTest` | 26 | EOF en los tres casos de ejemplo, archivo vacío, los tres convenios de fin de línea, `0x1A` embebido, UTF-8 inválido, columnas y línea-fuente, y el costo de ubicar el error en un fuente de 200.000 líneas. |
 | `TipoDeTokenTest` | 22 | Que los nombres impresos coincidan con los que fija la cátedra. |
 | `PosicionDelCaretTest` | 21 | Dónde apunta el `^`, con el diagnóstico de `javac` citado en cada caso. |
@@ -182,13 +209,43 @@ mvn -Pmutacion test      # análisis de mutación con PIT
 
 mvn test -Dvolcado=resumen   # el volcado por caso, en su forma corta
 mvn test -Dvolcado=off       # sin volcado
+
+mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en las dos fases)
+mvn test -Pfase-sintactico   # sólo el sintáctico
+
+mvn test -Dlogros=ninguno    # la misma suite con cero logros
+mvn test -Dlogros=etapa1     # con los de la Etapa 1
+mvn test -Dlogros=ternario,lambda
 ```
+
+### Los tests corren en función de los logros prendidos
+
+`-Dlogros` fija la configuración de **toda la corrida** (`ConfiguracionDeLaCorrida`), y llega tanto a
+los tests escritos a mano como al corpus. Un test que no aplica a esa configuración se **saltea**:
+
+```java
+@Test
+@RequiereLogro(Logro.GENERICO)
+void conGenericidadAvanzadaSeAceptaUnGenericoAnidado() { … }
+
+@Test
+@RequiereLogroApagado(Logro.GENERICO)
+void sinGenericidadAvanzadaUnGenericoAnidadoSeRechaza() { … }
+```
+
+Están implementadas como una `ExecutionCondition` de JUnit 5, conviven en un mismo elemento y la
+anotación de la clase alcanza a sus métodos. **Saltean, no fallan**: un test que falla porque un
+logro está apagado estaría fallando por algo que el compilador no tiene que hacer en esa
+configuración, y eso es ruido, no información.
+
+Por cada logro hace falta el par completo: el caso que pasa con el logro prendido **y** el que
+verifica el comportamiento base con el logro apagado.
 
 Los testers de la cátedra están escritos con JUnit 4; corren junto a los propios (JUnit 5) gracias al
 *vintage engine*, sin necesidad de tocarlos.
 
 **El *working directory* debe ser `compilador/`**, porque los testers de la cátedra usan rutas
-relativas duras (`resources/sinErrores/`, `resources/conErrores/`). Es el valor por defecto cuando
+relativas duras (`resources/lexico/sinErrores/`, `resources/lexico/conErrores/`). Es el valor por defecto cuando
 IntelliJ importa el proyecto Maven correctamente.
 
 ## 7. Ver también
@@ -223,7 +280,7 @@ usando los tests de esa fase específica — de ahí que los tests se ubiquen y 
 |---|---|---|
 | **Unit** | unidades aisladas y deterministas | cada estado del AF, `Token`, tabla de palabras clave, clasificador de caracteres, formateadores de error, manejador de archivo |
 | **Data-driven** | muchas entradas evaluadas con la misma lógica | fuente → stream de tokens esperado, un archivo de tabla por familia léxica (identificadores, enteros, chars, strings, operadores, comentarios, floats, unicode) |
-| **Integration** | interacción entre componentes/fases | `SourceManager → AnalizadorLexico`, `AnalizadorLexico → ModuloPrincipal` |
+| **Integration** | interacción entre componentes/fases | `SourceManager → AnalizadorLexico`, `AnalizadorLexico → ModuloPrincipalLexico` |
 | **E2E** | pipeline completo | `Main.main()` sobre los archivos de `resources/`, más los 2 testers de la cátedra sin modificar |
 | **Negative** | programas inválidos deben rechazarse correctamente | un caso por cada `TipoDeErrorLexico` |
 | **Regression** | todo bug relevante encontrado | append-only, nunca se borra ni se renumera un caso |
@@ -329,7 +386,7 @@ dentro de un `litString` (`documentacion/decisiones.md` §4.3), donde `javac` si
 literal y MiniJava lo descarta hasta la comilla de cierre. Los tests de ese caso citan la indicación
 del profesor, no a `javac`.
 
-### Los dos testers de casos de `resources/conErrores/`
+### Los dos testers de casos de `resources/lexico/conErrores/`
 
 Corren sobre los **mismos archivos** y conviven:
 
@@ -395,7 +452,7 @@ deliberadamente no se testea de forma directa (para eso existe la interfaz `Sali
 testeada vía `SalidaEnMemoria`). `Main.main()` **sí** se testea ahora (`MainTest`), pero sólo en sus
 modos de falla —sin argumentos, archivo inexistente, extensión rara— capturando `System.out`: son los
 casos en los que una excepción sin atrapar mataría la corrida in-process de los testers de la
-cátedra, así que valen el costo. `ModuloPrincipal`'s `manejador.close()` no se
+cátedra, así que valen el costo. `ModuloPrincipalLexico`'s `manejador.close()` no se
 puede espiar sin inyectar `ManejadorDeArchivo` por constructor (hoy se instancia adentro del método)
 — cambio de diseño no justificado sólo para este hueco, dado que `close()` únicamente libera memoria
 en un proceso de corta vida (no hay handle de archivo del SO abierto de por medio). `SourceManagerImpl`

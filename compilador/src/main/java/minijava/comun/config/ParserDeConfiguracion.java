@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-// Traduce la especificación textual de logros —`--logros=` en la línea de
-// comandos, `-Dlogros=` en los tests— a una ConfiguracionDelCompilador.
-//
 // Un nombre desconocido NO aborta: se junta como aviso y se sigue con el resto.
 // El compilador tiene que arrancar igual, porque los testers de la cátedra
 // invocan main() in-process y una excepción acá mataría la corrida entera.

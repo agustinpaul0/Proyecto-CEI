@@ -8,9 +8,6 @@ import java.util.List;
 // Esquema Simple puede fallar (Clase 5, slides 21 y 30): un match que no
 // coincide, y un no terminal NO anulable cuyo token actual no está en los
 // Primeros de ninguna de sus producciones.
-//
-// Lleva el token encontrado —de donde salen el lexema y la línea que exige el
-// reporte— y la descripción de lo que se esperaba en su lugar.
 public final class ExcepcionSintactica extends Exception {
 
     private final Token encontrado;

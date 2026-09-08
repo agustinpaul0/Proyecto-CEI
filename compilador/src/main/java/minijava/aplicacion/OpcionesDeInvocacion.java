@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// Lo que se lee de la línea de comandos: qué etapa correr, con qué logros y
-// sobre qué archivo. Un solo jar sirve a las dos etapas, porque la Etapa 1 se
-// corrige por separado y tiene que seguir siendo ejecutable sin recompilar nada.
+// Un solo jar sirve a las dos etapas, porque la Etapa 1 se corrige por separado
+// y tiene que seguir siendo ejecutable sin recompilar nada.
 //
-// El contrato de invocación de las Pautas (Etapa 1 slide 40, Etapa 2 slide 28)
-// es `java -jar Compilador.jar programa1.java`, con cualquier extensión: por eso
-// el único argumento obligatorio es la ruta, y las opciones llevan `--`.
+// El contrato de invocación de las Pautas (Etapa 2, slide 28) es
+// `java -jar Compilador.jar programa1.java`, con cualquier extensión: por eso el
+// único argumento obligatorio es la ruta, y las opciones llevan `--`.
 public record OpcionesDeInvocacion(
         int etapa,
         ConfiguracionDelCompilador configuracion,

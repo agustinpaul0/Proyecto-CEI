@@ -19,6 +19,12 @@ qué se tomó— están en [`decisiones.md`](decisiones-de-logica.md) §7.
 
 ## 1. Los 56 tokens, de un vistazo
 
+> Los 56 son los que define «Aspectos Léxicos de MiniJava», o sea el alcance de la Etapa 1. La
+> Etapa 2 agrega cuatro que no figuran ahí y que existen sólo porque un logro los necesita —`for`,
+> `private`, `?` y `->`—, cada uno **condicionado al interruptor de su logro**: apagado, el léxico
+> se comporta exactamente como acá se describe. El detalle está en
+> [`../sintactico/arquitectura-del-analizador-sintactico.md`](../sintactico/arquitectura-del-analizador-sintactico.md).
+
 | Familia | Cantidad | Tokens |
 |---|---|---|
 | Palabras clave | 21 | `pr_class`, `pr_extends`, `pr_interface`, `pr_implements`, `pr_static`, `pr_boolean`, `pr_char`, `pr_int`, `pr_void`, `pr_public`, `pr_if`, `pr_else`, `pr_while`, `pr_return`, `pr_var`, `pr_this`, `pr_new`, `pr_null`, `pr_true`, `pr_false`, `pr_float` |
@@ -106,8 +112,8 @@ puede ser incorporada por distintos métodos de entrada y que en pantalla se ve 
 
 **Esto no es una divergencia con Java, sino una coincidencia.** `javac` sobre `char c = '🌟';` responde
 `error: character literal contains more than one UTF-16 code unit` — nombra literalmente la misma
-limitación, y por la misma razón. Fijado por `resources/sinErrores/charConSimbolosNoAscii.java` y
-`resources/conErrores/charConEmojiFueraDelBmp.java`.
+limitación, y por la misma razón. Fijado por `resources/lexico/sinErrores/charConSimbolosNoAscii.java` y
+`resources/lexico/conErrores/charConEmojiFueraDelBmp.java`.
 
 ```mermaid
 stateDiagram-v2
@@ -472,7 +478,7 @@ Java tampoco acota la cantidad de dígitos — lo verificado con `javac`:
 Lo que Java rechaza es un literal **no nulo que se redondee a infinito o a cero**: un chequeo de
 **valor**, no léxico (lo hace al convertir el literal, no al tokenizarlo). **MiniJava no lo hace**, y
 la decisión es deliberada: la cátedra pidió la misma *estructura*, y un chequeo de rango es
-semántico, no de Etapa 1. Fijado en `resources/sinErrores/floatFueraDelRangoDeJava.java`.
+semántico, no de Etapa 1. Fijado en `resources/lexico/sinErrores/floatFueraDelRangoDeJava.java`.
 
 **Asimetría a tener presente**: el chequeo de 9 dígitos de `EstadoEntero` corre **sólo si la corrida
 de dígitos no continúa hacia un float**, así que `1234567890.5` es un `floatLiteral` válido con diez
@@ -518,7 +524,7 @@ regulares, corregido en
   `Aspectos Lexicos MiniJava 2026.pdf` §2.3.2. `'\q'` es un `charLiteral` válido con valor `q`.
 - **`''` (char vacío) es error.** La ER de la cátedra es `'x'` con `x ≠ \, '` o `'\x'`: la cadena
   vacía no está en ninguna de las dos alternativas. `javac` coincide (`empty character literal`), así
-  que no hay ambigüedad por ningún lado. Cubierto por `resources/conErrores/tresComillasSimples.java`,
+  que no hay ambigüedad por ningún lado. Cubierto por `resources/lexico/conErrores/tresComillasSimples.java`,
   que además ejercita la cascada: la tercera comilla abre un `charLiteral` que nunca cierra.
 - **Escapes en `litString`: restringidos al conjunto válido de Java** (JLS §3.10.7, verificado contra
   la especificación — ver [`investigacion.md`](../proyecto/protocolo-de-investigacion.md)): `b s t n f r " ' \` o un dígito

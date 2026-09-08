@@ -43,7 +43,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf`.
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
-  `minijava.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
+  `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
   `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso).
 
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por

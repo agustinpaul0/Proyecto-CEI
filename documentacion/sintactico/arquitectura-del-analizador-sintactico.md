@@ -3,9 +3,11 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La gramática está terminada y verificada; el código del analizador se escribe en las
-> Sesiones 2 y 3. Este documento describe el diseño acordado, y se actualiza a medida que se
-> implementa. El plan está en
+> **Estado.** La gramática está terminada y verificada, y el núcleo del analizador está
+> implementado: `Inicial`, `ListaClases`, `Clase`, `Interfaz`, `GenericidadOpcional`,
+> `HerenciaOpcional`, `ExtensionOpcional`, `TipoReferencia`, `TipoGenericoOpcional` y
+> `ArgumentoDeTipo`. Los miembros y las sentencias llegan en la Sesión 3; hasta entonces el
+> compilador acepta clases e interfaces **sin miembros**. El plan está en
 > [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
@@ -100,10 +102,6 @@ El constructor recibe el léxico como dependencia, carga el primer token y llama
 (Clase 5, slide 61). Cuando `inicial()` retorna sin excepción y se consumió el `eof`, el programa
 es sintácticamente válido.
 
-> **Pendiente de explicación en vivo.** El recorrido paso a paso de este flujo sobre un fuente
-> MiniJava concreto está anotado en el backlog del plan para el arranque de la Sesión 2, antes de
-> escribir código.
-
 ## 5. Los conjuntos de Primeros en el código
 
 No van escritos a mano dentro de cada `if`. Van como **constantes con nombre** en un paquete
@@ -116,24 +114,34 @@ static final ConjuntoDePrimeros PRIMEROS_EXPRESION_BASICA = de(
 ```
 
 El motivo es que el código se pueda leer contra la gramática del informe renglón por renglón, y que
-un cambio en la gramática tenga un único lugar donde reflejarse. Los conjuntos se generan y se
-contrastan con
-`python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --markdown`.
+un cambio en la gramática tenga un único lugar donde reflejarse. Viven en
+`sintactico/primeros/PrimerosDelNucleo`, sobre el tipo `ConjuntoDePrimeros`, y un test los contrasta
+con lo que calcula
+`python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g`.
+
+`ConjuntoDePrimeros` además **filtra por logro** antes de describir lo esperado en un mensaje de
+error: prometer un token que un logro apagado sacó del lenguaje sería ofrecer una entrada que el
+compilador igual rechazaría.
 
 ## 6. Organización del código
 
-El repositorio pasa de estar organizado por «el compilador es el léxico» a estarlo **por fase**,
-para que las cinco etapas convivan:
+El repositorio está organizado **por fase**, para que las cinco etapas convivan:
 
 ```
 compilador/src/main/java/minijava/
-  comun/         io/  salida/  config/  errores/     compartido por todas las etapas
-  lexico/        AnalizadorLexico, automata/, estados/, contexto/, recuperacion/, tokens/
-  sintactico/    AnalizadorSintactico, primeros/, recuperacion/
-  aplicacion/    Main + ModuloPrincipalLexico + ModuloPrincipalSintactico
+  comun/         io/  salida/  config/                compartido por todas las etapas
+  lexico/        AnalizadorLexico, automata/, estados/, contexto/, recuperacion/,
+                 tokens/, errores/
+  sintactico/    AnalizadorSintactico, primeros/, errores/
+  aplicacion/    Main + OpcionesDeInvocacion + ModuloPrincipalLexico + ModuloPrincipalSintactico
 ```
 
-El árbol de tests espeja esa estructura.
+El árbol de tests espeja esa estructura, y `resources/` se separa igual:
+`resources/{lexico,sintactico}/{sinErrores,conErrores}`.
+
+`errores/` cuelga de cada fase y no de `comun/`: el reporte léxico usa `TipoDeErrorLexico`, la
+columna y la línea del fuente, que son de esa fase, y dejarlo en `comun/` obligaría a que `comun`
+dependa de `lexico`.
 
 **Un solo `Main`, con selector de etapa.** Corre la Etapa 2 por defecto y acepta `--etapa=1` para
 volver al volcado de tokens. Un único jar, que sigue cumpliendo el contrato de invocación de las
@@ -155,14 +163,20 @@ El compilador tiene que poder ejecutarse y testearse con **0, 1 o N logros en cu
 combinación**, y la de cero logros debe reproducir exactamente la especificación base de la
 cátedra.
 
-`ConfiguracionDelCompilador` pasa de cuatro booleanos a un `EnumSet<Logro>` que cubre los de las
-dos etapas, configurable por CLI (`--logros=ninguno`, `--logros=ternario,fors`) y por propiedad de
-sistema para los tests. Los tests llevan `@RequiereLogro` / `@RequiereLogroApagado`, implementadas
-como `ExecutionCondition` de JUnit 5: **saltean** el test cuando el logro no corresponde, no lo
-fallan.
+`ConfiguracionDelCompilador` envuelve un `EnumSet<Logro>` con los 14 logros conmutables de las dos
+etapas, configurable por CLI (`--logros=ninguno`, `--logros=ternario,for`, `--logros=etapa1`) y por
+la propiedad de sistema `-Dlogros` para los tests. El nombre de cada logro es el mismo flag con el
+que la gramática marca sus producciones, para que el enum y `minijava-ll1-logros.g` se lean uno
+contra el otro.
 
-A nivel gramática esa condición ya está verificada en las 1024 combinaciones. A nivel código se
-implementa en la Sesión 2.
+Los tests llevan `@RequiereLogro` / `@RequiereLogroApagado`, implementadas como `ExecutionCondition`
+de JUnit 5: **saltean** el test cuando el logro no corresponde, no lo fallan — un test que falla por
+un logro apagado estaría fallando por algo que el compilador no tiene que hacer. El corpus declara
+lo mismo en `resources/lexico/requisitos-de-logros.txt`, y un test verifica que cada requisito
+declarado corresponda a una dependencia real.
+
+A nivel gramática esa condición está verificada en las 1024 combinaciones; a nivel código, en 11
+configuraciones de la suite.
 
 ## 8. Impacto sobre el Analizador Léxico
 
@@ -176,10 +190,14 @@ Cuatro logros exigen tokens que **no figuran en «Aspectos Léxicos de MiniJava�
 | `->` | MiniLambdas E2 | se reconoce como `-` seguido de `>` |
 
 Se agregan **condicionados al interruptor de su logro**, de modo que con el logro apagado el
-comportamiento léxico de la Etapa 1 queda intacto y verificable. El cambio es acotado: los dos
-archivos de `tokens/`, `EstadoInicial` (el `?`) y el estado del operador `-` (que pasa a mirar si
-sigue un `>`). **No toca** el patrón State, ni el driver, ni el manejo de errores, ni el
-`SourceManager`.
+comportamiento léxico de la Etapa 1 queda intacto y verificable. `TablaDeLexemas` conoce el
+vocabulario completo y declara qué logro habilita cada token (`logroQueLoHabilita`); quien decide es
+el punto de reconocimiento: `EstadoIdMV` para `for` y `private`, `EstadoInicial` para el `?`, y
+`EstadoOperadorConSufijoOpcional` para el `->`. **No toca** el patrón State, ni el driver, ni el
+manejo de errores, ni el `SourceManager`, y no introduce estado mutable.
+
+Los tokens de floats **no** entran en ese mapa: el logro Floats I gobierna la forma del literal
+desde los estados numéricos, y `float` es palabra reservada aun con el logro apagado.
 
 Los tokens `:`, `++` y `--` ya existían desde la Etapa 1; `++` y `--` estaban en el léxico sin
 ninguna regla de la gramática que los usara, y el logro de posfijos es el que se los da.

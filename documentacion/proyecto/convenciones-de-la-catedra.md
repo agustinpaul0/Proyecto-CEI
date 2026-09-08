@@ -44,7 +44,11 @@ Estas NO son negociables, están tomadas literal de `Pautas Etapa 1.pdf` (slides
   y el tipo de la variable `init` en los testers para apuntar a cualquier clase con
   `public static void main` — se aprovechó esa libertad para evitar el nesting `main/java/main/`.
 - El *working directory* de los tests debe ser la raíz del proyecto Maven (`compilador/`), porque los
-  testers usan paths relativos duros: `resources/sinErrores/`, `resources/conErrores/`.
+  testers usan paths relativos duros. En el repositorio el corpus está separado por fase
+  (`resources/lexico/…`, `resources/sintactico/…`); los testers **de la cátedra** esperan
+  `resources/sinErrores/` y `resources/conErrores/`, así que al armar el zip de una entrega el
+  corpus de esa fase se copia a esos dos directorios (ver
+  [`comandos-y-entrega.md`](comandos-compilacion-y-entrega.md)).
 - **El código de error `[Error:Lexema|NroLinea]` no lleva columna** — es el contrato exacto de la
   cátedra y el tester lo compara literal. La columna (Reporte de Error Elegante,
   [`especificacion-lexica.md`](../lexico/especificacion-lexica-de-minijava.md)) va sólo en el mensaje legible que antecede

@@ -278,7 +278,7 @@ sólo haría el mensaje más difícil de leer.
 Esto vale **sólo** para el lexema de un error y para la representación de la línea en el detalle.
 El lexema de un **token** se imprime crudo, porque el contrato de la cátedra es que sea el texto
 exacto del fuente — un tabulador dentro de un `litString` sale como tabulador (ver
-`resources/sinErrores/stringConTabuladorInterior.java`).
+`resources/lexico/sinErrores/stringConTabuladorInterior.java`).
 
 Aparte de eso, los estados que siguen a una barra invertida (`EstadoCharEscapado`,
 `EstadoStringTrasBarra`) rechazan explícitamente el salto de línea en vez de consumirlo: una barra al

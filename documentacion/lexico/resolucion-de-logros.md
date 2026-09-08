@@ -60,7 +60,7 @@ floats de Java". Ver [`decisiones.md`](decisiones-de-logica.md) §3.2 y §3.3.
 **Cómo verificarlo:**
 
 ```bash
-java -jar target/Compilador.jar resources/sinErrores/floatFueraDelRangoDeJava.java
+java -jar target/Compilador.jar resources/lexico/sinErrores/floatFueraDelRangoDeJava.java
 mvn -o test -Dtest=LimitesNumericosTest
 ```
 
@@ -95,7 +95,7 @@ para demostrar algo que el escape ya demuestra.
 
 ```bash
 mvn -o test -Dtest=AnalizadorLexicoTest
-grep -l unicode resources/sinErrores/*.java resources/conErrores/*.java
+grep -l unicode resources/lexico/sinErrores/*.java resources/lexico/conErrores/*.java
 ```
 
 ## 3. Multi-detección de Errores Léxicos
@@ -139,7 +139,7 @@ los números, está en [`decisiones.md`](decisiones-de-logica.md) §4.3.
 **Cómo verificarlo:**
 
 ```bash
-java -jar target/Compilador.jar resources/conErrores/stringConDosEscapesInvalidos.java
+java -jar target/Compilador.jar resources/lexico/conErrores/stringConDosEscapesInvalidos.java
 mvn -o test -Dtest=CriterioDeRecuperacionTest,PropiedadesDelReporteTest
 ```
 
@@ -185,7 +185,7 @@ Los tres son hoy invariantes verificadas sobre entradas generadas.
 **Cómo verificarlo:**
 
 ```bash
-java -jar target/Compilador.jar resources/conErrores/lexConErrores01.java
+java -jar target/Compilador.jar resources/lexico/conErrores/lexConErrores01.java
 mvn -o test -Dtest=PosicionDelCaretTest,FormateadorDeErrorTest,ReporteDeErrorEleganteTest
 ```
 

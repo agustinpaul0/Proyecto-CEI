@@ -45,7 +45,7 @@ flowchart LR
     MP -->|"System.out"| Usuario
 ```
 
-**Módulo Principal** — `minijava.aplicacion.Main` + `ModuloPrincipal`. Es la interfaz con el usuario y
+**Módulo Principal** — `minijava.aplicacion.Main` + `ModuloPrincipalLexico`. Es la interfaz con el usuario y
 el **cliente** del analizador. Recibe la ruta del archivo por línea de comandos, abre el manejador,
 y entra en un bucle pidiendo tokens de a uno hasta recibir el token `EOF`. Imprime cada token que
 recibe y, al final, `[SinErrores]` o los reportes de error. Es también quien decide **qué hacer ante
@@ -57,7 +57,7 @@ invoca (`proximoToken()`), leyendo del manejador exactamente los caracteres que 
 más. No conoce a `System.out`, no decide políticas de error, no sabe qué hará el cliente con el
 token. Su implementación interna es el patrón State — §4 y [`patron-state.md`](patron-state-metodo-por-estado.md).
 
-**Manejador de Archivo** — `minijava.io.ManejadorDeArchivoEficiente`. Abstrae el acceso al archivo:
+**Manejador de Archivo** — `minijava.comun.io.ManejadorDeArchivoEficiente`. Abstrae el acceso al archivo:
 entrega un carácter por vez, lleva la cuenta de línea y columna, y sabe devolver el texto completo de
 la línea en curso (que el reporte de error necesita para dibujar el `^`).
 
@@ -84,8 +84,8 @@ if class}
 ```
 
 1. El usuario ejecuta `java -jar Compilador.jar programa.java`.
-2. `Main` valida que haya un argumento y delega en `ModuloPrincipal.ejecutar(ruta)`.
-3. `ModuloPrincipal` abre el archivo con el Manejador y crea un `AnalizadorLexico`.
+2. `Main` valida que haya un argumento y delega en `ModuloPrincipalLexico.ejecutar(ruta)`.
+3. `ModuloPrincipalLexico` abre el archivo con el Manejador y crea un `AnalizadorLexico`.
 4. Bucle: pide un token y lo imprime.
    Repite hasta `EOF`.
 5. Sin errores, imprime `[SinErrores]`. El manejador se cierra en un `finally`.
@@ -224,7 +224,7 @@ El trazado completo de un caso largo (`1.5e-3f`, siete estados) está en
 
 ### 5.1. `Salida` es una interfaz, no `System.out` esparcido
 
-Toda la salida pasa por `minijava.salida.Salida`. `SalidaEstandar` —la única implementación que usa
+Toda la salida pasa por `minijava.comun.salida.Salida`. `SalidaEstandar` —la única implementación que usa
 `Main`— delega en `System.out`, así que hacia afuera el comportamiento es exactamente el que exige la
 cátedra ("toda la salida por `System.out`").
 
@@ -235,13 +235,13 @@ stream global de la JVM en cada test — una alternativa más frágil para la ej
 
 ### 5.2. Todas las dependencias se inyectan por constructor
 
-`ModuloPrincipal` recibe su `Salida` y su configuración; `AnalizadorLexico` recibe su
-`ContextoLexico` ya construido, y el `ModuloPrincipal` es quien lo arma con la configuración que a su
+`ModuloPrincipalLexico` recibe su `Salida` y su configuración; `AnalizadorLexico` recibe su
+`ContextoLexico` ya construido, y el `ModuloPrincipalLexico` es quien lo arma con la configuración que a su
 vez recibió. Ninguna clase busca sus colaboradores en una variable global. Consecuencia práctica:
 cada pieza se testea sustituyendo colaboradores reales, sin necesidad de un framework de mocking.
 
 Que la cadena esté completa no es cosmético. Mientras `AnalizadorLexico` construía su propio
-`ContextoLexico` con la configuración por omisión, la configuración que `ModuloPrincipal` recibía de
+`ContextoLexico` con la configuración por omisión, la configuración que `ModuloPrincipalLexico` recibía de
 su llamador **se perdía en el camino**: los dos flags que lee el autómata (*Floats I* y *Unicodes*)
 no tenían efecto alguno al ejecutar el compilador de punta a punta. Los tests de configuración que
 existían no lo detectaban porque ejercitaban los otros dos flags, que se resuelven fuera del léxico.
@@ -315,21 +315,27 @@ que la cátedra recomienda explícitamente (Clase 02, slides 62-63).
 compilador/
 ├── pom.xml                       ← Maven: JUnit 5 (+vintage), jqwik, JaCoCo, PIT
 ├── resources/
-│   ├── sinErrores/               ← 76 casos válidos, con oráculo //#lexema,línea
-│   ├── conErrores/               ← 82 casos con error, con oráculo // [Error:lexema|línea]
-│   └── regresion/                ← casos que reprodujeron un defecto real (nunca se borran)
+│   ├── lexico/
+│   │   ├── sinErrores/           ← 76 casos válidos, con oráculo //#lexema,línea
+│   │   ├── conErrores/           ← 82 casos con error, con oráculo // [Error:lexema|línea]
+│   │   ├── regresion/            ← casos que reprodujeron un defecto real (nunca se borran)
+│   │   └── requisitos-de-logros.txt  ← a qué configuración de logros aplica cada caso
+│   └── sintactico/               ← el corpus de la Etapa 2
 └── src/
     ├── main/java/minijava/
-    │   ├── aplicacion/           ← Main, ModuloPrincipal
-    │   ├── config/               ← ConfiguracionDelCompilador
-    │   ├── io/                   ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
-    │   │                            contenido intacto), ManejadorDeArchivo + el reemplazo propio
-    │   ├── tokens/               ← Token (record inmutable), TipoDeToken (56 valores),
-    │   │                            TablaDeLexemas (los 49 tokens de lexema fijo)
-    │   ├── errores/              ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError,
-    │   │                            PosicionLexica, EscapadorDeNoImprimibles
-    │   ├── salida/               ← interfaz Salida + SalidaEstandar
+    │   ├── aplicacion/           ← Main, OpcionesDeInvocacion, ModuloPrincipalLexico,
+    │   │                            ModuloPrincipalSintactico
+    │   ├── comun/                ← lo que cruza todas las etapas
+    │   │   ├── config/           ← Logro, ConfiguracionDelCompilador, ParserDeConfiguracion
+    │   │   ├── io/               ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
+    │   │   │                        contenido intacto), ManejadorDeArchivo + el reemplazo propio
+    │   │   └── salida/           ← interfaz Salida + SalidaEstandar
+    │   ├── sintactico/           ← AnalizadorSintactico, primeros/, errores/ (Etapa 2)
     │   └── lexico/               ← AnalizadorLexico (el driver)
+    │       ├── tokens/           ← Token (record inmutable), TipoDeToken (60 valores),
+    │       │                        TablaDeLexemas (los 53 tokens de lexema fijo)
+    │       ├── errores/          ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError,
+    │       │                        PosicionLexica, EscapadorDeNoImprimibles
     │       ├── automata/         ← EstadoLexico, ResultadoDeTransicion, Continuar, Emitir
     │       ├── contexto/         ← ContextoLexico (fachada de BuilderDeLexema y
     │       │                        FabricaDeExcepcionesLexicas), AnclaDeError
@@ -424,17 +430,21 @@ por estado, trazado paso a paso) en [`../documentacion/patron-state.md`](patron-
 
 ```
 minijava/
-├── aplicacion/     Main (punto de entrada), ModuloPrincipal
-├── config/          ConfiguracionDelCompilador (flags de logros)
-├── io/              SourceManager + SourceManagerImpl (interfaz e impl ORIGINALES de la
-│                     cátedra, contenido sin tocar — sólo se movió el `package` al mudarlas
-│                     acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo
-│                     (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
-├── errores/         ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError, PosicionLexica
-│                     (las coordenadas del reporte), EscapadorDeNoImprimibles
-├── tokens/          Token (record inmutable), TipoDeToken, TablaDeLexemas
-├── salida/          interfaz Salida + implementaciones (real / en memoria para tests)
+├── aplicacion/     Main (punto de entrada), OpcionesDeInvocacion (la línea de comandos),
+│                    ModuloPrincipalLexico y ModuloPrincipalSintactico
+├── comun/          lo compartido por todas las etapas
+│   ├── config/      Logro (los 14 conmutables), ConfiguracionDelCompilador,
+│   │                 ParserDeConfiguracion (--logros / -Dlogros)
+│   ├── io/          SourceManager + SourceManagerImpl (interfaz e impl ORIGINALES de la
+│   │                 cátedra, contenido sin tocar — sólo se movió el `package` al mudarlas
+│   │                 acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo
+│   │                 (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
+│   └── salida/      interfaz Salida + implementaciones (real / en memoria para tests)
+├── sintactico/     AnalizadorSintactico, primeros/, errores/ — la Etapa 2
 └── lexico/          AnalizadorLexico (el driver)
+    ├── tokens/         Token (record inmutable), TipoDeToken, TablaDeLexemas
+    ├── errores/        ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError, PosicionLexica
+    │                    (las coordenadas del reporte), EscapadorDeNoImprimibles
     ├── automata/       EstadoLexico, ResultadoDeTransicion + Continuar/Emitir
     ├── contexto/       ContextoLexico (fachada de BuilderDeLexema +
     │                    FabricaDeExcepcionesLexicas), AnclaDeError
@@ -482,7 +492,7 @@ archivo: [`manejo-de-errores.md`](../compartido/manejo-de-errores.md).
 
 ### Por qué el `SourceManagerImpl` de la cátedra no sirve tal cual
 
-`SourceManagerImpl.java` (contenido original de la cátedra, hoy en `minijava.io`) lee **por líneas**
+`SourceManagerImpl.java` (contenido original de la cátedra, hoy en `minijava.comun.io`) lee **por líneas**
 (`reader.readLine()`) y usa `reader.ready()` para decidir si hay más contenido. Ese diseño **falla
 contra los propios casos de ejemplo de la cátedra**: `testersLexico/resources/sinErrores/
 lexSinErrores01.java` tiene 21 saltos de línea y termina en newline; el oráculo (`//#$,22`) espera el

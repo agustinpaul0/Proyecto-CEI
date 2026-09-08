@@ -91,7 +91,7 @@ equivoqué y después lo arreglé» —que no va—.
 | Sesión | Foco | Estado |
 |---|---|---|
 | **S1** | Conceptos + gramática | **Terminada** |
-| **S2** | Cimientos + arranque del parser | Pendiente |
+| **S2** | Cimientos + arranque del parser | **Terminada** |
 | **S3** | Parser completo | Pendiente |
 | **S4** | Robustez, testing y entrega | Pendiente |
 | **S5** | Reserva | Pendiente |
@@ -124,10 +124,35 @@ herramientas y documentación.
 - **84 casos** de aceptación y rechazo propios, más los **8 de la cátedra**, que además fallan en
   el token exacto que declara la expectativa de cada uno.
 
+### Lo que dejó la S2
+
+Primer código de la Etapa 2. `mvn verify` verde, 889 tests.
+
+- **Código y corpus reorganizados por fase**: `minijava/{comun,lexico,sintactico,aplicacion}/` y
+  `resources/{lexico,sintactico}/`. El árbol de tests espeja el de producción.
+- **Los logros son un `EnumSet<Logro>`** con los 14 conmutables de las dos etapas, configurable por
+  `--logros=` y por `-Dlogros=`. El nombre de cada logro es el flag con el que la gramática marca
+  sus producciones, y hay un test que lo verifica.
+- **Un solo `Main` con selector de etapa**: sin opciones corre el sintáctico; `--etapa=1` vuelve al
+  volcado de tokens con los logros de la Etapa 1.
+- **Los cuatro tokens de la Etapa 2** (`for`, `private`, `?`, `->`), cada uno detrás de su logro.
+  Apagado el logro, el léxico se comporta exactamente como la Etapa 1.
+- **La suite corre por fase y por configuración de logros**: `@RequiereLogro` /
+  `@RequiereLogroApagado` saltean el test que no aplica, y el corpus léxico declara sus requisitos
+  en `resources/lexico/requisitos-de-logros.txt` en vez de asumirlos. Verificado en 11
+  configuraciones, `-Pfase-lexico` (643 tests) y `-Pfase-sintactico` (247).
+- **El núcleo del analizador sintáctico**: `Inicial`, `ListaClases`, `Clase`, `Interfaz`,
+  `GenericidadOpcional`, `HerenciaOpcional`, `ExtensionOpcional`, `TipoReferencia`,
+  `TipoGenericoOpcional` y `ArgumentoDeTipo`, con los Primeros como constantes con nombre en
+  `sintactico/primeros/`. El logro de genericidad ya funciona de punta a punta.
+- **El contrato de salida de la Etapa 2** completo: `Compilacion Exitosa` + `[SinErrores]`, y
+  `Error Sintactico en linea N: ...` + `[Error:Y|N]`, con `$` de lexema para el `eof`.
+
 ### Estado de la Etapa 1
 
-Entregada, **pendiente de corrección**. Tiene que seguir siendo ejecutable y testeable de forma
-aislada mientras la Etapa 2 avanza: `--etapa=1` en el `Main` y `mvn test -Pfase-lexico`.
+**Corregida: todos los logros alcanzados, sin errores ni observaciones.** Tiene que seguir siendo
+ejecutable y testeable de forma aislada mientras la Etapa 2 avanza: `--etapa=1` en el `Main` y
+`mvn test -Pfase-lexico`.
 
 ### Resultado de la revisión externa de la gramática
 
@@ -246,9 +271,11 @@ caso**; `--etapa=1` sigue volcando tokens.
 
 **Objetivo.** Todos los no terminales de la gramática final implementados.
 
-**Leer antes.** Clase 5 slides 33-62 otra vez, `documentacion/gramatica-minijava.md`.
+**Leer antes.** Clase 5 slides 33-62 otra vez, `documentacion/gramatica-minijava.md`, y
+`compilador/src/main/java/minijava/sintactico/`, que ya tiene el núcleo escrito.
 
-**Trabajo.** Un método privado por no terminal, en el orden de la gramática. Los conjuntos de
+**Trabajo.** Continuar desde `ListaMiembros` y `ListaMetodosInterfaz`, un método privado por no
+terminal, en el orden de la gramática. Los conjuntos de
 Primeros van como constantes con nombre en un paquete `primeros/`, no inline, cada una con un
 comentario que cite la producción, para que el código se lea contra el informe. Mensaje de error
 según Pautas slide 25: `Error Sintactico en linea N: se esperaba X se encontro "Y"` más
@@ -282,9 +309,6 @@ Colchón. Si no se usa, se dedica a subir cobertura y a buscar más casos raros.
 
 Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de resolverlo.
 
-- [ ] **Explicar al arrancar la S2, antes de codear.** El flujo `match` ↔ métodos por no terminal,
-      con un fuente MiniJava chico corrido paso a paso. Pedido explícito del usuario, pendiente
-      desde la S1.
 - [ ] **Implementar en la S3.** Los chequeos del analizador que la gramática no puede expresar: el
       indicador `dentroDeLambda` para el `this` explícito e implícito, el conjunto de parámetros
       para la captura de variables, y la verificación de que el contenido entre paréntesis de una
@@ -295,9 +319,21 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
       sobre el mismo corpus y exija veredictos idénticos. Hoy la equivalencia está sostenida por
       84 casos elegidos a mano; esto la volvería verificable, y responde de frente a Clase 3
       slide 42, que exige preservar el lenguaje pero no da método para demostrarlo.
-- [ ] **Atender cuando llegue.** La corrección del léxico de la Etapa 1.
+- [ ] **Terminar en la S3.** `ListaMiembros` y `ListaMetodosInterfaz` cubren hoy sólo su producción
+      vacía: el compilador acepta clases e interfaces **sin miembros** y rechaza el resto en la
+      llave de cierre. Es un pendiente por alcance, declarado en el propio `AnalizadorSintactico` y
+      cubierto por `CasosDeLaCatedraTest`, que fija en qué línea frena hoy cada uno de los 5 casos
+      de la cátedra con miembros.
 - [ ] Los logros de la Etapa 1 que sigan siendo alcanzables se mantienen; los de Etapa 2 no
       implementables por código son *Entrega Anticipada*, *Imbatibilidad* y *Well Done!*.
+
+### Cerrado en la S2
+
+- [x] La explicación del flujo `Main` → módulo → `AnalizadorSintactico` → `match` ↔ métodos por no
+      terminal, corrida paso a paso sobre un fuente MiniJava.
+- [x] La corrección del léxico de la Etapa 1: llegó, y salió perfecta.
+- [x] Que el corpus léxico corra en función de los logros prendidos en vez de asumir una
+      configuración fija.
 
 ### Cerrado en la S1
 
@@ -356,6 +392,10 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria 
 bash herramientas/casos-gramatica.sh                                            # 69/69
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java  # 8/8
 mvn verify                                                                      # suite + cobertura
+mvn test -Dlogros=ninguno                                                       # cero logros
+mvn test -Dlogros=todos                                                         # todos
+mvn test -Pfase-lexico                                                          # sólo el léxico
+mvn test -Pfase-sintactico                                                      # sólo el sintáctico
 ```
 
 Y, cuando el informe cambie:
