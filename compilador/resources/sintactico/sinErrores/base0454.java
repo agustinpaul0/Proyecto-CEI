@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class F7 implements Y8 { public M1Is_A ( ) { if ( ! Kzc_5j . j_70_ ( ) . yC . t_r && ! ".0" != - 7917949 - 40831 <= - false ) while ( this = false ) { } } public E_1 ( Oo x ) { return 1834 = 'g' < true ; ; while ( + 5683 ) return ; var n = + 4873 ; return ; } public MZl ( ) { var y = ! true > - true ; } static void a ( ) { if ( ! true ) ; else ; var d = + true ; { ; return ; } } EU < YlX > s ; } class WG < Z > implements W__ < CY > { }

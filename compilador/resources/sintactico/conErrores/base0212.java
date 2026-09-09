@@ -1,0 +1,2 @@
+///[Error:>|2]
+interface EO < F > { } interface Q8 extends E_ < > { } class I1__ < D > { public G01 ( boolean m , SSM b_ , X ty ) { if ( 'w' * + true + - null ) + false ; if ( true = - true ) var u55 = - null ; } public H1 ( I_ < S > [ ] [ ] [ ] x , boolean [ ] [ ] b , V2_ [ ] j6 , int [ ] nV ) { while ( ! null <= false ) { } } } interface Vx_ extends Xy { } interface Eb < I > extends P96_ < Z > { } interface Gz < M > extends KgzW { } class Z1 < K > { }

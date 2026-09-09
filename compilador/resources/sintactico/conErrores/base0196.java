@@ -1,0 +1,2 @@
+///[Error:u|2]
+interface Cg extends N_ { LG [ ] [ ] t ( boolean [ ] [ ] [ ] o , E hD , char [ ] [ ] [ ] [ ] m , G i_9g ) ; } class GONUk_6 < F > implements X3 < XpSC > { public N_ ( boolean p ) { return ! this < true ; } } interface DhA__ { I e ( ) ; Q__9_ < C_ > [ ] a ( ) ; void kvU ( boolean [ ] md ) ; void j_ ( ) ; void b_3 ( K [ ] m , Q [ ] nK , G aA ) ; u ( ) ; } interface F_3 { } class F_2 < D > { C [ ] u ( ) { var t = true ; return ; } } class BW_mJ4_ { Z w ( ) { { } } public Z84 ( ) { return ; ; ; } }

@@ -1,0 +1,2 @@
+///[Error:(|2]
+interface Zx < K > { } class A_ extends I7C_ < ETNOK > { public ( boolean brJz_E ) { } int [ ] [ ] c ; } class SK < T > implements XUmB5 < I > { int [ ] [ ] p ( Bb_ [ ] q , Ww < B > t , I s ) { ; } } interface Zqk { E yz ( char [ ] [ ] z , int [ ] [ ] [ ] yi ) ; } class I432 { boolean iMF ( Y [ ] [ ] u , Tg9 [ ] i ) { } O n ( boolean [ ] f , char [ ] q ) { ; } public Ph ( boolean [ ] q ) { return ; return ; ; ; } } interface P_ extends V3q { }

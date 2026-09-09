@@ -1,0 +1,2 @@
+///[Error:(|2]
+class U_ < Z > { } interface KEc extends S4 { } class Q0_ implements Yh < O > { public P17R ( ) { { { ; ; ; } } } void wGTK ( ) { } public S1Y ( Q [ ] x_ , boolean gv ) { } static char oa_ ( int [ ] b ) { } static IKz ( boolean [ ] [ ] a ) { { { } ; } ; ; return ; ; } E s ( ) { } } interface In < Q > extends E5 < E > { } interface CBl_ extends G1 { } class T8 < V > { } interface Bk_Y_7 extends Om_ { void p_C ( boolean e_ ) ; }

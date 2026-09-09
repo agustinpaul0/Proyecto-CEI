@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class IDpB71S_ { public void m ( D [ ] [ ] t_ ) { } } interface W_L extends F6_E { int [ ] c ( DibR < G6 > [ ] [ ] [ ] ks_ , char [ ] f , M qx ) ; public void u ( int [ ] [ ] [ ] [ ] [ ] o6zs6 , M6 v ) ; void k ( ) ; } interface PQ_x extends WfKO8 < P_V > { void e ( M [ ] t_YR4K , boolean [ ] n , H [ ] oA ) ; } class Ml extends X__t5 < L > { private void g__ ( ) { } private Z d ( boolean [ ] k34RK2 , U7I6Wg [ ] [ ] [ ] b8h ) { } }

@@ -1,6 +1,7 @@
 package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipalLexico;
+import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
 import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
@@ -45,7 +46,7 @@ class TesterDeCasosConErroresEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casos")
     void elCasoProduceExactamenteLosErroresYTokensDeclarados(Path caso) throws IOException {
-        var requisitos = RequisitosDeLogrosDelCaso.de(caso);
+        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, caso);
         var configuracion = ConfiguracionDeLaCorrida.actual();
         assumeTrue(requisitos.seCumplenEn(configuracion),
                 () -> caso + ": no aplica a esta configuracion de logros ("

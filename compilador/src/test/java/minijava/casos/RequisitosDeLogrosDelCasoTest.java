@@ -1,5 +1,6 @@
 package minijava.casos;
 
+import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
 import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.config.Logro;
 import org.junit.jupiter.api.Tag;
@@ -24,7 +25,7 @@ class RequisitosDeLogrosDelCasoTest {
 
     @Test
     void unCasoSinRequisitosAplicaACualquierConfiguracion() {
-        var requisitos = RequisitosDeLogrosDelCaso.de(RAIZ.resolve("sinErrores/lexSinErrores01.java"));
+        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve("sinErrores/lexSinErrores01.java"));
 
         assertTrue(requisitos.seCumplenEn(ConfiguracionDelCompilador.ninguno()));
         assertTrue(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos()));
@@ -33,7 +34,7 @@ class RequisitosDeLogrosDelCasoTest {
 
     @Test
     void unCasoQueExigeUnLogroPrendidoNoAplicaSinEl() {
-        var requisitos = RequisitosDeLogrosDelCaso.de(RAIZ.resolve("sinErrores/floats.java"));
+        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve("sinErrores/floats.java"));
 
         assertTrue(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos()));
         assertFalse(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos().sin(Logro.FLOATS)));
@@ -43,7 +44,7 @@ class RequisitosDeLogrosDelCasoTest {
 
     @Test
     void unCasoQueExigeUnLogroApagadoNoAplicaConEl() {
-        var requisitos = RequisitosDeLogrosDelCaso.de(RAIZ.resolve("conErrores/preguntaSuelta.java"));
+        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve("conErrores/preguntaSuelta.java"));
 
         assertTrue(requisitos.seCumplenEn(ConfiguracionDelCompilador.soloEtapa(1)));
         assertFalse(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos()));
@@ -53,8 +54,8 @@ class RequisitosDeLogrosDelCasoTest {
 
     @Test
     void elCasoSeIdentificaIgualPorRutaCompletaQuePorDirectorioYNombre() {
-        assertEquals(RequisitosDeLogrosDelCaso.de(RAIZ.resolve("sinErrores/floats.java")),
-                RequisitosDeLogrosDelCaso.de(Path.of("sinErrores", "floats.java")));
+        assertEquals(RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve("sinErrores/floats.java")),
+                RequisitosDeLogrosDelCaso.de(Fase.LEXICO, Path.of("sinErrores", "floats.java")));
     }
 
     // Un caso declarado en el manifiesto que después se renombra o se borra
@@ -78,7 +79,7 @@ class RequisitosDeLogrosDelCasoTest {
     void todoRequisitoDeclaradoCorrespondeAUnaDependenciaReal() throws IOException {
         List<String> falsos = new ArrayList<>();
         for (String caso : casosDeclarados()) {
-            var requisitos = RequisitosDeLogrosDelCaso.de(RAIZ.resolve(caso));
+            var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve(caso));
             for (Logro logro : requisitos.prendidos()) {
                 if (!laSalidaCambiaAlPrender(caso, logro)) {
                     falsos.add(caso + " declara requerir " + logro.getNombre() + " prendido");

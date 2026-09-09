@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface Z594c7v_2 { Y [ ] [ ] z7j_ ( ) ; } class R__8e_r implements BG < T > { } class EEq extends X5 < V > { public O_ ( boolean [ ] s1__H , J k , QO < L > g ) { } }

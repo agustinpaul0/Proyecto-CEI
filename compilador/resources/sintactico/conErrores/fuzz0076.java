@@ -1,0 +1,2 @@
+///[Error:(|2]
+class VI < J > extends YA8 { public static void zR_ ( boolean gLW ) { { { for ( ; ; ) for ( ; ; ) ; J41_ . x ( ) ++ ; } float [ ] [ ] o ; } } } class HW { public void l_B ( J6 < V > n ) { for ( ; null ; ) return ; char [ ] e_1 = 319114 , w0n65 ; if ( + false ) boolean fS , ex ; else { { } } int r , n7O_ ; return ; } } interface P__p { ( ) } class P_0M < W > implements UCU { } interface K_3f extends FT < M > { } class T__ extends O_43nws { } class K_ { private V [ ] oX ( ) { } }

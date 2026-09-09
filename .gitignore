@@ -25,6 +25,12 @@ out/
 .DS_Store
 Thumbs.db
 
+# Fuzzer del corpus sintáctico: el corpus generado SÍ se versiona, el andamiaje
+# para regenerarlo no. `make venv` reinstala Grammarinator y baja los jars.
+compilador/.venv/
+compilador/herramientas/fuzz/trabajo/
+compilador/herramientas/fuzz/jars/
+
 # Logs y temporales
 *.log
 *.tmp

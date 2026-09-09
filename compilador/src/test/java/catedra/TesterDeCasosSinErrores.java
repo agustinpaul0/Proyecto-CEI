@@ -8,6 +8,7 @@ import java.util.List;
 
 import minijava.aplicacion.Main;
 import minijava.casos.RequisitosDeLogrosDelCaso;
+import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
 import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.casos.VolcadoDeCasos;
 import org.hamcrest.CoreMatchers;
@@ -157,7 +158,7 @@ public class TesterDeCasosSinErrores {
     // Un caso cuyos requisitos de logros no se cumplen en esta corrida se SALTEA
     // (JUnit 4 lo hace con Assume), no falla. Ver RequisitosDeLogrosDelCaso.
     private void saltearSiNoAplicaAEstaCorrida(String rutaDelFuente) {
-        var requisitos = RequisitosDeLogrosDelCaso.de(Path.of(rutaDelFuente));
+        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, Path.of(rutaDelFuente));
         var configuracion = ConfiguracionDeLaCorrida.actual();
         Assume.assumeTrue(
                 rutaDelFuente + ": no aplica a esta configuracion de logros ("

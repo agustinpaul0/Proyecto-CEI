@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class LKr extends W1 < B > { public D_81Kn ( ) { } public Tg_ ( P [ ] [ ] [ ] [ ] [ ] v ) { } } class B_LQ < S > implements Ca8kG { } class B9_i_ implements RJ { void vD ( ) { while ( true ) ; while ( ! false ) { } { } { } ; } } interface PH_ extends Q_hm3 < E > { int [ ] t ( Z_ < Z > [ ] [ ] [ ] wJ , int [ ] [ ] b , M r , C cG ) ; N t ( I [ ] t ) ; } class Vg7J < O > { }

@@ -1,0 +1,2 @@
+///[Error:void|2]
+interface Mb < G > { } void u2 ( Y m , J [ ] [ ] u , boolean [ ] u ) { this ++ == false > 7.0 = + null ; } class Kt63 < J > { C7 r0 ( ) { { } } } interface G7u < S > extends WDQg_B_K { public void jE_ ( ) ; } interface B9 extends TyY { } class JD < Y > { } interface KU < I > { public boolean m ( ) ; Vk_G [ ] r ( int [ ] jiy , N_e [ ] [ ] nZ ) ; public LH [ ] eE ( ) ; void vB ( I h ) ; F_ p ( ) ; public void xR ( ) ; }

@@ -1,0 +1,2 @@
+///[Error:int|2]
+class HO_ { R [ ] [ ] x ( Jr [ ] [ ] [ ] [ ] l , Z [ ] [ ] g ) { } float [ ] r47 ( ) { var j2 = + Or2k . a ( ) ++ ? ! true : 34880 % false ; } Uf ( ) { U8N < B > wX = + false ; { { return ; ; } } P [ ] [ ] dmt_4d_ , h ; } } class Dp_ { } class OsU { } class B___ < U > { private void f2_0 ( ) { { return ; { ; } for ( ; ; ) ; } ; } static boolean u_S_b_J int [ ] [ ] public static char t_ ( float [ ] [ ] [ ] ym_ ) { } }

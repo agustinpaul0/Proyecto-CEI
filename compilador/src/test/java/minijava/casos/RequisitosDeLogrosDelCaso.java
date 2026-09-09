@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -16,23 +17,42 @@ import java.util.Map;
 import java.util.Set;
 
 // A qué configuración de logros aplica un caso del corpus, según el manifiesto
-// resources/lexico/requisitos-de-logros.txt, que documenta el formato y el
-// motivo de estar afuera de los casos.
+// de su fase, que documenta el formato y el motivo de estar afuera de los casos.
+//
+// Hay un manifiesto por fase y no uno solo porque la clave es
+// <directorio>/<archivo>: `sinErrores/x.java` del léxico y del sintáctico
+// chocarían en un mapa único.
 //
 // Es la misma semántica que @RequiereLogro sobre un test: un caso cuyos
 // requisitos no se cumplen se SALTEA, no falla.
 public record RequisitosDeLogrosDelCaso(Set<Logro> prendidos, Set<Logro> apagados) {
 
-    private static final Path MANIFIESTO =
-            Path.of("resources", "lexico", "requisitos-de-logros.txt");
+    public enum Fase {
+        LEXICO("lexico"), SINTACTICO("sintactico");
+
+        private final String carpeta;
+
+        Fase(String carpeta) {
+            this.carpeta = carpeta;
+        }
+
+        Path manifiesto() {
+            return Path.of("resources", carpeta, "requisitos-de-logros.txt");
+        }
+    }
 
     private static final RequisitosDeLogrosDelCaso SIN_REQUISITOS =
             new RequisitosDeLogrosDelCaso(Set.of(), Set.of());
 
-    private static final Map<String, RequisitosDeLogrosDelCaso> POR_CASO = leerManifiesto();
+    private static final Map<Fase, Map<String, RequisitosDeLogrosDelCaso>> POR_FASE =
+            new EnumMap<>(Fase.class);
 
-    public static RequisitosDeLogrosDelCaso de(Path caso) {
-        return POR_CASO.getOrDefault(claveDe(caso), SIN_REQUISITOS);
+    public static RequisitosDeLogrosDelCaso de(Fase fase, Path caso) {
+        return manifiestoDe(fase).getOrDefault(claveDe(caso), SIN_REQUISITOS);
+    }
+
+    public static Map<String, RequisitosDeLogrosDelCaso> manifiestoDe(Fase fase) {
+        return POR_FASE.computeIfAbsent(fase, RequisitosDeLogrosDelCaso::leerManifiesto);
     }
 
     public boolean seCumplenEn(ConfiguracionDelCompilador configuracion) {
@@ -68,13 +88,14 @@ public record RequisitosDeLogrosDelCaso(Set<Logro> prendidos, Set<Logro> apagado
                 : directorio.getFileName() + "/" + normalizado.getFileName();
     }
 
-    private static Map<String, RequisitosDeLogrosDelCaso> leerManifiesto() {
+    private static Map<String, RequisitosDeLogrosDelCaso> leerManifiesto(Fase fase) {
+        Path manifiesto = fase.manifiesto();
         Map<String, RequisitosDeLogrosDelCaso> requisitos = new HashMap<>();
         List<String> lineas;
         try {
-            lineas = Files.readAllLines(MANIFIESTO, StandardCharsets.UTF_8);
+            lineas = Files.readAllLines(manifiesto, StandardCharsets.UTF_8);
         } catch (IOException excepcion) {
-            throw new UncheckedIOException("No se pudo leer " + MANIFIESTO, excepcion);
+            throw new UncheckedIOException("No se pudo leer " + manifiesto, excepcion);
         }
 
         for (String linea : lineas) {
@@ -85,26 +106,27 @@ public record RequisitosDeLogrosDelCaso(Set<Logro> prendidos, Set<Logro> apagado
             String[] campos = limpia.split("\\|", -1);
             if (campos.length != 3) {
                 throw new IllegalStateException(
-                        MANIFIESTO + ": se esperaban tres campos separados por | en: " + limpia);
+                        manifiesto + ": se esperaban tres campos separados por | en: " + limpia);
             }
             String caso = campos[0].strip();
             var anterior = requisitos.put(caso,
-                    new RequisitosDeLogrosDelCaso(logros(campos[1]), logros(campos[2])));
+                    new RequisitosDeLogrosDelCaso(logros(manifiesto, campos[1]),
+                            logros(manifiesto, campos[2])));
             if (anterior != null) {
-                throw new IllegalStateException(MANIFIESTO + ": caso declarado dos veces: " + caso);
+                throw new IllegalStateException(manifiesto + ": caso declarado dos veces: " + caso);
             }
         }
         return Map.copyOf(requisitos);
     }
 
-    private static Set<Logro> logros(String campo) {
+    private static Set<Logro> logros(Path manifiesto, String campo) {
         EnumSet<Logro> logros = EnumSet.noneOf(Logro.class);
         for (String nombre : campo.split(",")) {
             if (nombre.isBlank()) {
                 continue;
             }
             logros.add(Logro.porNombre(nombre).orElseThrow(() -> new IllegalStateException(
-                    MANIFIESTO + ": logro inexistente: " + nombre.strip())));
+                    manifiesto + ": logro inexistente: " + nombre.strip())));
         }
         return logros;
     }

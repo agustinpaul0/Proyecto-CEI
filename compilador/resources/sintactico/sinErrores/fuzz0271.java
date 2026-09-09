@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface MX extends M6__rC1K < F1c_W > { } class T_ < W > implements SH { public char d = R_ . dXG_ ( ) != false >= sJA ( ) ++ ? + T2j0 . a ( ) ++ ? false : null = 73.87e+1 ? - false : null : ! ' ' ? ' ' && '\n' && + false : + this ? null : true <= + false ; Vg < T > [ ] [ ] l ( L w , S [ ] es ) { if ( null ) return ; } private static P [ ] [ ] zW ( ) { } }

@@ -1,0 +1,2 @@
+///[Error:;|2]
+interface AG < E > { void g ( ) ; } interface Vc < G > { T q ( ) ; void h ( ) ; } interface ZvV extends H10J_0 < P > { } class H2 extends U_ { public WY ( int x , int t ) { var dfM = this ; var o_ = ; var z7 = false ; } } interface FVDM extends VRW { } interface C5 < N > extends VT__rUx < KV > { void q6 ( ) ; } interface Y2j { void o ( boolean [ ] [ ] oS ) ; } interface EZM_6_X7 < R > extends XC < Rh > { } class F7 < Z > extends X3M1 { } interface TF4 < X > { } interface R0 < J > extends I_ { void v ( ) ; Y_ f ( ) ; } class Pw < E > extends E6 { }

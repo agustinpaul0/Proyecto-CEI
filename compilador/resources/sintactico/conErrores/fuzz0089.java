@@ -1,0 +1,2 @@
+///[Error:<|2]
+interface Z_ { } class U_ extends OV < K > { } interface Z2 extends E_ { public void f_ ( char iP ) ; char j ( ) ; } interface I79 { } interface S0_ < M > extends SX_ { } interface P8v < R > extends K_ < Y > { } class J_ < H > { } interface KX { } interface F_o2 < N > extends < X > { Nz1 nq ( ) ; } class U7w { void j ( ) { } Uy ( ) { } public A [ ] s5_ ( ) { } private O g ( ) { } } class O_ < A > extends L9 { public Vk < A > [ ] [ ] mS ; } interface Lu extends I_ < Q > { public char w7 ( ) ; public int c_ ( ) ; }

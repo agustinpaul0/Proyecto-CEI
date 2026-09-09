@@ -1,0 +1,2 @@
+///[Error:c|2]
+class IG__6B extends N8T2 < B > { } interface Iq { QOQ < ZR > pSz ( c , L5 < U > o ) ; void f ( Z_5 < G > s ) ; void m ( F e2 ) ; } class Xw extends KaHi3 < V > { } interface Z_5 { KDV__h < U3 > r__ ( I_ < J_ > j , char [ ] [ ] gc4o , A [ ] p ) ; void n ( ) ; void wXS5x ( B_6 < F > ww ) ; void a ( boolean n_x ) ; void e ( W v3 ) ; void uT ( ) ; void e ( ) ; Ork [ ] [ ] [ ] t ( ) ; H n ( ) ; int i ( ) ; void e ( ) ; void g ( ) ; } interface KM { E gr_hll ( D f , V [ ] [ ] [ ] s_ , R oQ , int s_g0 ) ; } class Hv implements Ndi { }

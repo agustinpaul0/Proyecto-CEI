@@ -1,0 +1,2 @@
+///[Error:}|2]
+interface Tg extends W_ < M > { void b ( UB [ ] [ ] [ ] [ ] [ ] [ ] kOK , char [ ] z ) ; char q ( char [ ] [ ] [ ] [ ] [ ] a , MT < OE_ > x , K x ) ; void e ( char u , boolean [ ] qf , P [ ] a , G q ) ; D___ < R_R > [ ] [ ] [ ] [ ] [ ] t ( GV [ ] bO , G2c s ) ; } class Je extends E9 < C > { } class L_d_ < C > { } class OZ implements XJr < Jk > { } interface VXS7 { L6 < O7 > [ ] [ ] } class Er4 < K > extends I0 { } interface Pk { void qcn ( ) ; } class N_ < I > extends MJ < E > { }

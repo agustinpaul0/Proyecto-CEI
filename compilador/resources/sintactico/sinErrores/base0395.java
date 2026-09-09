@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface Mb < G > { } class Z8Y_ { public H_2 ( Y m , J [ ] [ ] u , boolean [ ] u ) { while ( '[' > - this = ! null || false ) if ( ! false = ! null ) return ; else { } } boolean c ; public ZMX ( ) { if ( ':' ) ; else { } if ( true ) ; else ; { { ; } { } } ; } public E__ ( ) { } } class P_ extends TyY { } class JD < Y > { } interface KU < I > { K_ < CU_ > [ ] [ ] [ ] bU ( R c_VsK , Xre < O > rP ) ; } class Dk < H > { } class V4QC { }

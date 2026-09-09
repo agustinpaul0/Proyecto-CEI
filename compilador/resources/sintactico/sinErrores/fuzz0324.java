@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class Rz < J > implements N7_K0 { private static void vS ( ) { if ( 9797 != true % + true ? + false : 'R' ) { } else int [ ] [ ] [ ] [ ] [ ] [ ] x = null ; 't' / this ++ + ! 0f || null + null ; } void s ( ) { } public Y tAS ( ) { } public char [ ] [ ] q ( float [ ] [ ] y ) { for ( E w ; ; ) return ; } } interface P___DC < X > extends J_Q < W > { }

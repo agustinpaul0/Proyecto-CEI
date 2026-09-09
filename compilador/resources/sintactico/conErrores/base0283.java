@@ -1,0 +1,2 @@
+///[Error:boolean|2]
+class L1tB implements L5 { public Ib ( ) boolean s ( char g , G [ ] b ) { } public Rh ( ) { { } } int ld ( ) { { { } ; ; { } } return ; ; return ; ; } } interface NF { R [ ] [ ] [ ] t ( ) ; }

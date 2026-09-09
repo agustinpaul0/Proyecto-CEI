@@ -1,0 +1,2 @@
+///[Error:(|2]
+( ) { } class X_j__ < M > implements T_ < P > { } class W_5 { static V [ ] e2 ( ) { } public F e = AP__ . j ( ) . p . m_ ( ) ++ ; } class V_ < O > implements C_awD { } class IsH_ extends H_ { public void l ( P [ ] [ ] g , Z [ ] hA , char l2 ) { } private boolean y ( ) { } } interface FtS_d < L > { public void e ( U_S5 [ ] [ ] r ) ; } class Q_j extends H_w < Vl9 > { F [ ] gH7 ( N [ ] k ) { } }

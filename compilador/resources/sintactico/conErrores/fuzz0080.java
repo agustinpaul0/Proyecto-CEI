@@ -1,0 +1,2 @@
+///[Error:[|2]
+interface FO { } class V_ < A > implements QC59 < OE < W > > { public W_9d62g ( R3 l , boolean [ ] z_ ) { } } interface U_ < G > { } class D_e6 < V > { static void u ( char iJS ) { } } interface LJq { M_2 < H1 < P > > [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] t ( ) ; void fu ( R cw ) ; public Ps < H > [ ] l ( K [ ] m , char p ) ; } class L08 implements UQ__ { } [ ] [ ] class S6_ < C > extends Gx { } interface Wpnhii < T > { }

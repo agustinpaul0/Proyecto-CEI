@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class N_ < O > implements Fw_ { } class MbM < M > { } interface J1 < M > extends N0w < X > { void u ( ) ; } interface WI < R > extends N_ { void y__ ( ) ; } class T0 < G > { void pW ( ) { for ( boolean [ ] g__ ; ; ) return ; return ; } } interface I_ { QN < X > [ ] [ ] [ ] [ ] [ ] e1 ( B p6 ) ; } class N_ extends ZF { } class La { }

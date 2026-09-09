@@ -1,0 +1,2 @@
+///[Error:}|2]
+class O_6 < V > { public Sc ( ) { } char k ; X2C6 [ ] [ ] } interface ISY { } class Vra5Nh < D > extends NB < MsHI > { static I [ ] q ( WHL q6 ) { ; return ; { } } } interface DPg { E [ ] [ ] yn ( I__ < Ek_5 > [ ] [ ] u24__ ) ; void n ( ) ; void i ( US < Ve > ivv_ , Ty < Y > d , V_ [ ] [ ] [ ] [ ] s0__ , OFP6V0 t ) ; }

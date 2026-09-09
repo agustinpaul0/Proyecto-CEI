@@ -1,0 +1,2 @@
+///[Error:o|2]
+interface Z594c7v_2 { public void yqtpk ( ) ; } class R__8e_r implements BG < T > { } o . n1 ( ) class Y60__ < W > { private I_q5W ( ) { "[\t" * - false ; A [ ] [ ] [ ] ze , dI ; } private V [ ] [ ] [ ] [ ] s = - H__ . fP ( ) ++ ; private void oG ( char [ ] [ ] [ ] z , F g_ ) { for ( ; ; ) - true ; } } class PI < Z > extends HgM < O > { } class Oe < R > implements V9E { F a ; } class Ac implements I_ { }
