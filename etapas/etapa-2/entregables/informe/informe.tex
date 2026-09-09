@@ -1279,7 +1279,7 @@ $ python3 herramientas/primeros.py gramatica/minijava-base.g
 NO ES LL(1): 16 conflicto(s)
 
 $ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
---- 98 no terminales, 204 producciones, 60 terminales ---
+--- 104 no terminales, 214 producciones, 60 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
 \end{consola}
 
@@ -1349,7 +1349,7 @@ ambigüedades de la gramática} y que cada una tiene una resolución explícita.
 La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
 tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
 hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
-verifican \textbf{69 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
+verifican \textbf{87 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
 cuando está apagado.
 
 \begin{consola}
@@ -1414,6 +1414,83 @@ expectativa de cada caso: el \texttt{==} indica que el código \texttt{[Error:le
 derivado de la gramática coincide con el que la cátedra espera en los cuatro. La gramática no sólo
 reconoce el lenguaje correcto: falla donde tiene que fallar.
 
+\subsection{Tres reconocedores independientes de la misma gramática}
+\label{sec:tres-reconocedores}
+
+El argumento de corrección más fuerte del trabajo no es que el analizador acepte una lista de
+casos, sino que \textbf{tres implementaciones escritas por separado coincidan}. Las tres reconocen
+la misma gramática y salen del mismo archivo, pero no comparten una línea de código:
+
+\begin{description}
+  \item[El analizador de la entrega] Java, descendente recursivo, Esquema Simple de Clase 5.
+        Elige mirando los Primeros que \texttt{primeros\_a\_java.py} genera desde la gramática.
+  \item[El simulador] Python, con pila explícita, en \texttt{primeros.py}. Imita el mismo esquema
+        pero sin recursión, y existía antes que el analizador.
+  \item[El oráculo JavaCC] generado por \texttt{gramatica\_a\_javacc.py}. JavaCC es un generador de
+        parsers de terceros: se le da la gramática y escribe el parser. Con \texttt{LOOKAHEAD = 1}
+        usa exactamente la misma técnica.
+\end{description}
+
+\begin{decision}{qué prueba, y qué no prueba, que JavaCC no emita avisos}
+JavaCC avisa \texttt{Choice conflict involving two expansions} cuando dos alternativas de un mismo
+no terminal empiezan con el mismo token. Sobre la gramática final \textbf{no emite ninguno}, lo que
+es una confirmación independiente ---de una herramienta que calculó los conjuntos por su cuenta
+sobre las 214 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
+
+\textbf{No confirma la condición fuerte.} Se comprobó con dos gramáticas de control: ante
+\nt{S} $\to$ \tl{a} \tl{b} $\mid$ \tl{a} \tl{c} JavaCC avisa; ante \nt{Opt} $\to$ \tl{b} $\mid$
+$\varepsilon$ seguido de \tl{b} ---un conflicto Primeros--Siguientes--- no avisa nada. Las siete
+ambigüedades de la sección~\ref{sec:mas-ambiguedades} son de esa segunda clase, así que el silencio
+de JavaCC no dice nada sobre ellas y siguen auditándose con el registro propio.
+
+\textbf{Lo que sí lo hace útil como oráculo} es cómo resuelve lo que no puede predecir: JavaCC toma
+\textbf{la primera alternativa que coincide}, que es exactamente la resolución voraz que aplica
+este analizador y la que la sección~\ref{sec:mas-ambiguedades} declara para las siete. Por eso las
+tres implementaciones coinciden también en los casos ambiguos, y por eso el oráculo puede etiquetar
+el corpus: cuando dice \texttt{[Error:lexema|línea]}, ése es el error que el analizador tiene que
+dar.
+\end{decision}
+
+\subsection{Equivalencia de lenguajes con la gramática de la cátedra}
+
+Clase 4 exige adaptar la gramática \emph{«sin cambiar el lenguaje que genera»}. Eliminar recursión
+a izquierda y factorizar lo preservan \emph{en teoría}; \texttt{equivalencia\_de\_lenguajes.py} lo
+comprueba \emph{en la práctica} sobre las dos gramáticas concretas. Deriva una cadena por cada
+producción de cada gramática ---dos por cada producción anidable, porque un solo uso no distingue
+\texttt{a = b} de \texttt{a = b = c}--- y verifica que la otra la acepte. Como la gramática base no
+es LL(1), reconocerla necesita un algoritmo que tolere recursión a izquierda y ambigüedad: se usa
+un reconocedor de Earley.
+
+\begin{consola}
+$ python3 herramientas/equivalencia_de_lenguajes.py
+minijava-base.g: 126/126 producciones ejercitadas, 0 inertes
+minijava-ll1-logros.g (cero logros): 154/159 producciones ejercitadas, 5 inertes
+    inerte    ExpresionSinIdClase -> ...
+    ...
+
+579 mutantes comparados en las dos gramaticas.
+LAS DOS GRAMATICAS GENERAN EL MISMO LENGUAJE: toda produccion de cada una fue
+ejercitada y la otra estuvo de acuerdo.
+\end{consola}
+
+Las cinco producciones \emph{inertes} son las de \nt{ExpresionSinIdClase} y sus colas, que existen
+para compartirse entre dos logros y con cero logros no las referencia nadie. La cobertura por
+producción es lo que le da fuerza al chequeo: se validó contra dos controles negativos ---uno que
+ensancha el lenguaje final permitiendo \texttt{a = b = c} y otro que lo angosta quitando
+\nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
+
+\subsection{El analizador cita exactamente la gramática}
+
+Cada método del analizador lleva arriba, en un comentario, las producciones que traduce.
+\texttt{auditar\_analizador.py} compara esas citas contra la gramática y falla si una producción no
+la implementa nadie o si un comentario quedó viejo:
+
+\begin{consola}
+$ python3 herramientas/auditar_analizador.py
+220 producciones en la gramatica, 220 citadas por el analizador.
+EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
+\end{consola}
+
 \subsection{Resumen}
 
 \begin{center}
@@ -1421,24 +1498,197 @@ reconoce el lenguaje correcto: falla donde tiene que fallar.
 \toprule
  & \textbf{Gramática base} & \textbf{Gramática final} \\
 \midrule
-No terminales            & 60  & 98  \\
-Producciones             & 126 & 204 \\
-Terminales               & 51  & 60  \\
-Ambigüedades             & 2   & 0   \\
-Conflictos LL(1)& 16  & 0   \\
+No terminales                    & 60  & 104 \\
+Producciones                     & 126 & 214 \\
+Terminales                       & 51  & 60  \\
+Conflictos Primeros--Primeros    & 16  & 0   \\
+Ambigüedades sin declarar        & 2   & 0   \\
+Ambigüedades declaradas y resueltas & 0 & 7   \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-El crecimiento se reparte entre la corrección del núcleo (seis no terminales) y las nueve
-extensiones por logro. Ninguna ambigüedad y ningún conflicto de predicción quedan pendientes, en
-ninguna de las 1024 configuraciones.
+El crecimiento se reparte entre la corrección del núcleo y las nueve extensiones por logro. No
+queda ningún conflicto de predicción en ninguna de las 1024 configuraciones, y las siete
+ambigüedades que quedan están declaradas con su regla de resolución, que es lo que pide Clase 4,
+slide 49.
 
 \subsection{Tabla de Primeros}
 
 Conjunto de Primeros de cada producción de la gramática final, con todos los logros prendidos.
 
 \input{generado/tabla-primeros}
+
+% ===========================================================================
+\section{Decisiones tomadas con criterio propio}
+\label{sec:decisiones}
+% ===========================================================================
+
+Buena parte del trabajo de esta etapa no fue aplicar transformaciones mecánicas sino \emph{decidir}
+dónde la especificación admitía más de una lectura. Esta sección junta todas esas decisiones en un
+solo lugar, cada una con la regla que se aplicó y con la fuente que la respalda.
+
+El criterio de desempate, cuando lo hubo, es el que fija la cátedra: \emph{«todo lo que NO esté
+especificado para MiniJava tiene comportamiento por defecto igual al de Java»}.
+
+\subsection{Ambigüedades: qué árbol se elige}
+
+Las siete ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
+regla de implementación ---la vía que autoriza Clase 4, slide 49--- y todas de la misma forma:
+\textbf{voraz}, consumiendo todo lo que se pueda. Son tres ambigüedades conceptuales:
+
+\begin{center}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.62\linewidth}@{}}
+\toprule
+\textbf{Caso} & \textbf{Decisión} \\
+\midrule
+\emph{dangling else} & El \tl{else} liga al \tl{if} más cercano. En el analizador es el orden de
+las ramas: se toma \tl{else} apenas se lo ve. Coincide con Java. \\[2pt]
+\texttt{new int[3][4]} & Todas las dimensiones pertenecen a la creación; no es un acceso al
+arreglo recién creado. Coincide con Java, que lo lee como una creación 2-D. Heredada de la
+gramática de la cátedra. \\[2pt]
+Cuerpo de la lambda ($\times 5$) & \texttt{x -> a + b} es \texttt{x -> (a + b)}. Contagia a los
+cinco no terminales de cola. La introduce este trabajo al poner la lambda a nivel \nt{Primario};
+subirla al nivel del JLS la eliminaría, y se descartó porque produce el mismo analizador con
+quince producciones más. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Además, \nt{Asignacion} y \nt{Llamada} tienen cuerpos idénticos en la gramática original y por lo
+tanto toda sentencia-expresión tiene dos árboles. Se \textbf{colapsan en una sola producción}:
+distinguir una asignación de una llamada exige saber a qué se refiere el nombre de la izquierda, o
+sea una tabla de símbolos, y eso es trabajo del analizador semántico.
+
+\subsection{Dónde la especificación admitía más de una lectura}
+
+\begin{description}
+
+  \item[Asociatividad del ternario.] A derecha: \texttt{a ? b : c ? d : e} es
+        \texttt{a ? b : (c ? d : e)}. Es lo que hace Java.
+
+  \item[Los dos operandos del ternario.] El del medio es una \nt{Expresion} completa y el de la
+        derecha una \nt{ExpresionCondicional}, tal cual el JLS 15.25. En consecuencia
+        \texttt{a ? b = 1 : c} es válido y \texttt{a ? b : c = d} no lo es, que es exactamente lo
+        que acepta y rechaza \texttt{javac}.
+
+  \item[La asignación no encadena.] Todo lado derecho de un \tl{=} ---el de la asignación y el de
+        los cinco inicializadores--- es una \nt{ExpresionCondicional} y no una \nt{Expresion}.
+        \textbf{No es una decisión libre}: la regla original pone \nt{ExpresionCompuesta} ahí, o
+        sea que \texttt{a = b = c} nunca fue válido en MiniJava. Se preservó, y por eso tampoco
+        vale dentro del operando del medio del ternario.
+
+  \item[Genéricos anidados.] \texttt{List<List<Persona>>} cierra con \textbf{dos \tl{>}
+        separados}: el analizador léxico de MiniJava no tiene un token \tl{>>}, así que el
+        problema clásico de Java no se presenta.
+
+  \item[Visibilidad en métodos de interfaz.] Se admite \tl{public} y \textbf{no} \tl{private}.
+        Verificado contra \texttt{javac}: un método de interfaz \tl{private} exige cuerpo
+        (\emph{missing method body, or declare abstract}), y en MiniJava los métodos de interfaz
+        terminan en \tl{;} y ningún logro les agrega cuerpo, así que un \tl{private} ahí sería
+        siempre la forma que Java rechaza.
+
+  \item[Orden de los modificadores.] \texttt{public static void f()\{\}} se acepta y
+        \texttt{static public void f()\{\}} se rechaza. Es fiel a la gramática original, donde la
+        visibilidad precede al modificador; Java admitiría los dos órdenes, pero acá la
+        especificación \emph{sí} dice algo y gana sobre la regla de desempate.
+
+  \item[Inicializador de arreglos.] Es \textbf{anidable}: \texttt{new int[][]\{\{1,2\},\{3,4\}\}}
+        se acepta. El logro dice «como en Java» y sólo restringe \emph{dónde} puede aparecer
+        ---dentro de un \tl{new}--- no cuántas dimensiones admite.
+
+  \item[Notación diamante.] Sólo al instanciar una clase genérica. \texttt{new C<>()} se acepta;
+        \texttt{new C<>[3]} y \texttt{List<> x;} se rechazan. La restricción queda impuesta por la
+        \emph{gramática} ---el diamante sólo aparece en la rama que va a \nt{ArgsActuales}--- y no
+        delegada al semántico.
+
+  \item[El declarador tipado del \tl{for}.] \texttt{for (int i = 0; ; )} funciona con el logro
+        \emph{Fors!} aunque el de variables locales clásicas esté apagado, porque el logro dice
+        «\tl{for} similar a como es en Java» y en Java el \tl{for} clásico declara su propia
+        variable. Por eso el encabezado tiene su propio \nt{InicializacionDeDeclaradorFor} en vez
+        de reusar el de las variables locales. La misma declaración \emph{como sentencia} sigue
+        necesitando el otro logro: los dos son independientes.
+
+  \item[\texttt{float} en la gramática.] \tl{float} es token del léxico desde la Etapa 1 pero no
+        figura en las \emph{Reglas de Sintaxis}. Sin agregarlo como \nt{TipoPrimitivo} y como
+        \nt{Primitivo}, el logro de la etapa anterior quedaba inutilizable en ésta.
+
+  \item[El lexema del token EOF.] Es \tl{\$}. El material de la cátedra se contradice: Pautas
+        slide 26 y \emph{Aspectos Léxicos} §2.5 dicen \tl{\$}, y la \emph{Guía de uso de los
+        testers --- Etapa 2}, §5, dice que es vacío y que el código queda \texttt{[Error:|N]}. Como
+        los dos formatos son incompatibles bajo la comparación por contenido que hace el tester, se
+        consultó y se confirmó \tl{\$}.
+
+\end{description}
+
+\subsection{Qué verifica el analizador y qué queda para el semántico}
+
+El logro \emph{MiniLambdas E2} prohíbe usar \tl{this} y capturar variables dentro de una lambda.
+Nada de eso es expresable en una gramática libre de contexto: no hay forma de escribir «\tl{this}
+es válido, salvo debajo de un cuerpo de lambda». El criterio para decidir en qué etapa se verifica
+cada una fue: \textbf{si alcanza con información que el analizador acaba de leer, la verifica el
+analizador; si hace falta resolver un nombre contra su declaración, es del semántico.}
+
+\begin{center}
+\begin{tabular}{@{}p{0.26\linewidth}cp{0.55\linewidth}@{}}
+\toprule
+\textbf{Restricción} & \textbf{Etapa} & \textbf{Por qué} \\
+\midrule
+\tl{this} explícito \newline \texttt{x -> this.c} & 2 &
+Pura forma: alcanza un indicador de «estoy dentro de una lambda», que se prende al entrar al
+cuerpo y se restaura al salir. \\[4pt]
+Captura \newline \texttt{x -> x + n} & 2 &
+El cuerpo de una lambda es \emph{una sola expresión}, así que adentro no se declara nada: los
+únicos nombres legales son sus propios parámetros, que el analizador acaba de leer. \\[4pt]
+Parámetro que no es un identificador pelado, o repetido \newline \texttt{(a + 1) -> a} & 2 &
+Hasta ver la \tl{->} el contenido entre paréntesis es una \nt{Expresion} en los dos casos. El
+analizador la lee y recuerda si consumió exactamente un \tl{idMetVar}. \\[4pt]
+Llamada sin punto \newline \texttt{x -> ayuda(x)} & \textbf{3} &
+Es \texttt{this.ayuda(x)} \emph{sólo si} \tl{ayuda} es un método de instancia. Si es \tl{static} de
+la misma clase no hay ningún \tl{this} y Java lo acepta. Distinguirlos exige la tabla de símbolos,
+así que rechazarlo acá sería rechazar un programa válido. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Todo lo demás que dependa de resolver un nombre ---que exista, que el tipo cierre, que la aridad
+coincida--- es del semántico y no se toca en esta etapa.
+
+\subsection{Decisiones de implementación}
+
+\begin{description}
+
+  \item[Insertar el no terminal, no fusionar.] Al factorizar, cuando había que elegir entre fundir
+        dos contextos en un mismo no terminal o insertar uno nuevo por contexto, se insertó. Clase
+        4, slide 40, avisa que factorizar de más le complica el trabajo al semántico; el no
+        terminal insertado es justamente el punto de decisión que la Etapa 3 va a necesitar.
+
+  \item[La recursión a derecha se traduce con un bucle.] Clase 5, slide 59, muestra el método de
+        \nt{E'} llamándose a sí mismo. Acá se traduce con un \texttt{while}: deriva exactamente la
+        misma cadena y no hace depender de la pila de la JVM una cadena larga de operadores o una
+        lista larga de argumentos. Es la única libertad que se toma respecto del esquema.
+
+  \item[Modo Pánico: dónde se recupera.] En tres lugares y sólo tres ---las tres listas de la
+        gramática que repiten un elemento: clases, miembros y sentencias---, así el manejo del
+        error no se desparrama por las diez secciones del analizador.
+
+  \item[Modo Pánico: con qué se sincroniza.] Con los tokens de Pautas slide 40 (\tl{;}, \tl{\}} y
+        la llave que abre) \textbf{más los Primeros del elemento de la lista}. Los Primeros hacen
+        falta: sin ellos, un \texttt{int x} al que le falta el \tl{;} se lleva puesto el método que
+        viene después, porque el análisis falla justo en el \tl{void} con el que empieza el miembro
+        siguiente y correcto. Las llaves se cuentan mientras se descarta, así el cuerpo de un
+        método con la firma rota se saltea entero en vez de leerse como si cada sentencia fuera
+        otro miembro.
+
+  \item[Modo Pánico: el formato del reporte.] Se repite el reporte completo de Pautas slide 25
+        ---mensaje, renglón en blanco, código--- por cada error. Es el mismo formato con el que la
+        Etapa 1 reporta varios errores léxicos con \emph{Multi-detección}.
+
+  \item[Modo Pánico: el primer error no cambia.] El logro agrega errores al final de la lista,
+        nunca cambia el primero. Es lo que permite que un mismo caso del corpus valga con el logro
+        prendido y apagado, y hay un test que lo fija sobre todo el corpus.
+
+\end{description}
 
 % ===========================================================================
 \section{Herramientas y uso de inteligencia artificial}
@@ -1470,7 +1720,7 @@ concreto:
 \begin{itemize}
   \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
         elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
-        independiente con \texttt{primeros.py} y con los 69 casos de aceptación y rechazo. Ninguna
+        independiente con \texttt{primeros.py} y con los 87 casos de aceptación y rechazo. Ninguna
         afirmación de este informe descansa únicamente en la salida del modelo.
   \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
   \item La \textbf{verificación} es mecánica y reproducible con los comandos de la
