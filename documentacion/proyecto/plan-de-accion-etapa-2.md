@@ -150,7 +150,7 @@ Primer código de la Etapa 2. `mvn verify` verde, 889 tests.
 
 ### Lo que dejó la S3
 
-El analizador sintáctico **completo**. `mvn verify` verde, 1117 tests.
+El analizador sintáctico **completo**. `mvn verify` verde, 1117 tests en ese momento.
 
 - **Los 104 no terminales implementados**, divididos en una clase por sección de la gramática
   (`sintactico/partes/`, de 99 a 172 líneas cada una) más `EntradaDeTokens`, `Sintaxis` y

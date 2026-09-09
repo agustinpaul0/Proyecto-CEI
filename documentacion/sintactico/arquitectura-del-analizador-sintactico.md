@@ -137,7 +137,8 @@ python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g
 ```
 
 Generarlas es lo único que garantiza que lo que el analizador usa para elegir producción sea
-exactamente lo que el verificador calcula sobre la gramática. `Primeros.java` no se edita a mano; si
+exactamente lo que el verificador calcula sobre la gramática. Las clases `PrimerosDeX` —una por
+sección de la gramática, la misma división que `partes/`— no se editan a mano; si
 la gramática cambia, se regenera.
 
 `ConjuntoDePrimeros` además **filtra por logro** antes de describir lo esperado en un mensaje de

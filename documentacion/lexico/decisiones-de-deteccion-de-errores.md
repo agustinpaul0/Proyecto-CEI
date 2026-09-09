@@ -203,5 +203,5 @@ vacío entre dos tokens, con uno terminado en barra invertida (Java no tiene con
 con uno cerrado por `\r` solo o por `\r\n`. Los casos que terminan exactamente en el constructo
 —el archivo entero es `//`, o `/*`, o `/`— no se pueden escribir en el formato del corpus, porque
 sus líneas de oráculo son ellas mismas comentarios y quedarían después; viven como unit tests en
-`AnalizadorLexicoTest`.
+las suites `AnalizadorLexico*Test`.
 

@@ -94,7 +94,7 @@ para demostrar algo que el escape ya demuestra.
 **Cómo verificarlo:**
 
 ```bash
-mvn -o test -Dtest=AnalizadorLexicoTest
+mvn -o test -Dtest='AnalizadorLexico*Test'
 grep -l unicode resources/lexico/sinErrores/*.java resources/lexico/conErrores/*.java
 ```
 
