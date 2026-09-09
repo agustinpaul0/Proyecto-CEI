@@ -15,6 +15,12 @@ import sys
 sys.path.insert(0, "herramientas")
 from primeros import aceptar_detallado, analizar, parsear  # noqa: E402
 
+# La gramatica se parsea CON los logros prendidos: sin fijarlos quedan activas
+# a la vez las producciones @+ y las @-, que son alternativas excluyentes.
+LOGROS = {"visibilidad", "atrinit", "varclasica", "for", "ternario", "posfijo",
+          "lambda", "arrinit", "generico", "float"}
+
+
 GRAMATICA = "gramatica/minijava-ll1-logros.g"
 JAR = "target/Compilador.jar"
 # --etapa=1 porque el jar corre el sintáctico por defecto y acá se lo quiere sólo
@@ -74,7 +80,7 @@ def aceptar_con_posicion(g, vaciables, primeros_nt, tokens):
 
 def main():
     with open(GRAMATICA, encoding="utf-8") as archivo:
-        g = parsear(archivo.read())
+        g = parsear(archivo.read(), logros=LOGROS)
     vaciables, primeros_nt, _ = analizar(g)
 
     fallos = 0

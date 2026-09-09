@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
-"""Compara el analizador sintáctico en Java contra el simulador de la gramática.
+"""Compara el simulador de la gramática contra la expectativa de cada caso del corpus.
 
-    python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
+    python3 herramientas/comparar_con_gramatica.py                    # el corpus entero
+    python3 herramientas/comparar_con_gramatica.py \'ruta/*.java\'      # otro conjunto
 
-Verifica que el analizador escrito a mano reconozca EXACTAMENTE el lenguaje que
-la gramática define, y no uno parecido: mismo veredicto, y cuando los dos
-rechazan, el mismo token. Es lo que sostiene que las dos cosas no se separen a
-medida que la gramática o el analizador cambien.
+El corpus tiene su expectativa escrita en cada caso, y el analizador en Java la
+verifica dentro de `mvn verify`. Esto cierra el triángulo con el TERCER
+reconocedor: el simulador del Esquema Simple, escrito en Python sobre la
+gramática. Que los tres coincidan —mismo veredicto y, cuando rechazan, el mismo
+token— es lo que sostiene que el analizador reconozca EXACTAMENTE el lenguaje que
+la gramática define, y no uno parecido.
 
 DIVERGENCIAS DECLARADAS
 -----------------------
-El analizador es deliberadamente MÁS restrictivo que la gramática en los
-chequeos que una gramática libre de contexto no puede expresar (el `this` y la
-captura de variables dentro de una lambda, y que un parámetro de lambda sea un
-identificador pelado). Esas divergencias van declaradas abajo con su motivo: una
-que no esté en la lista hace fallar la comparación.
+El analizador es deliberadamente MÁS restrictivo que la gramática en los tres
+chequeos que una gramática libre de contexto no puede expresar. La gramática
+acepta y el analizador rechaza; nunca al revés. Se reconocen por el mensaje del
+caso, no por que el fuente contenga una flecha.
 """
+import concurrent.futures
 import glob
+import os
 import re
 import subprocess
 import sys
@@ -28,65 +32,81 @@ from primeros import analizar, parsear  # noqa: E402
 GRAMATICA = "gramatica/minijava-ll1-logros.g"
 JAR = "target/Compilador.jar"
 
-# Cada entrada: (patrón que reconoce el fuente, motivo). El analizador rechaza y
-# la gramática acepta; nunca al revés.
-DIVERGENCIAS_DECLARADAS = [
-    (re.compile(r"->"), "restriccion de MiniLambdas que la gramatica no puede expresar: "
-                        "this, captura de variables, o un parametro que no es un identificador"),
-]
+# La gramatica se parsea CON los logros prendidos: sin fijarlos quedan activas
+# a la vez las producciones @+ y las @-, que son alternativas excluyentes.
+LOGROS = {"visibilidad", "atrinit", "varclasica", "for", "ternario", "posfijo",
+          "lambda", "arrinit", "generico", "float"}
+
+# Los tres chequeos que el analizador hace y la gramática no puede expresar. Un
+# caso que los ejercita declara el motivo en el mensaje, así que se reconocen por
+# ahí y no por un patrón sobre el fuente, que amnistiaba de más.
+MOTIVOS_DECLARADOS = (
+    "no se permite this dentro de una lambda",
+    "no se permite capturar la variable",
+    "un parametro de lambda tiene que ser un identificador",
+    "esta repetido en la lambda",
+)
 
 
-def divergencia_declarada(fuente):
-    for patron, motivo in DIVERGENCIAS_DECLARADAS:
-        if patron.search(fuente):
+def divergencia_declarada(salida_java):
+    for motivo in MOTIVOS_DECLARADOS:
+        if motivo in salida_java:
             return motivo
     return None
+
+
+def veredicto_de_java(ruta):
+    salida = subprocess.run(["java", "-jar", JAR, "--logros=todos", ruta],
+                            capture_output=True, text=True).stdout
+    return ruta, salida
 
 
 def main():
     patron = sys.argv[1] if len(sys.argv) > 1 else "resources/sintactico/*/*.java"
     with open(GRAMATICA, encoding="utf-8") as archivo:
-        g = parsear(archivo.read())
+        g = parsear(archivo.read(), logros=LOGROS)
     vaciables, primeros_nt, _ = analizar(g)
 
-    comparados = fallos = declaradas = 0
-    for ruta in sorted(glob.glob(patron)):
+    rutas = sorted(glob.glob(patron))
+    # Una JVM por fuente sobre un corpus de miles tarda demasiado en serie.
+    hilos = min(32, (os.cpu_count() or 4) * 4)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=hilos) as ejecutor:
+        salidas = dict(ejecutor.map(veredicto_de_java, rutas))
+
+    comparados = fallos = declaradas = salteados = 0
+    for ruta in rutas:
         tokens, errores_lexicos = tokenizar(ruta)
         if errores_lexicos:
+            salteados += 1
             continue
-        with open(ruta, encoding="utf-8", errors="replace") as archivo:
-            fuente = archivo.read()
 
         ok_gramatica, motivo, posicion = aceptar_con_posicion(g, vaciables, primeros_nt, tokens)
-        salida = subprocess.run(
-            ["java", "-jar", JAR, ruta], capture_output=True, text=True
-        ).stdout
+        salida = salidas[ruta]
         ok_java = "[SinErrores]" in salida
-        ultima = salida.strip().splitlines()[-1] if salida.strip() else "(sin salida)"
+        primera = next((l for l in salida.splitlines() if l.startswith("[")), "(sin salida)")
         comparados += 1
 
         if ok_gramatica and not ok_java:
-            declarada = divergencia_declarada(fuente)
-            if declarada:
+            if divergencia_declarada(salida):
                 declaradas += 1
                 continue
             fallos += 1
             print(f"DIVERGE {ruta}: la gramatica acepta y el analizador rechaza")
-            print(f"        java: {ultima}")
+            print(f"        java: {primera}")
         elif ok_java and not ok_gramatica:
             fallos += 1
             print(f"DIVERGE {ruta}: el analizador acepta y la gramatica rechaza")
             print(f"        gramatica: {motivo}")
         elif not ok_gramatica:
             codigo = f"[Error:{posicion[0]}|{posicion[1]}]"
-            if codigo != ultima:
+            if codigo != primera:
                 fallos += 1
                 print(f"DIVERGE {ruta}: rechazan los dos, pero en tokens distintos")
-                print(f"        gramatica={codigo}  java={ultima}")
+                print(f"        gramatica={codigo}  java={primera}")
 
     print()
     print(f"{comparados} fuentes comparadas, {declaradas} divergencias declaradas, "
-          f"{fallos} sin declarar")
+          f"{fallos} sin declarar, {salteados} salteadas por errores lexicos")
     print("EL ANALIZADOR Y LA GRAMATICA COINCIDEN." if not fallos
           else f"{fallos} DIVERGENCIA(S) NO DECLARADA(S).")
     return fallos
