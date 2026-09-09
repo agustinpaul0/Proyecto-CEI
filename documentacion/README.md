@@ -39,7 +39,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 | Etapa | Qué es | Estado |
 |---|---|---|
 | 1 | Analizador Léxico + Módulo Principal | entregada, pendiente de corrección |
-| 2 | Analizador Sintáctico Descendente Recursivo | **en curso** — gramática terminada, analizador pendiente |
+| 2 | Analizador Sintáctico Descendente Recursivo | **completa** — gramática, analizador, los diez logros y el corpus |
 | 3 a 5 | Semántico y siguientes | sin especificación todavía |
 
 ## Las dos reglas que gobiernan todas las decisiones

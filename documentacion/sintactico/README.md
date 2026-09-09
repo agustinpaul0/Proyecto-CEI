@@ -1,7 +1,7 @@
 # Etapa 2 — Analizador Sintáctico
 
-Documentación del **Analizador Sintáctico Descendente Recursivo Predictivo LL(1)**. Etapa en curso;
-entrega 23/09/2026.
+Documentación del **Analizador Sintáctico Descendente Recursivo Predictivo LL(1)**. Analizador
+completo, con los diez logros de la etapa implementados; entrega 23/09/2026.
 
 El objeto central de esta etapa es la **gramática**: se parte de la que publica la cátedra, se la
 diagnostica, se la corrige a LL(1) y se la extiende con los logros. Los cuatro primeros documentos
@@ -36,9 +36,21 @@ La gramática no se afirma correcta: se comprueba. Desde `compilador/`:
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # 1024/1024
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades   # todas declaradas
-bash herramientas/casos-gramatica.sh                                              # 84 casos
+python3 herramientas/equivalencia_de_lenguajes.py    # mismo lenguaje que la de la cátedra
+python3 herramientas/auditar_analizador.py           # 220/220 producciones citadas
+bash herramientas/casos-gramatica.sh                                              # 87 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java   # 8/8
+python3 herramientas/comparar_con_gramatica.py       # 1861 fuentes del corpus
 ```
+
+Son **cuatro verificaciones independientes** y conviene tener claro qué prueba cada una:
+
+| Herramienta | Qué garantiza |
+|---|---|
+| `primeros.py` | Que la gramática cumpla la condición LL(1) de la cátedra en **las 1024** configuraciones de logros, y que toda ambigüedad esté declarada con su regla de resolución. |
+| `equivalencia_de_lenguajes.py` | Que transformar la gramática **no cambió el lenguaje**, comparándola con la de la cátedra mediante un reconocedor de Earley y una cadena por cada producción de cada una. |
+| `auditar_analizador.py` | Que el código y la gramática **no se hayan separado**: cada producción la implementa un método y cada cita corresponde a una producción real. |
+| `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el **mismo veredicto y el mismo token** sobre el corpus. El tercer reconocedor, el oráculo JavaCC, ya intervino al etiquetar cada caso. |
 
 Qué hace cada archivo de gramática está en
 [`../../compilador/gramatica/README.md`](../../compilador/gramatica/README.md).
