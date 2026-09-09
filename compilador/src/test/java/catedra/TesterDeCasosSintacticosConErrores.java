@@ -37,7 +37,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Tag("sintactico")
 public class TesterDeCasosSintacticosConErrores {
 
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sintactico/conErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
     // La primera línea es "///[Error:Lexema|NroLinea]": se saltea el "///".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
     private static final String ARGUMENTO_DE_LOGROS =

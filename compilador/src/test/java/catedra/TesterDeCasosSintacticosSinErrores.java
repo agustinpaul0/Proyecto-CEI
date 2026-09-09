@@ -35,7 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TesterDeCasosSintacticosSinErrores {
 
     private static final String MENSAJE_DE_EXITO = "[SinErrores]";
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sintactico/sinErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
     private static final String ARGUMENTO_DE_LOGROS =
             ConfiguracionDeLaCorrida.comoArgumentoDeLinea();
 

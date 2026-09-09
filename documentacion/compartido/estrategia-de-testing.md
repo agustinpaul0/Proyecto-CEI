@@ -38,7 +38,7 @@ error reportado en el lugar equivocado, silenciosamente, tres etapas más adelan
 | **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 2 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `MainTest` |
 | **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/lexico/conErrores/` |
 | **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest`, `AnalizadorSintacticoPropiedadesTest` |
-| **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios en el léxico, programas derivados de la gramática y después mutados en el sintáctico. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest`, `resources/sintactico/` |
+| **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios en el léxico, programas derivados de la gramática y después mutados en el sintáctico. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest`, `resources/{sinErrores,conErrores}/` |
 | **Diferencial** | Que dos implementaciones distintas del mismo lenguaje coincidan. | `comparar_con_gramatica.py`, `equivalencia_de_lenguajes.py`, el oráculo JavaCC |
 
 A eso se suma el **análisis de mutación** (PIT), que no es un tipo de test sino una forma de medir
@@ -50,7 +50,8 @@ porque cada mutante volvería a correr miles de casos parametrizados.
 
 ### El corpus del analizador sintáctico no se escribió a mano del todo
 
-`resources/sintactico/` tiene dos orígenes, y la distinción importa:
+El corpus del sintáctico —`resources/sinErrores/` y `resources/conErrores/`— tiene dos orígenes,
+y la distinción importa:
 
 - **Escrito a mano** (~120 casos): lo que un generador al azar no busca. El archivo vacío, el de
   sólo comentarios, la clase sin miembros, `for(;;)`, `new int[]{}`, cien bloques anidados, el

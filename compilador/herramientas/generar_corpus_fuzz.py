@@ -25,7 +25,7 @@ pares acepta-con / rechaza-sin los cubren los tests con fuente embebido y
 herramientas/casos-gramatica.sh, que sí saben apagar logros.
 
 Los casos que sólo valen con todos los logros prendidos declaran ese requisito en
-resources/sintactico/requisitos-de-logros.txt, para que una corrida con
+resources/requisitos-de-logros.txt, para que una corrida con
 `-Dlogros=ninguno` los saltee en vez de fallar.
 """
 import argparse
@@ -42,9 +42,9 @@ TRABAJO = HERRAMIENTAS / "fuzz" / "trabajo"
 JARS = HERRAMIENTAS / "fuzz" / "jars"
 VENV = RAIZ / ".venv" / "bin"
 
-SIN_ERRORES = RAIZ / "resources" / "sintactico" / "sinErrores"
-CON_ERRORES = RAIZ / "resources" / "sintactico" / "conErrores"
-MANIFIESTO = RAIZ / "resources" / "sintactico" / "requisitos-de-logros.txt"
+SIN_ERRORES = RAIZ / "resources" / "sinErrores"
+CON_ERRORES = RAIZ / "resources" / "conErrores"
+MANIFIESTO = RAIZ / "resources" / "requisitos-de-logros.txt"
 
 TODOS_LOS_LOGROS = "todos"
 LOGROS_SINTACTICOS = ("visibilidad", "atrinit", "varclasica", "for", "ternario",

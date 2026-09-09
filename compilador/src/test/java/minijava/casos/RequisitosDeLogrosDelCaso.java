@@ -28,16 +28,24 @@ import java.util.Set;
 public record RequisitosDeLogrosDelCaso(Set<Logro> prendidos, Set<Logro> apagados) {
 
     public enum Fase {
-        LEXICO("lexico"), SINTACTICO("sintactico");
+        // El corpus de la etapa ACTIVA vive en la raíz de resources/, que es donde
+        // los testers de la cátedra lo buscan sin subcarpeta. El de la etapa
+        // anterior queda archivado en su propia carpeta.
+        LEXICO(Path.of("resources", "lexico")),
+        SINTACTICO(Path.of("resources"));
 
-        private final String carpeta;
+        private final Path raiz;
 
-        Fase(String carpeta) {
-            this.carpeta = carpeta;
+        Fase(Path raiz) {
+            this.raiz = raiz;
+        }
+
+        public Path raiz() {
+            return raiz;
         }
 
         Path manifiesto() {
-            return Path.of("resources", carpeta, "requisitos-de-logros.txt");
+            return raiz.resolve("requisitos-de-logros.txt");
         }
     }
 

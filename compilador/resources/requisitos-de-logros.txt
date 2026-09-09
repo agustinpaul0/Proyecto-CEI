@@ -870,6 +870,8 @@ sinErrores/fuzz0457.java        | visibilidad,atrinit,varclasica,for,ternario,po
 # Casos escritos a mano (herramientas/lote_sintactico.py).
 
 # Casos escritos a mano (herramientas/lote_sintactico.py).
+
+# Casos escritos a mano (herramientas/lote_sintactico.py).
 conErrores/asignacionEnLaRamaDerechaDelTernario.java | ternario |
 conErrores/capturaDeVariableEnLambda.java        | lambda |
 conErrores/diamanteAlCrearArreglo.java           | generico |

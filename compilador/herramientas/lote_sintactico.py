@@ -17,8 +17,8 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-SIN_ERRORES = RAIZ / "resources" / "sintactico" / "sinErrores"
-CON_ERRORES = RAIZ / "resources" / "sintactico" / "conErrores"
+SIN_ERRORES = RAIZ / "resources" / "sinErrores"
+CON_ERRORES = RAIZ / "resources" / "conErrores"
 
 # Los logros que hace falta declarar cuando el caso usa su sintaxis.
 requisitos = {}
@@ -434,7 +434,7 @@ interface Comparable {
 def escribir_manifiesto():
     """Se fusiona con lo que ya declaró el generador del fuzzer: los dos escriben
     en el mismo manifiesto y ninguno tiene que pisar al otro."""
-    manifiesto = RAIZ / "resources" / "sintactico" / "requisitos-de-logros.txt"
+    manifiesto = RAIZ / "resources" / "requisitos-de-logros.txt"
     lineas = manifiesto.read_text(encoding="utf-8").splitlines() if manifiesto.exists() else []
     mios = set(requisitos)
     conservadas = [l for l in lineas

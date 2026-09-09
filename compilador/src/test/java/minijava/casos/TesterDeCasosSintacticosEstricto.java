@@ -36,8 +36,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Tag("sintactico")
 class TesterDeCasosSintacticosEstricto {
 
-    private static final Path SIN_ERRORES = Path.of("resources", "sintactico", "sinErrores");
-    private static final Path CON_ERRORES = Path.of("resources", "sintactico", "conErrores");
+    private static final Path SIN_ERRORES = Path.of("resources", "sinErrores");
+    private static final Path CON_ERRORES = Path.of("resources", "conErrores");
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
     static Stream<Path> casosCorrectos() throws IOException {
@@ -132,7 +132,7 @@ class TesterDeCasosSintacticosEstricto {
 
     @Test
     void todoCasoDelManifiestoExisteEnElCorpus() {
-        Path raiz = Path.of("resources", "sintactico");
+        Path raiz = Path.of("resources");
         List<String> inexistentes = RequisitosDeLogrosDelCaso.manifiestoDe(Fase.SINTACTICO)
                 .keySet().stream().filter(caso -> !Files.isRegularFile(raiz.resolve(caso)))
                 .sorted().toList();

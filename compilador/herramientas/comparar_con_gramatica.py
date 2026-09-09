@@ -62,7 +62,7 @@ def veredicto_de_java(ruta):
 
 
 def main():
-    patron = sys.argv[1] if len(sys.argv) > 1 else "resources/sintactico/*/*.java"
+    patron = sys.argv[1] if len(sys.argv) > 1 else "resources/*Errores/*.java"
     with open(GRAMATICA, encoding="utf-8") as archivo:
         g = parsear(archivo.read(), logros=LOGROS)
     vaciables, primeros_nt, _ = analizar(g)

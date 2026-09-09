@@ -48,21 +48,30 @@ testers de la cátedra invocan `main()` in-process y una excepción mataría la 
 
 ### Al armar el zip de la Etapa 2
 
-Los testers de la cátedra hardcodean `resources/sinErrores/` y `resources/conErrores/`, y en el
-repositorio esos directorios están separados por fase. Al empaquetar la entrega de la Etapa 2 hay
-que copiar `resources/sintactico/{sinErrores,conErrores}` a `resources/{sinErrores,conErrores}`:
+**No hay ningún paso de copia.** El corpus de la etapa **activa** vive directamente en
+`resources/sinErrores/` y `resources/conErrores/`, que es exactamente donde los testers de la
+cátedra lo buscan —lo tienen escrito a fuego, sin subcarpeta—; el de la Etapa 1 queda archivado en
+`resources/lexico/`. Armar la entrega es comprimir la carpeta:
 
 ```bash
 cd compilador
-mkdir -p entrega/resources
-cp -r resources/sintactico/sinErrores resources/sintactico/conErrores entrega/resources/
+mvn clean package                 # deja target/Compilador.jar
+zip -r ../Etapa2-Paul.zip . -x 'target/*' '.venv/*' 'herramientas/fuzz/jars/*' \
+                                'herramientas/fuzz/trabajo/*'
 ```
 
-Son **1861 archivos y medio megabyte**. Todos están verificados con el compilador tal cual, o sea
-con todos los logros prendidos, que es como la cátedra corre sus testers: ningún caso del corpus
-depende de tener un logro apagado. Lo que **no** va en el zip es el andamiaje para regenerarlo
-—`.venv/`, `herramientas/fuzz/jars/` y `herramientas/fuzz/trabajo/`, todos ignorados por git—: el
-corpus está versionado y `mvn verify` no lo necesita.
+Son **1861 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
+4 segundos. Todos están verificados con el compilador tal cual —o sea con todos los logros
+prendidos, que es como la cátedra lo corre—: ningún caso del corpus depende de tener un logro
+apagado. Los pares acepta-con / rechaza-sin los cubren `RamasSinLogroTest`, los tests con fuente
+embebido y `casos-gramatica.sh`.
+
+**La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en
+`resources/sinErrores/`, así que sobre esta entrega encontraría los casos del sintáctico. Es
+deliberado: la raíz le pertenece a la etapa que se está entregando, y la Etapa 1 ya está corregida.
+Su corpus sigue completo en `resources/lexico/` y `mvn test -Pfase-lexico` lo corre entero. Cuando
+arranque la Etapa 3, el corpus del sintáctico se muda a `resources/sintactico/` y el nuevo ocupa la
+raíz.
 
 Java: `maven.compiler.release=25` (coincide con el JDK instalado; no hay ninguna directiva de la
 cátedra que fije una versión distinta). JaCoCo en `0.8.15` — versiones anteriores (`0.8.12` y por

@@ -69,7 +69,7 @@ calcula sobre la gramática. Si se toca el `.g`, hay que regenerarlo.
 ## `comparar_con_gramatica.py` — que el analizador y la gramática no se separen
 
 ```bash
-python3 herramientas/comparar_con_gramatica.py 'resources/sintactico/*/*.java'
+python3 herramientas/comparar_con_gramatica.py
 ```
 
 Corre el analizador sintáctico en Java y el simulador del Esquema Simple sobre los mismos fuentes y
