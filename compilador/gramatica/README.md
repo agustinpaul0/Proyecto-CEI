@@ -49,13 +49,16 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g    # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # las 1024
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades   # registro
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --nt Miembro     # un NT
-bash herramientas/casos-gramatica.sh                                # 84 casos
+bash herramientas/casos-gramatica.sh                                # 87 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java
+python3 herramientas/equivalencia_de_lenguajes.py   # mismo lenguaje que la de la cátedra
+python3 herramientas/auditar_analizador.py          # el código cita exactamente estas producciones
 ```
 
 ## Al tocar la gramática
 
-Después de cualquier cambio hay que **regenerar** los documentos derivados, nunca editarlos a mano:
+Después de cualquier cambio hay que **regenerar** los documentos derivados y el código que sale de
+la gramática, nunca editarlos a mano:
 
 ```bash
 python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-logros.g --sin-cabecera \
@@ -64,6 +67,11 @@ python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g produc
     > ../etapas/etapa-2/entregables/informe/generado/gramatica-final.tex
 python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g primeros \
     > ../etapas/etapa-2/entregables/informe/generado/tabla-primeros.tex
+python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g   # las clases PrimerosDeX
 ```
+
+Los **banners de sección** (`# ==== NOMBRE ====`) no son decorativos: `primeros_a_java.py` los usa
+para decidir en qué clase va cada constante, y tiene que conocer el nombre. Agregar una sección
+nueva al `.g` exige agregarla también a `POR_SECCION` en ese script.
 
 Y volver a correr la verificación completa.

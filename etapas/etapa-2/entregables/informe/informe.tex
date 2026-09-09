@@ -72,11 +72,11 @@ en cuatro pasos:
 
 \subsection{Qué está y qué no está en este informe}
 
-Está la gramática y su tratamiento. No está la implementación en Java del analizador, que se
-describe en la documentación técnica del repositorio; sí está, en cambio, todo lo que la
-implementación necesita decidir antes de escribirse: qué producción elegir ante cada token, dónde
-la gramática es ambigua y con qué criterio se resuelve, y qué construcciones quedan deliberadamente
-fuera del alcance del análisis sintáctico.
+Está la gramática y su tratamiento, y está el analizador que sale de ella: cómo compilarlo y
+correrlo (sección~\ref{sec:uso}), cómo está construido y qué errores detecta
+(sección~\ref{sec:analizador}), qué logros persigue (sección~\ref{sec:logros-perseguidos}) y qué
+decisiones hubo que tomar donde la especificación admitía más de una lectura
+(sección~\ref{sec:decisiones}).
 
 \subsection{Qué chequea y qué no chequea un analizador sintáctico}
 \label{sec:alcance-chequeos}
@@ -1260,6 +1260,195 @@ revés.
 \end{decision}
 
 \input{generado/gramatica-final}
+
+% ===========================================================================
+\section{Cómo compilar y correr}
+\label{sec:uso}
+% ===========================================================================
+
+El proyecto se construye con Maven y apunta a Java~25. Desde la carpeta \texttt{compilador/}, que
+es donde está el \texttt{pom.xml}:
+
+\begin{consola}
+$ mvn package          # compila, corre la suite y arma target/Compilador.jar
+$ mvn verify           # ademas verifica los umbrales de cobertura
+$ mvn test             # solo la suite
+\end{consola}
+
+El jar resultante es ejecutable y recibe el fuente como único argumento, tal cual pide Pautas
+slide 28. Acepta cualquier extensión:
+
+\begin{consola}
+$ java -jar target/Compilador.jar programa1.java
+Compilacion Exitosa
+
+[SinErrores]
+\end{consola}
+
+Dos opciones más, que no hacen falta para la corrección normal pero permiten ejercitar el
+compilador entero:
+
+\begin{consola}
+# La Etapa 1 sigue siendo ejecutable sola: vuelca la lista de tokens.
+$ java -jar target/Compilador.jar --etapa=1 programa1.java
+
+# Prender y apagar logros. Sin --logros manda la etapa: la Etapa 2 los trae todos.
+$ java -jar target/Compilador.jar --logros=ninguno programa1.java
+$ java -jar target/Compilador.jar --logros=ternario,lambda programa1.java
+\end{consola}
+
+Una opción o un nombre de logro desconocidos se informan por salida estándar y \textbf{no} abortan:
+los testers de la cátedra invocan \texttt{main()} dentro del mismo proceso, y una excepción o un
+\texttt{System.exit()} matarían la corrida entera. Por el mismo motivo el compilador no llama nunca
+a \texttt{System.exit()}.
+
+% ===========================================================================
+\section{El analizador sintáctico}
+\label{sec:analizador}
+% ===========================================================================
+
+\subsection{La técnica}
+
+Analizador \textbf{Descendente Recursivo Predictivo LL(1)}, con el \textbf{Esquema Simple} de Clase
+5: un método por no terminal, \texttt{match} para los terminales, y la producción se elige mirando
+si el token actual está en los Primeros del cuerpo de alguna de ellas. \textbf{Sólo Primeros}: los
+Siguientes no aparecen en ninguna línea del compilador.
+
+Los métodos tienen tres formas, según cuántas producciones tenga el no terminal y si alguna deriva
+a vacío:
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.64\linewidth}@{}}
+\toprule
+\textbf{Forma del NT} & \textbf{Traducción} \\
+\midrule
+Una sola producción & El cuerpo, sin condición. \\
+Varias, ninguna anulable & Una cadena de \texttt{if/else if} sobre los Primeros de cada cuerpo, y
+un \texttt{else} que lanza el error (slide 36). \\
+Varias, alguna anulable & Lo mismo, pero el \texttt{else} \textbf{no hace nada}: que el token no
+coincida con ninguno significa que el no terminal derivó a vacío, y quien llamó decidirá si eso es
+un error (slides 52--54). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La única libertad que se toma respecto del esquema es traducir la \textbf{recursión a derecha con
+un bucle} en vez de con una llamada: deriva exactamente la misma cadena y no hace depender de la
+pila de la JVM una cadena larga de operadores o una lista larga de argumentos.
+
+\subsection{Las clases}
+
+El analizador tiene 104 no terminales. Escribirlos en una sola clase daba 1176 líneas y 89 métodos,
+así que están repartidos en \textbf{una clase por sección de la gramática}: el archivo de código y
+la sección del \texttt{.g} se leen uno al lado del otro.
+
+\begin{center}
+\begin{tabular}{@{}lp{0.60\linewidth}@{}}
+\toprule
+\textbf{Clase} & \textbf{Qué traduce} \\
+\midrule
+\texttt{AnalizadorSintactico} & El arranque y el contrato de uso: carga el primer token, llama al
+símbolo inicial y devuelve la lista de errores. \\
+\texttt{EntradaDeTokens} & El lookahead y \textbf{el único punto que consume entrada}. \\
+\texttt{Sintaxis} & Cablea las once secciones. Existe porque la gramática tiene recursión mutua
+entre ellas ---una sentencia contiene expresiones, una expresión contiene lambdas, el cuerpo de una
+lambda vuelve a ser una expresión--- y por lo tanto no se pueden inyectar unas en otras por
+constructor sin un ciclo. \\
+\texttt{ParteDelAnalizador} & La base de las once: delega \texttt{match}, \texttt{actual},
+\texttt{estaEn} y \texttt{hayLogro} para que cada método se lea como en la slide 57. \\
+\texttt{AnalizadorDe\{Clases, Miembros, Tipos, Sentencias, Fors, Expresiones, Referencias, Lambdas,
+Creacion, Argumentos\}} & Una sección de la gramática cada una, entre 99 y 173 líneas. \\
+\texttt{primeros/PrimerosDeX} & Una constante por producción, \textbf{generada} desde la gramática:
+220 en total, divididas por la misma sección. \\
+\texttt{RestriccionesDeLambda} & Los chequeos del logro MiniLambdas que la gramática no expresa. \\
+\texttt{recuperacion/\{RecuperadorDePanico, ContextoDeSincronizacion\}} & El logro Modo Pánico. \\
+\texttt{errores/ExcepcionSintactica} & El único error que produce el analizador. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Que el código y la gramática no se separen no depende de la disciplina: cada método cita arriba las
+producciones que traduce, y \texttt{auditar\_analizador.py} falla si una producción no la implementa
+nadie o si un comentario quedó viejo (sección~\ref{sec:verificacion}).
+
+\subsection{Los tipos de error que detecta}
+
+El Esquema Simple tiene \textbf{exactamente dos} puntos donde puede fallar, y no hay un tercero:
+
+\begin{enumerate}
+  \item \textbf{Un \texttt{match} que no coincide.} Se esperaba un terminal concreto y llegó otro.
+        \emph{«se esperaba \texttt{;} se encontro "\texttt{void}"».}
+  \item \textbf{Un no terminal NO anulable cuyo token actual no está en los Primeros de ninguna de
+        sus producciones.} \emph{«se esperaba \texttt{this}, \texttt{new}, \dots o \texttt{(} se
+        encontro "\texttt{;}"».} Cuando el no terminal \emph{sí} es anulable esto no es un error:
+        derivó a vacío y lo resolverá quien llamó.
+\end{enumerate}
+
+A esos se suman los \textbf{tres chequeos del logro MiniLambdas} que una gramática libre de
+contexto no puede expresar (sección~\ref{sec:decisiones}): el \texttt{this} explícito dentro de una
+lambda, la captura de una variable que no es parámetro, y que un parámetro sea un identificador
+pelado y no se repita. Rechazan con el mismo código \texttt{[Error:lexema|línea]} y declaran el
+motivo en prosa.
+
+Y una aclaración que conviene dejar escrita: los errores \textbf{léxicos} los sigue detectando y
+reportando el analizador de la Etapa 1, con su propio formato. El sintáctico no los toca.
+
+\subsection{El formato del reporte}
+
+Pautas slide 25: un mensaje que nombre el lexema y la línea, un renglón en blanco y el código.
+
+\begin{consola}
+Error Sintactico en linea 3: se esperaba idClase se encontro "clasesita"
+
+[Error:clasesita|3]
+\end{consola}
+
+El lexema del token EOF es \tl{\$}, como fija Pautas slide 26. Con el logro \emph{Modo Pánico}
+prendido el reporte entero se repite por cada error encontrado, en orden, que es el mismo formato
+con el que la Etapa 1 reporta varios errores léxicos.
+
+% ===========================================================================
+\section{Logros perseguidos}
+\label{sec:logros-perseguidos}
+% ===========================================================================
+
+Se persiguen \textbf{los diez logros de la etapa que son implementables por código}, más el
+\emph{carry-over} de \emph{Floats} de la Etapa 1. Cada uno es un \textbf{interruptor independiente}:
+el compilador se puede ejecutar y testear con 0, 1 o N logros en cualquier combinación, y la de
+cero logros reproduce exactamente la especificación base de la cátedra. Eso está verificado sobre
+las 1024 configuraciones.
+
+\begin{center}
+\begin{tabular}{@{}llp{0.46\linewidth}@{}}
+\toprule
+\textbf{Logro} & \textbf{\texttt{-{}-logros=}} & \textbf{Dónde está} \\
+\midrule
+MiniLambdas E2 & \texttt{lambda} & \S\ref{sec:decisiones} y las seis producciones del bloque de
+lambdas. Requiere el token \tl{->}. \\
+Variables locales Clásicas E2 & \texttt{varclasica} & La factorización de \tl{idClase} en
+\nt{Sentencia}. \\
+Visibilidad Mejorada E2 & \texttt{visibilidad} & \nt{VisibilidadOpcional} al frente de los tres
+miembros. Requiere el token \tl{private}. \\
+Fors! E2 & \texttt{for} & El bloque \nt{For} entero, estándar y de iteradores. Requiere el token
+\tl{for}. \\
+Operador Ternario E2 & \texttt{ternario} & La capa \nt{ExpresionCondicional}. Requiere el token
+\tl{?}, que sin el logro es un error léxico. \\
+Operadores Posifijos E2 & \texttt{posfijo} & \nt{PosfijoOpcional}. Único logro que no toca el
+léxico: \tl{++} y \tl{-{}-} ya eran tokens de la Etapa 1. \\
+Atributos Inicializados & \texttt{atrinit} & \nt{InicializacionDeAtributo}. \\
+Inicializacion de Arreglos E2 & \texttt{arrinit} & El inicializador, anidable, sólo bajo \tl{new}. \\
+Genericidad Avanzada E2 & \texttt{generico} & Genéricos anidados y la notación diamante. \\
+Recuperación Modo Pánico & \texttt{modopanico} & No toca la gramática: es enteramente
+implementación. \\
+\midrule
+Floats (Etapa 1) & \texttt{floats} & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$
+\tl{floatLiteral}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Los tres logros de la etapa que no se implementan por código ---\emph{Entrega Anticipada},
+\emph{Imbatibilidad} y \emph{Well Done!}--- no dependen del compilador.
 
 % ===========================================================================
 \section{Verificación}

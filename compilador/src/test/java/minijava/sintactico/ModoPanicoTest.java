@@ -6,6 +6,7 @@ import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
 import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.logros.RequiereLogro;
+import minijava.logros.RequiereLogroApagado;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -160,6 +161,22 @@ class ModoPanicoTest extends BaseDeAnalisis {
 
         assertFalse(salida.contains("[SinErrores]"));
         assertEquals(4, salida.stream().filter(l -> l.startsWith("[Error:")).count());
+    }
+
+    // Un error LÉXICO corta el análisis, pero no puede llevarse puestos los
+    // errores sintácticos que la recuperación ya había encontrado: son anteriores
+    // en el fuente y hay que reportarlos igual.
+    @Test
+    @RequiereLogro(Logro.MODO_PANICO)
+    @RequiereLogroApagado(Logro.TERNARIO)
+    void unErrorLexicoNoSeLlevaPuestosLosSintacticosYaEncontrados(@TempDir Path dir)
+            throws Exception {
+        // Sin el logro de ternario, el `?` no es un token de MiniJava.
+        List<String> salida = salidaDe(dir, "class C1 { int x  void m(){ } }\nclass ?\n",
+                conPanico());
+
+        assertTrue(salida.contains("[Error:void|1]"), salida.toString());
+        assertTrue(salida.stream().anyMatch(l -> l.startsWith("[Error:?")), salida.toString());
     }
 
     // El formato de cada reporte es el mismo de Pautas slide 25, repetido: el

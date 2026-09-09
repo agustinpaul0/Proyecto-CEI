@@ -48,4 +48,12 @@ public final class AnalizadorSintactico {
         }
         return sintaxis.recuperador().errores();
     }
+
+    // Los errores sintácticos encontrados hasta ahora. Hace falta cuando `analizar`
+    // corta por un error LÉXICO: con Modo Pánico puede haber recuperado varios
+    // antes de que el léxico se tope con un símbolo que no existe, y perderlos
+    // sería reportar de menos.
+    public List<ExcepcionSintactica> erroresDetectados() {
+        return sintaxis.recuperador().errores();
+    }
 }

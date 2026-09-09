@@ -169,7 +169,17 @@ instanciación, no delegado al semántico. La tabla de qué acepta y qué rechaz
 No toca la gramática: es enteramente implementación. Va detrás de su interruptor — apagado, el
 compilador corta en el primer error, que es la convención base de las Pautas slide 25.
 
-**Pendiente: Sesión 4.**
+**Implementado.** Tres puntos de recuperación, y sólo tres: las tres listas de la gramática que
+repiten un elemento (`ListaClases`, `ListaMiembros` y `ListaSentencias`). Sincroniza con los tokens
+que nombra la consigna **más los Primeros del elemento de la lista** —sin eso, un `int x` al que le
+falta el `;` se lleva puesto el método que viene después, porque el análisis falla justo en el
+`void` con el que empieza el miembro siguiente y correcto— y cuenta las llaves mientras descarta,
+para saltear entero el cuerpo de un método cuya firma está rota.
+
+El **primer error reportado no cambia** con el logro prendido o apagado: la recuperación agrega
+errores al final, nunca altera el primero. Eso es lo que permite que un mismo caso del corpus valga
+en las dos configuraciones. El detalle está en
+[`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §5.
 
 ## 11. Floats — carry-over de la Etapa 1
 

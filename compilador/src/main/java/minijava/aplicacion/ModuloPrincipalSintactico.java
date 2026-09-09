@@ -44,6 +44,10 @@ public final class ModuloPrincipalSintactico {
                 errores.forEach(this::reportar);
             }
         } catch (ExcepcionLexica excepcion) {
+            // Con Modo Pánico el análisis puede haber recuperado varios errores
+            // sintácticos antes de que el léxico se topara con un símbolo que no
+            // existe. Van primero: son anteriores en el fuente.
+            analizador.erroresDetectados().forEach(this::reportar);
             formateadorDeError.formatear(excepcion).forEach(salida::imprimir);
         } finally {
             manejador.close();
