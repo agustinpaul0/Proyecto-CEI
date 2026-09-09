@@ -3,11 +3,11 @@
 Documento autocontenido: qué garantiza cada suite de tests, cómo están organizadas y cómo correrlas.
 
 En este proyecto **los tests son la prioridad número uno, por encima del código de producción**. La
-razón es específica de un compilador: un analizador léxico tiene una superficie de entrada infinita
-y llena de bordes (literales sin cerrar, escapes raros, caracteres invisibles, archivos truncados),
-y la única forma de saber que funciona es ejercitarlo sistemáticamente. Un defecto léxico no se
-manifiesta como una excepción ruidosa: se manifiesta como un token de menos, silenciosamente, tres
-etapas más adelante.
+razón es específica de un compilador: tiene una superficie de entrada infinita y llena de bordes
+—literales sin cerrar, escapes raros, caracteres invisibles, archivos truncados, expresiones
+anidadas hasta el absurdo— y la única forma de saber que funciona es ejercitarlo sistemáticamente.
+Un defecto no se manifiesta como una excepción ruidosa: se manifiesta como un token de menos o un
+error reportado en el lugar equivocado, silenciosamente, tres etapas más adelante.
 
 ## 1. Las reglas del proyecto
 
@@ -37,13 +37,30 @@ etapas más adelante.
 | **De integración** | Interacción entre piezas: manejador → analizador, analizador → módulo principal. | `ModuloPrincipalTest`, `ReporteDeErrorEleganteTest` |
 | **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 2 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `MainTest` |
 | **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/lexico/conErrores/` |
-| **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest` |
-| **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest` |
+| **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest`, `AnalizadorSintacticoPropiedadesTest` |
+| **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios en el léxico, programas derivados de la gramática y después mutados en el sintáctico. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest`, `resources/sintactico/` |
+| **Diferencial** | Que dos implementaciones distintas del mismo lenguaje coincidan. | `comparar_con_gramatica.py`, `equivalencia_de_lenguajes.py`, el oráculo JavaCC |
 
 A eso se suma el **análisis de mutación** (PIT), que no es un tipo de test sino una forma de medir
 qué tan buena es la suite: introduce mutaciones en el código de producción y comprueba que algún test
 las detecte. Un mutante que sobrevive señala un test faltante. Corre en un perfil aparte
-(`mvn -Pmutacion test`) porque es lento; no en cada cambio.
+(`mvn -Pmutacion verify`) porque es lento; no en cada cambio. Los runners del corpus y las
+propiedades quedan afuera de esa corrida: son excelentes para verificar pero pésimos para mutar,
+porque cada mutante volvería a correr miles de casos parametrizados.
+
+### El corpus del analizador sintáctico no se escribió a mano del todo
+
+`resources/sintactico/` tiene dos orígenes, y la distinción importa:
+
+- **Escrito a mano** (~120 casos): lo que un generador al azar no busca. El archivo vacío, el de
+  sólo comentarios, la clase sin miembros, `for(;;)`, `new int[]{}`, cien bloques anidados, el
+  error en el primer token, el error en el último, el `$` del EOF. **Cada expectativa se predice
+  antes de correr el compilador**: si no coincide, o el caso estaba mal escrito o el compilador
+  tiene un defecto, y las dos cosas hay que mirarlas.
+- **Generado** (~1700 casos): Grammarinator deriva programas al azar de la gramática, los vuelve a
+  parsear en árboles y los muta; el oráculo JavaCC dice qué veredicto corresponde. Un caso entra
+  sólo si todos los oráculos de control coinciden. Se regenera con `make fuzz` desde una semilla
+  versionada.
 
 ## 3. Las invariantes, que son lo más valioso de la suite
 
@@ -171,32 +188,43 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 
 ## 5. Suites, una por una
 
-| Suite | Casos | Qué cubre |
-|---|---|---|
-| `AnalizadorLexicoTest` | 165 | El grueso del reconocimiento: un caso por familia léxica y sus bordes. |
-| `TesterDeCasosConErroresEstricto` | 82 | Los **mismos** archivos, pero verificando la salida completa. |
-| `catedra.TesterDeCasosConErrores` | 82 | El tester original de la cátedra sobre `resources/lexico/conErrores/`. |
-| `catedra.TesterDeCasosSinErrores` | 76 | El tester original de la cátedra sobre `resources/lexico/sinErrores/`. |
-| `TablaDeLexemasTest` | 57 | Que los 60 tipos de token estén cubiertos y que cada uno de los 53 lexemas fijos, suelto, produzca su propio tipo. |
-| `ManejadorDeArchivoEficienteTest` | 26 | EOF en los tres casos de ejemplo, archivo vacío, los tres convenios de fin de línea, `0x1A` embebido, UTF-8 inválido, columnas y línea-fuente, y el costo de ubicar el error en un fuente de 200.000 líneas. |
-| `TipoDeTokenTest` | 22 | Que los nombres impresos coincidan con los que fija la cátedra. |
-| `PosicionDelCaretTest` | 21 | Dónde apunta el `^`, con el diagnóstico de `javac` citado en cada caso. |
-| `CriterioDeRecuperacionTest` | 14 | Que tras cada error el análisis retome en el carácter correcto. |
-| `TipoDeErrorLexicoTest` | 14 | Diez casos parametrizados, uno por tipo de error, más cuatro pruebas adicionales de tipo y localización. |
-| `EscapadorDeNoImprimiblesTest` | 15 | Que ningún carácter invisible llegue crudo al mensaje de un error ni parta el formato de una línea por elemento. |
-| `LimitesNumericosTest` | 12 | El límite de 9 dígitos y su interacción con los floats. |
-| `DivergenciasConJavaTest` | 9 | Los puntos donde MiniJava se aparta de Java **a propósito**. |
-| `ModuloPrincipalTest` | 9 | El cliente completo, incluidas las combinaciones de configuración y que ésta llegue efectivamente al léxico. |
-| `AnalizadorLexicoPropiedadesTest` | 6 | Las invariantes de §3.1 y §3.3. |
-| `FormateadorDeErrorTest` | 8 | Las líneas del reporte elegante, y el `^` con tabs, caracteres CJK, marcas combinantes, controles y pares surrogate. |
-| `PropiedadesDelReporteTest` | 5 | Las invariantes de §3.2, §3.4 y §3.6 sobre entradas generadas. |
-| `AnalizadorLexicoFuzzTest` | 3 | Bytes UTF-8 arbitrarios con semilla fija. |
-| `DefectosDeRobustezTest` | 3 | Caracteres de control e invisibles en lexemas y mensajes. |
-| `MainTest` | 3 | El punto de entrada: sin argumentos, archivo inexistente, caso feliz. |
-| `CorpusDeRegresionTest` | 2 | Reprocesa el corpus de fuzzing acumulado. |
-| `ReporteDeErrorEleganteTest` | 1 | El ejemplo textual de la consigna, línea por línea. |
+### Del analizador léxico
 
-**Total: 631 casos ejecutables, en 22 suites.**
+| Suite | Qué cubre |
+|---|---|
+| `AnalizadorLexico{BlancosYEof,Identificadores,Numeros,Operadores,Comentarios,Literales,Unicode,Recuperacion}Test` | El grueso del reconocimiento, una suite por familia léxica sobre `BaseDeAnalisisLexico`. |
+| `TesterDeCasosConErroresEstricto` | Los archivos de `resources/lexico/conErrores/`, verificando la salida completa. |
+| `catedra.TesterDeCasos{Sin,Con}Errores` | Los testers originales de la cátedra sobre el corpus léxico. |
+| `TablaDeLexemasTest`, `TipoDeTokenTest` | Que los tipos de token y sus nombres impresos sean los que fija la cátedra. |
+| `PosicionDelCaretTest`, `FormateadorDeErrorTest`, `EscapadorDeNoImprimiblesTest` | El reporte de error: a dónde apunta el `^` y que ningún carácter invisible parta el formato. |
+| `CriterioDeRecuperacionTest`, `TipoDeErrorLexicoTest`, `LimitesNumericosTest` | Recuperación, taxonomía de errores y el límite de nueve dígitos. |
+| `DivergenciasConJavaTest` | Los puntos donde MiniJava se aparta de Java **a propósito**. |
+| `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest`, `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest` | Invariantes sobre entradas generadas y bytes arbitrarios, con semilla fija. |
+
+### Del analizador sintáctico
+
+| Suite | Qué cubre |
+|---|---|
+| `AnalizadorSintacticoTest` | Nivel clase e interfaz, el `$` del EOF, el formato del mensaje, genericidad anidada. |
+| `MiembrosYSentenciasTest` | Miembros, visibilidad, atributos inicializados, sentencias, variables clásicas, fors. |
+| `ExpresionesTest` | Las capas de precedencia, ternario, posfijos, creación, inicializadores, diamante. |
+| `LambdasTest` | El logro MiniLambdas entero, incluidas las restricciones que la gramática no expresa. |
+| `ModoPanicoTest` | Que la recuperación reporte todos los errores, avance siempre y no cambie el primero. |
+| `RamasSinLogroTest` | Las ramas que **sólo** existen con un logro apagado, con configuración explícita. |
+| `CasosDeLaCatedraTest` | Los ocho fuentes que la cátedra adjunta, cada error en el token exacto. |
+| `catedra.TesterDeCasosSintacticos{Sin,Con}Errores` | Los testers de la cátedra sobre el corpus, con su criterio intacto. |
+| `TesterDeCasosSintacticosEstricto` | El mismo corpus, exigiendo que el código declarado sea el **primero** y que no haya ninguno de más. |
+| `AnalizadorSintacticoPropiedadesTest` | Invariantes sobre sopas de tokens al azar. |
+| `primeros.ConjuntoDePrimerosTest`, `errores.ExcepcionSintacticaTest` | El álgebra de los conjuntos de Primeros y el formato del error. |
+
+### Compartidas
+
+| Suite | Qué cubre |
+|---|---|
+| `ManejadorDeArchivoEficienteTest` | EOF, archivo vacío, los tres convenios de fin de línea, UTF-8 inválido, y el costo de ubicar el error en un fuente de 200.000 líneas. |
+| `ConfiguracionDelCompiladorTest`, `LogroTest`, `ParserDeConfiguracionTest` | Los logros como `EnumSet`, sus nombres y su parseo desde la línea de comandos. |
+| `RequisitosDeLogrosDelCasoTest` | Que el manifiesto de cada fase no declare casos inexistentes ni dependencias falsas. |
+| `MainTest`, `OpcionesDeInvocacionTest`, `ModuloPrincipal{Lexico,Sintactico}Test` | El punto de entrada y el contrato de salida de las dos etapas. |
 
 ## 6. Cómo correr
 

@@ -291,6 +291,11 @@ def casos_de_expresiones():
     con_error("dosPosfijosSeguidos", envolver("x++ ++;"), "++", 3, ("posfijo",))
     con_error("posfijoSobreUnLiteral", envolver("var x = 5++;"), "++", 3, ("posfijo",))
     con_error("newSinTipo", envolver("var x = new ;"), ";", 3)
+    # Despues de `new Clase` tiene que venir `<`, `[` o `(`.
+    con_error("newDeClaseSinNadaDetras", envolver("var x = new Persona;"), ";", 3)
+    # Y despues de cerrar el generico, `[` o `(`.
+    con_error("newGenericoSinNadaDetras", envolver("var x = new Lista<T>;"), ";", 3,
+              ("generico",))
     # Con el logro de inicializacion de arreglos prendido, `new int[]` no es un
     # error de dimension: es la forma que pide su `{...}` a continuacion.
     con_error("newConArregloSinDimension", envolver("var x = new int[];"), ";", 3,
@@ -353,6 +358,8 @@ def casos_de_lambdas_y_fors():
               ("for",))
     con_error("forSinParentesis", envolver("for ;; ;"), ";", 3, ("for",))
     con_error("forConUnSoloSeparador", envolver("for(;) ;"), ")", 3, ("for",))
+    # Despues de `for (var i` tiene que venir `:` o `=`.
+    con_error("forConVarSinInicializar", envolver("for(var i;;) ;"), ";", 3, ("for",))
     con_error("forConDimensionesAlEstiloC", envolver("for(int v[] = null; ; ) ;"), "[", 3,
               ("for",))
 

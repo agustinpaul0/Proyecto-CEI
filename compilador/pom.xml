@@ -22,6 +22,10 @@
         <logros/>
         <!-- Etiquetas JUnit a correr; lo fijan los perfiles fase-*. -->
         <fases/>
+        <!-- Umbrales del perfil `mutacion`. Se bajan sólo con -D cuando hace falta
+             mirar un informe parcial; el valor versionado es el que se sostiene. -->
+        <umbral.mutacion>88</umbral.mutacion>
+        <umbral.cobertura.pit>95</umbral.cobertura.pit>
     </properties>
 
     <dependencyManagement>
@@ -101,6 +105,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.15</version>
+                <configuration>
+                    <!-- SourceManagerImpl es la implementación de referencia de la
+                         cátedra: se conserva intacta y el compilador no la usa, así
+                         que no tiene sentido que cuente para la cobertura. -->
+                    <excludes>
+                        <exclude>minijava/comun/io/SourceManagerImpl.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>jacoco-prepare-agent</id>
@@ -117,9 +129,12 @@
                     </execution>
                     <execution>
                         <!-- mvn verify falla si la cobertura baja de estos umbrales.
-                             Arrancan un poco por debajo de la cobertura real (94,4%/95,2%
-                             hoy) para no romper con cualquier variación menor; subir a
-                             medida que la suite madure. -->
+                             Van un punto por debajo de la cobertura real (98,9% de
+                             líneas y 94,4% de ramas) para no romper con cualquier
+                             variación menor. Lo que queda sin cubrir son los `else`
+                             del Esquema Simple que el chequeo del llamador ya hace
+                             inalcanzables, y que igual se escriben porque la slide 36
+                             los pide. -->
                         <id>jacoco-check</id>
                         <phase>verify</phase>
                         <goals>
@@ -133,12 +148,12 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
+                                            <minimum>0.98</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.85</minimum>
+                                            <minimum>0.93</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -183,13 +198,60 @@
                                 <version>1.2.3</version>
                             </dependency>
                         </dependencies>
+                        <!-- Sin esto el goal no se ata a ninguna fase y
+                             `mvn -Pmutacion verify` corre la suite sin mutar nada. -->
+                        <executions>
+                            <execution>
+                                <id>pitest-mutacion</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
                             <targetClasses>
                                 <param>minijava.*</param>
                             </targetClasses>
+                            <!-- Los tests dirigidos, que corren en segundos. Los
+                                 runners del corpus y las propiedades quedan afuera:
+                                 son excelentes para verificar pero pésimos para mutar,
+                                 porque cada mutante volvería a correr miles de casos
+                                 parametrizados o cientos de intentos de jqwik. -->
                             <targetTests>
-                                <param>minijava.*</param>
+                                <param>minijava.sintactico.*Test</param>
+                                <param>minijava.sintactico.*.*Test</param>
+                                <param>minijava.lexico.AnalizadorLexico*Test</param>
+                                <param>minijava.lexico.*Test</param>
+                                <param>minijava.comun.*.*Test</param>
+                                <param>minijava.aplicacion.*Test</param>
                             </targetTests>
+                            <!-- La implementación de referencia de la cátedra no se
+                                 testea ni se usa: mutarla sólo produce ruido. -->
+                            <excludedClasses>
+                                <param>minijava.comun.io.SourceManagerImpl</param>
+                            </excludedClasses>
+                            <!-- Los runners del corpus y las propiedades quedan afuera
+                                 de la caza de mutantes: son excelentes para verificar
+                                 pero pésimos para mutar, porque cada mutante volvería a
+                                 correr miles de casos parametrizados o cientos de
+                                 intentos de jqwik. Matan lo mismo los tests dirigidos,
+                                 y en segundos en vez de horas. -->
+                            <excludedTestClasses>
+                                <param>minijava.lexico.*PropiedadesTest</param>
+                                <param>minijava.lexico.*FuzzTest</param>
+                                <param>minijava.sintactico.*PropiedadesTest</param>
+                            </excludedTestClasses>
+                            <jvmArgs>
+                                <jvmArg>-Xmx2g</jvmArg>
+                            </jvmArgs>
+                            <!-- Un mutante que sobrevive es una línea que ningún test
+                                 distingue de otra cosa. El umbral hace que eso falle el
+                                 build en vez de quedar en un informe que nadie mira. -->
+                            <mutationThreshold>${umbral.mutacion}</mutationThreshold>
+                            <coverageThreshold>${umbral.cobertura.pit}</coverageThreshold>
+                            <timeoutConstant>6000</timeoutConstant>
+                            <threads>4</threads>
                         </configuration>
                     </plugin>
                 </plugins>

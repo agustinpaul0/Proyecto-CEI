@@ -3,14 +3,33 @@
 Andamiaje, no parte del compilador. Verifican la gramática, generan lo que el compilador consume
 desde ella, y escriben casos de corpus en lote.
 
+**Verificación de la gramática**
+
 | Herramienta | Para qué |
 |---|---|
-| `primeros.py` | El verificador de la gramática: vaciables, Primeros, LL(1), combinatoria de logros, registro de ambigüedades, simulador del Esquema Simple. |
-| `primeros_a_java.py` | Genera las constantes de Primeros que usa el analizador. |
-| `comparar_con_gramatica.py` | Exige que el analizador en Java y la gramática reconozcan el mismo lenguaje. |
+| `primeros.py` | El verificador: vaciables, Primeros, LL(1), combinatoria de logros, registro de ambigüedades, simulador del Esquema Simple. |
+| `equivalencia_de_lenguajes.py` | Con un reconocedor de Earley, que la gramática final con cero logros y la de la cátedra **generen el mismo lenguaje**. |
+| `auditar_analizador.py` | Que las producciones que cada método del analizador cita en su comentario sean **exactamente** las de la gramática. |
+| `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el mismo veredicto y el mismo token de rechazo sobre el corpus. |
 | `aceptar_fuente.py` | Corre la gramática sobre un fuente MiniJava real. |
 | `casos-gramatica.sh` | Casos de aceptación y rechazo de la gramática, por logro. |
-| `gramatica_a_markdown.py`, `gramatica_a_latex.py` | Generan los documentos de la gramática. |
+
+**Generación desde la gramática**
+
+| Herramienta | Para qué |
+|---|---|
+| `primeros_a_java.py` | Las clases `PrimerosDeX` que usa el analizador, una por sección de la gramática. |
+| `gramatica_a_markdown.py`, `gramatica_a_latex.py` | Los documentos de la gramática y las tablas del informe. |
+| `gramatica_a_antlr.py` | La gramática ANTLR con la que Grammarinator deriva y muta fuentes. |
+| `gramatica_a_javacc.py` | El oráculo JavaCC: un tercer reconocedor de la misma gramática. |
+| `gramaticas_externas.py` | Lo que las dos anteriores comparten: el léxico de la Etapa 1 y la convención de nombres. |
+
+**Corpus**
+
+| Herramienta | Para qué |
+|---|---|
+| `generar_corpus_fuzz.py` | El corpus generado del sintáctico, de punta a punta. Se invoca con `make fuzz`. |
+| `lote_sintactico.py` | El corpus del sintáctico **escrito a mano**, con las expectativas predichas. |
 | `lote*.py`, `generar_casos.py` | Escriben casos del corpus léxico en lote. |
 
 ## Los generadores del corpus léxico

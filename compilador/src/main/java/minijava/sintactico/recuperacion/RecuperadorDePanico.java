@@ -81,9 +81,9 @@ public final class RecuperadorDePanico {
     // elemento vuelve a fallar ahí mismo: `class C { int int; }` falla en el
     // segundo `int`, que también es el comienzo válido de un miembro. Sin esto el
     // analizador quedaría dando vueltas sobre el mismo token.
+    // No hace falta chequear el fin de archivo: sincronizar() devuelve false
+    // apenas lo ve, así que sólo se llega acá con un token de verdad por delante.
     public void forzarProgreso() throws ExcepcionLexica {
-        if (entrada.actual().tipo() != TipoDeToken.EOF) {
-            entrada.descartar();
-        }
+        entrada.descartar();
     }
 }

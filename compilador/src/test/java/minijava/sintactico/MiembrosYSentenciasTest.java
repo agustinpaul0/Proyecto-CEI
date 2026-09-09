@@ -23,6 +23,10 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     @ParameterizedTest
     @ValueSource(strings = {
             "int x;",
+            "boolean b;",
+            "char c;",
+            "boolean[] v;",
+            "char m1(boolean a, char b){}",
             "int[] a;",
             "int[][] m;",
             "Persona p;",
@@ -209,6 +213,10 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     @ValueSource(strings = {
             "for(;;) ;",
             "for(; i < 10; ) ;",
+            "for(var i = 0; ; ) ;",
+            "for(var i = 0; i < 10; i) ;",
+            "for(Clase.crear(); ; ) ;",
+            "for(Clase.crear().campo; ; ) ;",
             "for(var e : lista) ;",
             "for(Persona p : lista) ;",
             "for(int x : arreglo) ;",

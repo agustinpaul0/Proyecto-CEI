@@ -93,7 +93,7 @@ equivoqué y después lo arreglé» —que no va—.
 | **S1** | Conceptos + gramática | **Terminada** |
 | **S2** | Cimientos + arranque del parser | **Terminada** |
 | **S3** | Parser completo | **Terminada** |
-| **S4** | Robustez, testing y entrega | Pendiente |
+| **S4** | Robustez, testing y entrega | **Terminada** |
 | **S5** | Reserva | Pendiente |
 
 Días de 8-10 horas, asistidos. La S5 es colchón: para desvíos, para la corrección del léxico, o
@@ -166,6 +166,32 @@ El analizador sintáctico **completo**. `mvn verify` verde, 1117 tests.
   el simulador de la gramática dan el mismo veredicto y el mismo token de rechazo sobre 2250
   fuentes, con las divergencias deliberadas declaradas.
 
+### Lo que dejó la S4
+
+El compilador **completo**, con los diez logros implementados. `mvn verify` verde.
+
+- **Modo Pánico**, el único logro que faltaba. Tres puntos de recuperación —las tres listas de la
+  gramática que repiten un elemento—, sincronización con los tokens de Pautas slide 40 más los
+  Primeros del elemento, llaves contadas para saltear el cuerpo de un método con la firma rota, y
+  la invariante de que cada vuelta consume al menos un token.
+- **`match(...)` sin prefijo**: `ParteDelAnalizador` delega los cinco métodos de entrada, así cada
+  método de no terminal se lee como el ejemplo de Clase 5 slide 57. `EntradaDeTokens` sigue siendo
+  el único punto que consume entrada.
+- **El corpus del sintáctico**: 1861 casos. ~120 escritos a mano con la expectativa predicha, y el
+  resto generado con Grammarinator desde la propia gramática y etiquetado por un oráculo JavaCC.
+- **Tres reconocedores independientes coinciden** sobre el corpus entero: el analizador en Java, el
+  simulador en Python y el parser generado por JavaCC.
+- **Equivalencia de lenguajes verificada** con un reconocedor de Earley: la gramática final con
+  cero logros y la de la cátedra generan el mismo lenguaje, con cobertura por producción y dos
+  controles negativos que la validan.
+- **El analizador cita exactamente la gramática**: 220 de 220 producciones, verificado por
+  `auditar_analizador.py`.
+- **Modularización**: `Primeros.java` (828 líneas) pasó a diez clases por sección,
+  `AnalizadorLexicoTest.java` (1026 líneas) a ocho suites por tema, y `ArgsActuales` salió de
+  `AnalizadorDeCreacion` a su propia parte.
+- **Cobertura** 98,9 % de líneas y 95,0 % de ramas, con umbrales en `mvn verify`. **Mutación** al
+  91 %, con umbral, sobre todo el compilador.
+
 ### Estado de la Etapa 1
 
 **Corregida: todos los logros alcanzados, sin errores ni observaciones.** Tiene que seguir siendo
@@ -195,18 +221,18 @@ verificador antes de actuar. Resultado:
 
 ## Estado en una línea, para arrancar rápido
 
-El compilador **está completo salvo el Modo Pánico**. Lo que existe y anda hoy:
+El compilador **está completo**. Lo que existe y anda hoy:
 
 ```bash
 cd compilador
-mvn verify                    # 1117 tests, cobertura sobre el umbral
+mvn verify                    # 5731 tests, cobertura sobre el umbral
 java -jar target/Compilador.jar programa1.java             # analiza sintácticamente
 java -jar target/Compilador.jar --etapa=1 programa1.java   # vuelca tokens (Etapa 1)
 java -jar target/Compilador.jar --logros=ninguno prog.java # sin ningún logro
 ```
 
-Lo que **falta** para cerrar la etapa: el Modo Pánico, el corpus de `resources/sintactico/` —hoy
-vacío—, y las cuatro secciones del informe que pide Pautas slide 33. Todo eso es la S4.
+El compilador **está completo**: los diez logros implementados, el corpus poblado y el informe
+cerrado. Lo que queda es pulido y la preparación del zip.
 
 ## Protocolo de arranque de sesión
 
@@ -317,50 +343,22 @@ según Pautas slide 25: `Error Sintactico en linea N: se esperaba X se encontro 
 **Terminada cuando.** Los 8 casos de la cátedra pasan con el compilador real, no sólo con el
 simulador de la gramática. ✅
 
-### S4 — Robustez, testing y entrega
+### S4 — Robustez, testing y entrega — **terminada**
 
-**Objetivo.** Modo pánico, el corpus de tests, la documentación y el informe final. **Es lo único
-que queda de la etapa**: el analizador está completo y verificado.
+**Objetivo.** Modo pánico, el corpus de tests, la documentación y el informe final.
 
-**Leer antes.** `Pautas Etapa 2.pdf` slide 40 (Modo Pánico) y la sección 5 de
-[`../sintactico/decisiones-de-deteccion-de-errores.md`](../sintactico/decisiones-de-deteccion-de-errores.md).
+**Hecho.** Todo lo listado arriba en [Lo que dejó la S4](#lo-que-dejó-la-s4). Los puntos que
+cambiaron respecto de lo planeado, y por qué:
 
-**Trabajo.**
-1. **Recuperación en Modo Pánico** (logro): al detectar un error, descartar tokens hasta un token
-   de sincronización —`;`, `}` o `{` según el contexto, Pautas slide 40— y reanudar. Detrás de su
-   flag `MODO_PANICO`, que ya existe en el enum: apagado, el compilador corta en el primer error
-   como pide la convención base. **Es el único logro de la etapa sin implementar.**
-2. **Corpus** en `compilador/resources/sintactico/{sinErrores,conErrores}/`, que **hoy están
-   vacíos**, con el criterio de robustez de la regla 2 de este documento. El profesor autorizó
-   **asumir programas léxicamente válidos** para los tests del sintáctico, así que el corpus no
-   repite casos léxicos. Se reusa la mecánica que ya existe: el formato de expectativas
-   (`//#lexema,linea` y `// [Error:lexema|linea]`), `casos/VolcadoDeCasos`,
-   `RequisitosDeLogrosDelCaso` con su manifiesto, y los tres testers. **Las expectativas se predicen
-   a mano antes de correr.**
-3. **Integrar la suite de tests de un compañero** para ampliar el corpus. El usuario la trae al
-   arrancar la sesión. Cuidado: los casos ajenos pueden asumir logros distintos de los nuestros, así
-   que cada uno entra con sus requisitos declarados en el manifiesto, y **cualquier divergencia de
-   veredicto se investiga antes de aceptarla como propia** —puede ser un defecto nuestro o una
-   lectura distinta de la especificación, y las dos cosas hay que resolverlas, no taparlas—.
-4. **Llevar `comparar_con_gramatica.py` al corpus fijo**, para que la equivalencia entre el
-   analizador y la gramática quede en la verificación permanente y no dependa de fuentes generados
-   al momento.
-5. Actualizar `documentacion/proyecto/*.md` y `documentacion/*.md`.
-6. **Cerrar el informe.** Hoy cubre entera la gramática —alcance, notación, la original comentada,
-   diagnóstico, transformaciones, extensiones por logro, gramática final y verificación— pero
-   **nada de lo que produjeron la S2 y la S3**. Pautas slide 33 pide explícitamente cuatro cosas que
-   todavía no están:
-   - **cómo compilar el código entregado y cómo correrlo** (`mvn package`, `java -jar`, `--etapa`,
-     `--logros`);
-   - los **tipos de errores sintácticos** que el analizador puede detectar —los dos puntos del
-     Esquema Simple más los tres chequeos de lambda—;
-   - la **documentación usual de un proyecto de software**: decisiones de diseño y clases
-     utilizadas, o sea la división en `sintactico/partes/`, `EntradaDeTokens`, la fachada `Sintaxis`
-     y por qué;
-   - **qué logros se intentan alcanzar** en la etapa.
-
-   Y conviene sumar la verificación diferencial contra la gramática, que es el argumento más fuerte
-   de corrección que tiene el trabajo.
+- **La suite del compañero no se portó, se adaptó su andamiaje.** Lo que trajo era un pipeline de
+  fuzzing armado sobre *otra* gramática de MiniJava, escrita a mano en Python y sin logros. Portar
+  esa gramática habría creado una segunda fuente de verdad; en su lugar, las dos gramáticas que las
+  herramientas externas entienden —ANTLR para generar, JavaCC para el oráculo— se **generan** desde
+  `minijava-ll1-logros.g`, igual que los documentos y los Primeros.
+- **Los casos que dependen de un logro APAGADO no van en el corpus.** La cátedra corre sus testers
+  sobre la carpeta de entrega con el compilador tal cual, o sea con todos los logros; un caso que
+  necesite uno apagado haría fallar esa corrida. Esos pares acepta-con / rechaza-sin los cubren
+  `RamasSinLogroTest`, los tests con fuente embebido y `casos-gramatica.sh`.
 
 ### S5 — Reserva
 
@@ -372,17 +370,23 @@ Colchón. Si no se usa, se dedica a subir cobertura y a buscar más casos raros.
 
 Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de resolverlo.
 
-- [ ] **Traer al arrancar la S4.** La suite de tests de un compañero, para ampliar el corpus. Ver
-      el punto 3 de la S4.
-- [ ] **Hacer en la S4.** Llevar la comparación diferencial al corpus fijo: hoy
-      `herramientas/comparar_con_gramatica.py` corre sobre fuentes generados al momento, y debería
-      correr sobre `resources/sintactico/` como parte de la verificación permanente.
-- [ ] **Considerar para la S4.** La otra prueba diferencial, la de equivalencia de LENGUAJES entre
-      `minijava-base.g` y `minijava-ll1-logros.g` con cero logros, con un reconocedor de Earley.
-      Es distinta de la que ya existe —ésa compara el analizador contra la gramática final, no las
-      dos gramáticas entre sí— y responde de frente a Clase 3 slide 42.
 - [ ] Los logros de la Etapa 1 que sigan siendo alcanzables se mantienen; los de Etapa 2 no
       implementables por código son *Entrega Anticipada*, *Imbatibilidad* y *Well Done!*.
+- [ ] **Antes de entregar.** Armar el zip y medir cuánto tarda la corrida de los testers de la
+      cátedra sobre las 1861 fuentes del corpus; si se va de escala, decidir con el usuario qué
+      recortar.
+
+### Cerrado en la S4
+
+- [x] La suite de tests del compañero: su andamiaje quedó adaptado a esta gramática y
+      `vendor/tests-giuli/` se borró.
+- [x] La comparación diferencial corre sobre el corpus fijo y en paralelo.
+- [x] La equivalencia de LENGUAJES entre `minijava-base.g` y `minijava-ll1-logros.g` con cero
+      logros, con un reconocedor de Earley y cobertura por producción. Responde de frente a la
+      exigencia de Clase 4 de no cambiar el lenguaje al transformar la gramática.
+- [x] El Modo Pánico.
+- [x] `entrada().match(...)` pasa a `match(...)`.
+- [x] Los archivos densos: `Primeros.java` y `AnalizadorLexicoTest.java`.
 
 ### Cerrado en la S3
 
@@ -453,13 +457,25 @@ Todo esto tiene que pasar al cerrar cualquier sesión:
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria # 1024/1024
-bash herramientas/casos-gramatica.sh                                            # 69/69
+python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades # 7/7 declaradas
+python3 herramientas/auditar_analizador.py                                      # 220/220 citadas
+python3 herramientas/equivalencia_de_lenguajes.py                               # mismo lenguaje
+bash herramientas/casos-gramatica.sh                                            # 87/87
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java  # 8/8
+python3 herramientas/comparar_con_gramatica.py                                  # 1861 fuentes
 mvn verify                                                                      # suite + cobertura
+mvn -Pmutacion verify                                                           # mutación 91 %
 mvn test -Dlogros=ninguno                                                       # cero logros
 mvn test -Dlogros=todos                                                         # todos
 mvn test -Pfase-lexico                                                          # sólo el léxico
 mvn test -Pfase-sintactico                                                      # sólo el sintáctico
+```
+
+El corpus generado se regenera desde su semilla versionada, y hace falta el andamiaje del fuzzer:
+
+```bash
+make venv && make fuzz          # Grammarinator + los jars de ANTLR y JavaCC
+python3 herramientas/lote_sintactico.py   # los casos escritos a mano
 ```
 
 Y, cuando el informe cambie:

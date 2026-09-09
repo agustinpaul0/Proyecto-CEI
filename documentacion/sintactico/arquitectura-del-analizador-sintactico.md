@@ -69,18 +69,33 @@ Esa tercera forma es la que le permite al Esquema Simple prescindir de los Sigui
 ## 3. `match`, el único punto que consume entrada
 
 ```java
-private void match(TipoDeToken esperado) {
-    if (tokenActual.tipo() == esperado) tokenActual = analizadorLexico.proximoToken();
-    else throw new ExcepcionSintactica(tokenActual, esperado);
+public void match(TipoDeToken esperado) {
+    if (actual.tipo() != esperado) throw new ExcepcionSintactica(actual, nombreDe(esperado));
+    avanzar();
 }
 ```
 
-Dos cosas que conviene tener presentes:
+Vive en `EntradaDeTokens`, que es el lookahead del analizador y **el único punto que consume
+entrada**. Como las reglas están repartidas en diez secciones, cada una llega a él por un método
+puente de una línea en `ParteDelAnalizador`:
 
-- **`tokenActual` *es* el lookahead.** El analizador nunca mira más de un token hacia adelante; el
+```java
+protected final void match(TipoDeToken esperado) { sintaxis.entrada().match(esperado); }
+```
+
+Así cada método de no terminal se escribe `match(TipoDeToken.PR_CLASS)`, igual que en el ejemplo de
+Clase 5 slide 57, sin que ninguna sección tenga acceso al analizador léxico.
+
+Tres cosas que conviene tener presentes:
+
+- **El token actual *es* el lookahead.** El analizador nunca mira más de un token hacia adelante; el
   «token actual» ya es el que todavía no se consumió.
-- **`match` es el único lugar que avanza.** Ningún método toca el léxico directamente. Eso hace que
-  la posición del error sea siempre la del `tokenActual`, sin bookkeeping extra.
+- **`match` es el único lugar que avanza**, junto con `descartar()`, que usa el Modo Pánico
+  justamente para tirar entrada. Ningún método toca el léxico directamente, y por eso la posición
+  del error es siempre la del token actual, sin bookkeeping extra.
+- **La recursión a derecha se traduce con un `while`.** Clase 5 slide 59 muestra el método
+  llamándose a sí mismo; acá se usa un bucle, que deriva la misma cadena y no hace depender de la
+  pila de la JVM una cadena larga de operadores o una lista larga de argumentos.
 
 ## 4. El flujo completo
 
@@ -201,13 +216,23 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre 2250 fuentes —válidos y
-mutados— coinciden en todos.
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1861 fuentes** del
+corpus versionado coinciden en todas.
+
+Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser
+con **JavaCC**: un generador de terceros que con `LOOKAHEAD = 1` usa exactamente la misma técnica.
+Es el oráculo con el que se etiqueta el corpus generado, así que cada caso del corpus lleva la
+expectativa de una implementación distinta de la que la verifica.
 
 Las únicas divergencias posibles son las de los chequeos que una gramática libre de contexto no
 puede expresar, donde el analizador es deliberadamente más restrictivo, y van **declaradas** en la
 herramienta con su motivo: una divergencia sin declarar la hace fallar. Es el mismo criterio que el
 registro de ambigüedades del verificador.
+
+Una cuarta verificación cierra el otro extremo: `herramientas/equivalencia_de_lenguajes.py`
+comprueba con un reconocedor de Earley que la gramática final con cero logros y la de la cátedra
+**generen el mismo lenguaje**, derivando una cadena por cada producción de cada una. Es la respuesta
+a la exigencia de Clase 4 de adaptar la gramática «sin cambiar el lenguaje que genera».
 
 ## 7. Los logros son interruptores independientes
 

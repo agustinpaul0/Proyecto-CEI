@@ -93,11 +93,12 @@ try {
 Se restaura al salir y no simplemente se apaga, porque después de la lambda el código vuelve a poder
 usar `this`.
 
-**Hay un segundo caso, implícito.** Llamar a un método propio sin escribir `this` es un uso de
-`this` igual: `x -> metodo(x)` es `x -> this.metodo(x)`. Y adentro de una lambda de MiniJava, una
-llamada sin punto **sólo** puede ser un método de la clase: no hay funciones sueltas en el
-lenguaje, y un parámetro es un valor, no se lo puede llamar. Así que **toda llamada sin punto
-dentro de una lambda es un `this` implícito**, y se rechaza con el mismo indicador.
+**Hay un segundo caso, implícito, y ése queda para el semántico.** Llamar a un método propio sin
+escribir `this` parece un uso de `this` igual: `x -> metodo(x)` sería `x -> this.metodo(x)`. Pero
+**sólo si `metodo` es de instancia**. Si es `static` de la misma clase no hay ningún `this`, y Java
+acepta la lambda sin objeción. Distinguir los dos casos exige resolver el nombre contra su
+declaración —una tabla de símbolos— y por lo tanto cae del otro lado del criterio: rechazarlo acá
+sería rechazar un programa válido, que es peor que dejarlo pasar a la etapa que sí puede decidirlo.
 
 ### 3.2. Captura de variables
 
@@ -112,7 +113,7 @@ variable y cuál no:
 | Forma | Producción | ¿Se chequea? |
 |---|---|---|
 | `x` solo | `AccesoLlamadaOLambda → ε` | **sí**: tiene que estar en los parámetros |
-| `x(…)` | `AccesoLlamadaOLambda → ArgsActuales` | rechazo directo: es `this` implícito (3.1) |
+| `x(…)` | `AccesoLlamadaOLambda → ArgsActuales` | no: podría ser un método `static` (3.1) |
 | `.campo` | `Encadenado → . idMetVar …` | no: es un campo de otro objeto, no una variable |
 | `C.m(…)` | `LlamadaMetodoEstatico` | no: es estático, no captura nada |
 
@@ -131,7 +132,7 @@ Todo esto está verificado en `LambdasTest`, con el par completo por caso.
 | `x -> C.metodo(x)` | acepta | llamada estática, no captura |
 | `x -> x + n` | **rechaza** | `n` no está entre los parámetros |
 | `x -> this.campo` | **rechaza** | `this` explícito |
-| `x -> metodo(x)` | **rechaza** | `this` implícito |
+| `x -> metodo(x)` | acepta | podría ser un método `static`: lo decide el semántico |
 | `x -> y -> x + y` | **rechaza** | la interna usa `x`, que es de la externa |
 | `(a + 1) -> a` | **rechaza** | el parámetro no es un identificador pelado |
 | `(a, a) -> a` | **rechaza** | el parámetro está repetido |
@@ -193,18 +194,52 @@ que no esté declarada con su regla.
 
 ## 5. Recuperación en Modo Pánico
 
-Logro de la etapa. Al detectar un error, en lugar de terminar, el analizador descarta tokens hasta
-encontrar uno de sincronización —`;`, `}` o `{` según el contexto, Pautas slide 40— y reanuda el
-análisis, de modo que un fuente con varios errores los reporte todos.
+Logro de la etapa, **implementado**. Al detectar un error, en lugar de terminar, el analizador
+descarta tokens hasta uno donde pueda reanudar y sigue, de modo que un fuente con varios errores
+los reporte todos. Va detrás de su propio interruptor: **apagado, el compilador corta en el primer
+error**, que es la convención base de Pautas slide 25.
 
-Va detrás de su propio interruptor: **apagado, el compilador corta en el primer error**, que es la
-convención base de la slide 25. Se implementa en la Sesión 4; el plan está en
-[`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
+### 5.1. Dónde se recupera
 
-## Ver también
+En **tres lugares y sólo tres**: las tres listas de la gramática que repiten un elemento
+—`ListaClases`, `ListaMiembros` (y `ListaMetodosInterfaz`) y `ListaSentencias`—. Es donde tiene
+sentido descartar un elemento roto y seguir con el siguiente, y mantenerlo ahí evita que el
+`try/catch` se desparrame por las diez secciones del analizador.
 
-- [`../compartido/manejo-de-errores.md`](../compartido/manejo-de-errores.md) — el mecanismo de
-  reporte, común a todas las etapas.
-- [`transformacion-a-ll1-paso-a-paso.md`](transformacion-a-ll1-paso-a-paso.md) — las ambigüedades
-  y su resolución, con las derivaciones.
-- [`resolucion-de-logros.md`](resolucion-de-logros.md) — qué exige cada logro y dónde se resuelve.
+### 5.2. Con qué se sincroniza
+
+Pautas slide 40 nombra el punto y coma, la llave de cierre y la llave que abre «según el contexto».
+A esos se les suman **los Primeros del elemento de la lista**, y hacen falta:
+
+```java
+class C1 {
+  int x        // falta el `;`
+  void m(){ }  // este método es correcto
+}
+```
+
+El análisis falla en `void`, que es justamente donde empieza el miembro siguiente y correcto. Sin
+los Primeros como punto de reanudación, la recuperación se llevaría puesto el método entero.
+
+Las **llaves se cuentan** mientras se descarta: un `{` que no arranca un elemento de la lista abre
+algo anidado —el cuerpo del método cuya firma está rota— y se saltea entero, en vez de leer cada
+sentencia de adentro como si fuera otro miembro y producir un error inventado por cada una.
+
+### 5.3. La invariante de progreso
+
+Cada vuelta del bucle consume al menos un token. Hay que decirlo explícito porque el error puede
+caer justo en un token que también arranca otro elemento: `class C { int int; }` falla en el
+segundo `int`, que es un comienzo válido de miembro, y sin la garantía el analizador quedaría dando
+vueltas sobre el mismo token. Está cubierto con un test con límite de tiempo.
+
+### 5.4. El primer error no cambia
+
+El logro **agrega errores al final de la lista, nunca cambia el primero**. Eso es lo que permite que
+un mismo caso del corpus valga con el logro prendido y apagado, y hay un test que lo verifica sobre
+el corpus entero además de una propiedad que lo verifica sobre entradas al azar.
+
+### 5.5. El formato del reporte
+
+Se repite el reporte completo de Pautas slide 25 —mensaje, renglón en blanco, código— por cada
+error, en orden. Es el mismo formato con el que la Etapa 1 reporta varios errores léxicos con
+*Multi-detección*, que se corrigió sin observaciones.
