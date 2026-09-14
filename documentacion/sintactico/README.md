@@ -40,7 +40,7 @@ python3 herramientas/equivalencia_de_lenguajes.py    # mismo lenguaje que la de 
 python3 herramientas/auditar_analizador.py           # 234/234 producciones citadas
 bash herramientas/casos-gramatica.sh                                              # 87 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java   # 8/8
-python3 herramientas/comparar_con_gramatica.py       # 1861 fuentes del corpus
+python3 herramientas/comparar_con_gramatica.py       # 1879 fuentes del corpus
 ```
 
 Son **cuatro verificaciones independientes** y conviene tener claro qué prueba cada una:

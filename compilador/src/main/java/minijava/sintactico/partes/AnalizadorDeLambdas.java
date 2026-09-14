@@ -60,12 +60,23 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
             return;
         }
 
-        Candidato primero = leerCandidatoAParametro();
-        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
-            lambdaDeVariosParametros(primero);
-        } else {
-            match(TipoDeToken.PAREN_C);
-            finDeParentizadaOLambda(primero);
+        // El contenido se lee con las capturas EN DUDA: hasta ver qué sigue al
+        // `)` no se sabe si son parámetros o una expresión. El finally cierra el
+        // marco pase lo que pase, porque con Modo Pánico el contenido puede
+        // fallar y el análisis seguir.
+        RestriccionesDeLambda restricciones = sintaxis.restriccionesDeLambda();
+        int profundidad = restricciones.abrirCandidatoAParametro();
+        try {
+            Candidato primero = leerCandidatoAParametro();
+            if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
+                restricciones.descartarCandidatoAParametro();
+                lambdaDeVariosParametros(primero);
+            } else {
+                match(TipoDeToken.PAREN_C);
+                finDeParentizadaOLambda(primero);
+            }
+        } finally {
+            restricciones.cerrarCandidatoAParametro(profundidad);
         }
     }
 
@@ -107,12 +118,14 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     private void finDeParentizadaOLambda(Candidato primero)
             throws ExcepcionLexica, ExcepcionSintactica {
         if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
+            sintaxis.restriccionesDeLambda().descartarCandidatoAParametro();
             Set<String> parametros = new HashSet<>();
             exigirParametro(primero, parametros);
             match(TipoDeToken.OP_FLECHA);
             cuerpoLambda(parametros);
             return;
         }
+        sintaxis.restriccionesDeLambda().confirmarExpresionParentizada();
         exigirQueLaLambdaParentizadaNoLleveCola(primero);
         sintaxis.expresiones().colaDesdePrimarioSinAsignacion();
     }

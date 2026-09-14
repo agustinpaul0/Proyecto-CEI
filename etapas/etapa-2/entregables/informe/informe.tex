@@ -1172,6 +1172,19 @@ Pero \textbf{sí son verificables en el analizador}, y con información purament
         conjunto de la más interna.
 \end{itemize}
 
+\begin{decision}{el chequeo de captura se difiere adentro de un paréntesis}
+Hay un punto donde el chequeo no puede resolverse en el momento. El contenido de un paréntesis se
+lee como \nt{Expresion}, porque hasta ver el token que sigue al \tl{)} no se sabe si era una
+expresión o la lista de parámetros de otra lambda. Esa lectura pasa por el chequeo de captura, y
+ahí todavía rige el alcance de la lambda de afuera: en \texttt{x -> (y) -> y} el \texttt{y} se
+tomaría por una captura, y se rechazaría una lambda que escrita \texttt{x -> y -> y} se acepta.
+
+Mientras el paréntesis está abierto, entonces, un nombre que no es parámetro no se rechaza: queda
+\textbf{en duda}. Al cerrar se resuelve con el mismo token que ya decide todo lo demás: si sigue un
+\tl{->} eran declaraciones y las dudas se descartan; si no, era una expresión parentizada, eran
+capturas de verdad y se reporta la primera ---el mismo token que se habría reportado sin diferir---.
+\end{decision}
+
 La gramática ya distingue los tres usos de un \tl{idMetVar} ---acceso a variable, llamada, y campo
 después de un \tl{.}---, así que se sabe cuál hay que chequear contra los parámetros y cuál no:
 \texttt{x -> x.campo} y \texttt{x -> C.metodo(x)} son válidos, \texttt{x -> x + n} no.

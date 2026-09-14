@@ -930,3 +930,15 @@ sinErrores/todosLosLogrosJuntos.java             | visibilidad,atrinit,varclasic
 sinErrores/variablesLocalesClasicas.java         | varclasica |
 sinErrores/visibilidadEnTodoMiembro.java         | visibilidad |
 sinErrores/visibilidadYStaticEnEseOrden.java     | visibilidad |
+conErrores/comaFinalSinDeclarador.java           | varclasica |
+conErrores/declaradorFaltanteTrasLaComa.java     | varclasica |
+conErrores/dosDeclaradoresSinComa.java           | varclasica |
+conErrores/lambdaComoOperandoDeUnBinario.java    | lambda |
+conErrores/lambdaComoOperandoDeUnUnario.java     | lambda |
+conErrores/lambdaDeVariosParametrosSinCuerpo.java | lambda |
+conErrores/lambdaParentizadaConEncadenado.java   | lambda |
+conErrores/lambdaSueltaComoSentencia.java        | lambda |
+sinErrores/declaracionLocalComoCuerpoDeIf.java   | varclasica |
+sinErrores/declaradoresGenericosConInicializador.java | varclasica |
+sinErrores/parametroDeLambdaAnidadaEntreParentesis.java | lambda |
+conErrores/lambdaAnidadaEntreParentesisQueUsaElParametroDeAfuera.java | lambda |

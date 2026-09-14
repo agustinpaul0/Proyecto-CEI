@@ -60,7 +60,7 @@ zip -r ../Etapa2-Paul.zip . -x 'target/*' '.venv/*' 'herramientas/fuzz/jars/*' \
                                 'herramientas/fuzz/trabajo/*'
 ```
 
-Son **1861 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
+Son **1879 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
 4 segundos. Todos están verificados con el compilador tal cual —o sea con todos los logros
 prendidos, que es como la cátedra lo corre—: ningún caso del corpus depende de tener un logro
 apagado. Los pares acepta-con / rechaza-sin los cubren `RamasSinLogroTest`, los tests con fuente

@@ -332,6 +332,66 @@ class LambdasTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
+    // ------------------------------------- el parametro entre parentesis -------
+    // El contenido de un paréntesis se lee como expresión, porque hasta ver el
+    // `->` que sigue al `)` no hay forma de saber que era un parámetro. Mientras
+    // tanto el chequeo de captura queda EN DUDA: darlo por captura rechazaría la
+    // misma lambda que sin paréntesis se acepta.
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "x -> y -> y        | x -> (y) -> y",
+            "a -> a             | (a) -> a",
+            "x -> y -> z -> z   | x -> (y) -> (z) -> z",
+    })
+    void parentizarElParametroNoCambiaElVeredicto(String sinParentesis, String conParentesis,
+                                                  @TempDir Path dir) {
+        aceptarLambda(dir, sinParentesis);
+        aceptarLambda(dir, conParentesis);
+    }
+
+    // Parentizar de más NO es parentizar el parámetro: `((a)) -> a` no es una
+    // lambda en Java tampoco, porque la lista de parámetros es `(a)` y envolverla
+    // otra vez la deja de ser.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "((a)) -> a",
+            "x -> ((a, b)) -> a",
+    })
+    void parentizarDeMasNoEsUnaListaDeParametros(String lambda, @TempDir Path dir) {
+        rechazarLambda(dir, lambda);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "x -> (y) -> y",
+            "x -> (y, z) -> y + z",
+            "x -> ((y) -> y)",
+            "x -> (y) -> (z) -> z",
+    })
+    void elParametroDeUnaLambdaAnidadaEntreParentesisNoEsUnaCaptura(String lambda,
+                                                                    @TempDir Path dir) {
+        aceptarLambda(dir, lambda);
+    }
+
+    // Y la duda se resuelve al revés cuando el paréntesis resultó ser una
+    // expresión: ahí los nombres sí son capturas, y se reporta el primero.
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "x -> (a + b)       | a",
+            "x -> (a)           | a",
+            "x -> ((a))         | a",
+            "x -> (y) -> x      | x",
+            "x -> (y) -> z      | z",
+    })
+    void elParentesisQueResultoSerExpresionSiChequeaLaCaptura(String lambda, String lexema,
+                                                              @TempDir Path dir) {
+        ExcepcionSintactica excepcion = rechazarLambda(dir, lambda);
+
+        assertEquals(lexema, excepcion.getLexemaOfensivo());
+        assertTrue(excepcion.getMessage().contains("capturar"), excepcion.getMessage());
+    }
+
     // ------------------------------------------------------ el logro apagado ---
 
     @Test

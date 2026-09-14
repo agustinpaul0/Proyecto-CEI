@@ -95,6 +95,7 @@ equivoqué y después lo arreglé» —que no va—.
 | **S3** | Parser completo | **Terminada** |
 | **S4** | Robustez, testing y entrega | **Terminada** |
 | **S5** | Precedencia de lambdas + devolución del profesor | **Terminada** |
+| **S6** | Contraste contra un corpus externo | **Terminada** |
 
 Días de 8-10 horas, asistidos. La S5 es colchón: para desvíos, para la corrección del léxico, o
 para pulido.
@@ -177,7 +178,7 @@ El compilador **completo**, con los diez logros implementados. `mvn verify` verd
 - **`match(...)` sin prefijo**: `ParteDelAnalizador` delega los cinco métodos de entrada, así cada
   método de no terminal se lee como el ejemplo de Clase 5 slide 57. `EntradaDeTokens` sigue siendo
   el único punto que consume entrada.
-- **El corpus del sintáctico**: 1861 casos. ~120 escritos a mano con la expectativa predicha, y el
+- **El corpus del sintáctico**: 1879 casos. ~120 escritos a mano con la expectativa predicha, y el
   resto generado con Grammarinator desde la propia gramática y etiquetado por un oráculo JavaCC.
 - **Tres reconocedores independientes coinciden** sobre el corpus entero: el analizador en Java, el
   simulador en Python y el parser generado por JavaCC.
@@ -216,6 +217,36 @@ Corrección de la **precedencia de las lambdas** y los cuatro puntos que trajo e
   mismo `-Dvolcado` que el corpus. Sirve para mirar un caso desde IntelliJ sin romper un test.
 - 111 no terminales, 228 producciones. `mvn verify` verde, 5785 tests, cobertura sobre el umbral.
 
+### Lo que dejó la S6
+
+Contraste contra **un corpus externo** de 30.078 fuentes —78 escritas a mano y 30.000 de fuzzing
+sobre otra gramática de MiniJava, en tres variantes: base, variables locales clásicas y lambdas—.
+El material se usó una vez, como oráculo independiente, y no quedó en el repositorio.
+
+- **Cero falsos aceptados en los 30.078**: no hay un solo fuente que su corpus declare inválido y
+  este compilador acepte. Los 78 casos escritos a mano pasan todos.
+- Los ~3.300 rechazos nuestros se explican enteros, sin residuo: la divergencia documentada del
+  string terminado en `\` (§7 del léxico), las restricciones del logro MiniLambdas que esa gramática
+  no tiene (`this`, captura, parámetro que no es identificador) y la ubicación de la lambda fuera de
+  `<Primario>`. Los 94 que no entraban en ninguna categoría se adjudicaron con `javac`: 74 los
+  rechaza por sintaxis también, y los 20 restantes se redujeron a pares mínimos donde coincidimos.
+- **Un falso positivo propio, encontrado y corregido**: `x -> (y) -> y` se rechazaba por captura de
+  `y`. El contenido de un paréntesis se lee como expresión —no hay forma de saber que es un
+  parámetro hasta ver el `->` que sigue al `)`—, y ese parseo pasaba por el chequeo de captura con
+  el alcance de la lambda de afuera. Ahora los nombres quedan **en duda** hasta que se cierra el
+  paréntesis. Cambió el error reportado en 838 de las fuentes de fuzzing.
+- **18 casos nuevos en el corpus** —1879 en total—, los que no eran redundantes: dos argumentos de tipo en el
+  `extends`, tipo primitivo como argumento de tipo, coma en el `extends` de una interfaz, `idClase`
+  suelto como sentencia, los cuatro errores de la lista de declaradores, `var` sin nombre,
+  parámetros de lambda sin coma, lambda de varios parámetros sin cuerpo, los cuatro de la
+  precedencia de la lambda, y del lado válido la declaración local como cuerpo de un `if` sin
+  llaves y los declaradores genéricos con inicializador.
+- **El corpus de fuzzing NO se importó.** Son 30.000 fuentes etiquetadas contra otra gramática y sin
+  los logros de esta etapa; sumarlas duplicaría una fuente de verdad que este proyecto ya cubre con
+  su propio corpus generado desde `minijava-ll1-logros.g` y contrastado con tres reconocedores, y
+  multiplicaría por dieciséis lo que tarda la corrida de los testers de la cátedra sobre la entrega.
+- `mvn verify` verde, 5856 tests, cobertura sobre el umbral.
+
 ### Estado de la Etapa 1
 
 **Corregida: todos los logros alcanzados, sin errores ni observaciones.** Tiene que seguir siendo
@@ -249,7 +280,7 @@ El compilador **está completo**. Lo que existe y anda hoy:
 
 ```bash
 cd compilador
-mvn verify                    # 5785 tests, cobertura sobre el umbral
+mvn verify                    # 5856 tests, cobertura sobre el umbral
 java -jar target/Compilador.jar programa1.java             # analiza sintácticamente
 java -jar target/Compilador.jar --etapa=1 programa1.java   # vuelca tokens (Etapa 1)
 java -jar target/Compilador.jar --logros=ninguno prog.java # sin ningún logro
@@ -397,7 +428,7 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
 - [ ] Los logros de la Etapa 1 que sigan siendo alcanzables se mantienen; los de Etapa 2 no
       implementables por código son *Entrega Anticipada*, *Imbatibilidad* y *Well Done!*.
 - [ ] **Antes de entregar.** Armar el zip y medir cuánto tarda la corrida de los testers de la
-      cátedra sobre las 1861 fuentes del corpus; si se va de escala, decidir con el usuario qué
+      cátedra sobre las 1879 fuentes del corpus; si se va de escala, decidir con el usuario qué
       recortar.
 
 ### Cerrado en la S4
@@ -495,7 +526,7 @@ python3 herramientas/auditar_analizador.py                                      
 python3 herramientas/equivalencia_de_lenguajes.py                               # mismo lenguaje
 bash herramientas/casos-gramatica.sh                                            # 87/87
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java  # 8/8
-python3 herramientas/comparar_con_gramatica.py                                  # 1861 fuentes
+python3 herramientas/comparar_con_gramatica.py                                  # 1879 fuentes
 mvn verify                                                                      # suite + cobertura
 mvn -Pmutacion verify                                                           # mutación 90 %
 mvn test -Dlogros=ninguno                                                       # cero logros

@@ -223,7 +223,7 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1861 fuentes** del
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1879 fuentes** del
 corpus versionado coinciden en todas.
 
 Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser

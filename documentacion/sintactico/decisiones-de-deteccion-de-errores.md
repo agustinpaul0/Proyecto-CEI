@@ -134,6 +134,9 @@ Todo esto está verificado en `LambdasTest`, con el par completo por caso.
 | `x -> this.campo` | **rechaza** | `this` explícito |
 | `x -> metodo(x)` | acepta | podría ser un método `static`: lo decide el semántico |
 | `x -> y -> x + y` | **rechaza** | la interna usa `x`, que es de la externa |
+| `x -> (y) -> y` | acepta | `y` es el parámetro de la interna, aunque venga entre paréntesis |
+| `x -> (y) -> x` | **rechaza** | el cuerpo usa `x`, que es de la externa |
+| `x -> (a + b)` | **rechaza** | el paréntesis era una expresión: `a` es una captura |
 | `(a + 1) -> a` | **rechaza** | el parámetro no es un identificador pelado |
 | `(a, a) -> a` | **rechaza** | el parámetro está repetido |
 | `f((x -> x))` | acepta | la lambda parentizada es toda la expresión |
@@ -148,6 +151,15 @@ distinguirlos sin un lookahead ilimitado.
 El analizador lee el contenido como expresión y **recuerda si consumió exactamente un `idMetVar`**;
 si al ver el `->` resulta que no, lo rechaza. Es la única información extra que hace falta, y sale
 de contar los tokens que ya se consumieron (`EntradaDeTokens.consumidos()`).
+
+> **El chequeo de captura queda en duda mientras dura esa lectura.** Leer el contenido como
+> expresión lo hace pasar por el chequeo de captura, y ahí todavía rige el alcance de la lambda de
+> afuera: en `x -> (y) -> y` el `y` se leería como una captura de `x`, y se rechazaría una lambda
+> que escrita `x -> y -> y` se acepta. Por eso, mientras el paréntesis está abierto, los nombres
+> que no son parámetros no se rechazan sino que se **anotan en duda**; al cerrar se resuelve:
+> si sigue un `->` eran declaraciones y se descartan, y si no, eran capturas y se reporta la
+> primera. El marco se cierra pase lo que pase, porque con Modo Pánico el contenido puede fallar y
+> el análisis seguir.
 
 Se rechaza también el parámetro repetido, `(a, a) -> a`, por la misma vía.
 
