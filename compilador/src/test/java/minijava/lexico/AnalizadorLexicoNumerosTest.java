@@ -168,7 +168,7 @@ class AnalizadorLexicoNumerosTest extends BaseDeAnalisisLexico {
     // Sin el logro Floats I, '.' y 'e'/'E' terminan el intLiteral.
     @Test
     void conFloatsDeshabilitadosElPuntoNoContinuaElEntero(@TempDir Path dir) throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
         AnalizadorLexico analizador = crearAnalizador(dir, "1.5", configuracion);
 
         Token primero = analizador.proximoToken();
@@ -184,7 +184,7 @@ class AnalizadorLexicoNumerosTest extends BaseDeAnalisisLexico {
 
     @Test
     void conFloatsDeshabilitadosLaEYaNoIniciaUnExponente(@TempDir Path dir) throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
         AnalizadorLexico analizador = crearAnalizador(dir, "1e5", configuracion);
 
         Token primero = analizador.proximoToken();

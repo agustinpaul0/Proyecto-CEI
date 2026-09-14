@@ -14,7 +14,7 @@ import java.util.Optional;
 // nombre que acepta --logros= en la línea de comandos.
 public enum Logro {
 
-    FLOATS("floats", 1),
+    FLOAT("float", 1),
     UNICODES("unicodes", 1),
     MULTI_DETECCION("multideteccion", 1),
     REPORTE_ELEGANTE("reporteelegante", 1),
@@ -29,11 +29,6 @@ public enum Logro {
     ARRINIT("arrinit", 2),
     GENERICO("generico", 2),
     MODO_PANICO("modopanico", 2);
-
-    // El flag de la gramática es `float`, no `floats`: la Etapa 1 lo bautizó en
-    // plural y la gramática usa el singular del terminal. Se acepta cualquiera
-    // de los dos en --logros para que no haya que recordar cuál va.
-    private static final String ALIAS_DE_FLOATS = "float";
 
     private final String nombre;
     private final int etapa;
@@ -53,9 +48,6 @@ public enum Logro {
 
     public static Optional<Logro> porNombre(String nombre) {
         String normalizado = nombre.trim().toLowerCase();
-        if (normalizado.equals(ALIAS_DE_FLOATS)) {
-            return Optional.of(FLOATS);
-        }
         return Arrays.stream(values())
                 .filter(logro -> logro.nombre.equals(normalizado))
                 .findFirst();

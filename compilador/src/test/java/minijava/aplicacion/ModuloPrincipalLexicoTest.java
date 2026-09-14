@@ -132,7 +132,7 @@ class ModuloPrincipalLexicoTest {
             throws IOException {
         Path archivo = escribir(dir, "1.5");
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
+        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
 
         new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
 

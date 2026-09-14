@@ -52,7 +52,7 @@
 \noindent{\small NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de una variable local, y tienen que poder prenderse por separado.\par}
 
 \begin{producciones}
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicional}}\marca{+}{atrinit}
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}\marca{+}{atrinit}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
@@ -125,7 +125,7 @@
 
 \begin{producciones}
 \regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}}\marca{-}{varclasica}
-\regla{SentenciaExpresion}{\nt{Expresion}}\marca{-}{varclasica}
+\regla{SentenciaExpresion}{\nt{ExpresionSinLambda}}\marca{-}{varclasica}
 \end{producciones}
 
 \noindent{\small Con el logro, \texttt{C x;} y \texttt{C.m();} compiten por idClase y hay que factorizarlo.\par}
@@ -137,7 +137,7 @@
 \regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\marca{+}{varclasica}
 \regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\marca{+}{varclasica}
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda}}
 \end{producciones}
 
 \noindent{\small Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
@@ -146,7 +146,7 @@
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
 \regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
 \regla{RestoListaDeclaradores}{\eps}\marca{+}{varclasica}
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}\marca{+}{varclasica}
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}\marca{+}{varclasica}
 \regla{Return}{\tl{return} \nt{ExpresionOpcional}}
 \regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
 \regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
@@ -172,10 +172,10 @@
 
 \begin{producciones}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\marca{+}{for}
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}\marca{+}{for}
 \regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\marca{+}{for}
 \regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\marca{+}{for}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}\marca{+}{for}
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}\marca{+}{for}
 \end{producciones}
 
 \noindent{\small Una sola expresión por separador, como pide el logro.\par}
@@ -184,24 +184,44 @@
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
 \end{producciones}
 
-\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicional} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido. Y como con el logro de ternario apagado \nt{ExpresionCondicional} es un alias de \nt{ExpresionCompuesta}, el lenguaje base queda idéntico al de la cátedra.\par}
+\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido. Y como con los logros de ternario y de lambda apagados \nt{ExpresionCondicionalOLambda} es un alias de \nt{ExpresionCompuesta}, el lenguaje base queda idéntico al de la cátedra.\par}
 
 \begin{producciones}
-\regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
+\regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
 \end{producciones}
 
-\noindent{\small El lado derecho es ExpresionCondicional y NO Expresion: la gramática original pone \nt{ExpresionCompuesta} ahí, o sea que \texttt{a = b = c} NO es válido en MiniJava.\par}
+\noindent{\small La \nt{Expresion} de la gramática original: la que NO admite una lambda en la raíz. Se usa en los dos lugares donde Java tampoco la admite: adentro de una expresión parentizada que después va a ser operando, y como sentencia- expresión (\texttt{x -> x;} es «not a statement» en Java).\par}
 
 \begin{producciones}
-\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional} \alt{} \eps}
+\regla{ExpresionSinLambda}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
+\end{producciones}
+
+\noindent{\small El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática original pone \nt{ExpresionCompuesta} ahí, o sea que \texttt{a = b = c} NO es válido. Admite lambda porque el JLS define \texttt{Assignment: LeftHandSide = Expression}.\par}
+
+\begin{producciones}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \regla{OperadorAsignacion}{\tl{=}}
+\end{producciones}
+
+\noindent{\small --------------------------------------------------------------------------- El nivel del JLS \texttt{LambdaExpression | ConditionalExpression}: admite lambda, no admite \texttt{=} en la raíz. Es el operando de los seis \texttt{=} y el tercer operando del ternario. Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de siempre; las dos que sí —\texttt{idMetVar} y \texttt{(}— se factorizan. La cola se comparte con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.\par}
+
+\begin{producciones}
+\regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
+\regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}
+\regla{ExpresionCondicionalOLambda}{\nt{ExpresionDesdePrimarioOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{stringLiteral} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
-\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicional}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido y \texttt{a ? b : c = d} no lo es. Es la regla «lo no especificado es igual a Java», y no rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
+\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicionalOLambda}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido, \texttt{a ? b : c = d} no lo es, y \texttt{a ? b : x -> x} sí —la producción del JLS es \texttt{? Expression : LambdaExpression}—. No rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
 
 \begin{producciones}
-\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional}}\marca{+}{ternario}
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}\marca{+}{ternario}
 \regla{RestoCondicional}{\eps}
 \regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
@@ -228,14 +248,26 @@
 \regla{Primitivo}{\tl{floatLiteral}}\marca{+}{float}
 \end{producciones}
 
-\noindent{\small --- Expresión que no puede empezar con idClase ---------------------------- Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida.\par}
+\noindent{\small --- Expresión que no puede empezar con idClase ---------------------------- Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
 
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
 \regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}}
 \regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}
-\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \nt{RestoExpresion}}
+\end{producciones}
+
+\noindent{\small La cola se parte en dos para que el nivel \nt{ExpresionCondicionalOLambda} pueda reusarla sin arrastrar el \texttt{=}, que ahí no corresponde.\par}
+
+\begin{producciones}
+\regla{ColaTrasOperando}{\nt{ColaTrasOperandoSinAsignacion} \nt{RestoExpresion}}
+\regla{ColaTrasOperandoSinAsignacion}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional}}
 \regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}
+\regla{ColaDesdePrimarioSinAsignacion}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperandoSinAsignacion}}
+\end{producciones}
+
+\noindent{\small Ningún \nt{Primario} puede ser una lambda: ésa es exactamente la corrección de precedencia. Un \nt{Primario} es un operando, y una lambda no puede serlo.\par}
+
+\begin{producciones}
 \regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
 \regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia}}
 \regla{RestoReferencia}{\nt{AccesoArreglo} \nt{RestoReferencia}}
@@ -253,30 +285,36 @@
 \regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
 \regla{PrimarioSinIdClase}{\tl{this}}
 \regla{PrimarioSinIdClase}{\tl{stringLiteral}}
-\regla{PrimarioSinIdClase}{\nt{ParentizadaOLambda}}
-\regla{PrimarioSinIdClase}{\nt{AccesoVarLlamadaOLambda}}
+\regla{PrimarioSinIdClase}{\nt{Parentizada}}
+\regla{PrimarioSinIdClase}{\nt{AccesoVarOLlamada}}
 \regla{PrimarioSinIdClase}{\nt{Creacion}}
 \end{producciones}
 
-\noindent{\small Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>, con flecha = lambda de un parámetro sin paréntesis.\par}
+\noindent{\small El contenido es una \nt{ExpresionSinLambda}: \texttt{(x -> x)} como OPERANDO no existe en Java —\texttt{(x -> x) + 1} y \texttt{(x -> x).m()} son «lambda expression not expected here»—. La lambda parentizada sí es válida cuando ella misma es toda la expresión, y ese caso lo cubre \nt{ParentizadaOLambda}.\par}
 
 \begin{producciones}
-\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
-\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales}}
-\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
-\regla{AccesoLlamadaOLambda}{\eps}
+\regla{Parentizada}{\tl{(} \nt{ExpresionSinLambda} \tl{)}}
 \end{producciones}
 
-\noindent{\small MiniLambdas E2 \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto.\par}
+\noindent{\small Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>.\par}
 
 \begin{producciones}
+\regla{AccesoVarOLlamada}{\tl{idMetVar} \nt{AccesoLlamada}}
+\regla{AccesoLlamada}{\nt{ArgsActuales} \alt{} \eps}
+\end{producciones}
+
+\noindent{\small MiniLambdas E2 Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía. \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto. Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.\par}
+
+\begin{producciones}
+\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
+\regla{AccesoLlamadaOLambda}{\nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
 \regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
 \regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}}
 \regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
 \regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
 \regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
-\regla{FinDeParentizadaOLambda}{\eps}
+\regla{FinDeParentizadaOLambda}{\nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\marca{+}{lambda}
 \regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}\marca{+}{lambda}
 \end{producciones}
@@ -322,6 +360,11 @@
 \regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}\marca{+}{arrinit}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
+\end{producciones}
+
+\noindent{\small Sección propia y no parte de la creación: la lista de argumentos de una llamada la usan por igual el \texttt{new}, el encadenado, la llamada estática y el encabezado del for.\par}
+
+\begin{producciones}
 \regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}
 \regla{ListaExpsOpcional}{\nt{ListaExps} \alt{} \eps}
 \regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}}

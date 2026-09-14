@@ -459,15 +459,15 @@ dos árboles para la misma cadena. Es la ambigüedad clásica, presente tal cual
 Ambas se resuelven en la sección~\ref{sec:transformaciones}, y en los dos casos hay que
 \emph{decidir} un significado, no sólo reescribir.
 
-\subsection{Una tercera ambigüedad heredada, y cinco que agrega un logro}
+\subsection{Una tercera ambigüedad heredada, y una que agrega un logro}
 \label{sec:mas-ambiguedades}
 
 El criterio LL(1) de la cátedra ---disjunción de Primeros--- es el que decide si el analizador
 puede predecir, y es el único que interviene en la implementación. Pero el checklist de aceptación
 de Clase 4, slide 41, tiene un ítem más: que la gramática \textbf{no sea ambigua, o sea
 arreglable}. Verificarlo requiere mirar, además, qué puede seguir a un no terminal anulable. Se
-hizo esa verificación una vez, sobre las 1024 configuraciones, y aparecieron cinco ambigüedades más
-además de las dos anteriores.
+hizo esa verificación sobre las 1024 configuraciones, y apareció una ambigüedad más además de las
+dos anteriores.
 
 \begin{decision}{los Siguientes son un diagnóstico, no parte del método}
 Detectar una ambigüedad exige mirar el contexto en que aparece un no terminal anulable. Ese
@@ -490,28 +490,40 @@ documento:
 \textit{Creación 1-D indexada:}\quad \nt{Referencia} $\Rightarrow$ \nt{Referencia} \nt{AccesoArreglo} $\Rightarrow$ \nt{Primario} \tl{[}4\tl{]} $\Rightarrow$ \tl{new} \tl{int} \tl{[}3\tl{]} \tl{[}4\tl{]}
 \end{producciones}
 
-\textbf{Las otras cinco: el cuerpo de la lambda.} \texttt{x -> a + b} puede leerse
-\texttt{x -> (a + b)} o \texttt{(x -> a) + b}. La causa es dónde vive la lambda: se produce a nivel
-\nt{Primario}, o sea que ocupa una ranura de operando, y entonces la cola de la expresión que la
-contiene compite con la cola de su cuerpo. Contagia a \nt{RestoExpresion} (\tl{=}),
-\nt{RestoExpresionCompuesta} (los trece binarios), \nt{RestoReferencia} (\tl{.} y \tl{[}),
-\nt{RestoCondicional} (\tl{?}) y \nt{PosfijoOpcional} (\tl{++}, \tl{-{}-}). Java no la tiene porque
-el JLS pone la lambda como alternativa de \emph{AssignmentExpression}, nunca como \emph{Primary}:
-al vivir en el nivel más alto de la jerarquía, no hay cola externa con la que competir.
+\textbf{La cuarta: el cuerpo de la lambda.} \texttt{x -> a = b} puede leerse
+\texttt{x -> (a = b)} ---el cuerpo se come la asignación--- o \texttt{(x -> a) = b}. Afecta a un
+solo no terminal, \nt{RestoExpresion}, que es la única cola externa que todavía compite con la cola
+del cuerpo. Se resuelve voraz, que es lo que hace Java y lo que un descendente recursivo hace por
+construcción: el método del cuerpo llama a \nt{Expresion} y ésta avanza mientras pueda.
 
-\begin{decision}{las siete se resuelven voraz, no reescribiendo}
-En los siete casos la regla es la misma ---consumir todo lo que se pueda--- y coincide con Java. Es
-además lo que un analizador descendente recursivo hace \textbf{por construcción}: el método del
-cuerpo llama a \nt{Expresion} y ésta avanza mientras pueda.
+\begin{decision}{dónde vive la lambda: no es un operando}
+La ubicación que se impone sola al leer la especificación del logro es \nt{Primario}: la lambda
+aparece donde aparece un valor, y \nt{Primario} es el no terminal de los valores. Se evaluó y se
+descartó, porque \nt{Primario} es la ranura de un \emph{operando} y eso trae dos consecuencias,
+la segunda grave:
 
-Para la lambda existía la alternativa de subirla al nivel de \nt{Expresion} como hace el JLS, lo
-que eliminaría la ambigüedad de raíz. Se descartó porque exigiría factorizar \tl{idMetVar} y \tl{(}
-contra toda la cola de expresión ---unas quince producciones nuevas--- \textbf{para producir
-exactamente el mismo analizador}: las dos salidas se comportan igual, lo que cambia es cuántas
-reglas hay que leer para entenderlo.
+\begin{enumerate}
+  \item la cola de la expresión que la contiene competía con la cola de su cuerpo, y la ambigüedad
+        anterior se multiplicaba por cinco: \nt{RestoExpresion} (\tl{=}),
+        \nt{RestoExpresionCompuesta} (los trece binarios), \nt{RestoReferencia} (\tl{.} y \tl{[}),
+        \nt{RestoCondicional} (\tl{?}) y \nt{PosfijoOpcional} (\tl{++}, \tl{-{}-});
+  \item \textbf{el lenguaje reconocido era estrictamente más grande que el de Java}. Si una lambda
+        es un \nt{Primario}, entonces es un operando válido, y \texttt{1 + x -> x},
+        \texttt{a == x -> x}, \texttt{- x -> x}, \texttt{(x -> x) + 1} y \texttt{(x -> x).m()}
+        pasan el análisis. En Java los cinco son error ---\emph{«lambda expression not expected
+        here»}, verificado con \texttt{javac}---, porque el JLS define
+        \emph{Expression: LambdaExpression \textbar{} AssignmentExpression}: la lambda es una
+        alternativa del nivel \textbf{más alto} de la jerarquía, nunca un \emph{Primary}. Dicho de
+        otro modo: \tl{->} no tiene precedencia contra los operadores porque no compite con ellos.
+\end{enumerate}
 
-Lo que sí exige la slide 49 es \emph{declararlo}, y de ahí el registro de la
-sección~\ref{sec:verificacion}.
+Por la regla «lo que no está especificado se comporta como en Java», el segundo punto decide:
+la lambda se produce en el nivel de \nt{Expresion}, como en el JLS. El costo es factorizar las dos
+cabezas que comparte con una expresión normal ---\tl{idMetVar} y \tl{(}--- contra la cola de
+expresión, con la misma técnica que \nt{ExpresionSinIdClase}: catorce producciones nuevas, ninguna
+lógica duplicada, porque todas las colas se comparten. El beneficio es doble: el lenguaje pasa a
+ser el de Java, y cuatro de las cinco ambigüedades \textbf{desaparecen de raíz} en vez de
+resolverse por regla.
 \end{decision}
 
 % ===========================================================================
@@ -800,19 +812,19 @@ atributo, y por eso llega por \nt{AtributoOMetodo}.
 todo el prefijo. Misma situación que en R3 y misma resolución, con un no terminal de decisión
 \textbf{dedicado a este contexto}:
 \begin{producciones}
-\regla{AccesoVarOLlamadaMetodo}{\tl{idMetVar} \nt{AccesoOLlamada}}
-\regla{AccesoOLlamada}{\nt{ArgsActuales} \alt{} \eps}
+\regla{AccesoVarOLlamada}{\tl{idMetVar} \nt{AccesoLlamada}}
+\regla{AccesoLlamada}{\nt{ArgsActuales} \alt{} \eps}
 \end{producciones}
 
 \begin{decision}{un punto de decisión por contexto, aunque la forma coincida}
 Una versión anterior de esta transformación resolvía R3 y F7 con el \emph{mismo} no terminal
 \nt{ArgsActualesOpcional}, y se había justificado como una buena abstracción. Es al revés: su
 \eps{} significa dos cosas distintas según quién lo llame --- desde \nt{Encadenado} era un
-\nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde \nt{AccesoVarOLlamadaMetodo}
+\nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde \nt{AccesoVarOLlamada}
 era un \nt{AccesoVar}, acceso a una variable local, un parámetro o un atributo propio. Son dos
 nodos distintos, con reglas de resolución de nombres distintas, y un único método del analizador
 tendría que preguntarse quién lo llamó para saber cuál construir. Se separaron en
-\nt{EncadenadoAtributoOMetodo} y \nt{AccesoOLlamada}: cuesta un no terminal más y deja los cuatro
+\nt{EncadenadoAtributoOMetodo} y \nt{AccesoLlamada}: cuesta un no terminal más y deja los cuatro
 no terminales originales recuperables desde el nombre del método que decide.
 \end{decision}
 
@@ -1048,10 +1060,19 @@ usarse.
 
 \subsection{MiniLambdas E2}
 
-\paso{Defecto que crea} El \tl{(} abre tanto una expresión parentizada como la lista de parámetros
-de una lambda, y \tl{idMetVar} abre tanto un acceso a variable como una lambda de un parámetro.
-A primera vista \texttt{(a, b, c) -> x} contra \texttt{(a + b)} exige escanear hasta el \tl{)}
-para decidir, o sea anticipación ilimitada.
+\paso{Defecto que crea} Dos, y el segundo es el que da trabajo.
+
+El primero es \textbf{dónde vive la lambda}. No es una capa más de la jerarquía de precedencias:
+el JLS la pone como alternativa de \emph{Expression}, el nivel más alto, nunca como
+\emph{Primary}. Ponerla en \nt{Primario} ---la ranura del operando--- haría válidos
+\texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{(x -> x).m()}, que \texttt{javac} rechaza con
+\emph{«lambda expression not expected here»}. El análisis completo está en la
+sección~\ref{sec:mas-ambiguedades}.
+
+El segundo es la \textbf{anticipación}. El \tl{(} abre tanto una expresión parentizada como la
+lista de parámetros de una lambda, y \tl{idMetVar} abre tanto un acceso a variable como una lambda
+de un parámetro. A primera vista \texttt{(a, b, c) -> x} contra \texttt{(a + b)} exige escanear
+hasta el \tl{)} para decidir, o sea anticipación ilimitada.
 
 \paso{Análisis} \textbf{No la exige.} Los casos se separan solos:
 
@@ -1071,17 +1092,33 @@ para decidir, o sea anticipación ilimitada.
 La clave es que el \tl{->} viene \emph{inmediatamente} después del \tl{)}, así que en el momento
 de decidir sigue siendo un token de anticipación.
 
-\paso{Resultado}
+\paso{Resultado} Un nivel nuevo por encima de \nt{ExpresionCondicional} que admite lambda y no
+admite \tl{=}, que es exactamente el \emph{LambdaExpression \textbar{} ConditionalExpression} del
+JLS, y donde se factorizan las dos cabezas ambiguas:
+
 \begin{producciones}
+\regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
+\regla{ExpresionSinLambda}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
+\regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
+\regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}
+\regla{ExpresionCondicionalOLambda}{\nt{ExpresionDesdePrimarioOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda} \alt{} \nt{ParentizadaOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion} \alt{} \dots}
+\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda} \alt{} \nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
 \regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda} \alt{} \nt{Expresion} \nt{RestoDeParentesis}}
 \regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
 \regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}
-\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda} \alt{} \eps}
-\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
-\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales} \alt{} \tl{->} \nt{CuerpoLambda} \alt{} \eps}
+\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda} \alt{} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{CuerpoLambda}{\nt{Expresion}}
 \end{producciones}
+
+Ningún \nt{Primario} puede ya ser una lambda: \nt{Parentizada} \deriva{} \tl{(}
+\nt{ExpresionSinLambda} \tl{)}, y \nt{AccesoVarOLlamada} perdió la alternativa del \tl{->}. Los
+seis lugares donde el JLS sí admite una lambda ---argumento, índice de arreglo, las dos ramas del
+ternario, lado derecho de un \tl{=} y cuerpo de otra lambda--- la siguen admitiendo, porque los
+seis pasan por \nt{Expresion} o por \nt{ExpresionCondicionalOLambda}.
 \nt{CuerpoLambda} \deriva{} \nt{Expresion} es la lectura literal de «el cuerpo debe estar formado
 por una única expresión, no se permiten cuerpos delimitados por llaves»: como no hay alternativa
 con \tl{\{}, la gramática \textbf{rechaza} \texttt{x -> \{ \dots \}} sin ningún chequeo adicional.
@@ -1096,6 +1133,12 @@ misma clase de permisividad que la gramática original ya tiene con \texttt{5 = 
 como se anticipó en la sección~\ref{sec:alcance-chequeos}, para la prohibición de capturar
 variables.
 
+Hay una segunda, del mismo origen. \nt{ContenidoDeParentesis} \deriva{} \nt{Expresion}
+\nt{RestoDeParentesis}, y esa \nt{Expresion} puede ser una lambda ---\texttt{f((x -> x))} es válido
+en Java---. Pero \texttt{(x -> x).m()} no lo es: parentizarla no la convierte en operando.
+Distinguirlos en la gramática exigiría clonar toda la cadena de colas en su variante «el contenido
+del paréntesis fue una lambda», unos siete no terminales nuevos, así que lo cierra el analizador
+con lo que acaba de leer.
 \end{decision}
 
 \begin{decision}{\tl{this} y la captura los rechaza el analizador, no la gramática}
@@ -1134,6 +1177,14 @@ regla que resuelve el \emph{dangling else}, y Clase 4 slide 49 lo autoriza expre
 
 Lo que sí queda para el analizador semántico es todo lo que exija resolver un nombre contra una
 declaración: que exista, que el tipo cierre, que la aridad coincida.
+
+\textbf{Pendiente declarado para la Etapa 3.} La cátedra admite no controlar en esta etapa si un
+\tl{this} ---explícito o implícito--- está dentro o fuera de una lambda, porque con la tabla de
+símbolos del análisis semántico el control es mucho más directo. Acá está implementado igual, con
+el alcance que describe esta decisión, y se deja como está. Lo que queda para la Etapa 3 es el
+único caso que este analizador no puede decidir: la llamada sin punto \texttt{x -> ayuda(x)}, que
+es un \tl{this} implícito si \texttt{ayuda} es un método de instancia y no lo es si es
+\tl{static}. Distinguirlos exige resolver el nombre contra su declaración, así que acá se acepta.
 \end{decision}
 
 \subsection{Inicializacion de Arreglos E2}
@@ -1332,13 +1383,19 @@ un error (slides 52--54). \\
 \end{tabular}
 \end{center}
 
+Ese \texttt{else} vacío \textbf{se escribe igual}, con la producción $\varepsilon$ citada al lado,
+en vez de omitirlo dejando que el \texttt{if} caiga solo. El analizador hace lo mismo en los dos
+casos, pero omitirlo borra del código el único lugar donde está dicho «acá el no terminal derivó a
+vacío» ---que es exactamente el punto donde el análisis semántico de la Etapa 3 tiene que colgar la
+traducción de esa producción---.
+
 La única libertad que se toma respecto del esquema es traducir la \textbf{recursión a derecha con
 un bucle} en vez de con una llamada: deriva exactamente la misma cadena y no hace depender de la
 pila de la JVM una cadena larga de operadores o una lista larga de argumentos.
 
 \subsection{Las clases}
 
-El analizador tiene 104 no terminales. Escribirlos en una sola clase daba 1176 líneas y 89 métodos,
+El analizador tiene 111 no terminales. Escribirlos en una sola clase daba 1176 líneas y 89 métodos,
 así que están repartidos en \textbf{una clase por sección de la gramática}: el archivo de código y
 la sección del \texttt{.g} se leen uno al lado del otro.
 
@@ -1373,6 +1430,11 @@ nadie o si un comentario quedó viejo (sección~\ref{sec:verificacion}).
 
 \subsection{Los tipos de error que detecta}
 
+Todo error que emite el analizador informa \textbf{las dos mitades}: qué se encontró ---el lexema
+real, entre comillas--- y qué se esperaba en su lugar. No es una elección de redacción: son
+literalmente los dos datos con los que el Esquema Simple decide, el token actual y el conjunto de
+Primeros de la producción, así que el mensaje es la traducción directa de la condición que falló.
+
 El Esquema Simple tiene \textbf{exactamente dos} puntos donde puede fallar, y no hay un tercero:
 
 \begin{enumerate}
@@ -1384,18 +1446,24 @@ El Esquema Simple tiene \textbf{exactamente dos} puntos donde puede fallar, y no
         derivó a vacío y lo resolverá quien llamó.
 \end{enumerate}
 
-A esos se suman los \textbf{tres chequeos del logro MiniLambdas} que una gramática libre de
+En el primer caso «lo que se esperaba» es un terminal único; en el segundo, la lista completa de
+los terminales que podrían haber seguido, que es exactamente el conjunto de Primeros consultado.
+
+A esos se suman los \textbf{cuatro chequeos del logro MiniLambdas} que una gramática libre de
 contexto no puede expresar (sección~\ref{sec:decisiones}): el \texttt{this} explícito dentro de una
-lambda, la captura de una variable que no es parámetro, y que un parámetro sea un identificador
-pelado y no se repita. Rechazan con el mismo código \texttt{[Error:lexema|línea]} y declaran el
-motivo en prosa.
+lambda, la captura de una variable que no es parámetro, que un parámetro sea un identificador
+pelado y no se repita, y que una lambda parentizada no lleve cola de expresión. Rechazan con el
+mismo código \texttt{[Error:lexema|línea]} y, como ahí «lo esperado» no es un conjunto de tokens
+sino una regla, declaran el motivo en prosa ---\emph{«no se permite this dentro de una lambda»},
+\emph{«una lambda no puede ser operando de .»}--- sin perder la mitad de «qué se encontró».
 
 Y una aclaración que conviene dejar escrita: los errores \textbf{léxicos} los sigue detectando y
 reportando el analizador de la Etapa 1, con su propio formato. El sintáctico no los toca.
 
 \subsection{El formato del reporte}
 
-Pautas slide 25: un mensaje que nombre el lexema y la línea, un renglón en blanco y el código.
+Pautas slide 25: un mensaje que nombre el lexema y la línea, un renglón en blanco y el código. El
+mensaje abre con lo esperado y cierra con lo encontrado, en ese orden.
 
 \begin{consola}
 Error Sintactico en linea 3: se esperaba idClase se encontro "clasesita"
@@ -1441,7 +1509,7 @@ Genericidad Avanzada E2 & \texttt{generico} & Genéricos anidados y la notación
 Recuperación Modo Pánico & \texttt{modopanico} & No toca la gramática: es enteramente
 implementación. \\
 \midrule
-Floats (Etapa 1) & \texttt{floats} & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$
+Floats (Etapa 1) & \texttt{float} & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$
 \tl{floatLiteral}. \\
 \bottomrule
 \end{tabular}
@@ -1468,7 +1536,7 @@ $ python3 herramientas/primeros.py gramatica/minijava-base.g
 NO ES LL(1): 16 conflicto(s)
 
 $ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
---- 104 no terminales, 214 producciones, 60 terminales ---
+--- 111 no terminales, 228 producciones, 60 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
 \end{consola}
 
@@ -1517,15 +1585,11 @@ El analizador sintactico decide SOLO con Primeros (Esquema Simple,
 Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item
 "no es ambigua o es arreglable" del checklist de Clase 4 slide 41.
 
-Ambiguedades detectadas en las 1024 configuraciones: 7
+Ambiguedades detectadas en las 1024 configuraciones: 3
 
   <DimensionesConTamanioOpcional>  ...  [declarada]
   <ElseOpcional>                   ...  [declarada]
-  <PosfijoOpcional>                ...  [declarada]
-  <RestoCondicional>               ...  [declarada]
   <RestoExpresion>                 ...  [declarada]
-  <RestoExpresionCompuesta>        ...  [declarada]
-  <RestoReferencia>                ...  [declarada]
 
 Todas las ambiguedades detectadas estan declaradas con su regla de resolucion.
 \end{consola}
@@ -1624,17 +1688,17 @@ la misma gramática y salen del mismo archivo, pero no comparten una línea de c
 JavaCC avisa \texttt{Choice conflict involving two expansions} cuando dos alternativas de un mismo
 no terminal empiezan con el mismo token. Sobre la gramática final \textbf{no emite ninguno}, lo que
 es una confirmación independiente ---de una herramienta que calculó los conjuntos por su cuenta
-sobre las 214 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
+sobre las 228 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
 
 \textbf{No confirma la condición fuerte.} Se comprobó con dos gramáticas de control: ante
 \nt{S} $\to$ \tl{a} \tl{b} $\mid$ \tl{a} \tl{c} JavaCC avisa; ante \nt{Opt} $\to$ \tl{b} $\mid$
-$\varepsilon$ seguido de \tl{b} ---un conflicto Primeros--Siguientes--- no avisa nada. Las siete
+$\varepsilon$ seguido de \tl{b} ---un conflicto Primeros--Siguientes--- no avisa nada. Las tres
 ambigüedades de la sección~\ref{sec:mas-ambiguedades} son de esa segunda clase, así que el silencio
 de JavaCC no dice nada sobre ellas y siguen auditándose con el registro propio.
 
 \textbf{Lo que sí lo hace útil como oráculo} es cómo resuelve lo que no puede predecir: JavaCC toma
 \textbf{la primera alternativa que coincide}, que es exactamente la resolución voraz que aplica
-este analizador y la que la sección~\ref{sec:mas-ambiguedades} declara para las siete. Por eso las
+este analizador y la que la sección~\ref{sec:mas-ambiguedades} declara para las tres. Por eso las
 tres implementaciones coinciden también en los casos ambiguos, y por eso el oráculo puede etiquetar
 el corpus: cuando dice \texttt{[Error:lexema|línea]}, ése es el error que el analizador tiene que
 dar.
@@ -1676,7 +1740,7 @@ la implementa nadie o si un comentario quedó viejo:
 
 \begin{consola}
 $ python3 herramientas/auditar_analizador.py
-220 producciones en la gramatica, 220 citadas por el analizador.
+234 producciones en la gramatica, 234 citadas por el analizador.
 EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
 \end{consola}
 
@@ -1687,18 +1751,18 @@ EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
 \toprule
  & \textbf{Gramática base} & \textbf{Gramática final} \\
 \midrule
-No terminales                    & 60  & 104 \\
-Producciones                     & 126 & 214 \\
+No terminales                    & 60  & 111 \\
+Producciones                     & 126 & 228 \\
 Terminales                       & 51  & 60  \\
 Conflictos Primeros--Primeros    & 16  & 0   \\
 Ambigüedades sin declarar        & 2   & 0   \\
-Ambigüedades declaradas y resueltas & 0 & 7   \\
+Ambigüedades declaradas y resueltas & 0 & 3   \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 El crecimiento se reparte entre la corrección del núcleo y las nueve extensiones por logro. No
-queda ningún conflicto de predicción en ninguna de las 1024 configuraciones, y las siete
+queda ningún conflicto de predicción en ninguna de las 1024 configuraciones, y las tres
 ambigüedades que quedan están declaradas con su regla de resolución, que es lo que pide Clase 4,
 slide 49.
 
@@ -1722,9 +1786,9 @@ especificado para MiniJava tiene comportamiento por defecto igual al de Java»}.
 
 \subsection{Ambigüedades: qué árbol se elige}
 
-Las siete ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
+Las tres ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
 regla de implementación ---la vía que autoriza Clase 4, slide 49--- y todas de la misma forma:
-\textbf{voraz}, consumiendo todo lo que se pueda. Son tres ambigüedades conceptuales:
+\textbf{voraz}, consumiendo todo lo que se pueda:
 
 \begin{center}
 \begin{tabular}{@{}p{0.30\linewidth}p{0.62\linewidth}@{}}
@@ -1736,10 +1800,10 @@ las ramas: se toma \tl{else} apenas se lo ve. Coincide con Java. \\[2pt]
 \texttt{new int[3][4]} & Todas las dimensiones pertenecen a la creación; no es un acceso al
 arreglo recién creado. Coincide con Java, que lo lee como una creación 2-D. Heredada de la
 gramática de la cátedra. \\[2pt]
-Cuerpo de la lambda ($\times 5$) & \texttt{x -> a + b} es \texttt{x -> (a + b)}. Contagia a los
-cinco no terminales de cola. La introduce este trabajo al poner la lambda a nivel \nt{Primario};
-subirla al nivel del JLS la eliminaría, y se descartó porque produce el mismo analizador con
-quince producciones más. \\
+Cuerpo de la lambda & \texttt{x -> a = b} es \texttt{x -> (a = b)}. La introduce este trabajo, y
+afecta a un solo no terminal: \nt{RestoExpresion}, la única cola externa que todavía compite con la
+del cuerpo una vez que la lambda vive en el nivel más alto de la jerarquía
+(sección~\ref{sec:mas-ambiguedades}). Coincide con Java. \\
 \bottomrule
 \end{tabular}
 \end{center}

@@ -65,7 +65,7 @@ public final class ConfiguracionDelCompilador {
     }
 
     public boolean floatsHabilitados() {
-        return tiene(Logro.FLOATS);
+        return tiene(Logro.FLOAT);
     }
 
     public boolean unicodeHabilitado() {

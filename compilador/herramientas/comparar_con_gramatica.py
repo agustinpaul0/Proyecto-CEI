@@ -13,7 +13,7 @@ la gramática define, y no uno parecido.
 
 DIVERGENCIAS DECLARADAS
 -----------------------
-El analizador es deliberadamente MÁS restrictivo que la gramática en los tres
+El analizador es deliberadamente MÁS restrictivo que la gramática en los cuatro
 chequeos que una gramática libre de contexto no puede expresar. La gramática
 acepta y el analizador rechaza; nunca al revés. Se reconocen por el mensaje del
 caso, no por que el fuente contenga una flecha.
@@ -37,7 +37,7 @@ JAR = "target/Compilador.jar"
 LOGROS = {"visibilidad", "atrinit", "varclasica", "for", "ternario", "posfijo",
           "lambda", "arrinit", "generico", "float"}
 
-# Los tres chequeos que el analizador hace y la gramática no puede expresar. Un
+# Los cuatro chequeos que el analizador hace y la gramática no puede expresar. Un
 # caso que los ejercita declara el motivo en el mensaje, así que se reconocen por
 # ahí y no por un patrón sobre el fuente, que amnistiaba de más.
 MOTIVOS_DECLARADOS = (
@@ -45,6 +45,7 @@ MOTIVOS_DECLARADOS = (
     "no se permite capturar la variable",
     "un parametro de lambda tiene que ser un identificador",
     "esta repetido en la lambda",
+    "una lambda no puede ser operando de",
 )
 
 

@@ -38,40 +38,36 @@ class LogroTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"FLOATS", "Floats", "  floats  ", "FLOAT", "float"})
+    @ValueSource(strings = {"FLOAT", "Float", "  float  ", "float"})
     void elNombreSeReconoceSinImportarMayusculasNiEspacios(String escrito) {
-        assertSame(Logro.FLOATS, Logro.porNombre(escrito).orElseThrow());
+        assertSame(Logro.FLOAT, Logro.porNombre(escrito).orElseThrow());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", "   ", "inexistente", "floats2", "ternarios"})
+    @ValueSource(strings = {"", "   ", "inexistente", "floats", "ternarios"})
     void unNombreQueNoEsDeNingunLogroNoDevuelveNada(String escrito) {
         assertTrue(Logro.porNombre(escrito).isEmpty(), escrito);
     }
 
     // Los nombres son los flags con los que gramatica/minijava-ll1-logros.g marca
     // sus producciones: si divergen, el enum y la gramática dejan de leerse uno
-    // contra el otro. Los cuatro de Etapa 1 que no aparecen en la gramática y el
-    // modo pánico —que no es una producción— son la excepción esperada.
+    // contra el otro. Hay UN solo nombre por logro, sin alias. Los tres de Etapa 1
+    // que no aparecen en la gramática y el modo pánico —que no es una producción—
+    // son la excepción esperada.
     @Test
     void losLogrosDeGramaticaUsanElMismoNombreQueLosFlagsDelArchivoDeGramatica() {
         Set<String> flagsDeLaGramatica = Set.of(
                 "visibilidad", "atrinit", "varclasica", "for", "ternario",
-                "posfijo", "lambda", "arrinit", "generico");
+                "posfijo", "lambda", "arrinit", "generico", "float");
 
-        Set<String> deEtapaDos = new HashSet<>();
+        Set<String> conProduccionPropia = new HashSet<>();
         for (Logro logro : Logro.values()) {
-            if (logro.getEtapa() == 2 && logro != Logro.MODO_PANICO) {
-                deEtapaDos.add(logro.getNombre());
+            if (logro != Logro.MODO_PANICO && logro != Logro.UNICODES
+                    && logro != Logro.MULTI_DETECCION && logro != Logro.REPORTE_ELEGANTE) {
+                conProduccionPropia.add(logro.getNombre());
             }
         }
 
-        assertEquals(flagsDeLaGramatica, deEtapaDos);
-    }
-
-    @Test
-    void elFlagFloatDeLaGramaticaEsUnAliasYNoUnLogroPropio() {
-        assertFalse(Logro.porNombre("float").isEmpty());
-        assertEquals("floats", Logro.FLOATS.getNombre());
+        assertEquals(flagsDeLaGramatica, conProduccionPropia);
     }
 }

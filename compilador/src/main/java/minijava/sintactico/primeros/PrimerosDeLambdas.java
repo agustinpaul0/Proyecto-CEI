@@ -15,6 +15,18 @@ import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 // consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeLambdas {
 
+    // AccesoLlamadaOLambda -> -> CuerpoLambda
+    public static final ConjuntoDePrimeros ACCESO_LLAMADA_OLAMBDA_FLECHA = de(TipoDeToken.OP_FLECHA);
+
+    // AccesoLlamadaOLambda -> AccesoLlamada ColaDesdePrimarioSinAsignacion
+    public static final ConjuntoDePrimeros ACCESO_LLAMADA_OLAMBDA_ACCESO_LLAMADA = de(
+            TipoDeToken.OP_DISTINTO, TipoDeToken.OP_MODULO, TipoDeToken.OP_AND, TipoDeToken.PAREN_A,
+            TipoDeToken.OP_MULT, TipoDeToken.OP_SUMA, TipoDeToken.OP_INCREMENTO, TipoDeToken.OP_RESTA,
+            TipoDeToken.OP_DECREMENTO, TipoDeToken.PUNTO, TipoDeToken.OP_DIV, TipoDeToken.OP_MENOR,
+            TipoDeToken.OP_MENOR_IGUAL, TipoDeToken.OP_IGUAL, TipoDeToken.OP_MAYOR,
+            TipoDeToken.OP_MAYOR_IGUAL, TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.CORCHETE_A,
+            TipoDeToken.OP_OR);
+
     // ParentizadaOLambda -> ( ContenidoDeParentesis
     public static final ConjuntoDePrimeros PARENTIZADA_OLAMBDA_PAREN_A = de(TipoDeToken.PAREN_A);
 
@@ -37,8 +49,13 @@ public final class PrimerosDeLambdas {
     // FinDeParentizadaOLambda -> -> CuerpoLambda
     public static final ConjuntoDePrimeros FIN_DE_PARENTIZADA_OLAMBDA_FLECHA = de(TipoDeToken.OP_FLECHA);
 
-    // FinDeParentizadaOLambda -> EPSILON
-    public static final ConjuntoDePrimeros FIN_DE_PARENTIZADA_OLAMBDA = de();
+    // FinDeParentizadaOLambda -> ColaDesdePrimarioSinAsignacion
+    public static final ConjuntoDePrimeros FIN_DE_PARENTIZADA_OLAMBDA_COLA_DESDE_PRIMARIO_SIN_ASIGNACION = de(
+            TipoDeToken.OP_DISTINTO, TipoDeToken.OP_MODULO, TipoDeToken.OP_AND, TipoDeToken.OP_MULT,
+            TipoDeToken.OP_SUMA, TipoDeToken.OP_INCREMENTO, TipoDeToken.OP_RESTA, TipoDeToken.OP_DECREMENTO,
+            TipoDeToken.PUNTO, TipoDeToken.OP_DIV, TipoDeToken.OP_MENOR, TipoDeToken.OP_MENOR_IGUAL,
+            TipoDeToken.OP_IGUAL, TipoDeToken.OP_MAYOR, TipoDeToken.OP_MAYOR_IGUAL,
+            TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.CORCHETE_A, TipoDeToken.OP_OR);
 
     // ListaParametrosLambda -> idMetVar RestoListaParametrosLambda
     public static final ConjuntoDePrimeros LISTA_PARAMETROS_LAMBDA_ID_MET_VAR = de(TipoDeToken.ID_MV);

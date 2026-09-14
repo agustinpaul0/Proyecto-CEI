@@ -59,28 +59,26 @@ public final class PrimerosDeReferencias {
     // PrimarioSinIdClase -> stringLiteral
     public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_STRING_LITERAL = de(TipoDeToken.LIT_STRING);
 
-    // PrimarioSinIdClase -> ParentizadaOLambda
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA = de(
-            TipoDeToken.PAREN_A);
+    // PrimarioSinIdClase -> Parentizada
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PARENTIZADA = de(TipoDeToken.PAREN_A);
 
-    // PrimarioSinIdClase -> AccesoVarLlamadaOLambda
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA = de(
-            TipoDeToken.ID_MV);
+    // PrimarioSinIdClase -> AccesoVarOLlamada
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA = de(TipoDeToken.ID_MV);
 
     // PrimarioSinIdClase -> Creacion
     public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_CREACION = de(TipoDeToken.PR_NEW);
 
-    // AccesoVarLlamadaOLambda -> idMetVar AccesoLlamadaOLambda
-    public static final ConjuntoDePrimeros ACCESO_VAR_LLAMADA_OLAMBDA_ID_MET_VAR = de(TipoDeToken.ID_MV);
+    // Parentizada -> ( ExpresionSinLambda )
+    public static final ConjuntoDePrimeros PARENTIZADA_PAREN_A = de(TipoDeToken.PAREN_A);
 
-    // AccesoLlamadaOLambda -> ArgsActuales
-    public static final ConjuntoDePrimeros ACCESO_LLAMADA_OLAMBDA_ARGS_ACTUALES = de(TipoDeToken.PAREN_A);
+    // AccesoVarOLlamada -> idMetVar AccesoLlamada
+    public static final ConjuntoDePrimeros ACCESO_VAR_OLLAMADA_ID_MET_VAR = de(TipoDeToken.ID_MV);
 
-    // AccesoLlamadaOLambda -> -> CuerpoLambda
-    public static final ConjuntoDePrimeros ACCESO_LLAMADA_OLAMBDA_FLECHA = de(TipoDeToken.OP_FLECHA);
+    // AccesoLlamada -> ArgsActuales
+    public static final ConjuntoDePrimeros ACCESO_LLAMADA_ARGS_ACTUALES = de(TipoDeToken.PAREN_A);
 
-    // AccesoLlamadaOLambda -> EPSILON
-    public static final ConjuntoDePrimeros ACCESO_LLAMADA_OLAMBDA = de();
+    // AccesoLlamada -> EPSILON
+    public static final ConjuntoDePrimeros ACCESO_LLAMADA = de();
 
     private PrimerosDeReferencias() {
     }

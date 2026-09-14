@@ -139,6 +139,8 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
                 match(TipoDeToken.COMA);
                 elementoInicializador();
             }
+        } else {
+            // ListaElementosOpcional -> EPSILON
         }
         match(TipoDeToken.LLAVE_C);
     }

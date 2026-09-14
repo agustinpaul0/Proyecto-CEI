@@ -85,10 +85,10 @@ class RamasSinLogroTest extends BaseDeAnalisis {
     // TipoPrimitivo -> float  y  Primitivo -> floatLiteral  [+float]
     @Test
     void sinFloatsElTipoYElLiteralDejanDeExistir(@TempDir Path dir) {
-        aceptaSin(dir, "class C1 { int x; }", Logro.FLOATS);
+        aceptaSin(dir, "class C1 { int x; }", Logro.FLOAT);
         // Sin el logro `float` no es palabra clave: es un idMetVar, y como tal no
         // puede abrir un miembro.
-        assertEquals("float", rechazaSin(dir, "class C1 { float x; }", Logro.FLOATS));
+        assertEquals("float", rechazaSin(dir, "class C1 { float x; }", Logro.FLOAT));
     }
 
     @Test

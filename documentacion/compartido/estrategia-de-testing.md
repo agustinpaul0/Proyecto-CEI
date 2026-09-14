@@ -456,18 +456,34 @@ declarado en el `pom.xml` para que llegue al JVM forkeado). Cada caso imprime su
 salida entera del compilador y un pie con los conteos; cada suite cierra con
 `resources/<dir>: N casos procesados, M con errores`.
 
+Los tests **unitarios** del sintáctico no pasaban por ahí: trabajan con la `ExcepcionSintactica` y
+no con la consola, así que correr `LambdasTest` desde el IDE no mostraba nada de lo que el
+compilador diría sobre ese fuente. `BaseDeAnalisis` ahora también vuelca, y lo hace corriendo el
+**módulo principal** sobre el mismo archivo en vez de reconstruir el texto: lo que se lee en la
+consola es exactamente lo que imprimiría `java -jar Compilador.jar`. Sólo lo corre si el volcado
+está prendido, así que con `-Dvolcado=off` no se paga nada.
+
+```
+----- class C1 { void m(){ var f = 1 + x -> x; } }
+Error Sintactico en linea 3: se esperaba ; se encontro "->"
+
+[Error:->|3]
+----- 1 error
+```
+
+Desde IntelliJ sale sin configurar nada: el modo por defecto es `completo` y está puesto en el
+código (`System.getProperty("volcado", "completo")`), no sólo en el `pom.xml`, así que vale también
+cuando el IDE lanza JUnit directo sin pasar por Maven.
+
 **Regla para código nuevo**: un runner de corpus nuevo llama a `VolcadoDeCasos.volcar()` con la
 salida que ya tiene en la mano. Los que capturan `System.out` —los dos de la cátedra— tienen que
 pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
 
 ### Mutation testing (PIT) — referencia y por qué ciertos sobrevivientes no se cazan
 
-La última corrida con resultado registrado alcanzó **94% de mutantes matados** (306/327), *test
-strength* 97%. Este valor es una referencia histórica, no un resultado de la auditoría actual.
-Comando:
-`mvn -Pmutacion org.pitest:pitest-maven:mutationCoverage` (el goal no está bindeado a ninguna fase
-del profile, hay que invocarlo explícito). En la auditoría del 29/08/2026 la ejecución quedó en
-*timeout* antes de producir un nuevo score.
+La última corrida alcanzó **90% de mutantes matados** (998/1111), *test strength* 92%, con 98% de
+cobertura de línea sobre las clases mutadas. El umbral versionado —`umbral.mutacion` en el
+`pom.xml`— es 88, y `mvn -Pmutacion verify` falla por debajo.
 
 **Patrón recurrente de mutante equivalente en este código base**: varios estados hacen
 `contexto.avanzar(); return new Continuar(SiguienteEstado);` justo antes de pasarle el control a un

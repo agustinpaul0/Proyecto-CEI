@@ -76,13 +76,13 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
     }
 
     // EncabezadoForTrasVar -> : Expresion
-    // EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor
+    // EncabezadoForTrasVar -> = ExpresionCondicionalOLambda ClausulasFinalesFor
     private void encabezadoForTrasVar() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeFors.ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS)) {
             recorridoDeIterador();
         } else if (estaEn(PrimerosDeFors.ENCABEZADO_FOR_TRAS_VAR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicional();
+            sintaxis.expresiones().expresionCondicionalOLambda();
             clausulasFinalesFor();
         } else {
             throw errorEsperando(PrimerosDeFors.ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS,
@@ -101,7 +101,7 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
         clausulasFinalesFor();
     }
 
-    // InicializacionDeDeclaradorFor -> = ExpresionCondicional | EPSILON
+    // InicializacionDeDeclaradorFor -> = ExpresionCondicionalOLambda | EPSILON
     //
     // No es <InicializacionDeDeclarador>, que existe sólo con variables locales
     // clásicas: el encabezado del for tiene el suyo para que `for (int i = 0;;)`
@@ -109,7 +109,9 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
     private void inicializacionDeDeclaradorFor() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeFors.INICIALIZACION_DE_DECLARADOR_FOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicional();
+            sintaxis.expresiones().expresionCondicionalOLambda();
+        } else {
+            // InicializacionDeDeclaradorFor -> EPSILON
         }
     }
 

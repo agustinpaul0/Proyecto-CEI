@@ -7,12 +7,18 @@ import minijava.lexico.tokens.Token;
 import minijava.sintactico.RestriccionesDeLambda;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
+import minijava.sintactico.primeros.PrimerosDeExpresiones;
 import minijava.sintactico.primeros.PrimerosDeLambdas;
 
 import java.util.HashSet;
 import java.util.Set;
 
-// El logro MiniLambdas E2, y la desambiguación del paréntesis.
+// El logro MiniLambdas E2, y la desambiguación de sus dos cabezas.
+//
+// La lambda vive en el nivel MÁS ALTO de la jerarquía de expresiones, como en el
+// JLS: no es un Primario y por lo tanto no puede ser operando de ningún
+// operador. Las dos cabezas que comparte con una expresión normal son `idMetVar`
+// —AccesoLlamadaOLambda— y `(` —ParentizadaOLambda—.
 //
 // `(` abre tanto una expresión parentizada como la lista de parámetros de una
 // lambda. Parece necesitar lookahead ilimitado (`(a,b,c) ->` contra `(a+b)`),
@@ -23,6 +29,21 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
 
     public AnalizadorDeLambdas(Sintaxis sintaxis) {
         super(sintaxis);
+    }
+
+    // AccesoLlamadaOLambda -> -> CuerpoLambda   [+lambda]
+    // AccesoLlamadaOLambda -> AccesoLlamada ColaDesdePrimarioSinAsignacion
+    //
+    // El idMetVar ya lo consumió ExpresionDesdePrimarioOLambda; acá se decide si
+    // era el único parámetro de una lambda o el arranque de una expresión normal.
+    public void accesoLlamadaOLambda(Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
+        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
+            match(TipoDeToken.OP_FLECHA);
+            cuerpoLambda(Set.of(nombre.lexema()));
+            return;
+        }
+        sintaxis.referencias().accesoLlamada(nombre);
+        sintaxis.expresiones().colaDesdePrimarioSinAsignacion();
     }
 
     // ParentizadaOLambda -> ( ContenidoDeParentesis
@@ -60,6 +81,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         } finally {
             restricciones.salir(anterior);
         }
+        restricciones.anotarQueEsLambda();
     }
 
     // RestoDeParentesis -> , ListaParametrosLambda ) -> CuerpoLambda   [+lambda]
@@ -73,7 +95,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
             match(TipoDeToken.COMA);
             Token siguiente = actual();
             match(TipoDeToken.ID_MV);
-            exigirParametro(new Candidato(siguiente, true), parametros);
+            exigirParametro(new Candidato(siguiente, true, false), parametros);
         }
         match(TipoDeToken.PAREN_C);
         match(TipoDeToken.OP_FLECHA);
@@ -81,16 +103,32 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     }
 
     // FinDeParentizadaOLambda -> -> CuerpoLambda   [+lambda]
-    // FinDeParentizadaOLambda -> EPSILON
+    // FinDeParentizadaOLambda -> ColaDesdePrimarioSinAsignacion
     private void finDeParentizadaOLambda(Candidato primero)
             throws ExcepcionLexica, ExcepcionSintactica {
-        if (!hayLogro(Logro.LAMBDA) || !estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
+        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
+            Set<String> parametros = new HashSet<>();
+            exigirParametro(primero, parametros);
+            match(TipoDeToken.OP_FLECHA);
+            cuerpoLambda(parametros);
             return;
         }
-        Set<String> parametros = new HashSet<>();
-        exigirParametro(primero, parametros);
-        match(TipoDeToken.OP_FLECHA);
-        cuerpoLambda(parametros);
+        exigirQueLaLambdaParentizadaNoLleveCola(primero);
+        sintaxis.expresiones().colaDesdePrimarioSinAsignacion();
+    }
+
+    // `f((x -> x))` es válido y `(x -> x).m()` no: en Java una lambda, aunque
+    // esté parentizada, no puede ser operando ni receptor. Es la única forma de
+    // esa regla que la gramática no alcanza a expresar, porque distinguirlas
+    // exigiría clonar la cadena de colas en su variante «el contenido fue una
+    // lambda».
+    private void exigirQueLaLambdaParentizadaNoLleveCola(Candidato primero)
+            throws ExcepcionSintactica {
+        if (primero.fueLambda()
+                && estaEn(PrimerosDeExpresiones.COLA_DESDE_PRIMARIO_SIN_ASIGNACION_RESTO_REFERENCIA)) {
+            throw ExcepcionSintactica.porRestriccion(actual(),
+                    "una lambda no puede ser operando de " + actual().lexema());
+        }
     }
 
     // Hasta ver el `->` no se sabe si lo que hay entre paréntesis es el primer
@@ -102,7 +140,8 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         sintaxis.expresiones().expresion();
         boolean fueUnIdMetVarPelado =
                 primero.tipo() == TipoDeToken.ID_MV && consumioUnSoloTokenDesde(antes);
-        return new Candidato(primero, fueUnIdMetVarPelado);
+        return new Candidato(primero, fueUnIdMetVarPelado,
+                sintaxis.restriccionesDeLambda().ultimaExpresionFueLambda());
     }
 
     // Un parámetro de lambda tiene que ser un identificador pelado: `(a) -> a` es
@@ -120,6 +159,6 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         }
     }
 
-    private record Candidato(Token token, boolean esIdMetVarPelado) {
+    private record Candidato(Token token, boolean esIdMetVarPelado, boolean fueLambda) {
     }
 }

@@ -37,9 +37,9 @@ class RequisitosDeLogrosDelCasoTest {
         var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, RAIZ.resolve("sinErrores/floats.java"));
 
         assertTrue(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos()));
-        assertFalse(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos().sin(Logro.FLOATS)));
+        assertFalse(requisitos.seCumplenEn(ConfiguracionDelCompilador.todos().sin(Logro.FLOAT)));
         assertTrue(requisitos.describirIncumplidos(ConfiguracionDelCompilador.ninguno())
-                .contains("floats tiene que estar prendido"));
+                .contains("float tiene que estar prendido"));
     }
 
     @Test

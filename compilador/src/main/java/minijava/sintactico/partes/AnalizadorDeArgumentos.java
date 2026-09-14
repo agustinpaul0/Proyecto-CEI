@@ -27,6 +27,8 @@ public final class AnalizadorDeArgumentos extends ParteDelAnalizador {
                 match(TipoDeToken.COMA);
                 sintaxis.expresiones().expresion();
             }
+        } else {
+            // ListaExpsOpcional -> EPSILON
         }
         match(TipoDeToken.PAREN_C);
     }

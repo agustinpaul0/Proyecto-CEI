@@ -1,14 +1,11 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeReferencias;
-
-import java.util.Set;
 
 // Referencias, encadenados y primarios: de dónde sale un valor antes de que los
 // operadores lo combinen.
@@ -51,50 +48,63 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         }
     }
 
-    // PrimarioSinIdClase -> this | stringLiteral | ParentizadaOLambda
-    //                     | AccesoVarLlamadaOLambda | Creacion
+    // PrimarioSinIdClase -> this | stringLiteral | Parentizada
+    //                     | AccesoVarOLlamada | Creacion
+    //
+    // Ningún Primario puede ser una lambda: un Primario es un operando, y en Java
+    // una lambda nunca lo es. Ésa es exactamente la corrección de precedencia.
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
             sintaxis.restriccionesDeLambda().verificarThisExplicito(actual());
             match(TipoDeToken.PR_THIS);
         } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
             match(TipoDeToken.LIT_STRING);
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
-            sintaxis.lambdas().parentizadaOLambda();
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA)) {
-            accesoVarLlamadaOLambda();
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA)) {
+            parentizada();
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA)) {
+            accesoVarOLlamada();
         } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION)) {
             sintaxis.creacion().creacion();
         } else {
             throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS,
                     PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA_OLAMBDA,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_LLAMADA_OLAMBDA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA,
                     PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION);
         }
     }
 
-    // AccesoVarLlamadaOLambda -> idMetVar AccesoLlamadaOLambda
-    // AccesoLlamadaOLambda -> ArgsActuales
-    // AccesoLlamadaOLambda -> -> CuerpoLambda   [+lambda]
-    // AccesoLlamadaOLambda -> EPSILON
+    // Parentizada -> ( ExpresionSinLambda )
     //
-    // El no terminal dedicado distingue los tres usos de un idMetVar, que es lo
+    // El contenido no puede ser una lambda: `(x -> x) + 1` y `(x -> x).m()` son
+    // «lambda expression not expected here» en Java. La lambda parentizada que sí
+    // es válida —cuando ella misma es toda la expresión— la cubre
+    // ParentizadaOLambda, en el nivel más alto.
+    private void parentizada() throws ExcepcionLexica, ExcepcionSintactica {
+        match(TipoDeToken.PAREN_A);
+        sintaxis.expresiones().expresionSinLambda();
+        match(TipoDeToken.PAREN_C);
+    }
+
+    // AccesoVarOLlamada -> idMetVar AccesoLlamada
+    private void accesoVarOLlamada() throws ExcepcionLexica, ExcepcionSintactica {
+        Token nombre = actual();
+        match(TipoDeToken.ID_MV);
+        accesoLlamada(nombre);
+    }
+
+    // AccesoLlamada -> ArgsActuales | EPSILON
+    //
+    // El no terminal dedicado distingue los dos usos de un idMetVar, que es lo
     // que permite chequear la captura de variables sólo donde corresponde.
     //
     // La llamada sin punto NO se chequea: `x -> ayuda(x)` es `this.ayuda(x)` sólo
     // si `ayuda` es un método de instancia, y si es `static` de la misma clase no
     // hay ningún `this` y Java lo acepta. Distinguirlos exige resolver el nombre
     // contra una declaración, que es trabajo del analizador semántico.
-    private void accesoVarLlamadaOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        Token nombre = actual();
-        match(TipoDeToken.ID_MV);
-
-        if (estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_OLAMBDA_ARGS_ACTUALES)) {
+    public void accesoLlamada(Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_ARGS_ACTUALES)) {
             sintaxis.argumentos().argsActuales();
-        } else if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
-            match(TipoDeToken.OP_FLECHA);
-            sintaxis.lambdas().cuerpoLambda(Set.of(nombre.lexema()));
         } else {
             sintaxis.restriccionesDeLambda().verificarQueNoCaptura(nombre);
         }
@@ -107,6 +117,8 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         match(TipoDeToken.ID_MV);
         if (estaEn(PrimerosDeReferencias.ENCADENADO_ATRIBUTO_OMETODO_ARGS_ACTUALES)) {
             sintaxis.argumentos().argsActuales();
+        } else {
+            // EncadenadoAtributoOMetodo -> EPSILON
         }
     }
 

@@ -59,8 +59,8 @@ public final class PrimerosDeSentencias {
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // SentenciaExpresion -> Expresion
-    public static final ConjuntoDePrimeros SENTENCIA_EXPRESION_EXPRESION = de(
+    // SentenciaExpresion -> ExpresionSinLambda
+    public static final ConjuntoDePrimeros SENTENCIA_EXPRESION_EXPRESION_SIN_LAMBDA = de(
             TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
@@ -90,7 +90,7 @@ public final class PrimerosDeSentencias {
     // SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;
     public static final ConjuntoDePrimeros SENTENCIA_DESDE_ID_CLASE_PUNTO = de(TipoDeToken.PUNTO);
 
-    // VarLocal -> var idMetVar = ExpresionCondicional
+    // VarLocal -> var idMetVar = ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros VAR_LOCAL_VAR = de(TipoDeToken.PR_VAR);
 
     // ListaDeclaradores -> idMetVar InicializacionDeDeclarador RestoListaDeclaradores
@@ -102,7 +102,7 @@ public final class PrimerosDeSentencias {
     // RestoListaDeclaradores -> EPSILON
     public static final ConjuntoDePrimeros RESTO_LISTA_DECLARADORES = de();
 
-    // InicializacionDeDeclarador -> = ExpresionCondicional
+    // InicializacionDeDeclarador -> = ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros INICIALIZACION_DE_DECLARADOR_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
 

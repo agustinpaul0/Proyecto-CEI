@@ -103,7 +103,7 @@
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeAtributo}{\eps}\nobreak\par
@@ -244,7 +244,7 @@
 \regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{SentenciaExpresion}{\nt{Expresion}}\nobreak\par
+\regla{SentenciaExpresion}{\nt{ExpresionSinLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\nobreak\par
@@ -253,7 +253,7 @@
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{.} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional}}\nobreak\par
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{var} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\nobreak\par
@@ -265,7 +265,7 @@
 \regla{RestoListaDeclaradores}{\eps}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeDeclarador}{\eps}\nobreak\par
@@ -322,7 +322,7 @@
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{:} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}\nobreak\par
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\nobreak\par
@@ -331,7 +331,7 @@
 \regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;}, \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional}}\nobreak\par
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{InicializacionDeDeclaradorFor}{\eps}\nobreak\par
@@ -340,10 +340,13 @@
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{;} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{Expresion}{\nt{ExpresionCondicional} \nt{RestoExpresion}}\nobreak\par
+\regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional}}\nobreak\par
+\regla{ExpresionSinLambda}{\nt{ExpresionCondicional} \nt{RestoExpresion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{RestoExpresion}{\eps}\nobreak\par
@@ -352,10 +355,37 @@
 \regla{OperadorAsignacion}{\tl{=}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{=} \}\par}
 \par\hangindent=2.2em\hangafter=1
+\regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{+}, \tl{-} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionCondicionalOLambda}{\nt{ExpresionDesdePrimarioOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idClase} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{this} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\tl{stringLiteral} \nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{stringLiteral} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{new} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional}}\nobreak\par
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{?} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{RestoCondicional}{\eps}\nobreak\par
@@ -466,11 +496,17 @@
 \regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \nt{RestoExpresion}}\nobreak\par
+\regla{ColaTrasOperando}{\nt{ColaTrasOperandoSinAsignacion} \nt{RestoExpresion}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ColaTrasOperandoSinAsignacion}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{ColaDesdePrimarioSinAsignacion}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperandoSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} \}\par}
@@ -511,26 +547,32 @@
 \regla{PrimarioSinIdClase}{\tl{stringLiteral}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{stringLiteral} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{PrimarioSinIdClase}{\nt{ParentizadaOLambda}}\nobreak\par
+\regla{PrimarioSinIdClase}{\nt{Parentizada}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{PrimarioSinIdClase}{\nt{AccesoVarLlamadaOLambda}}\nobreak\par
+\regla{PrimarioSinIdClase}{\nt{AccesoVarOLlamada}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{PrimarioSinIdClase}{\nt{Creacion}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{new} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{AccesoVarLlamadaOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}\nobreak\par
+\regla{Parentizada}{\tl{(} \nt{ExpresionSinLambda} \tl{)}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoVarOLlamada}{\tl{idMetVar} \nt{AccesoLlamada}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{AccesoLlamadaOLambda}{\nt{ArgsActuales}}\nobreak\par
+\regla{AccesoLlamada}{\nt{ArgsActuales}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
+\par\hangindent=2.2em\hangafter=1
+\regla{AccesoLlamada}{\eps}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{->} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{AccesoLlamadaOLambda}{\eps}\nobreak\par
-{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\regla{AccesoLlamadaOLambda}{\nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{(}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{(} \}\par}
@@ -550,8 +592,8 @@
 \regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{->} \}\par}
 \par\hangindent=2.2em\hangafter=1
-\regla{FinDeParentizadaOLambda}{\eps}\nobreak\par
-{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \eps \}\par}
+\regla{FinDeParentizadaOLambda}{\nt{ColaDesdePrimarioSinAsignacion}}\nobreak\par
+{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps \}\par}
 \par\hangindent=2.2em\hangafter=1
 \regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\nobreak\par
 {\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ \tl{idMetVar} \}\par}

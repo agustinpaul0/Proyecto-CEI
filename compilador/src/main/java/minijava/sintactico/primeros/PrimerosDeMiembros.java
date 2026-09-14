@@ -71,7 +71,7 @@ public final class PrimerosDeMiembros {
     // AtributoOMetodo -> CuerpoDeMetodo
     public static final ConjuntoDePrimeros ATRIBUTO_OMETODO_CUERPO_DE_METODO = de(TipoDeToken.PAREN_A);
 
-    // InicializacionDeAtributo -> = ExpresionCondicional
+    // InicializacionDeAtributo -> = ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros INICIALIZACION_DE_ATRIBUTO_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
 

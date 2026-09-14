@@ -63,38 +63,53 @@ construcción.
 
 Es una ambigüedad **de la gramática de la cátedra**, no introducida por la transformación.
 
-### 2.2. El cuerpo de la lambda — introducida por el logro
+### 2.2. Dónde vive la lambda, y la ambigüedad que le queda
 
-`x -> a + b` tiene dos derivaciones:
+La ubicación que se impone sola al leer el logro es `<Primario>`: la lambda aparece donde aparece
+un valor, y `<Primario>` es el no terminal de los valores. **Es la equivocada**, y trae dos
+problemas de distinto peso.
 
-- `x -> (a + b)` — el cuerpo se come el `+ b`;
-- `(x -> a) + b` — el cuerpo es sólo `a`, y el `+ b` pertenece a la expresión que contiene a la
-  lambda.
+**El grave: el lenguaje queda más grande que el de Java.** `<Primario>` es la ranura de un
+*operando*. Si la lambda es un `<Primario>`, entonces es un operando válido de cualquier operador,
+y estas cinco formas pasan el análisis:
 
-La causa es dónde vive la lambda: se produce a nivel `<Primario>`, o sea que ocupa una ranura de
-operando, y entonces la cola de la expresión que la contiene compite con la cola de su cuerpo.
-Contagia a cinco no terminales, todos con la misma raíz: `<RestoExpresion>` (`=`),
+| Forma | Con la lambda en `<Primario>` | Java (`javac`) |
+|---|---|---|
+| `1 + x -> x` | acepta como `1 + (x -> x)` | `lambda expression not expected here` |
+| `a == x -> x` | acepta | rechaza |
+| `- x -> x`, `! x -> x` | acepta | rechaza |
+| `(x -> x) + 1` | acepta | rechaza |
+| `(x -> x).m()` | acepta | rechaza |
+
+El JLS define `Expression: LambdaExpression | AssignmentExpression`: la lambda es alternativa del
+nivel **más alto** de la jerarquía, nunca un `Primary`. Dicho de otra forma, `->` no tiene
+precedencia contra los operadores binarios ni unarios **porque no compite con ellos** — vive arriba
+de todos. Por la regla «lo no especificado es igual a Java», eso decide la ubicación.
+
+**El menor: la ambigüedad del cuerpo.** `x -> a + b` tiene dos derivaciones si la lambda es un
+operando —`x -> (a + b)` y `(x -> a) + b`—, porque la cola de la expresión que la contiene compite
+con la cola de su cuerpo. Contagia a los cinco no terminales de cola: `<RestoExpresion>` (`=`),
 `<RestoExpresionCompuesta>` (los 13 binarios), `<RestoReferencia>` (`.` y `[`),
 `<RestoCondicional>` (`?`) y `<PosfijoOpcional>` (`++`, `--`).
 
-Java no la tiene porque el JLS pone la lambda como alternativa de `AssignmentExpression`, nunca
-como `Primary`: al vivir en el nivel más alto de la jerarquía, no hay cola externa con la que
-competir.
+**Decisión: la lambda se produce en el nivel de `<Expresion>`.** Cuesta factorizar las dos cabezas
+que comparte con una expresión normal —`idMetVar` y `(`— contra la cola de expresión, con la misma
+técnica que `<ExpresionSinIdClase>`: catorce producciones nuevas y ninguna lógica duplicada, porque
+todas las colas se comparten. A cambio:
 
-**Decisión:** resolución voraz y declarada, no reestructuración. Los motivos:
+- el lenguaje reconocido pasa a ser el de Java en los cinco casos de la tabla;
+- **cuatro de las cinco ambigüedades desaparecen de raíz**, en vez de resolverse por regla.
 
-- Las dos salidas producen **el mismo analizador**: un descendente recursivo que llame a
-  `Expresion()` para el cuerpo consume todo lo que puede, o sea voraz, que además es lo que hace
-  Java.
-- Subir la lambda al nivel de `<Expresion>` como hace el JLS eliminaría la ambigüedad de raíz, pero
-  exigiría factorizar `idMetVar` y `(` contra toda la cola de expresión — unas quince producciones
-  nuevas, con la misma técnica que `<ExpresionSinIdClase>` — para no cambiar nada de lo que el
-  analizador hace.
-- Clase 4, slide 49 autoriza expresamente resolver una ambigüedad con una regla de implementación,
-  que es la vía que el proyecto ya usa para el `else`.
+La que sobrevive es la del `=`: `x -> a = b` es `x -> (a = b)`, porque `<RestoExpresion>` es la
+única cola externa que todavía compite con el cuerpo. Se resuelve **voraz**, que es lo que hace
+Java y lo que un descendente recursivo hace por construcción. Clase 4, slide 49 autoriza
+expresamente resolver una ambigüedad con una regla de implementación, que es la vía que el proyecto
+ya usa para el `else`.
 
-En la práctica: `x -> a + b` es `x -> (a + b)`, `x -> a.m()` es `x -> (a.m())`, y así con los seis
-testigos. Para forzar la otra lectura hay que parentizar: `(x -> a) + b`.
+Queda un hueco que la gramática no alcanza a cerrar y que cierra el analizador: el contenido de un
+paréntesis **sí** puede ser una lambda —`f((x -> x))` es válido en Java—, así que `(x -> x).m()`
+atraviesa la gramática. Está en
+[`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 ## 3. Alcance del operador ternario
 
@@ -202,8 +217,13 @@ indistinguibles hasta ver el token *después* del `)`, y para entonces `a` ya se
 expresión. Cerrarlo en la gramática exigiría duplicar la cadena de colas de expresión en su
 variante «no vacía», unos siete no terminales clonados.
 
-**Decisión:** se cierra con un chequeo en el analizador —verificar que lo parseado entre paréntesis
-fue exactamente un `idMetVar`— y no en la gramática. Está en el backlog de la Sesión 3 y detallado
+Del mismo origen sale la segunda: ese contenido entre paréntesis **puede** ser una lambda, porque
+`f((x -> x))` es válido en Java, así que `(x -> x).m()` y `(x -> x) + 1` también atraviesan la
+gramática aunque `javac` los rechace.
+
+**Decisión:** las dos se cierran con un chequeo en el analizador —que lo parseado entre paréntesis
+haya sido exactamente un `idMetVar`, y que una lambda parentizada no lleve cola— y no en la
+gramática. Está en el backlog de la Sesión 3 y detallado
 en [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 Del segundo parámetro en adelante la gramática **sí** exige identificador: `(a, b+1) -> x` y

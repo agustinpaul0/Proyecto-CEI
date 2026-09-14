@@ -16,8 +16,9 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// El logro MiniLambdas E2, que es el que más reglas trae: la desambiguación del
-// paréntesis, y las tres restricciones que la gramática no puede expresar.
+// El logro MiniLambdas E2, que es el que más reglas trae: dónde vive la lambda en
+// la jerarquía de expresiones, la desambiguación de sus dos cabezas, y las cuatro
+// restricciones que la gramática no puede expresar.
 @Tag("sintactico")
 @RequiereLogro(Logro.LAMBDA)
 class LambdasTest extends BaseDeAnalisis {
@@ -211,6 +212,99 @@ class LambdasTest extends BaseDeAnalisis {
 
         assertEquals("a", excepcion.getLexemaOfensivo());
         assertTrue(excepcion.getMessage().contains("repetido"), excepcion.getMessage());
+    }
+
+    // ------------------------------------------------- la precedencia del `->` ---
+    // La lambda no es un operando: vive en el nivel más alto de la jerarquía de
+    // expresiones, igual que en el JLS («Expression: LambdaExpression |
+    // AssignmentExpression»). Por eso `->` no compite en precedencia con ningún
+    // operador. Cada caso de acá se contrastó con javac.
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1 + x -> x",
+            "a * x -> x",
+            "a == x -> x",
+            "a || x -> x",
+            "- x -> x",
+            "! x -> x",
+            "1 + (x -> x)",
+            "a * () -> 1",
+            "1 + (a, b) -> a",
+    })
+    void unaLambdaNoPuedeSerOperandoDeUnOperador(String expresion, @TempDir Path dir) {
+        rechazarLambda(dir, expresion);
+    }
+
+    // `f((x -> x))` es válido y `(x -> x).m()` no: parentizarla no la convierte en
+    // un operando. javac dice «lambda expression not expected here» en los dos.
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "(x -> x).metodo() | .",
+            "(x -> x).campo    | .",
+            "(x -> x)[0]       | [",
+            "(x -> x) + 1      | +",
+            "(x -> x) ? a : b  | ?",
+            "(() -> 1) * 2     | *",
+            "(x -> x)++        | ++",
+    })
+    void unaLambdaParentizadaNoPuedeLlevarColaDeExpresion(String expresion, String lexema,
+                                                          @TempDir Path dir) {
+        ExcepcionSintactica excepcion = rechazarLambda(dir, expresion);
+
+        assertEquals(lexema, excepcion.getLexemaOfensivo());
+        assertTrue(excepcion.getMessage().contains("no puede ser operando"), excepcion.getMessage());
+    }
+
+    // La lambda parentizada SÍ es válida cuando ella misma es toda la expresión.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "(x -> x)",
+            "((x -> x))",
+            "((() -> 1))",
+    })
+    void unaLambdaParentizadaSinColaSeAcepta(String expresion, @TempDir Path dir) {
+        aceptarLambda(dir, expresion);
+    }
+
+    // Los lugares donde el JLS sí admite una lambda: argumento, índice de arreglo,
+    // las dos ramas del ternario, lado derecho de un `=` y cuerpo de otra lambda.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "metodo(x -> x)",
+            "metodo((x -> x))",
+            "arreglo[x -> x]",
+            "a ? x -> x : b",
+            "a ? b : x -> x",
+            "x -> x = 1",
+            "x -> y -> y",
+    })
+    void unaLambdaSeAceptaDondeElJlsLaAdmite(String expresion, @TempDir Path dir) {
+        aceptarLambda(dir, expresion);
+    }
+
+    // En Java una sentencia-expresión es un StatementExpression, que nunca es una
+    // lambda: `x -> x;` suelto es «not a statement».
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "x -> x;",
+            "(a, b) -> a;",
+            "() -> 1;",
+    })
+    void unaLambdaSueltaNoEsUnaSentencia(String sentencia, @TempDir Path dir) {
+        rechazar(dir, envolverEnMetodo(sentencia));
+    }
+
+    // El lado derecho de un `=` es una Expression del JLS, así que admite lambda;
+    // el de una asignación encadenada sigue sin existir.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "a = x -> x;",
+            "a.campo = x -> x;",
+            "arreglo[0] = () -> 1;",
+    })
+    void elLadoDerechoDeUnaAsignacionAdmiteLambda(String sentencia, @TempDir Path dir) {
+        aceptar(dir, envolverEnMetodo(sentencia));
     }
 
     // ------------------------------------------------------ el logro apagado ---

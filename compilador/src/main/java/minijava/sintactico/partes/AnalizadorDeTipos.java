@@ -61,12 +61,12 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
             match(TipoDeToken.PR_CHAR);
         } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_INT)) {
             match(TipoDeToken.PR_INT);
-        } else if (hayLogro(Logro.FLOATS) && estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
+        } else if (hayLogro(Logro.FLOAT) && estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
             match(TipoDeToken.PR_FLOAT);
         } else {
             throw errorEsperando(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN,
                     PrimerosDeTipos.TIPO_PRIMITIVO_CHAR, PrimerosDeTipos.TIPO_PRIMITIVO_INT,
-                    hayLogro(Logro.FLOATS) ? PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT : ConjuntoDePrimeros.de());
+                    hayLogro(Logro.FLOAT) ? PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT : ConjuntoDePrimeros.de());
         }
     }
 
@@ -78,6 +78,8 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
             match(TipoDeToken.OP_MENOR);
             argumentoDeTipo();
             match(TipoDeToken.OP_MAYOR);
+        } else {
+            // TipoGenericoOpcional -> EPSILON
         }
     }
 
@@ -113,6 +115,8 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
                 match(TipoDeToken.COMA);
                 argFormal();
             }
+        } else {
+            // ListaArgsFormalesOpcional -> EPSILON
         }
         match(TipoDeToken.PAREN_C);
     }

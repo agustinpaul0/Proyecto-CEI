@@ -42,7 +42,7 @@ class ExpresionesTest extends BaseDeAnalisis {
     }
 
     @Test
-    @RequiereLogro(Logro.FLOATS)
+    @RequiereLogro(Logro.FLOAT)
     void conFloatsUnLiteralFlotanteEsUnOperando(@TempDir Path dir) {
         aceptarExpresion(dir, "1.5");
     }

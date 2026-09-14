@@ -28,6 +28,12 @@ public final class VolcadoDeCasos {
     private VolcadoDeCasos() {
     }
 
+    // Para quien tenga que hacer trabajo extra —volver a correr el módulo
+    // principal, por ejemplo— sólo si se va a mirar el resultado.
+    public static boolean habilitado() {
+        return !MODO.equals("off");
+    }
+
     private static String normalizar(String valor) {
         String limpio = valor == null ? "completo" : valor.strip().toLowerCase();
         return switch (limpio) {
@@ -62,8 +68,10 @@ public final class VolcadoDeCasos {
             default -> {
                 consola.println("----- " + caso);
                 salida.forEach(consola::println);
+                // El conteo de tokens es del corpus léxico; en el sintáctico no
+                // hay ninguno y el pie se queda sólo con los errores.
                 consola.println("----- " + plural(errores, "error", "errores")
-                        + ", " + plural(tokens, "token", "tokens"));
+                        + (tokens == 0 ? "" : ", " + plural(tokens, "token", "tokens")));
             }
         }
         consola.flush();

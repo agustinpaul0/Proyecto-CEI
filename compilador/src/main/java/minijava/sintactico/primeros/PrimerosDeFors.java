@@ -51,7 +51,7 @@ public final class PrimerosDeFors {
     // EncabezadoForTrasVar -> : Expresion
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS = de(TipoDeToken.DOS_PUNTOS);
 
-    // EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor
+    // EncabezadoForTrasVar -> = ExpresionCondicionalOLambda ClausulasFinalesFor
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_VAR_ASIGNACION = de(TipoDeToken.OP_ASIGNACION);
 
     // EncabezadoForTrasDeclarador -> : Expresion
@@ -62,7 +62,7 @@ public final class PrimerosDeFors {
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_DECLARADOR_INICIALIZACION_DE_DECLARADOR_FOR = de(
             TipoDeToken.PUNTO_Y_COMA, TipoDeToken.OP_ASIGNACION);
 
-    // InicializacionDeDeclaradorFor -> = ExpresionCondicional
+    // InicializacionDeDeclaradorFor -> = ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros INICIALIZACION_DE_DECLARADOR_FOR_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
 

@@ -62,6 +62,8 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
             match(TipoDeToken.OP_MENOR);
             match(TipoDeToken.ID_GEN);
             match(TipoDeToken.OP_MAYOR);
+        } else {
+            // GenericidadOpcional -> EPSILON
         }
     }
 
@@ -73,6 +75,8 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeClases.HERENCIA_OPCIONAL_IMPLEMENTS)) {
             match(TipoDeToken.PR_IMPLEMENTS);
             sintaxis.tipos().tipoReferencia();
+        } else {
+            // HerenciaOpcional -> EPSILON
         }
     }
 
@@ -81,6 +85,8 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
         if (estaEn(PrimerosDeClases.EXTENSION_OPCIONAL_EXTENDS)) {
             match(TipoDeToken.PR_EXTENDS);
             sintaxis.tipos().tipoReferencia();
+        } else {
+            // ExtensionOpcional -> EPSILON
         }
     }
 

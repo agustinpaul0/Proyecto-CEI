@@ -33,7 +33,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // Sentencia -> ; | VarLocal ; | Return ; | If | While | Bloque
     // Sentencia -> For                                                        [+for]
     // Sentencia -> SentenciaExpresion ;                                       [-varclasica]
-    // SentenciaExpresion -> Expresion                                          [-varclasica]
+    // SentenciaExpresion -> ExpresionSinLambda                                 [-varclasica]
     // Sentencia -> ExpresionSinIdClase ;                                      [+varclasica]
     // Sentencia -> TipoPrimitivo DimensionesOpcionales ListaDeclaradores ;    [+varclasica]
     // Sentencia -> idGen DimensionesOpcionales ListaDeclaradores ;            [+varclasica]
@@ -56,7 +56,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         } else if (hayLogro(Logro.FOR) && estaEn(PrimerosDeSentencias.SENTENCIA_FOR)) {
             sintaxis.fors().sentenciaFor();
         } else if (!hayLogro(Logro.VARCLASICA)) {
-            sintaxis.expresiones().expresion();
+            sintaxis.expresiones().expresionSinLambda();
             match(TipoDeToken.PUNTO_Y_COMA);
         } else {
             sentenciaODeclaracionLocal();
@@ -67,6 +67,8 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     public void expresionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeSentencias.EXPRESION_OPCIONAL_EXPRESION)) {
             sintaxis.expresiones().expresion();
+        } else {
+            // ExpresionOpcional -> EPSILON
         }
     }
 
@@ -86,11 +88,13 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         }
     }
 
-    // InicializacionDeDeclarador -> = ExpresionCondicional | EPSILON
+    // InicializacionDeDeclarador -> = ExpresionCondicionalOLambda | EPSILON
     private void inicializacionDeDeclarador() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeSentencias.INICIALIZACION_DE_DECLARADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicional();
+            sintaxis.expresiones().expresionCondicionalOLambda();
+        } else {
+            // InicializacionDeDeclarador -> EPSILON
         }
     }
 
@@ -131,12 +135,12 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         }
     }
 
-    // VarLocal -> var idMetVar = ExpresionCondicional
+    // VarLocal -> var idMetVar = ExpresionCondicionalOLambda
     private void varLocal() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PR_VAR);
         match(TipoDeToken.ID_MV);
         match(TipoDeToken.OP_ASIGNACION);
-        sintaxis.expresiones().expresionCondicional();
+        sintaxis.expresiones().expresionCondicionalOLambda();
     }
 
     // Return -> return ExpresionOpcional
@@ -158,6 +162,8 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         if (estaEn(PrimerosDeSentencias.ELSE_OPCIONAL_ELSE)) {
             match(TipoDeToken.PR_ELSE);
             sentencia();
+        } else {
+            // ElseOpcional -> EPSILON
         }
     }
 

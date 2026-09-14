@@ -71,7 +71,7 @@ class ParserDeConfiguracionTest {
     void lasEtapasSeAcumulanConLosLogrosSueltos() {
         var configuracion = ParserDeConfiguracion.parsear("etapa1,ternario").configuracion();
 
-        assertTrue(configuracion.tiene(Logro.FLOATS));
+        assertTrue(configuracion.tiene(Logro.FLOAT));
         assertTrue(configuracion.tiene(Logro.TERNARIO));
         assertFalse(configuracion.tiene(Logro.LAMBDA));
     }

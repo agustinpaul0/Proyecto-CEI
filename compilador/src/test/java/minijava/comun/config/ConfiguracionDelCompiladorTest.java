@@ -71,10 +71,10 @@ class ConfiguracionDelCompiladorTest {
     void sinQuitaSinTocarLaConfiguracionOriginal() {
         var base = ConfiguracionDelCompilador.todos();
 
-        var derivada = base.sin(Logro.FLOATS);
+        var derivada = base.sin(Logro.FLOAT);
 
-        assertFalse(derivada.tiene(Logro.FLOATS));
-        assertTrue(base.tiene(Logro.FLOATS));
+        assertFalse(derivada.tiene(Logro.FLOAT));
+        assertTrue(base.tiene(Logro.FLOAT));
     }
 
     @Test
@@ -93,7 +93,7 @@ class ConfiguracionDelCompiladorTest {
 
     @Test
     void conYSinSinArgumentosDevuelvenLaMismaConfiguracion() {
-        var base = ConfiguracionDelCompilador.todos().sin(Logro.FLOATS);
+        var base = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
 
         assertEquals(base, base.con());
         assertEquals(base, base.sin());

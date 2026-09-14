@@ -818,8 +818,8 @@ capturan las colas compartidas:
 
 <ColaTrasOperando> ::= <RestoExpresionCompuesta> <RestoCondicional> <RestoExpresion>
 <ColaDeExpresionDesdePrimario> ::= <RestoReferencia> <PosfijoOpcional> <ColaTrasOperando>
-<PrimarioSinIdClase> ::= this | stringLiteral | <ParentizadaOLambda>
-                       | <AccesoVarLlamadaOLambda> | <Creacion>
+<PrimarioSinIdClase> ::= this | stringLiteral | <Parentizada>
+                       | <AccesoVarOLlamada> | <Creacion>
 ```
 
 y `<Primario> ::= <LlamadaMetodoEstatico> | <PrimarioSinIdClase>`, que es la única forma de
@@ -898,9 +898,22 @@ desactivación que el ternario: apagado, `<PosfijoOpcional>` queda en `ε`.
 
 El logro que **parece** necesitar lookahead ilimitado y no lo necesita.
 
-**Defecto que crea.** El `(` abre tanto una expresión parentizada como la lista de parámetros de
-una lambda, y `idMetVar` abre tanto un acceso a variable como una lambda de un parámetro.
-`(a, b, c) -> x` contra `(a + b)` sugiere que hay que escanear hasta el `)` para decidir.
+**Defectos que crea.** Dos.
+
+El primero es **dónde vive la lambda**. La ubicación que se impone sola es `<Primario>` — la
+lambda aparece donde aparece un valor —, y es la equivocada: `<Primario>` es la ranura de un
+*operando*, y una lambda no puede ser operando de nada. El JLS la define como alternativa de
+`Expression`, el nivel **más alto** de la jerarquía (`Expression: LambdaExpression |
+AssignmentExpression`), nunca como `Primary`. Puesta en `<Primario>`, `1 + x -> x`, `- x -> x`,
+`a == x -> x`, `(x -> x) + 1` y `(x -> x).m()` pasan el análisis, y `javac` rechaza los cinco con
+*«lambda expression not expected here»*. Por la regla «lo no especificado es igual a Java», la
+lambda va en el nivel de `<Expresion>`. El detalle está en
+[`decisiones-de-logica.md`](decisiones-de-logica.md#22-dónde-vive-la-lambda).
+
+El segundo es el **lookahead**. El `(` abre tanto una expresión parentizada como la lista de
+parámetros de una lambda, y `idMetVar` abre tanto un acceso a variable como una lambda de un
+parámetro. `(a, b, c) -> x` contra `(a + b)` sugiere que hay que escanear hasta el `)` para
+decidir.
 
 **Análisis.** No hace falta, porque los casos se separan solos:
 
@@ -917,16 +930,50 @@ decidir sigue siendo un token de lookahead.
 **Transformación**
 
 ```
+<Expresion> ::= <ExpresionCondicionalOLambda> <RestoExpresion>
+<ExpresionSinLambda> ::= <ExpresionCondicional> <RestoExpresion>
+<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicionalOLambda> | ε
+
+<ExpresionCondicionalOLambda> ::= <OperadorUnario> <Operando> <ColaTrasOperandoSinAsignacion>
+                                | <Primitivo> <ColaTrasOperandoSinAsignacion>
+                                | <ExpresionDesdePrimarioOLambda>
+
+<ExpresionDesdePrimarioOLambda> ::= idMetVar <AccesoLlamadaOLambda>
+                                  | <ParentizadaOLambda>
+                                  | this <ColaDesdePrimarioSinAsignacion>
+                                  | stringLiteral <ColaDesdePrimarioSinAsignacion>
+                                  | <Creacion> <ColaDesdePrimarioSinAsignacion>
+                                  | idClase . idMetVar <ArgsActuales> <ColaDesdePrimarioSinAsignacion>
+
+<AccesoLlamadaOLambda> ::= -> <CuerpoLambda>
+                         | <AccesoLlamada> <ColaDesdePrimarioSinAsignacion>
+
 <ParentizadaOLambda> ::= ( <ContenidoDeParentesis>
 <ContenidoDeParentesis> ::= ) -> <CuerpoLambda>
                           | <Expresion> <RestoDeParentesis>
 <RestoDeParentesis> ::= ) <FinDeParentizadaOLambda>
                       | , <ListaParametrosLambda> ) -> <CuerpoLambda>
-<FinDeParentizadaOLambda> ::= -> <CuerpoLambda> | ε
+<FinDeParentizadaOLambda> ::= -> <CuerpoLambda>
+                            | <ColaDesdePrimarioSinAsignacion>
 <CuerpoLambda> ::= <Expresion>
 
-<AccesoVarLlamadaOLambda> ::= idMetVar <AccesoLlamadaOLambda>
-<AccesoLlamadaOLambda> ::= <ArgsActuales> | -> <CuerpoLambda> | ε
+<ColaTrasOperando> ::= <ColaTrasOperandoSinAsignacion> <RestoExpresion>
+<ColaTrasOperandoSinAsignacion> ::= <RestoExpresionCompuesta> <RestoCondicional>
+<ColaDesdePrimarioSinAsignacion> ::= <RestoReferencia> <PosfijoOpcional>
+                                     <ColaTrasOperandoSinAsignacion>
+```
+
+`<ExpresionCondicionalOLambda>` es el nivel `LambdaExpression | ConditionalExpression` del JLS:
+admite lambda y no admite `=`. Es el operando de los seis `=` de la gramática y el tercer operando
+del ternario. Sólo duplica las **cabezas**; las colas se comparten, igual que en
+`<ExpresionSinIdClase>`.
+
+Del otro lado, ningún `<Primario>` puede ya ser una lambda:
+
+```
+<Parentizada> ::= ( <ExpresionSinLambda> )
+<AccesoVarOLlamada> ::= idMetVar <AccesoLlamada>
+<AccesoLlamada> ::= <ArgsActuales> | ε
 ```
 
 `<CuerpoLambda> ::= <Expresion>` es la lectura literal de *«el cuerpo debe estar formado por una
@@ -938,9 +985,17 @@ decidir sigue siendo un token de lookahead.
 > esa expresión tiene que ser un identificador suelto, y eso es un chequeo del semántico. Es la
 > misma clase de permisividad que la gramática original ya tiene con `5 = x;`.
 >
+> Del mismo origen: esa `<Expresion>` entre paréntesis puede ser una lambda, porque
+> `f((x -> x))` es válido en Java. Pero `(x -> x).m()` no lo es — parentizarla no la convierte en
+> operando —, y distinguirlos en la gramática exigiría clonar la cadena de colas en su variante
+> «el contenido del paréntesis fue una lambda».
+>
 > Lo mismo con *«no se permite la captura de variables locales, parámetros, ni el uso de `this`»*:
 > **no es decidible sintácticamente**, el parser no sabe qué nombres están en alcance. Lo único
 > del logro que el sintáctico impone es la forma.
+>
+> Las cuatro las cierra el analizador con lo que acaba de leer; están en
+> [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 ### 5.7 Inicializacion de Arreglos E2
 

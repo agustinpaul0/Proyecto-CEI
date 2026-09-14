@@ -17,6 +17,13 @@ import minijava.sintactico.recuperacion.RecuperadorDePanico;
 // EntradaDeTokens, para que cada método de no terminal se lea como el esquema de
 // Clase 5 (slide 57): `match(x)` para los terminales y una llamada para los no
 // terminales. Quién consume la entrada sigue siendo EntradaDeTokens y nadie más.
+//
+// Por la misma razón, NINGÚN método de no terminal omite el `else` final de su
+// cadena de Primeros. Si el no terminal NO es anulable, ese else es el error
+// (Clase 5, slide 39); si alguna de sus partes derechas deriva a ε, es un else
+// vacío —«no hago nada :)» en la slide 52—, que es donde el análisis semántico de
+// la Etapa 3 va a colgar la traducción de la producción vacía. Un else vacío con
+// la producción citada al lado dice «acá se derivó a ε»; omitirlo lo esconde.
 public abstract class ParteDelAnalizador {
 
     protected final Sintaxis sintaxis;

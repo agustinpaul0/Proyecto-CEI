@@ -128,7 +128,7 @@ class ConjuntoDePrimerosTest {
         assertEquals(Set.of(TipoDeToken.ID_CLASE), PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE.getTokens());
         assertEquals(Set.of(TipoDeToken.SIGNO_PREGUNTA),
                 PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA.getTokens());
-        assertEquals(Set.of(TipoDeToken.OP_FLECHA), PrimerosDeReferencias.ACCESO_LLAMADA_OLAMBDA_FLECHA.getTokens());
+        assertEquals(Set.of(TipoDeToken.OP_FLECHA), PrimerosDeLambdas.ACCESO_LLAMADA_OLAMBDA_FLECHA.getTokens());
     }
 
     // Los trece operadores binarios van en un solo nivel de precedencia, como en

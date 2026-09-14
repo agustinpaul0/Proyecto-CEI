@@ -75,6 +75,8 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
             match(TipoDeToken.PR_PUBLIC);
         } else if (estaEn(PrimerosDeMiembros.VISIBILIDAD_OPCIONAL_PRIVATE)) {
             match(TipoDeToken.PR_PRIVATE);
+        } else {
+            // VisibilidadOpcional -> EPSILON
         }
     }
 
@@ -146,12 +148,14 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         }
     }
 
-    // InicializacionDeAtributo -> = ExpresionCondicional   [+atrinit]
+    // InicializacionDeAtributo -> = ExpresionCondicionalOLambda   [+atrinit]
     // InicializacionDeAtributo -> EPSILON
     private void inicializacionDeAtributo() throws ExcepcionLexica, ExcepcionSintactica {
         if (hayLogro(Logro.ATRINIT) && estaEn(PrimerosDeMiembros.INICIALIZACION_DE_ATRIBUTO_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicional();
+            sintaxis.expresiones().expresionCondicionalOLambda();
+        } else {
+            // InicializacionDeAtributo -> EPSILON
         }
     }
 
@@ -166,6 +170,8 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     private void publicOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (hayLogro(Logro.VISIBILIDAD) && estaEn(PrimerosDeMiembros.PUBLIC_OPCIONAL_PUBLIC)) {
             match(TipoDeToken.PR_PUBLIC);
+        } else {
+            // PublicOpcional -> EPSILON
         }
     }
 }

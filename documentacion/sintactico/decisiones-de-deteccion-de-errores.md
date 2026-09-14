@@ -78,7 +78,7 @@ desaconseja (Clase 4, slide 40).
 **Sí es verificable en el analizador, y de la forma más barata posible: con un booleano.** El
 analizador sabe si está dentro de una lambda porque acaba de entrar; alcanza con prender un
 indicador al empezar el cuerpo y apagarlo al salir. Está implementado en
-`sintactico/RestriccionesDeLambda`, que guarda ese estado y expone los tres chequeos; el alcance se
+`sintactico/RestriccionesDeLambda`, que guarda ese estado y expone los cuatro chequeos; el alcance se
 abre y se cierra alrededor del cuerpo:
 
 ```java
@@ -112,8 +112,8 @@ variable y cuál no:
 
 | Forma | Producción | ¿Se chequea? |
 |---|---|---|
-| `x` solo | `AccesoLlamadaOLambda → ε` | **sí**: tiene que estar en los parámetros |
-| `x(…)` | `AccesoLlamadaOLambda → ArgsActuales` | no: podría ser un método `static` (3.1) |
+| `x` solo | `AccesoLlamada → ε` | **sí**: tiene que estar en los parámetros |
+| `x(…)` | `AccesoLlamada → ArgsActuales` | no: podría ser un método `static` (3.1) |
 | `.campo` | `Encadenado → . idMetVar …` | no: es un campo de otro objeto, no una variable |
 | `C.m(…)` | `LlamadaMetodoEstatico` | no: es estático, no captura nada |
 
@@ -136,6 +136,8 @@ Todo esto está verificado en `LambdasTest`, con el par completo por caso.
 | `x -> y -> x + y` | **rechaza** | la interna usa `x`, que es de la externa |
 | `(a + 1) -> a` | **rechaza** | el parámetro no es un identificador pelado |
 | `(a, a) -> a` | **rechaza** | el parámetro está repetido |
+| `f((x -> x))` | acepta | la lambda parentizada es toda la expresión |
+| `(x -> x).m()` | **rechaza** | parentizarla no la convierte en operando |
 
 ### 3.2.1. El parámetro tiene que ser un identificador pelado
 
@@ -148,6 +150,20 @@ si al ver el `->` resulta que no, lo rechaza. Es la única información extra qu
 de contar los tokens que ya se consumieron (`EntradaDeTokens.consumidos()`).
 
 Se rechaza también el parámetro repetido, `(a, a) -> a`, por la misma vía.
+
+### 3.2.2. Una lambda parentizada no lleva cola de expresión
+
+El cuarto chequeo, del mismo origen. Una lambda no es un operando: eso lo impone la gramática, que
+la produce en el nivel de `<Expresion>` y no en `<Primario>`
+([`decisiones-de-logica.md`](decisiones-de-logica.md)). Pero queda un hueco: el contenido de
+`<ContenidoDeParentesis>` es una `<Expresion>`, y **tiene que serlo**, porque `f((x -> x))` es
+válido en Java. Entonces `(x -> x).m()` y `(x -> x) + 1` también atraviesan la gramática, y `javac`
+los rechaza con *«lambda expression not expected here»*.
+
+Cerrarlo en la gramática exigiría clonar la cadena de colas en su variante «el contenido del
+paréntesis fue una lambda» — unos siete no terminales —, así que lo cierra el analizador: recuerda
+si lo que acaba de leer entre paréntesis fue una lambda y, si lo fue, exige que no siga ninguno de
+los tokens que abren una cola (`.`, `[`, `++`, `--`, los trece binarios, `?`).
 
 ### 3.3. Por qué no se posterga al semántico
 
@@ -169,15 +185,20 @@ declaración: que el nombre exista, que el tipo cierre, que la aridad coincida.
 
 ## 4. Ambigüedades resueltas por regla de implementación
 
-La gramática tiene siete ambigüedades declaradas, y ninguna se resuelve reescribiéndola: las siete
+La gramática tiene tres ambigüedades declaradas, y ninguna se resuelve reescribiéndola: las tres
 se resuelven con el **orden de las ramas** en el analizador, que es la segunda de las dos vías que
-ofrece Clase 4, slide 49. En los siete casos la regla es la misma —**voraz**— y coincide con Java.
+ofrece Clase 4, slide 49. En los tres casos la regla es la misma —**voraz**— y coincide con Java.
 
 | Ambigüedad | Regla | Efecto |
 |---|---|---|
 | *dangling else* | tomar la rama `else` apenas se ve el token | liga al `if` más cercano |
 | `new int[3][4]` | consumir el `[` como otra dimensión de la creación | es una creación 2-D, no un acceso |
-| cuerpo de lambda (×5) | dejar que `Expresion()` consuma todo lo que pueda | `x -> a + b` es `x -> (a + b)` |
+| cuerpo de lambda | dejar que `Expresion()` consuma todo lo que pueda | `x -> a = b` es `x -> (a = b)` |
+
+Eran siete mientras la lambda se producía a nivel `<Primario>`: ahí la cola de la expresión que la
+contenía competía con la cola de su cuerpo, y la misma ambigüedad aparecía en los cinco no
+terminales de cola. Ponerla en el nivel de `<Expresion>`, como el JLS, **elimina cuatro de raíz**;
+la que queda es la del `=`, la única cola externa que todavía compite con el cuerpo.
 
 Las tres están implementadas: el `else` en `AnalizadorDeSentencias`, el `new int[3][4]` en
 `AnalizadorDeCreacion` y el cuerpo de la lambda en `AnalizadorDeLambdas`. El detalle de cada una,

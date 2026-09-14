@@ -86,8 +86,14 @@ protected final void match(TipoDeToken esperado) { sintaxis.entrada().match(espe
 Así cada método de no terminal se escribe `match(TipoDeToken.PR_CLASS)`, igual que en el ejemplo de
 Clase 5 slide 57, sin que ninguna sección tenga acceso al analizador léxico.
 
-Tres cosas que conviene tener presentes:
+Cuatro cosas que conviene tener presentes:
 
+- **Ningún método omite el `else` final de su cadena de Primeros.** Si el no terminal no es
+  anulable, ese `else` es el error (Clase 5, slide 39). Si alguna de sus partes derechas deriva a
+  ε, es un `else` **vacío** con la producción citada al lado, que es literalmente lo que muestra la
+  slide 52: *«else // No hago nada :)»*. Podría omitirse y el analizador haría lo mismo, pero
+  entonces «acá se derivó a ε» dejaría de estar escrito en ningún lado — y es justo el punto donde
+  la Etapa 3 va a colgar la traducción de la producción vacía.
 - **El token actual *es* el lookahead.** El analizador nunca mira más de un token hacia adelante; el
   «token actual» ya es el que todavía no se consumió.
 - **`match` es el único lugar que avanza**, junto con `descartar()`, que usa el Modo Pánico
@@ -147,7 +153,7 @@ compilador igual rechazaría.
 
 ## 5.1. Cómo se divide el analizador
 
-Un analizador descendente recursivo tiene un método por no terminal, y con 104 no terminales una
+Un analizador descendente recursivo tiene un método por no terminal, y con 111 no terminales una
 sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
 por sección:
 

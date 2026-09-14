@@ -94,7 +94,7 @@ equivoqué y después lo arreglé» —que no va—.
 | **S2** | Cimientos + arranque del parser | **Terminada** |
 | **S3** | Parser completo | **Terminada** |
 | **S4** | Robustez, testing y entrega | **Terminada** |
-| **S5** | Reserva | Pendiente |
+| **S5** | Precedencia de lambdas + devolución del profesor | **Terminada** |
 
 Días de 8-10 horas, asistidos. La S5 es colchón: para desvíos, para la corrección del léxico, o
 para pulido.
@@ -106,7 +106,7 @@ Todo verificado; los comandos están en [Verificación](#verificación-permanent
 herramientas y documentación.
 
 - **Gramática LL(1) final y completa**, con los 9 logros de Etapa 2 y el *carry-over* de floats.
-  104 no terminales, 214 producciones. **No queda gramática por diseñar en las sesiones
+  111 no terminales, 228 producciones. **No queda gramática por diseñar en las sesiones
   siguientes.**
 - `compilador/gramatica/` con tres versiones y su
   [`README.md`](../../compilador/gramatica/README.md): `minijava-base.g` (transcripción del PDF,
@@ -152,12 +152,12 @@ Primer código de la Etapa 2. `mvn verify` verde, 889 tests.
 
 El analizador sintáctico **completo**. `mvn verify` verde, 1117 tests en ese momento.
 
-- **Los 104 no terminales implementados**, divididos en una clase por sección de la gramática
+- **Los no terminales implementados**, divididos en una clase por sección de la gramática
   (`sintactico/partes/`, de 99 a 172 líneas cada una) más `EntradaDeTokens`, `Sintaxis` y
   `RestriccionesDeLambda`. Una sola clase habría llegado a 1176 líneas y 89 métodos.
 - **Los 8 casos de la cátedra pasan con el compilador real**, cada error en el token exacto.
 - **Los 10 logros funcionan como interruptores** de punta a punta, verificado en 16 configuraciones.
-- **Las tres restricciones de MiniLambdas** que la gramática no puede expresar: `this` explícito,
+- **Las restricciones de MiniLambdas** que la gramática no puede expresar: `this` explícito,
   `this` implícito (toda llamada sin punto dentro de una lambda) y la captura de variables, más que
   el parámetro sea un identificador pelado y no se repita.
 - **Los Primeros se generan** desde la gramática con `herramientas/primeros_a_java.py`: 220
@@ -184,13 +184,37 @@ El compilador **completo**, con los diez logros implementados. `mvn verify` verd
 - **Equivalencia de lenguajes verificada** con un reconocedor de Earley: la gramática final con
   cero logros y la de la cátedra generan el mismo lenguaje, con cobertura por producción y dos
   controles negativos que la validan.
-- **El analizador cita exactamente la gramática**: 220 de 220 producciones, verificado por
+- **El analizador cita exactamente la gramática**: 234 de 234 producciones, verificado por
   `auditar_analizador.py`.
 - **Modularización**: `Primeros.java` (828 líneas) pasó a diez clases por sección,
   `AnalizadorLexicoTest.java` (1026 líneas) a ocho suites por tema, y `ArgsActuales` salió de
   `AnalizadorDeCreacion` a su propia parte.
 - **Cobertura** 98,9 % de líneas y 95,0 % de ramas, con umbrales en `mvn verify`. **Mutación** al
-  91 %, con umbral, sobre todo el compilador.
+  90 %, con umbral, sobre todo el compilador.
+
+### Lo que dejó la S5
+
+Corrección de la **precedencia de las lambdas** y los cuatro puntos que trajo el profesor.
+
+- **La lambda salió de `<Primario>` y pasa a producirse en el nivel de `<Expresion>`**, como el
+  JLS. Antes era un operando válido y el lenguaje reconocido era estrictamente más grande que el de
+  Java: `1 + x -> x`, `a == x -> x`, `- x -> x`, `(x -> x) + 1` y `(x -> x).m()` pasaban el
+  análisis y `javac` los rechaza. Cada caso se contrastó con `javac` antes y después.
+- **Cuatro de las siete ambigüedades declaradas desaparecieron de raíz**: eran un síntoma de la
+  ubicación, no un rasgo de las lambdas. Queda la del `=` (`x -> a = b` es `x -> (a = b)`).
+- **Un cuarto chequeo extra-gramatical**: una lambda parentizada no lleva cola. `f((x -> x))` es
+  válido y `(x -> x).m()` no; distinguirlos en la gramática exigiría clonar la cadena de colas.
+- **`()[]` verificado**: `f()[0]`, `f()[0][1]`, `f().g()[0]`, `Clase.met()[0]`, `new Cosa()[0]`,
+  `(a)[0]`, `this.m()[0]` — viene de `Referencia -> Referencia AccesoArreglo` de la cátedra.
+- **Informe**: los errores informan siempre las dos mitades —qué se encontró y qué se esperaba—,
+  con la explicación de por qué ése es el par de datos con el que decide el Esquema Simple; el
+  `this` en lambda queda anotado como pendiente de la Etapa 3.
+- **El `else` explícito en las producciones ε**, en los 18 métodos que lo dejaban implícito.
+- **`Logro.FLOAT`, un solo nombre**: se eliminó el alias `floats`/`float` de `--logros`.
+- **La salida real del compilador al correr los tests unitarios**: `BaseDeAnalisis` corre el módulo
+  principal sobre el mismo fuente y vuelca lo que imprimiría `java -jar Compilador.jar`, bajo el
+  mismo `-Dvolcado` que el corpus. Sirve para mirar un caso desde IntelliJ sin romper un test.
+- 111 no terminales, 228 producciones. `mvn verify` verde, 5785 tests, cobertura sobre el umbral.
 
 ### Estado de la Etapa 1
 
@@ -211,7 +235,7 @@ verificador antes de actuar. Resultado:
   proyecto y contagia a cinco no terminales. Las tres quedaron documentadas y resueltas voraz.
 - **Se agregó al verificador un registro de ambigüedades declaradas** (`--ambiguedades`): recorre
   las 1024 configuraciones y falla si aparece una que no esté en la lista con su regla de
-  resolución. Son siete y todas están declaradas.
+  resolución. Son tres y todas están declaradas.
 - **Se extendió el inicializador de arreglos a multidimensional**, porque el logro dice «como en
   Java» y sólo restringe dónde, no cuántas dimensiones.
 - El orden de los modificadores se mantiene fiel a la gramática original: `static public` se
@@ -225,7 +249,7 @@ El compilador **está completo**. Lo que existe y anda hoy:
 
 ```bash
 cd compilador
-mvn verify                    # 5731 tests, cobertura sobre el umbral
+mvn verify                    # 5785 tests, cobertura sobre el umbral
 java -jar target/Compilador.jar programa1.java             # analiza sintácticamente
 java -jar target/Compilador.jar --etapa=1 programa1.java   # vuelca tokens (Etapa 1)
 java -jar target/Compilador.jar --logros=ninguno prog.java # sin ningún logro
@@ -443,8 +467,17 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
 - El `this` dentro de una lambda —explícito e implícito— y la captura de variables **los rechaza el
   analizador sintáctico**, con un indicador de contexto y un conjunto con los parámetros de la
   lambda. No son expresables en la gramática, pero sí verificables con información local.
-- Las siete ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
+- Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
   están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
+- **La lambda se produce en el nivel de `<Expresion>`, nunca en `<Primario>`**, como el JLS. No es
+  un operando: `1 + x -> x`, `- x -> x`, `(x -> x) + 1` y `(x -> x).m()` se rechazan, igual que en
+  Java. No se vuelve a discutir.
+- **Ningún método de no terminal omite el `else` final de su cadena de Primeros.** Si el no terminal
+  no es anulable, ese `else` es el error (Clase 5, slide 39); si alguna parte derecha deriva a ε, es
+  un `else` vacío con la producción citada al lado —el «no hago nada :)» de la slide 52—, que es
+  donde la Etapa 3 va a colgar la traducción de la producción vacía. Pedido explícito del profesor.
+- **Cada logro tiene UN solo nombre, sin alias**: el mismo con el que la gramática marca sus
+  producciones. El de floats es `float`, no `floats`.
 - El inicializador de arreglos es anidable; el orden `static public` se rechaza.
 
 ---
@@ -457,14 +490,14 @@ Todo esto tiene que pasar al cerrar cualquier sesión:
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria # 1024/1024
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades # 7/7 declaradas
-python3 herramientas/auditar_analizador.py                                      # 220/220 citadas
+python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades # 3/3 declaradas
+python3 herramientas/auditar_analizador.py                                      # 234/234 citadas
 python3 herramientas/equivalencia_de_lenguajes.py                               # mismo lenguaje
 bash herramientas/casos-gramatica.sh                                            # 87/87
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java  # 8/8
 python3 herramientas/comparar_con_gramatica.py                                  # 1861 fuentes
 mvn verify                                                                      # suite + cobertura
-mvn -Pmutacion verify                                                           # mutación 91 %
+mvn -Pmutacion verify                                                           # mutación 90 %
 mvn test -Dlogros=ninguno                                                       # cero logros
 mvn test -Dlogros=todos                                                         # todos
 mvn test -Pfase-lexico                                                          # sólo el léxico

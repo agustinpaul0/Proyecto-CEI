@@ -38,23 +38,41 @@ incluido el vacío— se verifica sobre las 1024 combinaciones con `--combinator
 | Cláusula | Dónde se resuelve |
 |---|---|
 | forma `params -> expr` | gramática |
+| dónde puede aparecer una lambda | gramática — se produce en `<Expresion>`, no en `<Primario>` |
 | parámetros sin tipo | gramática — no hay producción que genere `(int x) -> e` |
 | cuerpo de una única expresión, sin llaves | gramática — no hay alternativa con `{` |
 | no captura de variables | **analizador**, con un conjunto de los parámetros |
 | no `this` | **analizador**, con un indicador de contexto |
+| lambda parentizada sin cola | **analizador**, con lo que acaba de leer |
 
 Las cuatro formas de parámetros funcionan: `() -> e`, `x -> e`, `(x) -> e`, `(a, b, c) -> e`.
 
-**El caso difícil, y por qué no hizo falta lookahead ilimitado.** El `(` abre tanto una expresión
+**El caso difícil de verdad: dónde vive la lambda.** *«Sintaxis similar a la utilizada en Java»*
+incluye **dónde** puede aparecer, y ahí Java no la trata como un valor más: el JLS define
+`Expression: LambdaExpression | AssignmentExpression`, o sea que la lambda es alternativa del nivel
+más alto de la jerarquía de expresiones y nunca un `Primary`. Producirla en `<Primario>` —que es la
+ubicación que se impone sola— haría válidos `1 + x -> x`, `- x -> x`, `a == x -> x`,
+`(x -> x) + 1` y `(x -> x).m()`, que `javac` rechaza con *«lambda expression not expected here»*.
+Se produce entonces en el nivel de `<Expresion>`, factorizando las dos cabezas que comparte con una
+expresión normal. El análisis completo, con la ambigüedad que eso elimina, está en
+[`decisiones-de-logica.md` §2.2](decisiones-de-logica.md).
+
+**El otro caso difícil, y por qué no hizo falta lookahead ilimitado.** El `(` abre tanto una expresión
 parentizada como una lista de parámetros, y `(a, b, c) -> x` contra `(a + b)` parece exigir escanear
 hasta el `)`. No lo exige: `( )` sólo puede ser una lambda de cero parámetros; `( e ,` sólo puede
 ser una lambda porque MiniJava no tiene operador coma; y `( e )` lo decide el token
 **inmediatamente** posterior al `)`. En los tres casos alcanza un token.
 
-Las dos partes que resuelve el analizador y no la gramática están detalladas en
+Las partes que resuelve el analizador y no la gramática están detalladas en
 [`decisiones-de-deteccion-de-errores.md` §3](decisiones-de-deteccion-de-errores.md). La
 permisividad del primer parámetro está en
 [`decisiones-de-logica.md` §9](decisiones-de-logica.md).
+
+**Pendiente declarado para la Etapa 3.** La cátedra admite no controlar en esta etapa si un `this`
+—explícito o implícito— cae dentro o fuera de una lambda, porque con la tabla de símbolos del
+semántico el control es mucho más directo. Acá está implementado igual y se deja como está; lo que
+queda para la Etapa 3 es el único caso que este analizador no puede decidir: `x -> ayuda(x)`, que
+es un `this` implícito si `ayuda` es de instancia y no lo es si es `static`.
 
 **Requiere el token `->`**, que no existe en el léxico de la Etapa 1.
 

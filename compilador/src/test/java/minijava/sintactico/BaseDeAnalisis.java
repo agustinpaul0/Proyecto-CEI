@@ -1,8 +1,11 @@
 package minijava.sintactico;
 
 import minijava.comun.config.ConfiguracionDelCompilador;
+import minijava.aplicacion.ModuloPrincipalSintactico;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
+import minijava.comun.salida.SalidaEnMemoria;
+import minijava.casos.VolcadoDeCasos;
 import minijava.lexico.AnalizadorLexico;
 import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.sintactico.errores.ExcepcionSintactica;
@@ -23,6 +26,7 @@ abstract class BaseDeAnalisis {
             throws Exception {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
+        volcar(archivo, fuente, configuracion);
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
         try {
@@ -31,6 +35,30 @@ abstract class BaseDeAnalisis {
         } finally {
             manejador.close();
         }
+    }
+
+    // Estos tests trabajan con la excepción y no con la consola, así que sin esto
+    // correrlos desde el IDE no muestra nada de lo que el compilador diría. Se
+    // vuelca la salida REAL —se corre el módulo principal sobre el mismo fuente—
+    // y no una reconstrucción, para que lo que se lee en la consola sea
+    // exactamente lo que imprimiría `java -jar Compilador.jar`.
+    //
+    // Lo gobierna el mismo -Dvolcado que el corpus: completo | resumen | off.
+    private void volcar(Path archivo, String fuente, ConfiguracionDelCompilador configuracion) {
+        if (!VolcadoDeCasos.habilitado()) {
+            return;
+        }
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        try {
+            new ModuloPrincipalSintactico(salida, configuracion).ejecutar(archivo.toString());
+        } catch (Exception excepcion) {
+            salida.imprimir(excepcion.toString());
+        }
+        VolcadoDeCasos.volcar(enUnaLinea(fuente), salida.getLineas());
+    }
+
+    private String enUnaLinea(String fuente) {
+        return fuente.strip().replaceAll("\\s+", " ");
     }
 
     // Analizar y dejar que el primer error suba como excepción: es lo que espera

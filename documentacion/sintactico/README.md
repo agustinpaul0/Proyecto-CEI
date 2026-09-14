@@ -37,7 +37,7 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # 1024/1024
 python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades   # todas declaradas
 python3 herramientas/equivalencia_de_lenguajes.py    # mismo lenguaje que la de la cátedra
-python3 herramientas/auditar_analizador.py           # 220/220 producciones citadas
+python3 herramientas/auditar_analizador.py           # 234/234 producciones citadas
 bash herramientas/casos-gramatica.sh                                              # 87 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java   # 8/8
 python3 herramientas/comparar_con_gramatica.py       # 1861 fuentes del corpus

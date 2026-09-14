@@ -74,7 +74,7 @@ AtributoOMetodo -> CuerpoDeMetodo
 
 # NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de
 # una variable local, y tienen que poder prenderse por separado.
-InicializacionDeAtributo -> = ExpresionCondicional             @+atrinit
+InicializacionDeAtributo -> = ExpresionCondicionalOLambda           @+atrinit
 InicializacionDeAtributo -> EPSILON
 
 # <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
@@ -158,7 +158,7 @@ Sentencia -> For                                              @+for
 # Sin variables locales clásicas, una sentencia-expresión puede empezar con
 # idClase sin competir con nada: es la regla original.
 Sentencia -> SentenciaExpresion ;                             @-varclasica
-SentenciaExpresion -> Expresion                               @-varclasica
+SentenciaExpresion -> ExpresionSinLambda                             @-varclasica
 
 # Con el logro, `C x;` y `C.m();` compiten por idClase y hay que factorizarlo.
 Sentencia -> ExpresionSinIdClase ;                            @+varclasica
@@ -169,7 +169,7 @@ Sentencia -> idClase SentenciaDesdeIdClase                    @+varclasica
 SentenciaDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales ListaDeclaradores ;   @+varclasica
 SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;           @+varclasica
 
-VarLocal -> var idMetVar = ExpresionCondicional
+VarLocal -> var idMetVar = ExpresionCondicionalOLambda
 
 # Varias variables por sentencia, cada una con inicialización opcional:
 # `int x,y,z = 10;`
@@ -177,7 +177,7 @@ ListaDeclaradores -> idMetVar InicializacionDeDeclarador RestoListaDeclaradores 
 RestoListaDeclaradores -> , idMetVar InicializacionDeDeclarador RestoListaDeclaradores    @+varclasica
 RestoListaDeclaradores -> EPSILON                                                         @+varclasica
 
-InicializacionDeDeclarador -> = ExpresionCondicional | EPSILON                            @+varclasica
+InicializacionDeDeclarador -> = ExpresionCondicionalOLambda | EPSILON                            @+varclasica
 
 Return -> return ExpresionOpcional
 
@@ -209,12 +209,12 @@ EncabezadoForDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimari
 
 # El `:` distingue el for de iteradores del estándar, y está a un solo token.
 EncabezadoForTrasVar -> : Expresion                                                       @+for
-EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor                        @+for
+EncabezadoForTrasVar -> = ExpresionCondicionalOLambda ClausulasFinalesFor                        @+for
 
 EncabezadoForTrasDeclarador -> : Expresion                                                @+for
 EncabezadoForTrasDeclarador -> InicializacionDeDeclaradorFor ClausulasFinalesFor          @+for
 
-InicializacionDeDeclaradorFor -> = ExpresionCondicional | EPSILON                         @+for
+InicializacionDeDeclaradorFor -> = ExpresionCondicionalOLambda | EPSILON                         @+for
 
 # Una sola expresión por separador, como pide el logro.
 ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional                            @+for
@@ -228,20 +228,54 @@ ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional                  
 # binarios, en un solo nivel como en el original; <ExpresionBasica> los
 # operadores unarios prefijos; y <Operando> un literal, o una referencia con
 # posfijo opcional.
+#
+# La lambda NO es una capa de esta jerarquía ni un <Primario>: es una
+# alternativa del nivel MÁS ALTO, igual que en el JLS, que define
+# `Expression: LambdaExpression | AssignmentExpression`. Por eso `->` no tiene
+# precedencia contra ningún operador —no compite con ellos, vive arriba de
+# todos—, y `1 + x -> x`, `- x -> x` y `a == x -> x` son inválidos, como en
+# Java. Las dos cabezas que una lambda comparte con una expresión normal,
+# `idMetVar` y `(`, se factorizan en <ExpresionDesdePrimarioOLambda>.
 
 # Todo lado derecho de un `=` —el de la asignación y el de los cinco
-# inicializadores— es una <ExpresionCondicional> y no una <Expresion>. Eso
-# preserva lo que la regla original conseguía usando <ExpresionCompuesta>: que
-# `a = b = c` no sea válido. Y como con el logro de ternario apagado
-# <ExpresionCondicional> es un alias de <ExpresionCompuesta>, el lenguaje base
-# queda idéntico al de la cátedra.
-Expresion -> ExpresionCondicional RestoExpresion
+# inicializadores— es una <ExpresionCondicionalOLambda> y no una <Expresion>.
+# Eso preserva lo que la regla original conseguía usando <ExpresionCompuesta>:
+# que `a = b = c` no sea válido. Y como con los logros de ternario y de lambda
+# apagados <ExpresionCondicionalOLambda> es un alias de <ExpresionCompuesta>, el
+# lenguaje base queda idéntico al de la cátedra.
+Expresion -> ExpresionCondicionalOLambda RestoExpresion
 
-# El lado derecho es ExpresionCondicional y NO Expresion: la gramática original
-# pone <ExpresionCompuesta> ahí, o sea que `a = b = c` NO es válido en MiniJava.
-RestoExpresion -> OperadorAsignacion ExpresionCondicional | EPSILON
+# La <Expresion> de la gramática original: la que NO admite una lambda en la
+# raíz. Se usa en los dos lugares donde Java tampoco la admite: adentro de una
+# expresión parentizada que después va a ser operando, y como sentencia-
+# expresión (`x -> x;` es «not a statement» en Java).
+ExpresionSinLambda -> ExpresionCondicional RestoExpresion
+
+# El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática
+# original pone <ExpresionCompuesta> ahí, o sea que `a = b = c` NO es válido.
+# Admite lambda porque el JLS define `Assignment: LeftHandSide = Expression`.
+RestoExpresion -> OperadorAsignacion ExpresionCondicionalOLambda | EPSILON
 
 OperadorAsignacion -> =
+
+# ---------------------------------------------------------------------------
+# El nivel del JLS `LambdaExpression | ConditionalExpression`: admite lambda,
+# no admite `=` en la raíz. Es el operando de los seis `=` y el tercer operando
+# del ternario.
+#
+# Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de
+# siempre; las dos que sí —`idMetVar` y `(`— se factorizan. La cola se comparte
+# con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.
+ExpresionCondicionalOLambda -> OperadorUnario Operando ColaTrasOperandoSinAsignacion
+ExpresionCondicionalOLambda -> Primitivo ColaTrasOperandoSinAsignacion
+ExpresionCondicionalOLambda -> ExpresionDesdePrimarioOLambda
+
+ExpresionDesdePrimarioOLambda -> idClase . idMetVar ArgsActuales ColaDesdePrimarioSinAsignacion
+ExpresionDesdePrimarioOLambda -> this ColaDesdePrimarioSinAsignacion
+ExpresionDesdePrimarioOLambda -> stringLiteral ColaDesdePrimarioSinAsignacion
+ExpresionDesdePrimarioOLambda -> Creacion ColaDesdePrimarioSinAsignacion
+ExpresionDesdePrimarioOLambda -> idMetVar AccesoLlamadaOLambda
+ExpresionDesdePrimarioOLambda -> ParentizadaOLambda
 
 ExpresionCondicional -> ExpresionCompuesta RestoCondicional
 
@@ -250,10 +284,11 @@ ExpresionCondicional -> ExpresionCompuesta RestoCondicional
 # desaparece sin dejar rastro. Asociativo a derecha, como en Java.
 #
 # El operando del MEDIO es una <Expresion> y el de la derecha una
-# <ExpresionCondicional>, tal cual el JLS 15.25: en Java `a ? b = 1 : c` es
-# válido y `a ? b : c = d` no lo es. Es la regla «lo no especificado es igual a
-# Java», y no rompe LL(1) porque Primeros(Expresion) no contiene `:`.
-RestoCondicional -> ? Expresion : ExpresionCondicional                                    @+ternario
+# <ExpresionCondicionalOLambda>, tal cual el JLS 15.25: en Java `a ? b = 1 : c`
+# es válido, `a ? b : c = d` no lo es, y `a ? b : x -> x` sí —la producción del
+# JLS es `? Expression : LambdaExpression`—. No rompe LL(1) porque
+# Primeros(Expresion) no contiene `:`.
+RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda                             @+ternario
 RestoCondicional -> EPSILON
 
 ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
@@ -282,18 +317,28 @@ Primitivo -> floatLiteral                                     @+float
 # Se usa donde una expresión compite con una declaración de variable local
 # (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
 # se comparten con la jerarquía normal, así que no hay lógica repetida.
+#
+# NO admite lambda en la raíz, por la misma razón que <ExpresionSinLambda>: los
+# dos contextos donde se usa son sentencia-expresión e inicialización del for,
+# y en Java los dos exigen un StatementExpression, que nunca es una lambda.
 
 ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
 ExpresionSinIdClase -> Primitivo ColaTrasOperando
 ExpresionSinIdClase -> PrimarioSinIdClase ColaDeExpresionDesdePrimario
 
-ColaTrasOperando -> RestoExpresionCompuesta RestoCondicional RestoExpresion
+# La cola se parte en dos para que el nivel <ExpresionCondicionalOLambda> pueda
+# reusarla sin arrastrar el `=`, que ahí no corresponde.
+ColaTrasOperando -> ColaTrasOperandoSinAsignacion RestoExpresion
+ColaTrasOperandoSinAsignacion -> RestoExpresionCompuesta RestoCondicional
 
 ColaDeExpresionDesdePrimario -> RestoReferencia PosfijoOpcional ColaTrasOperando
+ColaDesdePrimarioSinAsignacion -> RestoReferencia PosfijoOpcional ColaTrasOperandoSinAsignacion
 
 # ===========================================================================
 # REFERENCIAS Y PRIMARIOS
 # ===========================================================================
+# Ningún <Primario> puede ser una lambda: ésa es exactamente la corrección de
+# precedencia. Un <Primario> es un operando, y una lambda no puede serlo.
 
 Referencia -> Primario RestoReferencia
 
@@ -316,20 +361,26 @@ LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
 
 PrimarioSinIdClase -> this
 PrimarioSinIdClase -> stringLiteral
-PrimarioSinIdClase -> ParentizadaOLambda
-PrimarioSinIdClase -> AccesoVarLlamadaOLambda
+PrimarioSinIdClase -> Parentizada
+PrimarioSinIdClase -> AccesoVarOLlamada
 PrimarioSinIdClase -> Creacion
 
+# El contenido es una <ExpresionSinLambda>: `(x -> x)` como OPERANDO no existe
+# en Java —`(x -> x) + 1` y `(x -> x).m()` son «lambda expression not expected
+# here»—. La lambda parentizada sí es válida cuando ella misma es toda la
+# expresión, y ese caso lo cubre <ParentizadaOLambda>.
+Parentizada -> ( ExpresionSinLambda )
+
 # Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era
-# <LlamadaMetodo>, con flecha = lambda de un parámetro sin paréntesis.
-AccesoVarLlamadaOLambda -> idMetVar AccesoLlamadaOLambda
-AccesoLlamadaOLambda -> ArgsActuales
-AccesoLlamadaOLambda -> -> CuerpoLambda                                                   @+lambda
-AccesoLlamadaOLambda -> EPSILON
+# <LlamadaMetodo>.
+AccesoVarOLlamada -> idMetVar AccesoLlamada
+AccesoLlamada -> ArgsActuales | EPSILON
 
 # ===========================================================================
 # MiniLambdas E2
 # ===========================================================================
+# Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía.
+#
 # `(` abre tanto una expresión parentizada como la lista de parámetros de una
 # lambda. Parece necesitar lookahead ilimitado (`(a,b,c) ->` vs `(a+b)`), pero
 # NO lo necesita:
@@ -338,6 +389,11 @@ AccesoLlamadaOLambda -> EPSILON
 #   - `( e )`    se decide con el token que sigue al `)`: `->` es lambda,
 #                cualquier otro es una expresión parentizada.
 # Con eso alcanza un token de lookahead en cada punto.
+
+# Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o
+# la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.
+AccesoLlamadaOLambda -> -> CuerpoLambda                                                   @+lambda
+AccesoLlamadaOLambda -> AccesoLlamada ColaDesdePrimarioSinAsignacion
 
 ParentizadaOLambda -> ( ContenidoDeParentesis
 
@@ -348,7 +404,7 @@ RestoDeParentesis -> ) FinDeParentizadaOLambda
 RestoDeParentesis -> , ListaParametrosLambda ) -> CuerpoLambda                            @+lambda
 
 FinDeParentizadaOLambda -> -> CuerpoLambda                                                @+lambda
-FinDeParentizadaOLambda -> EPSILON
+FinDeParentizadaOLambda -> ColaDesdePrimarioSinAsignacion
 
 ListaParametrosLambda -> idMetVar RestoListaParametrosLambda                              @+lambda
 RestoListaParametrosLambda -> , idMetVar RestoListaParametrosLambda | EPSILON             @+lambda

@@ -16,19 +16,19 @@
 #
 # Un caso que no figura acá aplica a cualquier configuración.
 
-sinErrores/dotVsFloat.java                         | floats |
-sinErrores/doubleEsUnIdentificadorComun.java       | floats |
-sinErrores/enteroDeCuatroDigitosPegadoALetras.java | floats |
-sinErrores/enteroLargoDentroDeUnFloat.java         | floats |
-sinErrores/exponentesExtremos.java                 | floats |
-sinErrores/exponentesLargos.java                   | floats |
-sinErrores/floatFueraDelRangoDeJava.java           | floats |
-sinErrores/floatSinLimiteDeDigitos.java            | floats |
-sinErrores/floats.java                             | floats |
-sinErrores/floatsContraintuitivos.java             | floats |
-sinErrores/nueveDigitosEsElLimiteExacto.java       | floats |
-sinErrores/puntoSeguidoDeSufijoDeFloat.java        | floats |
-sinErrores/sufijosFloatSinPunto.java               | floats |
+sinErrores/dotVsFloat.java                         | float |
+sinErrores/doubleEsUnIdentificadorComun.java       | float |
+sinErrores/enteroDeCuatroDigitosPegadoALetras.java | float |
+sinErrores/enteroLargoDentroDeUnFloat.java         | float |
+sinErrores/exponentesExtremos.java                 | float |
+sinErrores/exponentesLargos.java                   | float |
+sinErrores/floatFueraDelRangoDeJava.java           | float |
+sinErrores/floatSinLimiteDeDigitos.java            | float |
+sinErrores/floats.java                             | float |
+sinErrores/floatsContraintuitivos.java             | float |
+sinErrores/nueveDigitosEsElLimiteExacto.java       | float |
+sinErrores/puntoSeguidoDeSufijoDeFloat.java        | float |
+sinErrores/sufijosFloatSinPunto.java               | float |
 
 sinErrores/escapeUnicodeConDigitosNoAscii.java     | unicodes |
 sinErrores/escapesUnicodeValidos.java              | unicodes |
@@ -36,12 +36,12 @@ sinErrores/escapesUnicodeValidos.java              | unicodes |
 # `a -> b` son cuatro tokens sin MiniLambdas y tres con él.
 sinErrores/secuenciasQueNoSonUnOperador.java       |          | lambda
 
-conErrores/exponenteConSignoSeguidoDePuntoYComa.java    | floats,multideteccion |
-conErrores/exponenteConSignoSinDigitos.java             | floats |
-conErrores/exponenteSeguidoDeLetra.java                 | floats,multideteccion |
-conErrores/exponenteSinDigitos.java                     | floats |
-conErrores/exponenteSinDigitosSeguidoDeParentesis.java  | floats,multideteccion |
-conErrores/exponenteSinDigitosSeguidoDePuntoYComa.java  | floats,multideteccion |
+conErrores/exponenteConSignoSeguidoDePuntoYComa.java    | float,multideteccion |
+conErrores/exponenteConSignoSinDigitos.java             | float |
+conErrores/exponenteSeguidoDeLetra.java                 | float,multideteccion |
+conErrores/exponenteSinDigitos.java                     | float |
+conErrores/exponenteSinDigitosSeguidoDeParentesis.java  | float,multideteccion |
+conErrores/exponenteSinDigitosSeguidoDePuntoYComa.java  | float,multideteccion |
 
 conErrores/escapeUnicodeConCuartoDigitoInvalido.java            | unicodes,multideteccion |
 conErrores/escapeUnicodeConDigitoInvalido.java                  | unicodes |
