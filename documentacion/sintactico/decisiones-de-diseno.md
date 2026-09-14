@@ -135,3 +135,44 @@ python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-logros.g pri
 - [`decisiones-de-logica.md`](decisiones-de-logica.md) — qué lenguaje reconoce exactamente.
 - [`arquitectura-del-analizador-sintactico.md`](arquitectura-del-analizador-sintactico.md) — cómo
   se traduce a código.
+
+---
+
+## Decisiones cerradas: lo que no se vuelve a discutir
+
+Resumen de las decisiones que la etapa dio por zanjadas. Cada una está desarrollada en el
+documento que le corresponde; esta lista existe para que no se relitiguen.
+
+- Gramática LL(1) cerrada, con nombres de no terminal semánticos en español y notación BNF del PDF
+  de la cátedra. **No se rediseña**; si aparece un defecto se corrige puntualmente y se regeneran
+  los documentos.
+- Ante factorizar fusionando o insertando un no terminal, **se inserta**: el NT insertado es el
+  punto de decisión que el semántico de la Etapa 3 necesita. Un NT de decisión por contexto,
+  aunque dos contextos tengan la misma forma.
+- Un solo `Main` con selector de etapa, no dos jars.
+- Los cuatro tokens léxicos nuevos van condicionados al flag de su logro.
+- La ambigüedad `<Asignacion>`/`<Llamada>` se colapsa en una sentencia-expresión; distinguirlas es
+  trabajo del semántico. El *dangling else* se resuelve por regla de implementación: la rama
+  `else` va primero, y liga al `if` más cercano.
+- Los métodos de interfaz admiten `public` y no `private`, y **son siempre abstractos**: ningún
+  logro de esta etapa les agrega cuerpo.
+- El `this` dentro de una lambda —explícito e implícito— y la captura de variables **los rechaza el
+  analizador sintáctico**, con un indicador de contexto y un conjunto con los parámetros de la
+  lambda. No son expresables en la gramática, pero sí verificables con información local.
+  **Se evaluó diferirlos al semántico** —la cátedra lo admite— y se decidió **dejarlos como están**.
+  El motivo técnico, además de que ya estaban hechos: el control del `this` implícito **no es
+  separable** del de la captura, porque `x -> campo` y `x -> n` son la misma forma sintáctica;
+  quitar uno quita el otro, y quitar sólo el `this` explícito no simplifica nada —todo el estado de
+  `RestriccionesDeLambda` lo sostiene la cláusula de la captura—. No se vuelve a discutir.
+- Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
+  están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
+- **La lambda se produce en el nivel de `<Expresion>`, nunca en `<Primario>`**, como el JLS. No es
+  un operando: `1 + x -> x`, `- x -> x`, `(x -> x) + 1` y `(x -> x).m()` se rechazan, igual que en
+  Java. No se vuelve a discutir.
+- **Ningún método de no terminal omite el `else` final de su cadena de Primeros.** Si el no terminal
+  no es anulable, ese `else` es el error (Clase 5, slide 39); si alguna parte derecha deriva a ε, es
+  un `else` vacío con la producción citada al lado —el «no hago nada :)» de la slide 52—, que es
+  donde la Etapa 3 va a colgar la traducción de la producción vacía. Pedido explícito del profesor.
+- **Cada logro tiene UN solo nombre, sin alias**: el mismo con el que la gramática marca sus
+  producciones. El de floats es `float`, no `floats`.
+- El inicializador de arreglos es anidable; el orden `static public` se rechaza.

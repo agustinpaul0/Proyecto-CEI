@@ -6,8 +6,7 @@ cómo queda organizado el código para que las cinco etapas conviyan.
 > **Estado.** La etapa está **terminada**: la gramática verificada, los 111 no terminales
 > implementados, los diez logros —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el
 > token exacto y las cuatro restricciones de MiniLambdas que la gramática no puede expresar. El
-> estado de cierre está en
-> [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
+> verificación está en [`README.md`](README.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
 

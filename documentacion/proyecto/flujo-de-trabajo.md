@@ -36,7 +36,7 @@ sección del JLS) que justifica por qué el código hace lo que hace, o una inva
 silenciosamente si alguien lo tocara sin saberlo. Ante la duda, no comentar — un comentario que
 sólo repite lo que ya dice el nombre de la variable o el método es ruido, no documentación.
 
-## Tres reglas que aplican a todas las etapas
+## Cuatro reglas que aplican a todas las etapas
 
 ### Todo lo que no esté especificado se comporta como en Java
 
@@ -57,6 +57,14 @@ lo que la construcción **debe rechazar** además de lo que debe aceptar, las co
 logros, y las entradas degeneradas (archivo vacío, un único token, el error en el primer carácter
 y en el último). La estrategia completa está en [`testing.md`](../compartido/estrategia-de-testing.md).
 
+### Cada logro es un interruptor independiente, de punta a punta
+
+El compilador tiene que poder ejecutarse y testearse con **0, 1 o N logros en cualquier
+combinación**, incluida la de cero logros, que debe reproducir exactamente la especificación base
+de la cátedra. Eso vale para la gramática, para el léxico, para el módulo principal y para los
+tests, que se saltean solos cuando su logro está apagado. Ningún logro puede apoyarse en que otro
+esté prendido.
+
 ### En los entregables no se deja constancia de los errores del desarrollo
 
 El informe y la documentación describen **el estado final y por qué es así**. No se narran los
@@ -71,6 +79,19 @@ arreglé» —que no va—.
 
 Esto vale para el informe, para `documentacion/` y para cualquier cosa que vea la cátedra. En los
 mensajes de commit y en `git log`, en cambio, el historial real sí es bienvenido.
+
+## Qué se le consulta al usuario antes de ejecutar
+
+Más allá del paso a paso de arriba, estas cuatro cosas se explican **antes** de aplicarlas, nunca
+después:
+
+- **Cualquier desvío del Esquema Simple de Clase 5**, con la alternativa evaluada y la razón.
+- **Cualquier caso que caiga bajo la regla «como en Java»**: qué dice Java, dónde se verificó, y
+  qué se va a implementar.
+- **Cualquier cambio que toque el analizador léxico de la Etapa 1**, porque esa etapa se corrige
+  aparte y tiene que seguir funcionando y siendo testeable sola.
+- **Cualquier decisión que agrande o achique el lenguaje reconocido** respecto de la gramática de
+  la cátedra.
 
 ## Regla vital al terminar cualquier feature
 

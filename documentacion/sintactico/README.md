@@ -1,7 +1,18 @@
 # Etapa 2 — Analizador Sintáctico
 
 Documentación del **Analizador Sintáctico Descendente Recursivo Predictivo LL(1)**. Analizador
-completo, con los diez logros de la etapa implementados; entrega 23/09/2026.
+completo, con los **diez logros implementables por código** de la etapa; entrega 23/09/2026. Los
+otros tres de las Pautas —*Entrega Anticipada*, *Imbatibilidad* y *Well Done!*— no dependen del
+código.
+
+| | |
+|---|---|
+| Gramática | 111 no terminales, 228 producciones, 60 terminales; LL(1) en las 1024 configuraciones de logros |
+| Ambigüedades | 3, todas declaradas con su regla de resolución |
+| Analizador | una clase por sección de la gramática; cita 234 de 234 producciones |
+| Corpus | 1879 fuentes, más 87 casos de gramática y los 8 de la cátedra |
+| Suite | 5859 tests; cobertura 98,9 % de líneas y 94,4 % de ramas; mutación 90 % |
+| Informe | `etapas/etapa-2/entregables/`, 60 páginas |
 
 El objeto central de esta etapa es la **gramática**: se parte de la que publica la cátedra, se la
 diagnostica, se la corrige a LL(1) y se la extiende con los logros. Los cuatro primeros documentos
@@ -58,5 +69,5 @@ Qué hace cada archivo de gramática está en
 ## Ver también
 
 - [`../compartido/estrategia-de-testing.md`](../compartido/estrategia-de-testing.md)
-- [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md) — estado y backlog.
+- [`../proyecto/README.md`](../proyecto/README.md) — las cuatro reglas que no se negocian.
 - [`../minijava/`](../minijava/README.md) — «Reglas de Sintaxis MiniJava 2026», el documento fuente.

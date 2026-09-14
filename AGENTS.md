@@ -31,11 +31,13 @@ tomar cualquier decisión de comportamiento no cubierta explícitamente en los a
 Materia **Compiladores e Intérpretes** (UNS, 2do cuatrimestre 2026). Proyecto: compilador completo
 para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos — a lo largo de 5 etapas.
 
-- **Etapa 1** (entregada, pendiente de corrección): Analizador Léxico + Módulo Principal cliente
+- **Etapa 1** (entregada y **corregida**, sin errores ni observaciones): Analizador Léxico + Módulo Principal cliente
   por consola. Tiene que seguir siendo ejecutable y testeable de forma aislada.
-- **Etapa 2** (activa): Analizador Sintáctico Descendente Recursivo Predictivo LL(1). Entrega
-  23/09/2026. **El plan, el estado y el backlog están en
-  [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) — leerlo antes que nada.**
+- **Etapa 2** (terminada, entrega 23/09/2026): Analizador Sintáctico Descendente Recursivo
+  Predictivo LL(1), con los diez logros implementables por código. **El estado y la verificación
+  están en [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las
+  decisiones cerradas, en
+  [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md).**
 - Etapas 3-5: sin especificación todavía (aparecerán en `etapas/etapa-3/` etc. cuando se publiquen).
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:
@@ -67,16 +69,17 @@ donde está el `pom.xml`).
 
 **Siempre, para cualquier tarea**, dos archivos:
 
-1. [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) — el plan, el estado y el backlog de la etapa
-   **activa**. Dice qué se hizo, qué falta, qué material leer, qué explicarle al usuario antes de
-   ejecutar y qué consultarle. Se actualiza al cerrar cada sesión de trabajo.
+1. [`documentacion/proyecto/README.md`](documentacion/proyecto/README.md) — las cuatro reglas que
+   no se negocian y el índice de los documentos normativos.
 2. [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) — workflow paso a paso, estilo de comentarios, regla
    de deuda-cero.
 
 | Si la tarea es... | Leer |
 |---|---|
-| Retomar la etapa activa después de un tiempo, o arrancar una sesión nueva | [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) — **primero, siempre** |
-| Tocar la gramática, el parser, los Primeros o el informe de la Etapa 2 | [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) + [`documentacion/guia-de-la-gramatica.md`](documentacion/sintactico/defectos-de-la-gramatica-original.md) |
+| Retomar el proyecto después de un tiempo | [`documentacion/README.md`](documentacion/README.md) y [`documentacion/proyecto/README.md`](documentacion/proyecto/README.md) — **primero, siempre** |
+| Tocar la gramática, el parser, los Primeros o el informe de la Etapa 2 | [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md) + [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md) (las decisiones cerradas) |
+| Entender Primeros, LL(1), factorización, o implementar el parser | `etapas/etapa-2/Clase 3 - Sint1…pdf`, `Clase 4 - Sint2…pdf` y `Clase 5 - Sint3…pdf` (slides 33-62) |
+| Consultar el contrato de salida, los logros o la invocación de la Etapa 2 | `etapas/etapa-2/Pautas Etapa 2.pdf` (errores 25-26, invocación 28, logros 34-44) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `documentacion/proyecto/` | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) — **antes** de escribir código |
 | Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) + [`documentacion/especificacion-lexica.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (ER formal) |
 | Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/patron-state.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |
@@ -98,7 +101,6 @@ donde está el `pom.xml`).
 | [`documentacion/compartido/estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
 | [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
 | [`documentacion/proyecto/comandos-compilacion-y-entrega.md`](documentacion/proyecto/comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
-| [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) | Estado de cierre de la Etapa 2 y backlog de entrega; las cuatro reglas que la gobiernan; qué leer y qué consultar. |
 
 ## 4. Documentación técnica (para explicar el proyecto sin leer código)
 

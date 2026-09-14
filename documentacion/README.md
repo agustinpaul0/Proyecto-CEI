@@ -29,8 +29,8 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 **Si vas a escribir código**, primero:
 
-1. [`proyecto/plan-de-accion-etapa-2.md`](proyecto/plan-de-accion-etapa-2.md) — el estado de
-   cierre de la Etapa 2, lo que falta antes de entregar y las decisiones que no se rediscuten.
+1. [`proyecto/README.md`](proyecto/README.md) — las cuatro reglas que no se negocian y el índice
+   de los documentos normativos.
 2. [`proyecto/flujo-de-trabajo.md`](proyecto/flujo-de-trabajo.md) — las reglas que aplican sin
    excepción.
 
@@ -38,7 +38,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 | Etapa | Qué es | Estado |
 |---|---|---|
-| 1 | Analizador Léxico + Módulo Principal | entregada, pendiente de corrección |
+| 1 | Analizador Léxico + Módulo Principal | entregada y corregida, sin observaciones |
 | 2 | Analizador Sintáctico Descendente Recursivo | **completa** — gramática, analizador, los diez logros y el corpus |
 | 3 a 5 | Semántico y siguientes | sin especificación todavía |
 

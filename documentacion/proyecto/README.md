@@ -5,7 +5,6 @@ que hay que leer antes de escribir código, y los que fijan qué se consulta y q
 
 | Documento | Qué responde |
 |---|---|
-| [`plan-de-accion-etapa-2.md`](plan-de-accion-etapa-2.md) | **El estado de cierre de la Etapa 2**: qué hay hoy, lo que falta antes de entregar, las reglas y decisiones que no se rediscuten, y la verificación comando por comando. **Leer primero, siempre.** |
 | [`flujo-de-trabajo.md`](flujo-de-trabajo.md) | El paso a paso antes de implementar y ante un bug, el estilo de comentarios, y las reglas que aplican a todas las etapas. |
 | [`protocolo-de-investigacion.md`](protocolo-de-investigacion.md) | Qué hacer ante una duda de comportamiento no resuelta: MiniJava primero, Java verificado después, informar siempre. |
 | [`convenciones-de-la-catedra.md`](convenciones-de-la-catedra.md) | Lo no negociable: contrato de salida, códigos de error, invariantes duras. |
@@ -13,7 +12,7 @@ que hay que leer antes de escribir código, y los que fijan qué se consulta y q
 
 ## Las cuatro reglas que no se negocian
 
-Están desarrolladas en [`flujo-de-trabajo.md`](flujo-de-trabajo.md) y en el plan; acá el resumen:
+Están desarrolladas en [`flujo-de-trabajo.md`](flujo-de-trabajo.md); acá el resumen:
 
 1. **Todo lo que no esté especificado se comporta como en Java**, verificado contra la
    especificación o ejecutando `javac`, nunca de memoria, e informado antes de implementar.

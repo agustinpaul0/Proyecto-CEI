@@ -12,10 +12,10 @@ Por último, todo lo que NO esté especificado para MiniJava tiene comportamient
 
 ---
 
-**Nota del proyecto (no es parte de la consigna original de la cátedra):** el plan de trabajo de
-esta etapa, su estado y lo que hay que leer antes de retomarla están en
-[`documentacion/proyecto/plan-de-accion-etapa-2.md`](../../documentacion/proyecto/plan-de-accion-etapa-2.md). El punto de partida general del repositorio
-sigue siendo [`AGENTS.md`](../../AGENTS.md).
+**Nota del proyecto (no es parte de la consigna original de la cátedra):** el estado de esta
+etapa y cómo se verifica están en
+[`documentacion/sintactico/README.md`](../../documentacion/sintactico/README.md). El punto de
+partida general del repositorio sigue siendo [`AGENTS.md`](../../AGENTS.md).
 
 Material técnico del lenguaje (no específico de esta etapa, se movió para compartirlo entre todas):
 [`documentacion/minijava/`](../../documentacion/minijava) — «Reglas de Sintaxis

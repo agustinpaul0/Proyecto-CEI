@@ -6,9 +6,8 @@ Se persiguen **todos los alcanzables por código**: los nueve que tocan la gram�
 recuperación en modo pánico, más el *carry-over* de floats de la Etapa 1. Los tres restantes
 —*Entrega Anticipada*, *Imbatibilidad* y *Well Done!*— no dependen de la implementación.
 
-> **Estado.** Los diez están **implementados y verificados**, modo pánico incluido. El estado de
-> cierre está en
-> [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
+> **Estado.** Los diez están **implementados y verificados**, modo pánico incluido. Cómo se
+> comprueba cada uno está en [`README.md`](README.md).
 
 ## Cómo se verifica cualquiera de estos
 
@@ -226,5 +225,4 @@ queda intacto.
 
 - [`../lexico/resolucion-de-logros.md`](../lexico/resolucion-de-logros.md) — los 8 de la Etapa 1.
 - [`decisiones-de-logica.md`](decisiones-de-logica.md) — el detalle de cada decisión de lenguaje.
-- [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md) — qué queda
-  pendiente y en qué sesión.
+- [`decisiones-de-diseno.md`](decisiones-de-diseno.md) — las decisiones cerradas de la etapa.

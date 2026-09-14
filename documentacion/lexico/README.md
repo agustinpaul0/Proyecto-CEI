@@ -1,7 +1,7 @@
 # Etapa 1 — Analizador Léxico
 
 Documentación del **Analizador Léxico** de MiniJava y del Módulo Principal que lo consume por
-consola. Etapa entregada, pendiente de corrección.
+consola. Etapa entregada y corregida, sin errores ni observaciones.
 
 El analizador toma un archivo fuente y produce la secuencia de sus componentes léxicos, un token
 por línea, en el formato que fija la cátedra: `(nombreToken,lexema,nroLínea)`.
