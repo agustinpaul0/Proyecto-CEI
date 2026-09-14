@@ -289,6 +289,13 @@ Los testers de la cátedra están escritos con JUnit 4; corren junto a los propi
 relativas duras (`resources/lexico/sinErrores/`, `resources/lexico/conErrores/`). Es el valor por defecto cuando
 IntelliJ importa el proyecto Maven correctamente.
 
+> **Las clases de propiedades etiquetan con el `@Tag` de jqwik, no con el de JUnit.** Los perfiles
+> de fase filtran por etiqueta, y jqwik **ignora** `org.junit.jupiter.api.Tag`: una clase de
+> propiedades que lo use queda sin etiquetar para su motor y el perfil la **saltea en silencio**,
+> sin fallar y sin contarla. Lo único que lo delata es un aviso por consola. `PropiedadesEtiquetadasTest`
+> lo verifica por reflexión sobre `target/test-classes`, así que una clase nueva que se equivoque
+> rompe la suite en vez de desaparecer.
+
 ## 7. Ver también
 
 - [`decisiones.md`](../lexico/decisiones-de-logica.md) — cada decisión, con el test que la fija.
