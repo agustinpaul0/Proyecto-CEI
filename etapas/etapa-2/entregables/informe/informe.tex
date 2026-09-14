@@ -1206,6 +1206,17 @@ el alcance que describe esta decisión, y se deja como está. Lo que queda para 
 único caso que este analizador no puede decidir: la llamada sin punto \texttt{x -> ayuda(x)}, que
 es un \tl{this} implícito si \texttt{ayuda} es un método de instancia y no lo es si es
 \tl{static}. Distinguirlos exige resolver el nombre contra su declaración, así que acá se acepta.
+
+Vale además dejar dicho por qué diferirlo no habría simplificado nada: \textbf{el control del
+\tl{this} implícito no es separable del de la captura}. En el cuerpo de una lambda,
+\texttt{x -> campo} ---un atributo, o sea \tl{this} implícito--- y \texttt{x -> n} ---una local o un
+parámetro de afuera, o sea una captura--- son \emph{la misma forma}: un \tl{idMetVar} pelado que no
+está entre los parámetros. Un solo \texttt{if} rechaza los dos, y separarlos exigiría resolver el
+nombre contra su declaración, que es justamente lo que el sintáctico no hace. La consecuencia
+práctica es que quitar el control del \tl{this} implícito significaría quitar también el de la
+captura, que el logro exige por separado; y que todo el estado que este chequeo necesita ---el
+alcance, el conjunto de parámetros y el diferimiento--- se sostiene por la cláusula de la captura,
+no por la del \tl{this}.
 \end{decision}
 
 \subsection{Inicializacion de Arreglos E2}

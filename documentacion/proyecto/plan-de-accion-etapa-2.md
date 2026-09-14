@@ -507,6 +507,11 @@ Abierto. Lo que dice «consultar» requiere hablarlo con el usuario antes de res
 - El `this` dentro de una lambda —explícito e implícito— y la captura de variables **los rechaza el
   analizador sintáctico**, con un indicador de contexto y un conjunto con los parámetros de la
   lambda. No son expresables en la gramática, pero sí verificables con información local.
+  **Se evaluó diferirlos al semántico** —la cátedra lo admite— y se decidió **dejarlos como están**.
+  El motivo técnico, además de que ya estaban hechos: el control del `this` implícito **no es
+  separable** del de la captura, porque `x -> campo` y `x -> n` son la misma forma sintáctica;
+  quitar uno quita el otro, y quitar sólo el `this` explícito no simplifica nada —todo el estado de
+  `RestriccionesDeLambda` lo sostiene la cláusula de la captura—. No se vuelve a discutir.
 - Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
   están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
 - **La lambda se produce en el nivel de `<Expresion>`, nunca en `<Primario>`**, como el JLS. No es

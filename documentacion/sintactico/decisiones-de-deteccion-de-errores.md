@@ -218,6 +218,26 @@ Es una decisión de frontera y conviene dejar dicho por qué cayó de este lado.
 Lo que **sí** queda para el semántico es todo lo que dependa de resolver un nombre contra una
 declaración: que el nombre exista, que el tipo cierre, que la aridad coincida.
 
+### 3.4. El control del `this` implícito no es separable del de la captura
+
+La cátedra admite **no** controlar en esta etapa si un `this` —explícito o implícito— cae dentro o
+fuera de una lambda, porque con la tabla de símbolos del semántico es mucho más directo. Acá está
+implementado igual y **se deja como está**, que es lo que el profesor indicó para lo ya hecho.
+
+Conviene dejar escrito por qué diferirlo tampoco habría simplificado el analizador, para no volver
+a derivarlo:
+
+- `x -> campo` es un atributo, o sea un `this` implícito.
+- `x -> n` es una local o un parámetro de afuera, o sea una captura.
+- **Son la misma forma**: un `idMetVar` pelado que no está entre los parámetros. Un solo `if`
+  rechaza los dos, y separarlos exige resolver el nombre contra su declaración.
+
+De ahí dos consecuencias. La primera, que quitar el control del `this` implícito significa quitar
+también el de la captura, que el logro exige por separado. La segunda, que **todo el estado de
+`RestriccionesDeLambda`** —el indicador de alcance, el conjunto de parámetros y el diferimiento de
+§3.2— lo sostiene la cláusula de la captura y no la del `this`: quitar sólo el `this` explícito
+saca dos llamadas y deja la clase intacta.
+
 ## 4. Ambigüedades resueltas por regla de implementación
 
 La gramática tiene tres ambigüedades declaradas, y ninguna se resuelve reescribiéndola: las tres
