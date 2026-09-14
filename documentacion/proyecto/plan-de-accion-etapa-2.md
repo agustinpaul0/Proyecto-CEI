@@ -190,7 +190,7 @@ El compilador **completo**, con los diez logros implementados. `mvn verify` verd
 - **Modularización**: `Primeros.java` (828 líneas) pasó a diez clases por sección,
   `AnalizadorLexicoTest.java` (1026 líneas) a ocho suites por tema, y `ArgsActuales` salió de
   `AnalizadorDeCreacion` a su propia parte.
-- **Cobertura** 98,9 % de líneas y 95,0 % de ramas, con umbrales en `mvn verify`. **Mutación** al
+- **Cobertura** 98,9 % de líneas y 94,5 % de ramas, con umbrales en `mvn verify`. **Mutación** al
   90 %, con umbral, sobre todo el compilador.
 
 ### Lo que dejó la S5
@@ -245,7 +245,16 @@ El material se usó una vez, como oráculo independiente, y no quedó en el repo
   los logros de esta etapa; sumarlas duplicaría una fuente de verdad que este proyecto ya cubre con
   su propio corpus generado desde `minijava-ll1-logros.g` y contrastado con tres reconocedores, y
   multiplicaría por dieciséis lo que tarda la corrida de los testers de la cátedra sobre la entrega.
-- `mvn verify` verde, 5856 tests, cobertura sobre el umbral.
+- **`matchDelActual()` se eliminó.** Consumía el token actual sin nombrar qué terminal esperaba, y
+  Clase 5 slide 60 hace lo contrario: para un no terminal cuyas producciones son un solo terminal
+  —`OperadorBinario`, `OperadorUnario`, `Primitivo`— escribe una rama por producción, cada una con
+  su `match` nombrando el terminal. Ahora se lee así, con las constantes por alternativa que el
+  generador ya emitía y nadie usaba. Agrega 42 ramas y sólo 3 sin cubrir —el `else` de error de
+  `OperadorBinario` y el de `OperadorUnario` son inalcanzables porque el llamador ya discriminó con
+  el mismo conjunto de Primeros—, así que la cobertura de ramas pasa de 94,47 % a 94,39 %, con el
+  umbral en 93 %. Se dejan igual, porque son las que pide el esquema y las que detectarían una
+  divergencia entre el conjunto unión y los conjuntos por alternativa.
+- `mvn verify` verde, 5857 tests, cobertura sobre el umbral.
 
 ### Estado de la Etapa 1
 

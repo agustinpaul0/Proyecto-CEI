@@ -36,10 +36,6 @@ public abstract class ParteDelAnalizador {
         sintaxis.entrada().match(esperado);
     }
 
-    protected final void matchDelActual() throws ExcepcionLexica, ExcepcionSintactica {
-        sintaxis.entrada().matchDelActual();
-    }
-
     protected final ExcepcionSintactica errorEsperando(ConjuntoDePrimeros... alternativas) {
         return sintaxis.entrada().errorEsperando(alternativas);
     }

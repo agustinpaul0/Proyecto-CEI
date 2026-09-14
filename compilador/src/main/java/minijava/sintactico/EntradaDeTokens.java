@@ -57,13 +57,6 @@ public final class EntradaDeTokens {
         avanzar();
     }
 
-    // Para los no terminales cuyo cuerpo es un único terminal cualquiera del
-    // conjunto —los operadores binarios y unarios—, donde ya se verificó que el
-    // token actual pertenece.
-    public void matchDelActual() throws ExcepcionLexica, ExcepcionSintactica {
-        avanzar();
-    }
-
     public ExcepcionSintactica errorEsperando(ConjuntoDePrimeros... alternativas) {
         ConjuntoDePrimeros esperados = ConjuntoDePrimeros.de();
         for (ConjuntoDePrimeros alternativa : alternativas) {

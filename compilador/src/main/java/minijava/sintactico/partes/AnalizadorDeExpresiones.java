@@ -70,7 +70,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     public void expresionCondicionalOLambda() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
         if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO)) {
-            matchDelActual();
+            operadorUnario();
             operando();
             colaTrasOperandoSinAsignacion();
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_PRIMITIVO)) {
@@ -167,8 +167,58 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // cambia qué se reconoce: el bucle deriva exactamente la misma cadena.
     private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
         while (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
-            matchDelActual();
+            operadorBinario();
             expresionBasica();
+        }
+    }
+
+    // OperadorBinario -> || | && | == | != | < | > | <= | >= | + | - | * | / | %
+    //
+    // Trece producciones de un solo terminal, y una rama por cada una: es el
+    // esquema de Clase 5 slide 60, donde el `match` nombra el terminal que
+    // consume en vez de consumir «el actual, sea cual sea».
+    private void operadorBinario() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_OR)) {
+            match(TipoDeToken.OP_OR);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_AND)) {
+            match(TipoDeToken.OP_AND);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_IGUAL)) {
+            match(TipoDeToken.OP_IGUAL);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_DISTINTO)) {
+            match(TipoDeToken.OP_DISTINTO);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MENOR)) {
+            match(TipoDeToken.OP_MENOR);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MAYOR)) {
+            match(TipoDeToken.OP_MAYOR);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MENOR_IGUAL)) {
+            match(TipoDeToken.OP_MENOR_IGUAL);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MAYOR_IGUAL)) {
+            match(TipoDeToken.OP_MAYOR_IGUAL);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_SUMA)) {
+            match(TipoDeToken.OP_SUMA);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_RESTA)) {
+            match(TipoDeToken.OP_RESTA);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MULT)) {
+            match(TipoDeToken.OP_MULT);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_DIV)) {
+            match(TipoDeToken.OP_DIV);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_BINARIO_MODULO)) {
+            match(TipoDeToken.OP_MODULO);
+        } else {
+            throw errorEsperando(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO);
+        }
+    }
+
+    // OperadorUnario -> + | - | !
+    private void operadorUnario() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeExpresiones.OPERADOR_UNARIO_SUMA)) {
+            match(TipoDeToken.OP_SUMA);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_UNARIO_RESTA)) {
+            match(TipoDeToken.OP_RESTA);
+        } else if (estaEn(PrimerosDeExpresiones.OPERADOR_UNARIO_NEGACION)) {
+            match(TipoDeToken.OP_NEGACION);
+        } else {
+            throw errorEsperando(PrimerosDeExpresiones.EXPRESION_BASICA_OPERADOR_UNARIO);
         }
     }
 
@@ -176,7 +226,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // OperadorUnario -> + | - | !
     private void expresionBasica() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.EXPRESION_BASICA_OPERADOR_UNARIO)) {
-            matchDelActual();
+            operadorUnario();
         }
         operando();
     }
@@ -214,10 +264,21 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // Primitivo -> true | false | intLiteral | charLiteral | null
     // Primitivo -> floatLiteral   [+float]
     private void primitivo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeExpresiones.PRIMITIVO_FLOAT_LITERAL) && !hayLogro(Logro.FLOAT)) {
+        if (estaEn(PrimerosDeExpresiones.PRIMITIVO_TRUE)) {
+            match(TipoDeToken.PR_TRUE);
+        } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_FALSE)) {
+            match(TipoDeToken.PR_FALSE);
+        } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_INT_LITERAL)) {
+            match(TipoDeToken.INT_LITERAL);
+        } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_CHAR_LITERAL)) {
+            match(TipoDeToken.CHAR_LITERAL);
+        } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_NULL)) {
+            match(TipoDeToken.PR_NULL);
+        } else if (hayLogro(Logro.FLOAT) && estaEn(PrimerosDeExpresiones.PRIMITIVO_FLOAT_LITERAL)) {
+            match(TipoDeToken.FLOAT_LITERAL);
+        } else {
             throw errorEsperando(PrimerosDeExpresiones.OPERANDO_PRIMITIVO);
         }
-        matchDelActual();
     }
 
     // ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
@@ -229,7 +290,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // normal, así que no hay lógica repetida.
     public void expresionSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
-            matchDelActual();
+            operadorUnario();
             operando();
             colaTrasOperando();
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
