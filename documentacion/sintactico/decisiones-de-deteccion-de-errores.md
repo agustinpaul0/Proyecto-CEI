@@ -158,8 +158,12 @@ de contar los tokens que ya se consumieron (`EntradaDeTokens.consumidos()`).
 > que escrita `x -> y -> y` se acepta. Por eso, mientras el paréntesis está abierto, los nombres
 > que no son parámetros no se rechazan sino que se **anotan en duda**; al cerrar se resuelve:
 > si sigue un `->` eran declaraciones y se descartan, y si no, eran capturas y se reporta la
-> primera. El marco se cierra pase lo que pase, porque con Modo Pánico el contenido puede fallar y
-> el análisis seguir.
+> primera en orden de aparición. El marco se cierra pase lo que pase, porque con Modo Pánico el
+> contenido puede fallar y el análisis seguir.
+>
+> La primera en orden de aparición no siempre es la que se habría reportado sin diferir, y ahí está
+> la ganancia: en `x -> ((y) -> z)` el diferimiento descarta el `y` —resultó ser un parámetro— y
+> deja el `z`, que es la captura real.
 
 Se rechaza también el parámetro repetido, `(a, a) -> a`, por la misma vía.
 

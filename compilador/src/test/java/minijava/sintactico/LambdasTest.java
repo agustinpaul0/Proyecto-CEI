@@ -375,7 +375,10 @@ class LambdasTest extends BaseDeAnalisis {
     }
 
     // Y la duda se resuelve al revés cuando el paréntesis resultó ser una
-    // expresión: ahí los nombres sí son capturas, y se reporta el primero.
+    // expresión: ahí los nombres sí son capturas, y se reporta el primero en
+    // orden de aparición. La última fila es la que muestra que ése no es siempre
+    // el que se habría reportado sin diferir: el `y` se descarta —era un
+    // parámetro— y queda el `z`, que es la captura real.
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
             "x -> (a + b)       | a",
@@ -383,6 +386,7 @@ class LambdasTest extends BaseDeAnalisis {
             "x -> ((a))         | a",
             "x -> (y) -> x      | x",
             "x -> (y) -> z      | z",
+            "x -> ((y) -> z)    | z",
     })
     void elParentesisQueResultoSerExpresionSiChequeaLaCaptura(String lambda, String lexema,
                                                               @TempDir Path dir) {

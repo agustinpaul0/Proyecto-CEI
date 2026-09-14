@@ -1182,7 +1182,9 @@ tomaría por una captura, y se rechazaría una lambda que escrita \texttt{x -> y
 Mientras el paréntesis está abierto, entonces, un nombre que no es parámetro no se rechaza: queda
 \textbf{en duda}. Al cerrar se resuelve con el mismo token que ya decide todo lo demás: si sigue un
 \tl{->} eran declaraciones y las dudas se descartan; si no, era una expresión parentizada, eran
-capturas de verdad y se reporta la primera ---el mismo token que se habría reportado sin diferir---.
+capturas de verdad y se reporta la primera en orden de aparición. No siempre coincide con la que se
+habría reportado sin diferir, y ahí está la ganancia: en \texttt{x -> ((y) -> z)} el diferimiento
+descarta el \texttt{y} ---resultó ser un parámetro--- y deja el \texttt{z}, que es la captura real.
 \end{decision}
 
 La gramática ya distingue los tres usos de un \tl{idMetVar} ---acceso a variable, llamada, y campo

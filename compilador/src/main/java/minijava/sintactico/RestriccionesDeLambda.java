@@ -104,7 +104,9 @@ public final class RestriccionesDeLambda {
     }
 
     // Era una expresión parentizada: las dudas eran capturas de verdad, y se
-    // reporta la primera, que es la que se habría reportado sin el diferimiento.
+    // reporta la primera en orden de aparición. No es necesariamente la que se
+    // habría reportado sin diferir: en `x -> ((y) -> z)` el diferimiento descarta
+    // el `y` —resultó ser un parámetro— y deja el `z`, que es la captura real.
     public void confirmarExpresionParentizada() throws ExcepcionSintactica {
         List<Token> enDuda = capturasEnDuda.pop();
         if (!enDuda.isEmpty()) {
