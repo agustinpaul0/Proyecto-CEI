@@ -6,8 +6,8 @@ Se persiguen **todos los alcanzables por código**: los nueve que tocan la gram�
 recuperación en modo pánico, más el *carry-over* de floats de la Etapa 1. Los tres restantes
 —*Entrega Anticipada*, *Imbatibilidad* y *Well Done!*— no dependen de la implementación.
 
-> **Estado.** La parte de gramática de los nueve primeros está terminada y verificada. El modo
-> pánico se implementa en la Sesión 4. El plan está en
+> **Estado.** Los diez están **implementados y verificados**, modo pánico incluido. El estado de
+> cierre está en
 > [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
 
 ## Cómo se verifica cualquiera de estos

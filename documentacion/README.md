@@ -29,8 +29,8 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 **Si vas a escribir código**, primero:
 
-1. [`proyecto/plan-de-accion-etapa-2.md`](proyecto/plan-de-accion-etapa-2.md) — el estado, el
-   backlog y qué hay que leer antes de tocar nada.
+1. [`proyecto/plan-de-accion-etapa-2.md`](proyecto/plan-de-accion-etapa-2.md) — el estado de
+   cierre de la Etapa 2, lo que falta antes de entregar y las decisiones que no se rediscuten.
 2. [`proyecto/flujo-de-trabajo.md`](proyecto/flujo-de-trabajo.md) — las reglas que aplican sin
    excepción.
 

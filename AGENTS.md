@@ -98,7 +98,7 @@ donde está el `pom.xml`).
 | [`documentacion/compartido/estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
 | [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
 | [`documentacion/proyecto/comandos-compilacion-y-entrega.md`](documentacion/proyecto/comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
-| [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) | Plan, estado y backlog de la etapa activa; las cuatro reglas que la gobiernan; qué leer y qué consultar en cada sesión. |
+| [`documentacion/proyecto/plan-de-accion-etapa-2.md`](documentacion/proyecto/plan-de-accion-etapa-2.md) | Estado de cierre de la Etapa 2 y backlog de entrega; las cuatro reglas que la gobiernan; qué leer y qué consultar. |
 
 ## 4. Documentación técnica (para explicar el proyecto sin leer código)
 

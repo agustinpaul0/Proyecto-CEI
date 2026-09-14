@@ -223,8 +223,8 @@ gramática aunque `javac` los rechace.
 
 **Decisión:** las dos se cierran con un chequeo en el analizador —que lo parseado entre paréntesis
 haya sido exactamente un `idMetVar`, y que una lambda parentizada no lleve cola— y no en la
-gramática. Está en el backlog de la Sesión 3 y detallado
-en [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
+gramática. El detalle está en
+[`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 Del segundo parámetro en adelante la gramática **sí** exige identificador: `(a, b+1) -> x` y
 `(a, int b) -> x` se rechazan.

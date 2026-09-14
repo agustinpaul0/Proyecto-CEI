@@ -3,10 +3,10 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La gramática está terminada y verificada, y el analizador está **completo**: los 104
-> no terminales implementados, los 8 casos de la cátedra pasando con el token exacto, y las tres
-> restricciones de MiniLambdas que la gramática no puede expresar. Falta el Modo Pánico, que es la
-> Sesión 4. El plan está en
+> **Estado.** La etapa está **terminada**: la gramática verificada, los 111 no terminales
+> implementados, los diez logros —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el
+> token exacto y las cuatro restricciones de MiniLambdas que la gramática no puede expresar. El
+> estado de cierre está en
 > [`../proyecto/plan-de-accion-etapa-2.md`](../proyecto/plan-de-accion-etapa-2.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
