@@ -267,6 +267,31 @@ class LambdasTest extends BaseDeAnalisis {
         aceptarLambda(dir, expresion);
     }
 
+    // El paréntesis anidado no lava la restricción: lo que cuenta es si la RAÍZ de
+    // lo que hay adentro es una lambda, por muchos paréntesis que la envuelvan.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "((x -> x)).metodo()",
+            "(((x -> x))).metodo()",
+            "((() -> 1)) + 1",
+    })
+    void elParentesisAnidadoNoHabilitaLaCola(String expresion, @TempDir Path dir) {
+        rechazarLambda(dir, expresion);
+    }
+
+    // La restricción es sobre la RAÍZ, no sobre «se vio una lambda». Con un `=` o
+    // un `?` arriba, la expresión es una asignación o un ternario —no una lambda—
+    // y puede llevar cola: `javac` acepta la forma de las tres.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "(a = x -> x).metodo()",
+            "(a ? x -> x : b).metodo()",
+            "(a ? b : x -> x).metodo()",
+    })
+    void unaLambdaQueNoEsLaRaizNoBloqueaLaCola(String expresion, @TempDir Path dir) {
+        aceptarLambda(dir, expresion);
+    }
+
     // Los lugares donde el JLS sí admite una lambda: argumento, índice de arreglo,
     // las dos ramas del ternario, lado derecho de un `=` y cuerpo de otra lambda.
     @ParameterizedTest

@@ -165,6 +165,25 @@ paréntesis fue una lambda» — unos siete no terminales —, así que lo cierr
 si lo que acaba de leer entre paréntesis fue una lambda y, si lo fue, exige que no siga ninguno de
 los tokens que abren una cola (`.`, `[`, `++`, `--`, los trece binarios, `?`).
 
+Lo que el indicador dice es si la **raíz** de esa expresión es una lambda, no si se vio una lambda
+en algún lado. La diferencia importa:
+
+| Entrada | Raíz | Veredicto |
+|---|---|---|
+| `(x -> x).m()` | lambda | **rechaza** |
+| `((x -> x)).m()` | lambda, con paréntesis de más | **rechaza** |
+| `(a = x -> x).m()` | asignación | acepta — `javac` acepta la forma |
+| `(a ? b : x -> x).m()` | ternario | acepta — ver el límite de abajo |
+
+Por eso las dos producciones que pueden poner otra cosa en la raíz por encima de una lambda
+—`RestoExpresion` con su `=` y `RestoCondicional` con su `?`— apagan el indicador al terminar.
+
+> **Límite declarado.** `javac` igual rechaza `(a ? b : x -> x).m()`, pero no por la forma: un
+> ternario con una rama lambda es una *poly expression* (JLS 15.25) y eso lo decide la
+> **clasificación** de la expresión, que depende de sus operandos y de su tipo destino. Es
+> exactamente la clase de chequeo que este proyecto delega al analizador semántico, así que acá se
+> acepta y queda anotado.
+
 ### 3.3. Por qué no se posterga al semántico
 
 Es una decisión de frontera y conviene dejar dicho por qué cayó de este lado.

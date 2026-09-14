@@ -522,8 +522,8 @@ la lambda se produce en el nivel de \nt{Expresion}, como en el JLS. El costo es 
 cabezas que comparte con una expresión normal ---\tl{idMetVar} y \tl{(}--- contra la cola de
 expresión, con la misma técnica que \nt{ExpresionSinIdClase}: catorce producciones nuevas, ninguna
 lógica duplicada, porque todas las colas se comparten. El beneficio es doble: el lenguaje pasa a
-ser el de Java, y cuatro de las cinco ambigüedades \textbf{desaparecen de raíz} en vez de
-resolverse por regla.
+ser el de Java en las cinco formas de la tabla, y cuatro de las cinco ambigüedades
+\textbf{desaparecen de raíz} en vez de resolverse por regla.
 \end{decision}
 
 % ===========================================================================
@@ -1139,6 +1139,12 @@ en Java---. Pero \texttt{(x -> x).m()} no lo es: parentizarla no la convierte en
 Distinguirlos en la gramática exigiría clonar toda la cadena de colas en su variante «el contenido
 del paréntesis fue una lambda», unos siete no terminales nuevos, así que lo cierra el analizador
 con lo que acaba de leer.
+
+Lo que verifica es si la \textbf{raíz} de esa expresión es una lambda, no si se vio una lambda en
+algún lado: \texttt{(a = x -> x).m()} es una asignación y \texttt{(a ? b : x -> x).m()} un ternario,
+y Java acepta la forma de los dos. \texttt{javac} igual rechaza el segundo, pero por la regla de
+\emph{poly expressions} del JLS~15.25, que depende de la clasificación de la expresión y de su tipo
+destino ---un chequeo del analizador semántico, no de la forma---. Queda declarado.
 \end{decision}
 
 \begin{decision}{\tl{this} y la captura los rechaza el analizador, no la gramática}

@@ -108,7 +108,7 @@ ya usa para el `else`.
 
 Queda un hueco que la gramática no alcanza a cerrar y que cierra el analizador: el contenido de un
 paréntesis **sí** puede ser una lambda —`f((x -> x))` es válido en Java—, así que `(x -> x).m()`
-atraviesa la gramática. Está en
+atraviesa la gramática. El detalle, con la regla de la raíz y su límite declarado, está en
 [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 ## 3. Alcance del operador ternario

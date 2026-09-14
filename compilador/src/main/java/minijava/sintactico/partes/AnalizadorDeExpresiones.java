@@ -51,6 +51,10 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
             expresionCondicionalOLambda();
+            // Con un `=` en la raíz la expresión es una asignación, no la lambda
+            // que acaba de parsearse como lado derecho: `(a = x -> x).m()` es
+            // legal en Java. Ver RestriccionesDeLambda.
+            sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
         } else {
             // RestoExpresion -> EPSILON
         }
@@ -139,6 +143,9 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             expresion();
             match(TipoDeToken.DOS_PUNTOS);
             expresionCondicionalOLambda();
+            // Ídem: con un `?` en la raíz la expresión es un ternario, aunque una
+            // de sus ramas sea una lambda.
+            sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
         } else {
             // RestoCondicional -> EPSILON
         }

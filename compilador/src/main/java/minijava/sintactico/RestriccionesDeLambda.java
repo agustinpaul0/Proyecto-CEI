@@ -41,6 +41,11 @@ public final class RestriccionesDeLambda {
     // gramática exigiría clonar la cadena de colas en su variante «el contenido
     // del paréntesis fue una lambda», así que lo verifica el analizador con lo
     // que acaba de leer.
+    //
+    // El indicador dice si la RAÍZ de la última expresión es una lambda, no si se
+    // vio una lambda en algún lado: `(a = x -> x)` es una asignación y
+    // `(a ? b : x -> x)` un ternario, y las dos pueden llevar cola. Por eso las
+    // producciones que ponen un `=` o un `?` en la raíz lo apagan al terminar.
     public void anotarQueEsLambda() {
         ultimaExpresionFueLambda = true;
     }
