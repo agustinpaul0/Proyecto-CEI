@@ -381,8 +381,8 @@ La gramática de la cátedra \textbf{no es LL(1)}. Verificando la condición
 $\prim{\beta_i} \cap \prim{\beta_j} = \varnothing$ sobre todas las producciones aparecen
 \textbf{dieciséis conflictos} repartidos en \textbf{diez no terminales}.
 
-\begin{center}
-\begin{longtable}{@{}clp{0.30\textwidth}p{0.30\textwidth}@{}}
+\begin{center}\small
+\begin{longtable}{@{}c@{\hspace{0.9em}}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}@{}}
 \toprule
 \textbf{\#} & \textbf{No terminal} & \textbf{Defecto} & \textbf{Intersección} \\
 \midrule\endhead
@@ -407,8 +407,8 @@ Siguiendo el criterio de la sección~\ref{sec:dos-defectos}, se clasificó cada 
 que \textbf{sólo dos} de los dieciséis son ambigüedades reales; los otros catorce son conflictos
 de predicción que se corrigen mecánicamente sin alterar el lenguaje.
 
-\begin{center}
-\begin{tabular}{@{}llp{0.30\textwidth}@{}}
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
 \toprule
 \textbf{Par} & \textbf{Longitudes derivables} & \textbf{Veredicto} \\
 \midrule
@@ -1250,8 +1250,8 @@ Dos cosas distintas. El \textbf{anidamiento} sale de una sola recursión:
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen} \alt{} \tl{idClase} \nt{TipoGenericoOpcional}}
 \end{producciones}
-Con el logro apagado la segunda alternativa es \tl{idClase} a secas. (\texttt{List<List<Persona>>}
-cierra con dos \tl{>} separados: el léxico no define ningún token \texttt{>>}, así que la regla de
+Con el logro apagado la segunda alternativa es \tl{idClase} a secas. (\texttt{List<List<Persona>{}>}
+cierra con dos \tl{>} separados: el léxico no define ningún token \texttt{>{}>}, así que la regla de
 \emph{maximal munch} entrega dos \tl{>} y no hay nada que resolver del lado sintáctico.)
 
 El \textbf{diamante} exige más cuidado, porque el enunciado dice que «sólo puede utilizarse al
@@ -1272,7 +1272,7 @@ La primera alternativa de \nt{GenericoDeCreacion} \emph{es} el diamante, y va s�
 \textbf{Entrada} & \textbf{Veredicto} \\
 \midrule
 \texttt{List<Persona> x;}        & acepta \\
-\texttt{List<List<Persona>> x;}  & acepta \\
+\texttt{List<List<Persona>{}> x;}  & acepta \\
 \texttt{new List<>()}            & acepta \\
 \texttt{new List<Persona>[3]}    & acepta \\
 \texttt{List<> x;}               & \textbf{rechaza} (diamante en posición de tipo) \\
@@ -1432,7 +1432,7 @@ así que están repartidos en \textbf{una clase por sección de la gramática}: 
 la sección del \texttt{.g} se leen uno al lado del otro.
 
 \begin{center}
-\begin{tabular}{@{}lp{0.60\linewidth}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}
 \toprule
 \textbf{Clase} & \textbf{Qué traduce} \\
 \midrule
@@ -1447,11 +1447,11 @@ constructor sin un ciclo. \\
 \texttt{estaEn} y \texttt{hayLogro} para que cada método se lea como en la slide 57. \\
 \texttt{AnalizadorDe\{Clases, Miembros, Tipos, Sentencias, Fors, Expresiones, Referencias, Lambdas,
 Creacion, Argumentos\}} & Una sección de la gramática cada una, entre 99 y 173 líneas. \\
-\texttt{primeros/PrimerosDeX} & Una constante por producción, \textbf{generada} desde la gramática:
+\texttt{primeros/\allowbreak PrimerosDeX} & Una constante por producción, \textbf{generada} desde la gramática:
 220 en total, divididas por la misma sección. \\
 \texttt{RestriccionesDeLambda} & Los chequeos del logro MiniLambdas que la gramática no expresa. \\
-\texttt{recuperacion/\{RecuperadorDePanico, ContextoDeSincronizacion\}} & El logro Modo Pánico. \\
-\texttt{errores/ExcepcionSintactica} & El único error que produce el analizador. \\
+\texttt{recuperacion/\allowbreak \{RecuperadorDePanico, ContextoDeSincronizacion\}} & El logro Modo Pánico. \\
+\texttt{errores/\allowbreak ExcepcionSintactica} & El único error que produce el analizador. \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1512,8 +1512,9 @@ con el que la Etapa 1 reporta varios errores léxicos.
 \label{sec:logros-perseguidos}
 % ===========================================================================
 
-Se persiguen \textbf{los diez logros de la etapa que son implementables por código}, más el
-\emph{carry-over} de \emph{Floats} de la Etapa 1. Cada uno es un \textbf{interruptor independiente}:
+Se persiguen \textbf{todos los logros de la etapa}: los diez que son implementables por código
+---más el \emph{carry-over} de \emph{Floats} de la Etapa 1--- y los tres que no lo son. Cada uno de
+los implementables por código es un \textbf{interruptor independiente}:
 el compilador se puede ejecutar y testear con 0, 1 o N logros en cualquier combinación, y la de
 cero logros reproduce exactamente la especificación base de la cátedra. Eso está verificado sobre
 las 1024 configuraciones.
@@ -1547,8 +1548,8 @@ Floats (Etapa 1) & \texttt{float} & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Pr
 \end{tabular}
 \end{center}
 
-Los tres logros de la etapa que no se implementan por código ---\emph{Entrega Anticipada},
-\emph{Imbatibilidad} y \emph{Well Done!}--- no dependen del compilador.
+Los otros tres ---\emph{Entrega Anticipada}, \emph{Imbatibilidad} y \emph{Well Done!}--- también
+se persiguen, pero no se implementan por código: no dependen del compilador.
 
 % ===========================================================================
 \section{Verificación}
@@ -1863,8 +1864,8 @@ sea una tabla de símbolos, y eso es trabajo del analizador semántico.
         sea que \texttt{a = b = c} nunca fue válido en MiniJava. Se preservó, y por eso tampoco
         vale dentro del operando del medio del ternario.
 
-  \item[Genéricos anidados.] \texttt{List<List<Persona>>} cierra con \textbf{dos \tl{>}
-        separados}: el analizador léxico de MiniJava no tiene un token \tl{>>}, así que el
+  \item[Genéricos anidados.] \texttt{List<List<Persona>{}>} cierra con \textbf{dos \tl{>}
+        separados}: el analizador léxico de MiniJava no tiene un token \tl{>{}>}, así que el
         problema clásico de Java no se presenta.
 
   \item[Visibilidad en métodos de interfaz.] Se admite \tl{public} y \textbf{no} \tl{private}.

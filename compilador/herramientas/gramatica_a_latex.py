@@ -9,6 +9,7 @@ cátedra en «Reglas de Sintaxis de MiniJava»: no terminales en \\texttt, media
     python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g producciones
     python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g primeros
 """
+import re
 import sys
 
 sys.path.insert(0, "herramientas")
@@ -26,11 +27,22 @@ ESCAPES = {
 }
 
 
+TITULO = "\x00"
+
+
+def separar_ligaduras(texto):
+    for par in ("--", "<<", ">>"):
+        texto = texto.replace(par, par[0] + "{}" + par[1])
+    return texto
+
+
 def escapar(texto):
     salida = "".join(ESCAPES.get(c, c) for c in texto)
     # LaTeX liga `--` en un guion medio y `---` en uno largo. El operador `--`
-    # de MiniJava tiene que salir con dos guiones.
-    return salida.replace("--", "-{}-")
+    # de MiniJava tiene que salir con dos guiones. Lo mismo con `<<` y `>>`,
+    # que en T1 ligan en las comillas angulares «»: el cierre de un genérico
+    # anidado tiene que salir como dos mayores separados.
+    return separar_ligaduras(salida)
 
 
 def render(simbolo, no_terminales):
@@ -71,7 +83,7 @@ def texto_comentario(texto, no_terminales):
                 continue
         salida.append(ESCAPES.get(c, c))
         i += 1
-    return "".join(salida)
+    return separar_ligaduras("".join(salida))
 
 
 def producciones(ruta):
@@ -96,7 +108,21 @@ def producciones(ruta):
                 cerrar()
                 tipo = "regla"
             actual.append((cuerpo, marca))
-        elif comentario and not set(comentario) <= set("= "):
+        elif comentario:
+            # Los filetes ASCII del .g (`----`, `====`) son separadores
+            # visuales del archivo, no prosa: acá los reemplaza el blanco
+            # entre párrafos. Un filete con un título adentro lo conserva,
+            # pero como título en negrita, no pegado a la prosa que sigue.
+            filete = re.fullmatch(r"[-=]{3,}(.*?)[-=]{0,}", comentario)
+            if filete:
+                comentario = filete.group(1).strip()
+            if not comentario:
+                continue
+            if filete and not comentario.isupper():
+                cerrar()
+                tipo = "comentario"
+                actual.append(TITULO + comentario)
+                continue
             # Los banners en MAYÚSCULAS son la estructura del .g, no prosa:
             # este informe ya tiene sus propias secciones.
             if comentario.isupper():
@@ -114,8 +140,13 @@ def producciones(ruta):
 
     for clase, contenido in bloques:
         if clase == "comentario":
+            titulo = ""
+            if contenido and contenido[0].startswith(TITULO):
+                titulo = r"\textbf{%s.} " % texto_comentario(
+                    contenido[0][len(TITULO):].rstrip("."), nts)
+                contenido = contenido[1:]
             prosa = texto_comentario(" ".join(contenido), nts)
-            print(r"\noindent{\small %s\par}" % prosa)
+            print(r"\noindent{\small %s%s\par}" % (titulo, prosa))
             print()
             continue
         print(r"\begin{producciones}")

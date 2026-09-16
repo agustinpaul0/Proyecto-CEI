@@ -91,8 +91,10 @@
 \newcommand{\marca}[2]{\quad{\footnotesize[#1\,\texttt{#2}]}}
 
 % --- Bloques de consola --------------------------------------------------------
+% \footnotesize y no \small: la línea más larga de una sesión de consola tiene
+% 82 caracteres y a \small no entra en la caja de texto.
 \DefineVerbatimEnvironment{consola}{Verbatim}%
-  {fontsize=\small,xleftmargin=1.1em,formatcom=\color{tinta}}
+  {fontsize=\footnotesize,xleftmargin=1.1em,formatcom=\color{tinta}}
 
 % --- Cajas ---------------------------------------------------------------------
 % Sin fondos: un filete al costado, que separa sin ensuciar la página.
@@ -111,8 +113,11 @@
 \newcommand{\paso}[1]{\par\smallskip\noindent\textbf{#1}\quad\ignorespaces}
 
 % Los nombres largos de no terminales no se parten, así que se le da al
-% justificado un margen de maniobra en vez de dejar renglones desbordados.
-\setlength{\emergencystretch}{2.5em}
+% justificado un margen de maniobra en vez de dejar renglones desbordados: con
+% poco margen TeX prefiere el renglón que se sale de la caja al que estira los
+% espacios, y un <NoTerminalDeNombreLargo> al final de línea se va al margen.
+\setlength{\emergencystretch}{4.5em}
+\tolerance=3000
 
 \setlist[itemize]{leftmargin=1.3em,itemsep=0.25ex,topsep=0.5ex}
 \setlist[enumerate]{leftmargin=1.5em,itemsep=0.25ex,topsep=0.5ex}

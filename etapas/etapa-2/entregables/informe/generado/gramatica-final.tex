@@ -94,7 +94,7 @@
 \regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>>}. Sin el logro: \texttt{ArgumentoDeTipo -> idGen | idClase}.\par}
+\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>{}>}. Sin el logro: \texttt{ArgumentoDeTipo -> idGen | idClase}.\par}
 
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen}}
@@ -203,7 +203,7 @@
 \regla{OperadorAsignacion}{\tl{=}}
 \end{producciones}
 
-\noindent{\small --------------------------------------------------------------------------- El nivel del JLS \texttt{LambdaExpression | ConditionalExpression}: admite lambda, no admite \texttt{=} en la raíz. Es el operando de los seis \texttt{=} y el tercer operando del ternario. Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de siempre; las dos que sí —\texttt{idMetVar} y \texttt{(}— se factorizan. La cola se comparte con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.\par}
+\noindent{\small El nivel del JLS \texttt{LambdaExpression | ConditionalExpression}: admite lambda, no admite \texttt{=} en la raíz. Es el operando de los seis \texttt{=} y el tercer operando del ternario. Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de siempre; las dos que sí —\texttt{idMetVar} y \texttt{(}— se factorizan. La cola se comparte con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.\par}
 
 \begin{producciones}
 \regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
@@ -248,7 +248,7 @@
 \regla{Primitivo}{\tl{floatLiteral}}\marca{+}{float}
 \end{producciones}
 
-\noindent{\small --- Expresión que no puede empezar con idClase ---------------------------- Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
+\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
 
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
