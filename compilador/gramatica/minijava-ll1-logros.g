@@ -309,7 +309,6 @@ PosfijoOpcional -> ++                                                           
 PosfijoOpcional -> --                                                                     @+posfijo
 PosfijoOpcional -> EPSILON
 
-# floatLiteral
 Primitivo -> true | false | intLiteral | charLiteral | null
 Primitivo -> floatLiteral                                     @+float
 

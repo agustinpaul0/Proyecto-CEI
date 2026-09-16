@@ -134,11 +134,22 @@ informe se puedan comparar renglón a renglón con las de aquél.
 \nt{X} \deriva{} $\alpha$              & una producción, con $\alpha$ una secuencia de terminales y no terminales \\
 \nt{X} \deriva{} $\alpha$ \alt{} $\beta$ & abreviación de \nt{X} \deriva{} $\alpha$ y \nt{X} \deriva{} $\beta$ \\
 $\prim{\beta}$           & conjunto de terminales que pueden aparecer primeros en $\beta$ \\
+{\footnotesize[+\,\texttt{logro}]} & la producción existe sólo con ese logro \textbf{prendido} \\
+{\footnotesize[-\,\texttt{logro}]} & la producción existe sólo con ese logro \textbf{apagado} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 El no terminal inicial es \nt{Inicial}.
+
+Las dos últimas son propias de este informe: la gramática de la cátedra no las necesita porque no
+tiene logros. Una producción sin marca existe siempre. Cuando un mismo no terminal aparece con las
+dos marcas ---\nt{Miembro} es el caso canónico--- no es una regla con un pedazo opcional: son
+\textbf{dos gramáticas distintas}, la del logro prendido y la del logro apagado, y por eso hacen
+falta las dos marcas y no una sola. Cada logro es un interruptor independiente de los demás
+(sección~\ref{sec:logros-perseguidos}), así que las marcas se combinan libremente: la gramática
+que se analiza en cada corrida es la que queda al resolver las diez marcas contra los diez
+interruptores.
 
 \subsection{El criterio LL(1)}
 
@@ -1127,11 +1138,16 @@ Requiere el token \tl{->}, que no existe en el léxico de la Etapa 1.
 
 \begin{decision}{permisividad declarada de las lambdas}
 En \texttt{( a , b ) -> x} el \texttt{a} se deriva como \nt{Expresion}, no como parámetro, de modo
-que \texttt{( a + 1 , b ) -> x} \textbf{atraviesa el análisis sintáctico}. Rechazarlo exige saber
-que esa expresión tiene que ser un identificador suelto, lo que es un chequeo semántico. Es la
-misma clase de permisividad que la gramática original ya tiene con \texttt{5 = x;}. Lo mismo vale,
-como se anticipó en la sección~\ref{sec:alcance-chequeos}, para la prohibición de capturar
-variables.
+que \texttt{( a + 1 , b ) -> x} \textbf{atraviesa la gramática}: rechazarlo exige saber que esa
+expresión tiene que ser un identificador suelto, y eso una gramática libre de contexto no lo puede
+decir. Es la misma clase de permisividad que la gramática original ya tiene con \texttt{5 = x;}.
+
+\textbf{La diferencia está en qué pasa después.} El \texttt{5 = x;} queda para el análisis
+semántico, y el compilador lo acepta. El parámetro que no es un identificador pelado, en cambio,
+\textbf{lo rechaza este analizador}: no hace falta la tabla de símbolos, alcanza con lo que acaba
+de leer ---la decisión que sigue lo desarrolla, junto con el \texttt{this} y la captura, y la
+sección~\ref{sec:alcance-chequeos} fija el criterio con el que se decide caso por caso---. Lo
+permisiva que es la gramática y lo permisivo que es el compilador son dos cosas distintas.
 
 Hay una segunda, del mismo origen. \nt{ContenidoDeParentesis} \deriva{} \nt{Expresion}
 \nt{RestoDeParentesis}, y esa \nt{Expresion} puede ser una lambda ---\texttt{f((x -> x))} es válido
@@ -1331,9 +1347,10 @@ la sección~\ref{sec:atomicidad}. Los tokens \tl{:}, \tl{++} y \tl{-{}-}, en cam
 % ===========================================================================
 
 La gramática completa resultante: núcleo corregido más los nueve logros de la Etapa 2 y el
-\emph{carry-over} de floats. Las producciones marcadas con \textit{[sólo con \texttt{logro}]}
-existen únicamente cuando ese interruptor está prendido; las marcadas \textit{[sólo sin
-\texttt{logro}]}, únicamente cuando está apagado. Las que no llevan marca existen siempre.
+\emph{carry-over} de floats. Las producciones marcadas con {\footnotesize[+\,\texttt{logro}]}
+existen únicamente cuando ese interruptor está prendido; las marcadas con
+{\footnotesize[-\,\texttt{logro}]}, únicamente cuando está apagado. Las que no llevan marca existen
+siempre (sección~\ref{sec:notacion}).
 
 \begin{decision}{este listado se genera, no se transcribe}
 El texto que sigue se produce automáticamente a partir del mismo archivo que verifica la

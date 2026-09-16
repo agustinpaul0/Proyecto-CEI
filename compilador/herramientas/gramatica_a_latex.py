@@ -65,7 +65,9 @@ def leer(ruta):
 
 
 def texto_comentario(texto, no_terminales):
-    """Comentario del .g a prosa LaTeX: `x` -> \\texttt{x}, <X> -> \\nt{X}."""
+    """Comentario del .g a prosa LaTeX: `x` -> \\texttt{x}, <X> -> \\nt{X},
+    *x* -> \\emph{x} (la misma marca de énfasis que ya lee el generador de
+    Markdown, para que el comentario se escriba una sola vez)."""
     salida, i = [], 0
     while i < len(texto):
         c = texto[i]
@@ -73,6 +75,12 @@ def texto_comentario(texto, no_terminales):
             fin = texto.find("`", i + 1)
             if fin != -1:
                 salida.append(r"\texttt{%s}" % escapar(texto[i + 1:fin]))
+                i = fin + 1
+                continue
+        if c == "*":
+            fin = texto.find("*", i + 1)
+            if fin > i + 1 and not texto[i + 1:fin].strip() != texto[i + 1:fin]:
+                salida.append(r"\emph{%s}" % texto_comentario(texto[i + 1:fin], no_terminales))
                 i = fin + 1
                 continue
         if c == "<":
@@ -99,10 +107,17 @@ def producciones(ruta):
             bloques.append((tipo, list(actual)))
             actual.clear()
 
+    lineas = []
     for linea_cruda in texto.splitlines():
         sin_com, _, comentario = linea_cruda.partition("#")
         cuerpo, _, marca = sin_com.partition("@")
-        cuerpo, marca, comentario = cuerpo.strip(), marca.strip(), comentario.strip()
+        lineas.append((cuerpo.strip(), marca.strip(), comentario.strip()))
+
+    def es_filete(indice):
+        return (0 <= indice < len(lineas)
+                and bool(re.fullmatch(r"[-=]{3,}", lineas[indice][2])))
+
+    for numero, (cuerpo, marca, comentario) in enumerate(lineas):
         if cuerpo:
             if tipo != "regla":
                 cerrar()
@@ -113,6 +128,10 @@ def producciones(ruta):
             # visuales del archivo, no prosa: acá los reemplaza el blanco
             # entre párrafos. Un filete con un título adentro lo conserva,
             # pero como título en negrita, no pegado a la prosa que sigue.
+            # Un título encerrado entre dos filetes es un banner de sección del
+            # .g, y este informe ya tiene sus propias secciones: no va.
+            if es_filete(numero - 1) and es_filete(numero + 1):
+                continue
             filete = re.fullmatch(r"[-=]{3,}(.*?)[-=]{0,}", comentario)
             if filete:
                 comentario = filete.group(1).strip()

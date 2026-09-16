@@ -154,7 +154,7 @@
 \regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
 \end{producciones}
 
-\noindent{\small Fors! E2 Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
+\noindent{\small Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
 
 \begin{producciones}
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}\marca{+}{for}
@@ -239,16 +239,11 @@
 \regla{PosfijoOpcional}{\tl{++}}\marca{+}{posfijo}
 \regla{PosfijoOpcional}{\tl{-{}-}}\marca{+}{posfijo}
 \regla{PosfijoOpcional}{\eps}
-\end{producciones}
-
-\noindent{\small floatLiteral\par}
-
-\begin{producciones}
 \regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
 \regla{Primitivo}{\tl{floatLiteral}}\marca{+}{float}
 \end{producciones}
 
-\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
+\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las \emph{cabezas}: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
 
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
@@ -303,7 +298,7 @@
 \regla{AccesoLlamada}{\nt{ArgsActuales} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small MiniLambdas E2 Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía. \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto. Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.\par}
+\noindent{\small Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía. \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto. Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.\par}
 
 \begin{producciones}
 \regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}

@@ -351,8 +351,6 @@ Estado actual:
 <PosfijoOpcional> ::= `--`  *[sólo con `posfijo`]*  
 <PosfijoOpcional> ::= ε  
 
-> floatLiteral
-
 <Primitivo> ::= **true** | **false** | **intLiteral** | **charLiteral** | **null**  
 <Primitivo> ::= **floatLiteral**  *[sólo con `float`]*  
 
