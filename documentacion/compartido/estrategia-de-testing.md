@@ -234,7 +234,7 @@ cd compilador
 
 mvn test                 # suite propia + los 2 testers de la cátedra, en la misma pasada
 mvn verify               # además exige el umbral de cobertura de JaCoCo
-mvn -Pmutacion test      # análisis de mutación con PIT
+mvn -Pmutacion verify    # análisis de mutación con PIT (verify: es la fase a la que está atado)
 
 mvn test -Dvolcado=resumen   # el volcado por caso, en su forma corta
 mvn test -Dvolcado=off       # sin volcado

@@ -241,8 +241,8 @@ Los instrumentos que apuntan específicamente a esto:
 **Cómo verificarlo:**
 
 ```bash
-mvn -o verify          # 631 tests + umbral de cobertura
-mvn -o -Pmutacion test # los mutantes sobrevivientes son tests faltantes
+mvn -o verify            # 631 tests + umbral de cobertura
+mvn -o -Pmutacion verify # los mutantes sobrevivientes son tests faltantes
 ```
 
 ## 7. Good Job! I

@@ -11,7 +11,9 @@ Corré, desde `compilador/`, el comando que corresponda según `documentacion/pr
 - `resumen`  → `mvn test -Dvolcado=resumen`
 - `off`      → `mvn test -Dvolcado=off`
 - `cobertura`→ `mvn verify` (incluye el umbral de JaCoCo)
-- `mutacion` → `mvn -Pmutacion test` (los mutantes sobrevivientes son tests faltantes)
+- `mutacion` → `mvn -Pmutacion verify` (los mutantes sobrevivientes son tests faltantes).
+  **`verify`, no `test`**: PIT está atado a la fase `verify` en el `pom.xml`, así que con `test`
+  corre la suite normal, no muta nada y termina en verde sin haber analizado un solo mutante.
 
 Después reportá el resultado sin adornarlo: si algo falla, mostrá la salida real del fallo e
 investigá la causa antes de proponer un fix. Una regresión sin explicar no cuenta como suite

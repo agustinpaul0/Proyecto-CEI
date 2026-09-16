@@ -8,7 +8,8 @@
 cd compilador
 mvn test                 # suite completa: la nuestra + los 2 testers de la cátedra (vintage engine)
 mvn verify                # + chequeo de umbral de cobertura JaCoCo (falla si baja del umbral)
-mvn -Pmutacion test       # PIT — mutantes sobrevivientes = tests faltantes
+mvn -Pmutacion verify     # PIT — mutantes sobrevivientes = tests faltantes (verify, no test:
+                          # PIT esta atado a esa fase y con `test` no muta nada)
 
 # Cada caso del corpus vuelca a consola la salida real del compilador (tokens,
 # [Error:...] y el reporte elegante) más un pie con los archivos procesados.
