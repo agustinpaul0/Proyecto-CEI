@@ -115,4 +115,3 @@ Están desarrolladas en `~/downloads/dudas.pdf`. En una línea cada una:
    corchete vacío (Java)?
 2. **La lambda** — `p -> x;` y `(x -> y).m()` se aceptan, respetando el molde de la base; ¿está
    bien, o el «como en Java» del logro pesa más? Incluye qué costaría el cambio contrario.
-3. **Léxico de `--etapa=1`** — ¿molesta que hoy reconozca los cuatro tokens de la Etapa 2?
