@@ -64,12 +64,17 @@ Simple de Clase 5, con los **diez logros implementables por código** más el *c
 
 ### Lo que queda abierto
 
-Dos decisiones de lenguaje donde la especificación admite más de una lectura. Las dos están
-implementadas y declaradas, pero **conviene confirmarlas** (ver *Dudas abiertas*):
+Tres puntos de lenguaje donde la especificación admite más de una lectura. Los tres están
+implementados y declarados, pero **conviene confirmarlos** (ver *Dudas abiertas*):
 
 1. **Inicialización de arreglos.** Hoy toda dimensión conserva su tamaño y el inicializador se
    cuelga al final: `new int[2][2]{{1,2},{3,4}}` vale y `new int[]{1,2,3}` no. Diverge de Java.
-2. **Lambda parentizada con cola.** Hoy `(x -> y).m()` se **acepta**: sale sola de la gramática
+2. **Lambda como sentencia suelta.** Hoy `p -> x;` se **rechaza**, y `(p -> x);` se acepta: es
+   incoherente. MiniJava base deriva `Sentencia -> Expresion ;` (`Asignacion -> Expresion`), así
+   que por el mismo criterio que el punto 3 debería aceptarse. El motivo es de implementación:
+   `ExpresionSinIdClase` quedó sin las cabezas que llevan a la lambda. **Es la única divergencia
+   abierta contra el corpus externo**, con 213 casos.
+3. **Lambda parentizada con cola.** Hoy `(x -> y).m()` se **acepta**: sale sola de la gramática
    base, que define `ExpresionParentizada -> ( Expresion )` y que un `Primario` arrastra cadena.
    Diverge de Java, que lo rechaza. Sin paréntesis la lambda sigue sin ser operando.
 
@@ -111,6 +116,7 @@ Están desarrolladas en `~/downloads/dudas.pdf`. En una línea cada una:
 
 1. **Arreglos** — ¿el inicializador se cuelga de dimensiones con tamaño (base MiniJava) o exige
    corchete vacío (Java)?
+1.bis. **Lambda como sentencia** — `p -> x;` hoy se rechaza contra lo que dice la base; ¿se corrige?
 2. **Lambda parentizada** — se acepta, respetando el molde de la base; ¿está bien, o el «como en
    Java» del logro pesa más?
 3. **Léxico de `--etapa=1`** — ¿molesta que hoy reconozca los cuatro tokens de la Etapa 2?

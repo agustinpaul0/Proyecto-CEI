@@ -52,11 +52,19 @@ class CorpusExternoTest {
     // prueba es que NO aparezca una sexta.
     private enum Divergencia {
 
-        // `p -> x;` y `() -> x;` como sentencia suelta, que su gramática acepta.
-        // Acá no: MiniJava base no tiene `Sentencia -> Expresion ;`, tiene
-        // `Asignacion ;` y `Llamada ;`, que es la misma restricción que JLS 14.8
-        // —`javac` dice «not a statement»—. La lambda entra por <Expresion>, y a
-        // <Expresion> una sentencia sólo llega por esas dos formas.
+        // `p -> x;` y `() -> x;` como sentencia suelta, que su gramática acepta y
+        // ésta no. LA DIVERGENCIA ABIERTA: acá el equivocado es este proyecto.
+        // MiniJava base sí deriva `Sentencia -> Expresion ;`, porque
+        // `Asignacion -> Expresion` y `Llamada -> Expresion` son eso y nada más
+        // —los nombres sugieren la restricción de JLS 14.8, las producciones no
+        // la imponen—. Este analizador ya sigue ese molde: acepta `1 + 2;` y
+        // `true;`, que javac rechaza. Con la lambda en <Expresion>, `p -> x;`
+        // debería derivar, y encima `(p -> x);` hoy se acepta.
+        //
+        // El motivo es de implementación: <ExpresionSinIdClase>, el no terminal
+        // que usa la sentencia, se factorizó contra la declaración de variable
+        // local y quedó sin las dos cabezas que llevan a la lambda. Anotado para
+        // consultar; ver documentacion/sintactico/decisiones-de-logica.md §2.2.
         LAMBDA_COMO_SENTENCIA,
 
         // `(x -> y).m()` y compañía, al revés que la anterior: acá se aceptan y su

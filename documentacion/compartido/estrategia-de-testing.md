@@ -237,11 +237,17 @@ verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el tes
 
 | Familia | Casos | Qué la explica |
 |---|---:|---|
-| `p -> x;` como sentencia suelta | 213 | **Su generador.** MiniJava base no tiene `Sentencia -> Expresion ;`: tiene `Asignacion ;` y `Llamada ;`, que es la misma restricción de JLS 14.8 —`javac` contesta *"not a statement"*—. Una lambda suelta no es sentencia ni acá ni en Java. |
+| `p -> x;` como sentencia suelta | 213 | **Este proyecto, y es una inconsistencia abierta.** MiniJava base sí deriva `Sentencia -> Expresion ;`, porque `Asignacion -> Expresion` y `Llamada -> Expresion` son eso y nada más. Este analizador ya sigue ese molde (acepta `1 + 2;`, `true;`), así que por el mismo argumento de `(x -> y).m()` debería aceptar `p -> x;`. Hoy lo rechaza, y encima acepta `(p -> x);`. Ver abajo. |
 | `(x -> y).m()` | 3 | **Este proyecto**, a propósito y al revés que la anterior: acá se acepta y su gramática lo rechaza. Ver [`decisiones-de-logica.md`](../sintactico/decisiones-de-logica.md) §2.2. |
 | `new Clase<Arg>()` y `new Clase<>()` | 49 | **Este proyecto.** El primero lo genera la gramática de la cátedra (`LlamadaConstructor -> new TipoReferencia ArgsActuales`); el segundo lo habilita el logro de genericidad. Ojo con la notación: `C` de una sola letra es un `idGen`, no un `idClase`, así que `new C<T>()` es inválido en las dos. |
 | `public void m(){}`, constructor sin `public` | 34 | **Su generador**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
 | Ambos rechazan, en distinto token | 54 | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
+
+**La única divergencia abierta es la lambda como sentencia.** El motivo es de implementación, no de
+criterio: el no terminal de expresión que usa la sentencia, `ExpresionSinIdClase`, se factorizó
+contra la declaración de variable local y quedó sin las dos cabezas que llevan a la lambda
+—`idMetVar AccesoLlamadaOLambda` y `ParentizadaOLambda`—, que son las que sí tiene
+`ExpresionDesdePrimarioOLambda`. Corregirlo es dárselas. Está anotado para consultar.
 
 **Se clasifica un renglón, no el archivo.** La primera versión miraba el fuente entero: si en
 cualquier parte aparecía un `new Xx<Y>()`, el caso caía en esa familia aunque el error estuviera

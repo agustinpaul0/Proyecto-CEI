@@ -1727,9 +1727,7 @@ verificadas a mano:
 \textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
 \midrule
 \texttt{p -> x;} como sentencia & 213 &
-\textbf{Su generador.} \textsc{MiniJava} base no tiene \regla{Sentencia}{\nt{Expresion} \tl{;}}: tiene
-\nt{Asignacion} y \nt{Llamada}, que es la misma restricción de JLS 14.8 ---\texttt{javac} contesta
-\emph{«not a statement»}---. Una lambda suelta no es sentencia ni acá ni en Java. \\[4pt]
+\textbf{Este trabajo, y es una inconsistencia abierta.} Ver el recuadro de abajo. \\[4pt]
 \texttt{(x -> y).m()} & 3 &
 \textbf{Este trabajo}, a propósito y al revés que la anterior: acá se acepta y su gramática lo
 rechaza. Ver la decisión de la sección~\ref{sec:lambda-parentizada}. \\[4pt]
@@ -1745,6 +1743,33 @@ otro. \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\begin{decision}{la lambda como sentencia: acá la gramática base manda lo contrario}
+\label{sec:lambda-sentencia}
+Es la única divergencia que queda \textbf{sin resolver}, y la más grande. \textsc{MiniJava} base
+define la sentencia-expresión así:
+
+\begin{producciones}
+\regla{Sentencia}{\nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;}}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\end{producciones}
+
+Los nombres sugieren la restricción de JLS 14.8 ---en Java una sentencia-expresión sólo puede ser
+una asignación, un incremento, una llamada o un \tl{new}---, pero las producciones no la imponen:
+los dos no terminales son \nt{Expresion} y nada más. De hecho este analizador ya sigue ese molde y
+acepta \texttt{1 + 2;}, \texttt{true;} y \texttt{"x";}, que \texttt{javac} rechaza.
+
+Entonces, por el mismo argumento de la sección~\ref{sec:lambda-parentizada}: si el logro agrega la
+lambda como alternativa de \nt{Expresion}, \texttt{p -> x;} \textbf{se deriva solo}. Hoy se rechaza,
+y de forma incoherente ---\texttt{(p -> x);} sí se acepta, porque ahí la lambda entra por
+\nt{Parentizada}---. El motivo es de implementación y no de criterio: el no terminal de expresión
+que usa la sentencia, \nt{ExpresionSinIdClase}, se factorizó contra la declaración de variable local
+y quedó sin las dos cabezas que llevan a la lambda.
+
+Corregirlo es darle esas dos cabezas, las mismas que ya usa
+\nt{ExpresionDesdePrimarioOLambda}. Queda anotado para consultar junto con el resto.
+\end{decision}
 
 \begin{decision}{clasificar por renglón, no por archivo}
 La primera versión de esta clasificación miraba el \emph{fuente entero}: si en cualquier parte del
