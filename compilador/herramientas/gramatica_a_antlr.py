@@ -2,14 +2,11 @@
 """Genera la gramática ANTLR que consume el fuzzer, desde la gramática del proyecto.
 
     python3 herramientas/gramatica_a_antlr.py gramatica/minijava-ll1-final.g \
-            --logros todos > herramientas/fuzz/MiniJava.g4
+            > herramientas/fuzz/MiniJava.g4
 
 La usa Grammarinator para dos cosas: derivar fuentes MiniJava al azar y volver a
 parsearlos en árboles que después se mutan. La parte sintáctica sale del `.g`, que
 es la fuente de verdad; la léxica, de herramientas/lexico_minijava.py.
-
-Se genera por configuración de logros: un corpus generado con `--logros ninguno`
-tiene que ser aceptado por el compilador sin ningún logro prendido.
 """
 import argparse
 import sys

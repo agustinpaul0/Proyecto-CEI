@@ -165,7 +165,7 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   `RestriccionesDeLambda`, que era la lógica más compleja del analizador: la pila de capturas en
   duda existía sólo para diferir ese chequeo.
 - De las restricciones de lambda **sobreviven dos**, porque son de forma y no de significado: que
-  un parámetro sea un identificador pelado (`(a+1) -> a` se rechaza) y que una lambda parentizada no
+  un parámetro sea un identificador sin tipo (`(a+1) -> a` se rechaza) y que una lambda parentizada no
   lleve cola (`(x -> x).m()` se rechaza). Ninguna es expresable en una gramática libre de contexto,
   y las dos se deciden con lo que el analizador acaba de leer.
 - Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y

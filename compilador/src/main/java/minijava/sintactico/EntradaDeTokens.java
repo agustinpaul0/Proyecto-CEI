@@ -37,7 +37,7 @@ public final class EntradaDeTokens {
     }
 
     // Lo usa el chequeo de que el contenido entre paréntesis de una lambda sea un
-    // identificador pelado: `(a) -> a` es una lambda y `(a + 1) -> a` no lo es.
+    // identificador sin tipo: `(a) -> a` es una lambda y `(a + 1) -> a` no lo es.
     public boolean consumioUnSoloTokenDesde(int marca) {
         return consumidos == marca + 1;
     }

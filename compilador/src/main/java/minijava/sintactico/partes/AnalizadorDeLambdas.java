@@ -133,22 +133,22 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         Token primero = actual();
         int antes = marca();
         sintaxis.expresiones().expresion();
-        boolean fueUnIdMetVarPelado =
+        boolean fueUnIdMetVarSinTipo =
                 primero.tipo() == TipoDeToken.ID_MV && consumioUnSoloTokenDesde(antes);
-        return new Candidato(primero, fueUnIdMetVarPelado, sintaxis.ultimaExpresionFueLambda());
+        return new Candidato(primero, fueUnIdMetVarSinTipo, sintaxis.ultimaExpresionFueLambda());
     }
 
-    // Un parámetro de lambda tiene que ser un identificador pelado: `(a) -> a` es
+    // Un parámetro de lambda tiene que ser un identificador sin tipo: `(a) -> a` es
     // una lambda y `(a + 1) -> a` no. La gramática no puede distinguirlos —los dos
     // son una Expresion hasta ver el `->`—, así que lo verifica el analizador.
     // Que el nombre no se repita SÍ es del semántico, y no se mira acá.
     private void exigirParametro(Candidato candidato) throws ExcepcionSintactica {
-        if (!candidato.esIdMetVarPelado()) {
+        if (!candidato.esIdMetVarSinTipo()) {
             throw ExcepcionSintactica.porRestriccion(candidato.token(),
                     "un parametro de lambda tiene que ser un identificador");
         }
     }
 
-    private record Candidato(Token token, boolean esIdMetVarPelado, boolean fueLambda) {
+    private record Candidato(Token token, boolean esIdMetVarSinTipo, boolean fueLambda) {
     }
 }

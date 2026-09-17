@@ -142,7 +142,7 @@ def publicar_negativos(candidatos, classpaths, prefijo):
     TOKEN.
 
     La expectativa se calcula sobre el archivo que ya lleva su cabecera, no sobre
-    el contenido pelado: la cabecera es una línea más y correría el número de
+    el contenido sin la cabecera: es una línea más y correría el número de
     línea del error. Por eso se escribe primero con una cabecera de relleno del
     mismo alto, se consulta, y recién ahí se escribe la definitiva.
     """

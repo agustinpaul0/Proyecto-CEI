@@ -77,7 +77,7 @@ EXPLICACION = {
                "`public static` y `static public` y a la vez rechaza `public private`, sin "
                "ningún chequeo fuera de la gramática.",
     "MiembroTrasVisibilidad": "INSERTADO. Lo que puede seguir a un `public` o un `private`: el "
-                              "`static` (y entonces es un método) o un miembro pelado.",
+                              "`static` (y entonces es un método) o un miembro sin modificadores.",
     "Visibilidad": "`public` o `private`. `protected` no existe en MiniJava y no se agrega.",
     "VisibilidadOpcional": "La visibilidad después del `static`, que puede no estar.",
     "MiembroSinModificadores": "Un miembro sin `public`, `private` ni `static`. Las cuatro "

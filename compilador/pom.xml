@@ -17,8 +17,6 @@
         <!-- Volcado a consola de la salida del compilador por cada caso del corpus:
              completo (default) | resumen | off. Ver VolcadoDeCasos. -->
         <volcado>completo</volcado>
-        <!-- Logros con los que corre la suite: ninguno | todos | etapaN | a,b,c.
-             Vacío = todos. Ver ConfiguracionDeLaCorrida y @RequiereLogro. -->
         <!-- Etiquetas JUnit a correr; lo fijan los perfiles fase-*. -->
         <fases/>
         <!-- Umbrales del perfil `mutacion`. Se bajan sólo con -D cuando hace falta

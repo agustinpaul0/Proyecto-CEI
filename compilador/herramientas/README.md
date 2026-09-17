@@ -20,6 +20,7 @@ desde ella, y escriben casos de corpus en lote.
 |---|---|
 | `primeros_a_java.py` | Las clases `PrimerosDeX` que usa el analizador, una por sección de la gramática. |
 | `gramatica_a_markdown.py`, `gramatica_a_latex.py` | Los documentos de la gramática y las tablas del informe. |
+| `explicacion_de_reglas.py` | La gramática explicada no terminal por no terminal: qué genera cada producción y por qué está escrita así. **No es material de entrega**, es un documento de estudio; sale a `~/downloads/explicacion-reglas.pdf`. |
 | `gramatica_a_antlr.py` | La gramática ANTLR con la que Grammarinator deriva y muta fuentes. |
 | `gramatica_a_javacc.py` | El oráculo JavaCC: un tercer reconocedor de la misma gramática. |
 | `gramaticas_externas.py` | Lo que las dos anteriores comparten: el léxico de la Etapa 1 y la convención de nombres. |

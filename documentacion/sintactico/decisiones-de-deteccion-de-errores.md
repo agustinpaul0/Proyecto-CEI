@@ -76,7 +76,7 @@ local.
 
 - `x -> campo` es un atributo, o sea un `this` implícito.
 - `x -> n` es una variable local de afuera, o sea una captura.
-- **Son la misma forma**: un `idMetVar` pelado que no está entre los parámetros. Separarlas exige
+- **Son la misma forma**: un `idMetVar` suelto que no está entre los parámetros. Separarlas exige
   resolver el nombre contra su declaración, que es exactamente la tabla de símbolos de la Etapa 3.
 
 El `this` explícito sí sería decidible con un booleano, pero controlarlo solo no aporta: dejaría
@@ -101,7 +101,7 @@ paréntesis lo hacía pasar por el chequeo de captura antes de saber si era una 
 en `x -> (y) -> y` el `y` se habría reportado como captura de `x`; había que anotar los nombres en
 duda y resolverlos al cerrar el paréntesis. Sin chequeo de captura, esa maquinaria no tiene motivo.
 
-### 3.2. Lo que se queda: el parámetro tiene que ser un identificador pelado
+### 3.2. Lo que se queda: el parámetro tiene que ser un identificador sin tipo
 
 `(a) -> a` es una lambda y `(a + 1) -> a` no lo es, pero hasta ver el `->` los dos son una
 `<Expresion>` entre paréntesis: la gramática no puede distinguirlos sin lookahead ilimitado.
@@ -162,7 +162,7 @@ lo único que sobrevive de `RestriccionesDeLambda`: un `boolean` en `Sintaxis`.
 |---|---|
 | forma `params -> expr`, parámetros sin tipo, cuerpo sin llaves | gramática |
 | dónde puede aparecer una lambda | gramática (`<Expresion>`, no `<Primario>`) |
-| el parámetro es un identificador pelado | analizador sintáctico (§3.2) |
+| el parámetro es un identificador sin tipo | analizador sintáctico (§3.2) |
 | una lambda parentizada no lleva cola | analizador sintáctico (§3.3) |
 | no `this`, explícito ni implícito | **analizador semántico** |
 | no captura de variables locales ni parámetros | **analizador semántico** |

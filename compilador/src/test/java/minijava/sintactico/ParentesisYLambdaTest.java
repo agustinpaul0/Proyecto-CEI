@@ -107,7 +107,7 @@ class ParentesisYLambdaTest extends BaseDeAnalisis {
         rechazar(dir, envolverEnMetodo(sentencia));
     }
 
-    // El parámetro tiene que ser un identificador pelado. Es lo otro que la
+    // El parámetro tiene que ser un identificador sin tipo. Es lo otro que la
     // gramática no puede expresar: hasta ver el `->` las dos formas son una
     // <Expresion> entre paréntesis.
     @ParameterizedTest
