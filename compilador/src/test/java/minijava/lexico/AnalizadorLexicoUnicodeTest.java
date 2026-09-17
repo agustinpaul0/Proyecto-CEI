@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Tag("lexico")
 class AnalizadorLexicoUnicodeTest extends BaseDeAnalisisLexico {
 
-    // Caracteres Unicode crudos y escapes \\uXXXX, con y sin el logro.
-
     // Logro Unicodes: no-ASCII crudos en literales, y el escape de 4 hex dígitos.
     @Test
     void stringLiteralAceptaCaracteresUnicodeCrudos(@TempDir Path dir) throws Exception {

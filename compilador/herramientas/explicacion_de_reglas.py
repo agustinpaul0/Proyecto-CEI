@@ -179,9 +179,6 @@ EXPLICACION = {
     # --- Expresiones ---
     "Expresion": "El nivel MÁS ALTO de la jerarquía: admite una lambda y admite un `=`. Es el "
                  "equivalente de `Expression` en el JLS.",
-    "ExpresionSinLambda": "La `<Expresion>` de la gramática original: la que NO admite lambda. "
-                          "Es lo que va adentro de un paréntesis común, y es lo que impide que "
-                          "una lambda sea un operando.",
     "RestoExpresion": "INSERTADO. El `= expresión` opcional. Que el lado derecho sea una "
                       "`<ExpresionCondicionalOLambda>` y no una `<Expresion>` es lo que impide "
                       "`a = b = c`, tal cual la gramática original.",
@@ -192,13 +189,10 @@ EXPLICACION = {
     "ExpresionDesdePrimarioOLambda": "INSERTADO. Las seis cabezas de una expresión que puede ser "
                                      "una lambda. Las dos que dan trabajo son `idMetVar` y `(`, "
                                      "que abren tanto una lambda como una expresión normal.",
-    "ExpresionCondicional": "La capa del ternario. Sin el `?`, es un alias de "
-                            "`<ExpresionCompuesta>`: la capa no le saca nada al lenguaje base.",
     "RestoCondicional": "INSERTADO. El `? a : b` opcional. Asociativo a DERECHA, como en Java, "
                         "porque la rama del `:` vuelve a este mismo nivel. El operando del medio "
                         "es una `<Expresion>` completa y el de la derecha no, que es exactamente "
                         "lo que acepta y rechaza javac.",
-    "ExpresionCompuesta": "La capa de los operadores binarios.",
     "RestoExpresionCompuesta": "INSERTADO por la eliminación de recursión a izquierda. Cero o "
                                "más `operador operando`.",
     "OperadorBinario": "Los trece binarios en UN SOLO nivel: MiniJava no define precedencia "
@@ -231,12 +225,15 @@ EXPLICACION = {
     "EncadenadoAtributoOMetodo": "INSERTADO. El `(` decide: con argumentos es una llamada, sin "
                                  "ellos un acceso a atributo.",
     "AccesoArreglo": "Un `[expresión]`. Que el receptor sea realmente un arreglo es semántico.",
-    "Primario": "Un operando atómico. NINGÚN primario puede ser una lambda, y ésa es la "
-                "corrección de precedencia central del logro: una lambda no es un operando.",
+    "Primario": "Un operando atómico. Una lambda SIN paréntesis nunca es un primario —ésa es la "
+                "corrección de precedencia del logro—, pero entre paréntesis sí, porque "
+                "`<Parentizada>` contiene una `<Expresion>` completa.",
     "LlamadaMetodoEstatico": "`Clase.metodo(args)`.",
     "PrimarioSinIdClase": "INSERTADO. Los primarios que no empiezan con `idClase`.",
-    "Parentizada": "Un paréntesis común. Contiene una `<ExpresionSinLambda>`, y eso es lo que "
-                   "impide que `(x -> x)` aparezca donde se espera un operando.",
+    "Parentizada": "Un paréntesis común, con una `<Expresion>` completa adentro —lambda "
+                   "incluida—, tal cual la regla original. Como un `<Primario>` arrastra cadena, "
+                   "de acá sale que `(x -> y).m()` sea válido. Java lo rechaza; se respetó el "
+                   "molde de la gramática base.",
     "AccesoVarOLlamada": "Un `idMetVar` que puede ser una variable o una llamada.",
     "AccesoLlamada": "INSERTADO. El `(args)` opcional que distingue los dos usos.",
     "AccesoLlamadaOLambda": "INSERTADO. La versión que además admite `->`: acá se decide si el "

@@ -868,14 +868,16 @@ El logro que **parece** necesitar lookahead ilimitado y no lo necesita.
 
 **Defectos que crea.** Dos.
 
-El primero es **dónde vive la lambda**. La ubicación que se impone sola es `<Primario>` — la
-lambda aparece donde aparece un valor —, y es la equivocada: `<Primario>` es la ranura de un
-*operando*, y una lambda no puede ser operando de nada. El JLS la define como alternativa de
-`Expression`, el nivel **más alto** de la jerarquía (`Expression: LambdaExpression |
-AssignmentExpression`), nunca como `Primary`. Puesta en `<Primario>`, `1 + x -> x`, `- x -> x`,
-`a == x -> x`, `(x -> x) + 1` y `(x -> x).m()` pasan el análisis, y `javac` rechaza los cinco con
-*«lambda expression not expected here»*. Por la regla «lo no especificado es igual a Java», la
-lambda va en el nivel de `<Expresion>`. El detalle está en
+El primero es **dónde vive la lambda**. La ubicación que se impone sola es `<Primario>` —la lambda
+aparece donde aparece un valor—, y es la equivocada: `<Primario>` es la ranura de un *operando*, y
+una lambda **suelta** no puede serlo. El JLS la define como alternativa de `Expression`, el nivel
+**más alto** de la jerarquía, nunca como `Primary`. Puesta en `<Primario>`, `1 + x -> x`,
+`- x -> x` y `a == x -> x` pasarían el análisis, y `javac` los rechaza con *«lambda expression not
+expected here»*. La lambda va entonces en el nivel de `<Expresion>`.
+
+Eso **no** alcanza para dejar afuera `(x -> x).m()`, y es deliberado: MiniJava base ya define que
+cualquier expresión parentizada es un `<Primario>` y que un `<Primario>` arrastra cadena, así que
+una lambda **entre paréntesis** sí es operando. El detalle está en
 [`decisiones-de-logica.md`](decisiones-de-logica.md#22-dónde-vive-la-lambda).
 
 El segundo es el **lookahead**. El `(` abre tanto una expresión parentizada como la lista de
@@ -899,7 +901,6 @@ decidir sigue siendo un token de lookahead.
 
 ```
 <Expresion> ::= <ExpresionCondicionalOLambda> <RestoExpresion>
-<ExpresionSinLambda> ::= <ExpresionCondicional> <RestoExpresion>
 <RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicionalOLambda> | ε
 
 <ExpresionCondicionalOLambda> ::= <OperadorUnario> <Operando> <ColaTrasOperandoSinAsignacion>
@@ -936,10 +937,11 @@ admite lambda y no admite `=`. Es el operando de los seis `=` de la gramática y
 del ternario. Sólo duplica las **cabezas**; las colas se comparten, igual que en
 `<ExpresionSinIdClase>`.
 
-Del otro lado, ningún `<Primario>` puede ya ser una lambda:
+Del otro lado, ningún `<Primario>` es una lambda **por sí mismo** —pero el paréntesis sigue
+admitiendo una `<Expresion>` completa, tal cual la regla original:
 
 ```
-<Parentizada> ::= ( <ExpresionSinLambda> )
+<Parentizada> ::= ( <Expresion> )
 <AccesoVarOLlamada> ::= idMetVar <AccesoLlamada>
 <AccesoLlamada> ::= <ArgsActuales> | ε
 ```
@@ -953,16 +955,11 @@ Del otro lado, ningún `<Primario>` puede ya ser una lambda:
 > esa expresión tiene que ser un identificador suelto, y eso es un chequeo del semántico. Es la
 > misma clase de permisividad que la gramática original ya tiene con `5 = x;`.
 >
-> Del mismo origen: esa `<Expresion>` entre paréntesis puede ser una lambda, porque
-> `f((x -> x))` es válido en Java. Pero `(x -> x).m()` no lo es — parentizarla no la convierte en
-> operando —, y distinguirlos en la gramática exigiría clonar la cadena de colas en su variante
-> «el contenido del paréntesis fue una lambda».
->
 > En cambio *«no se permite la captura de variables locales, parámetros, ni el uso de `this`»* **no
 > es decidible sintácticamente** —el parser no sabe qué nombres están en alcance— y queda para el
 > analizador semántico, por indicación del profesor.
 >
-> Las dos que sí cierra el analizador están en
+> La única que sí cierra el analizador está en
 > [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 ### 5.7 Inicializacion de Arreglos E2
@@ -1048,7 +1045,7 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades  
 bash herramientas/casos-gramatica.sh                                              # 81/81
 ```
 
-- **112 no terminales, 230 producciones, 60 terminales.**
+- **109 no terminales, 227 producciones, 60 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
 - **81 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
   debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` se rechaza,
@@ -1057,5 +1054,5 @@ bash herramientas/casos-gramatica.sh                                            
   `public private` no, `new int[2]{1,2}` se acepta y `new int[]{1,2}` no.
 
 El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
-**de 60 a 112 no terminales y de 126 a 230 producciones**, sin ninguna ambigüedad sin declarar y sin
+**de 60 a 109 no terminales y de 126 a 227 producciones**, sin ninguna ambigüedad sin declarar y sin
 ningún conflicto de predicción.

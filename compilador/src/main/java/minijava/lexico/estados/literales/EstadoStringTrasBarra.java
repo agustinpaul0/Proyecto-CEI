@@ -35,7 +35,6 @@ public final class EstadoStringTrasBarra implements EstadoLexico {
                     AnclaDeError.INICIO_DEL_LEXEMA);
         }
         char actual = contexto.getCaracterActual();
-        // Sin el logro Unicodes la 'u' es un carácter común como cualquier otro.
         if (actual == 'u') {
             contexto.avanzar();
             return new Continuar(new EstadoMarcadorUnicode(EstadoStringAbierto.INSTANCIA, true));

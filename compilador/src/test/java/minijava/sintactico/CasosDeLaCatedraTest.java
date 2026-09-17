@@ -56,7 +56,7 @@ class CasosDeLaCatedraTest {
 
     // El primero, y no el último: con Modo Pánico el análisis sigue después del
     // primer error y puede reportar los que arrastra. El que la cátedra declara
-    // es el primero, y tiene que ser el mismo esté el logro prendido o apagado.
+    // es el primero.
     private String primerCodigo(List<String> salida) {
         return salida.stream().filter(linea -> linea.startsWith("[")).findFirst()
                 .orElseThrow(() -> new AssertionError("no se emitio ningun codigo: " + salida));

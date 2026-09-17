@@ -140,14 +140,14 @@ class AnalizadorSintacticoTest extends BaseDeAnalisis {
         aceptar(dir, "class C1 extends " + "Lista<".repeat(50) + "Hoja" + ">".repeat(50) + " {}");
     }
 
-    // Un solo nivel de genérico existe con el logro y sin él: el logro agrega el
-    // anidamiento, no la genericidad.
+    // Lo que el logro agrega es el ANIDAMIENTO: un solo nivel ya venía en la
+    // gramática de la cátedra.
     @Test
-    void unGenericoDeUnSoloNivelSeAceptaConElLogroYSinEl(@TempDir Path dir) {
+    void unGenericoDeUnSoloNivelSeAcepta(@TempDir Path dir) {
         aceptar(dir, "class C1 extends Base<Otra> {}");
     }
 
-    // La clase sigue limitada a UN parámetro de tipo, también con el logro.
+    // La clase sigue limitada a UN parámetro de tipo: el logro no toca eso.
     @Test
     void laClaseSigueLimitadaAUnUnicoParametroDeTipo(@TempDir Path dir) {
         ExcepcionSintactica excepcion = rechazar(dir, "class C1<T,U> {}");

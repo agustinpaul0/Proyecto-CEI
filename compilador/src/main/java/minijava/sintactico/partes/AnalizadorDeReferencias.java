@@ -74,15 +74,15 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         }
     }
 
-    // Parentizada -> ( ExpresionSinLambda )
+    // Parentizada -> ( Expresion )
     //
-    // El contenido no puede ser una lambda: `(x -> x) + 1` y `(x -> x).m()` son
-    // «lambda expression not expected here» en Java. La lambda parentizada que sí
-    // es válida —cuando ella misma es toda la expresión— la cubre
-    // ParentizadaOLambda, en el nivel más alto.
+    // El contenido es una Expresion completa, lambda incluida, tal cual la regla
+    // original de la cátedra. Como un Primario arrastra cadena, de ahí sale que
+    // `(x -> y).m()` y `(x -> y) + 1` sean válidos. Java los rechaza; se eligió
+    // respetar el molde de la gramática base. Ver decisiones-de-logica.md §2.2.
     private void parentizada() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
-        sintaxis.expresiones().expresionSinLambda();
+        sintaxis.expresiones().expresion();
         match(TipoDeToken.PAREN_C);
     }
 

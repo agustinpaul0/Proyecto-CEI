@@ -122,39 +122,34 @@ tokens consumidos (`EntradaDeTokens.consumidos()`).
 Del segundo parámetro en adelante la restricción la impone la gramática, que ahí sí exige
 `idMetVar` (`<RestoDeParentesis> ::= , <ListaParametrosLambda> ) -> <CuerpoLambda>`).
 
-### 3.3. Lo que se queda: una lambda parentizada no lleva cola de expresión
+### 3.3. Lo que NO se controla: la lambda parentizada con cola
 
-Una lambda no es un operando: eso lo impone la gramática, que la produce en el nivel de
-`<Expresion>` y no en `<Primario>` ([`decisiones-de-logica.md`](decisiones-de-logica.md)). Pero
-queda un hueco: el contenido de `<ContenidoDeParentesis>` es una `<Expresion>`, y **tiene que
-serlo**, porque `f((x -> x))` es válido en Java. Entonces `(x -> x).m()` y `(x -> x) + 1` también
-atraviesan la gramática, y `javac` los rechaza con *«lambda expression not expected here»*.
+`(x -> y).m()` **se acepta**, y `javac` lo rechaza con *«lambda expression not expected here»*.
+Es deliberado.
 
-Cerrarlo en la gramática exigiría clonar la cadena de colas en su variante «el contenido del
-paréntesis fue una lambda» —unos siete no terminales—, así que lo cierra el analizador: recuerda si
-lo que acaba de leer entre paréntesis fue una lambda y, si lo fue, exige que no siga ninguno de los
-tokens que abren una cola (`.`, `[`, `++`, `--`, los trece binarios, `?`).
+MiniJava base ya define que cualquier expresión parentizada es un `<Primario>`
+(`<ExpresionParentizada> ::= ( <Expresion> )`) y que un `<Primario>` arrastra cadena
+(`<Referencia> ::= <Referencia> <MetodoEncadenado>`). Si el logro agrega la lambda como alternativa
+de `<Expresion>` —que es el único no terminal de expresión que la gramática tiene—, `(x -> y).m()`
+**se deriva solo**, sin tocar ninguna regla. Bloquearlo obligaría a achicar
+`<ExpresionParentizada>`, o sea a modificar algo que la especificación ya daba.
 
-Lo que el indicador dice es si la **raíz** de esa expresión es una lambda, no si se vio una lambda
-en algún lado. La diferencia importa:
+El criterio del proyecto es no despegarse de lo que la base ya dictaminó, y sólo ir a Java donde la
+base no dice nada. Acá dice, así que gana la base.
 
-| Entrada | Raíz | Veredicto |
+Lo que **sí** sigue sin ser operando es la lambda **sin paréntesis**: `1 + x -> x` no deriva, porque
+la lambda se produce en el nivel más alto de la jerarquía y nunca en `<Primario>`.
+
+| Entrada | Veredicto | Java |
 |---|---|---|
-| `f((x -> x))` | — | acepta: la lambda parentizada es toda la expresión |
-| `(x -> x).m()` | lambda | **rechaza** |
-| `((x -> x)).m()` | lambda, con paréntesis de más | **rechaza** |
-| `(a = x -> x).m()` | asignación | acepta — `javac` acepta la forma |
-| `(a ? b : x -> x).m()` | ternario | acepta — ver el límite de abajo |
+| `1 + x -> x` | **rechaza** | error |
+| `- x -> x` | **rechaza** | error |
+| `(x -> y).m()` | acepta | error |
+| `(x -> y) + 1` | acepta | error |
+| `1 + (x -> y)` | acepta | error |
+| `f((x -> y))` | acepta | compila |
 
-Por eso las dos producciones que pueden poner otra cosa en la raíz por encima de una lambda
-—`RestoExpresion` con su `=` y `RestoCondicional` con su `?`— apagan el indicador al terminar. Es
-lo único que sobrevive de `RestriccionesDeLambda`: un `boolean` en `Sintaxis`.
-
-> **Límite declarado.** `javac` igual rechaza `(a ? b : x -> x).m()`, pero no por la forma: un
-> ternario con una rama lambda es una *poly expression* (JLS 15.25) y eso lo decide la
-> **clasificación** de la expresión, que depende de sus operandos y de su tipo destino. Es
-> exactamente la clase de chequeo que este proyecto delega al analizador semántico, así que acá se
-> acepta y queda anotado.
+Queda anotado para confirmar con el profesor.
 
 ### 3.4. El resumen de la frontera
 
@@ -163,7 +158,6 @@ lo único que sobrevive de `RestriccionesDeLambda`: un `boolean` en `Sintaxis`.
 | forma `params -> expr`, parámetros sin tipo, cuerpo sin llaves | gramática |
 | dónde puede aparecer una lambda | gramática (`<Expresion>`, no `<Primario>`) |
 | el parámetro es un identificador sin tipo | analizador sintáctico (§3.2) |
-| una lambda parentizada no lleva cola | analizador sintáctico (§3.3) |
 | no `this`, explícito ni implícito | **analizador semántico** |
 | no captura de variables locales ni parámetros | **analizador semántico** |
 | parámetros sin nombre repetido | **analizador semántico** |

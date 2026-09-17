@@ -7,10 +7,10 @@ import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeSentencias;
 import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
 
-// Bloques y sentencias. Con el logro de variables locales clásicas una
-// declaración puede empezar con idClase (`C x;`) y una sentencia-expresión
-// también (`C.m();`): ese idClase se factoriza y el desempate lo hace el token
-// siguiente, donde `.` es expresión y cualquier otro es declaración.
+// Bloques y sentencias. Una declaración local puede empezar con idClase
+// (`C x;`) y una sentencia-expresión también (`C.m();`): ese idClase se
+// factoriza y el desempate lo hace el token siguiente, donde `.` es expresión y
+// cualquier otro es declaración.
 public final class AnalizadorDeSentencias extends ParteDelAnalizador {
 
     public AnalizadorDeSentencias(Sintaxis sintaxis) {

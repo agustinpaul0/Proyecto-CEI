@@ -29,17 +29,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         restoExpresion();
     }
 
-    // ExpresionSinLambda -> ExpresionCondicional RestoExpresion
-    //
-    // La Expresion de la gramática original: la que NO admite una lambda en la
-    // raíz. Va en los dos lugares donde Java tampoco la admite: adentro de una
-    // parentizada que después va a ser operando, y como sentencia-expresión
-    // —`x -> x;` es «not a statement» en Java—.
-    public void expresionSinLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        expresionCondicional();
-        restoExpresion();
-    }
-
     // RestoExpresion -> OperadorAsignacion ExpresionCondicionalOLambda | EPSILON
     // OperadorAsignacion -> =
     //
@@ -50,10 +39,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
             expresionCondicionalOLambda();
-            // Con un `=` en la raíz la expresión es una asignación, no la lambda
-            // que acaba de parsearse como lado derecho: `(a = x -> x).m()` es
-            // legal en Java.
-            sintaxis.anotarQueNoEsLambda();
         } else {
             // RestoExpresion -> EPSILON
         }
@@ -67,7 +52,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // y no admite `=` en la raíz. Es el operando de los seis `=` y el tercer
     // operando del ternario. Sólo duplica las CABEZAS; las colas se comparten.
     public void expresionCondicionalOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        sintaxis.anotarQueNoEsLambda();
         if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO)) {
             operadorUnario();
             operando();
@@ -121,12 +105,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         }
     }
 
-    // ExpresionCondicional -> ExpresionCompuesta RestoCondicional
-    public void expresionCondicional() throws ExcepcionLexica, ExcepcionSintactica {
-        expresionCompuesta();
-        restoCondicional();
-    }
-
     // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
     // RestoCondicional -> EPSILON
     //
@@ -134,25 +112,15 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // hace asociativo a derecha. El operando del medio es una Expresion completa,
     // como en el JLS 15.25: `a ? b = 1 : c` es válido, `a ? b : c = d` no, y
     // `a ? b : x -> x` sí —la producción del JLS es `? Expression : LambdaExpression`—.
-    // Con el logro apagado esta capa desaparece sin dejar rastro.
     private void restoCondicional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
             match(TipoDeToken.SIGNO_PREGUNTA);
             expresion();
             match(TipoDeToken.DOS_PUNTOS);
             expresionCondicionalOLambda();
-            // Ídem: con un `?` en la raíz la expresión es un ternario, aunque una
-            // de sus ramas sea una lambda.
-            sintaxis.anotarQueNoEsLambda();
         } else {
             // RestoCondicional -> EPSILON
         }
-    }
-
-    // ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
-    private void expresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
-        expresionBasica();
-        restoExpresionCompuesta();
     }
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta

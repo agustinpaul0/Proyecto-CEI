@@ -66,7 +66,7 @@ public final class PrimerosDeReferencias {
     // PrimarioSinIdClase -> Creacion
     public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_CREACION = de(TipoDeToken.PR_NEW);
 
-    // Parentizada -> ( ExpresionSinLambda )
+    // Parentizada -> ( Expresion )
     public static final ConjuntoDePrimeros PARENTIZADA_PAREN_A = de(TipoDeToken.PAREN_A);
 
     // AccesoVarOLlamada -> idMetVar AccesoLlamada

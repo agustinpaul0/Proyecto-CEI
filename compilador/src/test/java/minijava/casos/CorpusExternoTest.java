@@ -42,22 +42,10 @@ class CorpusExternoTest {
             Path.of("..", "vendor", "tests", "resources", "parser", "corpora");
     private static final List<String> GENERADOS = List.of("base", "lambdas", "localvar");
 
-    // Las cinco familias en que las dos gramáticas difieren, cada una verificada a
-    // mano. Un caso que cae en una de ellas no se compara: lo que este test prueba
-    // es que NO aparezca una sexta.
+    // Las cuatro familias en que las dos gramáticas difieren, cada una verificada
+    // a mano. Un caso que cae en una de ellas no se compara: lo que este test
+    // prueba es que NO aparezca una quinta.
     private enum Divergencia {
-
-        // `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]`. NO es un defecto de ninguna
-        // de las dos: el enunciado del logro admite dos lecturas.
-        //
-        // MiniJava base ya define que cualquier expresión parentizada es un
-        // <Primario> y que un <Primario> arrastra cadena, así que agregar la
-        // lambda como alternativa de <Expresion> hace que `(x -> y).m()` se derive
-        // solo. Acá la lambda se produce en un nivel NUEVO por encima de ese
-        // <Expresion>, porque el logro dice «sintaxis similar a la utilizada en
-        // Java» y javac rechaza los tres con «lambda expression not expected
-        // here». La discusión completa está en el informe, §11.8.
-        LAMBDA_COMO_OPERANDO,
 
         // `"a\\"`. Aspectos Léxicos §2.3.3 da una regla POSICIONAL —la comilla de
         // cierre nunca está antecedida por `\`— y no una de apareamiento, así que
@@ -66,12 +54,15 @@ class CorpusExternoTest {
         // documentacion/lexico/decisiones-de-logica.md §3.5.
         STRING_TERMINADO_EN_BARRA,
 
-        // `new Clase<Arg>()`. La gramática de la cátedra lo genera
-        // (`LlamadaConstructor -> new TipoReferencia ArgsActuales`, con
-        // `TipoReferencia -> idClase TipoGenericoOpcional`), y su gramática lo
-        // rechaza. Ojo con la notación: `C` de una sola letra es un idGen y no un
-        // idClase, así que `new C<T>()` lo rechazan las dos.
-        CREACION_GENERICA_CON_ARGUMENTO,
+        // `new Clase<Arg>()` y `new Clase<>()`. El primero lo genera la gramática
+        // de la cátedra (`LlamadaConstructor -> new TipoReferencia ArgsActuales`,
+        // con `TipoReferencia -> idClase TipoGenericoOpcional`); el segundo lo
+        // habilita el logro de genericidad, que sólo admite el diamante al
+        // instanciar. La otra gramática rechaza los dos.
+        //
+        // Ojo con la notación: `C` de una sola letra es un idGen y no un idClase,
+        // así que `new C<T>()` lo rechazan las dos implementaciones.
+        CREACION_GENERICA,
 
         // Sus corpus `base` y `localvar` se generaron sin el logro de Visibilidad
         // Mejorada, así que para él `public` sólo puede encabezar un constructor:
@@ -92,8 +83,10 @@ class CorpusExternoTest {
     // clase, así que no es esta familia —lo rechazan las dos gramáticas—. Adentro
     // de los ángulos vale idGen o idClase, que es lo que dice la regla original
     // (`InstanciadoOParametrico -> idGen | idClase`).
+    // El nombre de la clase es un idClase: mayúscula MÁS de un carácter. Entre los
+    // ángulos, un idGen, un idClase, o nada —el diamante—.
     private static final Pattern CREACION_GENERICA =
-            Pattern.compile("new\\s+[A-Z]\\w+\\s*<\\s*[A-Z]\\w*\\s*>\\s*\\(");
+            Pattern.compile("new\\s+[A-Z]\\w+\\s*<\\s*(?:[A-Z]\\w*\\s*)?>\\s*\\(");
     // Las dos formas que el logro de Visibilidad Mejorada habilita y la otra
     // gramática no tiene: un miembro con modificador, y un constructor sin `public`.
     private static final Pattern MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC =
@@ -160,14 +153,11 @@ class CorpusExternoTest {
     }
 
     private static Divergencia divergenciaDe(String fuente, String salida) {
-        if (salida.contains("una lambda no puede ser operando")) {
-            return Divergencia.LAMBDA_COMO_OPERANDO;
-        }
         if (BARRA_ANTES_DE_CERRAR.matcher(fuente).find()) {
             return Divergencia.STRING_TERMINADO_EN_BARRA;
         }
         if (CREACION_GENERICA.matcher(fuente).find()) {
-            return Divergencia.CREACION_GENERICA_CON_ARGUMENTO;
+            return Divergencia.CREACION_GENERICA;
         }
         if (salida.contains("[Error:")) {
             return Divergencia.RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN;

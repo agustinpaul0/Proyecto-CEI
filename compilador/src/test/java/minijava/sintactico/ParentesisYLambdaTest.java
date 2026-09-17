@@ -18,9 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // analizador diverge de otras implementaciones de MiniJava: la mayoría produce la
 // lambda en <Primario>, y entonces una lambda parentizada puede ser operando.
 //
-// Acá la lambda vive en el nivel de <Expresion>, como el JLS, así que NO puede
-// serlo. Cada rechazo de abajo está verificado contra javac, que responde
-// «lambda expression not expected here».
+// Una lambda SIN paréntesis no es operando: vive en el nivel de <Expresion> y
+// `1 + x -> x` no deriva. Entre paréntesis SÍ lo es, porque MiniJava base define
+// `ExpresionParentizada -> ( Expresion )` y `Primario -> ExpresionParentizada`, y
+// un Primario arrastra cadena. Java rechaza eso último con «lambda expression not
+// expected here»; se eligió respetar el molde de la base.
 @Tag("sintactico")
 class ParentesisYLambdaTest extends BaseDeAnalisis {
 
@@ -46,10 +48,8 @@ class ParentesisYLambdaTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
-    // ------------------------------------------- la lambda como operando: no ---
-    // `f((x -> x))` es válido en Java y `(x -> x).m()` no. El paréntesis no la
-    // convierte en operando, y la gramática no puede distinguir los dos casos sin
-    // clonar la cadena de colas entera, así que lo cierra el analizador.
+    // ------------------------------------ entre paréntesis SÍ es un operando ---
+    // Consecuencia directa de la gramática base. Java rechaza todos éstos.
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -63,25 +63,24 @@ class ParentesisYLambdaTest extends BaseDeAnalisis {
             "var a = ((x -> y)).m();",
             "var a = (((x -> y))).m();",
             "var a = (x -> y)++;",
-    })
-    void unaLambdaParentizadaNoPuedeSerOperando(String sentencia, @TempDir Path dir) {
-        var excepcion = rechazar(dir, envolverEnMetodo(sentencia));
-
-        assertTrue(excepcion.getMessage().contains(
-                        "una lambda no puede ser operando de " + excepcion.getLexemaOfensivo()),
-                sentencia + " -> " + excepcion.getMessage());
-    }
-
-    // La raíz importa, no si se vio una lambda en algún lado: con un `=` o un `?`
-    // por encima, la raíz ya no es la lambda y la cola vuelve a ser válida.
-    @ParameterizedTest
-    @ValueSource(strings = {
+            "var a = 1 + (x -> y);",
+            "var a = -(x -> y);",
             "var a = (b = x -> y).m();",
             "var a = (c ? d : x -> y).m();",
-            "var a = (b = x -> y) + 1;",
     })
-    void conOtraCosaEnLaRaizLaColaVuelveAserValida(String sentencia, @TempDir Path dir) {
+    void unaLambdaParentizadaEsUnOperando(String sentencia, @TempDir Path dir) {
         aceptar(dir, envolverEnMetodo(sentencia));
+    }
+
+    // Sin paréntesis sigue sin serlo: la lambda se produce en el nivel más alto.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "var a = 1 + x -> y;",
+            "var a = - x -> y;",
+            "var a = a == x -> y;",
+    })
+    void unaLambdaSinParentesisNoEsOperando(String sentencia, @TempDir Path dir) {
+        rechazar(dir, envolverEnMetodo(sentencia));
     }
 
     // ------------------------------------------ paréntesis: lista o expresión ---

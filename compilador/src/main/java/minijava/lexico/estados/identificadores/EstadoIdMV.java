@@ -11,9 +11,6 @@ import minijava.lexico.tokens.Token;
 
 // Terminal: idMV, o la palabra clave si el lexema figura en la tabla de lexemas.
 // Consultarla entera es seguro: un lexema de identificador nunca puede ser "(" ni ">=".
-//
-// `for` y `private` son palabras reservadas sólo con su logro de la Etapa 2
-// prendido; apagado vuelven a ser idMV, que es lo que reconocía la Etapa 1.
 public final class EstadoIdMV implements EstadoLexico {
 
     public static final EstadoIdMV INSTANCIA = new EstadoIdMV();

@@ -135,10 +135,8 @@ def lexer_antlr():
     # LÉXICOS y ya los cubre el corpus escrito a mano.
     lineas.append("fragment CHAR_COMUN : [\\u0020-\\u0026\\u0028-\\u005B\\u005D-\\u007E] ;")
     lineas.append("fragment STRING_COMUN : [\\u0020-\\u0021\\u0023-\\u005B\\u005D-\\u007E] ;")
-    # Sin `\\uXXXX`: el escape Unicode depende del logro LÉXICO `unicodes`, que no
-    # es de esta etapa. Con el logro apagado `'\\u0041'` es un char de seis
-    # caracteres, o sea un error léxico, y el corpus sintáctico tiene que valer en
-    # cualquier configuración. Los escapes Unicode los cubre el corpus léxico.
+    # Sin `\\uXXXX`: el escape Unicode es un asunto LÉXICO y no de esta etapa. Lo
+    # cubre entero el corpus léxico.
     lineas.append("fragment ESCAPE : '\\\\' [btnfr\"'\\\\] ;")
     lineas.append("fragment EXPONENTE : [eE] [+-]? DIGITO+ ;")
     lineas.append("fragment SUFIJO : [fFdD] ;")

@@ -950,16 +950,11 @@ Hasta ver el \tl{->} el contenido del paréntesis es una \nt{Expresion} en los d
 \emph{la misma producción} genera la lambda válida y la inválida. El analizador lee la expresión y
 recuerda si consumió exactamente un \tl{idMetVar}. Del segundo parámetro en adelante sí lo impone
 la gramática, porque ahí ya se sabe que es una lista. \\[4pt]
-Una lambda parentizada no lleva cola ---\texttt{(x -> y).m()} se rechaza--- &
-\nt{ContenidoDeParentesis} tiene que admitir una lambda, porque \texttt{f((x -> y))} es válido.
-Distinguir los dos casos en la gramática exigiría clonar la cadena entera de colas en una variante
-«el contenido fue una lambda»: unos siete no terminales nuevos, que es justamente lo que Clase 4,
-slide 40, desaconseja. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-O sea: la \emph{ambigüedad} está resuelta en la gramática y la \emph{permisividad que queda} la
+O sea: la \emph{ambigüedad} está resuelta en la gramática y la única permisividad que queda la
 cierra el analizador, que es la segunda de las dos vías que autoriza Clase 4, slide 49 --- la misma
 con la que se resuelve el \emph{dangling else}.
 \end{decision}
@@ -970,7 +965,6 @@ JLS, y donde se factorizan las dos cabezas ambiguas:
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
-\regla{ExpresionSinLambda}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
 \regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
 \regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}
@@ -990,16 +984,66 @@ JLS, y donde se factorizan las dos cabezas ambiguas:
 \regla{CuerpoLambda}{\nt{Expresion}}
 \end{producciones}
 
-Ningún \nt{Primario} puede ya ser una lambda: \nt{Parentizada} \deriva{} \tl{(}
-\nt{ExpresionSinLambda} \tl{)}, y \nt{AccesoVarOLlamada} perdió la alternativa del \tl{->}. Los
-seis lugares donde el JLS sí admite una lambda ---argumento, índice de arreglo, las dos ramas del
-ternario, lado derecho de un \tl{=} y cuerpo de otra lambda--- la siguen admitiendo, porque los
-seis pasan por \nt{Expresion} o por \nt{ExpresionCondicionalOLambda}.
+Ningún \nt{Primario} es una lambda \emph{por sí mismo}: \nt{AccesoVarOLlamada} perdió la
+alternativa del \tl{->}, y por eso \texttt{1 + x -> x} no deriva. Pero \nt{Parentizada} \deriva{}
+\tl{(} \nt{Expresion} \tl{)} sigue admitiendo una lambda adentro, tal cual la regla original de la
+cátedra, así que \texttt{(x -> y).m()} sí ---ver la decisión de más abajo---. Los seis lugares donde
+el JLS admite una lambda ---argumento, índice de arreglo, las dos ramas del ternario, lado derecho
+de un \tl{=} y cuerpo de otra lambda--- la siguen admitiendo, porque los seis pasan por
+\nt{Expresion} o por \nt{ExpresionCondicionalOLambda}.
 \nt{CuerpoLambda} \deriva{} \nt{Expresion} es la lectura literal de «el cuerpo debe estar formado
 por una única expresión, no se permiten cuerpos delimitados por llaves»: como no hay alternativa
 con \tl{\{}, la gramática \textbf{rechaza} \texttt{x -> \{ \dots \}} sin ningún chequeo adicional.
 
 Requiere el token \tl{->}, que no existe en el léxico de la Etapa 1.
+
+\begin{decision}{una lambda entre paréntesis SÍ es un operando}
+\label{sec:lambda-parentizada}
+Es la decisión más discutible del logro, y va con su fundamento porque diverge de Java.
+
+\textsc{MiniJava} base ya define dos cosas:
+
+\begin{producciones}
+\regla{Primario}{\nt{ExpresionParentizada}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
+\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
+\end{producciones}
+
+Cualquier expresión parentizada es un \nt{Primario}, y un \nt{Primario} arrastra cadena. Como el
+logro agrega la lambda a \nt{Expresion} ---que es el único no terminal de expresión que la gramática
+tiene---, \texttt{(x -> y).m()} \textbf{se deriva solo}, sin tocar ninguna regla.
+
+\texttt{javac} lo rechaza: \emph{«lambda expression not expected here»}, porque en Java la lambda es
+alternativa de \emph{Expression} y nunca un \emph{Primary}. Bloquearlo acá obligaría a achicar
+\nt{ExpresionParentizada}, o sea a \textbf{modificar una regla que la especificación ya daba}.
+
+\paso{El criterio} Lo que \textsc{MiniJava} base define, manda; a Java se va sólo donde la base no
+dice nada. Acá dice, así que se respeta el molde de la base y se acepta.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Veredicto} & \textbf{Java} \\
+\midrule
+\texttt{1 + x -> x}      & \textbf{rechaza} & error \\
+\texttt{- x -> x}        & \textbf{rechaza} & error \\
+\texttt{(x -> y).m()}    & acepta & error \\
+\texttt{(x -> y) + 1}    & acepta & error \\
+\texttt{1 + (x -> y)}    & acepta & error \\
+\texttt{f((x -> y))}     & acepta & compila \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La lambda \emph{sin} paréntesis sigue sin ser operando, porque se produce en el nivel más alto y
+nunca en \nt{Primario}: esa parte de la corrección de precedencia se mantiene.
+
+\paso{Lo que se simplificó} Con esta lectura desaparecen tres no terminales
+---\nt{ExpresionSinLambda} y las dos capas espejo que sostenía---, el chequeo que el analizador
+hacía sobre la cola, y el indicador de estado que lo alimentaba. El analizador quedó sin ningún
+resto de la maquinaria que verificaba restricciones de lambda: lo único que le queda es comprobar
+que el primer parámetro sea un identificador sin tipo.
+\end{decision}
 
 \begin{decision}{permisividad declarada de las lambdas}
 En \texttt{( a , b ) -> x} el \texttt{a} se deriva como \nt{Expresion}, no como parámetro, de modo
@@ -1066,7 +1110,6 @@ parámetros sin tipo                                 & gramática \\
 cuerpo de una única expresión, sin llaves           & gramática \\
 dónde puede aparecer una lambda                     & gramática: \nt{Expresion}, no \nt{Primario} \\
 el parámetro es un identificador sin tipo           & analizador sintáctico \\
-una lambda parentizada no lleva cola                & analizador sintáctico \\
 no \tl{this}, explícito ni implícito                & \textbf{analizador semántico} \\
 no captura de variables locales ni parámetros       & \textbf{analizador semántico} \\
 parámetros sin nombre repetido                      & \textbf{analizador semántico} \\
@@ -1095,9 +1138,9 @@ Con ejemplos concretos, que es lo que importa a la hora de leer la salida del co
 \texttt{(int x) -> x}            & \textbf{rechaza} & el parámetro no lleva tipo \\
 \texttt{(a + 1) -> a}            & \textbf{rechaza} & el parámetro no es un identificador sin tipo \\
 \texttt{((a)) -> a}              & \textbf{rechaza} & parentizar de más no es parentizar el parámetro \\
-\texttt{1 + x -> x}              & \textbf{rechaza} & la lambda no es operando \\
-\texttt{(x -> x).m()}            & \textbf{rechaza} & parentizarla no la convierte en operando \\
-\texttt{(x -> x) + 1}            & \textbf{rechaza} & ídem \\
+\texttt{1 + x -> x}              & \textbf{rechaza} & sin paréntesis no es operando \\
+\texttt{(x -> x).m()}            & acepta & entre paréntesis sí lo es: sale de la base \\
+\texttt{(x -> x) + 1}            & acepta & ídem \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1343,7 +1386,7 @@ analizador no se toma \textbf{ninguna} libertad respecto del esquema.
 
 \subsection{Las clases}
 
-El analizador tiene 111 no terminales. Escribirlos en una sola clase daba 1176 líneas y 89 métodos,
+El analizador tiene 109 no terminales. Escribirlos en una sola clase daba 1176 líneas y 89 métodos,
 así que están repartidos en \textbf{una clase por sección de la gramática}: el archivo de código y
 la sección del \texttt{.g} se leen uno al lado del otro.
 
@@ -1396,13 +1439,11 @@ El Esquema Simple tiene \textbf{exactamente dos} puntos donde puede fallar, y no
 En el primer caso «lo que se esperaba» es un terminal único; en el segundo, la lista completa de
 los terminales que podrían haber seguido, que es exactamente el conjunto de Primeros consultado.
 
-A esos se suman los \textbf{cuatro chequeos del logro MiniLambdas} que una gramática libre de
-contexto no puede expresar (sección~\ref{sec:decisiones}): el \texttt{this} explícito dentro de una
-lambda, la captura de una variable que no es parámetro, que un parámetro sea un identificador
-sin tipo y no se repita, y que una lambda parentizada no lleve cola de expresión. Rechazan con el
-mismo código \texttt{[Error:lexema|línea]} y, como ahí «lo esperado» no es un conjunto de tokens
-sino una regla, declaran el motivo en prosa ---\emph{«no se permite this dentro de una lambda»},
-\emph{«una lambda no puede ser operando de .»}--- sin perder la mitad de «qué se encontró».
+A ésos se suma el \textbf{único chequeo del logro MiniLambdas} que una gramática libre de contexto
+no puede expresar (sección~\ref{sec:decisiones}): que el primer parámetro sea un identificador sin
+tipo. Rechaza con el mismo código \texttt{[Error:lexema|línea]} y, como ahí «lo esperado» no es un
+conjunto de tokens sino una regla, declara el motivo en prosa ---\emph{«un parametro de lambda tiene
+que ser un identificador»}--- sin perder la mitad de «qué se encontró».
 
 Y una aclaración que conviene dejar escrita: los errores \textbf{léxicos} los sigue detectando y
 reportando el analizador de la Etapa 1, con su propio formato. El sintáctico no los toca.
@@ -1478,7 +1519,7 @@ $ python3 herramientas/primeros.py gramatica/minijava-base.g
 NO ES LL(1): 16 conflicto(s)
 
 $ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g
---- 112 no terminales, 230 producciones, 60 terminales ---
+--- 109 no terminales, 227 producciones, 60 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
 \end{consola}
 
@@ -1621,7 +1662,7 @@ gramática y no comparten una línea de código:
 JavaCC avisa \texttt{Choice conflict involving two expansions} cuando dos alternativas de un mismo
 no terminal empiezan con el mismo token. Sobre la gramática final \textbf{no emite ninguno}, lo que
 es una confirmación independiente ---de una herramienta que calculó los conjuntos por su cuenta
-sobre las 230 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
+sobre las 227 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
 
 \textbf{No confirma la condición fuerte.} Verificado con dos gramáticas de control: ante
 \nt{S} $\to$ \tl{a} \tl{b} $\mid$ \tl{a} \tl{c} avisa; ante \nt{Opt} $\to$ \tl{b} $\mid$
@@ -1677,69 +1718,42 @@ contrastar su analizador. No son material de este trabajo: acá sólo se corrió
 ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
 \end{decision}
 
-\textbf{26.291 coinciden exactamente.} Los 3.709 restantes caen en cinco familias, todas declaradas
-y verificadas a mano:
+\textbf{27.793 coinciden exactamente.} Los 2.207 restantes caen en cuatro familias, todas
+declaradas y verificadas a mano:
 
 \begin{center}
-\begin{tabular}{@{}p{0.32\linewidth}rp{0.54\linewidth}@{}}
+\begin{tabular}{@{}p{0.30\linewidth}rp{0.56\linewidth}@{}}
 \toprule
 \textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
 \midrule
-\texttt{(x -> y).m()}, \texttt{(x -> y) + 1}, \texttt{(x -> y)[0]} & 2434 &
-\textbf{Dos lecturas del enunciado del logro}, y las dos defendibles. Ver la discusión de abajo. \\[4pt]
-\texttt{"a\textbackslash\textbackslash"} & 987 &
+\texttt{"a\textbackslash\textbackslash"} & 1852 &
 \textbf{Este trabajo}, por lectura de la especificación: \emph{Aspectos Léxicos} §2.3.3 da una regla
 \textbf{posicional} ---la comilla de cierre nunca está antecedida por \texttt{\textbackslash}--- y no
 una de apareamiento. Su generador asume la semántica de Java. \\[4pt]
-\texttt{new Clase<Arg>()} & 162 &
-\textbf{Este trabajo.} La gramática de la cátedra lo genera
-(\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}, con
-\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}) y la suya lo rechaza. \\[4pt]
-\texttt{public void m()\{\}}, constructor sin \tl{public} & 6 &
+\texttt{new Clase<Arg>()} y \texttt{new Clase<>()} & 255 &
+\textbf{Este trabajo.} El primero lo genera la gramática de la cátedra
+(\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}); el segundo lo habilita
+el logro de genericidad, que admite el diamante al instanciar. \\[4pt]
+\texttt{public void m()\{\}}, constructor sin \tl{public} & 7 &
 \textbf{Ninguno}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
-Los dos rechazan, en distinto token & 120 &
+Los dos rechazan, en distinto token & 93 &
 \textbf{Ninguno}: su gramática cubre menos construcciones, así que el primer token que no encaja es
 otro. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\begin{decision}{la lambda parentizada con cola: dos lecturas del mismo enunciado}
-La familia más grande no es un defecto de ninguno de los dos analizadores: es que el enunciado del
-logro admite dos lecturas, y cada uno tomó una.
-
-\textbf{La lectura de la otra implementación.} \textsc{MiniJava} base ya define que \emph{cualquier}
-expresión parentizada es un \nt{Primario}, y que un \nt{Primario} arrastra cadena:
-
-\begin{producciones}
-\regla{Primario}{\nt{ExpresionParentizada}}
-\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
-\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
-\end{producciones}
-
-Si el logro agrega la lambda como alternativa de \nt{Expresion} ---que es el único no terminal de
-expresión que la gramática tiene---, entonces \texttt{(x -> y).m()} \textbf{se deriva solo}, sin
-tocar ninguna regla. Restringirlo obliga a achicar \nt{ExpresionParentizada}, o sea a modificar una
-regla que la especificación ya daba.
-
-\textbf{La lectura de este trabajo.} El logro dice \emph{«con una sintaxis similar a la utilizada en
-Java»}, y en Java la lambda no es un \emph{Primary}: el JLS la define como alternativa de
-\emph{Expression}, el nivel más alto. \texttt{javac} rechaza los tres casos con \emph{«lambda
-expression not expected here»}. Como \textsc{MiniJava} base no tiene lambdas, dónde va en la
-jerarquía es un hueco, y la regla de la cátedra para los huecos es «como en Java». Acá la lambda se
-produce en un nivel \textbf{nuevo, por encima} del \nt{Expresion} original, así que
-\nt{ExpresionParentizada} sigue conteniendo exactamente lo que contenía ---lo que cambia es que hay
-un nivel más arriba que ella no alcanza---.
-
-\textbf{Cuál pesa más} depende de si se considera que la ubicación de la lambda es un hueco de la
-especificación (y entonces manda Java) o una consecuencia mecánica de reglas que la especificación
-ya fijó (y entonces manda la base). Este trabajo tomó la primera; queda declarado que la segunda es
-defendible.
+\begin{decision}{la familia más grande desapareció}
+Hasta hace poco había una quinta familia, y era la mayor: 2.434 casos de \texttt{(x -> y).m()},
+\texttt{(x -> y) + 1} y \texttt{(x -> y)[0]}, que esta implementación rechazaba siguiendo al JLS y
+la otra aceptaba. Se revisó el argumento y \textbf{la otra tenía razón}: \textsc{MiniJava} base ya
+define que cualquier expresión parentizada es un \nt{Primario} y que un \nt{Primario} arrastra
+cadena, así que esos tres se derivan solos. Se corrigió ---la discusión está en
+la sección~\ref{sec:logros}--- y con eso las coincidencias pasaron de 26.291 a 27.793.
 \end{decision}
-Las cinco están declaradas en el test, que falla si aparece una sexta. Es la misma disciplina que el
-registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
 
-\subsection{El analizador cita exactamente la gramática}
+Las cuatro están declaradas en el test, que falla si aparece una quinta. Es la misma disciplina que
+el registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
 
 Cada método del analizador lleva arriba, en un comentario, las producciones que traduce.
 \texttt{auditar\_analizador.py} compara esas citas contra la gramática y falla si una producción no
@@ -1747,7 +1761,7 @@ la implementa nadie o si un comentario quedó viejo:
 
 \begin{consola}
 $ python3 herramientas/auditar_analizador.py
-230 producciones en la gramatica, 230 citadas por el analizador.
+227 producciones en la gramatica, 227 citadas por el analizador.
 EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
 \end{consola}
 
@@ -1909,25 +1923,13 @@ Orden de inicialización y alcance de lo que se referencia. \\
 \end{tabular}
 \end{center}
 
-\paragraph{Y lo que sí verifica el analizador, aunque la gramática no lo exprese.} Son dos, los dos
-del logro de lambdas, y los dos son restricciones de \emph{forma}: no hay ningún nombre que
-resolver, alcanza con lo que el analizador acaba de leer.
-
-\begin{center}
-\begin{tabular}{@{}p{0.28\linewidth}p{0.64\linewidth}@{}}
-\toprule
-\textbf{Se rechaza} & \textbf{Cómo se decide} \\
-\midrule
-\texttt{(a + 1) -> a}  & El contenido del paréntesis se lee como \nt{Expresion} ---hasta ver el
-\tl{->} no se sabe si era una lista de parámetros--- y se recuerda si consumió exactamente un
-\tl{idMetVar}. Del segundo parámetro en adelante lo impone la gramática. \\[4pt]
-\texttt{(x -> x).m()}  & Se recuerda si la \textbf{raíz} de lo que se acaba de leer entre
-paréntesis fue una lambda, y si lo fue se exige que no siga ninguna cola. Expresarlo en la
-gramática exigiría clonar la cadena de colas entera en una variante «el contenido fue una lambda»,
-unos siete no terminales. \\
-\bottomrule
-\end{tabular}
-\end{center}
+\paragraph{Y lo único que sí verifica el analizador, aunque la gramática no lo exprese.} Que el
+primer parámetro de una lambda sea un identificador sin tipo: \texttt{(a + 1) -> a} se rechaza. Es
+una restricción de \emph{forma} ---no hay ningún nombre que resolver---, y no es expresable porque
+hasta ver el \tl{->} el contenido del paréntesis es una \nt{Expresion} en los dos casos, o sea que
+\emph{la misma producción} genera la lambda válida y la inválida. El analizador lee la expresión y
+recuerda si consumió exactamente un \tl{idMetVar}. Del segundo parámetro en adelante lo impone la
+gramática, porque ahí ya se sabe que es una lista.
 
 \subsection{Decisiones de implementación}
 

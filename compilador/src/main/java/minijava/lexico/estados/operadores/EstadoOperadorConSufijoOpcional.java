@@ -14,8 +14,6 @@ import minijava.lexico.tokens.TipoDeToken;
 // token, y ahora ése lo da la tabla a partir del lexema armado.
 //
 // El '-' tiene un segundo sufijo posible, el '>' de la flecha de las lambdas.
-// Sin el logro de MiniLambdas ese sufijo no se mira y "->" vuelve a leerse como
-// op- seguido de op_mayor, que es lo que hacía la Etapa 1.
 public final class EstadoOperadorConSufijoOpcional implements EstadoLexico {
 
     public static final EstadoOperadorConSufijoOpcional SUFIJO_IGUAL =

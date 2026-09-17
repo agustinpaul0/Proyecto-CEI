@@ -25,11 +25,6 @@ public final class Sintaxis {
     private final EntradaDeTokens entrada;
     private final RecuperadorDePanico recuperador;
 
-    // Si la RAÍZ de la última expresión leída fue una lambda. Lo consultan las
-    // producciones del paréntesis para rechazar `(x -> x).m()`, que la gramática
-    // no alcanza a distinguir de `(e).m()`.
-    private boolean ultimaExpresionFueLambda;
-
     private final AnalizadorDeClases clases;
     private final AnalizadorDeMiembros miembros;
     private final AnalizadorDeTipos tipos;
@@ -59,18 +54,6 @@ public final class Sintaxis {
 
     public EntradaDeTokens entrada() {
         return entrada;
-    }
-
-    public void anotarQueEsLambda() {
-        ultimaExpresionFueLambda = true;
-    }
-
-    public void anotarQueNoEsLambda() {
-        ultimaExpresionFueLambda = false;
-    }
-
-    public boolean ultimaExpresionFueLambda() {
-        return ultimaExpresionFueLambda;
     }
 
     public RecuperadorDePanico recuperador() {

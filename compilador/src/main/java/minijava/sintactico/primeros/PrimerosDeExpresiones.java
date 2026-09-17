@@ -20,13 +20,6 @@ public final class PrimerosDeExpresiones {
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // ExpresionSinLambda -> ExpresionCondicional RestoExpresion
-    public static final ConjuntoDePrimeros EXPRESION_SIN_LAMBDA_EXPRESION_CONDICIONAL = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
-
     // RestoExpresion -> OperadorAsignacion ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros RESTO_EXPRESION_OPERADOR_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
@@ -73,25 +66,11 @@ public final class PrimerosDeExpresiones {
     public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_PARENTIZADA_OLAMBDA = de(
             TipoDeToken.PAREN_A);
 
-    // ExpresionCondicional -> ExpresionCompuesta RestoCondicional
-    public static final ConjuntoDePrimeros EXPRESION_CONDICIONAL_EXPRESION_COMPUESTA = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
-
     // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
     public static final ConjuntoDePrimeros RESTO_CONDICIONAL_SIGNO_PREGUNTA = de(TipoDeToken.SIGNO_PREGUNTA);
 
     // RestoCondicional -> EPSILON
     public static final ConjuntoDePrimeros RESTO_CONDICIONAL = de();
-
-    // ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
-    public static final ConjuntoDePrimeros EXPRESION_COMPUESTA_EXPRESION_BASICA = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta
     public static final ConjuntoDePrimeros RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO = de(

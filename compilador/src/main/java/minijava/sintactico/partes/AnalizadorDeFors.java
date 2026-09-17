@@ -103,9 +103,8 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
 
     // InicializacionDeDeclaradorFor -> = ExpresionCondicionalOLambda | EPSILON
     //
-    // No es <InicializacionDeDeclarador>, que existe sólo con variables locales
-    // clásicas: el encabezado del for tiene el suyo para que `for (int i = 0;;)`
-    // funcione con el logro de fors aunque el de variables clásicas esté apagado.
+    // No es <InicializacionDeDeclarador>: el encabezado del for declara su propia
+    // variable, y tener el suyo deja esa decisión separada para el semántico.
     private void inicializacionDeDeclaradorFor() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeFors.INICIALIZACION_DE_DECLARADOR_FOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);

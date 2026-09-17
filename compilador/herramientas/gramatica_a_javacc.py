@@ -2,7 +2,7 @@
 """Genera el oráculo JavaCC desde la gramática del proyecto.
 
     python3 herramientas/gramatica_a_javacc.py gramatica/minijava-ll1-final.g \
-            --logros todos > herramientas/fuzz/MiniJavaParser.jj
+            > herramientas/fuzz/MiniJavaParser.jj
 
 El parser que sale de acá lee uno o varios fuentes y, por cada uno, imprime
 `<ruta>\\t[SinErrores]` o `<ruta>\\t[Error:lexema|linea]`. Es un TERCER

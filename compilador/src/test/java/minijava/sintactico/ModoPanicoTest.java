@@ -113,7 +113,7 @@ class ModoPanicoTest extends BaseDeAnalisis {
     }
 
     @Test
-    void unFuenteValidoNoCambiaConElLogroPrendido(@TempDir Path dir) throws Exception {
+    void unFuenteValidoNoDisparaLaRecuperacion(@TempDir Path dir) throws Exception {
         String fuente = "class C1 { int x; void m(){ var a = 1; } }\nclass C2 { }\n";
 
         assertTrue(erroresDe(dir, fuente).isEmpty());
@@ -137,11 +137,12 @@ class ModoPanicoTest extends BaseDeAnalisis {
     @Test
     void unErrorLexicoNoSeLlevaPuestosLosSintacticosYaEncontrados(@TempDir Path dir)
             throws Exception {
-        // Sin el logro de ternario, el `?` no es un token de MiniJava.
-        List<String> salida = salidaDe(dir, "class C1 { int x  void m(){ } }\nclass ?\n");
+        // `#` no es un carácter de MiniJava: error LÉXICO, y llega después del
+        // error sintáctico de la primera línea.
+        List<String> salida = salidaDe(dir, "class C1 { int x  void m(){ } }\nclass #\n");
 
         assertTrue(salida.contains("[Error:void|1]"), salida.toString());
-        assertTrue(salida.stream().anyMatch(l -> l.startsWith("[Error:?")), salida.toString());
+        assertTrue(salida.stream().anyMatch(l -> l.startsWith("[Error:#")), salida.toString());
     }
 
     // El formato de cada reporte es el mismo de Pautas slide 25, repetido: el

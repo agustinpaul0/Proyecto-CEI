@@ -177,19 +177,13 @@
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \end{producciones}
 
-\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido.\par}
+\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); <ExpresionCondicional> el ternario; <ExpresionCompuesta> los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando <ExpresionCompuesta>: que \texttt{a = b = c} no sea válido.\par}
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
 \end{producciones}
 
-\noindent{\small La \nt{Expresion} de la gramática original: la que NO admite una lambda en la raíz. Se usa en los dos lugares donde Java tampoco la admite: adentro de una expresión parentizada que después va a ser operando, y como sentencia- expresión (\texttt{x -> x;} es «not a statement» en Java).\par}
-
-\begin{producciones}
-\regla{ExpresionSinLambda}{\nt{ExpresionCondicional} \nt{RestoExpresion}}
-\end{producciones}
-
-\noindent{\small El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática original pone \nt{ExpresionCompuesta} ahí, o sea que \texttt{a = b = c} NO es válido. Admite lambda porque el JLS define \texttt{Assignment: LeftHandSide = Expression}.\par}
+\noindent{\small El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática original pone <ExpresionCompuesta> ahí, o sea que \texttt{a = b = c} NO es válido. Admite lambda porque el JLS define \texttt{Assignment: LeftHandSide = Expression}.\par}
 
 \begin{producciones}
 \regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
@@ -208,7 +202,6 @@
 \regla{ExpresionDesdePrimarioOLambda}{\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
 \regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}
-\regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
 \noindent{\small Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicionalOLambda}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido, \texttt{a ? b : c = d} no lo es, y \texttt{a ? b : x -> x} sí —la producción del JLS es \texttt{? Expression : LambdaExpression}—. No rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
@@ -216,7 +209,6 @@
 \begin{producciones}
 \regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}
 \regla{RestoCondicional}{\eps}
-\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
 \regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
 \regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando}}
@@ -236,7 +228,7 @@
 \regla{Primitivo}{\tl{floatLiteral}}
 \end{producciones}
 
-\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las \emph{cabezas}: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
+\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las \emph{cabezas}: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la RAIZ: los dos contextos donde se usa son sentencia- expresion e inicializacion del for, y MiniJava base restringe la sentencia a \texttt{<Asignacion> | <Llamada>}, no a una \nt{Expresion} cualquiera. Una lambda sí puede aparecer adentro, via \texttt{( Expresion )}, igual que en la base.\par}
 
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
@@ -278,10 +270,10 @@
 \regla{PrimarioSinIdClase}{\nt{Creacion}}
 \end{producciones}
 
-\noindent{\small El contenido es una \nt{ExpresionSinLambda}: \texttt{(x -> x)} como OPERANDO no existe en Java —\texttt{(x -> x) + 1} y \texttt{(x -> x).m()} son «lambda expression not expected here»—. La lambda parentizada sí es válida cuando ella misma es toda la expresión, y ese caso lo cubre \nt{ParentizadaOLambda}.\par}
+\noindent{\small El contenido es una \nt{Expresion} completa, lambda incluida, tal cual la regla original: \texttt{ExpresionParentizada -> ( Expresion )}, y \texttt{Primario -> ExpresionParentizada}. MiniJava base ya define que cualquier expresion parentizada es un primario y que un primario arrastra cadena, asi que \texttt{(x -> y).m()} y \texttt{(x -> y) + 1} se derivan solos. DIVERGE de Java, que los rechaza con «lambda expression not expected here» porque ahi la lambda es alternativa de Expression y nunca un Primary. Se eligio respetar el molde de la gramatica base antes que la forma de Java: la base define esta estructura, y el criterio del proyecto es no despegarse de lo que la base ya dictamino.\par}
 
 \begin{producciones}
-\regla{Parentizada}{\tl{(} \nt{ExpresionSinLambda} \tl{)}}
+\regla{Parentizada}{\tl{(} \nt{Expresion} \tl{)}}
 \end{producciones}
 
 \noindent{\small Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>.\par}

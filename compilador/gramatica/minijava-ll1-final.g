@@ -236,12 +236,6 @@ ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
 # que `a = b = c` no sea válido.
 Expresion -> ExpresionCondicionalOLambda RestoExpresion
 
-# La <Expresion> de la gramática original: la que NO admite una lambda en la
-# raíz. Se usa en los dos lugares donde Java tampoco la admite: adentro de una
-# expresión parentizada que después va a ser operando, y como sentencia-
-# expresión (`x -> x;` es «not a statement» en Java).
-ExpresionSinLambda -> ExpresionCondicional RestoExpresion
-
 # El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática
 # original pone <ExpresionCompuesta> ahí, o sea que `a = b = c` NO es válido.
 # Admite lambda porque el JLS define `Assignment: LeftHandSide = Expression`.
@@ -268,7 +262,6 @@ ExpresionDesdePrimarioOLambda -> Creacion ColaDesdePrimarioSinAsignacion
 ExpresionDesdePrimarioOLambda -> idMetVar AccesoLlamadaOLambda
 ExpresionDesdePrimarioOLambda -> ParentizadaOLambda
 
-ExpresionCondicional -> ExpresionCompuesta RestoCondicional
 
 # Asociativo a derecha, como en Java.
 #
@@ -280,7 +273,6 @@ ExpresionCondicional -> ExpresionCompuesta RestoCondicional
 RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
 RestoCondicional -> EPSILON
 
-ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
 RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta | EPSILON
 
 OperadorBinario -> || | && | == | != | < | > | <= | >= | + | - | * | / | %
@@ -306,9 +298,10 @@ Primitivo -> floatLiteral
 # (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
 # se comparten con la jerarquía normal, así que no hay lógica repetida.
 #
-# NO admite lambda en la raíz, por la misma razón que <ExpresionSinLambda>: los
-# dos contextos donde se usa son sentencia-expresión e inicialización del for,
-# y en Java los dos exigen un StatementExpression, que nunca es una lambda.
+# NO admite lambda en la RAIZ: los dos contextos donde se usa son sentencia-
+# expresion e inicializacion del for, y MiniJava base restringe la sentencia a
+# `<Asignacion> | <Llamada>`, no a una <Expresion> cualquiera. Una lambda sí
+# puede aparecer adentro, via `( Expresion )`, igual que en la base.
 
 ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
 ExpresionSinIdClase -> Primitivo ColaTrasOperando
@@ -353,11 +346,18 @@ PrimarioSinIdClase -> Parentizada
 PrimarioSinIdClase -> AccesoVarOLlamada
 PrimarioSinIdClase -> Creacion
 
-# El contenido es una <ExpresionSinLambda>: `(x -> x)` como OPERANDO no existe
-# en Java —`(x -> x) + 1` y `(x -> x).m()` son «lambda expression not expected
-# here»—. La lambda parentizada sí es válida cuando ella misma es toda la
-# expresión, y ese caso lo cubre <ParentizadaOLambda>.
-Parentizada -> ( ExpresionSinLambda )
+# El contenido es una <Expresion> completa, lambda incluida, tal cual la regla
+# original: `ExpresionParentizada -> ( Expresion )`, y `Primario ->
+# ExpresionParentizada`. MiniJava base ya define que cualquier expresion
+# parentizada es un primario y que un primario arrastra cadena, asi que
+# `(x -> y).m()` y `(x -> y) + 1` se derivan solos.
+#
+# DIVERGE de Java, que los rechaza con «lambda expression not expected here»
+# porque ahi la lambda es alternativa de Expression y nunca un Primary. Se
+# eligio respetar el molde de la gramatica base antes que la forma de Java: la
+# base define esta estructura, y el criterio del proyecto es no despegarse de
+# lo que la base ya dictamino.
+Parentizada -> ( Expresion )
 
 # Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era
 # <LlamadaMetodo>.

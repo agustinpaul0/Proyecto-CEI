@@ -264,7 +264,7 @@ Del mismo origen sale la segunda: ese contenido entre paréntesis **puede** ser 
 gramática aunque `javac` los rechace.
 
 **Decisión:** las dos se cierran con un chequeo en el analizador —que lo parseado entre paréntesis
-haya sido exactamente un `idMetVar`, y que una lambda parentizada no lleve cola— y no en la
+haya sido exactamente un `idMetVar`— y no en la
 gramática. El detalle está en
 [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 

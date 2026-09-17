@@ -72,7 +72,7 @@ class TokensDeLaEtapaDosTest {
         assertEquals("private", token.lexema());
     }
 
-    // Prefijos y sufijos: `format` no es `for`, ni con el logro prendido.
+    // Prefijos y sufijos: `format` no es `for`.
     @ParameterizedTest
     @ValueSource(strings = {"format", "forma", "for1", "for_", "privateX", "myprivate", "For", "FOR"})
     void unIdentificadorQueSoloEmpiezaOTerminaComoLaPalabraSigueSiendoUnIdentificador(
@@ -117,8 +117,8 @@ class TokensDeLaEtapaDosTest {
         assertEquals("->", token.lexema());
     }
 
-    // Maximal munch: con el logro prendido `-` sigue compitiendo con `--` y `->`,
-    // y gana el más largo que exista. `-->` es `--` seguido de `>`, no `-` y `->`.
+    // Maximal munch: `-` compite con `--` y con `->`, y gana el más largo que
+    // exista. `-->` es `--` seguido de `>`, no `-` y `->`.
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
             "-    | op-",

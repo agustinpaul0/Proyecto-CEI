@@ -46,8 +46,8 @@ public final class TablaDeLexemas {
         // No figura en Aspectos Léxicos: se agrega por confirmación directa del
         // profesor. 'double' NO es reservada (decisiones.md §3.1).
         palabrasClave.put("float", TipoDeToken.PR_FLOAT);
-        // Tampoco figuran en Aspectos Léxicos: las trae la Etapa 2. Con su logro
-        // apagado vuelven a ser idMetVar, que es lo que la Etapa 1 reconocía.
+        // Tampoco figuran en Aspectos Léxicos: las trae la Etapa 2. En la Etapa 1
+        // eran idMetVar.
         palabrasClave.put("for", TipoDeToken.PR_FOR);
         palabrasClave.put("private", TipoDeToken.PR_PRIVATE);
 
@@ -82,8 +82,8 @@ public final class TablaDeLexemas {
         porLexema.put("++", TipoDeToken.OP_INCREMENTO);
         porLexema.put("--", TipoDeToken.OP_DECREMENTO);
 
-        // Los otros dos de la Etapa 2. Con su logro apagado, '?' vuelve a ser un
-        // símbolo inválido y "->" vuelve a leerse como op- seguido de op_mayor.
+        // Los otros dos de la Etapa 2, que no figuran en Aspectos Léxicos: sin
+        // ellos '?' sería un símbolo inválido y "->" se leería como op- y op_mayor.
         porLexema.put("->", TipoDeToken.OP_FLECHA);
         porLexema.put("?", TipoDeToken.SIGNO_PREGUNTA);
 

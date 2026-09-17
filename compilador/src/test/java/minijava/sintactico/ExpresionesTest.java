@@ -113,8 +113,8 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptarExpresion(dir, "a ? b : c ? d : e ? f : g");
     }
 
-    // Sin el logro el `?` ni siquiera es un token de MiniJava, así que el fuente
-    // se rechaza en el LÉXICO y nunca llega al analizador. Que el rechazo sea
+    // La rama falsa es obligatoria: `a ? b` no deriva, y el rechazo cae en el `;`
+    // que la expresión cierra, no en el `?`.
     @Test
     void unTernarioSinRamaFalsaSeRechaza(@TempDir Path dir) {
         assertEquals(";", rechazarExpresion(dir, "a ? b"));

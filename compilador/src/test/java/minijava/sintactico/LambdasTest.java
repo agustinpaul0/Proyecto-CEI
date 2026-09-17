@@ -177,35 +177,40 @@ class LambdasTest extends BaseDeAnalisis {
             "a || x -> x",
             "- x -> x",
             "! x -> x",
-            "1 + (x -> x)",
             "a * () -> 1",
             "1 + (a, b) -> a",
     })
-    void unaLambdaNoPuedeSerOperandoDeUnOperador(String expresion, @TempDir Path dir) {
+    void unaLambdaSinParentesisNoPuedeSerOperandoDeUnOperador(String expresion,
+                                                              @TempDir Path dir) {
         rechazarLambda(dir, expresion);
     }
 
-    // `f((x -> x))` es válido y `(x -> x).m()` no: parentizarla no la convierte en
-    // un operando. javac dice «lambda expression not expected here» en los dos.
+    // Entre paréntesis, en cambio, SÍ es un operando y puede llevar cola. Sale de
+    // la gramática base: `ExpresionParentizada -> ( Expresion )`,
+    // `Primario -> ExpresionParentizada`, y un Primario arrastra cadena. Java
+    // rechaza estos siete con «lambda expression not expected here»; se eligió
+    // respetar el molde de la base. Ver decisiones-de-logica.md §2.2.
     @ParameterizedTest
-    @CsvSource(delimiter = '|', value = {
-            "(x -> x).metodo() | .",
-            "(x -> x).campo    | .",
-            "(x -> x)[0]       | [",
-            "(x -> x) + 1      | +",
-            "(x -> x) ? a : b  | ?",
-            "(() -> 1) * 2     | *",
-            "(x -> x)++        | ++",
+    @ValueSource(strings = {
+            "(x -> x).metodo()",
+            "(x -> x).campo",
+            "(x -> x)[0]",
+            "(x -> x) + 1",
+            "(x -> x) ? a : b",
+            "(() -> 1) * 2",
+            "(x -> x)++",
+            "((x -> x)).metodo()",
+            "(((x -> x))).metodo()",
+            "((() -> 1)) + 1",
+            "(a = x -> x).metodo()",
+            "(a ? x -> x : b).metodo()",
+            "(a ? b : x -> x).metodo()",
     })
-    void unaLambdaParentizadaNoPuedeLlevarColaDeExpresion(String expresion, String lexema,
-                                                          @TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, expresion);
-
-        assertEquals(lexema, excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("no puede ser operando"), excepcion.getMessage());
+    void unaLambdaParentizadaEsUnOperandoYLlevaCola(String expresion, @TempDir Path dir) {
+        aceptarLambda(dir, expresion);
     }
 
-    // La lambda parentizada SÍ es válida cuando ella misma es toda la expresión.
+    // Y sigue siendo válida cuando ella misma es toda la expresión.
     @ParameterizedTest
     @ValueSource(strings = {
             "(x -> x)",
@@ -213,31 +218,6 @@ class LambdasTest extends BaseDeAnalisis {
             "((() -> 1))",
     })
     void unaLambdaParentizadaSinColaSeAcepta(String expresion, @TempDir Path dir) {
-        aceptarLambda(dir, expresion);
-    }
-
-    // El paréntesis anidado no lava la restricción: lo que cuenta es si la RAÍZ de
-    // lo que hay adentro es una lambda, por muchos paréntesis que la envuelvan.
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "((x -> x)).metodo()",
-            "(((x -> x))).metodo()",
-            "((() -> 1)) + 1",
-    })
-    void elParentesisAnidadoNoHabilitaLaCola(String expresion, @TempDir Path dir) {
-        rechazarLambda(dir, expresion);
-    }
-
-    // La restricción es sobre la RAÍZ, no sobre «se vio una lambda». Con un `=` o
-    // un `?` arriba, la expresión es una asignación o un ternario —no una lambda—
-    // y puede llevar cola: `javac` acepta la forma de las tres.
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "(a = x -> x).metodo()",
-            "(a ? x -> x : b).metodo()",
-            "(a ? b : x -> x).metodo()",
-    })
-    void unaLambdaQueNoEsLaRaizNoBloqueaLaCola(String expresion, @TempDir Path dir) {
         aceptarLambda(dir, expresion);
     }
 

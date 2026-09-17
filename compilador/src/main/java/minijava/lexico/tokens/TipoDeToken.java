@@ -11,9 +11,8 @@ public enum TipoDeToken {
     PR_VAR("pr_var"), PR_THIS("pr_this"), PR_NEW("pr_new"), PR_NULL("pr_null"),
     PR_TRUE("pr_true"), PR_FALSE("pr_false"), PR_FLOAT("pr_float"),
 
-    // Los cuatro que NO figuran en «Aspectos Léxicos de MiniJava»: existen sólo
-    // porque un logro de la Etapa 2 los necesita, y cada uno se reconoce
-    // únicamente con su logro prendido (TablaDeLexemas.logroQueLoHabilita).
+    // Los dos que NO figuran en «Aspectos Léxicos de MiniJava»: los trae la
+    // Etapa 2, que los necesita para el `for` y para Visibilidad Mejorada.
     PR_FOR("pr_for"), PR_PRIVATE("pr_private"),
 
     ID_CLASE("idClase"), ID_GEN("idGen"), ID_MV("idMV"),

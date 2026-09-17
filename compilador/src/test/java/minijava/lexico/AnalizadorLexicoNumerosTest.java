@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Tag("lexico")
 class AnalizadorLexicoNumerosTest extends BaseDeAnalisisLexico {
 
-    // Literales enteros y de punto flotante, con y sin el logro de floats.
-
     @Test
     void reconoceUnEnteroDeUnDigito(@TempDir Path dir) throws Exception {
         Token token = crearAnalizador(dir, "5").proximoToken();

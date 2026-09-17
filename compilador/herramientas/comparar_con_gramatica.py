@@ -32,12 +32,11 @@ from primeros import analizar, parsear  # noqa: E402
 GRAMATICA = "gramatica/minijava-ll1-final.g"
 JAR = "target/Compilador.jar"
 
-# Los dos chequeos que el analizador hace y la gramática no puede expresar. Un
-# caso que los ejercita declara el motivo en el mensaje, así que se reconocen por
-# ahí y no por un patrón sobre el fuente, que amnistiaba de más.
+# El unico chequeo que el analizador hace y la gramatica no puede expresar: que el
+# primer parametro de una lambda sea un identificador sin tipo. Se reconoce por el
+# motivo del mensaje y no por un patron sobre el fuente, que amnistiaba de mas.
 MOTIVOS_DECLARADOS = (
     "un parametro de lambda tiene que ser un identificador",
-    "una lambda no puede ser operando de",
 )
 
 

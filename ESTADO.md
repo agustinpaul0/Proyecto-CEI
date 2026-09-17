@@ -44,13 +44,13 @@ Simple de Clase 5, con los **diez logros implementables por código** más el *c
 
 | | |
 |---|---|
-| Gramática | 112 no terminales, 230 producciones, 60 terminales; LL(1) verificada |
+| Gramática | 109 no terminales, 227 producciones, 60 terminales; LL(1) verificada |
 | Ambigüedades | 3, todas declaradas con su regla de resolución |
-| Analizador | una clase por sección; cita 230 de 230 producciones |
+| Analizador | una clase por sección; cita 227 de 227 producciones |
 | Corpus propio | 1953 fuentes, 81 casos de gramática, 8 de la cátedra |
-| Corpus externo | 30.000 fuentes de Giuliano Taormina; 26.291 coinciden, 5 familias declaradas |
-| Suite | 5900 tests; 98,8 % de líneas, 94,5 % de ramas; mutación 89 % |
-| Informe | `etapas/etapa-2/entregables/`, 49 páginas |
+| Corpus externo | 30.000 fuentes de Giuliano Taormina; 27.793 coinciden, 4 familias declaradas |
+| Suite | 5901 tests; 98,8 % de líneas, 94,5 % de ramas; mutación 89 % |
+| Informe | `etapas/etapa-2/entregables/`, 47 páginas |
 
 ### Decisiones cerradas en esta etapa
 
@@ -60,6 +60,7 @@ Simple de Clase 5, con los **diez logros implementables por código** más el *c
   se implementa.
 - La recursión a derecha se traduce **con recursión**, no con `while`, en los diez lugares.
 - El `this`, la captura de variables y los parámetros repetidos de una lambda **van al semántico**.
+- Una lambda entre paréntesis **es un operando** y puede llevar cadena, como sale de la base.
 
 ### Lo que queda abierto
 
@@ -68,8 +69,9 @@ implementadas y declaradas, pero **conviene confirmarlas** (ver *Dudas abiertas*
 
 1. **Inicialización de arreglos.** Hoy toda dimensión conserva su tamaño y el inicializador se
    cuelga al final: `new int[2][2]{{1,2},{3,4}}` vale y `new int[]{1,2,3}` no. Diverge de Java.
-2. **Lambda parentizada con cola.** Hoy `(x -> y).m()` se rechaza, siguiendo al JLS. La gramática
-   base permitiría aceptarlo sin tocar ninguna regla.
+2. **Lambda parentizada con cola.** Hoy `(x -> y).m()` se **acepta**: sale sola de la gramática
+   base, que define `ExpresionParentizada -> ( Expresion )` y que un `Primario` arrastra cadena.
+   Diverge de Java, que lo rechaza. Sin paréntesis la lambda sigue sin ser operando.
 
 ---
 
@@ -109,5 +111,6 @@ Están desarrolladas en `~/downloads/dudas.pdf`. En una línea cada una:
 
 1. **Arreglos** — ¿el inicializador se cuelga de dimensiones con tamaño (base MiniJava) o exige
    corchete vacío (Java)?
-2. **Lambda parentizada** — ¿`(x -> y).m()` se acepta (sale de la base) o se rechaza (como Java)?
+2. **Lambda parentizada** — se acepta, respetando el molde de la base; ¿está bien, o el «como en
+   Java» del logro pesa más?
 3. **Léxico de `--etapa=1`** — ¿molesta que hoy reconozca los cuatro tokens de la Etapa 2?

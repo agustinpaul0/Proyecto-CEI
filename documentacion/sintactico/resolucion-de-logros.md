@@ -42,7 +42,6 @@ bash herramientas/casos-gramatica.sh          # los 81 casos de aceptacion y rec
 | no `this` | **analizador semántico** (Etapa 3) |
 | parámetros sin nombre repetido | **analizador semántico** (Etapa 3) |
 | el parámetro es un identificador sin tipo | **analizador**, con lo que acaba de leer |
-| lambda parentizada sin cola | **analizador**, con lo que acaba de leer |
 
 Las cuatro formas de parámetros funcionan: `() -> e`, `x -> e`, `(x) -> e`, `(a, b, c) -> e`.
 

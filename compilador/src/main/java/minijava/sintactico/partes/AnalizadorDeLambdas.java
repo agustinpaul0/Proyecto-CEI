@@ -5,14 +5,19 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.PrimerosDeExpresiones;
 import minijava.sintactico.primeros.PrimerosDeLambdas;
 
 // MiniLambdas, y la desambiguación de sus dos cabezas.
 //
-// La lambda vive en el nivel MÁS ALTO de la jerarquía de expresiones, como en el
-// JLS: no es un Primario y por lo tanto no puede ser operando de ningún
-// operador. Las dos cabezas que comparte con una expresión normal son `idMetVar`
+// La lambda se produce en el nivel MÁS ALTO de la jerarquía, así que sin
+// paréntesis no es operando: `1 + x -> x` no deriva. Entre paréntesis sí lo es,
+// porque
+// MiniJava base define `ExpresionParentizada -> ( Expresion )` y
+// `Primario -> ExpresionParentizada`, y un Primario arrastra cadena: de ahí que
+// `(x -> y).m()` sea válido. Java lo rechaza; se eligió respetar el molde de la
+// gramática base. Ver decisiones-de-logica.md §2.2.
+//
+// Las dos cabezas que comparte con una expresión normal son `idMetVar`
 // —AccesoLlamadaOLambda— y `(` —ParentizadaOLambda—.
 //
 // `(` abre tanto una expresión parentizada como la lista de parámetros de una
@@ -21,9 +26,10 @@ import minijava.sintactico.primeros.PrimerosDeLambdas;
 // ser una lambda porque MiniJava no tiene operador coma, y `(e)` se decide con
 // el token que sigue al `)`. Un token de lookahead en cada punto.
 //
-// Lo que la lambda usa —`this`, los nombres que captura, que sus parámetros no
-// se repitan— no lo mira el sintáctico: son restricciones de significado y las
-// resuelve el analizador semántico.
+// Lo único que este analizador verifica y la gramática no puede expresar es que
+// el primer parámetro sea un identificador sin tipo. El `this`, los nombres que
+// captura y que sus parámetros no se repitan son restricciones de significado y
+// las resuelve el analizador semántico.
 public final class AnalizadorDeLambdas extends ParteDelAnalizador {
 
     public AnalizadorDeLambdas(Sintaxis sintaxis) {
@@ -74,7 +80,6 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     // `x -> (a + b)`. Es una de las ambigüedades declaradas.
     public void cuerpoLambda() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.expresiones().expresion();
-        sintaxis.anotarQueEsLambda();
     }
 
     // RestoDeParentesis -> , ListaParametrosLambda ) -> CuerpoLambda
@@ -108,22 +113,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
             cuerpoLambda();
             return;
         }
-        exigirQueLaLambdaParentizadaNoLleveCola(primero);
         sintaxis.expresiones().colaDesdePrimarioSinAsignacion();
-    }
-
-    // `f((x -> x))` es válido y `(x -> x).m()` no: en Java una lambda, aunque
-    // esté parentizada, no puede ser operando ni receptor. Es la única forma de
-    // esa regla que la gramática no alcanza a expresar, porque distinguirlas
-    // exigiría clonar la cadena de colas en su variante «el contenido fue una
-    // lambda».
-    private void exigirQueLaLambdaParentizadaNoLleveCola(Candidato primero)
-            throws ExcepcionSintactica {
-        if (primero.fueLambda()
-                && estaEn(PrimerosDeExpresiones.COLA_DESDE_PRIMARIO_SIN_ASIGNACION_RESTO_REFERENCIA)) {
-            throw ExcepcionSintactica.porRestriccion(actual(),
-                    "una lambda no puede ser operando de " + actual().lexema());
-        }
     }
 
     // Hasta ver el `->` no se sabe si lo que hay entre paréntesis es el primer
@@ -135,7 +125,7 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         sintaxis.expresiones().expresion();
         boolean fueUnIdMetVarSinTipo =
                 primero.tipo() == TipoDeToken.ID_MV && consumioUnSoloTokenDesde(antes);
-        return new Candidato(primero, fueUnIdMetVarSinTipo, sintaxis.ultimaExpresionFueLambda());
+        return new Candidato(primero, fueUnIdMetVarSinTipo);
     }
 
     // Un parámetro de lambda tiene que ser un identificador sin tipo: `(a) -> a` es
@@ -149,6 +139,6 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         }
     }
 
-    private record Candidato(Token token, boolean esIdMetVarSinTipo, boolean fueLambda) {
+    private record Candidato(Token token, boolean esIdMetVarSinTipo) {
     }
 }
