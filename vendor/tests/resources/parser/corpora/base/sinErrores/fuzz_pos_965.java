@@ -1,2 +1,0 @@
-interface Ow extends Rm {
-}

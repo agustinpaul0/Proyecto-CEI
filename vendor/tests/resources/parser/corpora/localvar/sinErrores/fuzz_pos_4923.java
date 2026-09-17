@@ -1,2 +1,0 @@
-interface N___ < L > {
-}

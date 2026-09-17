@@ -1,2 +1,0 @@
-interface C_ < B > {
-}

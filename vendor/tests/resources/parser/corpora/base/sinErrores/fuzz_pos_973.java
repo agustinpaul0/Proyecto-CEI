@@ -1,2 +1,0 @@
-interface J_ < Q > {
-}

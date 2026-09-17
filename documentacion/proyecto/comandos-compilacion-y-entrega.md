@@ -52,7 +52,7 @@ zip -r ../Etapa2-Paul.zip . -x 'target/*' '.venv/*' 'herramientas/fuzz/jars/*' \
                                 'herramientas/fuzz/trabajo/*'
 ```
 
-Son **1883 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
+Son **1953 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
 4 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en

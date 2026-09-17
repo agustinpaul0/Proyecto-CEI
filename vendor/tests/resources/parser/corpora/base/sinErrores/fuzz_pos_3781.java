@@ -1,2 +1,0 @@
-interface Po extends LM {
-}

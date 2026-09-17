@@ -1,2 +1,0 @@
-interface V_ < O > {
-}

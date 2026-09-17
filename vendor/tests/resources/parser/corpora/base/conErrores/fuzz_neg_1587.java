@@ -1,2 +1,0 @@
-// [Error:Q6XE8I|2]
-Q6XE8I Yo

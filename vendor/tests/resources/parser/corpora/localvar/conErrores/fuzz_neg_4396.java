@@ -1,3 +1,0 @@
-// [Error:}|3]
-class R_5a3m < E > {
-int e7DZ ( ) }

@@ -1,3 +1,0 @@
-// [Error:U3|2]
-U3 < E > [ ] [ ] ty6LK ;
-KTA_

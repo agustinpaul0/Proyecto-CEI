@@ -1,3 +1,0 @@
-interface OG {
-int [ ] [ ] c ( ) ;
-}

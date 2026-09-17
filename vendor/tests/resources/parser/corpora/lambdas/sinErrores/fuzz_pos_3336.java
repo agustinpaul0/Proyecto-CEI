@@ -1,3 +1,0 @@
-interface JG {
-void d ( ) ;
-}

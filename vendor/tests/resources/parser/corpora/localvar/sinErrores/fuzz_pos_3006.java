@@ -1,3 +1,0 @@
-interface PLe {
-void qq ( ) ;
-}

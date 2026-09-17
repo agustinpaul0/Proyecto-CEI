@@ -61,7 +61,7 @@ Son **cinco verificaciones independientes** y conviene tener claro qué prueba c
 | `equivalencia_de_lenguajes.py` | Que corregir la gramática **no cambió el lenguaje**: compara el núcleo LL(1) sin logros (`minijava-ll1.g`) con la de la cátedra mediante un reconocedor de Earley y una cadena por cada producción de cada una. |
 | `auditar_analizador.py` | Que el código y la gramática **no se hayan separado**: cada producción la implementa un método y cada cita corresponde a una producción real. |
 | `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el **mismo veredicto y el mismo token** sobre las 1953 fuentes del corpus. El tercer reconocedor, el oráculo JavaCC, ya intervino al etiquetar cada caso. |
-| `CorpusExternoTest` | Que el analizador coincida con **30.000 fuentes generados por otra persona a partir de su propia gramática** (`vendor/tests/`). 26.291 coinciden exactamente; las cinco familias que divergen están declaradas y verificadas a mano. Es la única verificación que no comparte decisiones con este proyecto. |
+| `CorpusExternoTest` | Que el analizador coincida con **30.000 fuentes generados a partir de otra gramática** — el corpus y su *fuzzer* son de Giuliano Taormina, compañero de la materia (`vendor/tests/`, no versionado). 26.291 coinciden exactamente; las cinco familias que divergen están declaradas y verificadas a mano. Es la única verificación que no comparte decisiones con este proyecto. |
 
 Qué hace cada archivo de gramática está en
 [`../../compilador/gramatica/README.md`](../../compilador/gramatica/README.md).

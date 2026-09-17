@@ -1,4 +1,0 @@
-interface Pp {
-}
-interface JA {
-}

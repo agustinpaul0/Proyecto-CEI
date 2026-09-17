@@ -1,4 +1,0 @@
-class ViP {
-}
-interface UP {
-}

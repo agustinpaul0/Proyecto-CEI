@@ -1,2 +1,0 @@
-interface Td_ < V > {
-}

@@ -1,2 +1,0 @@
-interface X_ < T > {
-}

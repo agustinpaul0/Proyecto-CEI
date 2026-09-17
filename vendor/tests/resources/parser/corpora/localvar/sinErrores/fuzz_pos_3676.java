@@ -1,3 +1,0 @@
-interface EX {
-GN [ ] qM ( ) ;
-}

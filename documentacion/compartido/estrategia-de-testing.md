@@ -224,9 +224,12 @@ Etapa 1 y la Etapa 2 incorporados, siempre, así que la suite tiene una sola con
 
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
-ese hueco corriendo el compilador contra **30.000 fuentes generados por otra persona**, a partir de
-**su propia gramática** de MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni
-los criterios.
+ese hueco corriendo el compilador contra **30.000 fuentes generados a partir de otra gramática** de
+MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni los criterios.
+
+> **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
+> de este proyecto: acá sólo se corre el compilador contra ellos y se clasifica cada divergencia.
+> La carpeta **no se versiona** —son 174 MB— y el test se saltea si no está.
 
 De esos 30.000, **26.291 coinciden exactamente**. Los 3.709 restantes caen en cinco familias, todas
 verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el test comprueba es que
@@ -241,8 +244,7 @@ verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el tes
 | Ambos rechazan, en distinto token | resto | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
 
 Los **73 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
-`resources/` con el prefijo `ext`—; los generados no se copian, porque son 145 MB. El test se
-**saltea** si la carpeta no está.
+`resources/` con el prefijo `ext`—; los generados no se copian ni se versionan.
 
 `ParentesisYLambdaTest` destila la primera familia en 39 casos legibles, que son los que protegen
 contra una regresión: toda la combinatoria de `(x -> y)` según lo que venga después del paréntesis.

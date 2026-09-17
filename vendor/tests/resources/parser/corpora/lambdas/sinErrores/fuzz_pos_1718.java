@@ -1,2 +1,0 @@
-interface U7_ {
-}

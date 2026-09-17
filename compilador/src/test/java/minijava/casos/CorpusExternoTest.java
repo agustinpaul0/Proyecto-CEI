@@ -17,15 +17,20 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-// Verificación diferencial contra un corpus ESCRITO POR OTRA PERSONA: 30.000
-// fuentes generados por fuzzing a partir de su propia gramática de MiniJava, en
-// `vendor/tests/`. Es el mismo argumento que `comparar_con_gramatica.py` —dos
-// implementaciones independientes tienen que coincidir— pero con una gramática
-// que no salió de este proyecto, así que no comparte ni siquiera las decisiones.
+// Verificación diferencial contra un corpus AJENO: 30.000 fuentes generados por
+// fuzzing a partir de otra gramática de MiniJava, en `vendor/tests/`. Es el mismo
+// argumento que `comparar_con_gramatica.py` —dos implementaciones independientes
+// tienen que coincidir— pero con una gramática que no salió de este proyecto, así
+// que no comparte ni siquiera las decisiones.
+//
+// EL CORPUS Y SU FUZZER SON DE GIULIANO TAORMINA, compañero de la materia, que los
+// compartió para que cada uno pudiera contrastar su analizador. No son material de
+// este proyecto: acá sólo se corre el compilador contra ellos y se clasifica cada
+// divergencia.
 //
 // Los casos escritos a mano de ese corpus (73, los `ext*` de resources/) ya están
-// importados y se verifican con el resto. Acá van los generados, que NO se
-// copian: son 145 MB y viven donde los dejó su autor.
+// importados y se verifican con el resto. Acá van los generados, que NO se copian
+// ni se versionan: son 174 MB.
 //
 // El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
@@ -35,9 +40,9 @@ class CorpusExternoTest {
             Path.of("..", "vendor", "tests", "resources", "parser", "corpora");
     private static final List<String> GENERADOS = List.of("base", "lambdas", "localvar");
 
-    // Las cuatro familias en que las dos gramáticas difieren, cada una verificada
-    // a mano. Un caso que cae en una de ellas no se compara: lo que prueba es que
-    // NO aparezca ninguna quinta familia.
+    // Las cinco familias en que las dos gramáticas difieren, cada una verificada a
+    // mano. Un caso que cae en una de ellas no se compara: lo que este test prueba
+    // es que NO aparezca una sexta.
     private enum Divergencia {
 
         // `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]`. Su gramática produce la
@@ -76,9 +81,9 @@ class CorpusExternoTest {
     private static final Pattern BARRA_ANTES_DE_CERRAR = Pattern.compile("\\\\\\\\\"");
     private static final Pattern CREACION_GENERICA =
             Pattern.compile("new\\s+[A-Z]\\w*\\s*<\\s*\\w+\\s*>\\s*\\(");
-    // Las dos formas que el logro de Visibilidad Mejorada habilita y su gramática
-    // no tiene: un miembro con modificador, y un constructor SIN `public`.
-    private static final Pattern MODIFICADOR_O_CONSTRUCTOR_PELADO =
+    // Las dos formas que el logro de Visibilidad Mejorada habilita y la otra
+    // gramática no tiene: un miembro con modificador, y un constructor sin `public`.
+    private static final Pattern MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC =
             Pattern.compile("^\\s*(public|private|static)\\b|^\\s*[A-Z]\\w*\\s*\\(");
 
     @Test
@@ -165,7 +170,7 @@ class CorpusExternoTest {
         if (linea < 1 || linea > renglones.length) {
             return false;
         }
-        return MODIFICADOR_O_CONSTRUCTOR_PELADO.matcher(renglones[linea - 1]).find();
+        return MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC.matcher(renglones[linea - 1]).find();
     }
 
     private static String leer(Path caso) throws IOException {

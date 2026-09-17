@@ -1,2 +1,0 @@
-interface QlM5_ {
-}

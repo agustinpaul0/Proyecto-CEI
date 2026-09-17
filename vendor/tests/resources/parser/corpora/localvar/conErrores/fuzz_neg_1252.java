@@ -1,4 +1,0 @@
-// [Error:<|4]
-class B_ < O > implements Fh3 < L_ > {
-}
-< A >

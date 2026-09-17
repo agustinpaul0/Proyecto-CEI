@@ -1,2 +1,0 @@
-interface TD extends KOz {
-}

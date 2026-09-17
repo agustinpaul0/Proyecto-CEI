@@ -1,2 +1,0 @@
-interface OKf < L > {
-}

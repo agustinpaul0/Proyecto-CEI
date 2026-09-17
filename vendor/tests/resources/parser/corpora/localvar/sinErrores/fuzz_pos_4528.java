@@ -1,3 +1,0 @@
-class CO {
-boolean [ ] [ ] w ;
-}

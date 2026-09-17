@@ -1,2 +1,0 @@
-interface OZ extends FoX {
-}

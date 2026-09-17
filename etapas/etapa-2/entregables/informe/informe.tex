@@ -1725,9 +1725,15 @@ quitando \nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
 
 Todas las verificaciones anteriores comparten un límite: las implementaciones que se contrastan
 salen del \emph{mismo} archivo de gramática, así que comparten sus decisiones. El contraste que
-cierra ese hueco usa un corpus de \textbf{30.000 fuentes generados por otra persona a partir de su
-propia gramática} de \textsc{MiniJava}, que no comparte con este trabajo ni el código ni los
-criterios.
+cierra ese hueco usa un corpus de \textbf{30.000 fuentes generados a partir de otra gramática} de
+\textsc{MiniJava}, que no comparte con este trabajo ni el código ni los criterios.
+
+\begin{decision}{el corpus y su generador son de Giuliano Taormina}
+El \emph{fuzzer} que produjo esos 30.000 casos, y la gramática de la que se derivan, los escribió
+\textbf{Giuliano Taormina}, compañero de la materia, que los compartió para que cada uno pudiera
+contrastar su analizador. No son material de este trabajo: acá sólo se corrió el compilador contra
+ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
+\end{decision}
 
 \textbf{26.291 coinciden exactamente.} Los 3.709 restantes caen en cinco familias, y ninguna es un
 defecto de este analizador:

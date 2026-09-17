@@ -1,2 +1,0 @@
-interface TE__ < T > {
-}

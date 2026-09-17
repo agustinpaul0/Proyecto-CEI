@@ -1,3 +1,0 @@
-interface QE {
-void h ( ) ;
-}

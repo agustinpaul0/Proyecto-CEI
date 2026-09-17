@@ -1,2 +1,0 @@
-class AGO < P > {
-}

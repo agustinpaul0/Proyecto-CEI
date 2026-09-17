@@ -1,5 +1,0 @@
-// [Error:>|2]
-interface S_n_ < Z > extends JZ < > {
-void vi ( W y , E m89 ) ;
-void rz ( ) ;
-}

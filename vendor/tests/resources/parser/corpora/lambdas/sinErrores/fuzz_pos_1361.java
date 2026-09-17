@@ -1,2 +1,0 @@
-interface Gfh_ < R > {
-}

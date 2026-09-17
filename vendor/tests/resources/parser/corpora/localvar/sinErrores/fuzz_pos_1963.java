@@ -1,2 +1,0 @@
-interface AD_93 {
-}

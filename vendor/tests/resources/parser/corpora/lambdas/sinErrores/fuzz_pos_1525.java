@@ -1,2 +1,0 @@
-class Tz1J {
-}

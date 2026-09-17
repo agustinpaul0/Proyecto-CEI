@@ -1,3 +1,0 @@
-interface Fl {
-void l ( ) ;
-}
