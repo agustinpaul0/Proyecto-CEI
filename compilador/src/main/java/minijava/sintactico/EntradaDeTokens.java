@@ -1,6 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TablaDeLexemas;
@@ -15,15 +14,12 @@ import minijava.sintactico.primeros.ConjuntoDePrimeros;
 public final class EntradaDeTokens {
 
     private final AnalizadorLexico analizadorLexico;
-    private final ConfiguracionDelCompilador configuracion;
 
     private Token actual;
     private int consumidos;
 
-    public EntradaDeTokens(AnalizadorLexico analizadorLexico,
-                           ConfiguracionDelCompilador configuracion) {
+    public EntradaDeTokens(AnalizadorLexico analizadorLexico) {
         this.analizadorLexico = analizadorLexico;
-        this.configuracion = configuracion;
     }
 
     public void cargarPrimerToken() throws ExcepcionLexica {
@@ -62,7 +58,7 @@ public final class EntradaDeTokens {
         for (ConjuntoDePrimeros alternativa : alternativas) {
             esperados = esperados.unido(alternativa);
         }
-        return new ExcepcionSintactica(actual, esperados.habilitadosEn(configuracion).describir());
+        return new ExcepcionSintactica(actual, esperados.describir());
     }
 
     // Consume el token actual sin verificar nada. Lo usa el Modo Pánico, que

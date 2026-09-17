@@ -1,6 +1,5 @@
 package minijava.aplicacion;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.errores.FormateadorDeError;
 import minijava.comun.io.ManejadorDeArchivo;
@@ -16,24 +15,18 @@ import java.io.IOException;
 public final class ModuloPrincipalLexico {
 
     private final Salida salida;
-    private final ConfiguracionDelCompilador configuracion;
     private final FormateadorDeError formateadorDeError;
 
     public ModuloPrincipalLexico(Salida salida) {
-        this(salida, ConfiguracionDelCompilador.DEFAULT);
-    }
-
-    public ModuloPrincipalLexico(Salida salida, ConfiguracionDelCompilador configuracion) {
         this.salida = salida;
-        this.configuracion = configuracion;
-        this.formateadorDeError = new FormateadorDeError(configuracion);
+        this.formateadorDeError = new FormateadorDeError();
     }
 
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);
         AnalizadorLexico analizador =
-                new AnalizadorLexico(new ContextoLexico(manejador, configuracion));
+                new AnalizadorLexico(new ContextoLexico(manejador));
         boolean huboErrores = false;
 
         try {
@@ -47,7 +40,8 @@ public final class ModuloPrincipalLexico {
                     huboErrores = true;
                     reportarError(excepcion);
                     // Sin paso de recuperación: el estado que lanzó ya consumió lo suyo.
-                    termino = !configuracion.multiDeteccionDeErrores();
+                    // El análisis sigue hasta el EOF: la multidetección de errores
+                    // léxicos es el comportamiento único, no una opción.
                 }
             }
         } finally {

@@ -1,6 +1,5 @@
 package minijava.lexico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import java.io.IOException;
@@ -12,16 +11,11 @@ import java.nio.file.Path;
 abstract class BaseDeAnalisisLexico {
 
     protected AnalizadorLexico crearAnalizador(Path dir, String fuente) throws IOException {
-        return crearAnalizador(dir, fuente, ConfiguracionDelCompilador.DEFAULT);
-    }
-
-    protected AnalizadorLexico crearAnalizador(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
-            throws IOException {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(archivo.toString());
-        return new AnalizadorLexico(manejador, configuracion);
+        return new AnalizadorLexico(manejador);
     }
 
 }

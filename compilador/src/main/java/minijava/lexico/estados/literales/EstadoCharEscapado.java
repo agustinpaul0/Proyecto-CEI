@@ -24,7 +24,7 @@ public final class EstadoCharEscapado implements EstadoLexico {
             throw contexto.crearExcepcionLexica(TipoDeErrorLexico.CHAR_SIN_CERRAR,
                     AnclaDeError.INICIO_DEL_LEXEMA);
         }
-        if (contexto.getCaracterActual() == 'u' && contexto.getConfiguracion().unicodeHabilitado()) {
+        if (contexto.getCaracterActual() == 'u') {
             contexto.avanzar();
             return new Continuar(new EstadoMarcadorUnicode(EstadoCharCerrando.INSTANCIA, false));
         }

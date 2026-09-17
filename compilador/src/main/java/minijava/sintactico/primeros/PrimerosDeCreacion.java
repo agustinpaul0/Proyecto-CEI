@@ -5,14 +5,12 @@ import minijava.lexico.tokens.TipoDeToken;
 import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 
 // GENERADO por herramientas/primeros_a_java.py desde
-// gramatica/minijava-ll1-logros.g. No editar a mano: se regenera.
+// gramatica/minijava-ll1-final.g. No editar a mano: se regenera.
 //
 // Las expresiones de creacion.
 //
 // Una constante por produccion, con su produccion citada al lado, para que
 // el analizador se lea contra la gramatica del informe renglon por renglon.
-// Las producciones que existen por un logro se emiten igual: el analizador
-// consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeCreacion {
 
     // Creacion -> new ArregloOInstancia
@@ -53,25 +51,26 @@ public final class PrimerosDeCreacion {
     public static final ConjuntoDePrimeros ARREGLO_OINSTANCIA_DE_CLASE_ARGS_ACTUALES = de(
             TipoDeToken.PAREN_A);
 
-    // CreacionDeArreglo -> [ RestoCreacionDeArreglo
-    public static final ConjuntoDePrimeros CREACION_DE_ARREGLO_CORCHETE_A = de(TipoDeToken.CORCHETE_A);
-
-    // RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional
-    public static final ConjuntoDePrimeros RESTO_CREACION_DE_ARREGLO_EXPRESION = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
-
-    // RestoCreacionDeArreglo -> ] DimensionesVaciasOpcional InicializadorDeArreglo
-    public static final ConjuntoDePrimeros RESTO_CREACION_DE_ARREGLO_CORCHETE_C = de(TipoDeToken.CORCHETE_C);
-
-    // DimensionesVaciasOpcional -> [ ] DimensionesVaciasOpcional
-    public static final ConjuntoDePrimeros DIMENSIONES_VACIAS_OPCIONAL_CORCHETE_A = de(
+    // CreacionDeArreglo -> DimensionesConTamanio InicializadorDeArregloOpcional
+    public static final ConjuntoDePrimeros CREACION_DE_ARREGLO_DIMENSIONES_CON_TAMANIO = de(
             TipoDeToken.CORCHETE_A);
 
-    // DimensionesVaciasOpcional -> EPSILON
-    public static final ConjuntoDePrimeros DIMENSIONES_VACIAS_OPCIONAL = de();
+    // DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
+    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_CORCHETE_A = de(TipoDeToken.CORCHETE_A);
+
+    // DimensionesConTamanioOpcional -> DimensionesConTamanio
+    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_OPCIONAL_DIMENSIONES_CON_TAMANIO = de(
+            TipoDeToken.CORCHETE_A);
+
+    // DimensionesConTamanioOpcional -> EPSILON
+    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_OPCIONAL = de();
+
+    // InicializadorDeArregloOpcional -> InicializadorDeArreglo
+    public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_OPCIONAL_INICIALIZADOR_DE_ARREGLO = de(
+            TipoDeToken.LLAVE_A);
+
+    // InicializadorDeArregloOpcional -> EPSILON
+    public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_OPCIONAL = de();
 
     // InicializadorDeArreglo -> { ListaElementosOpcional }
     public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_LLAVE_A = de(TipoDeToken.LLAVE_A);
@@ -109,16 +108,6 @@ public final class PrimerosDeCreacion {
     // ElementoInicializador -> InicializadorDeArreglo
     public static final ConjuntoDePrimeros ELEMENTO_INICIALIZADOR_INICIALIZADOR_DE_ARREGLO = de(
             TipoDeToken.LLAVE_A);
-
-    // DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
-    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_CORCHETE_A = de(TipoDeToken.CORCHETE_A);
-
-    // DimensionesConTamanioOpcional -> DimensionesConTamanio
-    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_OPCIONAL_DIMENSIONES_CON_TAMANIO = de(
-            TipoDeToken.CORCHETE_A);
-
-    // DimensionesConTamanioOpcional -> EPSILON
-    public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_OPCIONAL = de();
 
     private PrimerosDeCreacion() {
     }

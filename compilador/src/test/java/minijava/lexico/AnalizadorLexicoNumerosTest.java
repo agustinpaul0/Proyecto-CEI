@@ -1,7 +1,5 @@
 package minijava.lexico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import org.junit.jupiter.api.Tag;
@@ -163,37 +161,6 @@ class AnalizadorLexicoNumerosTest extends BaseDeAnalisisLexico {
         assertEquals("1.5", primero.lexema());
         assertEquals(TipoDeToken.ID_MV, segundo.tipo());
         assertEquals("x", segundo.lexema());
-    }
-
-    // Sin el logro Floats I, '.' y 'e'/'E' terminan el intLiteral.
-    @Test
-    void conFloatsDeshabilitadosElPuntoNoContinuaElEntero(@TempDir Path dir) throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
-        AnalizadorLexico analizador = crearAnalizador(dir, "1.5", configuracion);
-
-        Token primero = analizador.proximoToken();
-        Token segundo = analizador.proximoToken();
-        Token tercero = analizador.proximoToken();
-
-        assertEquals(TipoDeToken.INT_LITERAL, primero.tipo());
-        assertEquals("1", primero.lexema());
-        assertEquals(TipoDeToken.PUNTO, segundo.tipo());
-        assertEquals(TipoDeToken.INT_LITERAL, tercero.tipo());
-        assertEquals("5", tercero.lexema());
-    }
-
-    @Test
-    void conFloatsDeshabilitadosLaEYaNoIniciaUnExponente(@TempDir Path dir) throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
-        AnalizadorLexico analizador = crearAnalizador(dir, "1e5", configuracion);
-
-        Token primero = analizador.proximoToken();
-        Token segundo = analizador.proximoToken();
-
-        assertEquals(TipoDeToken.INT_LITERAL, primero.tipo());
-        assertEquals("1", primero.lexema());
-        assertEquals(TipoDeToken.ID_MV, segundo.tipo());
-        assertEquals("e5", segundo.lexema());
     }
 
 }

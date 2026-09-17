@@ -1,6 +1,5 @@
 package minijava.sintactico.primeros;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.lexico.tokens.TablaDeLexemas;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
@@ -40,18 +39,6 @@ public final class ConjuntoDePrimeros {
 
     public Set<TipoDeToken> getTokens() {
         return tokens;
-    }
-
-    // Los tokens que un logro apagado saca del lenguaje no pueden aparecer en un
-    // mensaje de error: prometerían una entrada que el compilador rechazaría.
-    public ConjuntoDePrimeros habilitadosEn(ConfiguracionDelCompilador configuracion) {
-        EnumSet<TipoDeToken> habilitados = EnumSet.noneOf(TipoDeToken.class);
-        for (TipoDeToken token : tokens) {
-            if (TablaDeLexemas.estaHabilitado(token, configuracion)) {
-                habilitados.add(token);
-            }
-        }
-        return new ConjuntoDePrimeros(habilitados);
     }
 
     // Lo que va después de «se esperaba» en el reporte. Un lexema fijo se nombra

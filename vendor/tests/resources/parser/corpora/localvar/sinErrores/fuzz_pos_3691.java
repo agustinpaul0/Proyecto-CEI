@@ -1,0 +1,2 @@
+interface Yt6 {
+}

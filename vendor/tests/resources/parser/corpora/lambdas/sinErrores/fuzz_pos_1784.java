@@ -1,0 +1,2 @@
+interface W7 {
+}

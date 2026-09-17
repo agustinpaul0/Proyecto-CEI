@@ -1,0 +1,2 @@
+interface TS__ < W > {
+}

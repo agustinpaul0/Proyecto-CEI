@@ -1,19 +1,14 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
-import minijava.sintactico.RestriccionesDeLambda;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeExpresiones;
 import minijava.sintactico.primeros.PrimerosDeLambdas;
 
-import java.util.HashSet;
-import java.util.Set;
-
-// El logro MiniLambdas E2, y la desambiguación de sus dos cabezas.
+// MiniLambdas, y la desambiguación de sus dos cabezas.
 //
 // La lambda vive en el nivel MÁS ALTO de la jerarquía de expresiones, como en el
 // JLS: no es un Primario y por lo tanto no puede ser operando de ningún
@@ -25,21 +20,25 @@ import java.util.Set;
 // pero no: `()` sólo puede ser una lambda de cero parámetros, `(e ,` sólo puede
 // ser una lambda porque MiniJava no tiene operador coma, y `(e)` se decide con
 // el token que sigue al `)`. Un token de lookahead en cada punto.
+//
+// Lo que la lambda usa —`this`, los nombres que captura, que sus parámetros no
+// se repitan— no lo mira el sintáctico: son restricciones de significado y las
+// resuelve el analizador semántico.
 public final class AnalizadorDeLambdas extends ParteDelAnalizador {
 
     public AnalizadorDeLambdas(Sintaxis sintaxis) {
         super(sintaxis);
     }
 
-    // AccesoLlamadaOLambda -> -> CuerpoLambda   [+lambda]
+    // AccesoLlamadaOLambda -> -> CuerpoLambda
     // AccesoLlamadaOLambda -> AccesoLlamada ColaDesdePrimarioSinAsignacion
     //
     // El idMetVar ya lo consumió ExpresionDesdePrimarioOLambda; acá se decide si
     // era el único parámetro de una lambda o el arranque de una expresión normal.
     public void accesoLlamadaOLambda(Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
+        if (estaEn(PrimerosDeLambdas.ACCESO_LLAMADA_OLAMBDA_FLECHA)) {
             match(TipoDeToken.OP_FLECHA);
-            cuerpoLambda(Set.of(nombre.lexema()));
+            cuerpoLambda();
             return;
         }
         sintaxis.referencias().accesoLlamada(nombre);
@@ -47,85 +46,68 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
     }
 
     // ParentizadaOLambda -> ( ContenidoDeParentesis
-    // ContenidoDeParentesis -> ) -> CuerpoLambda   [+lambda]
+    // ContenidoDeParentesis -> ) -> CuerpoLambda
     // ContenidoDeParentesis -> Expresion RestoDeParentesis
     // RestoDeParentesis -> ) FinDeParentizadaOLambda
     public void parentizadaOLambda() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
 
-        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.CONTENIDO_DE_PARENTESIS_PAREN_C)) {
+        if (estaEn(PrimerosDeLambdas.CONTENIDO_DE_PARENTESIS_PAREN_C)) {
             match(TipoDeToken.PAREN_C);
             match(TipoDeToken.OP_FLECHA);
-            cuerpoLambda(Set.of());
+            cuerpoLambda();
             return;
         }
 
-        // El contenido se lee con las capturas EN DUDA: hasta ver qué sigue al
-        // `)` no se sabe si son parámetros o una expresión. El finally cierra el
-        // marco pase lo que pase, porque con Modo Pánico el contenido puede
-        // fallar y el análisis seguir.
-        RestriccionesDeLambda restricciones = sintaxis.restriccionesDeLambda();
-        int profundidad = restricciones.abrirCandidatoAParametro();
-        try {
-            Candidato primero = leerCandidatoAParametro();
-            if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
-                restricciones.descartarCandidatoAParametro();
-                lambdaDeVariosParametros(primero);
-            } else {
-                match(TipoDeToken.PAREN_C);
-                finDeParentizadaOLambda(primero);
-            }
-        } finally {
-            restricciones.cerrarCandidatoAParametro(profundidad);
+        Candidato primero = leerCandidatoAParametro();
+        if (estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
+            lambdaDeVariosParametros(primero);
+        } else {
+            match(TipoDeToken.PAREN_C);
+            finDeParentizadaOLambda(primero);
         }
     }
 
-    // CuerpoLambda -> Expresion   [+lambda]
+    // CuerpoLambda -> Expresion
     //
     // Voraz: la expresión consume todo lo que puede, así que `x -> a + b` es
-    // `x -> (a + b)`. Es una de las siete ambigüedades declaradas.
-    public void cuerpoLambda(Set<String> parametros) throws ExcepcionLexica, ExcepcionSintactica {
-        RestriccionesDeLambda restricciones = sintaxis.restriccionesDeLambda();
-        RestriccionesDeLambda.Alcance anterior = restricciones.entrar(parametros);
-        try {
-            sintaxis.expresiones().expresion();
-        } finally {
-            restricciones.salir(anterior);
-        }
-        restricciones.anotarQueEsLambda();
+    // `x -> (a + b)`. Es una de las ambigüedades declaradas.
+    public void cuerpoLambda() throws ExcepcionLexica, ExcepcionSintactica {
+        sintaxis.expresiones().expresion();
+        sintaxis.anotarQueEsLambda();
     }
 
-    // RestoDeParentesis -> , ListaParametrosLambda ) -> CuerpoLambda   [+lambda]
+    // RestoDeParentesis -> , ListaParametrosLambda ) -> CuerpoLambda
     // ListaParametrosLambda -> idMetVar RestoListaParametrosLambda
-    // RestoListaParametrosLambda -> , idMetVar RestoListaParametrosLambda | EPSILON
     private void lambdaDeVariosParametros(Candidato primero)
             throws ExcepcionLexica, ExcepcionSintactica {
-        Set<String> parametros = new HashSet<>();
-        exigirParametro(primero, parametros);
-        while (estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
-            match(TipoDeToken.COMA);
-            Token siguiente = actual();
-            match(TipoDeToken.ID_MV);
-            exigirParametro(new Candidato(siguiente, true, false), parametros);
-        }
+        exigirParametro(primero);
+        restoListaParametrosLambda();
         match(TipoDeToken.PAREN_C);
         match(TipoDeToken.OP_FLECHA);
-        cuerpoLambda(parametros);
+        cuerpoLambda();
     }
 
-    // FinDeParentizadaOLambda -> -> CuerpoLambda   [+lambda]
+    // RestoListaParametrosLambda -> , idMetVar RestoListaParametrosLambda | EPSILON
+    private void restoListaParametrosLambda() throws ExcepcionLexica, ExcepcionSintactica {
+        if (!estaEn(PrimerosDeLambdas.RESTO_DE_PARENTESIS_COMA)) {
+            return;
+        }
+        match(TipoDeToken.COMA);
+        match(TipoDeToken.ID_MV);
+        restoListaParametrosLambda();
+    }
+
+    // FinDeParentizadaOLambda -> -> CuerpoLambda
     // FinDeParentizadaOLambda -> ColaDesdePrimarioSinAsignacion
     private void finDeParentizadaOLambda(Candidato primero)
             throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.LAMBDA) && estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
-            sintaxis.restriccionesDeLambda().descartarCandidatoAParametro();
-            Set<String> parametros = new HashSet<>();
-            exigirParametro(primero, parametros);
+        if (estaEn(PrimerosDeLambdas.FIN_DE_PARENTIZADA_OLAMBDA_FLECHA)) {
+            exigirParametro(primero);
             match(TipoDeToken.OP_FLECHA);
-            cuerpoLambda(parametros);
+            cuerpoLambda();
             return;
         }
-        sintaxis.restriccionesDeLambda().confirmarExpresionParentizada();
         exigirQueLaLambdaParentizadaNoLleveCola(primero);
         sintaxis.expresiones().colaDesdePrimarioSinAsignacion();
     }
@@ -153,22 +135,17 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         sintaxis.expresiones().expresion();
         boolean fueUnIdMetVarPelado =
                 primero.tipo() == TipoDeToken.ID_MV && consumioUnSoloTokenDesde(antes);
-        return new Candidato(primero, fueUnIdMetVarPelado,
-                sintaxis.restriccionesDeLambda().ultimaExpresionFueLambda());
+        return new Candidato(primero, fueUnIdMetVarPelado, sintaxis.ultimaExpresionFueLambda());
     }
 
     // Un parámetro de lambda tiene que ser un identificador pelado: `(a) -> a` es
     // una lambda y `(a + 1) -> a` no. La gramática no puede distinguirlos —los dos
     // son una Expresion hasta ver el `->`—, así que lo verifica el analizador.
-    private void exigirParametro(Candidato candidato, Set<String> parametros)
-            throws ExcepcionSintactica {
+    // Que el nombre no se repita SÍ es del semántico, y no se mira acá.
+    private void exigirParametro(Candidato candidato) throws ExcepcionSintactica {
         if (!candidato.esIdMetVarPelado()) {
             throw ExcepcionSintactica.porRestriccion(candidato.token(),
                     "un parametro de lambda tiene que ser un identificador");
-        }
-        if (!parametros.add(candidato.token().lexema())) {
-            throw ExcepcionSintactica.porRestriccion(candidato.token(),
-                    "el parametro " + candidato.token().lexema() + " esta repetido en la lambda");
         }
     }
 

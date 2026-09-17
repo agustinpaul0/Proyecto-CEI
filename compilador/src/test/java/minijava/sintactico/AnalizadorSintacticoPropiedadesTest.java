@@ -1,10 +1,7 @@
 package minijava.sintactico;
 
 import minijava.aplicacion.ModuloPrincipalSintactico;
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import net.jqwik.api.Arbitraries;
 import net.jqwik.api.Arbitrary;
 import net.jqwik.api.ForAll;
@@ -58,23 +55,15 @@ class AnalizadorSintacticoPropiedadesTest {
                 .map(tokens -> String.join(" ", tokens));
     }
 
-    private List<String> analizar(String fuente, ConfiguracionDelCompilador configuracion) {
+    private List<String> analizar(String fuente) {
         try {
             Files.writeString(ARCHIVO, fuente);
             SalidaEnMemoria salida = new SalidaEnMemoria();
-            new ModuloPrincipalSintactico(salida, configuracion).ejecutar(ARCHIVO.toString());
+            new ModuloPrincipalSintactico(salida).ejecutar(ARCHIVO.toString());
             return salida.getLineas();
         } catch (IOException excepcion) {
             throw new UncheckedIOException(excepcion);
         }
-    }
-
-    private ConfiguracionDelCompilador conPanico() {
-        return ConfiguracionDeLaCorrida.actual().con(Logro.MODO_PANICO);
-    }
-
-    private ConfiguracionDelCompilador sinPanico() {
-        return ConfiguracionDeLaCorrida.actual().sin(Logro.MODO_PANICO);
     }
 
     private List<String> codigos(List<String> salida) {
@@ -85,46 +74,30 @@ class AnalizadorSintacticoPropiedadesTest {
     @Property(tries = 400)
     void elModuloSiempreTerminaYNuncaDejaEscaparUnaExcepcion(
             @ForAll("sopasDeTokens") String fuente) {
-        assertFalse(analizar(fuente, sinPanico()).isEmpty(), fuente);
-        assertFalse(analizar(fuente, conPanico()).isEmpty(), fuente);
+        assertFalse(analizar(fuente).isEmpty(), fuente);
     }
 
     // O se aceptó y el contrato de éxito es exacto, o hay al menos un código de
     // error; nunca las dos cosas, nunca ninguna.
     @Property(tries = 400)
     void oSeAceptaOSeReportaAlMenosUnError(@ForAll("sopasDeTokens") String fuente) {
-        for (var configuracion : List.of(sinPanico(), conPanico())) {
-            List<String> salida = analizar(fuente, configuracion);
-            List<String> codigos = codigos(salida);
+        List<String> salida = analizar(fuente);
+        List<String> codigos = codigos(salida);
 
-            assertFalse(codigos.isEmpty(), fuente + " -> " + salida);
-            if (codigos.contains("[SinErrores]")) {
-                assertEquals(List.of("Compilacion Exitosa", "", "[SinErrores]"), salida, fuente);
-            } else {
-                assertTrue(codigos.stream().allMatch(c -> c.startsWith("[Error:")),
-                        fuente + " -> " + salida);
-            }
+        assertFalse(codigos.isEmpty(), fuente + " -> " + salida);
+        if (codigos.contains("[SinErrores]")) {
+            assertEquals(List.of("Compilacion Exitosa", "", "[SinErrores]"), salida, fuente);
+        } else {
+            assertTrue(codigos.stream().allMatch(c -> c.startsWith("[Error:")),
+                    fuente + " -> " + salida);
         }
-    }
-
-    // Sin el logro se reporta a lo sumo un error; con el logro, el primero es el
-    // mismo. Es lo que hace que un caso del corpus valga en las dos.
-    @Property(tries = 400)
-    void elModoPanicoAgregaErroresAlFinalPeroNuncaCambiaElPrimero(
-            @ForAll("sopasDeTokens") String fuente) {
-        List<String> sinLogro = codigos(analizar(fuente, sinPanico()));
-        List<String> conLogro = codigos(analizar(fuente, conPanico()));
-
-        assertEquals(1, sinLogro.size(), fuente + " -> " + sinLogro);
-        assertEquals(sinLogro.getFirst(), conLogro.getFirst(), fuente);
-        assertTrue(conLogro.size() >= sinLogro.size(), fuente);
     }
 
     // El lexema que reporta el error salió del fuente, o es el `$` del EOF, y su
     // línea cae dentro del archivo.
     @Property(tries = 400)
     void elTokenDelErrorSiempreSalioDelFuente(@ForAll("sopasDeTokens") String fuente) {
-        for (String codigo : codigos(analizar(fuente, conPanico()))) {
+        for (String codigo : codigos(analizar(fuente))) {
             if (codigo.equals("[SinErrores]")) {
                 continue;
             }
@@ -143,7 +116,7 @@ class AnalizadorSintacticoPropiedadesTest {
     // retrocede, y no puede haber más errores que tokens.
     @Property(tries = 400)
     void conModoPanicoLosErroresAvanzan(@ForAll("sopasDeTokens") String fuente) {
-        List<String> codigos = codigos(analizar(fuente, conPanico()));
+        List<String> codigos = codigos(analizar(fuente));
         int tokens = fuente.isBlank() ? 0 : fuente.split("\\s+").length;
 
         assertTrue(codigos.size() <= tokens + 1,
@@ -154,6 +127,6 @@ class AnalizadorSintacticoPropiedadesTest {
     @Property(tries = 50)
     void unFuenteDeSoloBlancosSiempreSeAcepta(@ForAll @IntRange(min = 0, max = 40) int blancos) {
         assertEquals(List.of("Compilacion Exitosa", "", "[SinErrores]"),
-                analizar(" \n\t".repeat(blancos), conPanico()));
+                analizar(" \n\t".repeat(blancos)));
     }
 }

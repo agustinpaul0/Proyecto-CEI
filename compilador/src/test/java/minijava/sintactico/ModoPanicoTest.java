@@ -1,12 +1,7 @@
 package minijava.sintactico;
 
 import minijava.aplicacion.ModuloPrincipalSintactico;
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
-import minijava.logros.ConfiguracionDeLaCorrida;
-import minijava.logros.RequiereLogro;
-import minijava.logros.RequiereLogroApagado;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -23,33 +18,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 
-// El logro Recuperación de Errores Modo Pánico: al detectar un error el
-// analizador descarta entrada hasta un token de sincronización y sigue, en vez
-// de terminar en el primero.
+// Recuperación de Errores en Modo Pánico: al detectar un error el analizador
+// descarta entrada hasta un token de sincronización y sigue, en vez de terminar
+// en el primero.
 @Tag("sintactico")
 class ModoPanicoTest extends BaseDeAnalisis {
 
-    private ConfiguracionDelCompilador conPanico() {
-        return ConfiguracionDeLaCorrida.actual().con(Logro.MODO_PANICO);
-    }
-
-    private ConfiguracionDelCompilador sinPanico() {
-        return ConfiguracionDeLaCorrida.actual().sin(Logro.MODO_PANICO);
-    }
-
-    private List<String> lexemasDeLosErrores(Path dir, String fuente,
-                                             ConfiguracionDelCompilador configuracion)
-            throws Exception {
-        return erroresDe(dir, fuente, configuracion).stream()
+    private List<String> lexemasDeLosErrores(Path dir, String fuente) throws Exception {
+        return erroresDe(dir, fuente).stream()
                 .map(ExcepcionSintactica::getLexemaOfensivo).toList();
     }
 
-    private List<String> salidaDe(Path dir, String fuente, ConfiguracionDelCompilador configuracion)
-            throws Exception {
+    private List<String> salidaDe(Path dir, String fuente) throws Exception {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalSintactico(salida, configuracion).ejecutar(archivo.toString());
+        new ModuloPrincipalSintactico(salida).ejecutar(archivo.toString());
         return salida.getLineas();
     }
 
@@ -71,37 +55,27 @@ class ModoPanicoTest extends BaseDeAnalisis {
             """;
 
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
-    void conModoPanicoSeReportanTodosLosErroresYNoSoloElPrimero(@TempDir Path dir) throws Exception {
-        assertEquals(List.of("void", ";", ";", ","), lexemasDeLosErrores(dir, CUATRO_ERRORES, conPanico()));
+    void seReportanTodosLosErroresYNoSoloElPrimero(@TempDir Path dir) throws Exception {
+        assertEquals(List.of("void", ";", ";", ","), lexemasDeLosErrores(dir, CUATRO_ERRORES));
+    }
+
+    // La recuperación agrega errores DESPUÉS del primero, nunca cambia cuál es el
+    // primero: es el mismo que reportaría un analizador que cortara ahí, que es
+    // la convención base de Pautas slide 25.
+    @Test
+    void elPrimerErrorEsElDelPrimerTokenQueNoEncaja(@TempDir Path dir) throws Exception {
+        assertEquals("void", lexemasDeLosErrores(dir, CUATRO_ERRORES).getFirst());
+        assertEquals("{", lexemasDeLosErrores(dir, "class C1 { }\nclass { }\n").getFirst());
+        assertEquals("else",
+                lexemasDeLosErrores(dir, envolverEnMetodo("if (a) ; else ; else ;")).getFirst());
+        assertEquals(";", lexemasDeLosErrores(dir, envolverEnMetodo("x = ;")).getFirst());
+        assertEquals("{", lexemasDeLosErrores(dir, "interface I1 { void m(){} }\n").getFirst());
     }
 
     @Test
-    void sinModoPanicoElAnalisisCortaEnElPrimerError(@TempDir Path dir) throws Exception {
-        assertEquals(List.of("void"), lexemasDeLosErrores(dir, CUATRO_ERRORES, sinPanico()));
-    }
-
-    // La invariante que hace que un caso del corpus valga para las dos
-    // configuraciones: el logro agrega errores al final, nunca cambia el primero.
-    @Test
-    void elPrimerErrorEsElMismoConElLogroYSinEl(@TempDir Path dir) throws Exception {
-        for (String fuente : List.of(
-                CUATRO_ERRORES,
-                "class C1 { }\nclass { }\n",
-                envolverEnMetodo("if (a) ; else ; else ;"),
-                envolverEnMetodo("x = ;"),
-                "interface I1 { void m(){} }\n",
-                "class C1 { void m(){ } ")) {
-            assertEquals(lexemasDeLosErrores(dir, fuente, sinPanico()).getFirst(),
-                    lexemasDeLosErrores(dir, fuente, conPanico()).getFirst(), fuente);
-        }
-    }
-
-    @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void unaLineaDeErrorNuncaRetrocede(@TempDir Path dir) throws Exception {
         int anterior = 0;
-        for (ExcepcionSintactica error : erroresDe(dir, CUATRO_ERRORES, conPanico())) {
+        for (ExcepcionSintactica error : erroresDe(dir, CUATRO_ERRORES)) {
             assertTrue(error.getLinea() >= anterior, "las lineas retroceden");
             anterior = error.getLinea();
         }
@@ -111,53 +85,47 @@ class ModoPanicoTest extends BaseDeAnalisis {
     // contenido se leería como si fuera otro miembro y cada sentencia daría un
     // error inventado.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void elCuerpoDeUnMetodoConLaFirmaRotaNoInventaErrores(@TempDir Path dir) throws Exception {
         String fuente = "class C1 { void m(int){ x = 1; y = 2; z = 3; } int b; }\n";
 
-        assertEquals(List.of(")"), lexemasDeLosErrores(dir, fuente, conPanico()));
+        assertEquals(List.of(")"), lexemasDeLosErrores(dir, fuente));
     }
 
     // Un miembro correcto que viene después de uno roto se sigue analizando: el
     // punto de sincronización incluye los Primeros del miembro siguiente.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void unMiembroCorrectoDespuesDeUnoRotoNoSePierde(@TempDir Path dir) throws Exception {
         String fuente = "class C1 { int x  void m(){ y = ; } }\n";
 
-        assertEquals(List.of("void", ";"), lexemasDeLosErrores(dir, fuente, conPanico()));
+        assertEquals(List.of("void", ";"), lexemasDeLosErrores(dir, fuente));
     }
 
     // El error cae justo en un token que también arranca un miembro válido, y el
     // miembro vuelve a fallar ahí mismo. Sin la garantía de progreso el
     // analizador daría vueltas para siempre sobre el mismo token.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void unErrorQueCaeEnElComienzoDeOtroElementoNoCiclaParaSiempre(@TempDir Path dir) {
         assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
-            assertFalse(lexemasDeLosErrores(dir, "class C1 { int int; }\n", conPanico()).isEmpty());
-            assertFalse(lexemasDeLosErrores(dir, "class C1 { void m(){ if if ; } }\n",
-                    conPanico()).isEmpty());
-            assertFalse(lexemasDeLosErrores(dir, "class class class\n", conPanico()).isEmpty());
+            assertFalse(lexemasDeLosErrores(dir, "class C1 { int int; }\n").isEmpty());
+            assertFalse(lexemasDeLosErrores(dir, "class C1 { void m(){ if if ; } }\n").isEmpty());
+            assertFalse(lexemasDeLosErrores(dir, "class class class\n").isEmpty());
         });
     }
 
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void unFuenteValidoNoCambiaConElLogroPrendido(@TempDir Path dir) throws Exception {
         String fuente = "class C1 { int x; void m(){ var a = 1; } }\nclass C2 { }\n";
 
-        assertTrue(erroresDe(dir, fuente, conPanico()).isEmpty());
+        assertTrue(erroresDe(dir, fuente).isEmpty());
         assertEquals(List.of("Compilacion Exitosa", "", "[SinErrores]"),
-                salidaDe(dir, fuente, conPanico()));
+                salidaDe(dir, fuente));
     }
 
     // Con errores nunca se imprime el código de éxito, aunque el análisis haya
     // seguido después del primero.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void conErroresNuncaSeImprimeSinErrores(@TempDir Path dir) throws Exception {
-        List<String> salida = salidaDe(dir, CUATRO_ERRORES, conPanico());
+        List<String> salida = salidaDe(dir, CUATRO_ERRORES);
 
         assertFalse(salida.contains("[SinErrores]"));
         assertEquals(4, salida.stream().filter(l -> l.startsWith("[Error:")).count());
@@ -167,13 +135,10 @@ class ModoPanicoTest extends BaseDeAnalisis {
     // errores sintácticos que la recuperación ya había encontrado: son anteriores
     // en el fuente y hay que reportarlos igual.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
-    @RequiereLogroApagado(Logro.TERNARIO)
     void unErrorLexicoNoSeLlevaPuestosLosSintacticosYaEncontrados(@TempDir Path dir)
             throws Exception {
         // Sin el logro de ternario, el `?` no es un token de MiniJava.
-        List<String> salida = salidaDe(dir, "class C1 { int x  void m(){ } }\nclass ?\n",
-                conPanico());
+        List<String> salida = salidaDe(dir, "class C1 { int x  void m(){ } }\nclass ?\n");
 
         assertTrue(salida.contains("[Error:void|1]"), salida.toString());
         assertTrue(salida.stream().anyMatch(l -> l.startsWith("[Error:?")), salida.toString());
@@ -182,9 +147,8 @@ class ModoPanicoTest extends BaseDeAnalisis {
     // El formato de cada reporte es el mismo de Pautas slide 25, repetido: el
     // mensaje, un renglón en blanco y el código.
     @Test
-    @RequiereLogro(Logro.MODO_PANICO)
     void cadaErrorSeReportaConElFormatoCompletoDeLasPautas(@TempDir Path dir) throws Exception {
-        List<String> salida = salidaDe(dir, "class C1 { int x  int y  }\n", conPanico());
+        List<String> salida = salidaDe(dir, "class C1 { int x  int y  }\n");
 
         assertEquals(6, salida.size());
         assertTrue(salida.get(0).startsWith("Error Sintactico en linea 1: "));

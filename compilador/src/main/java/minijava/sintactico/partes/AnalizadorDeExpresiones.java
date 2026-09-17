@@ -1,6 +1,5 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
@@ -53,8 +52,8 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             expresionCondicionalOLambda();
             // Con un `=` en la raíz la expresión es una asignación, no la lambda
             // que acaba de parsearse como lado derecho: `(a = x -> x).m()` es
-            // legal en Java. Ver RestriccionesDeLambda.
-            sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
+            // legal en Java.
+            sintaxis.anotarQueNoEsLambda();
         } else {
             // RestoExpresion -> EPSILON
         }
@@ -68,7 +67,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // y no admite `=` en la raíz. Es el operando de los seis `=` y el tercer
     // operando del ternario. Sólo duplica las CABEZAS; las colas se comparten.
     public void expresionCondicionalOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
+        sintaxis.anotarQueNoEsLambda();
         if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO)) {
             operadorUnario();
             operando();
@@ -100,7 +99,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             sintaxis.argumentos().argsActuales();
             colaDesdePrimarioSinAsignacion();
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_THIS)) {
-            sintaxis.restriccionesDeLambda().verificarThisExplicito(actual());
             match(TipoDeToken.PR_THIS);
             colaDesdePrimarioSinAsignacion();
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_STRING_LITERAL)) {
@@ -129,7 +127,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         restoCondicional();
     }
 
-    // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda   [+ternario]
+    // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
     // RestoCondicional -> EPSILON
     //
     // La recursión sobre ExpresionCondicional en la rama derecha es lo que lo
@@ -138,14 +136,14 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // `a ? b : x -> x` sí —la producción del JLS es `? Expression : LambdaExpression`—.
     // Con el logro apagado esta capa desaparece sin dejar rastro.
     private void restoCondicional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.TERNARIO) && estaEn(PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
+        if (estaEn(PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
             match(TipoDeToken.SIGNO_PREGUNTA);
             expresion();
             match(TipoDeToken.DOS_PUNTOS);
             expresionCondicionalOLambda();
             // Ídem: con un `?` en la raíz la expresión es un ternario, aunque una
             // de sus ramas sea una lambda.
-            sintaxis.restriccionesDeLambda().anotarQueNoEsLambda();
+            sintaxis.anotarQueNoEsLambda();
         } else {
             // RestoCondicional -> EPSILON
         }
@@ -161,14 +159,13 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     //                          | EPSILON
     // OperadorBinario -> || | && | == | != | < | > | <= | >= | + | - | * | / | %
     //
-    // La recursión a derecha se traduce en un while y no en una llamada, para que
-    // una cadena larguísima de operadores no dependa de la pila de la JVM. Es la
-    // única libertad que se toma respecto del esquema de Clase 5 slide 59, y no
-    // cambia qué se reconoce: el bucle deriva exactamente la misma cadena.
     private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
+        if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
             operadorBinario();
             expresionBasica();
+            restoExpresionCompuesta();
+        } else {
+            // RestoExpresionCompuesta -> EPSILON
         }
     }
 
@@ -244,14 +241,11 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         }
     }
 
-    // PosfijoOpcional -> ++ | --   [+posfijo]
+    // PosfijoOpcional -> ++ | --
     // PosfijoOpcional -> EPSILON
     //
     // Va sobre Referencia y no sobre Operando: `5++` no tiene sentido.
     public void posfijoOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!hayLogro(Logro.POSFIJO)) {
-            return;
-        }
         if (estaEn(PrimerosDeExpresiones.POSFIJO_OPCIONAL_INCREMENTO)) {
             match(TipoDeToken.OP_INCREMENTO);
         } else if (estaEn(PrimerosDeExpresiones.POSFIJO_OPCIONAL_DECREMENTO)) {
@@ -262,7 +256,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     }
 
     // Primitivo -> true | false | intLiteral | charLiteral | null
-    // Primitivo -> floatLiteral   [+float]
+    // Primitivo -> floatLiteral
     private void primitivo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.PRIMITIVO_TRUE)) {
             match(TipoDeToken.PR_TRUE);
@@ -274,7 +268,7 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
             match(TipoDeToken.CHAR_LITERAL);
         } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_NULL)) {
             match(TipoDeToken.PR_NULL);
-        } else if (hayLogro(Logro.FLOAT) && estaEn(PrimerosDeExpresiones.PRIMITIVO_FLOAT_LITERAL)) {
+        } else if (estaEn(PrimerosDeExpresiones.PRIMITIVO_FLOAT_LITERAL)) {
             match(TipoDeToken.FLOAT_LITERAL);
         } else {
             throw errorEsperando(PrimerosDeExpresiones.OPERANDO_PRIMITIVO);

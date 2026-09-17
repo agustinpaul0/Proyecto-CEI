@@ -1,0 +1,2 @@
+class YS extends Ru {
+}

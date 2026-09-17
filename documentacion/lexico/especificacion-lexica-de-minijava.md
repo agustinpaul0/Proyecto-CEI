@@ -20,9 +20,9 @@ qué se tomó— están en [`decisiones.md`](decisiones-de-logica.md) §7.
 ## 1. Los 56 tokens, de un vistazo
 
 > Los 56 son los que define «Aspectos Léxicos de MiniJava», o sea el alcance de la Etapa 1. La
-> Etapa 2 agrega cuatro que no figuran ahí y que existen sólo porque un logro los necesita —`for`,
-> `private`, `?` y `->`—, cada uno **condicionado al interruptor de su logro**: apagado, el léxico
-> se comporta exactamente como acá se describe. El detalle está en
+> Etapa 2 agrega cuatro que no figuran ahí y que existen porque los necesitan sus logros —`for`,
+> `private`, `?` y `->`—. Este documento describe el vocabulario de la Etapa 1; el de los cuatro
+> nuevos está en
 > [`../sintactico/arquitectura-del-analizador-sintactico.md`](../sintactico/arquitectura-del-analizador-sintactico.md).
 
 | Familia | Cantidad | Tokens |
@@ -597,13 +597,12 @@ mencionarlas en el informe.
 | Manejador de Archivos Eficiente | **Requisito, no un extra**: ver [`arquitectura.md`](arquitectura-del-analizador-lexico.md) "por qué el manejador de la cátedra está roto". Char a char sobre buffer de bloques, sólo `java.io`. |
 | Multi-detección de Errores | recuperación en el Módulo Principal; invariante a testear con property-based: cada recuperación consume ≥1 carácter o llega a EOF (garantiza terminación). |
 | Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. Dónde apunta el `^` sigue el criterio de `javac`, salvo `charLiteral vacío`, que señala la comilla de cierre: ver [`manejo-de-errores.md`](../compartido/manejo-de-errores.md). |
-| Floats I | activable/testeable por flag, ver `ConfiguracionDelCompilador`. |
+| Floats I | siempre activo; la forma del literal la gobiernan los estados numéricos. |
 | Unicodes | caracteres no-ASCII crudos dentro de literales char/string + escape `\uXXXX` (marcador repetible). |
 | Imbatibilidad Léxica | consecuencia de la suite masiva + corpus de `resources/`. |
 | Good Job! I | consecuencia de lo anterior. |
 | Entrega Anticipada | hito de calendario. |
 
-Los cuatro logros de comportamiento (floats, unicode, reporte elegante, multi-detección) se activan
-vía `ConfiguracionDelCompilador(floatsHabilitados, unicodeHabilitado, reporteElegante,
-multiDeteccionDeErrores)` — todos `true` por defecto — para poder testear cada combinación por
-separado y no acoplar el comportamiento base al de los logros.
+Los cuatro logros de comportamiento (floats, unicode, reporte elegante, multi-detección) están
+**siempre activos**: el compilador reconoce MiniJava con todos los logros incorporados y no es
+configurable.

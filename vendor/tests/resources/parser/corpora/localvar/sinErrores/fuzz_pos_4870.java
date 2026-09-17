@@ -1,0 +1,2 @@
+interface Gvi < L > {
+}

@@ -1,6 +1,5 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
@@ -22,22 +21,30 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // ListaSentencias -> Sentencia ListaSentencias | EPSILON
     public void bloque() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.LLAVE_A);
-        while (estaEn(PrimerosDeSentencias.LISTA_SENTENCIAS_SENTENCIA)) {
-            if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_SENTENCIAS, this::sentencia)) {
-                break;
-            }
-        }
+        listaSentencias();
         match(TipoDeToken.LLAVE_C);
     }
 
-    // Sentencia -> ; | VarLocal ; | Return ; | If | While | Bloque
-    // Sentencia -> For                                                        [+for]
-    // Sentencia -> SentenciaExpresion ;                                       [-varclasica]
-    // SentenciaExpresion -> ExpresionSinLambda                                 [-varclasica]
-    // Sentencia -> ExpresionSinIdClase ;                                      [+varclasica]
-    // Sentencia -> TipoPrimitivo DimensionesOpcionales ListaDeclaradores ;    [+varclasica]
-    // Sentencia -> idGen DimensionesOpcionales ListaDeclaradores ;            [+varclasica]
-    // Sentencia -> idClase SentenciaDesdeIdClase                              [+varclasica]
+    // ListaSentencias -> Sentencia ListaSentencias | EPSILON
+    //
+    // La recursión es la de la producción; lo único que agrega `reanudaTrasError`
+    // es que un elemento roto no corte la lista: registra el error, sincroniza y
+    // dice si se puede seguir con el siguiente.
+    private void listaSentencias() throws ExcepcionLexica, ExcepcionSintactica {
+        if (!estaEn(PrimerosDeSentencias.LISTA_SENTENCIAS_SENTENCIA)) {
+            return;
+        }
+        if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_SENTENCIAS, this::sentencia)) {
+            return;
+        }
+        listaSentencias();
+    }
+
+    // Sentencia -> ; | VarLocal ; | Return ; | If | While | Bloque | For
+    // Sentencia -> ExpresionSinIdClase ;
+    // Sentencia -> TipoPrimitivo DimensionesOpcionales ListaDeclaradores ;
+    // Sentencia -> idGen DimensionesOpcionales ListaDeclaradores ;
+    // Sentencia -> idClase SentenciaDesdeIdClase
     public void sentencia() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeSentencias.SENTENCIA_PUNTO_Y_COMA)) {
             match(TipoDeToken.PUNTO_Y_COMA);
@@ -53,11 +60,8 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
             sentenciaWhile();
         } else if (estaEn(PrimerosDeSentencias.SENTENCIA_BLOQUE)) {
             bloque();
-        } else if (hayLogro(Logro.FOR) && estaEn(PrimerosDeSentencias.SENTENCIA_FOR)) {
+        } else if (estaEn(PrimerosDeSentencias.SENTENCIA_FOR)) {
             sintaxis.fors().sentenciaFor();
-        } else if (!hayLogro(Logro.VARCLASICA)) {
-            sintaxis.expresiones().expresionSinLambda();
-            match(TipoDeToken.PUNTO_Y_COMA);
         } else {
             sentenciaODeclaracionLocal();
         }
@@ -81,11 +85,19 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     public void listaDeclaradores() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.ID_MV);
         inicializacionDeDeclarador();
-        while (estaEn(PrimerosDeSentencias.RESTO_LISTA_DECLARADORES_COMA)) {
-            match(TipoDeToken.COMA);
-            match(TipoDeToken.ID_MV);
-            inicializacionDeDeclarador();
+        restoListaDeclaradores();
+    }
+
+    // RestoListaDeclaradores -> , idMetVar InicializacionDeDeclarador RestoListaDeclaradores
+    //                         | EPSILON
+    private void restoListaDeclaradores() throws ExcepcionLexica, ExcepcionSintactica {
+        if (!estaEn(PrimerosDeSentencias.RESTO_LISTA_DECLARADORES_COMA)) {
+            return;
         }
+        match(TipoDeToken.COMA);
+        match(TipoDeToken.ID_MV);
+        inicializacionDeDeclarador();
+        restoListaDeclaradores();
     }
 
     // InicializacionDeDeclarador -> = ExpresionCondicionalOLambda | EPSILON

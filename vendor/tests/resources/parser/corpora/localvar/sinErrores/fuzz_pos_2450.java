@@ -1,0 +1,4 @@
+class Gg {
+}
+interface KPOo {
+}

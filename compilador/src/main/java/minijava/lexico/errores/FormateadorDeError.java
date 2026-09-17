@@ -1,24 +1,13 @@
 package minijava.lexico.errores;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-
 import java.util.List;
 
 public final class FormateadorDeError {
 
     private static final int ANCHO_DE_TABULACION = 8;
 
-    private final ConfiguracionDelCompilador configuracion;
-
-    public FormateadorDeError(ConfiguracionDelCompilador configuracion) {
-        this.configuracion = configuracion;
-    }
-
     public List<String> formatear(ExcepcionLexica excepcion) {
         String codigo = "[Error:" + excepcion.getLexemaOfensivo() + "|" + excepcion.getLinea() + "]";
-        if (!configuracion.reporteElegante()) {
-            return List.of(codigo);
-        }
         String encabezado = "Error Léxico en línea " + excepcion.getLinea()
                 + ", columna " + excepcion.getColumna() + ": "
                 + excepcion.getTipo().describir(excepcion.getLexemaOfensivo());

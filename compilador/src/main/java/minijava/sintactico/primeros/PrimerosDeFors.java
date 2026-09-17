@@ -5,14 +5,12 @@ import minijava.lexico.tokens.TipoDeToken;
 import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 
 // GENERADO por herramientas/primeros_a_java.py desde
-// gramatica/minijava-ll1-logros.g. No editar a mano: se regenera.
+// gramatica/minijava-ll1-final.g. No editar a mano: se regenera.
 //
-// El logro Fors! E2.
+// La sentencia for, estandar y de iteradores.
 //
 // Una constante por produccion, con su produccion citada al lado, para que
 // el analizador se lea contra la gramatica del informe renglon por renglon.
-// Las producciones que existen por un logro se emiten igual: el analizador
-// consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeFors {
 
     // For -> for ( EncabezadoFor ) Sentencia

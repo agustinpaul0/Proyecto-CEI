@@ -25,13 +25,14 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     //                  | AccesoArreglo RestoReferencia
     //                  | EPSILON
     public void restoReferencia() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ENCADENADO)
-                || estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ACCESO_ARREGLO)) {
-            if (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ENCADENADO)) {
-                encadenado();
-            } else {
-                accesoArreglo();
-            }
+        if (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ENCADENADO)) {
+            encadenado();
+            restoReferencia();
+        } else if (estaEn(PrimerosDeReferencias.RESTO_REFERENCIA_ACCESO_ARREGLO)) {
+            accesoArreglo();
+            restoReferencia();
+        } else {
+            // RestoReferencia -> EPSILON
         }
     }
 
@@ -55,7 +56,6 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // una lambda nunca lo es. Ésa es exactamente la corrección de precedencia.
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
-            sintaxis.restriccionesDeLambda().verificarThisExplicito(actual());
             match(TipoDeToken.PR_THIS);
         } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
             match(TipoDeToken.LIT_STRING);
@@ -95,18 +95,13 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
 
     // AccesoLlamada -> ArgsActuales | EPSILON
     //
-    // El no terminal dedicado distingue los dos usos de un idMetVar, que es lo
-    // que permite chequear la captura de variables sólo donde corresponde.
-    //
-    // La llamada sin punto NO se chequea: `x -> ayuda(x)` es `this.ayuda(x)` sólo
-    // si `ayuda` es un método de instancia, y si es `static` de la misma clase no
-    // hay ningún `this` y Java lo acepta. Distinguirlos exige resolver el nombre
-    // contra una declaración, que es trabajo del analizador semántico.
+    // El no terminal dedicado distingue los dos usos de un idMetVar: con
+    // argumentos es una llamada, sin ellos un acceso a variable. Cuál de los dos
+    // nombra algo declarado, y si ese algo es alcanzable desde donde se lo usa,
+    // lo resuelve el analizador semántico.
     public void accesoLlamada(Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_ARGS_ACTUALES)) {
             sintaxis.argumentos().argsActuales();
-        } else {
-            sintaxis.restriccionesDeLambda().verificarQueNoCaptura(nombre);
         }
     }
 

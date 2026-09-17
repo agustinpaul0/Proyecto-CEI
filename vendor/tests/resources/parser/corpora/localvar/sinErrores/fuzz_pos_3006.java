@@ -1,0 +1,3 @@
+interface PLe {
+void qq ( ) ;
+}

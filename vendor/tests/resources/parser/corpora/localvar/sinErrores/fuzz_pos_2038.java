@@ -1,0 +1,2 @@
+interface J7 {
+}

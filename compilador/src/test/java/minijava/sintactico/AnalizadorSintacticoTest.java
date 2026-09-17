@@ -1,12 +1,8 @@
 package minijava.sintactico;
 
-import minijava.comun.config.Logro;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.lexico.AnalizadorLexico;
-import minijava.logros.ConfiguracionDeLaCorrida;
-import minijava.logros.RequiereLogro;
-import minijava.logros.RequiereLogroApagado;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -135,23 +131,13 @@ class AnalizadorSintacticoTest extends BaseDeAnalisis {
     // ------------------------------------------------- el logro de genericidad ---
 
     @Test
-    @RequiereLogro(Logro.GENERICO)
     void conGenericidadAvanzadaSeAceptaUnGenericoAnidado(@TempDir Path dir) {
         aceptar(dir, "class C1 extends Base<Lista<Otra>> {}");
     }
 
     @Test
-    @RequiereLogro(Logro.GENERICO)
     void conGenericidadAvanzadaElAnidamientoNoTieneLimite(@TempDir Path dir) {
         aceptar(dir, "class C1 extends " + "Lista<".repeat(50) + "Hoja" + ">".repeat(50) + " {}");
-    }
-
-    @Test
-    @RequiereLogroApagado(Logro.GENERICO)
-    void sinGenericidadAvanzadaUnGenericoAnidadoSeRechaza(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazar(dir, "class C1 extends Base<Lista<Otra>> {}");
-
-        assertEquals("<", excepcion.getLexemaOfensivo());
     }
 
     // Un solo nivel de genérico existe con el logro y sin él: el logro agrega el
@@ -190,9 +176,7 @@ class AnalizadorSintacticoTest extends BaseDeAnalisis {
             Files.writeString(archivo, "class C1 # {}");
             ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
             manejador.open(archivo.toString());
-            var configuracion = ConfiguracionDeLaCorrida.actual();
-            new AnalizadorSintactico(new AnalizadorLexico(manejador, configuracion), configuracion)
-                    .analizar();
+            new AnalizadorSintactico(new AnalizadorLexico(manejador)).analizar();
         });
     }
 

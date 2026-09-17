@@ -123,9 +123,8 @@ acceso al operador.
 
 **Decisión:** los seis pasan a `<ExpresionCondicional>`, exactamente un escalón más arriba. Sigue
 sin admitir un `=`, así que `a = b = c` se sigue rechazando; pero admite el ternario, así que
-`var x = c ? a : b;` es válido igual que `x = c ? a : b;`. Y como con el logro apagado
-`<ExpresionCondicional>` es un alias de `<ExpresionCompuesta>`, **el lenguaje base queda idéntico
-al de la cátedra**.
+`var x = c ? a : b;` es válido igual que `x = c ? a : b;`. La capa nueva no le saca nada al
+lenguaje de la cátedra: sólo le agrega el ternario.
 
 El ternario es **asociativo a derecha**, como en Java: `a ? b : c ? d : e` es `a ? b : (c ? d : e)`.
 
@@ -158,33 +157,76 @@ ahí sería, por construcción, siempre la forma que Java rechaza.
 
 La asimetría no es una preferencia: es una consecuencia.
 
-## 6. Orden de los modificadores: fiel a la gramática original
+## 6. Orden de los modificadores: los dos, como en Java
 
-Con el logro de visibilidad, `public static void f(){}` se acepta y `static public void f(){}` se
-rechaza. Java admite los dos órdenes.
+Java admite `public static` y `static public`. MiniJava **no define nada** sobre el orden: el logro
+de visibilidad habla de *poder indicar* la visibilidad, no de dónde va respecto de `static`.
 
-**Decisión:** se mantiene la restricción. La gramática original pone `<ModificadorOpcional>`
-*dentro* de `<Metodo>`, después de la posición donde el logro coloca la visibilidad; invertir el
-orden sería agrandar el lenguaje más allá de lo que el logro pide, y el logro sólo habla de *poder
-indicar* la visibilidad, no de dónde puede ir respecto de `static`.
+**Decisión:** se aceptan los dos órdenes, y lo mismo con `private`. Es la regla del proyecto —lo
+que MiniJava no define se comporta como en Java— aplicada tal cual, e indicación explícita del
+profesor. `protected` **no** se implementa: no está en MiniJava y agregarlo sí sería ampliar el
+lenguaje.
 
-## 7. Inicialización de arreglos: multidimensional
+La forma en que la gramática lo expresa hace además que el modificador no se pueda repetir, sin
+ningún chequeo fuera de ella:
+
+```
+<Miembro> ::= <Visibilidad> <MiembroTrasVisibilidad>
+            | static <VisibilidadOpcional> <TipoMetodo> <Metodo>
+            | <MiembroSinModificadores>
+<MiembroTrasVisibilidad> ::= static <TipoMetodo> <Metodo> | <MiembroSinModificadores>
+```
+
+La visibilidad aparece a **un solo lado** del `static`, así que `public private void m(){}`,
+`static static void m(){}` y `public static private void m(){}` no derivan. Y `static` sigue
+aplicando sólo a métodos, como en MiniJava base: no hay atributos estáticos.
+
+## 7. Inicialización de arreglos: con el tamaño puesto, y anidable
 
 El logro dice *«permite la inicialización de Arreglos al momento de su construcción **como en
 Java**. Sólo se permite como parte de una expresión de creación utilizando `new`»*. La única
 restricción que enuncia es **dónde**, no cuántas dimensiones.
 
-**Decisión:** el inicializador es anidable, como en Java. Un elemento puede ser una expresión o, a
-su vez, otro inicializador.
+Pero hay un choque, y conviene dejarlo escrito porque no tiene salida limpia. MiniJava base define
+la creación así:
 
 ```
-new int[]{1, 2, 3}              válido
-new int[][]{{1,2}, {3,4}}       válido
-new int[][][]{{{1}}}            válido
-new int[]{}                     válido
+CrearArreglo ::= new TipoBase DimensionesConTamanio
+DimensionesConTamanio ::= [ Expresion ] DimensionesConTamanio | [ Expresion ]
 ```
 
-La restricción de que sólo valga bajo `new` queda impuesta **por la gramática**: el inicializador
+**Toda dimensión lleva su tamaño**, y el corchete vacío no existe. Java, en cambio, exige lo
+contrario cuando hay inicializador: `new int[]{1,2,3}` compila y `new int[2]{1,2}` no —verificado
+con `javac`: *«array creation with both dimension expression and initialization is illegal»*, JLS
+§15.10.1—. O sea que no se puede a la vez respetar la forma de las dimensiones que MiniJava ya
+tenía definida y el «como en Java» del logro.
+
+**Decisión:** gana MiniJava base. Se deja `<DimensionesConTamanio>` tal cual y el inicializador se
+le cuelga al final, opcional. El inicializador es anidable: un elemento puede ser una expresión o,
+a su vez, otro inicializador.
+
+```
+<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>
+```
+
+```
+new int[3]              válido      (la forma de siempre)
+new int[3][4]           válido
+new int[3]{1, 2, 3}     válido
+new int[2][2]{{1,2}, {3,4}}   válido
+new int[0]{}            válido
+
+new int[]{1, 2, 3}      INVÁLIDO    (no hay corchete vacío en una creación)
+new int[]               INVÁLIDO
+new int[][]{{1,2}}      INVÁLIDO
+```
+
+El criterio general del proyecto —lo que MiniJava no define se comporta como en Java— **no aplica
+acá**, porque MiniJava sí define la forma de las dimensiones. Adoptar la forma de Java sería
+ampliar el lenguaje en una construcción ya especificada. La divergencia queda aislada en
+`<CreacionDeArreglo>`: revertirla es cambiar esa producción y nada más.
+
+La restricción de que el inicializador sólo valga bajo `new` queda impuesta **por la gramática**:
 sólo es alcanzable desde `<Creacion>`.
 
 ## 8. Genericidad: el diamante sólo al instanciar
@@ -233,7 +275,7 @@ Del segundo parámetro en adelante la gramática **sí** exige identificador: `(
 
 El léxico emite `pr_float` y `floatLiteral` desde la Etapa 1, por un logro de aquella etapa, pero
 la gramática de la cátedra no los tiene en `<TipoPrimitivo>` ni en `<Primitivo>`. Sin extenderla,
-ese logro quedaría inutilizable en la Etapa 2. Se agregan detrás de su propio interruptor.
+ese logro quedaría inutilizable en la Etapa 2, así que se agregan las dos alternativas.
 
 ## Ver también
 

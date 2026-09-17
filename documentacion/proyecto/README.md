@@ -10,7 +10,7 @@ que hay que leer antes de escribir código, y los que fijan qué se consulta y q
 | [`convenciones-de-la-catedra.md`](convenciones-de-la-catedra.md) | Lo no negociable: contrato de salida, códigos de error, invariantes duras. |
 | [`comandos-compilacion-y-entrega.md`](comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, formato del informe entregable. |
 
-## Las cuatro reglas que no se negocian
+## Las tres reglas que no se negocian
 
 Están desarrolladas en [`flujo-de-trabajo.md`](flujo-de-trabajo.md); acá el resumen:
 
@@ -18,7 +18,21 @@ Están desarrolladas en [`flujo-de-trabajo.md`](flujo-de-trabajo.md); acá el re
    especificación o ejecutando `javac`, nunca de memoria, e informado antes de implementar.
 2. **La robustez del testing es lo primero.** Los tests importan más que el código; buscar
    activamente casos extremos y de borde es parte del trabajo.
-3. **Cada logro es un interruptor independiente**, de punta a punta: el compilador tiene que poder
-   correrse y testearse con 0, 1 o N logros en cualquier combinación.
-4. **En los entregables no se deja constancia de los errores del desarrollo.** Sí de los defectos
+3. **En los entregables no se deja constancia de los errores del desarrollo.** Sí de los defectos
    del material de la cátedra, de las alternativas descartadas y de las decisiones.
+
+## Los logros no son configurables
+
+Hubo una cuarta regla —«cada logro es un interruptor independiente», con el compilador corriendo
+con 0, 1 o N logros en cualquier combinación— y **el profesor la revirtió**: complejiza la
+gramática sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo con más chance de
+error.
+
+**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
+siempre, y no es configurable. La gramática está escrita en base a todos los logros y sólo así: no
+tiene reglas dinámicas que aparecen y desaparecen según los logros.**
+
+No existen `--logros=` en la línea de comandos, `-Dlogros=` en los tests, ni marcas `@+`/`@-` en
+el `.g`. El núcleo sin logros sobrevive en un archivo aparte, `compilador/gramatica/minijava-ll1.g`,
+que el compilador no consume: está sólo para que `equivalencia_de_lenguajes.py` demuestre que
+genera el mismo lenguaje que la gramática de la cátedra.

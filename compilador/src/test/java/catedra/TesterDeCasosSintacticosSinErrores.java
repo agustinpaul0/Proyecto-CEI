@@ -9,14 +9,10 @@ import java.util.Collections;
 import java.util.List;
 
 import minijava.aplicacion.Main;
-import minijava.casos.RequisitosDeLogrosDelCaso;
-import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
 import minijava.casos.VolcadoDeCasos;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Tag;
@@ -36,9 +32,6 @@ public class TesterDeCasosSintacticosSinErrores {
 
     private static final String MENSAJE_DE_EXITO = "[SinErrores]";
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
-    private static final String ARGUMENTO_DE_LOGROS =
-            ConfiguracionDeLaCorrida.comoArgumentoDeLinea();
-
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static final PrintStream CONSOLA = System.out;
 
@@ -92,9 +85,8 @@ public class TesterDeCasosSintacticosSinErrores {
 
     private void probarExito(String nombre) {
         String ruta = TEST_FILES_DIRECTORY_PATH + nombre;
-        saltearSiNoAplicaAEstaCorrida(ruta);
 
-        Main.main(new String[] { ARGUMENTO_DE_LOGROS, ruta });
+        Main.main(new String[] { ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);
@@ -103,12 +95,4 @@ public class TesterDeCasosSintacticosSinErrores {
                 salida, CoreMatchers.containsString(MENSAJE_DE_EXITO));
     }
 
-    private void saltearSiNoAplicaAEstaCorrida(String rutaDelFuente) {
-        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.SINTACTICO, Path.of(rutaDelFuente));
-        var configuracion = ConfiguracionDeLaCorrida.actual();
-        Assume.assumeTrue(
-                rutaDelFuente + ": no aplica a esta configuracion de logros ("
-                        + requisitos.describirIncumplidos(configuracion) + ")",
-                requisitos.seCumplenEn(configuracion));
-    }
 }

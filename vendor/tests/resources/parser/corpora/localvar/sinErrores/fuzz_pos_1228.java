@@ -1,0 +1,2 @@
+interface BM < O > {
+}

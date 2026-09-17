@@ -1,0 +1,2 @@
+interface V__C {
+}

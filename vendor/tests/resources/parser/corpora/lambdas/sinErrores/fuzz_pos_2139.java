@@ -1,0 +1,2 @@
+interface Gh < U > {
+}

@@ -1,6 +1,5 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
@@ -37,9 +36,12 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
 
     // DimensionesOpcionales -> [ ] DimensionesOpcionales | EPSILON
     public void dimensionesOpcionales() throws ExcepcionLexica, ExcepcionSintactica {
-        while (estaEn(PrimerosDeTipos.DIMENSIONES_OPCIONALES_CORCHETE_A)) {
+        if (estaEn(PrimerosDeTipos.DIMENSIONES_OPCIONALES_CORCHETE_A)) {
             match(TipoDeToken.CORCHETE_A);
             match(TipoDeToken.CORCHETE_C);
+            dimensionesOpcionales();
+        } else {
+            // DimensionesOpcionales -> EPSILON
         }
     }
 
@@ -50,7 +52,7 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     }
 
     // TipoPrimitivo -> boolean | char | int
-    // TipoPrimitivo -> float   [+float]
+    // TipoPrimitivo -> float
     //
     // `float` es token del léxico desde la Etapa 1 pero no estaba en la gramática
     // de la cátedra; sin esta alternativa el logro de Etapa 1 queda inutilizable.
@@ -61,12 +63,12 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
             match(TipoDeToken.PR_CHAR);
         } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_INT)) {
             match(TipoDeToken.PR_INT);
-        } else if (hayLogro(Logro.FLOAT) && estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
+        } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
             match(TipoDeToken.PR_FLOAT);
         } else {
             throw errorEsperando(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN,
                     PrimerosDeTipos.TIPO_PRIMITIVO_CHAR, PrimerosDeTipos.TIPO_PRIMITIVO_INT,
-                    hayLogro(Logro.FLOAT) ? PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT : ConjuntoDePrimeros.de());
+                    PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT);
         }
     }
 
@@ -84,19 +86,16 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     }
 
     // ArgumentoDeTipo -> idGen
-    // ArgumentoDeTipo -> idClase TipoGenericoOpcional   [+generico]
-    // ArgumentoDeTipo -> idClase                        [-generico]
+    // ArgumentoDeTipo -> idClase TipoGenericoOpcional
     //
     // La recursión por TipoGenericoOpcional es la que habilita el anidamiento
-    // `List<List<Persona>>`, y es todo lo que el logro agrega.
+    // `List<List<Persona>>`.
     public void argumentoDeTipo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
         } else if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
-            if (hayLogro(Logro.GENERICO)) {
-                tipoGenericoOpcional();
-            }
+            tipoGenericoOpcional();
         } else {
             throw errorEsperando(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN,
                     PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE);
@@ -111,14 +110,21 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
         match(TipoDeToken.PAREN_A);
         if (estaEn(PrimerosDeTipos.LISTA_ARGS_FORMALES_OPCIONAL_LISTA_ARGS_FORMALES)) {
             argFormal();
-            while (estaEn(PrimerosDeTipos.RESTO_LISTA_ARGS_FORMALES_COMA)) {
-                match(TipoDeToken.COMA);
-                argFormal();
-            }
+            restoListaArgsFormales();
         } else {
             // ListaArgsFormalesOpcional -> EPSILON
         }
         match(TipoDeToken.PAREN_C);
+    }
+
+    // RestoListaArgsFormales -> , ArgFormal RestoListaArgsFormales | EPSILON
+    private void restoListaArgsFormales() throws ExcepcionLexica, ExcepcionSintactica {
+        if (!estaEn(PrimerosDeTipos.RESTO_LISTA_ARGS_FORMALES_COMA)) {
+            return;
+        }
+        match(TipoDeToken.COMA);
+        argFormal();
+        restoListaArgsFormales();
     }
 
     // ArgFormal -> Tipo idMetVar

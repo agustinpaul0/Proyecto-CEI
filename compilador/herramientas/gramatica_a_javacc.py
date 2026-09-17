@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Genera el oráculo JavaCC desde la gramática del proyecto.
 
-    python3 herramientas/gramatica_a_javacc.py gramatica/minijava-ll1-logros.g \
+    python3 herramientas/gramatica_a_javacc.py gramatica/minijava-ll1-final.g \
             --logros todos > herramientas/fuzz/MiniJavaParser.jj
 
 El parser que sale de acá lee uno o varios fuentes y, por cada uno, imprime
@@ -95,20 +95,11 @@ def parser_javacc(g):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("gramatica")
-    ap.add_argument("--logros", default="todos")
     args = ap.parse_args()
 
-    if args.logros == "todos":
-        logros = {"visibilidad", "atrinit", "varclasica", "for", "ternario",
-                  "posfijo", "lambda", "arrinit", "generico", "float"}
-    elif args.logros == "ninguno":
-        logros = set()
-    else:
-        logros = {nombre.strip() for nombre in args.logros.split(",") if nombre.strip()}
-
-    g = parsear(Path(args.gramatica).read_text(encoding="utf-8"), logros=logros)
+    g = parsear(Path(args.gramatica).read_text(encoding="utf-8"))
     print(CABECERA)
-    print(externas.lexer_javacc(logros))
+    print(externas.lexer_javacc())
     print(parser_javacc(g))
 
 

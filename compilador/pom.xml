@@ -19,7 +19,6 @@
         <volcado>completo</volcado>
         <!-- Logros con los que corre la suite: ninguno | todos | etapaN | a,b,c.
              Vacío = todos. Ver ConfiguracionDeLaCorrida y @RequiereLogro. -->
-        <logros/>
         <!-- Etiquetas JUnit a correr; lo fijan los perfiles fase-*. -->
         <fases/>
         <!-- Umbrales del perfil `mutacion`. Se bajan sólo con -D cuando hace falta
@@ -81,7 +80,6 @@
                          al JVM forkeado: es un interruptor que se usa a mano. -->
                     <systemPropertyVariables>
                         <volcado>${volcado}</volcado>
-                        <logros>${logros}</logros>
                     </systemPropertyVariables>
                     <!-- Vacío por defecto: sin -Pfase-* corre la suite entera. -->
                     <groups>${fases}</groups>

@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class C_ { int [ ] t ( Rg < G2 > [ ] d , QC0 [ ] [ ] o , R [ ] [ ] [ ] g8 , Xr [ ] kw7__ , J [ ] [ ] [ ] [ ] c , float w2__ , char zF ) { } } class X7P5 extends G2Q < F > { Dr < W > [ ] d ( ) { for ( B5_ < Zl27 > [ ] ks ; ; ) var o = null ; } } class KR7V_F extends Mc { public N0 ( ) { new K [ ] [ ] [ ] { } . p ( ) ; var k_ = 3f ; ; } }
+class C_ { int [ ] t ( Rg < G2 > [ ] d , QC0 [ ] [ ] o , R [ ] [ ] [ ] g8 , Xr [ ] kw7__ , J [ ] [ ] [ ] [ ] c , float w2__ , char zF ) { } } class X7P5 extends G2Q < F > { Dr < W > [ ] d ( ) { for ( B5_ < Zl27 > [ ] ks ; ; ) var o = null ; } } class KR7V_F extends Mc { public N0 ( ) { new K [ 1 ] [ 1 ] [ 1 ] { } . p ( ) ; var k_ = 3f ; ; } }

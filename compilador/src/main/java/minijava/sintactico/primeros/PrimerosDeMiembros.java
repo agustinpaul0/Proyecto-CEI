@@ -5,57 +5,59 @@ import minijava.lexico.tokens.TipoDeToken;
 import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 
 // GENERADO por herramientas/primeros_a_java.py desde
-// gramatica/minijava-ll1-logros.g. No editar a mano: se regenera.
+// gramatica/minijava-ll1-final.g. No editar a mano: se regenera.
 //
 // Los miembros de una clase y los metodos de una interfaz.
 //
 // Una constante por produccion, con su produccion citada al lado, para que
 // el analizador se lea contra la gramatica del informe renglon por renglon.
-// Las producciones que existen por un logro se emiten igual: el analizador
-// consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeMiembros {
 
-    // Miembro -> VisibilidadOpcional MiembroSinVisibilidad
-    public static final ConjuntoDePrimeros MIEMBRO_VISIBILIDAD_OPCIONAL = de(
+    // Miembro -> Visibilidad MiembroTrasVisibilidad
+    public static final ConjuntoDePrimeros MIEMBRO_VISIBILIDAD = de(
+            TipoDeToken.PR_PRIVATE, TipoDeToken.PR_PUBLIC);
+
+    // Miembro -> static VisibilidadOpcional TipoMetodo Metodo
+    public static final ConjuntoDePrimeros MIEMBRO_STATIC = de(TipoDeToken.PR_STATIC);
+
+    // Miembro -> MiembroSinModificadores
+    public static final ConjuntoDePrimeros MIEMBRO_MIEMBRO_SIN_MODIFICADORES = de(
             TipoDeToken.PR_BOOLEAN, TipoDeToken.PR_CHAR, TipoDeToken.PR_FLOAT, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_GEN, TipoDeToken.PR_INT, TipoDeToken.PR_PRIVATE, TipoDeToken.PR_PUBLIC,
-            TipoDeToken.PR_STATIC, TipoDeToken.PR_VOID);
+            TipoDeToken.ID_GEN, TipoDeToken.PR_INT, TipoDeToken.PR_VOID);
 
-    // Miembro -> MiembroSinVisibilidad
-    public static final ConjuntoDePrimeros MIEMBRO_MIEMBRO_SIN_VISIBILIDAD = de(
+    // MiembroTrasVisibilidad -> static TipoMetodo Metodo
+    public static final ConjuntoDePrimeros MIEMBRO_TRAS_VISIBILIDAD_STATIC = de(TipoDeToken.PR_STATIC);
+
+    // MiembroTrasVisibilidad -> MiembroSinModificadores
+    public static final ConjuntoDePrimeros MIEMBRO_TRAS_VISIBILIDAD_MIEMBRO_SIN_MODIFICADORES = de(
             TipoDeToken.PR_BOOLEAN, TipoDeToken.PR_CHAR, TipoDeToken.PR_FLOAT, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_GEN, TipoDeToken.PR_INT, TipoDeToken.PR_STATIC, TipoDeToken.PR_VOID);
+            TipoDeToken.ID_GEN, TipoDeToken.PR_INT, TipoDeToken.PR_VOID);
 
-    // Miembro -> Constructor
-    public static final ConjuntoDePrimeros MIEMBRO_CONSTRUCTOR = de(TipoDeToken.PR_PUBLIC);
+    // Visibilidad -> public
+    public static final ConjuntoDePrimeros VISIBILIDAD_PUBLIC = de(TipoDeToken.PR_PUBLIC);
 
-    // VisibilidadOpcional -> public
-    public static final ConjuntoDePrimeros VISIBILIDAD_OPCIONAL_PUBLIC = de(TipoDeToken.PR_PUBLIC);
+    // Visibilidad -> private
+    public static final ConjuntoDePrimeros VISIBILIDAD_PRIVATE = de(TipoDeToken.PR_PRIVATE);
 
-    // VisibilidadOpcional -> private
-    public static final ConjuntoDePrimeros VISIBILIDAD_OPCIONAL_PRIVATE = de(TipoDeToken.PR_PRIVATE);
+    // VisibilidadOpcional -> Visibilidad
+    public static final ConjuntoDePrimeros VISIBILIDAD_OPCIONAL_VISIBILIDAD = de(
+            TipoDeToken.PR_PRIVATE, TipoDeToken.PR_PUBLIC);
 
     // VisibilidadOpcional -> EPSILON
     public static final ConjuntoDePrimeros VISIBILIDAD_OPCIONAL = de();
 
-    // Constructor -> public idClase CuerpoDeMetodo
-    public static final ConjuntoDePrimeros CONSTRUCTOR_PUBLIC = de(TipoDeToken.PR_PUBLIC);
+    // MiembroSinModificadores -> void Metodo
+    public static final ConjuntoDePrimeros MIEMBRO_SIN_MODIFICADORES_VOID = de(TipoDeToken.PR_VOID);
 
-    // MiembroSinVisibilidad -> static TipoMetodo Metodo
-    public static final ConjuntoDePrimeros MIEMBRO_SIN_VISIBILIDAD_STATIC = de(TipoDeToken.PR_STATIC);
-
-    // MiembroSinVisibilidad -> void Metodo
-    public static final ConjuntoDePrimeros MIEMBRO_SIN_VISIBILIDAD_VOID = de(TipoDeToken.PR_VOID);
-
-    // MiembroSinVisibilidad -> TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
-    public static final ConjuntoDePrimeros MIEMBRO_SIN_VISIBILIDAD_TIPO_PRIMITIVO = de(
+    // MiembroSinModificadores -> TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
+    public static final ConjuntoDePrimeros MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO = de(
             TipoDeToken.PR_BOOLEAN, TipoDeToken.PR_CHAR, TipoDeToken.PR_FLOAT, TipoDeToken.PR_INT);
 
-    // MiembroSinVisibilidad -> idGen DimensionesOpcionales idMetVar AtributoOMetodo
-    public static final ConjuntoDePrimeros MIEMBRO_SIN_VISIBILIDAD_ID_GEN = de(TipoDeToken.ID_GEN);
+    // MiembroSinModificadores -> idGen DimensionesOpcionales idMetVar AtributoOMetodo
+    public static final ConjuntoDePrimeros MIEMBRO_SIN_MODIFICADORES_ID_GEN = de(TipoDeToken.ID_GEN);
 
-    // MiembroSinVisibilidad -> idClase MiembroDesdeIdClase
-    public static final ConjuntoDePrimeros MIEMBRO_SIN_VISIBILIDAD_ID_CLASE = de(TipoDeToken.ID_CLASE);
+    // MiembroSinModificadores -> idClase MiembroDesdeIdClase
+    public static final ConjuntoDePrimeros MIEMBRO_SIN_MODIFICADORES_ID_CLASE = de(TipoDeToken.ID_CLASE);
 
     // MiembroDesdeIdClase -> CuerpoDeMetodo
     public static final ConjuntoDePrimeros MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO = de(TipoDeToken.PAREN_A);

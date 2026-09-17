@@ -1,8 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.Logro;
-import minijava.logros.RequiereLogro;
-import minijava.logros.RequiereLogroApagado;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // la jerarquía de expresiones, la desambiguación de sus dos cabezas, y las cuatro
 // restricciones que la gramática no puede expresar.
 @Tag("sintactico")
-@RequiereLogro(Logro.LAMBDA)
 class LambdasTest extends BaseDeAnalisis {
 
     private void aceptarLambda(Path dir, String lambda) {
@@ -99,38 +95,34 @@ class LambdasTest extends BaseDeAnalisis {
         assertEquals("return", rechazarLambda(dir, "x -> return x").getLexemaOfensivo());
     }
 
-    // -------------------------------------------------------- `this` prohibido ---
+    // --------------------------- lo que el sintáctico NO mira de una lambda ---
+    // Qué nombres usa el cuerpo —`this`, un campo, una variable de afuera— y si
+    // los parámetros se repiten son restricciones de SIGNIFICADO: para resolverlas
+    // hay que asociar cada nombre con su declaración, que es la tabla de símbolos
+    // del analizador semántico. El sintáctico las acepta a todas.
 
     @Test
-    void elThisExplicitoDentroDeUnaLambdaSeRechaza(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> this.campo");
-
-        assertEquals("this", excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("this"), excepcion.getMessage());
+    void elThisDentroDeUnaLambdaSeAceptaYQuedaParaElSemantico(@TempDir Path dir) {
+        aceptarLambda(dir, "x -> this.campo");
+        aceptarLambda(dir, "x -> this");
     }
 
-    // Una llamada sin punto NO se rechaza. Sería `this.metodo(x)` sólo si `metodo`
-    // es de instancia; si es `static` de la misma clase no hay ningún `this` y
-    // Java lo acepta. Distinguirlos exige resolver el nombre contra su
-    // declaración, o sea la tabla de símbolos de la Etapa 3.
     @Test
-    void unaLlamadaSinPuntoDentroDeUnaLambdaSeAcepta(@TempDir Path dir) {
+    void capturarUnaVariableQueNoEsParametroSeAceptaYQuedaParaElSemantico(@TempDir Path dir) {
+        aceptarLambda(dir, "x -> x + n");
+        aceptarLambda(dir, "x -> metodo(n)");
+        aceptarLambda(dir, "x -> y -> x + y");
+    }
+
+    @Test
+    void unParametroRepetidoSeAceptaYQuedaParaElSemantico(@TempDir Path dir) {
+        aceptarLambda(dir, "(a, a) -> a");
+    }
+
+    @Test
+    void unaLlamadaDentroDeUnaLambdaSeAcepta(@TempDir Path dir) {
         aceptarLambda(dir, "x -> metodo(x)");
         aceptarLambda(dir, "() -> arrancar()");
-    }
-
-    // Pero el argumento sí se sigue chequeando: `n` no es parámetro de la lambda.
-    @Test
-    void elArgumentoDeUnaLlamadaSinPuntoSigueSiendoUnaCaptura(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> metodo(n)");
-
-        assertEquals("n", excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("capturar"), excepcion.getMessage());
-    }
-
-    // Una llamada CON punto sí se permite: es un método de otro objeto.
-    @Test
-    void unaLlamadaConPuntoDentroDeUnaLambdaSeAcepta(@TempDir Path dir) {
         aceptarLambda(dir, "x -> x.metodo()");
         aceptarLambda(dir, "x -> Clase.metodo(x)");
     }
@@ -139,24 +131,8 @@ class LambdasTest extends BaseDeAnalisis {
     void fueraDeUnaLambdaElThisSigueSiendoValido(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("this.campo = 1;"));
         aceptar(dir, envolverEnMetodo("metodo();"));
-    }
-
-    // Después de la lambda el código vuelve a poder usar `this`: el indicador se
-    // restaura al salir.
-    @Test
-    void elIndicadorDeLambdaSeRestauraAlSalir(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("var f = x -> x; this.campo = 1;"));
         aceptar(dir, envolverEnMetodo("var f = m1(x -> x, this);"));
-    }
-
-    // ------------------------------------------------ captura de variables ---
-
-    @Test
-    void capturarUnaVariableQueNoEsParametroSeRechaza(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> x + n");
-
-        assertEquals("n", excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("capturar"), excepcion.getMessage());
     }
 
     @Test
@@ -164,27 +140,8 @@ class LambdasTest extends BaseDeAnalisis {
         aceptarLambda(dir, "x -> x");
         aceptarLambda(dir, "(a, b) -> a * b");
         aceptarLambda(dir, "(a, b) -> b");
-    }
-
-    // Un nombre después de un `.` es un campo de otro objeto, no una variable del
-    // alcance: no se chequea.
-    @Test
-    void unCampoDespuesDeUnPuntoNoCuentaComoCaptura(@TempDir Path dir) {
         aceptarLambda(dir, "x -> x.n");
         aceptarLambda(dir, "x -> x.a.b.c");
-    }
-
-    // Usar el parámetro de la lambda de AFUERA también está prohibido, así que
-    // alcanza con el conjunto de la más interna.
-    @Test
-    void unaLambdaAnidadaNoPuedeUsarElParametroDeLaDeAfuera(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "x -> y -> x + y");
-
-        assertEquals("x", excepcion.getLexemaOfensivo());
-    }
-
-    @Test
-    void unaLambdaAnidadaSiPuedeUsarElPropio(@TempDir Path dir) {
         aceptarLambda(dir, "x -> y -> y + 1");
     }
 
@@ -204,14 +161,6 @@ class LambdasTest extends BaseDeAnalisis {
 
         assertEquals(lexema, excepcion.getLexemaOfensivo());
         assertTrue(excepcion.getMessage().contains("identificador"), excepcion.getMessage());
-    }
-
-    @Test
-    void unParametroRepetidoSeRechaza(@TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, "(a, a) -> a");
-
-        assertEquals("a", excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("repetido"), excepcion.getMessage());
     }
 
     // ------------------------------------------------- la precedencia del `->` ---
@@ -374,33 +323,19 @@ class LambdasTest extends BaseDeAnalisis {
         aceptarLambda(dir, lambda);
     }
 
-    // Y la duda se resuelve al revés cuando el paréntesis resultó ser una
-    // expresión: ahí los nombres sí son capturas, y se reporta el primero en
-    // orden de aparición. La última fila es la que muestra que ése no es siempre
-    // el que se habría reportado sin diferir: el `y` se descarta —era un
-    // parámetro— y queda el `z`, que es la captura real.
+    // El paréntesis que resultó ser una expresión y no una lista de parámetros
+    // sigue siendo una expresión válida: qué nombra cada nombre es del semántico.
     @ParameterizedTest
-    @CsvSource(delimiter = '|', value = {
-            "x -> (a + b)       | a",
-            "x -> (a)           | a",
-            "x -> ((a))         | a",
-            "x -> (y) -> x      | x",
-            "x -> (y) -> z      | z",
-            "x -> ((y) -> z)    | z",
+    @ValueSource(strings = {
+            "x -> (a + b)",
+            "x -> (a)",
+            "x -> ((a))",
+            "x -> (y) -> x",
+            "x -> (y) -> z",
+            "x -> ((y) -> z)",
     })
-    void elParentesisQueResultoSerExpresionSiChequeaLaCaptura(String lambda, String lexema,
-                                                              @TempDir Path dir) {
-        ExcepcionSintactica excepcion = rechazarLambda(dir, lambda);
-
-        assertEquals(lexema, excepcion.getLexemaOfensivo());
-        assertTrue(excepcion.getMessage().contains("capturar"), excepcion.getMessage());
-    }
-
-    // ------------------------------------------------------ el logro apagado ---
-
-    @Test
-    @RequiereLogroApagado(Logro.LAMBDA)
-    void sinElLogroLaFlechaNoFormaUnaLambda(@TempDir Path dir) {
-        assertEquals(">", rechazarLambda(dir, "x -> x").getLexemaOfensivo());
+    void elParentesisQueResultoSerExpresionSigueSiendoUnaExpresion(String lambda,
+                                                                   @TempDir Path dir) {
+        aceptarLambda(dir, lambda);
     }
 }

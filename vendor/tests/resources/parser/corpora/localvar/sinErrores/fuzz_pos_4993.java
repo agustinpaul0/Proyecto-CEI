@@ -1,0 +1,2 @@
+interface MB extends IZ {
+}

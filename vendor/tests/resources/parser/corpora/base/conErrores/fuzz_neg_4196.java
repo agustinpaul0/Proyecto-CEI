@@ -1,0 +1,16 @@
+// [Error:<|2]
+< O > class A1 extends F_f__ {
+I9_ < M > [ ] [ ] n ;
+}
+class OU extends Sgu < F_XQ > {
+}
+class F84m6 implements N_ {
+}
+interface FPs_ < M > {
+void m ( ) ;
+}
+class VZ < E > {
+P [ ] [ ] [ ] k_ ;
+}
+interface O_ < H > {
+}

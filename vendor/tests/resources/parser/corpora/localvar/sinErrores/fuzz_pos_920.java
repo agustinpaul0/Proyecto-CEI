@@ -1,0 +1,2 @@
+interface G_ {
+}

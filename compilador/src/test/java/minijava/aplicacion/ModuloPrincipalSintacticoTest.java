@@ -1,7 +1,6 @@
 package minijava.aplicacion;
 
 import minijava.comun.salida.SalidaEnMemoria;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -22,7 +21,7 @@ class ModuloPrincipalSintacticoTest {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, fuente);
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalSintactico(salida, ConfiguracionDeLaCorrida.actual())
+        new ModuloPrincipalSintactico(salida)
                 .ejecutar(archivo.toString());
         return salida.getLineas();
     }
@@ -69,8 +68,7 @@ class ModuloPrincipalSintacticoTest {
 
     @Test
     void unArchivoInexistenteLanzaIOExceptionYNoRompeElReporte(@TempDir Path dir) {
-        var modulo = new ModuloPrincipalSintactico(new SalidaEnMemoria(),
-                ConfiguracionDeLaCorrida.actual());
+        var modulo = new ModuloPrincipalSintactico(new SalidaEnMemoria());
 
         assertThrows(IOException.class, () -> modulo.ejecutar(dir.resolve("no-existe").toString()));
     }

@@ -1,0 +1,5 @@
+// [Error:)|3]
+class K2 implements O_ < K2 > {
+public O_ ( boolean [ ] [ ] g , ) {
+}
+}

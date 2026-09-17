@@ -1,0 +1,8 @@
+// [Error:{|2]
+interface ZK extends {
+int zg ( B [ ] [ ] b_ ) ;
+void t ( Lr9 [ ] f , K p ) ;
+F u_ ( ) ;
+( char x , V x0l1 , B g_ ) }
+class Uj__ < G > implements O3 {
+}

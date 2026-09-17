@@ -1,0 +1,8 @@
+// [Error:->|4]
+class D_ < C > {
+static char [ ] g ( ) {
+while ( - new G5qs [ this = - '\"' ] [ false = gl -> T9 . p ( ) -> ( ) -> "\uuFDDd\\" = c3 = null * + this = this . u . p0 ( ) . m_rV_588 ( ) != + '\"' , null < null / false = c50 -> "\\3" > - false [ this [ new V4 < O___ > ( ) . ts ( ) . cD__ . e ( ) . r_ = v_s6 -> ! null ] . y ( v_ = null ) [ ( ) -> true = n_ ] [ ( null ) ] >= Vf . j57V21 ( ) [ 50882 = this ] [ this = null ] . h ( ) . u02nh_ ( ) . a ( ) . iP__B || null = new G_u < F > [ null ] [ ! true = ! false ] >= U_ . f ( ) ] * true - ! ( "" [ i2 = this ] ) . i3 ( "" = ( m ( ) ) ) % new Ma < Y_2 > ( ! null , null ) [ ( co_mc ) -> this = + true % ! this >= - "" ] [ - true ] [ y_U___e ] > + 97745 % n ( "" ) [ s ( ) . n = ( this ) ] = new ZI_ < X > [ i ( - true ) [ o__ = y7 ] [ "]wE." = this ] [ true ] . s ( ) * "" == this = 'Y' ] [ ( ( ( jke . c_ . xv . j4NC ) = p6 ( ) ) . bJ . i ( ) != - this ) . h ( ) . ro . g . d ( ) / F_ . cL ( ) = ( nH_ <= this . m0zK < "" + this = 078454 ) . t ( ) ] [ ! true / - 049235 ] . cP [ ( ( ) -> - D_Iq . v6_ ( ) = ( ( null ) ) = ( ( "" ) . f22 = + false ) ) [ + 'y' ] % - "\"\u39F9]" && + '\b' * this ] . n_l7bW . j [ ( ) -> ! "" = this ] [ ( ri_5A_aw ( ) = null ) . c_1_M_ = ( cba . q_ ) ] / + s ] [ ( x = ! this . i - ! "FR\"\\" . yVn [ ! new Gq < VP > ( ) * this [ ( null = null ) . fxP ] ] . e_ ( ( ) -> + i || true ) [ null % + 45466 * null ] || - 'k' ) [ sZ || - U_ . nO ( ! this == ! '\ubdaa' , ! "" % + "" ) [ ! new Y__ < MCzP_ > ( ) [ y_vQ = "" ] / "\ub85B" . qq2CDh ( ) ] . vbw_ ( ) . n ( y1Wdj = u_ , b , this ) . l9 ( 'N' ) [ 269 = this ] . o ( ) . w ( ) < + bq_ ( ) . lO ( "\uuu7dbd2" . p ) . i ( ) [ d . x ( ) . d = null ] ] . p1 ] ) {
+}
+;
+}
+}

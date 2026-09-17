@@ -1,0 +1,2 @@
+class XRJ < D > {
+}

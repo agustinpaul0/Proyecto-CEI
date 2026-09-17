@@ -1,7 +1,5 @@
 package minijava.sintactico.primeros;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import org.junit.jupiter.api.Tag;
@@ -82,35 +80,6 @@ class ConjuntoDePrimerosTest {
 
         assertTrue(descripcion.contains("{"), descripcion.toString());
         assertTrue(descripcion.contains("idClase"), descripcion.toString());
-    }
-
-    // Prometer en un mensaje de error un token que el logro apagado sacó del
-    // lenguaje sería ofrecer una entrada que el compilador igual rechazaría.
-    @Test
-    void unTokenDeUnLogroApagadoNoAparecEnLaDescripcion() {
-        var primeros = ConjuntoDePrimeros.de(TipoDeToken.PR_CLASS, TipoDeToken.PR_FOR);
-
-        assertEquals(List.of("class"),
-                primeros.habilitadosEn(ConfiguracionDelCompilador.ninguno()).describir());
-        assertTrue(primeros.habilitadosEn(ConfiguracionDelCompilador.todos()).describir()
-                .contains("for"));
-    }
-
-    @Test
-    void filtrarPorLogrosNoTocaElConjuntoOriginal() {
-        var primeros = ConjuntoDePrimeros.de(TipoDeToken.PR_FOR);
-
-        primeros.habilitadosEn(ConfiguracionDelCompilador.ninguno());
-
-        assertEquals(Set.of(TipoDeToken.PR_FOR), primeros.getTokens());
-    }
-
-    @Test
-    void unConjuntoEnteroDeTokensDeshabilitadosQuedaVacio() {
-        var primeros = ConjuntoDePrimeros.de(TipoDeToken.PR_FOR, TipoDeToken.SIGNO_PREGUNTA);
-
-        assertTrue(primeros.habilitadosEn(ConfiguracionDelCompilador.ninguno()
-                .con(Logro.LAMBDA)).getTokens().isEmpty());
     }
 
     // Las clases PrimerosDeX las genera herramientas/primeros_a_java.py desde la gramática.

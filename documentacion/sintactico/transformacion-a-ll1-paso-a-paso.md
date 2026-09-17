@@ -711,26 +711,20 @@ Cada logro se transforma con el mismo procedimiento de cuatro pasos. Lo que camb
 núcleo es que acá los conflictos **no vienen de la gramática de la cátedra: los crea el logro**,
 y hay que resolverlos sin romper lo que ya andaba.
 
-### 5.0 La condición de atomicidad
+### 5.0 Cada logro aterriza en su propio lugar
 
-El compilador tiene que poder ejecutarse y testearse con cualquier subconjunto de logros, incluido
-el vacío. A nivel gramática eso se traduce en una condición dura:
+La gramática es **una sola** y tiene todos los logros incorporados: no hay configuraciones, ni
+marcas, ni producciones que aparezcan y desaparezcan. Lo que sí se mantiene, porque es lo que la
+deja legible y lo que va a facilitar la Etapa 3, es que cada logro aterrice en un lugar
+identificable:
 
-> **Para todo subconjunto de logros, la gramática resultante debe ser LL(1).**
+> **Un logro agrega una capa o unas alternativas propias; no reescribe las reglas de al lado.**
 
-No alcanza con que lo sea con todos prendidos. Cada producción lleva una marca en el `.g`
-(`@+logro` / `@-logro`) y el verificador recorre las **2¹⁰ = 1024** configuraciones:
-
-```bash
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria
-10 logros -> 1024 configuraciones
-LAS 1024 CONFIGURACIONES SON LL(1).
-Cada logro se puede prender y apagar de forma independiente.
-```
-
-Esto tiene una consecuencia de diseño concreta: **ningún logro puede apoyarse en un no terminal
-que introdujo otro**. Cuando dos logros necesitan una construcción parecida, cada uno lleva la
-suya (ver 5.2).
+Consecuencia de diseño concreta: **ningún logro se apoya en un no terminal que introdujo otro**.
+Cuando dos necesitan una construcción parecida, cada uno lleva la suya (ver 5.2). Eso vale la pena
+aunque hoy no haya nada que apagar, porque un no terminal compartido entre dos construcciones
+distintas obliga al semántico a desambiguar en tiempo de ejecución lo que la gramática podía
+separar.
 
 ### 5.1 Visibilidad Mejorada E2
 
@@ -759,10 +753,6 @@ desempate es el token que sigue: `(` es constructor, cualquier otro abre un tipo
 `{static}`, `{void}`, `{boolean,char,int,float}`, `{idGen}`, `{idClase}` — disjuntos ✔
 `<MiembroDesdeIdClase>`: `{(}` contra `{<, [, idMetVar}` — disjuntos ✔
 
-**Con el logro apagado** vuelve la forma del núcleo (`<Miembro> ::= <MiembroSinVisibilidad> | <Constructor>`,
-con `<Constructor> ::= public idClase <CuerpoDeMetodo>`), y `<MiembroDesdeIdClase>` se queda con
-una sola producción.
-
 > **Decisión: en `<MetodoInterfaz>` se admite `public` y no `private`.** El logro habla de
 > «Métodos, Atributos y Constructores», y `<MetodoInterfaz>` es un no terminal aparte de
 > `<Miembro>`, así que el caso cae bajo la regla general: lo no especificado se comporta como en
@@ -779,9 +769,9 @@ una sola producción.
 ### 5.2 Atributos Inicializados y Variables locales Clásicas E2
 
 Los dos agregan un `= <ExpresionCompuesta>` opcional. **Tentación:** un único
-`<InicializacionOpcional>` compartido. **Está mal**, y no por prolijidad sino por la condición de
-5.0: son logros distintos, y con *atrinit* apagado y *varclasica* prendido las variables locales
-tienen que poder inicializarse igual. Van dos no terminales dedicados:
+`<InicializacionOpcional>` compartido. **Está mal**, por 5.0: son construcciones distintas —un
+atributo de clase y una variable local— y el semántico las trata distinto. Van dos no terminales
+dedicados:
 
 ```
 <InicializacionDeAtributo>   ::= = <ExpresionCompuesta> | ε     (atrinit)
@@ -879,7 +869,7 @@ binarios.
 Asociativo a **derecha** (`a ? b : c ? d : e` es `a ? b : (c ? d : e)`), porque la rama del `:`
 vuelve a `<ExpresionCondicional>`, que puede tener su propio `<RestoCondicional>`.
 
-**Detalle de la desactivación.** Con el logro apagado, `<RestoCondicional>` queda **sólo con `ε`**
+**Por qué la capa no molesta.** Si se le quitara el `?`, `<RestoCondicional>` quedaría **sólo con `ε`**
 y `<ExpresionCondicional>` se vuelve un alias de `<ExpresionCompuesta>`: la capa desaparece sin
 dejar rastro y sin tocar ninguna otra regla. Ésa es la forma barata de hacer un logro atómico —
 que su desactivación sea *quitar alternativas*, no *cambiar de estructura*.
@@ -892,7 +882,7 @@ que su desactivación sea *quitar alternativas*, no *cambiar de estructura*.
 ```
 
 Va sobre `<Referencia>` y **no** sobre `<Operando>`: `5++` no tiene sentido. Misma técnica de
-desactivación que el ternario: apagado, `<PosfijoOpcional>` queda en `ε`.
+forma que el ternario: sin sus dos alternativas, `<PosfijoOpcional>` queda en `ε`.
 
 ### 5.6 MiniLambdas E2
 
@@ -1023,7 +1013,7 @@ Dos cosas distintas: anidamiento y diamante.
 <ArgumentoDeTipo> ::= idGen | idClase <TipoGenericoOpcional>
 ```
 
-Con el logro apagado, la segunda alternativa es `idClase` a secas y el anidamiento desaparece.
+Sin esa recursión la segunda alternativa sería `idClase` a secas y el anidamiento desaparecería.
 (`List<List<Persona>>` cierra con dos `>` separados: el léxico no tiene token `>>`, así que
 maximal munch da `>` `>` y no hay nada que hacer del lado del sintáctico.)
 
@@ -1067,18 +1057,19 @@ rechazaría.
 
 ```bash
 cd compilador
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # 1024/1024
-bash herramientas/casos-gramatica.sh                                              # 69/69
+python3 herramientas/primeros.py gramatica/minijava-ll1-final.g                  # ES LL(1)
+python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # todas declaradas
+bash herramientas/casos-gramatica.sh                                              # 81/81
 ```
 
-- **98 no terminales, 204 producciones, 60 terminales.**
-- **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros.
-- **69 casos** de aceptación y rechazo, cubriendo por cada logro su propia sintaxis y la que debe
-  rechazar cuando está apagado. Entre ellos, los que fijan las decisiones difíciles:
-  `a = b = c` se rechaza, `( a ) + 1` se acepta como expresión parentizada y `( a ) -> a` como
-  lambda, `List<> x;` se rechaza y `new List<>()` se acepta.
+- **112 no terminales, 230 producciones, 60 terminales.**
+- **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
+- **81 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
+  debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` se rechaza,
+  `( a ) + 1` se acepta como expresión parentizada y `( a ) -> a` como lambda, `List<> x;` se
+  rechaza y `new List<>()` se acepta, `static public` y `public static` se aceptan los dos y
+  `public private` no, `new int[2]{1,2}` se acepta y `new int[]{1,2}` no.
 
-El costo total de la corrección más los 9 logros, respecto de la gramática base de la cátedra:
-**de 60 a 98 no terminales y de 126 a 204 producciones**, sin ninguna ambigüedad y sin ningún
-conflicto de predicción.
+El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
+**de 60 a 112 no terminales y de 126 a 230 producciones**, sin ninguna ambigüedad sin declarar y sin
+ningún conflicto de predicción.

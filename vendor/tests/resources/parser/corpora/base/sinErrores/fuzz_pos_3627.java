@@ -1,0 +1,2 @@
+interface JyMJ3O {
+}

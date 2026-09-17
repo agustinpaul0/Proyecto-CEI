@@ -1,0 +1,2 @@
+interface G_ < K > {
+}

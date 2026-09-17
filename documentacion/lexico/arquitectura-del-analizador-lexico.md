@@ -240,13 +240,6 @@ stream global de la JVM en cada test — una alternativa más frágil para la ej
 vez recibió. Ninguna clase busca sus colaboradores en una variable global. Consecuencia práctica:
 cada pieza se testea sustituyendo colaboradores reales, sin necesidad de un framework de mocking.
 
-Que la cadena esté completa no es cosmético. Mientras `AnalizadorLexico` construía su propio
-`ContextoLexico` con la configuración por omisión, la configuración que `ModuloPrincipalLexico` recibía de
-su llamador **se perdía en el camino**: los dos flags que lee el autómata (*Floats I* y *Unicodes*)
-no tenían efecto alguno al ejecutar el compilador de punta a punta. Los tests de configuración que
-existían no lo detectaban porque ejercitaban los otros dos flags, que se resuelven fuera del léxico.
-Hoy hay dos casos que recorren la cadena entera, uno por flag.
-
 ### 5.2.1. `ContextoLexico` es una fachada, no un objeto que hace de todo
 
 Lo que los estados ven es una sola interfaz, pero detrás hay dos piezas con responsabilidades
@@ -263,20 +256,21 @@ una línea y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí,
 mismo archivo junto con la lógica de escapado — que hoy tampoco está ahí. Los estados no se enteraron del cambio: la
 fachada conserva exactamente la misma API que usaban.
 
-### 5.3. Los cuatro logros de comportamiento se activan por configuración
+### 5.3. Los logros no son configurables
 
-`ConfiguracionDelCompilador(floatsHabilitados, unicodeHabilitado, reporteElegante,
-multiDeteccionDeErrores)` — los cuatro en `true` por defecto.
+**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2, siempre,
+y no es configurable.**
 
-**Por qué existe**: cada uno de esos cuatro logros *cambia el comportamiento observable* del
-compilador. Sin un interruptor, el comportamiento base que pide la consigna (reportar el primer error
-y terminar; no reconocer floats) quedaría sepultado, y sería imposible demostrar que también se
-cumple. Con la configuración, cada combinación es testeable por separado, y se puede mostrar que el
-compilador satisface **tanto** la consigna base **como** los logros.
+Hubo una versión en la que los cuatro logros de comportamiento —*Floats I*, *Unicodes*, *Reporte de
+Error Elegante* y *Multi-detección*— vivían detrás de un `ConfiguracionDelCompilador`, para poder
+demostrar que el compilador cumplía tanto la consigna base como los logros. **El profesor lo
+revirtió** al empezar la Etapa 2: complejizaba la gramática sin necesidad, y cada etapa nueva
+obligaría a rehacer el trabajo.
 
-Dos de los flags (`floatsHabilitados`, `unicodeHabilitado`) los consultan los estados del autómata,
-porque cambian el lenguaje reconocido. Los otros dos viven fuera del léxico: `reporteElegante` lo usa
-el formateador de errores, y `multiDeteccionDeErrores` el Módulo Principal.
+Con eso desapareció el paquete `minijava.comun.config` entero, la opción `--logros=`, la propiedad
+`-Dlogros` de los tests y los manifiestos `requisitos-de-logros.txt` del corpus. Los estados del
+autómata dejaron de consultar nada: `EstadoEntero` pasa al float sin preguntar, y los dos estados de
+escape leen `\uXXXX` siempre.
 
 ### 5.4. Sin `System.exit()` y sin estado estático mutable
 
@@ -318,15 +312,13 @@ compilador/
 │   ├── lexico/
 │   │   ├── sinErrores/           ← 76 casos válidos, con oráculo //#lexema,línea
 │   │   ├── conErrores/           ← 82 casos con error, con oráculo // [Error:lexema|línea]
-│   │   ├── regresion/            ← casos que reprodujeron un defecto real (nunca se borran)
-│   │   └── requisitos-de-logros.txt  ← a qué configuración de logros aplica cada caso
+│   │   └── regresion/            ← casos que reprodujeron un defecto real (nunca se borran)
 │   └── sintactico/               ← el corpus de la Etapa 2
 └── src/
     ├── main/java/minijava/
     │   ├── aplicacion/           ← Main, OpcionesDeInvocacion, ModuloPrincipalLexico,
     │   │                            ModuloPrincipalSintactico
     │   ├── comun/                ← lo que cruza todas las etapas
-    │   │   ├── config/           ← Logro, ConfiguracionDelCompilador, ParserDeConfiguracion
     │   │   ├── io/               ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
     │   │   │                        contenido intacto), ManejadorDeArchivo + el reemplazo propio
     │   │   └── salida/           ← interfaz Salida + SalidaEstandar
@@ -433,8 +425,6 @@ minijava/
 ├── aplicacion/     Main (punto de entrada), OpcionesDeInvocacion (la línea de comandos),
 │                    ModuloPrincipalLexico y ModuloPrincipalSintactico
 ├── comun/          lo compartido por todas las etapas
-│   ├── config/      Logro (los 14 conmutables), ConfiguracionDelCompilador,
-│   │                 ParserDeConfiguracion (--logros / -Dlogros)
 │   ├── io/          SourceManager + SourceManagerImpl (interfaz e impl ORIGINALES de la
 │   │                 cátedra, contenido sin tocar — sólo se movió el `package` al mudarlas
 │   │                 acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo

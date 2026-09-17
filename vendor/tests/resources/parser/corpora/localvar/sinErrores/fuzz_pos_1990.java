@@ -1,0 +1,2 @@
+interface CMb < Z > {
+}

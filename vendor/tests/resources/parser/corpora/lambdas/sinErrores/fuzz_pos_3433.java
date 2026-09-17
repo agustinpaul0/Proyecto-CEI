@@ -1,0 +1,2 @@
+interface Hm__ < W > {
+}

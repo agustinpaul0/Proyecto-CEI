@@ -20,13 +20,6 @@ mvn package                # genera target/Compilador.jar
 # Sólo una fase de la suite. Los tests de comun/ corren en las dos.
 mvn test -Pfase-lexico
 mvn test -Pfase-sintactico
-
-# La suite en otra configuración de logros. Un test o un caso del corpus que no
-# aplique se SALTEA, no falla.
-mvn test -Dlogros=ninguno
-mvn test -Dlogros=todos
-mvn test -Dlogros=etapa1
-mvn test -Dlogros=ternario,lambda
 ```
 
 ### Invocar el compilador
@@ -35,17 +28,15 @@ mvn test -Dlogros=ternario,lambda
 # El contrato de la cátedra: un único argumento, cualquier extensión.
 java -jar target/Compilador.jar programa1.java
 
-# Etapa 1: vuelve al volcado de tokens, con los logros de esa etapa.
+# Etapa 1: vuelve al volcado de tokens.
 java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErrores01.java
-
-# Prender y apagar logros. Sin --logros manda la etapa: --etapa=1 trae los de la
-# Etapa 1, y la Etapa 2 los trae todos.
-java -jar target/Compilador.jar --logros=ninguno programa1.java
-java -jar target/Compilador.jar --logros=ternario,lambda programa1.java
 ```
 
-Un nombre de logro o una opción desconocidos se informan por `System.out` y **no** abortan: los
-testers de la cátedra invocan `main()` in-process y una excepción mataría la corrida entera.
+`--etapa` es la única opción: **no hay forma de elegir con qué logros correr**, porque el
+compilador reconoce MiniJava con todos los de la Etapa 1 y la Etapa 2 incorporados, siempre.
+
+Una opción desconocida se informa por `System.out` y **no** aborta: los testers de la cátedra
+invocan `main()` in-process y una excepción mataría la corrida entera.
 
 ### Al armar el zip de la Etapa 2
 
@@ -61,11 +52,8 @@ zip -r ../Etapa2-Paul.zip . -x 'target/*' '.venv/*' 'herramientas/fuzz/jars/*' \
                                 'herramientas/fuzz/trabajo/*'
 ```
 
-Son **1879 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
-4 segundos. Todos están verificados con el compilador tal cual —o sea con todos los logros
-prendidos, que es como la cátedra lo corre—: ningún caso del corpus depende de tener un logro
-apagado. Los pares acepta-con / rechaza-sin los cubren `RamasSinLogroTest`, los tests con fuente
-embebido y `casos-gramatica.sh`.
+Son **1883 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
+4 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en
 `resources/sinErrores/`, así que sobre esta entrega encontraría los casos del sintáctico. Es

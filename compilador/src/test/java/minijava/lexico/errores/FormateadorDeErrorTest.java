@@ -1,7 +1,5 @@
 package minijava.lexico.errores;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +17,8 @@ class FormateadorDeErrorTest {
     }
 
     @Test
-    void conConfiguracionPorDefectoIncluyeLasCuatroLineas() {
-        List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
+    void elReporteIncluyeLasCuatroLineas() {
+        List<String> lineas = new FormateadorDeError()
                 .formatear(excepcionDeEjemplo());
 
         // Encabezado, detalle, caret y código de contrato.
@@ -32,7 +30,7 @@ class FormateadorDeErrorTest {
     // el resto tiene razón propia.
     @Test
     void elEncabezadoDescribeElTipoDeErrorYNoUnaFraseGenerica() {
-        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+        var formateador = new FormateadorDeError();
 
         assertEquals("Error Léxico en línea 2, columna 5: # no es un símbolo válido",
                 formateador.formatear(excepcionDeEjemplo()).get(0));
@@ -51,7 +49,7 @@ class FormateadorDeErrorTest {
     // encabezado no puede degenerar en un "null".
     @Test
     void todoTipoDeErrorConservaElEncabezadoDeUnSoloDato() {
-        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+        var formateador = new FormateadorDeError();
 
         for (TipoDeErrorLexico tipo : TipoDeErrorLexico.values()) {
             String encabezado = formateador.formatear(
@@ -63,7 +61,7 @@ class FormateadorDeErrorTest {
     // El detalle normaliza tabs y el '^' usa el mismo ancho visual que el detalle.
     @Test
     void elCaretSeAlineaConTabsOCaracteresAnchos() {
-        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+        var formateador = new FormateadorDeError();
 
         List<String> conTab = formateador.formatear(
                 new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "#",
@@ -80,7 +78,7 @@ class FormateadorDeErrorTest {
 
     @Test
     void unaMarcaCombinanteSeEscapaParaQueElCaretSeaVisible() {
-        List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
+        List<String> lineas = new FormateadorDeError()
                 .formatear(new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\u20cc",
                         new PosicionLexica(1, 2, "(⃌>%")));
 
@@ -91,7 +89,7 @@ class FormateadorDeErrorTest {
 
     @Test
     void elCaretNoSeUbicaDentroDeUnParSurrogado() {
-        List<String> lineas = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT)
+        List<String> lineas = new FormateadorDeError()
                 .formatear(new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\udf1f",
                         new PosicionLexica(1, 3, "'🌟'")));
 
@@ -104,7 +102,7 @@ class FormateadorDeErrorTest {
     @Test
     void elDetalleEscapaTodosLosControlesParaConservarSuFormato() {
         String fuente = "v1 \f \u000b v2";
-        var formateador = new FormateadorDeError(ConfiguracionDelCompilador.DEFAULT);
+        var formateador = new FormateadorDeError();
 
         List<String> lineaDelPrimerError = formateador.formatear(
                 new ExcepcionLexica(TipoDeErrorLexico.CARACTER_DESCONOCIDO, "\\f",
@@ -123,12 +121,4 @@ class FormateadorDeErrorTest {
         return lineas.get(2).indexOf('^') - "Detalle: ".length();
     }
 
-    @Test
-    void conReporteEleganteDeshabilitadoSoloImprimeElCodigoDeContrato() {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.REPORTE_ELEGANTE);
-
-        List<String> lineas = new FormateadorDeError(configuracion).formatear(excepcionDeEjemplo());
-
-        assertEquals(List.of("[Error:#|2]"), lineas);
-    }
 }

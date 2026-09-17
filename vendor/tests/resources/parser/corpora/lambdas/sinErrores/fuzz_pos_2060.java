@@ -1,0 +1,2 @@
+interface Q7_ {
+}

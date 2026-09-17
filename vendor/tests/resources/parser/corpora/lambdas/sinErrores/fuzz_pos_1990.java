@@ -1,0 +1,2 @@
+class Qu implements YG {
+}

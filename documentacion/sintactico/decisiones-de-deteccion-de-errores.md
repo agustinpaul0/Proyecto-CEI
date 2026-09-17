@@ -64,135 +64,91 @@ El criterio que se usó:
 > teniendo a mano**, se verifica en el analizador sintáctico. Si requiere saber a qué se refiere un
 > nombre —o sea, una tabla de símbolos con alcances—, se delega al analizador semántico.
 
-### 3.1. `this` dentro de una lambda
+### 3.1. Lo que se va al analizador semántico
 
 El logro *MiniLambdas E2* dice: *«No se permite la captura de variables locales, parámetros, ni el
-uso de `this` dentro de una Lambda»*.
+uso de `this` dentro de una Lambda»*. Esas tres cláusulas, más la de que los parámetros de una
+lambda no se repitan, **no las controla esta etapa**. Lo indicó el profesor: son controles de
+significado, en el semántico se resuelven más fácil, y el logro en esta instancia no los requiere.
 
-**No es expresable en la gramática.** Una gramática libre de contexto no puede condicionar la
-presencia de un símbolo a *en qué parte del árbol* está: no hay forma de escribir «`this` es un
-`<Primario>` válido, salvo debajo de un `<CuerpoLambda>`». Escribirlo exigiría duplicar toda la
-jerarquía de expresiones en una variante «sin `this`», que es justamente lo que la cátedra
-desaconseja (Clase 4, slide 40).
+El motivo técnico coincide con el criterio de arriba: ninguna de las tres se decide con información
+local.
 
-**Sí es verificable en el analizador, y de la forma más barata posible: con un booleano.** El
-analizador sabe si está dentro de una lambda porque acaba de entrar; alcanza con prender un
-indicador al empezar el cuerpo y apagarlo al salir. Está implementado en
-`sintactico/RestriccionesDeLambda`, que guarda ese estado y expone los cuatro chequeos; el alcance se
-abre y se cierra alrededor del cuerpo:
+- `x -> campo` es un atributo, o sea un `this` implícito.
+- `x -> n` es una variable local de afuera, o sea una captura.
+- **Son la misma forma**: un `idMetVar` pelado que no está entre los parámetros. Separarlas exige
+  resolver el nombre contra su declaración, que es exactamente la tabla de símbolos de la Etapa 3.
 
-```java
-RestriccionesDeLambda.Alcance anterior = restricciones.entrar(parametros);
-try {
-    expresiones().expresion();
-} finally {
-    restricciones.salir(anterior);
-}
-```
+El `this` explícito sí sería decidible con un booleano, pero controlarlo solo no aporta: dejaría
+rechazado `x -> this.campo` y aceptado `x -> campo`, que es el mismo error escrito de otra forma.
 
-Se restaura al salir y no simplemente se apaga, porque después de la lambda el código vuelve a poder
-usar `this`.
-
-**Hay un segundo caso, implícito, y ése queda para el semántico.** Llamar a un método propio sin
-escribir `this` parece un uso de `this` igual: `x -> metodo(x)` sería `x -> this.metodo(x)`. Pero
-**sólo si `metodo` es de instancia**. Si es `static` de la misma clase no hay ningún `this`, y Java
-acepta la lambda sin objeción. Distinguir los dos casos exige resolver el nombre contra su
-declaración —una tabla de símbolos— y por lo tanto cae del otro lado del criterio: rechazarlo acá
-sería rechazar un programa válido, que es peor que dejarlo pasar a la etapa que sí puede decidirlo.
-
-### 3.2. Captura de variables
-
-Misma cláusula del logro. Es un chequeo sobre nombres, pero el conjunto de nombres legales es
-inusualmente chico y **local**: como el cuerpo de una lambda es *una única expresión*, adentro no
-se puede declarar nada, así que los únicos nombres válidos son **sus propios parámetros**, que el
-analizador acaba de leer.
-
-La gramática ya distingue los tres usos de un `idMetVar`, así que se sabe cuál es un acceso a
-variable y cuál no:
-
-| Forma | Producción | ¿Se chequea? |
-|---|---|---|
-| `x` solo | `AccesoLlamada → ε` | **sí**: tiene que estar en los parámetros |
-| `x(…)` | `AccesoLlamada → ArgsActuales` | no: podría ser un método `static` (3.1) |
-| `.campo` | `Encadenado → . idMetVar …` | no: es un campo de otro objeto, no una variable |
-| `C.m(…)` | `LlamadaMetodoEstatico` | no: es estático, no captura nada |
-
-Las lambdas anidadas no necesitan una pila de alcances: como usar el parámetro de la lambda de
-afuera **también** está prohibido, alcanza con el conjunto de la más interna.
-
-Ejemplos:
-
-Todo esto está verificado en `LambdasTest`, con el par completo por caso.
+El sintáctico entonces las acepta todas:
 
 | Entrada | Veredicto | Por qué |
 |---|---|---|
-| `x -> x + 1` | acepta | `x` es su parámetro |
-| `(a, b) -> a * b` | acepta | los dos son parámetros |
-| `x -> x.campo` | acepta | `campo` va después de un `.` |
-| `x -> C.metodo(x)` | acepta | llamada estática, no captura |
-| `x -> x + n` | **rechaza** | `n` no está entre los parámetros |
-| `x -> this.campo` | **rechaza** | `this` explícito |
-| `x -> metodo(x)` | acepta | podría ser un método `static`: lo decide el semántico |
-| `x -> y -> x + y` | **rechaza** | la interna usa `x`, que es de la externa |
-| `x -> (y) -> y` | acepta | `y` es el parámetro de la interna, aunque venga entre paréntesis |
-| `x -> (y) -> x` | **rechaza** | el cuerpo usa `x`, que es de la externa |
-| `x -> (a + b)` | **rechaza** | el paréntesis era una expresión: `a` es una captura |
-| `(a + 1) -> a` | **rechaza** | el parámetro no es un identificador pelado |
-| `(a, a) -> a` | **rechaza** | el parámetro está repetido |
-| `f((x -> x))` | acepta | la lambda parentizada es toda la expresión |
-| `(x -> x).m()` | **rechaza** | parentizarla no la convierte en operando |
+| `x -> this.campo` | acepta | el `this` lo controla el semántico |
+| `x -> x + n` | acepta | si `n` es captura o campo no se sabe sin declaraciones |
+| `x -> metodo(n)` | acepta | ídem |
+| `x -> y -> x + y` | acepta | la interna usa `x`, que es de la externa: lo ve el semántico |
+| `(a, a) -> a` | acepta | el parámetro repetido lo controla el semántico |
+| `x -> x + 1` | acepta | usa su propio parámetro |
+| `x -> x.campo` | acepta | |
+| `x -> C.metodo(x)` | acepta | |
 
-### 3.2.1. El parámetro tiene que ser un identificador pelado
+Con esto se borró `RestriccionesDeLambda` entera, que era la lógica más compleja del analizador. La
+pieza que se fue con ella es la pila de **capturas en duda**: como leer el contenido de un
+paréntesis lo hacía pasar por el chequeo de captura antes de saber si era una lista de parámetros,
+en `x -> (y) -> y` el `y` se habría reportado como captura de `x`; había que anotar los nombres en
+duda y resolverlos al cerrar el paréntesis. Sin chequeo de captura, esa maquinaria no tiene motivo.
 
-Hay un tercer chequeo, que sale del mismo lugar. `(a) -> a` es una lambda y `(a + 1) -> a` no lo es,
-pero hasta ver el `->` los dos son una `<Expresion>` entre paréntesis: la gramática no puede
-distinguirlos sin un lookahead ilimitado.
+### 3.2. Lo que se queda: el parámetro tiene que ser un identificador pelado
 
-El analizador lee el contenido como expresión y **recuerda si consumió exactamente un `idMetVar`**;
-si al ver el `->` resulta que no, lo rechaza. Es la única información extra que hace falta, y sale
-de contar los tokens que ya se consumieron (`EntradaDeTokens.consumidos()`).
+`(a) -> a` es una lambda y `(a + 1) -> a` no lo es, pero hasta ver el `->` los dos son una
+`<Expresion>` entre paréntesis: la gramática no puede distinguirlos sin lookahead ilimitado.
 
-> **El chequeo de captura queda en duda mientras dura esa lectura.** Leer el contenido como
-> expresión lo hace pasar por el chequeo de captura, y ahí todavía rige el alcance de la lambda de
-> afuera: en `x -> (y) -> y` el `y` se leería como una captura de `x`, y se rechazaría una lambda
-> que escrita `x -> y -> y` se acepta. Por eso, mientras el paréntesis está abierto, los nombres
-> que no son parámetros no se rechazan sino que se **anotan en duda**; al cerrar se resuelve:
-> si sigue un `->` eran declaraciones y se descartan, y si no, eran capturas y se reporta la
-> primera en orden de aparición. El marco se cierra pase lo que pase, porque con Modo Pánico el
-> contenido puede fallar y el análisis seguir.
->
-> La primera en orden de aparición no siempre es la que se habría reportado sin diferir, y ahí está
-> la ganancia: en `x -> ((y) -> z)` el diferimiento descarta el `y` —resultó ser un parámetro— y
-> deja el `z`, que es la captura real.
+Es una restricción de **forma**, no de significado —no hay ningún nombre que resolver—, así que se
+queda. El analizador lee el contenido como expresión y **recuerda si consumió exactamente un
+`idMetVar`**; si al ver el `->` resulta que no, lo rechaza. La información extra sale de contar los
+tokens consumidos (`EntradaDeTokens.consumidos()`).
 
-Se rechaza también el parámetro repetido, `(a, a) -> a`, por la misma vía.
+```
+(a + 1) -> a     rechaza   «un parametro de lambda tiene que ser un identificador»
+(m1()) -> a      rechaza
+(1) -> a         rechaza
+(a.b) -> a       rechaza
+((a)) -> a       rechaza   parentizar de más no es parentizar el parámetro
+```
 
-### 3.2.2. Una lambda parentizada no lleva cola de expresión
+Del segundo parámetro en adelante la restricción la impone la gramática, que ahí sí exige
+`idMetVar` (`<RestoDeParentesis> ::= , <ListaParametrosLambda> ) -> <CuerpoLambda>`).
 
-El cuarto chequeo, del mismo origen. Una lambda no es un operando: eso lo impone la gramática, que
-la produce en el nivel de `<Expresion>` y no en `<Primario>`
-([`decisiones-de-logica.md`](decisiones-de-logica.md)). Pero queda un hueco: el contenido de
-`<ContenidoDeParentesis>` es una `<Expresion>`, y **tiene que serlo**, porque `f((x -> x))` es
-válido en Java. Entonces `(x -> x).m()` y `(x -> x) + 1` también atraviesan la gramática, y `javac`
-los rechaza con *«lambda expression not expected here»*.
+### 3.3. Lo que se queda: una lambda parentizada no lleva cola de expresión
+
+Una lambda no es un operando: eso lo impone la gramática, que la produce en el nivel de
+`<Expresion>` y no en `<Primario>` ([`decisiones-de-logica.md`](decisiones-de-logica.md)). Pero
+queda un hueco: el contenido de `<ContenidoDeParentesis>` es una `<Expresion>`, y **tiene que
+serlo**, porque `f((x -> x))` es válido en Java. Entonces `(x -> x).m()` y `(x -> x) + 1` también
+atraviesan la gramática, y `javac` los rechaza con *«lambda expression not expected here»*.
 
 Cerrarlo en la gramática exigiría clonar la cadena de colas en su variante «el contenido del
-paréntesis fue una lambda» — unos siete no terminales —, así que lo cierra el analizador: recuerda
-si lo que acaba de leer entre paréntesis fue una lambda y, si lo fue, exige que no siga ninguno de
-los tokens que abren una cola (`.`, `[`, `++`, `--`, los trece binarios, `?`).
+paréntesis fue una lambda» —unos siete no terminales—, así que lo cierra el analizador: recuerda si
+lo que acaba de leer entre paréntesis fue una lambda y, si lo fue, exige que no siga ninguno de los
+tokens que abren una cola (`.`, `[`, `++`, `--`, los trece binarios, `?`).
 
 Lo que el indicador dice es si la **raíz** de esa expresión es una lambda, no si se vio una lambda
 en algún lado. La diferencia importa:
 
 | Entrada | Raíz | Veredicto |
 |---|---|---|
+| `f((x -> x))` | — | acepta: la lambda parentizada es toda la expresión |
 | `(x -> x).m()` | lambda | **rechaza** |
 | `((x -> x)).m()` | lambda, con paréntesis de más | **rechaza** |
 | `(a = x -> x).m()` | asignación | acepta — `javac` acepta la forma |
 | `(a ? b : x -> x).m()` | ternario | acepta — ver el límite de abajo |
 
 Por eso las dos producciones que pueden poner otra cosa en la raíz por encima de una lambda
-—`RestoExpresion` con su `=` y `RestoCondicional` con su `?`— apagan el indicador al terminar.
+—`RestoExpresion` con su `=` y `RestoCondicional` con su `?`— apagan el indicador al terminar. Es
+lo único que sobrevive de `RestriccionesDeLambda`: un `boolean` en `Sintaxis`.
 
 > **Límite declarado.** `javac` igual rechaza `(a ? b : x -> x).m()`, pero no por la forma: un
 > ternario con una rama lambda es una *poly expression* (JLS 15.25) y eso lo decide la
@@ -200,43 +156,20 @@ Por eso las dos producciones que pueden poner otra cosa en la raíz por encima d
 > exactamente la clase de chequeo que este proyecto delega al analizador semántico, así que acá se
 > acepta y queda anotado.
 
-### 3.3. Por qué no se posterga al semántico
+### 3.4. El resumen de la frontera
 
-Es una decisión de frontera y conviene dejar dicho por qué cayó de este lado.
+| Restricción del logro | Dónde se verifica |
+|---|---|
+| forma `params -> expr`, parámetros sin tipo, cuerpo sin llaves | gramática |
+| dónde puede aparecer una lambda | gramática (`<Expresion>`, no `<Primario>`) |
+| el parámetro es un identificador pelado | analizador sintáctico (§3.2) |
+| una lambda parentizada no lleva cola | analizador sintáctico (§3.3) |
+| no `this`, explícito ni implícito | **analizador semántico** |
+| no captura de variables locales ni parámetros | **analizador semántico** |
+| parámetros sin nombre repetido | **analizador semántico** |
 
-- **El logro es de la Etapa 2.** La cátedra corrige esta etapa por separado; postergarlo dejaría el
-  logro a medias en la entrega que se está evaluando.
-- **El costo es un booleano y un conjunto de strings.** No hay tabla de símbolos, no hay alcances
-  anidados, no hay resolución de nombres: el conjunto se arma con los parámetros que el propio
-  analizador acaba de leer y se descarta al salir de la lambda.
-- **No contamina la gramática.** Ninguna producción cambia; es un chequeo del analizador sobre lo
-  que ya parseó, del mismo tipo que la regla que resuelve el *dangling else*.
-- **Clase 4, slide 49 lo autoriza expresamente**: cuando algo no se puede resolver reescribiendo
-  la gramática, se agrega una regla en la implementación del analizador. Es la misma vía que el
-  proyecto ya usa para el `else`.
-
-Lo que **sí** queda para el semántico es todo lo que dependa de resolver un nombre contra una
-declaración: que el nombre exista, que el tipo cierre, que la aridad coincida.
-
-### 3.4. El control del `this` implícito no es separable del de la captura
-
-La cátedra admite **no** controlar en esta etapa si un `this` —explícito o implícito— cae dentro o
-fuera de una lambda, porque con la tabla de símbolos del semántico es mucho más directo. Acá está
-implementado igual y **se deja como está**, que es lo que el profesor indicó para lo ya hecho.
-
-Conviene dejar escrito por qué diferirlo tampoco habría simplificado el analizador, para no volver
-a derivarlo:
-
-- `x -> campo` es un atributo, o sea un `this` implícito.
-- `x -> n` es una local o un parámetro de afuera, o sea una captura.
-- **Son la misma forma**: un `idMetVar` pelado que no está entre los parámetros. Un solo `if`
-  rechaza los dos, y separarlos exige resolver el nombre contra su declaración.
-
-De ahí dos consecuencias. La primera, que quitar el control del `this` implícito significa quitar
-también el de la captura, que el logro exige por separado. La segunda, que **todo el estado de
-`RestriccionesDeLambda`** —el indicador de alcance, el conjunto de parámetros y el diferimiento de
-§3.2— lo sostiene la cláusula de la captura y no la del `this`: quitar sólo el `this` explícito
-saca dos llamadas y deja la clase intacta.
+Y lo que ya estaba del otro lado por definición: que el nombre exista, que el tipo cierre, que la
+aridad coincida.
 
 ## 4. Ambigüedades resueltas por regla de implementación
 
@@ -259,9 +192,8 @@ Las tres están implementadas: el `else` en `AnalizadorDeSentencias`, el `new in
 `AnalizadorDeCreacion` y el cuerpo de la lambda en `AnalizadorDeLambdas`. El detalle de cada una,
 con las derivaciones que las exhiben, está en
 [`transformacion-a-ll1-paso-a-paso.md`](transformacion-a-ll1-paso-a-paso.md). El listado se
-mantiene verificado: `python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
---ambiguedades` recorre las 1024 configuraciones de logros y **falla** si aparece una ambigüedad
-que no esté declarada con su regla.
+mantiene verificado: `python3 herramientas/primeros.py gramatica/minijava-ll1-final.g
+--ambiguedades` **falla** si aparece una ambigüedad que no esté declarada con su regla.
 
 > **Los Siguientes no son parte del método.** Ese diagnóstico los calcula para poder detectar
 > ambigüedades, que es un ítem del checklist de Clase 4, slide 41. Pero el analizador decide
@@ -272,8 +204,7 @@ que no esté declarada con su regla.
 
 Logro de la etapa, **implementado**. Al detectar un error, en lugar de terminar, el analizador
 descarta tokens hasta uno donde pueda reanudar y sigue, de modo que un fuente con varios errores
-los reporte todos. Va detrás de su propio interruptor: **apagado, el compilador corta en el primer
-error**, que es la convención base de Pautas slide 25.
+los reporte todos. Está siempre activa.
 
 ### 5.1. Dónde se recupera
 
@@ -310,9 +241,10 @@ vueltas sobre el mismo token. Está cubierto con un test con límite de tiempo.
 
 ### 5.4. El primer error no cambia
 
-El logro **agrega errores al final de la lista, nunca cambia el primero**. Eso es lo que permite que
-un mismo caso del corpus valga con el logro prendido y apagado, y hay un test que lo verifica sobre
-el corpus entero además de una propiedad que lo verifica sobre entradas al azar.
+La recuperación **agrega errores después del primero, nunca cambia cuál es el primero**: el primer
+código reportado es exactamente el que daría un analizador que cortara ahí, que es la convención
+base de Pautas slide 25. Cada caso del corpus con errores declara ese primer código en su primera
+línea, y el tester estricto verifica que sea el primero que el compilador emite.
 
 ### 5.5. El formato del reporte
 

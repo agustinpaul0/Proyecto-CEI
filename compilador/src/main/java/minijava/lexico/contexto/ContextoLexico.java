@@ -1,6 +1,5 @@
 package minijava.lexico.contexto;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.errores.PosicionLexica;
 import minijava.lexico.errores.TipoDeErrorLexico;
@@ -11,19 +10,13 @@ import minijava.comun.io.ManejadorDeArchivo;
 public final class ContextoLexico {
 
     private final ManejadorDeArchivo manejador;
-    private final ConfiguracionDelCompilador configuracion;
     private final BuilderDeLexema lexema;
     private final FabricaDeExcepcionesLexicas fabrica;
 
-    public ContextoLexico(ManejadorDeArchivo manejador, ConfiguracionDelCompilador configuracion) {
+    public ContextoLexico(ManejadorDeArchivo manejador) {
         this.manejador = manejador;
-        this.configuracion = configuracion;
         this.lexema = new BuilderDeLexema(manejador);
         this.fabrica = new FabricaDeExcepcionesLexicas(lexema);
-    }
-
-    public ConfiguracionDelCompilador getConfiguracion() {
-        return configuracion;
     }
 
     public char getCaracterActual() {

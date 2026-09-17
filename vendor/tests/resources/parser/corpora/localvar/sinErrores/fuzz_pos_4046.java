@@ -1,0 +1,3 @@
+interface Fd {
+void m ( ) ;
+}

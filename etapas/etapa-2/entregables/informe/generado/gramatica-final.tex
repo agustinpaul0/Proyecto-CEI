@@ -5,7 +5,7 @@
 \regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
 \end{producciones}
 
-\noindent{\small Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con el logro de genericidad avanzada.\par}
+\noindent{\small Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con la genericidad avanzada.\par}
 
 \begin{producciones}
 \regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
@@ -15,30 +15,31 @@
 \regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace que el \texttt{public} del \nt{Constructor} original quede absorbido por \nt{VisibilidadOpcional}, y que \nt{Constructor} pase a competir con \nt{Tipo} por el token idClase: \texttt{C()\{\}} (constructor) vs \texttt{C x;} (atributo de tipo C).\par}
+\noindent{\small La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace que el \texttt{public} del <Constructor> original quede absorbido por \nt{Visibilidad}, y que <Constructor> pase a competir con \nt{Tipo} por el token idClase: \texttt{C()\{\}} (constructor) vs \texttt{C x;} (atributo de tipo C).\par}
 
 \begin{producciones}
-\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}\marca{+}{visibilidad}
-\regla{Miembro}{\nt{MiembroSinVisibilidad}}\marca{-}{visibilidad}
-\regla{Miembro}{\nt{Constructor}}\marca{-}{visibilidad}
-\regla{VisibilidadOpcional}{\tl{public} \alt{} \tl{private} \alt{} \eps}\marca{+}{visibilidad}
+\regla{Miembro}{\nt{Visibilidad} \nt{MiembroTrasVisibilidad}}
+\regla{Miembro}{\tl{static} \nt{VisibilidadOpcional} \nt{TipoMetodo} \nt{Metodo}}
+\regla{Miembro}{\nt{MiembroSinModificadores}}
 \end{producciones}
 
-\noindent{\small Sin el logro, el \texttt{public} sólo aparece en el constructor y es lo que lo distingue del resto de los miembros: es la regla original de la cátedra.\par}
+\noindent{\small Los dos ordenes valen, como en Java: \texttt{public static} y \texttt{static public}. Que la visibilidad aparezca a un solo lado de \texttt{static} es lo que impide repetir el modificador —\texttt{public private void m()\{\}} no deriva—, sin necesitar un chequeo fuera de la gramatica.\par}
 
 \begin{producciones}
-\regla{Constructor}{\tl{public} \tl{idClase} \nt{CuerpoDeMetodo}}\marca{-}{visibilidad}
-\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
-\regla{MiembroSinVisibilidad}{\tl{void} \nt{Metodo}}
-\regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}
+\regla{MiembroTrasVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
+\regla{MiembroTrasVisibilidad}{\nt{MiembroSinModificadores}}
+\regla{Visibilidad}{\tl{public} \alt{} \tl{private}}
+\regla{VisibilidadOpcional}{\nt{Visibilidad} \alt{} \eps}
+\regla{MiembroSinModificadores}{\tl{void} \nt{Metodo}}
+\regla{MiembroSinModificadores}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinModificadores}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinModificadores}{\tl{idClase} \nt{MiembroDesdeIdClase}}
 \end{producciones}
 
 \noindent{\small El NT insertado que decide entre constructor y miembro con tipo de referencia. Con visibilidad el constructor ya no lleva \texttt{public} propio, así que compite con el atributo/método de tipo referencia por el token idClase.\par}
 
 \begin{producciones}
-\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}\marca{+}{visibilidad}
+\regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}
 \regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \end{producciones}
 
@@ -49,10 +50,10 @@
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}
 \end{producciones}
 
-\noindent{\small NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de una variable local, y tienen que poder prenderse por separado.\par}
+\noindent{\small NT dedicado y no compartido con la inicialización de una variable local: son construcciones distintas y el semántico las trata distinto.\par}
 
 \begin{producciones}
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}\marca{+}{atrinit}
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
@@ -68,11 +69,11 @@
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
 \end{producciones}
 
-\noindent{\small Los métodos de interfaz admiten \texttt{public} pero no \texttt{private}, que es lo que hace Java: verificado con javac, un método de interfaz \texttt{private} exige cuerpo («missing method body, or declare abstract»), y MiniJava no tiene forma de escribir ese cuerpo —\nt{MetodoInterfaz} termina en \texttt{;} en la especificación original y ningún logro lo cambia—. O sea que un \texttt{private} acá sería siempre la forma que Java rechaza.\par}
+\noindent{\small Los métodos de interfaz admiten \texttt{public} pero no \texttt{private}, que es lo que hace Java: verificado con javac, un método de interfaz \texttt{private} exige cuerpo («missing method body, or declare abstract»), y MiniJava no tiene forma de escribir ese cuerpo —\nt{MetodoInterfaz} termina en \texttt{;} en la especificación original—. O sea que un \texttt{private} acá sería siempre la forma que Java rechaza.\par}
 
 \begin{producciones}
 \regla{MetodoInterfaz}{\nt{PublicOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
-\regla{PublicOpcional}{\tl{public}}\marca{+}{visibilidad}
+\regla{PublicOpcional}{\tl{public}}
 \regla{PublicOpcional}{\eps}
 \regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
 \regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
@@ -81,11 +82,11 @@
 \regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
 \end{producciones}
 
-\noindent{\small \texttt{float} es token del léxico desde la Etapa 1 pero no estaba en la gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.\par}
+\noindent{\small \texttt{float} es token del léxico desde la Etapa 1 pero no estaba en la gramática; sin esta alternativa el \texttt{float} del léxico queda inutilizable.\par}
 
 \begin{producciones}
 \regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
-\regla{TipoPrimitivo}{\tl{float}}\marca{+}{float}
+\regla{TipoPrimitivo}{\tl{float}}
 \end{producciones}
 
 \noindent{\small En POSICIÓN DE TIPO no se admite el diamante: \texttt{List<> x;} es inválido.\par}
@@ -94,12 +95,11 @@
 \regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>{}>}. Sin el logro: \texttt{ArgumentoDeTipo -> idGen | idClase}.\par}
+\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>{}>}.\par}
 
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen}}
-\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}\marca{+}{generico}
-\regla{ArgumentoDeTipo}{\tl{idClase}}\marca{-}{generico}
+\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}
 \regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}}
 \regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales} \alt{} \eps}
 \regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}
@@ -107,7 +107,7 @@
 \regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}}
 \end{producciones}
 
-\noindent{\small Con el logro de variables locales clásicas una declaración local puede empezar con idClase (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}). Se factoriza ese idClase y el desempate lo hace el token siguiente: \texttt{.} es expresión, cualquier otro es declaración. La rama de expresión reusa \nt{ColaDeExpresionDesdePrimario} para no duplicar la jerarquía de expresiones.\par}
+\noindent{\small Una declaración local puede empezar con idClase (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}). Se factoriza ese idClase y el desempate lo hace el token siguiente: \texttt{.} es expresión, cualquier otro es declaración. La rama de expresión reusa \nt{ColaDeExpresionDesdePrimario} para no duplicar la jerarquía de expresiones.\par}
 
 \begin{producciones}
 \regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
@@ -118,35 +118,28 @@
 \regla{Sentencia}{\nt{If}}
 \regla{Sentencia}{\nt{While}}
 \regla{Sentencia}{\nt{Bloque}}
-\regla{Sentencia}{\nt{For}}\marca{+}{for}
+\regla{Sentencia}{\nt{For}}
 \end{producciones}
 
 \noindent{\small Sin variables locales clásicas, una sentencia-expresión puede empezar con idClase sin competir con nada: es la regla original.\par}
 
 \begin{producciones}
-\regla{Sentencia}{\nt{SentenciaExpresion} \tl{;}}\marca{-}{varclasica}
-\regla{SentenciaExpresion}{\nt{ExpresionSinLambda}}\marca{-}{varclasica}
-\end{producciones}
-
-\noindent{\small Con el logro, \texttt{C x;} y \texttt{C.m();} compiten por idClase y hay que factorizarlo.\par}
-
-\begin{producciones}
-\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}\marca{+}{varclasica}
-\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
-\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
-\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}\marca{+}{varclasica}
-\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}\marca{+}{varclasica}
-\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}\marca{+}{varclasica}
+\regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}
+\regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}
+\regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
+\regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}
 \regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda}}
 \end{producciones}
 
 \noindent{\small Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
 
 \begin{producciones}
-\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
-\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}\marca{+}{varclasica}
-\regla{RestoListaDeclaradores}{\eps}\marca{+}{varclasica}
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}\marca{+}{varclasica}
+\regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}
+\regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}
+\regla{RestoListaDeclaradores}{\eps}
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \regla{Return}{\tl{return} \nt{ExpresionOpcional}}
 \regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
 \regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
@@ -157,34 +150,34 @@
 \noindent{\small Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
 
 \begin{producciones}
-\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}\marca{+}{for}
-\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
-\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}\marca{+}{for}
-\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
-\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
-\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}\marca{+}{for}
-\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}\marca{+}{for}
-\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}\marca{+}{for}
-\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}\marca{+}{for}
+\regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
+\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
+\regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
+\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
+\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
+\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}
+\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
+\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}
 \end{producciones}
 
 \noindent{\small El \texttt{:} distingue el for de iteradores del estándar, y está a un solo token.\par}
 
 \begin{producciones}
-\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}\marca{+}{for}
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}\marca{+}{for}
-\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}\marca{+}{for}
-\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}\marca{+}{for}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}\marca{+}{for}
+\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}
+\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small Una sola expresión por separador, como pide el logro.\par}
+\noindent{\small Una sola expresión por separador.\par}
 
 \begin{producciones}
-\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}\marca{+}{for}
+\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \end{producciones}
 
-\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido. Y como con los logros de ternario y de lambda apagados \nt{ExpresionCondicionalOLambda} es un alias de \nt{ExpresionCompuesta}, el lenguaje base queda idéntico al de la cátedra.\par}
+\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); \nt{ExpresionCondicional} el ternario; \nt{ExpresionCompuesta} los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando \nt{ExpresionCompuesta}: que \texttt{a = b = c} no sea válido.\par}
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
@@ -218,10 +211,10 @@
 \regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
-\noindent{\small Con el logro apagado \nt{RestoCondicional} queda en solo ε, o sea que \nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta} y la capa desaparece sin dejar rastro. Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicionalOLambda}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido, \texttt{a ? b : c = d} no lo es, y \texttt{a ? b : x -> x} sí —la producción del JLS es \texttt{? Expression : LambdaExpression}—. No rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
+\noindent{\small Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicionalOLambda}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido, \texttt{a ? b : c = d} no lo es, y \texttt{a ? b : x -> x} sí —la producción del JLS es \texttt{? Expression : LambdaExpression}—. No rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
 
 \begin{producciones}
-\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}\marca{+}{ternario}
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}
 \regla{RestoCondicional}{\eps}
 \regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
@@ -236,11 +229,11 @@
 \noindent{\small Va sobre \nt{Referencia} y no sobre \nt{Operando}: \texttt{5++} no tiene sentido.\par}
 
 \begin{producciones}
-\regla{PosfijoOpcional}{\tl{++}}\marca{+}{posfijo}
-\regla{PosfijoOpcional}{\tl{-{}-}}\marca{+}{posfijo}
+\regla{PosfijoOpcional}{\tl{++}}
+\regla{PosfijoOpcional}{\tl{-{}-}}
 \regla{PosfijoOpcional}{\eps}
 \regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
-\regla{Primitivo}{\tl{floatLiteral}}\marca{+}{float}
+\regla{Primitivo}{\tl{floatLiteral}}
 \end{producciones}
 
 \noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las \emph{cabezas}: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la raíz, por la misma razón que \nt{ExpresionSinLambda}: los dos contextos donde se usa son sentencia-expresión e inicialización del for, y en Java los dos exigen un StatementExpression, que nunca es una lambda.\par}
@@ -301,23 +294,23 @@
 \noindent{\small Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía. \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto. Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.\par}
 
 \begin{producciones}
-\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
+\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}
 \regla{AccesoLlamadaOLambda}{\nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
-\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
+\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}
 \regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}}
 \regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
-\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
-\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}\marca{+}{lambda}
+\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}
+\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}
 \regla{FinDeParentizadaOLambda}{\nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}\marca{+}{lambda}
-\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}\marca{+}{lambda}
+\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}
+\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}
 \end{producciones}
 
 \noindent{\small Una única expresión, sin llaves.\par}
 
 \begin{producciones}
-\regla{CuerpoLambda}{\nt{Expresion}}\marca{+}{lambda}
+\regla{CuerpoLambda}{\nt{Expresion}}
 \regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
 \regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{CreacionDeArreglo}}
 \regla{ArregloOInstancia}{\tl{idGen} \nt{CreacionDeArreglo}}
@@ -327,34 +320,32 @@
 \regla{CreacionDesdeIdClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small el diamante \texttt{<>} sólo se admite acá, en la rama que va a ArgsActuales: \texttt{new C<>()} es válido y \texttt{new C<>[3]} no. La restricción del logro queda impuesta por la gramática, no delegada al semántico.\par}
+\noindent{\small el diamante \texttt{<>} sólo se admite acá, en la rama que va a ArgsActuales: \texttt{new C<>()} es válido y \texttt{new C<>[3]} no. La restricción queda impuesta por la gramática, no delegada al semántico.\par}
 
 \begin{producciones}
-\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}\marca{+}{generico}
+\regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}
 \regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}
 \regla{ArregloOInstanciaDeClase}{\nt{CreacionDeArreglo}}
 \regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small \texttt{new int[]\{1,2,3\}}. Sin el logro: CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional\par}
+\noindent{\small Toda dimension de una creacion conserva su \texttt{[ Expresion ]}, que es la forma de MiniJava base: \texttt{CrearArreglo -> new TipoBase DimensionesConTamanio} con \texttt{DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]}. El logro de inicializacion NO afloja esa exigencia: le cuelga el inicializador al final. Asi \texttt{new int[2][2]\{\{1,2\},\{3,4\}\}} es valido y \texttt{new int[]\{1,2,3\}} no. Esto DIVERGE de Java, que prohibe tamanio e inicializador juntos (JLS 15.10.1, verificado con javac: «array creation with both dimension expression and initialization is illegal»). Es una decision deliberada: se prefirio no ampliar la forma de las dimensiones que MiniJava ya tenia definida. Revertirla es cambiar CreacionDeArreglo y nada mas.\par}
 
 \begin{producciones}
-\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
-\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
-\end{producciones}
-
-\noindent{\small El logro dice «como en Java» y sólo restringe DÓNDE (dentro de un \texttt{new}), no cuántas dimensiones. Java admite \texttt{new int[][]\{\{1,2\},\{3,4\}\}}, así que el inicializador es anidable: un elemento puede ser una expresión o, a su vez, otro inicializador.\par}
-
-\begin{producciones}
-\regla{RestoCreacionDeArreglo}{\tl{]} \nt{DimensionesVaciasOpcional} \nt{InicializadorDeArreglo}}\marca{+}{arrinit}
-\regla{DimensionesVaciasOpcional}{\tl{[} \tl{]} \nt{DimensionesVaciasOpcional} \alt{} \eps}\marca{+}{arrinit}
-\regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}\marca{+}{arrinit}
-\regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \eps}\marca{+}{arrinit}
-\regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}\marca{+}{arrinit}
-\regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}\marca{+}{arrinit}
-\regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}\marca{+}{arrinit}
+\regla{CreacionDeArreglo}{\nt{DimensionesConTamanio} \nt{InicializadorDeArregloOpcional}}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
+\end{producciones}
+
+\noindent{\small El inicializador es anidable: un elemento puede ser una expresion o, a su vez, otro inicializador. Solo es alcanzable desde \nt{Creacion}, que es lo unico que el logro restringe sobre donde puede aparecer.\par}
+
+\begin{producciones}
+\regla{InicializadorDeArregloOpcional}{\nt{InicializadorDeArreglo} \alt{} \eps}
+\regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}
+\regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \eps}
+\regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}
+\regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}
+\regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
 \end{producciones}
 
 \noindent{\small Sección propia y no parte de la creación: la lista de argumentos de una llamada la usan por igual el \texttt{new}, el encadenado, la llamada estática y el encabezado del for.\par}

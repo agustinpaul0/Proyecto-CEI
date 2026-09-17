@@ -50,8 +50,7 @@ public final class EstadoOperadorConSufijoOpcional implements EstadoLexico {
     }
 
     private boolean esSufijoAlternativo(ContextoLexico contexto) {
-        if (tokenDelSufijoAlternativo == null
-                || !TablaDeLexemas.estaHabilitado(tokenDelSufijoAlternativo, contexto.getConfiguracion())) {
+        if (tokenDelSufijoAlternativo == null) {
             return false;
         }
         String conElSufijo = contexto.getLexema() + contexto.getCaracterActual();

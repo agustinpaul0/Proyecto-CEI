@@ -6,7 +6,7 @@
 
 Cómo funciona, de punta a punta:
 
-1. Se emiten desde gramatica/minijava-ll1-logros.g las dos gramáticas que las
+1. Se emiten desde gramatica/minijava-ll1-final.g las dos gramáticas que las
    herramientas externas entienden: `MiniJava.g4` para Grammarinator y
    `MiniJavaParser.jj` para el oráculo JavaCC.
 2. Grammarinator deriva fuentes MiniJava al azar. Son los casos POSITIVOS.
@@ -17,16 +17,9 @@ Cómo funciona, de punta a punta:
    del analizador en Java y del simulador en Python— dice qué veredicto
    corresponde, y de ahí sale la expectativa `[Error:lexema|linea]` del caso.
 
-Un caso entra al corpus SÓLO si su veredicto es el mismo en TODAS las
-configuraciones de control (`--verificar-en`). La cátedra corre sus testers sobre
-la carpeta de entrega con el compilador tal cual, o sea con todos los logros, así
-que un caso que dependa de tener un logro apagado haría fallar esa corrida. Los
-pares acepta-con / rechaza-sin los cubren los tests con fuente embebido y
-herramientas/casos-gramatica.sh, que sí saben apagar logros.
-
-Los casos que sólo valen con todos los logros prendidos declaran ese requisito en
-resources/requisitos-de-logros.txt, para que una corrida con
-`-Dlogros=ninguno` los saltee en vez de fallar.
+Hay un solo oráculo, porque hay una sola gramática: el compilador reconoce
+MiniJava con todos los logros de la Etapa 1 y la Etapa 2, siempre. Un caso entra
+al corpus si el oráculo y el generador coinciden en su veredicto.
 """
 import argparse
 import hashlib
@@ -36,7 +29,7 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-logros.g"
+GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-final.g"
 HERRAMIENTAS = RAIZ / "herramientas"
 TRABAJO = HERRAMIENTAS / "fuzz" / "trabajo"
 JARS = HERRAMIENTAS / "fuzz" / "jars"
@@ -44,11 +37,6 @@ VENV = RAIZ / ".venv" / "bin"
 
 SIN_ERRORES = RAIZ / "resources" / "sinErrores"
 CON_ERRORES = RAIZ / "resources" / "conErrores"
-MANIFIESTO = RAIZ / "resources" / "requisitos-de-logros.txt"
-
-TODOS_LOS_LOGROS = "todos"
-LOGROS_SINTACTICOS = ("visibilidad", "atrinit", "varclasica", "for", "ternario",
-                      "posfijo", "lambda", "arrinit", "generico", "float")
 
 
 def correr(comando, **kwargs):
@@ -62,14 +50,14 @@ def herramienta(nombre):
     return ruta
 
 
-def emitir_gramaticas(logros, destino):
+def emitir_gramaticas(destino):
     destino.mkdir(parents=True, exist_ok=True)
     g4 = destino / "MiniJava.g4"
     jj = destino / "MiniJavaParser.jj"
     for script, salida in ((HERRAMIENTAS / "gramatica_a_antlr.py", g4),
                            (HERRAMIENTAS / "gramatica_a_javacc.py", jj)):
         with open(salida, "w", encoding="utf-8") as archivo:
-            correr([sys.executable, script, GRAMATICA, "--logros", logros], stdout=archivo)
+            correr([sys.executable, script, GRAMATICA], stdout=archivo)
     return g4, jj
 
 
@@ -181,43 +169,21 @@ def publicar_negativos(candidatos, classpaths, prefijo):
     return publicados
 
 
-def oraculos_de_control(configuraciones):
-    """Compila un oráculo JavaCC por configuración de control. Se reusan: cada uno
-    tarda unos segundos en generarse y compilarse."""
-    classpaths = []
-    for i, configuracion in enumerate(configuraciones):
-        _, jj = emitir_gramaticas(configuracion, TRABAJO / f"gramaticas-{i}")
-        classpaths.append(construir_oraculo(jj, TRABAJO / f"oraculo-{i}"))
-        print(f"  oraculo listo para --logros {configuracion}")
-    return classpaths
+def oraculo_de_control():
+    """Compila el oráculo JavaCC. Tarda unos segundos, así que se compila una vez
+    y se reusa para los dos lotes."""
+    _, jj = emitir_gramaticas(TRABAJO / "gramaticas-oraculo")
+    classpath = construir_oraculo(jj, TRABAJO / "oraculo")
+    print("  oraculo listo")
+    return classpath
 
 
-def escribir_manifiesto(entradas):
-    """Qué logros necesita cada caso. Un caso que no figura acá aplica a cualquier
-    configuración, que es lo que se busca para el lote base."""
-    lineas = [
-        "# A qué configuración de logros aplica cada caso del corpus sintáctico.",
-        "#",
-        "# Lo genera herramientas/generar_corpus_fuzz.py junto con el corpus. Un caso",
-        "# que no figura acá vale en CUALQUIER configuración: se verificó contra un",
-        "# oráculo por cada logro por separado, además de con todos y con ninguno.",
-        "#",
-        "# Formato, un caso por línea:",
-        "#",
-        "#     <directorio>/<archivo> | <logros que deben estar PRENDIDOS> | <APAGADOS>",
-        "",
-    ]
-    lineas += entradas
-    MANIFIESTO.write_text("\n".join(lineas) + "\n", encoding="utf-8")
-    print(f"{MANIFIESTO.relative_to(RAIZ)}: {len(entradas)} casos con requisitos")
-
-
-def generar(args, classpaths, prefijo, logros):
+def generar(args, classpaths, prefijo):
     generador = TRABAJO / "generador"
     shutil.rmtree(generador, ignore_errors=True)
     generador.mkdir(parents=True)
 
-    g4, _ = emitir_gramaticas(logros, TRABAJO / "gramaticas-generacion")
+    g4, _ = emitir_gramaticas(TRABAJO / "gramaticas-generacion")
     correr([herramienta("grammarinator-process"), g4, "-o", generador],
            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
@@ -272,27 +238,16 @@ def main():
         for viejo in list(carpeta.glob("fuzz*.java")) + list(carpeta.glob("base*.java")):
             viejo.unlink()
 
-    # El lote `base` se deriva del núcleo sin logros y se verifica contra TODAS las
-    # configuraciones de control, así que vale en cualquier corrida. El lote `fuzz`
-    # se deriva con todos los logros y sólo tiene que valer ahí, que es como la
-    # cátedra corre sus testers sobre la carpeta de entrega.
-    print("compilando los oraculos de control...")
-    control_completo = oraculos_de_control(
-        ["ninguno", TODOS_LOS_LOGROS] + list(LOGROS_SINTACTICOS))
-    control_de_entrega = [control_completo[1]]
+    # Dos lotes con la misma gramática y el mismo oráculo, con semillas distintas:
+    # `base` sale de derivar el árbol, `fuzz` de mutarlo.
+    print("compilando el oraculo de control...")
+    control = [oraculo_de_control()]
 
-    base = generar(args, control_completo, "base", "ninguno")
-    fuzz = generar(args, control_de_entrega, "fuzz", TODOS_LOS_LOGROS)
+    base = generar(args, control, "base")
+    fuzz = generar(args, control, "fuzz")
 
-    requisitos = ",".join(LOGROS_SINTACTICOS)
-    entradas = [f"{caso.parent.name}/{caso.name:<20} | {requisitos} |"
-                for caso in sorted(fuzz[0] + fuzz[1])]
-    escribir_manifiesto(entradas)
-
-    print(f"\nlote base: {len(base[0])} positivos y {len(base[1])} negativos, "
-          f"validos en cualquier configuracion.")
-    print(f"lote fuzz: {len(fuzz[0])} positivos y {len(fuzz[1])} negativos, "
-          f"con todos los logros.")
+    print(f"\nlote base: {len(base[0])} positivos y {len(base[1])} negativos.")
+    print(f"lote fuzz: {len(fuzz[0])} positivos y {len(fuzz[1])} negativos.")
     print(f"semilla {args.semilla}.")
 
 

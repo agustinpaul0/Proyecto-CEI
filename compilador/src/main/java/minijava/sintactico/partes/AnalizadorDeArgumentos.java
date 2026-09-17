@@ -23,13 +23,20 @@ public final class AnalizadorDeArgumentos extends ParteDelAnalizador {
         match(TipoDeToken.PAREN_A);
         if (estaEn(PrimerosDeArgumentos.LISTA_EXPS_EXPRESION)) {
             sintaxis.expresiones().expresion();
-            while (estaEn(PrimerosDeArgumentos.RESTO_LISTA_EXPS_COMA)) {
-                match(TipoDeToken.COMA);
-                sintaxis.expresiones().expresion();
-            }
+            restoListaExps();
         } else {
             // ListaExpsOpcional -> EPSILON
         }
         match(TipoDeToken.PAREN_C);
+    }
+
+    // RestoListaExps -> , Expresion RestoListaExps | EPSILON
+    private void restoListaExps() throws ExcepcionLexica, ExcepcionSintactica {
+        if (!estaEn(PrimerosDeArgumentos.RESTO_LISTA_EXPS_COMA)) {
+            return;
+        }
+        match(TipoDeToken.COMA);
+        sintaxis.expresiones().expresion();
+        restoListaExps();
     }
 }

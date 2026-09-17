@@ -1,7 +1,5 @@
 package minijava.sintactico.recuperacion;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.EntradaDeTokens;
@@ -10,26 +8,19 @@ import minijava.sintactico.errores.ExcepcionSintactica;
 import java.util.ArrayList;
 import java.util.List;
 
-// El logro Recuperación de Errores Modo Pánico. Guarda los errores encontrados y
+// Recuperación de Errores en Modo Pánico. Guarda los errores encontrados y
 // descarta entrada hasta un punto donde se pueda reanudar.
 //
-// Apagado el logro, `habilitado()` es falso y el analizador deja subir la primera
-// excepción, que es la convención base de Pautas slide 25: reportar y terminar.
-// Prendido, el PRIMER error reportado sigue siendo exactamente el mismo, así que
-// un caso del corpus vale para las dos configuraciones.
+// El PRIMER error reportado es exactamente el que reportaría un analizador que
+// cortara en el primero, que es la convención base de Pautas slide 25: recuperar
+// sólo agrega los que vienen después.
 public final class RecuperadorDePanico {
 
     private final EntradaDeTokens entrada;
-    private final ConfiguracionDelCompilador configuracion;
     private final List<ExcepcionSintactica> errores = new ArrayList<>();
 
-    public RecuperadorDePanico(EntradaDeTokens entrada, ConfiguracionDelCompilador configuracion) {
+    public RecuperadorDePanico(EntradaDeTokens entrada) {
         this.entrada = entrada;
-        this.configuracion = configuracion;
-    }
-
-    public boolean habilitado() {
-        return configuracion.tiene(Logro.MODO_PANICO);
     }
 
     public void registrar(ExcepcionSintactica error) {

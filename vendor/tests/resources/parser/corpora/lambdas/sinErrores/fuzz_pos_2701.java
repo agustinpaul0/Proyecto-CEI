@@ -1,0 +1,2 @@
+interface Vn extends CB {
+}

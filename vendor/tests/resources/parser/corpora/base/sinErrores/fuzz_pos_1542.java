@@ -1,0 +1,2 @@
+interface QO_ < Y > {
+}

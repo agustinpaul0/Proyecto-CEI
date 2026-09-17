@@ -51,7 +51,8 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por
 clase — sin límite numérico de líneas, ver [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)),
 identificadores/comentarios en español, apuntar a **todos los logros desde el día 1** (no MVP primero
-y logros después), **los tests son más importantes que el código** — máxima cobertura de líneas y de
+y logros después) y **todos prendidos siempre, sin forma de elegirlos**, **los tests son más
+importantes que el código** — máxima cobertura de líneas y de
 ramas, máxima cantidad de casos, happy paths y edge cases siempre.
 
 **Comentarios: cero por defecto.** El objetivo es que el código se explique solo; un comentario se
@@ -69,7 +70,7 @@ donde está el `pom.xml`).
 
 **Siempre, para cualquier tarea**, dos archivos:
 
-1. [`documentacion/proyecto/README.md`](documentacion/proyecto/README.md) — las cuatro reglas que
+1. [`documentacion/proyecto/README.md`](documentacion/proyecto/README.md) — las tres reglas que
    no se negocian y el índice de los documentos normativos.
 2. [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) — workflow paso a paso, estilo de comentarios, regla
    de deuda-cero.
@@ -134,6 +135,6 @@ compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
 - [`documentacion/transformacion-gramatica.md`](documentacion/sintactico/transformacion-a-ll1-paso-a-paso.md) — el
   paso a paso atómico de la corrección a LL(1) y de las extensiones por logro.
 - [`documentacion/gramatica-minijava.md`](documentacion/sintactico/gramatica-ll1-final.md) — la gramática
-  final. **Se genera** desde `compilador/gramatica/minijava-ll1-logros.g`; no se edita a mano.
+  final. **Se genera** desde `compilador/gramatica/minijava-ll1-final.g`; no se edita a mano.
 
 El historial de decisiones vive en `git log`, no en estos documentos.

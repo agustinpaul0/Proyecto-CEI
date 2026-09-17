@@ -1,0 +1,2 @@
+class CW implements AopX {
+}

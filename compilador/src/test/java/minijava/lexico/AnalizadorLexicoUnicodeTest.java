@@ -1,7 +1,5 @@
 package minijava.lexico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import org.junit.jupiter.api.Tag;
@@ -105,33 +103,6 @@ class AnalizadorLexicoUnicodeTest extends BaseDeAnalisisLexico {
     void stringLiteralAceptaEscapeUnicodeConMultiplesUEsValido(@TempDir Path dir) throws Exception {
         String fuente = "\"letra \\" + "uuuu00F1 final\"";
         Token token = crearAnalizador(dir, fuente).proximoToken();
-
-        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
-        assertEquals(fuente, token.lexema());
-    }
-
-    // Sin el logro Unicodes la 'u' deja de ser marcador y pasa a ser un carácter
-    // como cualquier otro, así que el literal es válido y no se valida nada.
-    // Ojo: no escribir la secuencia literal acá, javac la decodifica hasta en los
-    // comentarios (JLS §3.3) y falla sin 4 hex dígitos detrás.
-    @Test
-    void conUnicodeDeshabilitadoElEscapeDeUnicodeEnStringEsUnCaracterComun(@TempDir Path dir)
-            throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
-        String fuente = "\"a\\" + "u0041\"";
-        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
-
-        assertEquals(TipoDeToken.LIT_STRING, token.tipo());
-        assertEquals(fuente, token.lexema());
-    }
-
-    // Y un Unicode mal formado tampoco es error sin el logro: nada lo valida.
-    @Test
-    void conUnicodeDeshabilitadoUnEscapeUnicodeRotoTampocoEsError(@TempDir Path dir)
-            throws Exception {
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
-        String fuente = "\"a\\" + "u12G4\"";
-        Token token = crearAnalizador(dir, fuente, configuracion).proximoToken();
 
         assertEquals(TipoDeToken.LIT_STRING, token.tipo());
         assertEquals(fuente, token.lexema());

@@ -1,0 +1,2 @@
+class ZuZ extends Ttz {
+}

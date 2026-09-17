@@ -1,0 +1,2 @@
+interface H_ < D > {
+}

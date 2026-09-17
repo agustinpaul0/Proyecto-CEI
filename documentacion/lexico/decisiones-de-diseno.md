@@ -114,7 +114,6 @@ Desarrolladas en [`arquitectura.md`](arquitectura-del-analizador-lexico.md) §5;
 |---|---|
 | `Salida` es una interfaz, no `System.out` directo | Permite testear el Módulo Principal completo con `assertEquals` contra una lista de líneas, sin capturar el stream global de la JVM. Es la decisión de mayor impacto en testeabilidad del proyecto. |
 | Todas las dependencias por constructor | Cada pieza se sustituye en tests sin frameworks de mocking. |
-| Los cuatro logros de comportamiento detrás de flags | Sin interruptor, el comportamiento base que pide la consigna quedaría sepultado y sería imposible demostrar que también se cumple. |
 | Sin `System.exit()` ni estado estático mutable | Los testers de la cátedra invocan `main()` in-process y repetidamente: un `exit` mataría la corrida y un estático mutable contaminaría un caso con el anterior. |
 | Un estado parametrizado para los seis operadores con sufijo | Seis clases idénticas salvo dos caracteres no aportan nada. |
 | Puntuación de un carácter con un `Map`, no una clase por símbolo | Ídem: diez clases triviales contra una tabla. |

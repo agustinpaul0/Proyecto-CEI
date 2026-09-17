@@ -1,0 +1,2 @@
+interface NjB extends Uw {
+}

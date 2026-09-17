@@ -1,0 +1,2 @@
+interface Ty < H > {
+}

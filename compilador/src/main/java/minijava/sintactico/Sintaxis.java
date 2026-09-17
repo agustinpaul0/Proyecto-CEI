@@ -1,6 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.sintactico.partes.AnalizadorDeArgumentos;
 import minijava.sintactico.partes.AnalizadorDeClases;
 import minijava.sintactico.partes.AnalizadorDeCreacion;
@@ -23,10 +22,13 @@ import minijava.sintactico.recuperacion.RecuperadorDePanico;
 // construido.
 public final class Sintaxis {
 
-    private final ConfiguracionDelCompilador configuracion;
     private final EntradaDeTokens entrada;
-    private final RestriccionesDeLambda restriccionesDeLambda;
     private final RecuperadorDePanico recuperador;
+
+    // Si la RAÍZ de la última expresión leída fue una lambda. Lo consultan las
+    // producciones del paréntesis para rechazar `(x -> x).m()`, que la gramática
+    // no alcanza a distinguir de `(e).m()`.
+    private boolean ultimaExpresionFueLambda;
 
     private final AnalizadorDeClases clases;
     private final AnalizadorDeMiembros miembros;
@@ -39,11 +41,9 @@ public final class Sintaxis {
     private final AnalizadorDeCreacion creacion;
     private final AnalizadorDeArgumentos argumentos;
 
-    public Sintaxis(EntradaDeTokens entrada, ConfiguracionDelCompilador configuracion) {
+    public Sintaxis(EntradaDeTokens entrada) {
         this.entrada = entrada;
-        this.configuracion = configuracion;
-        this.restriccionesDeLambda = new RestriccionesDeLambda();
-        this.recuperador = new RecuperadorDePanico(entrada, configuracion);
+        this.recuperador = new RecuperadorDePanico(entrada);
 
         this.clases = new AnalizadorDeClases(this);
         this.miembros = new AnalizadorDeMiembros(this);
@@ -61,12 +61,16 @@ public final class Sintaxis {
         return entrada;
     }
 
-    public ConfiguracionDelCompilador configuracion() {
-        return configuracion;
+    public void anotarQueEsLambda() {
+        ultimaExpresionFueLambda = true;
     }
 
-    public RestriccionesDeLambda restriccionesDeLambda() {
-        return restriccionesDeLambda;
+    public void anotarQueNoEsLambda() {
+        ultimaExpresionFueLambda = false;
+    }
+
+    public boolean ultimaExpresionFueLambda() {
+        return ultimaExpresionFueLambda;
     }
 
     public RecuperadorDePanico recuperador() {

@@ -5,14 +5,12 @@ import minijava.lexico.tokens.TipoDeToken;
 import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 
 // GENERADO por herramientas/primeros_a_java.py desde
-// gramatica/minijava-ll1-logros.g. No editar a mano: se regenera.
+// gramatica/minijava-ll1-final.g. No editar a mano: se regenera.
 //
 // Los tipos, las dimensiones y los argumentos formales.
 //
 // Una constante por produccion, con su produccion citada al lado, para que
 // el analizador se lea contra la gramatica del informe renglon por renglon.
-// Las producciones que existen por un logro se emiten igual: el analizador
-// consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeTipos {
 
     // Tipo -> TipoBase DimensionesOpcionales
@@ -62,9 +60,6 @@ public final class PrimerosDeTipos {
 
     // ArgumentoDeTipo -> idClase TipoGenericoOpcional
     public static final ConjuntoDePrimeros ARGUMENTO_DE_TIPO_ID_CLASE = de(TipoDeToken.ID_CLASE);
-
-    // ArgumentoDeTipo -> idClase
-    public static final ConjuntoDePrimeros ARGUMENTO_DE_TIPO_ID_CLASE_2 = de(TipoDeToken.ID_CLASE);
 
     // ArgsFormales -> ( ListaArgsFormalesOpcional )
     public static final ConjuntoDePrimeros ARGS_FORMALES_PAREN_A = de(TipoDeToken.PAREN_A);

@@ -1,10 +1,7 @@
 package minijava.lexico.tokens;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +20,6 @@ public final class TablaDeLexemas {
     private static final Set<String> PALABRAS_CLAVE;
     private static final Map<String, TipoDeToken> POR_LEXEMA;
     private static final Map<TipoDeToken, String> POR_TIPO;
-    private static final Map<TipoDeToken, Logro> LOGRO_QUE_LO_HABILITA;
 
     static {
         Map<String, TipoDeToken> palabrasClave = new LinkedHashMap<>();
@@ -99,19 +95,9 @@ public final class TablaDeLexemas {
         Map<TipoDeToken, String> porTipo = new LinkedHashMap<>();
         porLexema.forEach((lexema, tipo) -> porTipo.put(tipo, lexema));
 
-        // Sólo los cuatro de la Etapa 2. Los de floats NO van acá: el logro
-        // Floats I gobierna la FORMA del literal desde los estados numéricos, y
-        // `float` es palabra reservada aun con el logro apagado.
-        Map<TipoDeToken, Logro> logroQueLoHabilita = new EnumMap<>(TipoDeToken.class);
-        logroQueLoHabilita.put(TipoDeToken.PR_FOR, Logro.FOR);
-        logroQueLoHabilita.put(TipoDeToken.PR_PRIVATE, Logro.VISIBILIDAD);
-        logroQueLoHabilita.put(TipoDeToken.SIGNO_PREGUNTA, Logro.TERNARIO);
-        logroQueLoHabilita.put(TipoDeToken.OP_FLECHA, Logro.LAMBDA);
-
         PALABRAS_CLAVE = Collections.unmodifiableSet(palabrasClave.keySet());
         POR_LEXEMA = Collections.unmodifiableMap(porLexema);
         POR_TIPO = Collections.unmodifiableMap(porTipo);
-        LOGRO_QUE_LO_HABILITA = Collections.unmodifiableMap(logroQueLoHabilita);
     }
 
     private TablaDeLexemas() {
@@ -132,17 +118,6 @@ public final class TablaDeLexemas {
 
     public static Optional<String> lexemaFijoDe(TipoDeToken tipo) {
         return Optional.ofNullable(POR_TIPO.get(tipo));
-    }
-
-    // Vacío si el token existe siempre. Con valor, el token sólo se reconoce si
-    // ese logro está prendido; apagado, el punto de reconocimiento lo trata como
-    // lo trataba la Etapa 1 (idMV, dos operadores sueltos, o error léxico).
-    public static Optional<Logro> logroQueLoHabilita(TipoDeToken tipo) {
-        return Optional.ofNullable(LOGRO_QUE_LO_HABILITA.get(tipo));
-    }
-
-    public static boolean estaHabilitado(TipoDeToken tipo, ConfiguracionDelCompilador configuracion) {
-        return logroQueLoHabilita(tipo).map(configuracion::tiene).orElse(true);
     }
 
     public static Set<String> palabrasClave() {

@@ -123,34 +123,9 @@ resources/
 ├── lexico/
 │   ├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
 │   ├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
-│   ├── regresion/                    entradas que rompieron una corrida de fuzzing
-│   └── requisitos-de-logros.txt      a qué configuración de logros aplica cada caso
+│   └── regresion/                    entradas que rompieron una corrida de fuzzing
 └── sintactico/                       el corpus de la Etapa 2
 ```
-
-### A qué configuración de logros aplica cada caso
-
-La expectativa de un caso **depende de los logros prendidos**: `//#1.5,3` sólo se cumple con Floats I
-prendido, y `[Error:?|2]` sólo con el Ternario apagado. Si eso queda implícito pasan las dos cosas
-malas a la vez: la suite da verde en cualquier `-Dlogros` sin haber probado nada distinto, y un caso
-puede fallar por un logro que el compilador ni siquiera tiene que soportar en esa corrida.
-
-Por eso cada caso declara sus requisitos en `resources/lexico/requisitos-de-logros.txt`, con la
-misma semántica que `@RequiereLogro` sobre un test: **el caso que no aplica se saltea, no falla**.
-
-```
-sinErrores/floats.java                  | floats |
-conErrores/preguntaSuelta.java          |        | ternario
-conErrores/lexConErrores01.java         | multideteccion |
-```
-
-Los requisitos viven en un manifiesto y no adentro de cada caso porque las expectativas del corpus
-son **posicionales** (`//#lexema,linea`, y la línea del `eof` sale de cuántos saltos tiene el
-archivo): agregarle un renglón de metadatos a un caso correría todas sus líneas y lo rompería.
-
-Dos tests sostienen el manifiesto: uno falla si declara un caso que ya no existe, y otro si un
-requisito declarado **no corresponde a una dependencia real** —es decir, si con ese logro apagado la
-salida del compilador es la misma—.
 
 ### El tester estricto, y por qué hubo que escribirlo
 
@@ -209,9 +184,10 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `AnalizadorSintacticoTest` | Nivel clase e interfaz, el `$` del EOF, el formato del mensaje, genericidad anidada. |
 | `MiembrosYSentenciasTest` | Miembros, visibilidad, atributos inicializados, sentencias, variables clásicas, fors. |
 | `ExpresionesTest` | Las capas de precedencia, ternario, posfijos, creación, inicializadores, diamante. |
-| `LambdasTest` | El logro MiniLambdas entero, incluidas las restricciones que la gramática no expresa. |
+| `LambdasTest` | El logro MiniLambdas entero: las dos restricciones que el analizador verifica, y las tres que se difieren al semántico y acá se aceptan. |
+| `ParentesisYLambdaTest` | La combinatoria de `(x -> y)` según lo que siga al paréntesis: cuándo es toda la expresión, cuándo sería un operando y por qué se rechaza. |
+| `CorpusExternoTest` | 30.000 fuentes generados a partir de la gramática de otra persona, con las cinco divergencias declaradas. |
 | `ModoPanicoTest` | Que la recuperación reporte todos los errores, avance siempre y no cambie el primero. |
-| `RamasSinLogroTest` | Las ramas que **sólo** existen con un logro apagado, con configuración explícita. |
 | `CasosDeLaCatedraTest` | Los ocho fuentes que la cátedra adjunta, cada error en el token exacto. |
 | `catedra.TesterDeCasosSintacticos{Sin,Con}Errores` | Los testers de la cátedra sobre el corpus, con su criterio intacto. |
 | `TesterDeCasosSintacticosEstricto` | El mismo corpus, exigiendo que el código declarado sea el **primero** y que no haya ninguno de más. |
@@ -223,8 +199,6 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | Suite | Qué cubre |
 |---|---|
 | `ManejadorDeArchivoEficienteTest` | EOF, archivo vacío, los tres convenios de fin de línea, UTF-8 inválido, y el costo de ubicar el error en un fuente de 200.000 líneas. |
-| `ConfiguracionDelCompiladorTest`, `LogroTest`, `ParserDeConfiguracionTest` | Los logros como `EnumSet`, sus nombres y su parseo desde la línea de comandos. |
-| `RequisitosDeLogrosDelCasoTest` | Que el manifiesto de cada fase no declare casos inexistentes ni dependencias falsas. |
 | `MainTest`, `OpcionesDeInvocacionTest`, `ModuloPrincipal{Lexico,Sintactico}Test` | El punto de entrada y el contrato de salida de las dos etapas. |
 
 ## 6. Cómo correr
@@ -241,11 +215,37 @@ mvn test -Dvolcado=off       # sin volcado
 
 mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en las dos fases)
 mvn test -Pfase-sintactico   # sólo el sintáctico
-
-mvn test -Dlogros=ninguno    # la misma suite con cero logros
-mvn test -Dlogros=etapa1     # con los de la Etapa 1
-mvn test -Dlogros=ternario,lambda
 ```
+
+No hay forma de elegir con qué logros correr: el compilador reconoce MiniJava con todos los de la
+Etapa 1 y la Etapa 2 incorporados, siempre, así que la suite tiene una sola configuración.
+
+### La verificación diferencial contra un corpus ajeno
+
+El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
+salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
+ese hueco corriendo el compilador contra **30.000 fuentes generados por otra persona**, a partir de
+**su propia gramática** de MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni
+los criterios.
+
+De esos 30.000, **26.291 coinciden exactamente**. Los 3.709 restantes caen en cinco familias, todas
+verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el test comprueba es que
+**no aparezca una sexta**.
+
+| Familia | Casos | Quién tiene razón |
+|---|---:|---|
+| `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]` | 2434 | **Este proyecto.** Su gramática produce la lambda en `<Primario>`, así que una lambda parentizada puede ser operando. Acá vive en `<Expresion>`, como el JLS. Verificado con `javac`: *«lambda expression not expected here»* en los tres. |
+| `"a\\"` | 987 | **Este proyecto**, por lectura de la especificación. §2.3.3 da una regla posicional —la comilla de cierre nunca está antecedida por `\`— y no una de apareamiento; su *fuzzer* asume la semántica de Java. Ver [`decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) §3.5. |
+| `new C<T>()` | 162 | **Este proyecto.** La gramática de la cátedra lo genera (`LlamadaConstructor -> new TipoReferencia ArgsActuales`) y la suya lo rechaza. |
+| `public void m(){}`, constructor sin `public` | 126 | **Ninguno**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
+| Ambos rechazan, en distinto token | resto | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
+
+Los **73 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
+`resources/` con el prefijo `ext`—; los generados no se copian, porque son 145 MB. El test se
+**saltea** si la carpeta no está.
+
+`ParentesisYLambdaTest` destila la primera familia en 39 casos legibles, que son los que protegen
+contra una regresión: toda la combinatoria de `(x -> y)` según lo que venga después del paréntesis.
 
 ### La verificación diferencial contra la gramática
 
@@ -258,29 +258,6 @@ Es la prueba más fuerte de la suite del sintáctico: no depende de que a alguie
 correcto, sino de que dos implementaciones independientes coincidan. Las divergencias deliberadas
 —los chequeos que la gramática no puede expresar— van declaradas en la herramienta; una sin declarar
 la hace fallar.
-
-### Los tests corren en función de los logros prendidos
-
-`-Dlogros` fija la configuración de **toda la corrida** (`ConfiguracionDeLaCorrida`), y llega tanto a
-los tests escritos a mano como al corpus. Un test que no aplica a esa configuración se **saltea**:
-
-```java
-@Test
-@RequiereLogro(Logro.GENERICO)
-void conGenericidadAvanzadaSeAceptaUnGenericoAnidado() { … }
-
-@Test
-@RequiereLogroApagado(Logro.GENERICO)
-void sinGenericidadAvanzadaUnGenericoAnidadoSeRechaza() { … }
-```
-
-Están implementadas como una `ExecutionCondition` de JUnit 5, conviven en un mismo elemento y la
-anotación de la clase alcanza a sus métodos. **Saltean, no fallan**: un test que falla porque un
-logro está apagado estaría fallando por algo que el compilador no tiene que hacer en esa
-configuración, y eso es ruido, no información.
-
-Por cada logro hace falta el par completo: el caso que pasa con el logro prendido **y** el que
-verifica el comportamiento base con el logro apagado.
 
 Los testers de la cátedra están escritos con JUnit 4; corren junto a los propios (JUnit 5) gracias al
 *vintage engine*, sin necesidad de tocarlos.

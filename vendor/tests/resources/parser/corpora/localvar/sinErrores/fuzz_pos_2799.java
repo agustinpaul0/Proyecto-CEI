@@ -1,0 +1,2 @@
+interface BT < P > {
+}

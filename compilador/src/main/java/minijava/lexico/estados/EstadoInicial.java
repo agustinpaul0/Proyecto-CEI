@@ -96,10 +96,7 @@ public final class EstadoInicial implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(EstadoStringAbierto.INSTANCIA);
         }
-        // Sin el logro de ternario el '?' no es un símbolo de MiniJava y cae en
-        // el error de más abajo, igual que en la Etapa 1.
-        if (actual == '?'
-                && TablaDeLexemas.estaHabilitado(TipoDeToken.SIGNO_PREGUNTA, contexto.getConfiguracion())) {
+        if (actual == '?') {
             int linea = contexto.getLinea();
             contexto.avanzar();
             return Emitir.porLexemaFijo(contexto.getLexema(), linea);

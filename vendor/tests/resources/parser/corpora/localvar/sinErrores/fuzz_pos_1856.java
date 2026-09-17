@@ -1,0 +1,2 @@
+interface Zr < Y > {
+}

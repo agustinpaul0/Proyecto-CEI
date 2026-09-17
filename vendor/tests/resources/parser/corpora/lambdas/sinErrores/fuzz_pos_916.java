@@ -1,0 +1,2 @@
+interface NI < Q > {
+}

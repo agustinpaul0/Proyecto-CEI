@@ -11,17 +11,15 @@ recuperación en modo pánico, más el *carry-over* de floats de la Etapa 1. Los
 
 ## Cómo se verifica cualquiera de estos
 
-Cada logro es un interruptor independiente. Para probar uno solo:
+Los logros **no son configurables**: la gramática es una sola y los tiene todos. Para probar la
+sintaxis de uno se le da al simulador la cadena de tokens que ese logro habilita:
 
 ```bash
 cd compilador
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --logros ternario \
+python3 herramientas/primeros.py gramatica/minijava-ll1-final.g \
         --aceptar "class idClase { void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
-bash herramientas/casos-gramatica.sh          # los 84 casos, con y sin cada logro
+bash herramientas/casos-gramatica.sh          # los 81 casos de aceptacion y rechazo
 ```
-
-La condición de atomicidad —que la gramática siga siendo LL(1) con cualquier subconjunto de logros,
-incluido el vacío— se verifica sobre las 1024 combinaciones con `--combinatoria`.
 
 ---
 
@@ -40,8 +38,10 @@ incluido el vacío— se verifica sobre las 1024 combinaciones con `--combinator
 | dónde puede aparecer una lambda | gramática — se produce en `<Expresion>`, no en `<Primario>` |
 | parámetros sin tipo | gramática — no hay producción que genere `(int x) -> e` |
 | cuerpo de una única expresión, sin llaves | gramática — no hay alternativa con `{` |
-| no captura de variables | **analizador**, con un conjunto de los parámetros |
-| no `this` | **analizador**, con un indicador de contexto |
+| no captura de variables | **analizador semántico** (Etapa 3) |
+| no `this` | **analizador semántico** (Etapa 3) |
+| parámetros sin nombre repetido | **analizador semántico** (Etapa 3) |
+| el parámetro es un identificador pelado | **analizador**, con lo que acaba de leer |
 | lambda parentizada sin cola | **analizador**, con lo que acaba de leer |
 
 Las cuatro formas de parámetros funcionan: `() -> e`, `x -> e`, `(x) -> e`, `(a, b, c) -> e`.
@@ -67,11 +67,35 @@ Las partes que resuelve el analizador y no la gramática están detalladas en
 permisividad del primer parámetro está en
 [`decisiones-de-logica.md` §9](decisiones-de-logica.md).
 
-**Pendiente declarado para la Etapa 3.** La cátedra admite no controlar en esta etapa si un `this`
-—explícito o implícito— cae dentro o fuera de una lambda, porque con la tabla de símbolos del
-semántico el control es mucho más directo. Acá está implementado igual y se deja como está; lo que
-queda para la Etapa 3 es el único caso que este analizador no puede decidir: `x -> ayuda(x)`, que
-es un `this` implícito si `ayuda` es de instancia y no lo es si es `static`.
+**Lo que se difiere al semántico, por indicación del profesor.** El `this` —explícito e
+implícito—, la captura de variables locales y de parámetros, y que los parámetros de una lambda no
+se repitan **no los controla esta etapa**: son restricciones de significado, el logro no las pide, y
+con la tabla de símbolos del semántico se resuelven mucho más directo. El sintáctico las acepta
+todas:
+
+```
+x -> this.campo      se acepta      (el `this` lo controla el semántico)
+x -> x + n           se acepta      (`n` puede ser un campo, una local o nada: no se sabe acá)
+x -> y -> x          se acepta
+(a, a) -> a          se acepta      (el nombre repetido lo controla el semántico)
+```
+
+El motivo técnico de fondo es que ninguna de las tres es decidible con información local:
+`x -> campo` y `x -> n` son **la misma forma sintáctica**, y para saber si `n` es una captura hay
+que resolver el nombre contra su declaración. `x -> ayuda(x)` es el ejemplo extremo: es un `this`
+implícito si `ayuda` es de instancia y no lo es si es `static`.
+
+Lo que **sí** se controla acá son las dos restricciones que son de forma y no de significado:
+
+```
+(a + 1) -> a         se rechaza     «un parametro de lambda tiene que ser un identificador»
+(x -> x).m()         se rechaza     «una lambda no puede ser operando de .»
+```
+
+Ninguna de las dos es expresable en una gramática libre de contexto, y las dos se deciden con lo
+que el analizador acaba de leer. Al irse el control de capturas se borró `RestriccionesDeLambda`
+entera —era la lógica más compleja del analizador—: la pila de «capturas en duda», que existía para
+diferir el chequeo hasta saber si un paréntesis era una lista de parámetros, dejó de tener motivo.
 
 **Requiere el token `->`**, que no existe en el léxico de la Etapa 1.
 
@@ -133,9 +157,7 @@ Una capa nueva, `<ExpresionCondicional>`, entre la asignación y los operadores 
 precedencia de Java y asociatividad a derecha. Alcanza a los seis lados derechos de un `=`; el
 detalle está en [`decisiones-de-logica.md` §3](decisiones-de-logica.md).
 
-Con el logro apagado la capa desaparece sin dejar rastro.
-
-**Requiere el token `?`**, que hoy es un error léxico.
+**Requiere el token `?`**, que en el léxico de la Etapa 1 era un error.
 
 ## 6. Operadores Posifijos E2
 
@@ -183,8 +205,7 @@ instanciación, no delegado al semántico. La tabla de qué acepta y qué rechaz
 > el análisis. Se espera que se sincronice con el siguiente punto y coma, llave de cierre, o llave
 > que abre segun el contexto.»*
 
-No toca la gramática: es enteramente implementación. Va detrás de su interruptor — apagado, el
-compilador corta en el primer error, que es la convención base de las Pautas slide 25.
+No toca la gramática: es enteramente implementación, y está siempre activa.
 
 **Implementado.** Tres puntos de recuperación, y sólo tres: las tres listas de la gramática que
 repiten un elemento (`ListaClases`, `ListaMiembros` y `ListaSentencias`). Sincroniza con los tokens
@@ -193,9 +214,9 @@ falta el `;` se lleva puesto el método que viene después, porque el análisis 
 `void` con el que empieza el miembro siguiente y correcto— y cuenta las llaves mientras descarta,
 para saltear entero el cuerpo de un método cuya firma está rota.
 
-El **primer error reportado no cambia** con el logro prendido o apagado: la recuperación agrega
-errores al final, nunca altera el primero. Eso es lo que permite que un mismo caso del corpus valga
-en las dos configuraciones. El detalle está en
+El **primer error reportado es exactamente el que reportaría un analizador que cortara ahí**, que
+es la convención base de las Pautas slide 25: la recuperación agrega errores después del primero,
+nunca altera cuál es el primero. El detalle está en
 [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §5.
 
 ## 11. Floats — carry-over de la Etapa 1
@@ -217,9 +238,9 @@ inutilizable en ésta.
 | `:` `++` `--` | ternario, for-each, posfijos | **ya existían** |
 
 Los cuatro primeros **no figuran en «Aspectos Léxicos de MiniJava»**: la lista de palabras clave
-de §2.1 llega hasta `false` y la de operadores de §2.4.2 hasta `++ --`. Se agregan condicionados al
-interruptor de su logro, de modo que con el logro apagado el comportamiento léxico de la Etapa 1
-queda intacto.
+de §2.1 llega hasta `false` y la de operadores de §2.4.2 hasta `++ --`. Se agregan al léxico sin
+condición: el compilador reconoce MiniJava con todos los logros incorporados, así que la columna de
+la derecha describe lo que pasaba en la Etapa 1, no una configuración alcanzable hoy.
 
 ## Ver también
 

@@ -1,0 +1,2 @@
+interface VH extends SH {
+}

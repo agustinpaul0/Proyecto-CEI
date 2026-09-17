@@ -8,7 +8,7 @@ import java.io.IOException;
 public final class Main {
 
     private static final String USO =
-            "Uso: java -jar Compilador.jar [--etapa=1|2] [--logros=...] <archivo-fuente>";
+            "Uso: java -jar Compilador.jar [--etapa=1|2] <archivo-fuente>";
 
     public static void main(String[] args) {
         // Sin System.exit() ni excepciones que escapen: los testers de la cátedra
@@ -24,9 +24,9 @@ public final class Main {
         String ruta = opciones.rutaFuente().get();
         try {
             if (opciones.etapa() == 1) {
-                new ModuloPrincipalLexico(salida, opciones.configuracion()).ejecutar(ruta);
+                new ModuloPrincipalLexico(salida).ejecutar(ruta);
             } else {
-                new ModuloPrincipalSintactico(salida, opciones.configuracion()).ejecutar(ruta);
+                new ModuloPrincipalSintactico(salida).ejecutar(ruta);
             }
         } catch (IOException excepcion) {
             salida.imprimir("No se pudo leer el archivo fuente: " + ruta);

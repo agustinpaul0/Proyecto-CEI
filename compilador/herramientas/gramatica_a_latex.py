@@ -6,8 +6,8 @@ que el verificador comprueba. Usa la misma convención tipográfica que la
 cátedra en «Reglas de Sintaxis de MiniJava»: no terminales en \\texttt, mediante
 \\nt{}, y terminales en sans-serif negrita, mediante \\tl{}.
 
-    python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g producciones
-    python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-logros.g primeros
+    python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-final.g producciones
+    python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-final.g primeros
 """
 import re
 import sys
@@ -152,8 +152,8 @@ def producciones(ruta):
             actual.append(comentario)
     cerrar()
 
-    # La cabecera del .g documenta el formato del archivo y lista los logros:
-    # este informe ya explica las dos cosas en sus propias secciones.
+    # La cabecera del .g documenta el formato del archivo, que el informe ya
+    # explica en su propia seccion.
     primera = next((i for i, (t, _) in enumerate(bloques) if t == "regla"), 0)
     bloques = bloques[primera:]
 
@@ -195,15 +195,20 @@ def tabla_primeros(ruta):
     vaciables, primeros_nt, _ = analizar(g)
     nts = g.no_terminales
     # Dos columnas angostas no alcanzan: un no terminal como
-    # <InicializacionDeDeclarador> no se puede partir y desborda sobre la
-    # columna de al lado. Se usa una sola columna a lo ancho de la caja, con la
-    # producción en un renglón y sus Primeros sangrados debajo.
-    print(r"\begingroup\small")
+    # <InicializacionDeDeclarador> no se puede partir y desborda sobre la columna
+    # de al lado. Se usa una sola columna a lo ancho de la caja, con el no
+    # terminal como encabezado —una sola vez, no repetido en cada alternativa— y
+    # debajo un renglón por producción: el cuerpo, y sus Primeros a continuación.
+    #
+    # \footnotesize y no \small: son 230 producciones, y el cuerpo más chico
+    # ahorra varias páginas en una tabla que es de consulta, no de lectura.
+    print(r"\begingroup\footnotesize")
     print(r"\setlength{\parindent}{0pt}")
-    print(r"\setlength{\parskip}{0.7ex}")
+    print(r"\setlength{\parskip}{0pt}")
     print(r"\raggedright")
     print(r"\hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000")
     for nt in nts:
+        print(r"\par\medskip\nobreak\noindent\nt{%s} \deriva{}\nobreak\par" % nt)
         for cuerpo in g.por_izquierda[nt]:
             conjunto = primeros_de_secuencia(g, primeros_nt, vaciables, cuerpo)
             derecha = " ".join(render(s, nts) for s in cuerpo)
@@ -211,12 +216,10 @@ def tabla_primeros(ruta):
             texto = ", ".join(r"\tl{%s}" % escapar(c) for c in items)
             if EPSILON in conjunto:
                 texto = (texto + ", " if texto else "") + r"\eps"
-            print(r"\par\hangindent=2.2em\hangafter=1")
-            print(r"\regla{%s}{%s}\nobreak\par" % (nt, derecha))
-            # Los Primeros van en su propio bloque sangrado, para que al cortarse
-            # la continuación no vuelva al margen y se confunda con una producción.
-            print(r"{\leftskip=1.6em\relax\noindent\textup{Primeros} $=$ \{ %s \}\par}"
-                  % texto)
+            # Sangría francesa profunda: si el renglón se corta, la continuación
+            # no vuelve al margen y no se confunde con otra alternativa.
+            print(r"\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent"
+                  r"%s \hfill $\{$ %s $\}$\par\leftskip=0pt" % (derecha, texto))
     print(r"\endgroup")
 
 

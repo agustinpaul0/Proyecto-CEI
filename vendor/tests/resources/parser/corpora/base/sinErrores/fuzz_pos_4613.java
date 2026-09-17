@@ -1,0 +1,2 @@
+interface WT9 {
+}

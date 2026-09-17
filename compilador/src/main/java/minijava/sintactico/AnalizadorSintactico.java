@@ -1,6 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.sintactico.errores.ExcepcionSintactica;
@@ -20,37 +19,31 @@ public final class AnalizadorSintactico {
     private final EntradaDeTokens entrada;
     private final Sintaxis sintaxis;
 
-    public AnalizadorSintactico(AnalizadorLexico analizadorLexico,
-                                ConfiguracionDelCompilador configuracion) {
-        this.entrada = new EntradaDeTokens(analizadorLexico, configuracion);
-        this.sintaxis = new Sintaxis(entrada, configuracion);
+    public AnalizadorSintactico(AnalizadorLexico analizadorLexico) {
+        this.entrada = new EntradaDeTokens(analizadorLexico);
+        this.sintaxis = new Sintaxis(entrada);
     }
 
     // Se carga el primer token y se arranca por el símbolo inicial de la
     // gramática (Clase 5, slide 61). Devuelve los errores encontrados: una lista
     // vacía significa que el programa es sintácticamente válido.
     //
-    // Sin Modo Pánico la lista tiene a lo sumo un elemento, porque la primera
-    // excepción sube sin que nadie la recupere; con el logro prendido el
-    // analizador sigue y los junta todos, en el orden en que aparecen.
+    // El analizador recupera y sigue, así que los junta todos en el orden en que
+    // aparecen.
     public List<ExcepcionSintactica> analizar() throws ExcepcionLexica {
         entrada.cargarPrimerToken();
         try {
             sintaxis.clases().inicial();
         } catch (ExcepcionSintactica error) {
-            if (!sintaxis.recuperador().habilitado()) {
-                return List.of(error);
-            }
-            // Con el logro prendido, un error que nadie recuperó igual se suma a
-            // los que ya se habían encontrado: es el último de la lista, no el
-            // único.
+            // Un error que nadie recuperó igual se suma a los que ya se habían
+            // encontrado: es el último de la lista, no el único.
             sintaxis.recuperador().registrar(error);
         }
         return sintaxis.recuperador().errores();
     }
 
     // Los errores sintácticos encontrados hasta ahora. Hace falta cuando `analizar`
-    // corta por un error LÉXICO: con Modo Pánico puede haber recuperado varios
+    // corta por un error LÉXICO: el analizador puede haber recuperado varios
     // antes de que el léxico se tope con un símbolo que no existe, y perderlos
     // sería reportar de menos.
     public List<ExcepcionSintactica> erroresDetectados() {

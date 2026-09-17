@@ -1,53 +1,21 @@
 # Gramática LL(1) final de MiniJava
 
 Gramática corregida y **verificada** de MiniJava, en la notación BNF-extendida del PDF de la
-cátedra. Incluye el núcleo más los 9 logros de la Etapa 2 y el carry-over de `float` de la
-Etapa 1.
+cátedra. Es la **única** gramática del compilador, y describe MiniJava con todos los logros de la
+Etapa 1 y de la Etapa 2 incorporados: ninguna producción aparece o desaparece según una
+configuración.
 
 - El origen, sin tocar, está en [`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md).
 - Para entender qué hace cada regla y qué estaba roto: [`guia-de-la-gramatica.md`](defectos-de-la-gramatica-original.md).
 - El paso a paso de cada corrección: [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md).
 
-**Este documento se genera** desde `compilador/gramatica/minijava-ll1-logros.g`, que es el mismo
+**Este documento se genera** desde `compilador/gramatica/minijava-ll1-final.g`, que es el mismo
 archivo que verifica el script — no se edita a mano, para que no puedan divergir:
 
 ```bash
 cd compilador
-python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-logros.g --sin-cabecera
+python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --sin-cabecera
 ```
-
-## Notación
-
-| Elemento | Significado |
-|---|---|
-| **terminal** | símbolo terminal (palabra clave o categoría léxica) |
-| `` `símbolo` `` | símbolo terminal de puntuación u operador |
-| `<Clase>` | símbolo no terminal |
-| `ε` | la cadena vacía |
-| *[sólo con `logro`]* | la producción existe únicamente con ese logro **prendido** |
-| *[sólo sin `logro`]* | la producción existe únicamente con ese logro **apagado** |
-
-No terminal inicial: `<Inicial>`.
-
-## Verificación
-
-```bash
-cd compilador
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g                  # ES LL(1)
-python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria   # las 1024 config.
-bash herramientas/casos-gramatica.sh                                              # 69 casos
-```
-
-Estado actual:
-
-- **111 no terminales, 228 producciones, 60 terminales.**
-- **LL(1) en las 1024 combinaciones de logros**, incluida la de cero logros. Ningún logro depende
-  de que otro esté prendido: eso es lo que hace que se puedan prender y apagar de a uno.
-- **87 casos de aceptación y rechazo** pasan, cubriendo cada logro con su propia sintaxis y con
-  la sintaxis que debe rechazar cuando está apagado.
-
-## Producciones
-
 <Inicial> ::= <ListaClases> **eof**  
 
 <ListaClases> ::= <Clase> <ListaClases> | <Interfaz> <ListaClases> | ε  
@@ -57,7 +25,7 @@ Estado actual:
 <Interfaz> ::= **interface** **idClase** <GenericidadOpcional> <ExtensionOpcional> `{` <ListaMetodosInterfaz> `}`  
 
 > Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con
-> el logro de genericidad avanzada.
+> la genericidad avanzada.
 
 <GenericidadOpcional> ::= `<` **idGen** `>` | ε  
 
@@ -71,32 +39,36 @@ Estado actual:
 
 > MIEMBROS
 > La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace
-> que el `public` del <Constructor> original quede absorbido por
-> <VisibilidadOpcional>, y que <Constructor> pase a competir con <Tipo> por el
-> token idClase: `C(){}` (constructor) vs `C x;` (atributo de tipo C).
+> que el `public` del <Constructor> original quede absorbido por <Visibilidad>, y
+> que <Constructor> pase a competir con <Tipo> por el token idClase: `C(){}`
+> (constructor) vs `C x;` (atributo de tipo C).
 
-<Miembro> ::= <VisibilidadOpcional> <MiembroSinVisibilidad>  *[sólo con `visibilidad`]*  
-<Miembro> ::= <MiembroSinVisibilidad>  *[sólo sin `visibilidad`]*  
-<Miembro> ::= <Constructor>  *[sólo sin `visibilidad`]*  
+<Miembro> ::= <Visibilidad> <MiembroTrasVisibilidad>  
+<Miembro> ::= **static** <VisibilidadOpcional> <TipoMetodo> <Metodo>  
+<Miembro> ::= <MiembroSinModificadores>  
 
-<VisibilidadOpcional> ::= **public** | **private** | ε  *[sólo con `visibilidad`]*  
+> Los dos ordenes valen, como en Java: `public static` y `static public`. Que la
+> visibilidad aparezca a un solo lado de `static` es lo que impide repetir el
+> modificador —`public private void m(){}` no deriva—, sin necesitar un chequeo
+> fuera de la gramatica.
 
-> Sin el logro, el `public` sólo aparece en el constructor y es lo que lo
-> distingue del resto de los miembros: es la regla original de la cátedra.
+<MiembroTrasVisibilidad> ::= **static** <TipoMetodo> <Metodo>  
+<MiembroTrasVisibilidad> ::= <MiembroSinModificadores>  
 
-<Constructor> ::= **public** **idClase** <CuerpoDeMetodo>  *[sólo sin `visibilidad`]*  
+<Visibilidad> ::= **public** | **private**  
 
-<MiembroSinVisibilidad> ::= **static** <TipoMetodo> <Metodo>  
-<MiembroSinVisibilidad> ::= **void** <Metodo>  
-<MiembroSinVisibilidad> ::= <TipoPrimitivo> <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
-<MiembroSinVisibilidad> ::= **idGen** <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
-<MiembroSinVisibilidad> ::= **idClase** <MiembroDesdeIdClase>  
+<VisibilidadOpcional> ::= <Visibilidad> | ε  
+
+<MiembroSinModificadores> ::= **void** <Metodo>  
+<MiembroSinModificadores> ::= <TipoPrimitivo> <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
+<MiembroSinModificadores> ::= **idGen** <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
+<MiembroSinModificadores> ::= **idClase** <MiembroDesdeIdClase>  
 
 > El NT insertado que decide entre constructor y miembro con tipo de referencia.
 > Con visibilidad el constructor ya no lleva `public` propio, así que compite
 > con el atributo/método de tipo referencia por el token idClase.
 
-<MiembroDesdeIdClase> ::= <CuerpoDeMetodo>  *[sólo con `visibilidad`]*  
+<MiembroDesdeIdClase> ::= <CuerpoDeMetodo>  
 <MiembroDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> **idMetVar** <AtributoOMetodo>  
 
 > El NT insertado que decide entre atributo y método.
@@ -104,10 +76,10 @@ Estado actual:
 <AtributoOMetodo> ::= <InicializacionDeAtributo> `;`  
 <AtributoOMetodo> ::= <CuerpoDeMetodo>  
 
-> NT dedicado: la inicialización de un ATRIBUTO es un logro distinto que la de
-> una variable local, y tienen que poder prenderse por separado.
+> NT dedicado y no compartido con la inicialización de una variable local: son
+> construcciones distintas y el semántico las trata distinto.
 
-<InicializacionDeAtributo> ::= `=` <ExpresionCondicionalOLambda>  *[sólo con `atrinit`]*  
+<InicializacionDeAtributo> ::= `=` <ExpresionCondicionalOLambda>  
 <InicializacionDeAtributo> ::= ε  
 
 > <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
@@ -126,11 +98,11 @@ Estado actual:
 > hace Java: verificado con javac, un método de interfaz `private` exige cuerpo
 > («missing method body, or declare abstract»), y MiniJava no tiene forma de
 > escribir ese cuerpo —<MetodoInterfaz> termina en `;` en la especificación
-> original y ningún logro lo cambia—. O sea que un `private` acá sería siempre
+> original—. O sea que un `private` acá sería siempre
 > la forma que Java rechaza.
 
 <MetodoInterfaz> ::= <PublicOpcional> <TipoMetodo> **idMetVar** <ArgsFormales> `;`  
-<PublicOpcional> ::= **public**  *[sólo con `visibilidad`]*  
+<PublicOpcional> ::= **public**  
 <PublicOpcional> ::= ε  
 
 <TipoMetodo> ::= <Tipo> | **void**  
@@ -146,21 +118,20 @@ Estado actual:
 <TipoReferencia> ::= **idClase** <TipoGenericoOpcional>  
 
 > `float` es token del léxico desde la Etapa 1 pero no estaba en la
-> gramática; sin esta alternativa el logro de Etapa 1 queda inutilizable.
+> gramática; sin esta alternativa el `float` del léxico queda inutilizable.
 
 <TipoPrimitivo> ::= **boolean** | **char** | **int**  
-<TipoPrimitivo> ::= **float**  *[sólo con `float`]*  
+<TipoPrimitivo> ::= **float**  
 
 > En POSICIÓN DE TIPO no se admite el diamante: `List<> x;` es inválido.
 
 <TipoGenericoOpcional> ::= `<` <ArgumentoDeTipo> `>` | ε  
 
 > la recursión por <TipoGenericoOpcional> es la que habilita el
-> anidamiento `List<List<Persona>>`. Sin el logro: `ArgumentoDeTipo -> idGen | idClase`.
+> anidamiento `List<List<Persona>>`.
 
 <ArgumentoDeTipo> ::= **idGen**  
-<ArgumentoDeTipo> ::= **idClase** <TipoGenericoOpcional>  *[sólo con `generico`]*  
-<ArgumentoDeTipo> ::= **idClase**  *[sólo sin `generico`]*  
+<ArgumentoDeTipo> ::= **idClase** <TipoGenericoOpcional>  
 
 <ArgsFormales> ::= `(` <ListaArgsFormalesOpcional> `)`  
 
@@ -172,8 +143,8 @@ Estado actual:
 <ArgFormal> ::= <Tipo> **idMetVar**  
 
 > SENTENCIAS
-> Con el logro de variables locales clásicas una declaración local puede empezar con idClase (`C x;`), y
-> una sentencia-expresión también (`C.m();`). Se factoriza ese idClase y el
+> Una declaración local puede empezar con idClase (`C x;`), y una
+> sentencia-expresión también (`C.m();`). Se factoriza ese idClase y el
 > desempate lo hace el token siguiente: `.` es expresión, cualquier otro es
 > declaración. La rama de expresión reusa <ColaDeExpresionDesdePrimario> para no
 > duplicar la jerarquía de expresiones.
@@ -188,34 +159,29 @@ Estado actual:
 <Sentencia> ::= <If>  
 <Sentencia> ::= <While>  
 <Sentencia> ::= <Bloque>  
-<Sentencia> ::= <For>  *[sólo con `for`]*  
+<Sentencia> ::= <For>  
 
 > Sin variables locales clásicas, una sentencia-expresión puede empezar con
 > idClase sin competir con nada: es la regla original.
 
-<Sentencia> ::= <SentenciaExpresion> `;`  *[sólo sin `varclasica`]*  
-<SentenciaExpresion> ::= <ExpresionSinLambda>  *[sólo sin `varclasica`]*  
+<Sentencia> ::= <ExpresionSinIdClase> `;`  
+<Sentencia> ::= <TipoPrimitivo> <DimensionesOpcionales> <ListaDeclaradores> `;`  
+<Sentencia> ::= **idGen** <DimensionesOpcionales> <ListaDeclaradores> `;`  
+<Sentencia> ::= **idClase** <SentenciaDesdeIdClase>  
 
-> Con el logro, `C x;` y `C.m();` compiten por idClase y hay que factorizarlo.
-
-<Sentencia> ::= <ExpresionSinIdClase> `;`  *[sólo con `varclasica`]*  
-<Sentencia> ::= <TipoPrimitivo> <DimensionesOpcionales> <ListaDeclaradores> `;`  *[sólo con `varclasica`]*  
-<Sentencia> ::= **idGen** <DimensionesOpcionales> <ListaDeclaradores> `;`  *[sólo con `varclasica`]*  
-<Sentencia> ::= **idClase** <SentenciaDesdeIdClase>  *[sólo con `varclasica`]*  
-
-<SentenciaDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> <ListaDeclaradores> `;`  *[sólo con `varclasica`]*  
-<SentenciaDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> `;`  *[sólo con `varclasica`]*  
+<SentenciaDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> <ListaDeclaradores> `;`  
+<SentenciaDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> `;`  
 
 <VarLocal> ::= **var** **idMetVar** `=` <ExpresionCondicionalOLambda>  
 
 > Varias variables por sentencia, cada una con inicialización opcional:
 > `int x,y,z = 10;`
 
-<ListaDeclaradores> ::= **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  *[sólo con `varclasica`]*  
-<RestoListaDeclaradores> ::= `,` **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  *[sólo con `varclasica`]*  
-<RestoListaDeclaradores> ::= ε  *[sólo con `varclasica`]*  
+<ListaDeclaradores> ::= **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  
+<RestoListaDeclaradores> ::= `,` **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  
+<RestoListaDeclaradores> ::= ε  
 
-<InicializacionDeDeclarador> ::= `=` <ExpresionCondicionalOLambda> | ε  *[sólo con `varclasica`]*  
+<InicializacionDeDeclarador> ::= `=` <ExpresionCondicionalOLambda> | ε  
 
 <Return> ::= **return** <ExpresionOpcional>  
 
@@ -231,31 +197,31 @@ Estado actual:
 > iteradores del estándar, y aparece justo después del declarador, así que el
 > desempate es de un solo token.
 
-<For> ::= **for** `(` <EncabezadoFor> `)` <Sentencia>  *[sólo con `for`]*  
+<For> ::= **for** `(` <EncabezadoFor> `)` <Sentencia>  
 
-<EncabezadoFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  *[sólo con `for`]*  
-<EncabezadoFor> ::= **var** **idMetVar** <EncabezadoForTrasVar>  *[sólo con `for`]*  
-<EncabezadoFor> ::= <TipoPrimitivo> <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  *[sólo con `for`]*  
-<EncabezadoFor> ::= **idGen** <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  *[sólo con `for`]*  
-<EncabezadoFor> ::= **idClase** <EncabezadoForDesdeIdClase>  *[sólo con `for`]*  
-<EncabezadoFor> ::= <ExpresionSinIdClase> <ClausulasFinalesFor>  *[sólo con `for`]*  
+<EncabezadoFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  
+<EncabezadoFor> ::= **var** **idMetVar** <EncabezadoForTrasVar>  
+<EncabezadoFor> ::= <TipoPrimitivo> <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  
+<EncabezadoFor> ::= **idGen** <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  
+<EncabezadoFor> ::= **idClase** <EncabezadoForDesdeIdClase>  
+<EncabezadoFor> ::= <ExpresionSinIdClase> <ClausulasFinalesFor>  
 
-<EncabezadoForDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  *[sólo con `for`]*  
-<EncabezadoForDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> <ClausulasFinalesFor>  *[sólo con `for`]*  
+<EncabezadoForDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> **idMetVar** <EncabezadoForTrasDeclarador>  
+<EncabezadoForDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> <ClausulasFinalesFor>  
 
 > El `:` distingue el for de iteradores del estándar, y está a un solo token.
 
-<EncabezadoForTrasVar> ::= `:` <Expresion>  *[sólo con `for`]*  
-<EncabezadoForTrasVar> ::= `=` <ExpresionCondicionalOLambda> <ClausulasFinalesFor>  *[sólo con `for`]*  
+<EncabezadoForTrasVar> ::= `:` <Expresion>  
+<EncabezadoForTrasVar> ::= `=` <ExpresionCondicionalOLambda> <ClausulasFinalesFor>  
 
-<EncabezadoForTrasDeclarador> ::= `:` <Expresion>  *[sólo con `for`]*  
-<EncabezadoForTrasDeclarador> ::= <InicializacionDeDeclaradorFor> <ClausulasFinalesFor>  *[sólo con `for`]*  
+<EncabezadoForTrasDeclarador> ::= `:` <Expresion>  
+<EncabezadoForTrasDeclarador> ::= <InicializacionDeDeclaradorFor> <ClausulasFinalesFor>  
 
-<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCondicionalOLambda> | ε  *[sólo con `for`]*  
+<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCondicionalOLambda> | ε  
 
-> Una sola expresión por separador, como pide el logro.
+> Una sola expresión por separador.
 
-<ClausulasFinalesFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  *[sólo con `for`]*  
+<ClausulasFinalesFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  
 
 > EXPRESIONES
 > Las expresiones se organizan en capas, de menor a mayor precedencia:
@@ -276,9 +242,7 @@ Estado actual:
 > Todo lado derecho de un `=` —el de la asignación y el de los cinco
 > inicializadores— es una <ExpresionCondicionalOLambda> y no una <Expresion>.
 > Eso preserva lo que la regla original conseguía usando <ExpresionCompuesta>:
-> que `a = b = c` no sea válido. Y como con los logros de ternario y de lambda
-> apagados <ExpresionCondicionalOLambda> es un alias de <ExpresionCompuesta>, el
-> lenguaje base queda idéntico al de la cátedra.
+> que `a = b = c` no sea válido.
 
 <Expresion> ::= <ExpresionCondicionalOLambda> <RestoExpresion>  
 
@@ -319,9 +283,7 @@ Estado actual:
 
 <ExpresionCondicional> ::= <ExpresionCompuesta> <RestoCondicional>  
 
-> Con el logro apagado <RestoCondicional> queda en solo ε, o sea que
-> <ExpresionCondicional> se vuelve un alias de <ExpresionCompuesta> y la capa
-> desaparece sin dejar rastro. Asociativo a derecha, como en Java.
+> Asociativo a derecha, como en Java.
 
 > El operando del MEDIO es una <Expresion> y el de la derecha una
 > <ExpresionCondicionalOLambda>, tal cual el JLS 15.25: en Java `a ? b = 1 : c`
@@ -329,7 +291,7 @@ Estado actual:
 > JLS es `? Expression : LambdaExpression`—. No rompe LL(1) porque
 > Primeros(Expresion) no contiene `:`.
 
-<RestoCondicional> ::= `?` <Expresion> `:` <ExpresionCondicionalOLambda>  *[sólo con `ternario`]*  
+<RestoCondicional> ::= `?` <Expresion> `:` <ExpresionCondicionalOLambda>  
 <RestoCondicional> ::= ε  
 
 <ExpresionCompuesta> ::= <ExpresionBasica> <RestoExpresionCompuesta>  
@@ -347,12 +309,12 @@ Estado actual:
 
 > Va sobre <Referencia> y no sobre <Operando>: `5++` no tiene sentido.
 
-<PosfijoOpcional> ::= `++`  *[sólo con `posfijo`]*  
-<PosfijoOpcional> ::= `--`  *[sólo con `posfijo`]*  
+<PosfijoOpcional> ::= `++`  
+<PosfijoOpcional> ::= `--`  
 <PosfijoOpcional> ::= ε  
 
 <Primitivo> ::= **true** | **false** | **intLiteral** | **charLiteral** | **null**  
-<Primitivo> ::= **floatLiteral**  *[sólo con `float`]*  
+<Primitivo> ::= **floatLiteral**  
 
 > --- Expresión que no puede empezar con idClase ----------------------------
 > Se usa donde una expresión compite con una declaración de variable local
@@ -434,26 +396,26 @@ Estado actual:
 > Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o
 > la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.
 
-<AccesoLlamadaOLambda> ::= `->` <CuerpoLambda>  *[sólo con `lambda`]*  
+<AccesoLlamadaOLambda> ::= `->` <CuerpoLambda>  
 <AccesoLlamadaOLambda> ::= <AccesoLlamada> <ColaDesdePrimarioSinAsignacion>  
 
 <ParentizadaOLambda> ::= `(` <ContenidoDeParentesis>  
 
-<ContenidoDeParentesis> ::= `)` `->` <CuerpoLambda>  *[sólo con `lambda`]*  
+<ContenidoDeParentesis> ::= `)` `->` <CuerpoLambda>  
 <ContenidoDeParentesis> ::= <Expresion> <RestoDeParentesis>  
 
 <RestoDeParentesis> ::= `)` <FinDeParentizadaOLambda>  
-<RestoDeParentesis> ::= `,` <ListaParametrosLambda> `)` `->` <CuerpoLambda>  *[sólo con `lambda`]*  
+<RestoDeParentesis> ::= `,` <ListaParametrosLambda> `)` `->` <CuerpoLambda>  
 
-<FinDeParentizadaOLambda> ::= `->` <CuerpoLambda>  *[sólo con `lambda`]*  
+<FinDeParentizadaOLambda> ::= `->` <CuerpoLambda>  
 <FinDeParentizadaOLambda> ::= <ColaDesdePrimarioSinAsignacion>  
 
-<ListaParametrosLambda> ::= **idMetVar** <RestoListaParametrosLambda>  *[sólo con `lambda`]*  
-<RestoListaParametrosLambda> ::= `,` **idMetVar** <RestoListaParametrosLambda> | ε  *[sólo con `lambda`]*  
+<ListaParametrosLambda> ::= **idMetVar** <RestoListaParametrosLambda>  
+<RestoListaParametrosLambda> ::= `,` **idMetVar** <RestoListaParametrosLambda> | ε  
 
 > Una única expresión, sin llaves.
 
-<CuerpoLambda> ::= <Expresion>  *[sólo con `lambda`]*  
+<CuerpoLambda> ::= <Expresion>  
 
 > CREACIÓN
 
@@ -468,36 +430,42 @@ Estado actual:
 <CreacionDesdeIdClase> ::= <ArgsActuales>  
 
 > el diamante `<>` sólo se admite acá, en la rama que va a
-> ArgsActuales: `new C<>()` es válido y `new C<>[3]` no. La restricción del
-> logro queda impuesta por la gramática, no delegada al semántico.
+> ArgsActuales: `new C<>()` es válido y `new C<>[3]` no. La restricción queda
+> impuesta por la gramática, no delegada al semántico.
 
-<GenericoDeCreacion> ::= `>` <ArgsActuales>  *[sólo con `generico`]*  
+<GenericoDeCreacion> ::= `>` <ArgsActuales>  
 <GenericoDeCreacion> ::= <ArgumentoDeTipo> `>` <ArregloOInstanciaDeClase>  
 
 <ArregloOInstanciaDeClase> ::= <CreacionDeArreglo>  
 <ArregloOInstanciaDeClase> ::= <ArgsActuales>  
 
-> `new int[]{1,2,3}`. Sin el logro:
-> CreacionDeArreglo -> [ Expresion ] DimensionesConTamanioOpcional
+> Toda dimension de una creacion conserva su `[ Expresion ]`, que es la forma de
+> MiniJava base: `CrearArreglo -> new TipoBase DimensionesConTamanio` con
+> `DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]`.
+> El logro de inicializacion NO afloja esa exigencia: le cuelga el inicializador
+> al final. Asi `new int[2][2]{{1,2},{3,4}}` es valido y `new int[]{1,2,3}` no.
 
-<CreacionDeArreglo> ::= `[` <RestoCreacionDeArreglo>  
-<RestoCreacionDeArreglo> ::= <Expresion> `]` <DimensionesConTamanioOpcional>  
+> Esto DIVERGE de Java, que prohibe tamanio e inicializador juntos (JLS 15.10.1,
+> verificado con javac: «array creation with both dimension expression and
+> initialization is illegal»). Es una decision deliberada: se prefirio no ampliar
+> la forma de las dimensiones que MiniJava ya tenia definida. Revertirla es
+> cambiar CreacionDeArreglo y nada mas.
 
-> El logro dice «como en Java» y sólo restringe DÓNDE (dentro de un `new`), no
-> cuántas dimensiones. Java admite `new int[][]{{1,2},{3,4}}`, así que el
-> inicializador es anidable: un elemento puede ser una expresión o, a su vez,
-> otro inicializador.
-
-<RestoCreacionDeArreglo> ::= `]` <DimensionesVaciasOpcional> <InicializadorDeArreglo>  *[sólo con `arrinit`]*  
-<DimensionesVaciasOpcional> ::= `[` `]` <DimensionesVaciasOpcional> | ε  *[sólo con `arrinit`]*  
-<InicializadorDeArreglo> ::= `{` <ListaElementosOpcional> `}`  *[sólo con `arrinit`]*  
-<ListaElementosOpcional> ::= <ListaElementos> | ε  *[sólo con `arrinit`]*  
-<ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>  *[sólo con `arrinit`]*  
-<RestoListaElementos> ::= `,` <ElementoInicializador> <RestoListaElementos> | ε  *[sólo con `arrinit`]*  
-<ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>  *[sólo con `arrinit`]*  
+<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>  
 
 <DimensionesConTamanio> ::= `[` <Expresion> `]` <DimensionesConTamanioOpcional>  
 <DimensionesConTamanioOpcional> ::= <DimensionesConTamanio> | ε  
+
+> El inicializador es anidable: un elemento puede ser una expresion o, a su vez,
+> otro inicializador. Solo es alcanzable desde <Creacion>, que es lo unico que el
+> logro restringe sobre donde puede aparecer.
+
+<InicializadorDeArregloOpcional> ::= <InicializadorDeArreglo> | ε  
+<InicializadorDeArreglo> ::= `{` <ListaElementosOpcional> `}`  
+<ListaElementosOpcional> ::= <ListaElementos> | ε  
+<ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>  
+<RestoListaElementos> ::= `,` <ElementoInicializador> <RestoListaElementos> | ε  
+<ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>  
 
 > ARGUMENTOS ACTUALES
 > Sección propia y no parte de la creación: la lista de argumentos de una

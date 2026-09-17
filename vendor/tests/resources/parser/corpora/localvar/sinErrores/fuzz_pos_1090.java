@@ -1,0 +1,2 @@
+interface I___ < D > {
+}

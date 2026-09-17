@@ -1,0 +1,27 @@
+// [Error:)|15]
+class K_ < C > extends X_o {
+char z ;
+}
+interface Pe8 {
+char [ ] r ( ) ;
+}
+interface EtZ extends OzY_ss {
+void t ( S [ ] [ ] b6 ) ;
+J [ ] r ( char f , boolean g , T [ ] [ ] u ) ;
+void v9ER ( ) ;
+int [ ] n ( boolean [ ] i_ ) ;
+}
+interface L72 extends H_ {
+V y ( Q_ < MN > [ ] wn , boolean k , I_6C a , ) ;
+void x ( ) ;
+G x ( ) ;
+void w ( ) ;
+Z_ < J > [ ] s ( O [ ] t , P dX ) ;
+void h ( ) ;
+boolean [ ] [ ] o5_ ( ) ;
+, PP__ x8 }
+class O9 < M > implements H_C {
+public BF7_ ( N w_ , N1 < Z > u ) {
+return '8' + true ;
+}
+}

@@ -37,7 +37,7 @@ from primeros import EPSILON, calcular_vaciables, parsear  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 BASE = RAIZ / "gramatica" / "minijava-base.g"
-FINAL = RAIZ / "gramatica" / "minijava-ll1-logros.g"
+NUCLEO = RAIZ / "gramatica" / "minijava-ll1.g"
 
 
 # --- Reconocedor de Earley ---------------------------------------------------
@@ -339,9 +339,8 @@ def comparar(base, final, extra, semilla):
 
 def cobertura(g, semilla):
     """Cuántas producciones se pudieron ejercitar, cuáles quedaron inertes por ser
-    de un no terminal inalcanzable en esta configuración —tres no terminales
-    existen sólo para compartirlos entre dos logros y con cero logros no los
-    referencia nadie— y cuáles no se pudieron ejercitar sin explicación."""
+    de un no terminal inalcanzable, y cuáles no se pudieron ejercitar sin
+    explicación."""
     generador = Generador(g, random.Random(semilla))
     total = generador.todas_las_producciones()
     inalcanzables = set(g.inalcanzables())
@@ -364,12 +363,12 @@ def main():
     args = ap.parse_args()
 
     base = parsear(BASE.read_text(encoding="utf-8"))
-    # Cero logros: es la configuración que tiene que reproducir exactamente la
+    # El núcleo LL(1) sin logros: es la gramática que tiene que reproducir
     # especificación de la cátedra.
-    final = parsear(FINAL.read_text(encoding="utf-8"), logros=set())
+    final = parsear(NUCLEO.read_text(encoding="utf-8"))
 
     fallos_de_cobertura = 0
-    for nombre, g in (("minijava-base.g", base), ("minijava-ll1-logros.g (cero logros)", final)):
+    for nombre, g in (("minijava-base.g", base), ("minijava-ll1.g", final)):
         total, inertes, sin_ejercitar = cobertura(g, args.semilla)
         print(f"{nombre}: {total - len(inertes) - len(sin_ejercitar)}/{total} "
               f"producciones ejercitadas, {len(inertes)} inertes")

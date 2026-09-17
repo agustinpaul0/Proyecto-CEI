@@ -1,6 +1,5 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
@@ -56,9 +55,8 @@ public abstract class ParteDelAnalizador {
         return sintaxis.entrada().estaEn(primeros);
     }
 
-    // Corre un elemento de una lista y, si falla, o deja subir el error (sin el
-    // logro: cortar en el primero, Pautas slide 25) o lo registra y sincroniza
-    // para seguir con el elemento siguiente. Devuelve si la lista puede seguir.
+    // Corre un elemento de una lista y, si falla, lo registra y sincroniza para
+    // seguir con el elemento siguiente. Devuelve si la lista puede seguir.
     protected final boolean reanudaTrasError(ContextoDeSincronizacion contexto,
                                              ElementoDeLista elemento)
             throws ExcepcionLexica, ExcepcionSintactica {
@@ -68,13 +66,10 @@ public abstract class ParteDelAnalizador {
             elemento.analizar();
             return true;
         } catch (ExcepcionSintactica error) {
-            if (!recuperador.habilitado()) {
-                throw error;
-            }
             recuperador.registrar(error);
             boolean sigue = recuperador.sincronizar(contexto);
-            // Invariante del bucle: cada vuelta consume al menos un token, o el
-            // analizador no terminaría nunca.
+            // Invariante de la recursión: cada nivel consume al menos un token, o
+            // el analizador no terminaría nunca.
             if (sigue && marca() == antes) {
                 recuperador.forzarProgreso();
             }
@@ -85,9 +80,5 @@ public abstract class ParteDelAnalizador {
     @FunctionalInterface
     protected interface ElementoDeLista {
         void analizar() throws ExcepcionLexica, ExcepcionSintactica;
-    }
-
-    protected final boolean hayLogro(Logro logro) {
-        return sintaxis.configuracion().tiene(logro);
     }
 }

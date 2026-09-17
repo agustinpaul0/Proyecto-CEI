@@ -1,0 +1,16 @@
+class RHz < P > {
+}
+class Zh extends I4 < S > {
+void i ( ) {
+}
+}
+class QE < E > implements Qb < A__ > {
+T g ( ) {
+if ( ( ) -> ! null = '\u14Fa' ) ;
+}
+E lKQ ;
+void a ( ) {
+}
+}
+class H4 < K > extends UU_ {
+}

@@ -15,17 +15,11 @@ import sys
 sys.path.insert(0, "herramientas")
 from primeros import aceptar_detallado, analizar, parsear  # noqa: E402
 
-# La gramatica se parsea CON los logros prendidos: sin fijarlos quedan activas
-# a la vez las producciones @+ y las @-, que son alternativas excluyentes.
-LOGROS = {"visibilidad", "atrinit", "varclasica", "for", "ternario", "posfijo",
-          "lambda", "arrinit", "generico", "float"}
 
-
-GRAMATICA = "gramatica/minijava-ll1-logros.g"
+GRAMATICA = "gramatica/minijava-ll1-final.g"
 JAR = "target/Compilador.jar"
 # --etapa=1 porque el jar corre el sintáctico por defecto y acá se lo quiere sólo
-# como tokenizador; --logros=todos porque la gramática de esta herramienta es la
-# de todos los logros, y sin ellos faltarían `->`, `?`, `for` y `private`.
+# como tokenizador.
 
 # Los tokens de lexema fijo se identifican por su propio lexema, que es el
 # terminal de la gramática. Sólo los de lexema variable necesitan traducción.
@@ -44,7 +38,7 @@ LINEA = re.compile(r"^\((?P<tipo>[^,]+),(?P<lexema>.*),(?P<linea>\d+)\)$")
 
 def tokenizar(ruta):
     salida = subprocess.run(
-        ["java", "-jar", JAR, "--etapa=1", "--logros=todos", ruta],
+        ["java", "-jar", JAR, "--etapa=1", ruta],
         capture_output=True,
         text=True,
     ).stdout
@@ -80,7 +74,7 @@ def aceptar_con_posicion(g, vaciables, primeros_nt, tokens):
 
 def main():
     with open(GRAMATICA, encoding="utf-8") as archivo:
-        g = parsear(archivo.read(), logros=LOGROS)
+        g = parsear(archivo.read())
     vaciables, primeros_nt, _ = analizar(g)
 
     fallos = 0

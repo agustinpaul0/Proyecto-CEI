@@ -53,17 +53,20 @@ real de Java después (no de memoria), **informar al usuario antes de implementa
 implementación tiene que cumplir el requisito **en los casos más extremos**, y buscar activamente
 casos raros y de borde es parte del trabajo, no un extra. Para cada construcción hay que cubrir el
 caso vacío y el de un solo elemento, el anidamiento profundo, los límites del contrato de salida,
-lo que la construcción **debe rechazar** además de lo que debe aceptar, las combinaciones entre
-logros, y las entradas degeneradas (archivo vacío, un único token, el error en el primer carácter
+lo que la construcción **debe rechazar** además de lo que debe aceptar, y las entradas
+degeneradas (archivo vacío, un único token, el error en el primer carácter
 y en el último). La estrategia completa está en [`testing.md`](../compartido/estrategia-de-testing.md).
 
-### Cada logro es un interruptor independiente, de punta a punta
+### Los logros no son configurables
 
-El compilador tiene que poder ejecutarse y testearse con **0, 1 o N logros en cualquier
-combinación**, incluida la de cero logros, que debe reproducir exactamente la especificación base
-de la cátedra. Eso vale para la gramática, para el léxico, para el módulo principal y para los
-tests, que se saltean solos cuando su logro está apagado. Ningún logro puede apoyarse en que otro
-esté prendido.
+**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
+siempre, y no es configurable. La gramática está escrita en base a todos los logros y sólo así: no
+tiene reglas dinámicas que aparecen y desaparecen según los logros.**
+
+Lo dictaminó el profesor: poder elegir con qué logros correr complejiza la gramática sin necesidad,
+y cada etapa nueva obligaría a rehacer el trabajo con más chance de error. No hay `--logros=`, ni
+`-Dlogros=`, ni marcas `@+`/`@-` en el `.g`. Al agregar una construcción nueva se la incorpora a la
+gramática y punto, sin prever ninguna variante apagada.
 
 ### En los entregables no se deja constancia de los errores del desarrollo
 

@@ -1,0 +1,2 @@
+interface MC < D > {
+}

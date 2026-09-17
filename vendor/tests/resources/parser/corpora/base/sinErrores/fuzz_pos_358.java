@@ -1,0 +1,2 @@
+interface Xb_b {
+}

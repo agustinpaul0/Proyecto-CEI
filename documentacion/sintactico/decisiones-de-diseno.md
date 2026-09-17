@@ -87,20 +87,22 @@ aparte.
 
 ## 5. Dónde vive cada logro
 
-Un logro se activa o desactiva **quitando alternativas**, nunca cambiando de estructura. Eso es lo
-que hace posible que las 1024 combinaciones sean LL(1) sin casos especiales.
+**Los logros no son configurables.** La gramática es una sola y describe MiniJava con todos los de
+la Etapa 1 y la Etapa 2 incorporados: no hay producciones que aparezcan y desaparezcan según nada.
+Lo dictaminó el profesor, y revirtió la decisión anterior —que cada logro fuera un interruptor
+independiente, con la gramática llevando las dos formas marcadas `@+logro`/`@-logro`—. El motivo:
+complejiza la gramática sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo con más
+chance de error.
 
-El ejemplo limpio es el ternario: con el logro apagado, `<RestoCondicional>` queda en sólo `ε` y
-`<ExpresionCondicional>` se vuelve un alias de `<ExpresionCompuesta>` — la capa entera desaparece
-sin dejar rastro y sin tocar ninguna otra regla. Lo mismo con `<PosfijoOpcional>`.
+Lo que sí sobrevive de aquella decisión es **dónde** aterriza cada logro, porque es lo que hace la
+gramática legible: cada uno agrega una capa o unas alternativas identificables, y no reescribe las
+reglas de al lado. El ternario es `<RestoCondicional>` y la capa `<ExpresionCondicional>`; los
+posfijos, `<PosfijoOpcional>`; las lambdas, el bloque de `<ParentizadaOLambda>`. Dos logros que
+necesitan una construcción parecida llevan cada uno la suya.
 
-Cuando un logro **sí** obliga a cambiar de estructura —la visibilidad, que le saca al `public` su
-función de distinguir al constructor; las variables locales clásicas, que hacen que una sentencia
-pueda empezar con `idClase`— la gramática lleva las **dos** formas, marcadas `@+logro` y `@-logro`,
-y el verificador comprueba que cada una sea LL(1) por separado.
-
-**Corolario que se aplicó:** ningún logro puede apoyarse en un no terminal que introdujo otro.
-Cuando dos necesitan una construcción parecida, cada uno lleva la suya.
+El núcleo sin logros existe todavía, pero **fuera del compilador**: es
+`compilador/gramatica/minijava-ll1.g`, y está sólo para que `equivalencia_de_lenguajes.py`
+demuestre que corregir la gramática de la cátedra a LL(1) no cambió el lenguaje.
 
 ## 6. Nombres y notación
 
@@ -115,7 +117,7 @@ salió la regla pero no qué representa, y el semántico necesita lo segundo.
 
 ## 7. La gramática es la fuente de verdad, los documentos se generan
 
-`compilador/gramatica/minijava-ll1-logros.g` es el único lugar donde se edita la gramática. La
+`compilador/gramatica/minijava-ll1-final.g` es el único lugar donde se edita la gramática. La
 gramática final del informe y de
 [`gramatica-ll1-final.md`](gramatica-ll1-final.md) **se generan** desde ese archivo, que es el
 mismo que verifica el script. Si divergieran, el informe podría afirmar algo que la verificación no
@@ -123,9 +125,9 @@ comprueba.
 
 ```bash
 cd compilador
-python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-logros.g --sin-cabecera
-python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-logros.g producciones
-python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-logros.g primeros
+python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --sin-cabecera
+python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-final.g producciones
+python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-final.g primeros
 ```
 
 ## Ver también
@@ -150,20 +152,22 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   punto de decisión que el semántico de la Etapa 3 necesita. Un NT de decisión por contexto,
   aunque dos contextos tengan la misma forma.
 - Un solo `Main` con selector de etapa, no dos jars.
-- Los cuatro tokens léxicos nuevos van condicionados al flag de su logro.
+- Los cuatro tokens léxicos nuevos de la Etapa 2 —`for`, `private`, `?` y `->`— existen siempre.
 - La ambigüedad `<Asignacion>`/`<Llamada>` se colapsa en una sentencia-expresión; distinguirlas es
   trabajo del semántico. El *dangling else* se resuelve por regla de implementación: la rama
   `else` va primero, y liga al `if` más cercano.
 - Los métodos de interfaz admiten `public` y no `private`, y **son siempre abstractos**: ningún
   logro de esta etapa les agrega cuerpo.
-- El `this` dentro de una lambda —explícito e implícito— y la captura de variables **los rechaza el
-  analizador sintáctico**, con un indicador de contexto y un conjunto con los parámetros de la
-  lambda. No son expresables en la gramática, pero sí verificables con información local.
-  **Se evaluó diferirlos al semántico** —la cátedra lo admite— y se decidió **dejarlos como están**.
-  El motivo técnico, además de que ya estaban hechos: el control del `this` implícito **no es
-  separable** del de la captura, porque `x -> campo` y `x -> n` son la misma forma sintáctica;
-  quitar uno quita el otro, y quitar sólo el `this` explícito no simplifica nada —todo el estado de
-  `RestriccionesDeLambda` lo sostiene la cláusula de la captura—. No se vuelve a discutir.
+- El `this` dentro de una lambda —explícito e implícito—, la captura de variables locales y de
+  parámetros, y que los parámetros de una lambda no se repitan **quedan para el analizador
+  semántico**. Lo indicó el profesor: son controles de significado, ahí se resuelven más fácil, y
+  el logro de esta etapa no los pide. El sintáctico los acepta todos. Se borró con ellos el módulo
+  `RestriccionesDeLambda`, que era la lógica más compleja del analizador: la pila de capturas en
+  duda existía sólo para diferir ese chequeo.
+- De las restricciones de lambda **sobreviven dos**, porque son de forma y no de significado: que
+  un parámetro sea un identificador pelado (`(a+1) -> a` se rechaza) y que una lambda parentizada no
+  lleve cola (`(x -> x).m()` se rechaza). Ninguna es expresable en una gramática libre de contexto,
+  y las dos se deciden con lo que el analizador acaba de leer.
 - Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
   están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
 - **La lambda se produce en el nivel de `<Expresion>`, nunca en `<Primario>`**, como el JLS. No es
@@ -173,6 +177,21 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   no es anulable, ese `else` es el error (Clase 5, slide 39); si alguna parte derecha deriva a ε, es
   un `else` vacío con la producción citada al lado —el «no hago nada :)» de la slide 52—, que es
   donde la Etapa 3 va a colgar la traducción de la producción vacía. Pedido explícito del profesor.
-- **Cada logro tiene UN solo nombre, sin alias**: el mismo con el que la gramática marca sus
-  producciones. El de floats es `float`, no `floats`.
-- El inicializador de arreglos es anidable; el orden `static public` se rechaza.
+- **`public static` y `static public` son los dos válidos**, y lo mismo `private static` /
+  `static private`. Que la visibilidad aparezca a un solo lado del `static` es lo que impide repetir
+  el modificador, sin ningún chequeo fuera de la gramática. `protected` no se implementa: no está en
+  MiniJava y el profesor indicó no agregarlo.
+- **Toda dimensión de una creación de arreglo lleva su tamaño**, como en MiniJava base
+  (`CrearArreglo -> new TipoBase DimensionesConTamanio`), y el inicializador se le cuelga al final:
+  `new int[2][2]{{1,2},{3,4}}` es válido y `new int[]{1,2,3}` no. El inicializador es anidable.
+  Esto **diverge de Java**, que prohíbe tamaño e inicializador juntos (JLS §15.10.1, verificado con
+  `javac`); es deliberado, para no ampliar la forma de las dimensiones que MiniJava ya tenía
+  definida. Queda aislado en `<CreacionDeArreglo>` por si hay que revertirlo.
+- `int x[]` **no existe**: las dimensiones van pegadas al tipo base y nunca al nombre, que es lo que
+  define MiniJava base. No se amplía.
+- Una clase hereda de **una** clase o implementa **una** interfaz, nunca las dos ni varias: es
+  `<HerenciaOpcional> ::= extends <TipoReferencia> | implements <TipoReferencia> | ε`, tal cual la
+  gramática de la cátedra.
+- **La recursión a derecha de la gramática se traduce como recursión en el código**, no como un
+  `while`. Es el Esquema Simple de Clase 5, slide 59, sin desvíos. Pedido del profesor: el `while`
+  aleja el código del esquema que se extiende en el semántico y es más propenso a errores.

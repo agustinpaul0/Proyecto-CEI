@@ -12,14 +12,10 @@ import java.util.Collections;
 import java.util.List;
 
 import minijava.aplicacion.Main;
-import minijava.casos.RequisitosDeLogrosDelCaso;
-import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
 import minijava.casos.VolcadoDeCasos;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Tag;
@@ -40,9 +36,6 @@ public class TesterDeCasosSintacticosConErrores {
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
     // La primera línea es "///[Error:Lexema|NroLinea]": se saltea el "///".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
-    private static final String ARGUMENTO_DE_LOGROS =
-            ConfiguracionDeLaCorrida.comoArgumentoDeLinea();
-
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static final PrintStream CONSOLA = System.out;
 
@@ -96,11 +89,10 @@ public class TesterDeCasosSintacticosConErrores {
 
     private void probarFallo(String nombre) {
         String ruta = TEST_FILES_DIRECTORY_PATH + nombre;
-        saltearSiNoAplicaAEstaCorrida(ruta);
 
         String codigoEsperado = codigoDeError(ruta);
 
-        Main.main(new String[] { ARGUMENTO_DE_LOGROS, ruta });
+        Main.main(new String[] { ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);
@@ -137,12 +129,4 @@ public class TesterDeCasosSintacticosConErrores {
         }
     }
 
-    private void saltearSiNoAplicaAEstaCorrida(String rutaDelFuente) {
-        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.SINTACTICO, Path.of(rutaDelFuente));
-        var configuracion = ConfiguracionDeLaCorrida.actual();
-        Assume.assumeTrue(
-                rutaDelFuente + ": no aplica a esta configuracion de logros ("
-                        + requisitos.describirIncumplidos(configuracion) + ")",
-                requisitos.seCumplenEn(configuracion));
-    }
 }

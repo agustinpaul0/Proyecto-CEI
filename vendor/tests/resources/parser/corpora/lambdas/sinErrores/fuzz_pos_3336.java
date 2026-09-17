@@ -1,0 +1,3 @@
+interface JG {
+void d ( ) ;
+}

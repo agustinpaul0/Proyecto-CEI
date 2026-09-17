@@ -29,7 +29,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 **Si vas a escribir código**, primero:
 
-1. [`proyecto/README.md`](proyecto/README.md) — las cuatro reglas que no se negocian y el índice
+1. [`proyecto/README.md`](proyecto/README.md) — las tres reglas que no se negocian y el índice
    de los documentos normativos.
 2. [`proyecto/flujo-de-trabajo.md`](proyecto/flujo-de-trabajo.md) — las reglas que aplican sin
    excepción.

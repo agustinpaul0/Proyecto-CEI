@@ -1,0 +1,2 @@
+interface NZ < C > {
+}

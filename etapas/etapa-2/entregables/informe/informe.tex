@@ -116,6 +116,51 @@ ese logro que la gramática puede imponer es la \emph{forma} --- parámetros sin
 responsabilidad del analizador semántico.
 
 % ===========================================================================
+\section{Logros perseguidos}
+\label{sec:logros-perseguidos}
+% ===========================================================================
+
+Se persiguen \textbf{todos los logros de la etapa}: los diez que son implementables por código
+---más el \emph{carry-over} de \emph{Floats} de la Etapa 1--- y los tres que no lo son.
+
+Los diez están \textbf{siempre activos}. El compilador reconoce \textsc{MiniJava} con todos los
+logros de la Etapa 1 y de la Etapa 2 incorporados, y no es configurable: no hay opción de línea de
+comandos ni propiedad de sistema para elegir con cuáles correr, y la gramática no tiene
+producciones que aparezcan y desaparezcan. Hubo una versión anterior en la que cada logro era un
+interruptor independiente, verificada sobre las $2^{10}$ configuraciones; se revirtió por
+indicación del profesor, porque complejizaba la gramática sin necesidad y cada etapa nueva
+obligaría a rehacer el trabajo con más chance de error.
+
+\begin{center}
+\begin{tabular}{@{}lp{0.62\linewidth}@{}}
+\toprule
+\textbf{Logro} & \textbf{Dónde está} \\
+\midrule
+MiniLambdas E2 & \S\ref{sec:logros}: el bloque de \nt{ParentizadaOLambda}, la lambda en el nivel de
+\nt{Expresion}, y la frontera con el analizador semántico. Requiere el token \tl{->}. \\
+Variables locales Clásicas E2 & La factorización de \tl{idClase} en \nt{Sentencia}. \\
+Visibilidad Mejorada E2 & \nt{Visibilidad} al frente del miembro, y a los dos lados del
+\tl{static}. Requiere el token \tl{private}. \\
+Fors! E2 & El bloque \nt{For} entero, estándar y de iteradores. Requiere el token \tl{for}. \\
+Operador Ternario E2 & La capa \nt{ExpresionCondicional}. Requiere el token \tl{?}, que en la
+Etapa 1 era un error léxico. \\
+Operadores Posifijos E2 & \nt{PosfijoOpcional}. Único logro que no toca el léxico: \tl{++} y
+\tl{-{}-} ya eran tokens de la Etapa 1. \\
+Atributos Inicializados & \nt{InicializacionDeAtributo}. \\
+Inicializacion de Arreglos E2 & \nt{InicializadorDeArregloOpcional}, anidable y sólo bajo \tl{new},
+colgado de las dimensiones con tamaño. \\
+Genericidad Avanzada E2 & Genéricos anidados y la notación diamante. \\
+Recuperación Modo Pánico & No toca la gramática: es enteramente implementación. \\
+\midrule
+Floats (Etapa 1) & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$ \tl{floatLiteral}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Los otros tres ---\emph{Entrega Anticipada}, \emph{Imbatibilidad} y \emph{Well Done!}--- también
+se persiguen, pero no se implementan por código: no dependen del compilador.
+
+% ===========================================================================
 \section{Notación}
 \label{sec:notacion}
 % ===========================================================================
@@ -134,22 +179,16 @@ informe se puedan comparar renglón a renglón con las de aquél.
 \nt{X} \deriva{} $\alpha$              & una producción, con $\alpha$ una secuencia de terminales y no terminales \\
 \nt{X} \deriva{} $\alpha$ \alt{} $\beta$ & abreviación de \nt{X} \deriva{} $\alpha$ y \nt{X} \deriva{} $\beta$ \\
 $\prim{\beta}$           & conjunto de terminales que pueden aparecer primeros en $\beta$ \\
-{\footnotesize[+\,\texttt{logro}]} & la producción existe sólo con ese logro \textbf{prendido} \\
-{\footnotesize[-\,\texttt{logro}]} & la producción existe sólo con ese logro \textbf{apagado} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 El no terminal inicial es \nt{Inicial}.
 
-Las dos últimas son propias de este informe: la gramática de la cátedra no las necesita porque no
-tiene logros. Una producción sin marca existe siempre. Cuando un mismo no terminal aparece con las
-dos marcas ---\nt{Miembro} es el caso canónico--- no es una regla con un pedazo opcional: son
-\textbf{dos gramáticas distintas}, la del logro prendido y la del logro apagado, y por eso hacen
-falta las dos marcas y no una sola. Cada logro es un interruptor independiente de los demás
-(sección~\ref{sec:logros-perseguidos}), así que las marcas se combinan libremente: la gramática
-que se analiza en cada corrida es la que queda al resolver las diez marcas contra los diez
-interruptores.
+La gramática es \textbf{una sola}: describe \textsc{MiniJava} con todos los logros incorporados y
+no tiene producciones que aparezcan y desaparezcan según nada
+(sección~\ref{sec:logros-perseguidos}). Cuando una sección de este informe atribuye una producción
+a un logro, es para decir de dónde salió, no para marcar una variante.
 
 \subsection{El criterio LL(1)}
 
@@ -187,201 +226,6 @@ no hay ninguna cadena con dos árboles.
 Un criterio suficiente y barato para probar esa disyunción es comparar los \textbf{rangos de
 longitud derivable}: si no se solapan, los lenguajes son disjuntos y no puede haber ambigüedad.
 Se aplica en la sección~\ref{sec:diagnostico} y decide varios de los casos.
-
-% ===========================================================================
-\section{La gramática original, comentada}
-% ===========================================================================
-
-Antes de tocar nada, un recorrido por la gramática de la cátedra explicando qué modela cada regla
-y \textbf{por qué está escrita así}. Varias decisiones de forma que parecen arbitrarias son en
-realidad restricciones del lenguaje impuestas por la gramática, y perderlas al transformar sería
-cambiar \textsc{MiniJava}.
-
-\subsection{Estructura del programa}
-
-\begin{producciones}
-\regla{Inicial}{\nt{ListaClases} \tl{eof}}
-\regla{ListaClases}{\nt{Clase} \nt{ListaClases} \alt{} \nt{Interfaz} \nt{ListaClases} \alt{} \eps}
-\end{producciones}
-
-El \tl{eof} no es decoración: cumple la función del \tl{\$} de la teoría y obliga al analizador a
-consumir \emph{todo} el archivo. Sin él, un programa con símbolos sobrantes después de la última
-clase se aceptaría, porque \nt{ListaClases} puede derivar a vacío y el análisis terminaría dejando
-tokens sin leer. En el léxico de la Etapa 1, \tl{eof} es un token con lexema \texttt{\$}.
-
-\nt{ListaClases} usa \textbf{recursión a derecha}, que es la forma natural de expresar «cero o
-más» en una gramática destinada al análisis descendente. La variante con recursión a izquierda
-generaría el mismo lenguaje y sería inservible.
-
-\begin{producciones}
-\regla{Clase}{\tl{class} \tl{idClase} \nt{GenericidadOpcional} \nt{HerenciaOpcional} \tl{\{} \nt{ListaMiembros} \tl{\}}}
-\regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
-\regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
-\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements} \nt{TipoReferencia} \alt{} \eps}
-\regla{ExtensionOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \eps}
-\end{producciones}
-
-Clase e interfaz son casi simétricas, con tres diferencias deliberadas. Primero, la interfaz sólo
-admite \tl{extends} y la clase admite \tl{extends} o \tl{implements}: por eso hay dos no terminales
-distintos en vez de uno compartido, y la restricción queda impuesta \emph{por la gramática} en
-lugar de delegarse al análisis semántico. Segundo, la interfaz sólo contiene métodos. Tercero,
-\nt{HerenciaOpcional} tiene tres alternativas y no una combinación, lo que impide
-\texttt{extends A implements B} --- válido en Java, no en \textsc{MiniJava}.
-
-\nt{GenericidadOpcional} admite un \textbf{único} \tl{idGen}, no una lista: \textsc{MiniJava}
-limita a un solo parámetro de tipo, y el logro \emph{Genericidad Avanzada E2} confirma que esa
-limitación se mantiene.
-
-\subsection{Miembros}
-
-\begin{producciones}
-\regla{Miembro}{\nt{Atributo} \alt{} \nt{Metodo} \alt{} \nt{Constructor}}
-\regla{Atributo}{\nt{Tipo} \tl{idMetVar} \tl{;}}
-\regla{Metodo}{\nt{ModificadorOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \nt{Bloque}}
-\regla{MetodoInterfaz}{\nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
-\regla{Constructor}{\tl{public} \tl{idClase} \nt{ArgsFormales} \nt{Bloque}}
-\regla{ModificadorOpcional}{\tl{static} \alt{} \eps}
-\regla{TipoMetodo}{\nt{Tipo} \alt{} \tl{void}}
-\end{producciones}
-
-El \tl{public} del constructor \textbf{no es un modificador de visibilidad}: es lo que
-sintácticamente lo distingue de todo lo demás. Por eso ni el atributo ni el método lo llevan. Este
-detalle importa: el logro \emph{Visibilidad Mejorada E2} le saca esa función al \tl{public} y con
-eso crea un conflicto nuevo (sección~\ref{sec:logro-visibilidad}).
-
-\nt{Tipo} y \nt{TipoMetodo} están separados sólo para que \tl{void} sea un tipo de retorno válido
-y no un tipo de variable válido: así \texttt{void x;} es imposible sin ningún chequeo adicional.
-
-\nt{MetodoInterfaz} termina en \tl{;} y no tiene cuerpo. La diferencia con \nt{Metodo} está en el
-último símbolo, y como se usan desde no terminales distintos nunca compiten.
-
-\subsection{Tipos}
-
-\begin{producciones}
-\regla{Tipo}{\nt{TipoBase} \nt{DimensionesOpcionales}}
-\regla{TipoBase}{\nt{TipoPrimitivo} \alt{} \nt{TipoReferencia} \alt{} \tl{idGen}}
-\regla{DimensionesOpcionales}{\tl{[} \tl{]} \nt{DimensionesOpcionales} \alt{} \eps}
-\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
-\regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
-\regla{TipoGenericoOpcional}{\tl{<} \nt{InstanciadoOParametrico} \tl{>} \alt{} \eps}
-\regla{InstanciadoOParametrico}{\tl{idGen} \alt{} \tl{idClase}}
-\end{producciones}
-
-Las tres familias de \nt{TipoBase} se distinguen con un solo token porque \textbf{el léxico ya
-separó} \tl{idClase} de \tl{idGen} --- un \tl{idGen} es una única letra mayúscula. Es un buen
-ejemplo de una decisión léxica que le simplifica la vida al analizador sintáctico.
-
-\nt{InstanciadoOParametrico} nombra los dos usos de los ángulos: \emph{instanciado}
-(\texttt{Lista<Persona>}, se fija un tipo concreto) y \emph{paramétrico} (\texttt{Lista<T>} dentro
-de una clase genérica, se propaga el parámetro). No admite anidamiento ni notación diamante: las
-dos cosas las agrega un logro.
-
-\begin{decision}{transcripción de \texttt{[]}}
-El documento de la cátedra escribe \tl{[]} como si fuera un símbolo, pero léxicamente son
-\textbf{dos} tokens: \emph{Aspectos Léxicos de MiniJava} no define ningún token
-\texttt{[]}. En este informe se escribe \tl{[} \tl{]}, que es lo que el analizador tiene que
-reconocer. Es la única desviación deliberada de la literalidad del documento original.
-\end{decision}
-
-\subsection{Sentencias}
-
-\begin{producciones}
-\regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
-\regla{Sentencia}{\tl{;} \alt{} \nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;} \alt{} \nt{VarLocal} \tl{;} \alt{} \nt{Return} \tl{;}}
-\regla{Sentencia}{\nt{If} \alt{} \nt{While} \alt{} \nt{Bloque}}
-\regla{Asignacion}{\nt{Expresion}}
-\regla{Llamada}{\nt{Expresion}}
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCompuesta}}
-\regla{Return}{\tl{return} \nt{ExpresionOpcional}}
-\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
-\regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \tl{else} \nt{Sentencia}}
-\regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
-\end{producciones}
-
-Las cuatro primeras alternativas de \nt{Sentencia} llevan el \tl{;} explícito para que quede
-visible en la regla; las tres últimas no lo llevan porque terminan en \tl{\}} o en otra sentencia.
-La alternativa \tl{;} sola es la sentencia vacía.
-
-\nt{VarLocal} declara \textbf{sólo con} \tl{var} y \textbf{siempre} con inicialización: en la
-\textsc{MiniJava} base no existe \texttt{int x;}. Además usa \nt{ExpresionCompuesta} y no
-\nt{Expresion} a la derecha del \tl{=}, lo que impide \texttt{var x = y = 3;}. Es una regla más
-restrictiva a propósito.
-
-\subsection{Expresiones}
-
-Conviene leerlas como una pila de capas, cada una llamando a la de abajo. Ese encadenamiento es lo
-que fija qué se agrupa con qué.
-
-\begin{producciones}
-\regla{Expresion}{\nt{ExpresionCompuesta} \nt{OperadorAsignacion} \nt{ExpresionCompuesta}}
-\regla{Expresion}{\nt{ExpresionCompuesta}}
-\regla{OperadorAsignacion}{\tl{=}}
-\regla{ExpresionCompuesta}{\nt{ExpresionCompuesta} \nt{OperadorBinario} \nt{ExpresionBasica}}
-\regla{ExpresionCompuesta}{\nt{ExpresionBasica}}
-\regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
-\regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando} \alt{} \nt{Operando}}
-\regla{OperadorUnario}{\tl{+} \alt{} \tl{-} \alt{} \tl{!}}
-\regla{Operando}{\nt{Primitivo} \alt{} \nt{Referencia}}
-\regla{Primitivo}{\tl{true} \alt{} \tl{false} \alt{} \tl{intLiteral} \alt{} \tl{charLiteral} \alt{} \tl{null}}
-\end{producciones}
-
-Dos observaciones que condicionan todo lo que sigue.
-
-\textbf{La asignación no es asociativa.} El lado derecho del \tl{=} es una \nt{ExpresionCompuesta},
-no una \nt{Expresion}. En consecuencia \texttt{a = b = c} \textbf{no es un programa
-MiniJava válido}. Es fácil pasarlo por alto y «mejorarlo» al transformar; hacerlo
-agrandaría el lenguaje.
-
-\textbf{No hay niveles de precedencia entre operadores binarios.} Los trece operadores están en una
-única alternancia plana, sin la jerarquía habitual de un no terminal por nivel. Por lo tanto
-\texttt{a + b * c} y \texttt{a * b + c} se derivan con la misma forma: la precedencia y la
-asociatividad no están en la gramática de \textsc{MiniJava}, y darles lugar sería cambiar el
-lenguaje. Como corolario, eliminar la recursión a izquierda de \nt{ExpresionCompuesta} no pierde
-nada, porque no había precedencia que perder.
-
-\subsection{Referencias y primarios}
-
-\begin{producciones}
-\regla{Referencia}{\nt{Primario} \alt{} \nt{Referencia} \nt{VarEncadenada} \alt{} \nt{Referencia} \nt{MetodoEncadenado} \alt{} \nt{Referencia} \nt{AccesoArreglo}}
-\regla{Primario}{\tl{this} \alt{} \tl{stringLiteral} \alt{} \nt{AccesoVar} \alt{} \nt{CrearArreglo}}
-\regla{Primario}{\nt{LlamadaConstructor} \alt{} \nt{LlamadaMetodo} \alt{} \nt{LlamadaMetodoEstatico} \alt{} \nt{ExpresionParentizada}}
-\regla{AccesoVar}{\tl{idMetVar}}
-\regla{LlamadaMetodo}{\tl{idMetVar} \nt{ArgsActuales}}
-\regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
-\regla{CrearArreglo}{\tl{new} \nt{TipoBase} \nt{DimensionesConTamanio}}
-\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}
-\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
-\regla{VarEncadenada}{\tl{.} \tl{idMetVar}}
-\regla{MetodoEncadenado}{\tl{.} \tl{idMetVar} \nt{ArgsActuales}}
-\regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}
-\end{producciones}
-
-\nt{Referencia} modela una cadena como \texttt{this.lista.get(3).nombre[0]}: se arranca de un
-\nt{Primario} y se le cuelgan eslabones. La recursión a izquierda expresa que la cadena se asocia
-hacia la izquierda, que es lo correcto: \texttt{a.b.c} es \texttt{(a.b).c}.
-
-\tl{stringLiteral} está en \nt{Primario} y no en \nt{Primitivo} \textbf{a propósito}: de un
-\emph{String} se pueden colgar eslabones (\texttt{"hola".length()}) y de un \tl{intLiteral} no.
-Por el mismo motivo está \nt{ExpresionParentizada}, que habilita \texttt{(a + b).metodo()}.
-
-Ningún \nt{Primario} deriva un \tl{idClase} suelto: no existe la referencia a una clase por sí
-sola, siempre tiene que ser \texttt{C.metodo(\dots)}. Ese hecho se usa más adelante.
-
-\subsection{Construcciones que faltan}
-
-Tres ausencias, que no son errores sino el espacio que dejan los logros:
-
-\begin{itemize}
-  \item \tl{++} y \tl{-{}-} son tokens del léxico --- \emph{Aspectos Léxicos} \S2.4.2 los lista ---
-        pero \textbf{no aparecen en ninguna regla}. \nt{OperadorUnario} es sólo
-        \tl{+} \alt{} \tl{-} \alt{} \tl{!}. Son tokens sin lugar hasta el logro
-        \emph{Operadores Posifijos E2}.
-  \item \tl{float} y \tl{floatLiteral} tampoco tienen lugar, y el léxico de la Etapa 1 los emite
-        por un logro de aquella etapa. Sin extender la gramática, ese logro queda inutilizable.
-  \item \tl{for}, \tl{private}, \tl{?} y \tl{->} no están \textbf{ni en la gramática ni en el
-        léxico}: los agregan cuatro de los logros de esta etapa, y por lo tanto exigen tocar
-        también el analizador léxico.
-\end{itemize}
 
 % ===========================================================================
 \section{Diagnóstico}
@@ -477,8 +321,7 @@ El criterio LL(1) de la cátedra ---disjunción de Primeros--- es el que decide 
 puede predecir, y es el único que interviene en la implementación. Pero el checklist de aceptación
 de Clase 4, slide 41, tiene un ítem más: que la gramática \textbf{no sea ambigua, o sea
 arreglable}. Verificarlo requiere mirar, además, qué puede seguir a un no terminal anulable. Se
-hizo esa verificación sobre las 1024 configuraciones, y apareció una ambigüedad más además de las
-dos anteriores.
+hizo esa verificación, y apareció una ambigüedad más además de las dos anteriores.
 
 \begin{decision}{los Siguientes son un diagnóstico, no parte del método}
 Detectar una ambigüedad exige mirar el contexto en que aparece un no terminal anulable. Ese
@@ -871,28 +714,27 @@ un \texttt{if/else} cada uno.
 % ===========================================================================
 
 Se persiguen \textbf{los nueve logros de la Etapa 2 que afectan al analizador}, más el
-\emph{carry-over} de los floats de la Etapa 1. Cada uno se transforma con el mismo procedimiento
-de cuatro pasos; la diferencia con el núcleo es que acá los conflictos \textbf{no vienen de la
-gramática de la cátedra: los crea el logro}.
+\emph{carry-over} de los floats de la Etapa 1, y los nueve están \textbf{incorporados a la única
+gramática del compilador}. Cada uno se transforma con el mismo procedimiento de cuatro pasos; la
+diferencia con el núcleo es que acá los conflictos \textbf{no vienen de la gramática de la cátedra:
+los crea el logro}.
 
-\subsection{La condición de atomicidad}
+\subsection{Dónde aterriza cada logro}
 \label{sec:atomicidad}
 
-El compilador debe poder ejecutarse y probarse con cualquier subconjunto de logros, incluido el
-vacío. A nivel de gramática eso se traduce en una condición dura:
+No hay configuraciones: la gramática describe MiniJava con todos los logros puestos y no tiene
+producciones que aparezcan y desaparezcan según nada. Lo que sí se sostiene, porque es lo que la
+deja legible y lo que va a facilitar el analizador semántico, es un criterio de ubicación:
 
 \begin{quote}
-\textbf{Para todo subconjunto de logros, la gramática resultante debe ser LL(1).}
+\textbf{Un logro agrega una capa o unas alternativas propias; no reescribe las reglas de al lado.}
 \end{quote}
 
-No alcanza con que lo sea con todos prendidos. La condición tiene una consecuencia de diseño
-concreta: \textbf{ningún logro puede apoyarse en un no terminal que introdujo otro}. Cuando dos
-logros necesitan una construcción parecida, cada uno lleva la suya --- ver
-sección~\ref{sec:logro-inicializaciones}.
-
-Como técnica, conviene que \textbf{desactivar un logro sea quitar alternativas y no cambiar de
-estructura}. Los logros de ternario y de operadores posfijos son el ejemplo limpio: apagados,
-sus no terminales quedan en sólo \eps{} y la capa desaparece sin tocar ninguna otra regla.
+Tiene una consecuencia de diseño concreta: \textbf{ningún logro se apoya en un no terminal que
+introdujo otro}. Cuando dos necesitan una construcción parecida, cada uno lleva la suya --- ver
+sección~\ref{sec:logro-inicializaciones}. Compartir el no terminal ahorraría dos renglones y le
+costaría al analizador semántico desambiguar en tiempo de ejecución lo que la gramática podía
+separar de entrada.
 
 \subsection{Visibilidad Mejorada E2}
 \label{sec:logro-visibilidad}
@@ -904,23 +746,53 @@ el token \tl{idClase}: \texttt{C()\{\}} contra \texttt{C x;}.
 
 \paso{Transformación} Factorizar la visibilidad al frente y, adentro, factorizar el \tl{idClase}.
 El desempate es el token que sigue: \tl{(} es constructor, cualquier otro abre un tipo.
+
+Hay una decisión más, que la gramática resuelve sola. \textbf{Java admite los dos órdenes},
+\texttt{public static} y \texttt{static public}, y MiniJava no dice nada sobre el orden --- el
+logro habla de \emph{poder indicar} la visibilidad, no de dónde va respecto de \tl{static} ---, así
+que por la regla general de la cátedra se aceptan los dos. Lo que no se acepta es \textbf{repetir}
+un modificador, y eso tampoco necesita un chequeo fuera de la gramática: alcanza con que la
+visibilidad aparezca a \textbf{un solo lado} del \tl{static}.
+
 \begin{producciones}
-\regla{Miembro}{\nt{VisibilidadOpcional} \nt{MiembroSinVisibilidad}}
-\regla{VisibilidadOpcional}{\tl{public} \alt{} \tl{private} \alt{} \eps}
-\regla{MiembroSinVisibilidad}{\tl{static} \nt{TipoMetodo} \tl{idMetVar} \nt{CuerpoDeMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{void} \tl{idMetVar} \nt{CuerpoDeMetodo}}
-\regla{MiembroSinVisibilidad}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
-\regla{MiembroSinVisibilidad}{\tl{idClase} \nt{MiembroDesdeIdClase}}
+\regla{Miembro}{\nt{Visibilidad} \nt{MiembroTrasVisibilidad}}
+\regla{Miembro}{\tl{static} \nt{VisibilidadOpcional} \nt{TipoMetodo} \nt{Metodo}}
+\regla{Miembro}{\nt{MiembroSinModificadores}}
+\regla{MiembroTrasVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo} \alt{} \nt{MiembroSinModificadores}}
+\regla{Visibilidad}{\tl{public} \alt{} \tl{private}}
+\regla{VisibilidadOpcional}{\nt{Visibilidad} \alt{} \eps}
+\regla{MiembroSinModificadores}{\tl{void} \nt{Metodo}}
+\regla{MiembroSinModificadores}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinModificadores}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
+\regla{MiembroSinModificadores}{\tl{idClase} \nt{MiembroDesdeIdClase}}
 \regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}
 \regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \end{producciones}
-$\{$\tl{static}$\}$, $\{$\tl{void}$\}$, $\{$\tl{boolean}, \tl{char}, \tl{int}, \tl{float}$\}$,
-$\{$\tl{idGen}$\}$, $\{$\tl{idClase}$\}$: disjuntos. Y en \nt{MiembroDesdeIdClase}, $\{$\tl{(}$\}$
-contra $\{$\tl{<}, \tl{[}, \tl{idMetVar}$\}$: disjuntos.
 
-Con el logro apagado vuelve la forma del núcleo y \nt{MiembroDesdeIdClase} se queda con una sola
-producción.
+\paso{Resultado} En \nt{Miembro}, tres conjuntos disjuntos: $\{$\tl{public}, \tl{private}$\}$,
+$\{$\tl{static}$\}$ y los Primeros de \nt{MiembroSinModificadores} --- $\{$\tl{void},
+\tl{boolean}, \tl{char}, \tl{int}, \tl{float}, \tl{idGen}, \tl{idClase}$\}$. En
+\nt{MiembroDesdeIdClase}, $\{$\tl{(}$\}$ contra $\{$\tl{<}, \tl{[}, \tl{idMetVar}$\}$: disjuntos.
+
+\tl{static} sigue aplicando \textbf{sólo a métodos}, como en MiniJava base: no hay atributos
+estáticos y el logro no los agrega. Y \tl{protected} \textbf{no se implementa}: no figura en
+MiniJava, y agregarlo sería ampliar el lenguaje en algo que la especificación ya delimitó.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Veredicto} \\
+\midrule
+\texttt{public static void m()\{\}}           & acepta \\
+\texttt{static public void m()\{\}}           & acepta \\
+\texttt{private static int m()\{\}}           & acepta \\
+\texttt{static private int m()\{\}}           & acepta \\
+\texttt{public private void m()\{\}}          & \textbf{rechaza} \\
+\texttt{static static void m()\{\}}           & \textbf{rechaza} \\
+\texttt{public static private void m()\{\}}   & \textbf{rechaza} \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \begin{decision}{en los métodos de interfaz se admite \tl{public} y no \tl{private}}
 El enunciado del logro habla de «Métodos, Atributos y Constructores», y \nt{MetodoInterfaz} es un
@@ -960,10 +832,10 @@ $\{$\tl{public}$\}$ contra los Primeros de \nt{TipoMetodo}: disjuntos.
 \label{sec:logro-inicializaciones}
 
 Los dos agregan un \tl{=} \nt{ExpresionCompuesta} opcional, y la tentación es usar un único no
-terminal compartido. \textbf{Está mal} por la condición de atomicidad: son logros distintos, y con
-\emph{atrinit} apagado y \emph{varclasica} prendido las variables locales tienen que poder
-inicializarse igual. Van dos no terminales dedicados, \nt{InicializacionDeAtributo} e
-\nt{InicializacionDeDeclarador}, con el mismo cuerpo y distinta marca de logro.
+terminal compartido. \textbf{Está mal} por el criterio de la sección~\ref{sec:atomicidad}: son
+construcciones distintas --- un atributo de clase y una variable local --- y el analizador
+semántico las trata distinto. Van dos no terminales dedicados,
+\nt{InicializacionDeAtributo} e \nt{InicializacionDeDeclarador}, con el mismo cuerpo.
 
 \paso{Defecto que crea \emph{varclasica}} Una declaración local pasa a poder empezar con
 \tl{idClase} (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}, por
@@ -1037,9 +909,9 @@ Una capa nueva entre la asignación y los operadores binarios, con la precedenci
 \end{producciones}
 Asociativo a \textbf{derecha} --- \texttt{a ? b : c ? d : e} es \texttt{a ? b : (c ? d : e)} ---
 porque la rama del \tl{:} vuelve a \nt{ExpresionCondicional}, que puede tener su propio
-\nt{RestoCondicional}. Con el logro apagado, \nt{RestoCondicional} queda en sólo \eps{} y
-\nt{ExpresionCondicional} se vuelve un alias de \nt{ExpresionCompuesta}: la capa desaparece sin
-dejar rastro.
+\nt{RestoCondicional}. La capa nueva no le saca nada al lenguaje de la cátedra: sin el \tl{?},
+\nt{RestoCondicional} quedaría en sólo \eps{} y \nt{ExpresionCondicional} sería un alias de
+\nt{ExpresionCompuesta}.
 
 \begin{decision}{dónde alcanza el ternario}
 La gramática original usa \nt{ExpresionCompuesta} como lado derecho de un \tl{=} en \emph{los seis
@@ -1051,9 +923,8 @@ Al insertar la capa del ternario \emph{por encima} de \nt{ExpresionCompuesta}, e
 quedarían sin acceso al operador, y \texttt{var x = c ? a : b;} sería inválido aunque
 \texttt{x = c ? a : b;} no lo fuera --- una asimetría sin ninguna justificación. Los seis pasan
 entonces a \nt{ExpresionCondicional}, que es exactamente un escalón más arriba: sigue sin admitir
-un \tl{=} y por lo tanto sigue impidiendo la asignación encadenada, pero admite el ternario. Y
-como con el logro apagado \nt{ExpresionCondicional} es un alias de \nt{ExpresionCompuesta}, el
-lenguaje base queda \textbf{idéntico} al de la cátedra.
+un \tl{=} y por lo tanto sigue impidiendo la asignación encadenada, pero admite el ternario. La
+capa no le saca nada al lenguaje de la cátedra: sólo le agrega el ternario.
 \end{decision}
 
 Este logro requiere el token \tl{?}, que \textbf{no existe en el léxico de la Etapa 1}.
@@ -1114,8 +985,12 @@ JLS, y donde se factorizan las dos cabezas ambiguas:
 \regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
 \regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}
 \regla{ExpresionCondicionalOLambda}{\nt{ExpresionDesdePrimarioOLambda}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda} \alt{} \nt{ParentizadaOLambda}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion} \alt{} \dots}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\tl{stringLiteral} \nt{ColaDesdePrimarioSinAsignacion}}
+\regla{ExpresionDesdePrimarioOLambda}{\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda} \alt{} \nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}
 \regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
 \regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda} \alt{} \nt{Expresion} \nt{RestoDeParentesis}}
@@ -1163,102 +1038,153 @@ y Java acepta la forma de los dos. \texttt{javac} igual rechaza el segundo, pero
 destino ---un chequeo del analizador semántico, no de la forma---. Queda declarado.
 \end{decision}
 
-\begin{decision}{\tl{this} y la captura los rechaza el analizador, no la gramática}
-Las otras dos cláusulas del logro ---«no se permite la captura de variables locales, parámetros, ni
-el uso de \tl{this}»--- \textbf{no son expresables en una gramática libre de contexto}: no hay
-forma de escribir «\tl{this} es un \nt{Primario} válido, salvo debajo de un \nt{CuerpoLambda}», ni
-de condicionar un identificador a una lista que se leyó unas producciones antes. Escribirlo
-exigiría duplicar la jerarquía de expresiones en variantes «sin \tl{this}» y «sólo con estos
-nombres».
+\begin{decision}{el \tl{this}, la captura y el parámetro repetido van al analizador semántico}
+Las otras tres cláusulas del logro --- «no se permite la captura de variables locales, parámetros,
+ni el uso de \tl{this}», más el requisito implícito de que dos parámetros no se llamen igual ---
+\textbf{no las controla esta etapa}. Es indicación del profesor, y el motivo técnico coincide con
+el criterio de la sección~\ref{sec:alcance-chequeos}: ninguna de las tres es decidible con
+información local.
 
-Pero \textbf{sí son verificables en el analizador}, y con información puramente local:
+Dentro del cuerpo de una lambda, \texttt{x -> campo} --- un atributo, o sea un \tl{this} implícito ---
+y \texttt{x -> n} --- una variable de afuera, o sea una captura --- son \textbf{la misma forma}: un
+\tl{idMetVar} pelado que no está entre los parámetros. Separarlas exige resolver el nombre contra
+su declaración, que es exactamente la tabla de símbolos de la Etapa 3. El caso extremo es la
+llamada sin punto: \texttt{x -> ayuda(x)} es un \tl{this} implícito si \texttt{ayuda} es un método
+de instancia, y no lo es si es \tl{static}.
 
-\begin{itemize}
-  \item \textbf{\tl{this} explícito}: un indicador booleano que se prende al entrar al cuerpo de
-        una lambda y se apaga al salir. El analizador sabe dónde está porque acaba de entrar.
-  \item \textbf{\tl{this} implícito}: llamar a un método propio sin escribirlo ---
-        \texttt{x -> metodo(x)}--- es un uso de \tl{this} igual. Y dentro de una lambda de
-        \textsc{MiniJava} una llamada sin punto \emph{sólo} puede ser un método de la clase: no hay
-        funciones sueltas y un parámetro es un valor, no se lo puede llamar. Mismo indicador.
-  \item \textbf{captura de variables}: el conjunto de nombres legales dentro del cuerpo es
-        exactamente el de los parámetros de la lambda, que el analizador acaba de leer. Como el
-        cuerpo es \emph{una única expresión}, adentro no se puede declarar nada, así que el
-        conjunto es cerrado. Y las lambdas anidadas no necesitan una pila de alcances: usar el
-        parámetro de la lambda de afuera también está prohibido, de modo que alcanza con el
-        conjunto de la más interna.
-\end{itemize}
+El \tl{this} \emph{explícito} sí sería decidible con un booleano, pero controlarlo solo no aporta:
+dejaría rechazado \texttt{x -> this.campo} y aceptado \texttt{x -> campo}, que es el mismo error
+escrito de otra forma.
 
-\begin{decision}{el chequeo de captura se difiere adentro de un paréntesis}
-Hay un punto donde el chequeo no puede resolverse en el momento. El contenido de un paréntesis se
-lee como \nt{Expresion}, porque hasta ver el token que sigue al \tl{)} no se sabe si era una
-expresión o la lista de parámetros de otra lambda. Esa lectura pasa por el chequeo de captura, y
-ahí todavía rige el alcance de la lambda de afuera: en \texttt{x -> (y) -> y} el \texttt{y} se
-tomaría por una captura, y se rechazaría una lambda que escrita \texttt{x -> y -> y} se acepta.
-
-Mientras el paréntesis está abierto, entonces, un nombre que no es parámetro no se rechaza: queda
-\textbf{en duda}. Al cerrar se resuelve con el mismo token que ya decide todo lo demás: si sigue un
-\tl{->} eran declaraciones y las dudas se descartan; si no, era una expresión parentizada, eran
-capturas de verdad y se reporta la primera en orden de aparición. No siempre coincide con la que se
-habría reportado sin diferir, y ahí está la ganancia: en \texttt{x -> ((y) -> z)} el diferimiento
-descarta el \texttt{y} ---resultó ser un parámetro--- y deja el \texttt{z}, que es la captura real.
+Esto simplificó el analizador de manera apreciable. Se borró la clase que sostenía los cuatro
+chequeos, y con ella su pieza más intrincada: como leer el contenido de un paréntesis lo hacía
+pasar por el chequeo de captura \emph{antes} de saber si era una lista de parámetros, en
+\texttt{x -> (y) -> y} el \texttt{y} se habría reportado como captura de \texttt{x}; hacía falta
+anotar los nombres «en duda» en una pila y resolverlos recién al cerrar el paréntesis. Sin chequeo
+de captura, esa maquinaria no tiene motivo.
 \end{decision}
 
-La gramática ya distingue los tres usos de un \tl{idMetVar} ---acceso a variable, llamada, y campo
-después de un \tl{.}---, así que se sabe cuál hay que chequear contra los parámetros y cuál no:
-\texttt{x -> x.campo} y \texttt{x -> C.metodo(x)} son válidos, \texttt{x -> x + n} no.
+\paso{Qué chequea y qué no, entonces} Ésta es la frontera completa del logro:
 
-Se hace en el analizador y no se posterga al semántico porque el logro es de esta etapa, porque el
-costo es un booleano y un conjunto de cadenas ---no hay tabla de símbolos ni alcances anidados---,
-y porque no toca ninguna producción: es un chequeo sobre lo ya parseado, del mismo tipo que la
-regla que resuelve el \emph{dangling else}, y Clase 4 slide 49 lo autoriza expresamente.
+\begin{center}
+\begin{tabular}{@{}p{0.50\textwidth}p{0.40\textwidth}@{}}
+\toprule
+\textbf{Cláusula} & \textbf{Dónde se verifica} \\
+\midrule
+forma \texttt{params -> expr}                       & gramática \\
+parámetros sin tipo                                 & gramática \\
+cuerpo de una única expresión, sin llaves           & gramática \\
+dónde puede aparecer una lambda                     & gramática: \nt{Expresion}, no \nt{Primario} \\
+el parámetro es un identificador pelado             & analizador sintáctico \\
+una lambda parentizada no lleva cola                & analizador sintáctico \\
+no \tl{this}, explícito ni implícito                & \textbf{analizador semántico} \\
+no captura de variables locales ni parámetros       & \textbf{analizador semántico} \\
+parámetros sin nombre repetido                      & \textbf{analizador semántico} \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-Lo que sí queda para el analizador semántico es todo lo que exija resolver un nombre contra una
-declaración: que exista, que el tipo cierre, que la aridad coincida.
+Con ejemplos concretos, que es lo que importa a la hora de leer la salida del compilador:
 
-\textbf{Pendiente declarado para la Etapa 3.} La cátedra admite no controlar en esta etapa si un
-\tl{this} ---explícito o implícito--- está dentro o fuera de una lambda, porque con la tabla de
-símbolos del análisis semántico el control es mucho más directo. Acá está implementado igual, con
-el alcance que describe esta decisión, y se deja como está. Lo que queda para la Etapa 3 es el
-único caso que este analizador no puede decidir: la llamada sin punto \texttt{x -> ayuda(x)}, que
-es un \tl{this} implícito si \texttt{ayuda} es un método de instancia y no lo es si es
-\tl{static}. Distinguirlos exige resolver el nombre contra su declaración, así que acá se acepta.
-
-Vale además dejar dicho por qué diferirlo no habría simplificado nada: \textbf{el control del
-\tl{this} implícito no es separable del de la captura}. En el cuerpo de una lambda,
-\texttt{x -> campo} ---un atributo, o sea \tl{this} implícito--- y \texttt{x -> n} ---una local o un
-parámetro de afuera, o sea una captura--- son \emph{la misma forma}: un \tl{idMetVar} pelado que no
-está entre los parámetros. Un solo \texttt{if} rechaza los dos, y separarlos exigiría resolver el
-nombre contra su declaración, que es justamente lo que el sintáctico no hace. La consecuencia
-práctica es que quitar el control del \tl{this} implícito significaría quitar también el de la
-captura, que el logro exige por separado; y que todo el estado que este chequeo necesita ---el
-alcance, el conjunto de parámetros y el diferimiento--- se sostiene por la cláusula de la captura,
-no por la del \tl{this}.
-\end{decision}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Veredicto} & \textbf{Por qué} \\
+\midrule
+\texttt{x -> x}                  & acepta & \\
+\texttt{() -> arrancar()}        & acepta & \\
+\texttt{(a, b) -> a * b}         & acepta & \\
+\texttt{x -> x.a.b.c}            & acepta & \\
+\texttt{f((x -> x))}             & acepta & la lambda parentizada es toda la expresión \\
+\texttt{x -> this.campo}         & acepta & el \tl{this} lo controla el semántico \\
+\texttt{x -> x + n}              & acepta & si \texttt{n} es captura o campo no se sabe acá \\
+\texttt{x -> y -> x + y}         & acepta & la interna usa \texttt{x}: lo ve el semántico \\
+\texttt{(a, a) -> a}             & acepta & el nombre repetido lo controla el semántico \\
+\midrule
+\texttt{x -> \{ return x; \}}    & \textbf{rechaza} & el cuerpo no admite llaves \\
+\texttt{(int x) -> x}            & \textbf{rechaza} & el parámetro no lleva tipo \\
+\texttt{(a + 1) -> a}            & \textbf{rechaza} & el parámetro no es un identificador pelado \\
+\texttt{((a)) -> a}              & \textbf{rechaza} & parentizar de más no es parentizar el parámetro \\
+\texttt{1 + x -> x}              & \textbf{rechaza} & la lambda no es operando \\
+\texttt{(x -> x).m()}            & \textbf{rechaza} & parentizarla no la convierte en operando \\
+\texttt{(x -> x) + 1}            & \textbf{rechaza} & ídem \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \subsection{Inicializacion de Arreglos E2}
 
-Después del \tl{[} de una creación de arreglo, o viene una expresión de tamaño o viene el \tl{]}
-seguido del inicializador. Un token de desempate.
-\begin{producciones}
-\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
-\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
-\regla{RestoCreacionDeArreglo}{\tl{]} \tl{\{} \nt{ListaExpsOpcional} \tl{\}}}
-\end{producciones}
-El logro dice «como en Java» y la única restricción que enuncia es \emph{dónde} ---dentro de un
-\tl{new}---, no cuántas dimensiones. Como Java admite \texttt{new int[][]\{\{1,2\},\{3,4\}\}}, el
-inicializador es \textbf{anidable}: un elemento puede ser una expresión o, a su vez, otro
-inicializador.
+El logro dice \emph{«permite la inicialización de Arreglos al momento de su construcción como en
+Java. Sólo se permite como parte de una expresión de creación utilizando \tl{new}»}. La única
+restricción que enuncia es \emph{dónde}, no cuántas dimensiones. Pero hay un choque que conviene
+dejar escrito, porque no tiene salida limpia.
+
+\paso{El choque} MiniJava base define la creación de un arreglo así:
 
 \begin{producciones}
-\regla{DimensionesVaciasOpcional}{\tl{[} \tl{]} \nt{DimensionesVaciasOpcional} \alt{} \eps}
+\regla{CrearArreglo}{\tl{new} \nt{TipoBase} \nt{DimensionesConTamanio}}
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanio} \alt{} \tl{[} \nt{Expresion} \tl{]}}
+\end{producciones}
+
+\textbf{Toda dimensión lleva su tamaño}, y el corchete vacío no existe. Java exige exactamente lo
+contrario cuando hay inicializador. Verificado con \texttt{javac}:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{En Java} & \textbf{Resultado} \\
+\midrule
+\texttt{new int[]\{1,2,3\}}            & compila \\
+\texttt{new int[][]\{\{1,2\},\{3,4\}\}} & compila \\
+\texttt{new int[2]\{1,2\}}             & \textbf{error}: \emph{array creation with both dimension} \\
+                                        & \emph{expression and initialization is illegal} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+O sea que no se puede a la vez respetar la forma de las dimensiones que MiniJava ya tenía definida
+y el «como en Java» del enunciado.
+
+\begin{decision}{gana MiniJava base: la dimensión conserva su tamaño}
+Se deja \nt{DimensionesConTamanio} tal cual la escribió la cátedra y el inicializador se le cuelga
+al final, opcional:
+
+\begin{producciones}
+\regla{CreacionDeArreglo}{\nt{DimensionesConTamanio} \nt{InicializadorDeArregloOpcional}}
+\regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
+\regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
+\regla{InicializadorDeArregloOpcional}{\nt{InicializadorDeArreglo} \alt{} \eps}
 \regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}
 \regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
 \end{producciones}
 
-$\prim{\nt{Expresion}}$ no contiene \tl{\{}, así que las dos alternativas de
-\nt{ElementoInicializador} son disjuntas. La restricción de que sólo valga como parte de un
-\tl{new} queda impuesta por la gramática: \nt{CreacionDeArreglo} sólo es alcanzable desde
-\nt{Creacion}.
+El criterio general del proyecto --- lo que MiniJava no define se comporta como en Java --- \textbf{no
+aplica acá}, porque MiniJava sí define la forma de las dimensiones. Adoptar la de Java sería
+ampliar el lenguaje en una construcción ya especificada. La divergencia queda aislada en una sola
+producción, \nt{CreacionDeArreglo}, por si hubiera que revertirla.
+\end{decision}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Entrada} & \textbf{Veredicto} \\
+\midrule
+\texttt{new int[3]}                         & acepta --- la forma de siempre \\
+\texttt{new int[3][4]}                      & acepta \\
+\texttt{new int[3]\{1,2,3\}}                & acepta \\
+\texttt{new int[2][2]\{\{1,2\},\{3,4\}\}}   & acepta --- el inicializador es anidable \\
+\texttt{new int[0]\{\}}                     & acepta \\
+\texttt{new int[]\{1,2,3\}}                 & \textbf{rechaza} --- no hay corchete vacío \\
+\texttt{new int[]}                          & \textbf{rechaza} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paso{Resultado} $\prim{\nt{Expresion}}$ no contiene \tl{\{}, así que las dos alternativas de
+\nt{ElementoInicializador} son disjuntas, y \tl{\{} tampoco puede seguir a una expresión de
+creación en ningún contexto, así que \nt{InicializadorDeArregloOpcional} no entra en conflicto con
+su \eps{}. La restricción de que el inicializador sólo valga como parte de un \tl{new} queda
+impuesta por la gramática: \nt{InicializadorDeArreglo} sólo es alcanzable desde \nt{Creacion}.
 
 \subsection{Genericidad Avanzada E2}
 
@@ -1266,7 +1192,7 @@ Dos cosas distintas. El \textbf{anidamiento} sale de una sola recursión:
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen} \alt{} \tl{idClase} \nt{TipoGenericoOpcional}}
 \end{producciones}
-Con el logro apagado la segunda alternativa es \tl{idClase} a secas. (\texttt{List<List<Persona>{}>}
+Sin esa recursión la segunda alternativa sería \tl{idClase} a secas. (\texttt{List<List<Persona>{}>}
 cierra con dos \tl{>} separados: el léxico no define ningún token \texttt{>{}>}, así que la regla de
 \emph{maximal munch} entrega dos \tl{>} y no hay nada que resolver del lado sintáctico.)
 
@@ -1335,22 +1261,21 @@ de \S2.4.2 hasta \tl{++} y \tl{-{}-}.
 \end{tabular}
 \end{center}
 
-Se incorporan al analizador léxico \textbf{condicionados al interruptor de su logro}: con el logro
-apagado, \tl{?} vuelve a ser un error léxico y \tl{for} y \tl{private} vuelven a ser
-identificadores, exactamente como especifica la cátedra. De ese modo el comportamiento léxico base
-de la Etapa 1 se conserva íntegro y verificable, que es lo que exige la condición de atomicidad de
-la sección~\ref{sec:atomicidad}. Los tokens \tl{:}, \tl{++} y \tl{-{}-}, en cambio, ya existían.
+Se incorporan al analizador léxico \textbf{sin condición}, así que la columna de la derecha
+describe lo que pasaba en la Etapa 1 y no una configuración alcanzable hoy. El cambio no toca el
+patrón State ni el driver del autómata: \texttt{EstadoIdMV} reconoce \tl{for} y \tl{private},
+\texttt{EstadoInicial} el \tl{?}, y \texttt{EstadoOperadorConSufijoOpcional} el \tl{->}. Los tokens
+\tl{:}, \tl{++} y \tl{-{}-}, en cambio, ya existían.
 
 % ===========================================================================
 \section{Gramática final}
 \label{sec:gramatica-final}
 % ===========================================================================
 
-La gramática completa resultante: núcleo corregido más los nueve logros de la Etapa 2 y el
-\emph{carry-over} de floats. Las producciones marcadas con {\footnotesize[+\,\texttt{logro}]}
-existen únicamente cuando ese interruptor está prendido; las marcadas con
-{\footnotesize[-\,\texttt{logro}]}, únicamente cuando está apagado. Las que no llevan marca existen
-siempre (sección~\ref{sec:notacion}).
+La gramática completa resultante, \textbf{limpia}: núcleo corregido más los nueve logros de la
+Etapa 2 y el \emph{carry-over} de floats, en la misma notación del documento que publica la
+cátedra. Es la única gramática del compilador y no lleva ninguna marca: todas las producciones que
+siguen existen siempre.
 
 \begin{decision}{este listado se genera, no se transcribe}
 El texto que sigue se produce automáticamente a partir del mismo archivo que verifica la
@@ -1362,47 +1287,39 @@ revés.
 \input{generado/gramatica-final}
 
 % ===========================================================================
-\section{Cómo compilar y correr}
-\label{sec:uso}
+\section{Ambigüedades resueltas}
+\label{sec:ambiguedades}
 % ===========================================================================
 
-El proyecto se construye con Maven y apunta a Java~25. Desde la carpeta \texttt{compilador/}, que
-es donde está el \texttt{pom.xml}:
 
-\begin{consola}
-$ mvn package          # compila, corre la suite y arma target/Compilador.jar
-$ mvn verify           # ademas verifica los umbrales de cobertura
-$ mvn test             # solo la suite
-\end{consola}
+Las tres ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
+regla de implementación ---la vía que autoriza Clase 4, slide 49--- y todas de la misma forma:
+\textbf{voraz}, consumiendo todo lo que se pueda:
 
-El jar resultante es ejecutable y recibe el fuente como único argumento, tal cual pide Pautas
-slide 28. Acepta cualquier extensión:
+\begin{center}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.62\linewidth}@{}}
+\toprule
+\textbf{Caso} & \textbf{Decisión} \\
+\midrule
+\emph{dangling else} & El \tl{else} liga al \tl{if} más cercano. En el analizador es el orden de
+las ramas: se toma \tl{else} apenas se lo ve. Coincide con Java. \\[2pt]
+\texttt{new int[3][4]} & Todas las dimensiones pertenecen a la creación; no es un acceso al
+arreglo recién creado. Coincide con Java, que lo lee como una creación 2-D. Heredada de la
+gramática de la cátedra. \\[2pt]
+Cuerpo de la lambda & \texttt{x -> a = b} es \texttt{x -> (a = b)}. La introduce este trabajo, y
+afecta a un solo no terminal: \nt{RestoExpresion}, la única cola externa que todavía compite con la
+del cuerpo una vez que la lambda vive en el nivel más alto de la jerarquía
+(sección~\ref{sec:mas-ambiguedades}). Coincide con Java. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\begin{consola}
-$ java -jar target/Compilador.jar programa1.java
-Compilacion Exitosa
+Además, \nt{Asignacion} y \nt{Llamada} tienen cuerpos idénticos en la gramática original y por lo
+tanto toda sentencia-expresión tiene dos árboles. Se \textbf{colapsan en una sola producción}:
+distinguir una asignación de una llamada exige saber a qué se refiere el nombre de la izquierda, o
+sea una tabla de símbolos, y eso es trabajo del analizador semántico.
 
-[SinErrores]
-\end{consola}
 
-Dos opciones más, que no hacen falta para la corrección normal pero permiten ejercitar el
-compilador entero:
-
-\begin{consola}
-# La Etapa 1 sigue siendo ejecutable sola: vuelca la lista de tokens.
-$ java -jar target/Compilador.jar --etapa=1 programa1.java
-
-# Prender y apagar logros. Sin --logros manda la etapa: la Etapa 2 los trae todos.
-$ java -jar target/Compilador.jar --logros=ninguno programa1.java
-$ java -jar target/Compilador.jar --logros=ternario,lambda programa1.java
-\end{consola}
-
-Una opción o un nombre de logro desconocidos se informan por salida estándar y \textbf{no} abortan:
-los testers de la cátedra invocan \texttt{main()} dentro del mismo proceso, y una excepción o un
-\texttt{System.exit()} matarían la corrida entera. Por el mismo motivo el compilador no llama nunca
-a \texttt{System.exit()}.
-
-% ===========================================================================
 \section{El analizador sintáctico}
 \label{sec:analizador}
 % ===========================================================================
@@ -1525,48 +1442,43 @@ prendido el reporte entero se repite por cada error encontrado, en orden, que es
 con el que la Etapa 1 reporta varios errores léxicos.
 
 % ===========================================================================
-\section{Logros perseguidos}
-\label{sec:logros-perseguidos}
+\section{Cómo compilar y correr}
+\label{sec:uso}
 % ===========================================================================
 
-Se persiguen \textbf{todos los logros de la etapa}: los diez que son implementables por código
----más el \emph{carry-over} de \emph{Floats} de la Etapa 1--- y los tres que no lo son. Cada uno de
-los implementables por código es un \textbf{interruptor independiente}:
-el compilador se puede ejecutar y testear con 0, 1 o N logros en cualquier combinación, y la de
-cero logros reproduce exactamente la especificación base de la cátedra. Eso está verificado sobre
-las 1024 configuraciones.
+El proyecto se construye con Maven y apunta a Java~25. Desde la carpeta \texttt{compilador/}, que
+es donde está el \texttt{pom.xml}:
 
-\begin{center}
-\begin{tabular}{@{}llp{0.46\linewidth}@{}}
-\toprule
-\textbf{Logro} & \textbf{\texttt{-{}-logros=}} & \textbf{Dónde está} \\
-\midrule
-MiniLambdas E2 & \texttt{lambda} & \S\ref{sec:decisiones} y las seis producciones del bloque de
-lambdas. Requiere el token \tl{->}. \\
-Variables locales Clásicas E2 & \texttt{varclasica} & La factorización de \tl{idClase} en
-\nt{Sentencia}. \\
-Visibilidad Mejorada E2 & \texttt{visibilidad} & \nt{VisibilidadOpcional} al frente de los tres
-miembros. Requiere el token \tl{private}. \\
-Fors! E2 & \texttt{for} & El bloque \nt{For} entero, estándar y de iteradores. Requiere el token
-\tl{for}. \\
-Operador Ternario E2 & \texttt{ternario} & La capa \nt{ExpresionCondicional}. Requiere el token
-\tl{?}, que sin el logro es un error léxico. \\
-Operadores Posifijos E2 & \texttt{posfijo} & \nt{PosfijoOpcional}. Único logro que no toca el
-léxico: \tl{++} y \tl{-{}-} ya eran tokens de la Etapa 1. \\
-Atributos Inicializados & \texttt{atrinit} & \nt{InicializacionDeAtributo}. \\
-Inicializacion de Arreglos E2 & \texttt{arrinit} & El inicializador, anidable, sólo bajo \tl{new}. \\
-Genericidad Avanzada E2 & \texttt{generico} & Genéricos anidados y la notación diamante. \\
-Recuperación Modo Pánico & \texttt{modopanico} & No toca la gramática: es enteramente
-implementación. \\
-\midrule
-Floats (Etapa 1) & \texttt{float} & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$
-\tl{floatLiteral}. \\
-\bottomrule
-\end{tabular}
-\end{center}
+\begin{consola}
+$ mvn package          # compila, corre la suite y arma target/Compilador.jar
+$ mvn verify           # ademas verifica los umbrales de cobertura
+$ mvn test             # solo la suite
+\end{consola}
 
-Los otros tres ---\emph{Entrega Anticipada}, \emph{Imbatibilidad} y \emph{Well Done!}--- también
-se persiguen, pero no se implementan por código: no dependen del compilador.
+El jar resultante es ejecutable y recibe el fuente como único argumento, tal cual pide Pautas
+slide 28. Acepta cualquier extensión:
+
+\begin{consola}
+$ java -jar target/Compilador.jar programa1.java
+Compilacion Exitosa
+
+[SinErrores]
+\end{consola}
+
+Hay una sola opción más, que no hace falta para la corrección de esta etapa:
+
+\begin{consola}
+# La Etapa 1 sigue siendo ejecutable sola: vuelca la lista de tokens.
+$ java -jar target/Compilador.jar --etapa=1 programa1.java
+\end{consola}
+
+\textbf{No hay forma de elegir con qué logros correr}: el compilador reconoce \textsc{MiniJava} con
+todos los de la Etapa 1 y la Etapa 2 incorporados, siempre.
+
+Una opción desconocida se informa por salida estándar y \textbf{no} aborta:
+los testers de la cátedra invocan \texttt{main()} dentro del mismo proceso, y una excepción o un
+\texttt{System.exit()} matarían la corrida entera. Por el mismo motivo el compilador no llama nunca
+a \texttt{System.exit()}.
 
 % ===========================================================================
 \section{Verificación}
@@ -1585,23 +1497,9 @@ $ python3 herramientas/primeros.py gramatica/minijava-base.g
 --- 60 no terminales, 126 producciones, 51 terminales ---
 NO ES LL(1): 16 conflicto(s)
 
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
---- 111 no terminales, 228 producciones, 60 terminales ---
+$ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g
+--- 112 no terminales, 230 producciones, 60 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
-\end{consola}
-
-\subsection{Atomicidad de los logros}
-
-La condición de la sección~\ref{sec:atomicidad} exige que la gramática sea LL(1) para
-\emph{todo} subconjunto de logros, no sólo con todos prendidos. Cada producción lleva su marca y la
-herramienta recorre las $2^{10} = 1024$ configuraciones:
-
-\begin{consola}
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --combinatoria
-10 logros -> 1024 configuraciones
-
-LAS 1024 CONFIGURACIONES SON LL(1).
-Cada logro se puede prender y apagar de forma independiente.
 \end{consola}
 
 \subsection{Ambigüedad frente a conflicto de predicción}
@@ -1625,17 +1523,17 @@ entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
 
 La condición LL(1) que verifica el apartado anterior es la de la cátedra: disjunción de Primeros.
 El ítem «no es ambigua, o es arreglable» del checklist de Clase 4, slide 41, es otro, y se audita
-aparte. La herramienta recorre las 1024 configuraciones, junta toda ambigüedad que aparezca y
-\textbf{exige que cada una esté declarada con su regla de resolución}: si aparece una nueva, falla.
+aparte. La herramienta junta toda ambigüedad que aparezca y \textbf{exige que cada una esté
+declarada con su regla de resolución}: si aparece una nueva, falla.
 
 \begin{consola}
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g --ambiguedades
+$ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades
 DIAGNOSTICO OFFLINE - no forma parte del metodo de implementacion.
 El analizador sintactico decide SOLO con Primeros (Esquema Simple,
 Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item
 "no es ambigua o es arreglable" del checklist de Clase 4 slide 41.
 
-Ambiguedades detectadas en las 1024 configuraciones: 3
+Ambiguedades detectadas: 3
 
   <DimensionesConTamanioOpcional>  ...  [declarada]
   <ElseOpcional>                   ...  [declarada]
@@ -1652,17 +1550,16 @@ ambigüedades de la gramática} y que cada una tiene una resolución explícita.
 La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
 tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
 hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
-verifican \textbf{87 casos}: por cada logro, la sintaxis que debe aceptar y la que debe rechazar
-cuando está apagado.
+verifican \textbf{81 casos}: por cada construcción, la sintaxis que debe aceptar y la que debe
+rechazar.
 
 \begin{consola}
 $ bash herramientas/casos-gramatica.sh
---- nucleo (sin ningun logro) ---
+--- nucleo ---
   ok    clase vacia
   ok    if/else anidado
   ok    encadenamiento
-  ok    a = b = c NO es valido
---- MiniLambdas ---
+--- cada construccion contra su propia sintaxis ---
   ok    x -> x            (1 param sin parentesis)
   ok    ( ) -> 1          (0 params)
   ok    ( a ) -> a        (1 param con parentesis)
@@ -1670,11 +1567,15 @@ $ bash herramientas/casos-gramatica.sh
   ok    ( a ) + 1         (parentizada, NO lambda)
   ok    cuerpo con llaves NO se permite
   ok    parametro con tipo NO se permite
---- Genericidad Avanzada ---
   ok    List < List < Persona > > x ;  (anidado)
   ok    new List < > ( )               (diamante)
   ok    List < > x ;    diamante en posicion de TIPO
   ok    new List < > [ 3 ]  diamante con arreglo
+--- orden de modificadores: los dos, como en Java ---
+  ok    public static void f(){}
+  ok    static public void f(){}
+  ok    public private void f(){}
+  ok    static static void f(){}
 ...
 TODOS LOS CASOS PASAN.
 \end{consola}
@@ -1682,7 +1583,9 @@ TODOS LOS CASOS PASAN.
 Los casos que fijan las decisiones difíciles de este informe son, entre otros: \texttt{a = b = c}
 se rechaza (no asociatividad de la asignación); \texttt{( a ) + 1} se acepta como expresión
 parentizada y \texttt{( a ) -> a} como lambda, decidiéndose con un solo token; \texttt{List<> x;}
-se rechaza y \texttt{new List<>()} se acepta.
+se rechaza y \texttt{new List<>()} se acepta; \texttt{static public} y \texttt{public static} se
+aceptan los dos y \texttt{public private} no; \texttt{new int[2]\{1,2\}} se acepta y
+\texttt{new int[]\{1,2\}} no.
 
 \subsection{Validación contra los casos de la cátedra}
 
@@ -1738,7 +1641,7 @@ la misma gramática y salen del mismo archivo, pero no comparten una línea de c
 JavaCC avisa \texttt{Choice conflict involving two expansions} cuando dos alternativas de un mismo
 no terminal empiezan con el mismo token. Sobre la gramática final \textbf{no emite ninguno}, lo que
 es una confirmación independiente ---de una herramienta que calculó los conjuntos por su cuenta
-sobre las 228 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
+sobre las 230 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
 
 \textbf{No confirma la condición fuerte.} Se comprobó con dos gramáticas de control: ante
 \nt{S} $\to$ \tl{a} \tl{b} $\mid$ \tl{a} \tl{c} JavaCC avisa; ante \nt{Opt} $\to$ \tl{b} $\mid$
@@ -1758,29 +1661,68 @@ dar.
 
 Clase 4 exige adaptar la gramática \emph{«sin cambiar el lenguaje que genera»}. Eliminar recursión
 a izquierda y factorizar lo preservan \emph{en teoría}; \texttt{equivalencia\_de\_lenguajes.py} lo
-comprueba \emph{en la práctica} sobre las dos gramáticas concretas. Deriva una cadena por cada
-producción de cada gramática ---dos por cada producción anidable, porque un solo uso no distingue
-\texttt{a = b} de \texttt{a = b = c}--- y verifica que la otra la acepte. Como la gramática base no
-es LL(1), reconocerla necesita un algoritmo que tolere recursión a izquierda y ambigüedad: se usa
-un reconocedor de Earley.
+comprueba \emph{en la práctica} sobre las dos gramáticas concretas. La comparación es contra el
+\textbf{núcleo LL(1) sin logros}, \texttt{minijava-ll1.g}: es lo que tiene que generar el mismo
+lenguaje que la cátedra, porque los logros por definición lo agrandan. Ese archivo no lo consume el
+compilador; existe exactamente para esto.
+
+La herramienta deriva una cadena por cada producción de cada gramática ---dos por cada producción
+anidable, porque un solo uso no distingue \texttt{a = b} de \texttt{a = b = c}--- y verifica que la
+otra la acepte. Como la gramática base no es LL(1), reconocerla necesita un algoritmo que tolere
+recursión a izquierda y ambigüedad: se usa un \textbf{reconocedor de Earley}.
 
 \begin{consola}
 $ python3 herramientas/equivalencia_de_lenguajes.py
 minijava-base.g: 126/126 producciones ejercitadas, 0 inertes
-minijava-ll1-logros.g (cero logros): 154/159 producciones ejercitadas, 5 inertes
-    inerte    ExpresionSinIdClase -> ...
-    ...
+minijava-ll1.g:  135/135 producciones ejercitadas, 0 inertes
 
-579 mutantes comparados en las dos gramaticas.
+551 mutantes comparados en las dos gramaticas.
 LAS DOS GRAMATICAS GENERAN EL MISMO LENGUAJE: toda produccion de cada una fue
 ejercitada y la otra estuvo de acuerdo.
 \end{consola}
 
-Las cinco producciones \emph{inertes} son las de \nt{ExpresionSinIdClase} y sus colas, que existen
-para compartirse entre dos logros y con cero logros no las referencia nadie. La cobertura por
-producción es lo que le da fuerza al chequeo: se validó contra dos controles negativos ---uno que
-ensancha el lenguaje final permitiendo \texttt{a = b = c} y otro que lo angosta quitando
-\nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
+La cobertura por producción es lo que le da fuerza al chequeo: se validó contra dos controles
+negativos ---uno que ensancha el lenguaje permitiendo \texttt{a = b = c} y otro que lo angosta
+quitando \nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
+
+\subsection{Contraste con un corpus ajeno}
+\label{sec:corpus-externo}
+
+Todas las verificaciones anteriores comparten un límite: las implementaciones que se contrastan
+salen del \emph{mismo} archivo de gramática, así que comparten sus decisiones. El contraste que
+cierra ese hueco usa un corpus de \textbf{30.000 fuentes generados por otra persona a partir de su
+propia gramática} de \textsc{MiniJava}, que no comparte con este trabajo ni el código ni los
+criterios.
+
+\textbf{26.291 coinciden exactamente.} Los 3.709 restantes caen en cinco familias, y ninguna es un
+defecto de este analizador:
+
+\begin{center}
+\begin{tabular}{@{}p{0.34\linewidth}rp{0.52\linewidth}@{}}
+\toprule
+\textbf{Familia} & \textbf{Casos} & \textbf{Quién tiene razón} \\
+\midrule
+\texttt{(x -> y).m()}, \texttt{(x -> y) + 1}, \texttt{(x -> y)[0]} & 2434 &
+\textbf{Este trabajo.} Su gramática produce la lambda en \nt{Primario}, así que una lambda
+parentizada puede ser operando; acá vive en \nt{Expresion}, como el JLS. Verificado con
+\texttt{javac}: \emph{«lambda expression not expected here»} en los tres. \\[4pt]
+\texttt{"a\textbackslash\textbackslash"} & 987 &
+\textbf{Este trabajo}, por lectura de la especificación: \emph{Aspectos Léxicos} §2.3.3 da una regla
+\textbf{posicional} ---la comilla de cierre nunca está antecedida por \texttt{\textbackslash}--- y no
+una de apareamiento. Su generador asume la semántica de Java. \\[4pt]
+\texttt{new C<T>()} & 162 &
+\textbf{Este trabajo.} La gramática de la cátedra lo genera y la suya lo rechaza. \\[4pt]
+\texttt{public void m()\{\}}, constructor sin \tl{public} & 126 &
+\textbf{Ninguno}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
+Los dos rechazan, en distinto token & resto &
+\textbf{Ninguno}: su gramática cubre menos construcciones, así que el primer token que no encaja es
+otro. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Las cinco están declaradas en el test, que falla si aparece una sexta. Es la misma disciplina que el
+registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
 
 \subsection{El analizador cita exactamente la gramática}
 
@@ -1790,7 +1732,7 @@ la implementa nadie o si un comentario quedó viejo:
 
 \begin{consola}
 $ python3 herramientas/auditar_analizador.py
-234 producciones en la gramatica, 234 citadas por el analizador.
+230 producciones en la gramatica, 230 citadas por el analizador.
 EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
 \end{consola}
 
@@ -1801,8 +1743,8 @@ EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
 \toprule
  & \textbf{Gramática base} & \textbf{Gramática final} \\
 \midrule
-No terminales                    & 60  & 111 \\
-Producciones                     & 126 & 228 \\
+No terminales                    & 60  & 112 \\
+Producciones                     & 126 & 230 \\
 Terminales                       & 51  & 60  \\
 Conflictos Primeros--Primeros    & 16  & 0   \\
 Ambigüedades sin declarar        & 2   & 0   \\
@@ -1812,15 +1754,8 @@ Ambigüedades declaradas y resueltas & 0 & 3   \\
 \end{center}
 
 El crecimiento se reparte entre la corrección del núcleo y las nueve extensiones por logro. No
-queda ningún conflicto de predicción en ninguna de las 1024 configuraciones, y las tres
-ambigüedades que quedan están declaradas con su regla de resolución, que es lo que pide Clase 4,
-slide 49.
-
-\subsection{Tabla de Primeros}
-
-Conjunto de Primeros de cada producción de la gramática final, con todos los logros prendidos.
-
-\input{generado/tabla-primeros}
+queda ningún conflicto de predicción, y las tres ambigüedades que quedan están declaradas con su
+regla de resolución, que es lo que pide Clase 4, slide 49.
 
 % ===========================================================================
 \section{Decisiones tomadas con criterio propio}
@@ -1833,35 +1768,6 @@ solo lugar, cada una con la regla que se aplicó y con la fuente que la respalda
 
 El criterio de desempate, cuando lo hubo, es el que fija la cátedra: \emph{«todo lo que NO esté
 especificado para MiniJava tiene comportamiento por defecto igual al de Java»}.
-
-\subsection{Ambigüedades: qué árbol se elige}
-
-Las tres ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
-regla de implementación ---la vía que autoriza Clase 4, slide 49--- y todas de la misma forma:
-\textbf{voraz}, consumiendo todo lo que se pueda:
-
-\begin{center}
-\begin{tabular}{@{}p{0.30\linewidth}p{0.62\linewidth}@{}}
-\toprule
-\textbf{Caso} & \textbf{Decisión} \\
-\midrule
-\emph{dangling else} & El \tl{else} liga al \tl{if} más cercano. En el analizador es el orden de
-las ramas: se toma \tl{else} apenas se lo ve. Coincide con Java. \\[2pt]
-\texttt{new int[3][4]} & Todas las dimensiones pertenecen a la creación; no es un acceso al
-arreglo recién creado. Coincide con Java, que lo lee como una creación 2-D. Heredada de la
-gramática de la cátedra. \\[2pt]
-Cuerpo de la lambda & \texttt{x -> a = b} es \texttt{x -> (a = b)}. La introduce este trabajo, y
-afecta a un solo no terminal: \nt{RestoExpresion}, la única cola externa que todavía compite con la
-del cuerpo una vez que la lambda vive en el nivel más alto de la jerarquía
-(sección~\ref{sec:mas-ambiguedades}). Coincide con Java. \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Además, \nt{Asignacion} y \nt{Llamada} tienen cuerpos idénticos en la gramática original y por lo
-tanto toda sentencia-expresión tiene dos árboles. Se \textbf{colapsan en una sola producción}:
-distinguir una asignación de una llamada exige saber a qué se refiere el nombre de la izquierda, o
-sea una tabla de símbolos, y eso es trabajo del analizador semántico.
 
 \subsection{Dónde la especificación admitía más de una lectura}
 
@@ -1891,14 +1797,31 @@ sea una tabla de símbolos, y eso es trabajo del analizador semántico.
         terminan en \tl{;} y ningún logro les agrega cuerpo, así que un \tl{private} ahí sería
         siempre la forma que Java rechaza.
 
-  \item[Orden de los modificadores.] \texttt{public static void f()\{\}} se acepta y
-        \texttt{static public void f()\{\}} se rechaza. Es fiel a la gramática original, donde la
-        visibilidad precede al modificador; Java admitiría los dos órdenes, pero acá la
-        especificación \emph{sí} dice algo y gana sobre la regla de desempate.
+  \item[Orden de los modificadores.] Se aceptan \textbf{los dos}: \texttt{public static} y
+        \texttt{static public}, y lo mismo con \tl{private}. MiniJava no dice nada sobre el orden
+        ---el logro habla de \emph{poder indicar} la visibilidad---, así que manda la regla de
+        desempate. Que la visibilidad aparezca a un solo lado del \tl{static} es lo que impide
+        repetir un modificador, sin ningún chequeo fuera de la gramática. \tl{protected} \textbf{no}
+        se implementa: no figura en MiniJava.
 
-  \item[Inicializador de arreglos.] Es \textbf{anidable}: \texttt{new int[][]\{\{1,2\},\{3,4\}\}}
-        se acepta. El logro dice «como en Java» y sólo restringe \emph{dónde} puede aparecer
-        ---dentro de un \tl{new}--- no cuántas dimensiones admite.
+  \item[Dimensiones del arreglo.] \texttt{int[] x} se acepta y \texttt{int x[]} \textbf{no}: las
+        dimensiones van pegadas al tipo base y nunca al nombre, que es lo que define MiniJava base.
+        Java admite las dos formas, pero acá la especificación sí dice algo y gana.
+
+  \item[Inicializador de arreglos.] Toda dimensión de una creación conserva su tamaño, como en
+        MiniJava base, y el inicializador se le cuelga al final:
+        \texttt{new int[2][2]\{\{1,2\},\{3,4\}\}} se acepta y \texttt{new int[]\{1,2,3\}} no. Es
+        anidable. \textbf{Diverge de Java}, que prohíbe tamaño e inicializador juntos ---JLS
+        §15.10.1, verificado con \texttt{javac}: \emph{array creation with both dimension expression
+        and initialization is illegal}---. La divergencia es deliberada: el logro dice «como en
+        Java», pero MiniJava ya define la forma de las dimensiones y adoptar la de Java sería
+        ampliar el lenguaje en una construcción especificada. Queda aislada en una sola producción.
+
+  \item[Herencia.] Una clase hereda de \textbf{una} clase o implementa \textbf{una} interfaz, nunca
+        las dos ni varias: es la regla de la cátedra tal cual
+        (\regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements}
+        \nt{TipoReferencia} \alt{} \eps}). Java admite \texttt{extends A implements B, C}; no se
+        amplía.
 
   \item[Notación diamante.] Sólo al instanciar una clase genérica. \texttt{new C<>()} se acepta;
         \texttt{new C<>[3]} y \texttt{List<> x;} se rechazan. La restricción queda impuesta por la
@@ -1925,37 +1848,111 @@ sea una tabla de símbolos, y eso es trabajo del analizador semántico.
 \end{description}
 
 \subsection{Qué verifica el analizador y qué queda para el semántico}
+\label{sec:frontera-semantico}
 
-El logro \emph{MiniLambdas E2} prohíbe usar \tl{this} y capturar variables dentro de una lambda.
-Nada de eso es expresable en una gramática libre de contexto: no hay forma de escribir «\tl{this}
-es válido, salvo debajo de un cuerpo de lambda». El criterio para decidir en qué etapa se verifica
-cada una fue: \textbf{si alcanza con información que el analizador acaba de leer, la verifica el
-analizador; si hace falta resolver un nombre contra su declaración, es del semántico.}
+El criterio de frontera es uno solo:
+
+\begin{quote}
+\textbf{Si la restricción se decide con información que el analizador acaba de leer y sigue
+teniendo a mano, la verifica el analizador sintáctico. Si hace falta resolver un nombre contra su
+declaración ---o sea, una tabla de símbolos con alcances--- es del analizador semántico.}
+\end{quote}
+
+Lo que sigue es el inventario completo de lo que \textbf{atraviesa} el análisis sintáctico y queda
+para la Etapa 3. Está separado en dos: lo que viene de \textsc{MiniJava} base y lo que agrega cada
+logro de esta etapa.
+
+\paragraph{Del núcleo de \textsc{MiniJava}.}
 
 \begin{center}
-\begin{tabular}{@{}p{0.26\linewidth}cp{0.55\linewidth}@{}}
+\begin{tabular}{@{}p{0.40\linewidth}p{0.52\linewidth}@{}}
 \toprule
-\textbf{Restricción} & \textbf{Etapa} & \textbf{Por qué} \\
+\textbf{Pasa el análisis sintáctico} & \textbf{Qué tiene que decidir el semántico} \\
 \midrule
-\tl{this} explícito \newline \texttt{x -> this.c} & 2 &
-Pura forma: alcanza un indicador de «estoy dentro de una lambda», que se prende al entrar al
-cuerpo y se restaura al salir. \\[4pt]
-Captura \newline \texttt{x -> x + n} & 2 &
-El cuerpo de una lambda es \emph{una sola expresión}, así que adentro no se declara nada: los
-únicos nombres legales son sus propios parámetros, que el analizador acaba de leer. \\[4pt]
-Parámetro que no es un identificador pelado, o repetido \newline \texttt{(a + 1) -> a} & 2 &
-Hasta ver la \tl{->} el contenido entre paréntesis es una \nt{Expresion} en los dos casos. El
-analizador la lee y recuerda si consumió exactamente un \tl{idMetVar}. \\[4pt]
-Llamada sin punto \newline \texttt{x -> ayuda(x)} & \textbf{3} &
-Es \texttt{this.ayuda(x)} \emph{sólo si} \tl{ayuda} es un método de instancia. Si es \tl{static} de
-la misma clase no hay ningún \tl{this} y Java lo acepta. Distinguirlos exige la tabla de símbolos,
-así que rechazarlo acá sería rechazar un programa válido. \\
+\texttt{int x = "hola";}                       & compatibilidad de tipos en la inicialización \\
+\texttt{noDeclarada = 5;}                      & que el nombre esté declarado y en alcance \\
+\texttt{int x; int x;}                         & declaraciones duplicadas en el mismo alcance \\
+\texttt{5 = x;}                                & que el lado izquierdo de un \tl{=} sea asignable \\
+\texttt{m(1,2,3)} con \texttt{m} de un argumento & aridad contra la declaración \\
+\texttt{x.metodoQueNoExiste()}                 & que el miembro exista en el tipo del receptor \\
+\texttt{return;} en un método \tl{int}          & compatibilidad del valor de retorno \\
+un método \tl{int} sin \tl{return}             & que todo camino devuelva un valor \\
+\texttt{class A extends UnaInterfaz \{\}}      & que el padre de un \tl{extends} sea una clase \\
+\texttt{class A implements OtraClase \{\}}     & que lo implementado sea una interfaz \\
+\texttt{class A extends A \{\}}                & ciclos en la jerarquía de herencia \\
+\texttt{new Inexistente()}                     & que la clase exista y tenga ese constructor \\
+\texttt{this} en un método \tl{static}         & que haya una instancia sobre la cual resolverlo \\
+\texttt{a[i]} con \texttt{a} de tipo \tl{int}  & que el receptor de un \tl{[} sea un arreglo \\
+\texttt{if (1)}                                & que la condición sea \tl{boolean} \\
+\texttt{C.m()} con \texttt{m} de instancia     & que el método invocado así sea \tl{static} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Todo lo demás que dependa de resolver un nombre ---que exista, que el tipo cierre, que la aridad
-coincida--- es del semántico y no se toca en esta etapa.
+\paragraph{De los logros de esta etapa.}
+
+\begin{center}
+\begin{tabular}{@{}p{0.18\linewidth}p{0.32\linewidth}p{0.40\linewidth}@{}}
+\toprule
+\textbf{Logro} & \textbf{Pasa el análisis sintáctico} & \textbf{Qué tiene que decidir el semántico} \\
+\midrule
+MiniLambdas & \texttt{x -> this.campo} &
+Que no haya \tl{this} \emph{explícito} dentro del cuerpo. \\[4pt]
+MiniLambdas & \texttt{x -> campo} &
+Que no haya \tl{this} \emph{implícito}: si \texttt{campo} es un atributo, lo hay. Misma forma que
+el caso de abajo, y por eso los dos van juntos. \\[4pt]
+MiniLambdas & \texttt{x -> x + n} &
+Que \texttt{n} no sea una variable local ni un parámetro de afuera, o sea una captura. \\[4pt]
+MiniLambdas & \texttt{x -> y -> x + y} &
+Ídem con lambdas anidadas: la interna usa el parámetro de la externa. \\[4pt]
+MiniLambdas & \texttt{x -> ayuda(x)} &
+Es un \tl{this} implícito \emph{sólo si} \texttt{ayuda} es un método de instancia; si es \tl{static}
+de la misma clase, Java lo acepta. \\[4pt]
+MiniLambdas & \texttt{(a, a) -> a} &
+Que dos parámetros de la misma lambda no se llamen igual. \\[4pt]
+MiniLambdas & \texttt{(a ? b : x -> x).m()} &
+Un ternario con una rama lambda es una \emph{poly expression} (JLS 15.25): lo decide la
+clasificación de la expresión y su tipo destino. \\[4pt]
+Genericidad & \texttt{Lista<Persona> l = new Lista<Auto>();} &
+Que el argumento de tipo cierre con el del tipo declarado. \\[4pt]
+Genericidad & \texttt{C<T> x;} con \texttt{C} no genérica &
+Que la clase instanciada declare un parámetro de tipo. \\[4pt]
+Arreglos & \texttt{new int[2]\{1,2,3\}} &
+Que la cantidad de elementos del inicializador coincida con el tamaño, y que cada elemento sea del
+tipo del arreglo. \\[4pt]
+Arreglos & \texttt{new int[2][2]\{\{1\},\{2,3\}\}} &
+Que el anidamiento del inicializador coincida con la cantidad de dimensiones. \\[4pt]
+Fors! & \texttt{for (var e : 5) ;} &
+Que lo recorrido por el \tl{for} de iteradores sea iterable. \\[4pt]
+Visibilidad & \texttt{otro.metodoPrivado()} &
+Que un miembro \tl{private} no se use desde afuera de su clase. \\[4pt]
+Posfijos & \texttt{5++} en una variable no numérica &
+Que el operando sea una variable de tipo numérico y asignable. \\[4pt]
+Atributos inic. & \texttt{int x = otroAtributo;} &
+Orden de inicialización y alcance de lo que se referencia. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Y lo que sí verifica el analizador, aunque la gramática no lo exprese.} Son dos, los dos
+del logro de lambdas, y los dos son restricciones de \emph{forma}: no hay ningún nombre que
+resolver, alcanza con lo que el analizador acaba de leer.
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.64\linewidth}@{}}
+\toprule
+\textbf{Se rechaza} & \textbf{Cómo se decide} \\
+\midrule
+\texttt{(a + 1) -> a}  & El contenido del paréntesis se lee como \nt{Expresion} ---hasta ver el
+\tl{->} no se sabe si era una lista de parámetros--- y se recuerda si consumió exactamente un
+\tl{idMetVar}. Del segundo parámetro en adelante lo impone la gramática. \\[4pt]
+\texttt{(x -> x).m()}  & Se recuerda si la \textbf{raíz} de lo que se acaba de leer entre
+paréntesis fue una lambda, y si lo fue se exige que no siga ninguna cola. Expresarlo en la
+gramática exigiría clonar la cadena de colas entera en una variante «el contenido fue una lambda»,
+unos siete no terminales. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \subsection{Decisiones de implementación}
 
@@ -1966,14 +1963,21 @@ coincida--- es del semántico y no se toca en esta etapa.
         4, slide 40, avisa que factorizar de más le complica el trabajo al semántico; el no
         terminal insertado es justamente el punto de decisión que la Etapa 3 va a necesitar.
 
-  \item[La recursión a derecha se traduce con un bucle.] Clase 5, slide 59, muestra el método de
-        \nt{E'} llamándose a sí mismo. Acá se traduce con un \texttt{while}: deriva exactamente la
-        misma cadena y no hace depender de la pila de la JVM una cadena larga de operadores o una
-        lista larga de argumentos. Es la única libertad que se toma respecto del esquema.
+  \item[La recursión a derecha se traduce con recursión.] Clase 5, slide 59, muestra el método de
+        \nt{E'} llamándose a sí mismo, y así está implementado en los diez lugares donde la
+        gramática tiene una producción \nt{X} $\to$ $\alpha$ \nt{X} $\mid$ \eps{}. Hubo una versión
+        con \texttt{while} ---deriva la misma cadena y no hace depender de la pila de la JVM una
+        cadena larguísima de operadores---, y se revirtió por indicación del profesor: aleja el
+        código del esquema que se extiende en el semántico y lo vuelve más propenso a errores. El
+        analizador no se toma \textbf{ninguna} libertad respecto del Esquema Simple.
 
   \item[Modo Pánico: dónde se recupera.] En tres lugares y sólo tres ---las tres listas de la
         gramática que repiten un elemento: clases, miembros y sentencias---, así el manejo del
-        error no se desparrama por las diez secciones del analizador.
+        error no se desparrama por las diez secciones del analizador. Son justamente las tres
+        producciones recursivas a derecha del punto anterior, de modo que la recuperación vive
+        dentro de la recursión: el método de la lista corre un elemento, y si falla registra el
+        error, sincroniza y se vuelve a llamar sólo si se puede seguir. La invariante que lo hace
+        terminar es que cada nivel consuma al menos un token.
 
   \item[Modo Pánico: con qué se sincroniza.] Con los tokens de Pautas slide 40 (\tl{;}, \tl{\}} y
         la llave que abre) \textbf{más los Primeros del elemento de la lista}. Los Primeros hacen
@@ -1987,48 +1991,83 @@ coincida--- es del semántico y no se toca en esta etapa.
         ---mensaje, renglón en blanco, código--- por cada error. Es el mismo formato con el que la
         Etapa 1 reporta varios errores léxicos con \emph{Multi-detección}.
 
-  \item[Modo Pánico: el primer error no cambia.] El logro agrega errores al final de la lista,
-        nunca cambia el primero. Es lo que permite que un mismo caso del corpus valga con el logro
-        prendido y apagado, y hay un test que lo fija sobre todo el corpus.
+  \item[Modo Pánico: el primer error no cambia.] La recuperación agrega errores \emph{después} del
+        primero, nunca cambia cuál es el primero: el primer código reportado es exactamente el que
+        daría un analizador que cortara ahí, que es la convención base de Pautas slide 25. Cada caso
+        del corpus con errores declara ese primer código, y el tester estricto verifica que sea el
+        primero que el compilador emite.
 
 \end{description}
 
 % ===========================================================================
-\section{Herramientas y uso de inteligencia artificial}
+\section{Herramientas desarrolladas}
 % ===========================================================================
 
-\subsection{Herramientas desarrolladas}
-
-Para este informe se escribieron dos utilidades, que no forman parte del compilador y viven en
-\texttt{compilador/herramientas/}:
+Ninguna forma parte del compilador: viven en \texttt{compilador/herramientas/} y existen para
+\textbf{verificar} lo que este informe afirma. La gramática se mantiene en texto plano en
+\texttt{compilador/gramatica/}, y los documentos derivados ---el listado de producciones y la tabla
+de Primeros de este informe, y las clases \texttt{PrimerosDeX} del analizador--- se \textbf{generan}
+desde ahí y no se editan a mano, para que no puedan divergir.
 
 \begin{description}
-  \item[\texttt{primeros.py}] Calcula símbolos vaciables y conjuntos de Primeros por punto fijo,
-        verifica la condición LL(1), recorre todas las combinaciones de logros, compara
-        rangos de longitud derivable para distinguir ambigüedad de conflicto de predicción, y
-        simula el esquema de traducción sobre una secuencia de tokens.
-  \item[\texttt{gramatica\_a\_latex.py}] Genera el listado de producciones y la tabla de Primeros
-        de este informe desde el mismo archivo de gramática que verifica la herramienta anterior.
+  \item[\texttt{primeros.py}] El verificador. Calcula símbolos vaciables y conjuntos de Primeros
+        por punto fijo, verifica la condición LL(1) de la cátedra, compara rangos de longitud
+        derivable para distinguir una ambigüedad de un conflicto de predicción, audita el registro
+        de ambigüedades declaradas, y trae un simulador del Esquema Simple que permite probar la
+        gramática sobre una secuencia de tokens antes de escribir una línea de Java.
+
+  \item[\texttt{primeros\_a\_java.py}] Genera las diez clases \texttt{PrimerosDeX} que el analizador
+        consulta para elegir producción. Es lo único que garantiza que lo que el analizador usa sea
+        exactamente lo que el verificador calcula.
+
+  \item[\texttt{gramatica\_a\_latex.py}] Genera el listado de producciones y la tabla de Primeros de
+        este informe, desde el mismo archivo que verifica \texttt{primeros.py}.
+
+  \item[\texttt{gramatica\_a\_markdown.py}] Ídem para la documentación técnica del repositorio.
+
+  \item[\texttt{gramatica\_a\_javacc.py} y \texttt{gramatica\_a\_antlr.py}] Traducen la gramática a
+        los formatos de dos generadores de parsers de terceros. El parser JavaCC es el
+        \textbf{oráculo} que etiqueta el corpus generado (sección~\ref{sec:tres-reconocedores}); la
+        gramática ANTLR alimenta al generador de casos.
+
+  \item[\texttt{equivalencia\_de\_lenguajes.py}] Un \textbf{reconocedor de Earley} escrito para este
+        trabajo, que comprueba que corregir la gramática de la cátedra no cambió el lenguaje que
+        genera, derivando una cadena por cada producción de cada una.
+
+  \item[\texttt{auditar\_analizador.py}] Compara las producciones que cada método del analizador
+        cita en su comentario contra la gramática, y falla si una producción no la implementa nadie
+        o si un comentario quedó viejo.
+
+  \item[\texttt{comparar\_con\_gramatica.py}] Corre el analizador en Java y el simulador en Python
+        sobre el corpus entero y exige el mismo veredicto \emph{y el mismo token de rechazo}. Es la
+        verificación más fuerte de la suite: no depende de que a alguien se le ocurra el caso
+        correcto, sino de que dos implementaciones independientes coincidan.
+
+  \item[\texttt{aceptar\_fuente.py}] Tokeniza un fuente real con el analizador léxico de la Etapa 1
+        y le pasa la secuencia al simulador, para poder probar la gramática contra los casos de la
+        cátedra.
+
+  \item[\texttt{generar\_corpus\_fuzz.py} y \texttt{lote\_sintactico.py}] Generan el corpus:
+        Grammarinator deriva y muta programas a partir de la gramática ANTLR, el oráculo JavaCC
+        dicta el veredicto, y los casos escritos a mano se emiten con su expectativa declarada.
 \end{description}
 
-La gramática se mantiene en texto plano en \texttt{compilador/gramatica/}, en tres versiones: la
-base transcripta del documento de la cátedra, el núcleo corregido y la final con los logros.
 
-\subsection{Uso de inteligencia artificial}
+% ===========================================================================
+\appendix
+\section{Tabla de Primeros}
+\label{sec:tabla-primeros}
+% ===========================================================================
 
-Este trabajo se desarrolló con asistencia de un modelo de lenguaje (Claude, de Anthropic), en
-línea con la política de la cátedra que acepta y fomenta su uso. Se deja constancia del reparto
-concreto:
+Conjunto de Primeros de cada una de las 230 producciones de la gramática final. Es exactamente la
+tabla que el analizador consulta para elegir producción: las clases \texttt{PrimerosDeX} del código
+se \textbf{generan} desde el mismo archivo con \texttt{primeros\_a\_java.py}, así que lo que el
+analizador usa y lo que esta tabla dice no pueden divergir.
 
-\begin{itemize}
-  \item El \textbf{análisis de la gramática}, las transformaciones y las decisiones de diseño se
-        elaboraron en diálogo con la herramienta, y cada resultado se verificó de manera
-        independiente con \texttt{primeros.py} y con los 87 casos de aceptación y rechazo. Ninguna
-        afirmación de este informe descansa únicamente en la salida del modelo.
-  \item Las \textbf{herramientas} y la redacción del informe se escribieron con su asistencia.
-  \item La \textbf{verificación} es mecánica y reproducible con los comandos de la
-        sección~\ref{sec:verificacion}, de modo que cualquier error es localizable en un paso
-        concreto y no depende de confiar en el proceso.
-\end{itemize}
+Va al final, y no en la sección de verificación, porque es material de consulta: la disjunción de
+esos conjuntos es lo que se comprueba en la sección~\ref{sec:verificacion}, y para leer esa
+comprobación no hace falta recorrer la tabla entera.
+
+\input{generado/tabla-primeros}
 
 \end{document}

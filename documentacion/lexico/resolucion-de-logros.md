@@ -4,33 +4,27 @@ Documento autocontenido: qué exige cada logro (con el texto de la consigna), c�
 está implementado y **cómo verificarlo** ejecutando algo concreto.
 
 El proyecto persigue **los ocho desde el primer día**, no como agregados posteriores sobre un mínimo
-producto viable. Esa decisión tiene una consecuencia de diseño visible en todo el código: cuatro de
-los logros cambian el comportamiento observable del compilador, así que cada uno vive detrás de un
-interruptor de configuración y el comportamiento base que pide la consigna sigue siendo demostrable.
+producto viable. Los cuatro que cambian el comportamiento observable del compilador están **siempre
+activos**: el compilador reconoce MiniJava con todos los logros incorporados y no es configurable.
 
 ## Resumen
 
 | Logro | Naturaleza | Estado |
 |---|---|---|
-| 1. Floats I | cambia el lenguaje reconocido | implementado, con interruptor |
-| 2. Unicodes | cambia el lenguaje reconocido | implementado, con interruptor |
-| 3. Multi-detección de Errores Léxicos | cambia la política ante errores | implementado, con interruptor |
-| 4. Reporte de Error Elegante | agrega salida | implementado, con interruptor |
+| 1. Floats I | cambia el lenguaje reconocido | implementado, siempre activo |
+| 2. Unicodes | cambia el lenguaje reconocido | implementado, siempre activo |
+| 3. Multi-detección de Errores Léxicos | cambia la política ante errores | implementado, siempre activo |
+| 4. Reporte de Error Elegante | agrega salida | implementado, siempre activo |
 | 5. Manejador de Archivos Eficiente | reemplaza una pieza | implementado — y es un requisito, no un extra |
 | 6. Imbatibilidad Léxica | consecuencia de la suite | los 158 casos de fuente, el caso de regresión y los 2 testers de la cátedra pasan |
 | 7. Good Job! I | consecuencia de lo anterior | — |
 | 8. Entrega Anticipada Léxica | hito de calendario | — |
 
-Los cuatro interruptores viven en un único lugar:
-
-```java
-ConfiguracionDelCompilador(floatsHabilitados, unicodeHabilitado,
-                           reporteElegante, multiDeteccionDeErrores)
-```
-
-Los cuatro en `true` por defecto. Existen para que cada logro sea **testeable por separado** y para
-poder demostrar que el compilador cumple tanto la consigna base como los logros — sin el
-interruptor, el comportamiento base quedaría sepultado bajo el del logro.
+Hubo una versión en la que los cuatro vivían detrás de un `ConfiguracionDelCompilador` y podían
+apagarse uno por uno, para poder demostrar el comportamiento base además del de cada logro. **El
+profesor lo revirtió** al empezar la Etapa 2: complejizaba la gramática sin necesidad y cada etapa
+nueva obligaría a rehacerlo. El comportamiento base que pide la consigna queda documentado acá y en
+el informe, no ejecutable.
 
 ## 1. Floats I
 
@@ -87,9 +81,8 @@ Además, el escape se lee **dentro** de dos construcciones distintas, así que l
 escape necesitan saber a cuál volver al terminar — es una de las tres razones por las que existen
 estados construidos con `new` en vez de singletones. Ver [`patron-state.md`](patron-state-metodo-por-estado.md) §6.
 
-**Qué controla el interruptor**: sólo la secuencia escapada, **no** los caracteres crudos. Gatear los
-crudos exigiría meter clasificadores "sólo ASCII" en todo el autómata, ensuciando el léxico entero
-para demostrar algo que el escape ya demuestra.
+**Qué alcanza el logro**: sólo la secuencia escapada, **no** los caracteres crudos, que ya se
+aceptaban.
 
 **Cómo verificarlo:**
 

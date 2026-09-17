@@ -1,0 +1,12 @@
+// [Error:)|10]
+interface DCB {
+}
+interface Qc extends NCi3y {
+}
+interface ZV extends Rv {
+I___f < A > [ ] [ ] [ ] [ ] h6 ( ) ;
+Tv l ( boolean g_i_ ) ;
+L f ( ) ;
+char [ ] y ( D ) ;
+MH [ ] tKr ( N9v__ < L > r , int f_ ) ;
+}

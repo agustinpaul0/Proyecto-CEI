@@ -1,0 +1,2 @@
+interface Wd < K > {
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Genera las constantes de Primeros que consume el Analizador Sintáctico.
 
-    python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g
+    python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
 
 Escribe una clase por sección de la gramática en
 src/main/java/minijava/sintactico/primeros/, con una constante por producción y
@@ -11,8 +11,6 @@ contra su analizador. Se genera y NO se edita a mano: es la única forma de
 garantizar que lo que el analizador usa para elegir producción sea exactamente
 lo que el verificador calcula sobre la gramática.
 
-Las producciones marcadas con un logro (@+nombre / @-nombre) se emiten igual,
-porque el analizador consulta el logro por su cuenta antes de tomar la rama.
 """
 import sys
 from collections import OrderedDict
@@ -44,10 +42,10 @@ DESCRIPCION = {
     "PrimerosDeMiembros": "Los miembros de una clase y los metodos de una interfaz.",
     "PrimerosDeTipos": "Los tipos, las dimensiones y los argumentos formales.",
     "PrimerosDeSentencias": "Los bloques y las sentencias.",
-    "PrimerosDeFors": "El logro Fors! E2.",
+    "PrimerosDeFors": "La sentencia for, estandar y de iteradores.",
     "PrimerosDeExpresiones": "Las capas de precedencia de las expresiones.",
     "PrimerosDeReferencias": "Las referencias, los primarios y el encadenamiento.",
-    "PrimerosDeLambdas": "El logro MiniLambdas E2 y la desambiguacion del parentesis.",
+    "PrimerosDeLambdas": "Las lambdas y la desambiguacion del parentesis.",
     "PrimerosDeCreacion": "Las expresiones de creacion.",
     "PrimerosDeArgumentos": "La lista de argumentos actuales de una llamada.",
 }
@@ -168,7 +166,7 @@ def declaracion(nombre, terminales):
 
 
 def main():
-    ruta = sys.argv[1] if len(sys.argv) > 1 else "gramatica/minijava-ll1-logros.g"
+    ruta = sys.argv[1] if len(sys.argv) > 1 else "gramatica/minijava-ll1-final.g"
     texto = open(ruta, encoding="utf-8").read()
     g = parsear(texto)
     vaciables, primeros_nt, _ = analizar(g)
@@ -203,8 +201,6 @@ def main():
             "//",
             "// Una constante por produccion, con su produccion citada al lado, para que",
             "// el analizador se lea contra la gramatica del informe renglon por renglon.",
-            "// Las producciones que existen por un logro se emiten igual: el analizador",
-            "// consulta el logro por su cuenta antes de tomar la rama.",
             f"public final class {clase} {{",
             "",
         ]

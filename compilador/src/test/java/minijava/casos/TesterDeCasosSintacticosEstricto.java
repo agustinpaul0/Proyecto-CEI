@@ -1,11 +1,7 @@
 package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipalSintactico;
-import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -31,8 +27,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 // ser el PRIMER código que emite y no puede haber ninguno de más.
 //
 // «Primer» y no «único» porque con Modo Pánico el análisis sigue después del
-// primer error y reporta los que arrastra. El primero es el que el caso declara
-// y no cambia con el logro: eso lo fija elPrimerCodigoNoDependeDelModoPanico.
+// primer error y reporta los que arrastra. El primero es el que el caso declara.
 @Tag("sintactico")
 class TesterDeCasosSintacticosEstricto {
 
@@ -68,7 +63,6 @@ class TesterDeCasosSintacticosEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casosCorrectos")
     void unCasoCorrectoImprimeExactamenteElContratoDeExito(Path caso) throws IOException {
-        saltearSiNoAplica(caso);
 
         assertEquals(List.of(MENSAJE_DE_EXITO, "", "[SinErrores]"), ejecutar(caso),
                 caso + ": la salida de un fuente valido es la de Pautas slide 27");
@@ -77,7 +71,6 @@ class TesterDeCasosSintacticosEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casosConErrores")
     void unCasoConErroresDaExactamenteElCodigoQueDeclara(Path caso) throws IOException {
-        saltearSiNoAplica(caso);
         List<String> salida = ejecutar(caso);
         List<String> codigos = codigosDe(salida);
 
@@ -95,7 +88,6 @@ class TesterDeCasosSintacticosEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casosConErrores")
     void cadaReporteDeErrorTieneLaFormaDePautas(Path caso) throws IOException {
-        saltearSiNoAplica(caso);
         List<String> salida = ejecutar(caso);
 
         assertEquals(0, salida.size() % 3, caso + ": " + salida);
@@ -111,44 +103,6 @@ class TesterDeCasosSintacticosEstricto {
         }
     }
 
-    // La invariante que hace que un mismo caso valga con el logro y sin él.
-    @Test
-    void elPrimerCodigoNoDependeDelModoPanico() throws IOException {
-        var base = ConfiguracionDeLaCorrida.actual();
-        List<String> divergencias = new ArrayList<>();
-        for (Path caso : casosConErrores().toList()) {
-            if (!RequisitosDeLogrosDelCaso.de(Fase.SINTACTICO, caso).seCumplenEn(base)) {
-                continue;
-            }
-            String conLogro = codigosDe(ejecutar(caso, base.con(Logro.MODO_PANICO))).getFirst();
-            String sinLogro = codigosDe(ejecutar(caso, base.sin(Logro.MODO_PANICO))).getFirst();
-            if (!conLogro.equals(sinLogro)) {
-                divergencias.add(caso + ": " + sinLogro + " vs " + conLogro);
-            }
-        }
-
-        assertEquals(List.of(), divergencias);
-    }
-
-    @Test
-    void todoCasoDelManifiestoExisteEnElCorpus() {
-        Path raiz = Path.of("resources");
-        List<String> inexistentes = RequisitosDeLogrosDelCaso.manifiestoDe(Fase.SINTACTICO)
-                .keySet().stream().filter(caso -> !Files.isRegularFile(raiz.resolve(caso)))
-                .sorted().toList();
-
-        assertEquals(List.of(), inexistentes,
-                "el manifiesto declara casos que ya no existen");
-    }
-
-    private void saltearSiNoAplica(Path caso) {
-        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.SINTACTICO, caso);
-        var configuracion = ConfiguracionDeLaCorrida.actual();
-        assumeTrue(requisitos.seCumplenEn(configuracion),
-                () -> caso + ": no aplica a esta configuracion de logros ("
-                        + requisitos.describirIncumplidos(configuracion) + ")");
-    }
-
     private List<String> codigosDe(List<String> salida) {
         return salida.stream().filter(linea -> linea.startsWith("[")).toList();
     }
@@ -160,13 +114,8 @@ class TesterDeCasosSintacticosEstricto {
     }
 
     private List<String> ejecutar(Path caso) throws IOException {
-        return ejecutar(caso, ConfiguracionDeLaCorrida.actual());
-    }
-
-    private List<String> ejecutar(Path caso, ConfiguracionDelCompilador configuracion)
-            throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalSintactico(salida, configuracion).ejecutar(caso.toString());
+        new ModuloPrincipalSintactico(salida).ejecutar(caso.toString());
         List<String> lineas = salida.getLineas();
         VolcadoDeCasos.volcar(caso.toString(), lineas);
         return lineas;

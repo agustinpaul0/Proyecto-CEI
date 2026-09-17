@@ -12,7 +12,7 @@ class Registro<T> extends Base<T> {
     for(T elemento : iniciales) {
       this.cuenta++;
     }
-    var matriz = new int[][]{{1,2},{3,4}};
+    var matriz = new int[2][2]{{1,2},{3,4}};
   }
 
   private Lista<T> filtrar(Lista<T> origen, int limite){

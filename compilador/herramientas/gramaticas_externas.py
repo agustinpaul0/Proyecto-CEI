@@ -2,17 +2,17 @@
 """Lo que comparten las dos gramáticas externas que consume el fuzzer.
 
 `gramatica_a_antlr.py` y `gramatica_a_javacc.py` generan la parte sintáctica
-desde gramatica/minijava-ll1-logros.g, que es la fuente de verdad del proyecto,
+desde gramatica/minijava-ll1-final.g, que es la fuente de verdad del proyecto,
 pero la parte léxica no está en ese archivo: vive en el analizador de la Etapa 1.
 Acá se transcribe una vez, siguiendo
 documentacion/lexico/especificacion-lexica-de-minijava.md, y las dos la comparten,
 junto con la convención para nombrar las reglas.
 
-Los tokens que un logro habilita (`for`, `private`, `?`, `->`, `float` y sus
-literales) se emiten sólo si el logro está prendido, igual que en el compilador.
+Se emiten todos los terminales de la gramática: el compilador reconoce el
+lenguaje entero, sin configuración.
 """
 
-# terminal de la gramática -> (nombre de la regla léxica, logro que lo habilita)
+# terminal de la gramática -> (nombre de la regla léxica, None)
 PALABRAS_CLAVE = [
     ("class", "PR_CLASS", None), ("extends", "PR_EXTENDS", None),
     ("interface", "PR_INTERFACE", None), ("implements", "PR_IMPLEMENTS", None),
@@ -85,14 +85,13 @@ def nombre_de_regla(terminal):
     raise KeyError(f"terminal sin regla lexica: {terminal!r}")
 
 
-def habilitados(logros):
-    """Los terminales activos con esta configuración de logros."""
-    return {lexema for lexema, _, logro in TODOS if logro is None or logro in logros}
+def habilitados():
+    """Todos los terminales de la gramática."""
+    return {lexema for lexema, _, _ in TODOS}
 
 
-def _activos(tabla, logros):
-    return [(lexema, regla) for lexema, regla, logro in tabla
-            if logro is None or logro in logros]
+def _activos(tabla):
+    return [(lexema, regla) for lexema, regla, _ in tabla]
 
 
 # --- ANTLR -------------------------------------------------------------------
@@ -101,7 +100,7 @@ def _antlr_literal(lexema):
     return "'" + lexema.replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
-def lexer_antlr(logros):
+def lexer_antlr():
     """El bloque léxico del .g4. El orden importa: las palabras clave van antes
     que los identificadores para que `class` no sea un idMV, y ID_CLASE antes que
     ID_GEN aunque ANTLR resuelva por longitud."""
@@ -110,17 +109,16 @@ def lexer_antlr(logros):
                           (OPERADORES, "operadores"),
                           (PUNTUACION, "puntuacion")):
         lineas.append(f"// {titulo}")
-        for lexema, regla in _activos(tabla, logros):
+        for lexema, regla in _activos(tabla):
             lineas.append(f"{regla} : {_antlr_literal(lexema)} ;")
         lineas.append("")
 
     lineas.append("// literales e identificadores")
-    if "float" in logros:
-        lineas.append("FLOAT_LITERAL")
-        lineas.append("    : DIGITO+ '.' DIGITO* EXPONENTE? SUFIJO?")
-        lineas.append("    | DIGITO+ EXPONENTE SUFIJO?")
-        lineas.append("    | DIGITO+ SUFIJO")
-        lineas.append("    ;")
+    lineas.append("FLOAT_LITERAL")
+    lineas.append("    : DIGITO+ '.' DIGITO* EXPONENTE? SUFIJO?")
+    lineas.append("    | DIGITO+ EXPONENTE SUFIJO?")
+    lineas.append("    | DIGITO+ SUFIJO")
+    lineas.append("    ;")
     # Uno a nueve dígitos: diez ya es un error léxico y el fuzzer no debe generarlo.
     lineas.append("INT_LITERAL : DIGITO DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? ;")
     lineas.append("CHAR_LITERAL : '\\'' ( CHAR_COMUN | ESCAPE ) '\\'' ;")
@@ -142,9 +140,8 @@ def lexer_antlr(logros):
     # caracteres, o sea un error léxico, y el corpus sintáctico tiene que valer en
     # cualquier configuración. Los escapes Unicode los cubre el corpus léxico.
     lineas.append("fragment ESCAPE : '\\\\' [btnfr\"'\\\\] ;")
-    if "float" in logros:
-        lineas.append("fragment EXPONENTE : [eE] [+-]? DIGITO+ ;")
-        lineas.append("fragment SUFIJO : [fFdD] ;")
+    lineas.append("fragment EXPONENTE : [eE] [+-]? DIGITO+ ;")
+    lineas.append("fragment SUFIJO : [fFdD] ;")
     lineas.append("")
     lineas.append("// se descartan")
     lineas.append("COMENTARIO_DE_LINEA : '//' ~[\\r\\n]* -> skip ;")
@@ -162,7 +159,7 @@ def _javacc_literal(lexema):
     return '"' + "".join(_ESCAPES_JAVACC.get(c, c) for c in lexema) + '"'
 
 
-def lexer_javacc(logros):
+def lexer_javacc():
     lineas = ["SKIP :", "{", '      " "', '    | "\\t"', '    | "\\r"', '    | "\\n"',
               '    | <"//" (~["\\r","\\n"])*>',
               '    | <"/*" (~["*"])* ("*" (~["*","/"]) (~["*"])*)* ("*")+ "/">', "}", ""]
@@ -170,12 +167,11 @@ def lexer_javacc(logros):
     lineas.append("{")
     entradas = []
     for tabla in (PALABRAS_CLAVE, OPERADORES, PUNTUACION):
-        for lexema, regla in _activos(tabla, logros):
+        for lexema, regla in _activos(tabla):
             entradas.append(f"<{regla}: {_javacc_literal(lexema)}>")
-    if "float" in logros:
-        entradas.append('<FLOAT_LITERAL: (<DIGITO>)+ "." (<DIGITO>)* (<EXPONENTE>)? (<SUFIJO>)?'
-                        ' | (<DIGITO>)+ <EXPONENTE> (<SUFIJO>)?'
-                        ' | (<DIGITO>)+ <SUFIJO>>')
+    entradas.append('<FLOAT_LITERAL: (<DIGITO>)+ "." (<DIGITO>)* (<EXPONENTE>)? (<SUFIJO>)?'
+                    ' | (<DIGITO>)+ <EXPONENTE> (<SUFIJO>)?'
+                    ' | (<DIGITO>)+ <SUFIJO>>')
     entradas.append("<INT_LITERAL: (<DIGITO>) (<DIGITO>)? (<DIGITO>)? (<DIGITO>)? (<DIGITO>)?"
                     " (<DIGITO>)? (<DIGITO>)? (<DIGITO>)? (<DIGITO>)?>")
     entradas.append('<CHAR_LITERAL: "\'" ( <CHAR_COMUN> | <ESCAPE> ) "\'">')
@@ -189,9 +185,8 @@ def lexer_javacc(logros):
     entradas.append('<#CHAR_COMUN: ["\\u0020"-"\\u0026","\\u0028"-"\\u005b","\\u005d"-"\\u007e"]>')
     entradas.append('<#STRING_COMUN: ["\\u0020"-"\\u0021","\\u0023"-"\\u005b","\\u005d"-"\\u007e"]>')
     entradas.append('<#ESCAPE: "\\\\" ["b","t","n","f","r","\\"","\'","\\\\"]>')
-    if "float" in logros:
-        entradas.append('<#EXPONENTE: ["e","E"] (["+","-"])? (<DIGITO>)+>')
-        entradas.append('<#SUFIJO: ["f","F","d","D"]>')
+    entradas.append('<#EXPONENTE: ["e","E"] (["+","-"])? (<DIGITO>)+>')
+    entradas.append('<#SUFIJO: ["f","F","d","D"]>')
     for i, entrada in enumerate(entradas):
         lineas.append(("      " if i == 0 else "    | ") + entrada)
     lineas.append("}")

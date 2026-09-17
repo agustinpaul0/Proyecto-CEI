@@ -1,0 +1,2 @@
+interface FkL_ < O > {
+}

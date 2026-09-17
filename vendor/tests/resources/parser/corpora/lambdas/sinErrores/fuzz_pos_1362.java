@@ -1,0 +1,2 @@
+class AR_J {
+}

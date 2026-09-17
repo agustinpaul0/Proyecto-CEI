@@ -5,14 +5,12 @@ import minijava.lexico.tokens.TipoDeToken;
 import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 
 // GENERADO por herramientas/primeros_a_java.py desde
-// gramatica/minijava-ll1-logros.g. No editar a mano: se regenera.
+// gramatica/minijava-ll1-final.g. No editar a mano: se regenera.
 //
 // Los bloques y las sentencias.
 //
 // Una constante por produccion, con su produccion citada al lado, para que
 // el analizador se lea contra la gramatica del informe renglon por renglon.
-// Las producciones que existen por un logro se emiten igual: el analizador
-// consulta el logro por su cuenta antes de tomar la rama.
 public final class PrimerosDeSentencias {
 
     // Bloque -> { ListaSentencias }
@@ -51,20 +49,6 @@ public final class PrimerosDeSentencias {
 
     // Sentencia -> For
     public static final ConjuntoDePrimeros SENTENCIA_FOR = de(TipoDeToken.PR_FOR);
-
-    // Sentencia -> SentenciaExpresion ;
-    public static final ConjuntoDePrimeros SENTENCIA_SENTENCIA_EXPRESION = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
-
-    // SentenciaExpresion -> ExpresionSinLambda
-    public static final ConjuntoDePrimeros SENTENCIA_EXPRESION_EXPRESION_SIN_LAMBDA = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
-            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
     // Sentencia -> ExpresionSinIdClase ;
     public static final ConjuntoDePrimeros SENTENCIA_EXPRESION_SIN_ID_CLASE = de(

@@ -28,9 +28,7 @@ public final class EstadoIdMV implements EstadoLexico {
             return new Continuar(INSTANCIA);
         }
         String lexema = contexto.getLexema();
-        TipoDeToken tipo = TablaDeLexemas.buscar(lexema)
-                .filter(candidato -> TablaDeLexemas.estaHabilitado(candidato, contexto.getConfiguracion()))
-                .orElse(TipoDeToken.ID_MV);
+        TipoDeToken tipo = TablaDeLexemas.buscar(lexema).orElse(TipoDeToken.ID_MV);
         return new Emitir(new Token(tipo, lexema, contexto.getLinea()));
     }
 

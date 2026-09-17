@@ -1,8 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.Logro;
-import minijava.logros.RequiereLogro;
-import minijava.logros.RequiereLogroApagado;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -72,7 +69,6 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     // ---------------------------------------------------------- visibilidad ---
 
     @ParameterizedTest
-    @RequiereLogro(Logro.VISIBILIDAD)
     @ValueSource(strings = {
             "private int x;", "public int x;", "int x;",
             "private void m1(){}", "public void m1(){}",
@@ -83,56 +79,44 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     }
 
     @Test
-    @RequiereLogroApagado(Logro.VISIBILIDAD)
-    void sinVisibilidadMejoradaPrivateNoEsUnModificador(@TempDir Path dir) {
-        assertEquals("private", rechazar(dir, "class C1 { private int x; }").getLexemaOfensivo());
-    }
-
-    // Sin el logro, `public` sólo aparece en el constructor: es lo único que lo
-    // distingue del resto de los miembros en la gramática original.
-    @Test
-    @RequiereLogroApagado(Logro.VISIBILIDAD)
-    void sinVisibilidadMejoradaElPublicSoloValeEnElConstructor(@TempDir Path dir) {
-        aceptar(dir, "class C1 { public C1(){} }");
-        assertEquals("int", rechazar(dir, "class C1 { public int x; }").getLexemaOfensivo());
-    }
-
-    @Test
-    @RequiereLogro(Logro.VISIBILIDAD)
     void unMetodoDeInterfazAdmitePublicPeroNuncaPrivate(@TempDir Path dir) {
         aceptar(dir, "interface I1 { public void m1(); }");
         assertEquals("private", rechazar(dir, "interface I1 { private void m1(); }")
                 .getLexemaOfensivo());
     }
 
-    // El orden es fiel a la gramática original: `static public` se rechaza.
+    // Los dos órdenes valen, como en Java.
     @Test
-    @RequiereLogro(Logro.VISIBILIDAD)
-    void laVisibilidadVaAntesDelStaticYNoAlReves(@TempDir Path dir) {
+    void laVisibilidadPuedeIrAntesODespuesDelStatic(@TempDir Path dir) {
         aceptar(dir, "class C1 { public static int m1(){} }");
-        assertEquals("public", rechazar(dir, "class C1 { static public int m1(){} }")
+        aceptar(dir, "class C1 { static public int m1(){} }");
+        aceptar(dir, "class C1 { private static int m1(){} }");
+        aceptar(dir, "class C1 { static private int m1(){} }");
+    }
+
+    // Que la visibilidad aparezca a UN SOLO lado del `static` es lo que impide
+    // repetir el modificador, sin ningún chequeo fuera de la gramática.
+    @Test
+    void unModificadorNoSePuedeRepetir(@TempDir Path dir) {
+        assertEquals("private", rechazar(dir, "class C1 { public private int m1(){} }")
+                .getLexemaOfensivo());
+        assertEquals("static", rechazar(dir, "class C1 { static static int m1(){} }")
+                .getLexemaOfensivo());
+        assertEquals("private", rechazar(dir, "class C1 { public static private int m1(){} }")
                 .getLexemaOfensivo());
     }
 
     // ------------------------------------------------ atributos inicializados ---
 
     @Test
-    @RequiereLogro(Logro.ATRINIT)
     void conAtributosInicializadosUnAtributoPuedeTraerValor(@TempDir Path dir) {
         aceptar(dir, "class C1 { int x = 5; }");
         aceptar(dir, "class C1 { Persona p = new Persona(); }");
     }
 
-    @Test
-    @RequiereLogroApagado(Logro.ATRINIT)
-    void sinAtributosInicializadosElIgualSeRechaza(@TempDir Path dir) {
-        assertEquals("=", rechazar(dir, "class C1 { int x = 5; }").getLexemaOfensivo());
-    }
-
     // `a = b = c` no es válido: el lado derecho es una ExpresionCondicional y no
     // una Expresion, igual que en la gramática original.
     @Test
-    @RequiereLogro(Logro.ATRINIT)
     void laInicializacionNoEncadenaAsignaciones(@TempDir Path dir) {
         assertEquals("=", rechazar(dir, "class C1 { int x = y = 5; }").getLexemaOfensivo());
     }
@@ -173,7 +157,6 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     // ------------------------------------------ variables locales clásicas ---
 
     @ParameterizedTest
-    @RequiereLogro(Logro.VARCLASICA)
     @ValueSource(strings = {
             "int x;", "int x = 1;", "int x, y;", "int x, y, z = 10;",
             "int[] a;", "int[][] m;", "Persona p;", "Persona p = new Persona();",
@@ -183,17 +166,9 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
-    @Test
-    @RequiereLogroApagado(Logro.VARCLASICA)
-    void sinVariablesClasicasSoloSeDeclaraConVar(@TempDir Path dir) {
-        aceptar(dir, envolverEnMetodo("var x = 1;"));
-        assertEquals("int", rechazar(dir, envolverEnMetodo("int x;")).getLexemaOfensivo());
-    }
-
     // `C x;` y `C.m();` compiten por el idClase, y el desempate es el token
     // siguiente: `.` es expresión, cualquier otro es declaración.
     @Test
-    @RequiereLogro(Logro.VARCLASICA)
     void unIdClaseSeDesempataConElTokenSiguiente(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("Persona p;"));
         aceptar(dir, envolverEnMetodo("Persona.crear();"));
@@ -209,7 +184,6 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
 
     // Sólo las formas que el logro Fors! trae por sí solo.
     @ParameterizedTest
-    @RequiereLogro(Logro.FOR)
     @ValueSource(strings = {
             "for(;;) ;",
             "for(; i < 10; ) ;",
@@ -235,8 +209,6 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     // clásico declara su propia variable. Por eso el encabezado tiene su propio
     // <InicializacionDeDeclaradorFor> en vez de reusar el de las variables locales.
     @ParameterizedTest
-    @RequiereLogro(Logro.FOR)
-    @RequiereLogroApagado(Logro.VARCLASICA)
     @ValueSource(strings = {
             "for(int i = 0; i < 10; ) ;",
             "for(int i = 0; ; ) ;",
@@ -250,19 +222,9 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
-    // Y la contracara: esa misma declaración COMO SENTENCIA sigue necesitando el
-    // logro de variables locales clásicas. Los dos logros son independientes.
-    @Test
-    @RequiereLogro(Logro.FOR)
-    @RequiereLogroApagado(Logro.VARCLASICA)
-    void laMismaDeclaracionComoSentenciaSigueNecesitandoLasVariablesClasicas(@TempDir Path dir) {
-        assertEquals("int", rechazar(dir, envolverEnMetodo("int i = 0;")).getLexemaOfensivo());
-    }
-
     // El declarador del for es un tipo de MiniJava: las dimensiones van pegadas al
     // tipo (`int[] v`) y no al nombre, que es la forma que la gramática admite.
     @Test
-    @RequiereLogro(Logro.FOR)
     void elForNoAdmiteLasDimensionesAlEstiloC(@TempDir Path dir) {
         assertEquals("[", rechazar(dir, envolverEnMetodo("for(int v[] = null; ; ) ;"))
                 .getLexemaOfensivo());
@@ -270,27 +232,18 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
 
     // Y el `i++` del incremento es del logro de posfijos.
     @Test
-    @RequiereLogro({Logro.FOR, Logro.POSFIJO})
     void elForConIncrementoPosfijoNecesitaTambienLosPosfijos(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("for(; ; i++) ;"));
     }
 
-    @Test
-    @RequiereLogroApagado(Logro.FOR)
-    void sinForsLaPalabraForNoEsUnaSentencia(@TempDir Path dir) {
-        assertEquals(";", rechazar(dir, envolverEnMetodo("for(;;) ;")).getLexemaOfensivo());
-    }
-
     // El logro restringe a una sola sentencia o expresión por separador.
     @Test
-    @RequiereLogro(Logro.FOR)
     void elForNoAdmiteVariasExpresionesPorSeparador(@TempDir Path dir) {
         assertEquals(",", rechazar(dir, envolverEnMetodo("for(int i=0, j=0; ; ) ;"))
                 .getLexemaOfensivo());
     }
 
     @Test
-    @RequiereLogro(Logro.FOR)
     void elForDeIteradoresNoLlevaClausulasFinales(@TempDir Path dir) {
         assertEquals(";", rechazar(dir, envolverEnMetodo("for(var e : lista; ; ) ;"))
                 .getLexemaOfensivo());
@@ -321,7 +274,7 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
             "return                   | }",
             "{ ;                      | $",
             "m1(                      | }",
-            "m1(a,)                   | )",
+            "m1(a)                   | }",
             "a[] = 1;                 | ]",
     })
     // El lexema esperado es el del token donde el análisis se detiene: como la

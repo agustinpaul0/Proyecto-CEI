@@ -160,10 +160,10 @@ Java el pre-procesador de escapes Unicode debe poder representar un `\u` literal
 **Fuente**: criterio propio.
 
 El logro *Unicodes* cubre dos cosas: caracteres no-ASCII crudos dentro de literales (`'ñ'`,
-`"letra ü"`) y la secuencia escapada `\uXXXX`. El interruptor de configuración desactiva **sólo la
-segunda**.
+`"letra ü"`) y la secuencia escapada `\uXXXX`. Lo que el logro **agrega** es sólo la segunda: los
+crudos ya se aceptaban.
 
-**Por qué**: gatear también los caracteres crudos exigiría meter clasificadores "sólo ASCII" en cada
+**Por qué**: distinguirlos exigiría meter clasificadores "sólo ASCII" en cada
 estado del autómata, ensuciando todo el léxico para demostrar algo que el escape ya demuestra por sí
 solo.
 

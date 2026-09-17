@@ -138,17 +138,13 @@ un cambio en la gramática tenga un único lugar donde reflejarse.
 Las 220 constantes —una por producción— **se generan**, no se escriben:
 
 ```bash
-python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g
+python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
 ```
 
 Generarlas es lo único que garantiza que lo que el analizador usa para elegir producción sea
 exactamente lo que el verificador calcula sobre la gramática. Las clases `PrimerosDeX` —una por
 sección de la gramática, la misma división que `partes/`— no se editan a mano; si
 la gramática cambia, se regenera.
-
-`ConjuntoDePrimeros` además **filtra por logro** antes de describir lo esperado en un mensaje de
-error: prometer un token que un logro apagado sacó del lenguaje sería ofrecer una entrada que el
-compilador igual rechazaría.
 
 ## 5.1. Cómo se divide el analizador
 
@@ -240,27 +236,27 @@ comprueba con un reconocedor de Earley que la gramática final con cero logros y
 **generen el mismo lenguaje**, derivando una cadena por cada producción de cada una. Es la respuesta
 a la exigencia de Clase 4 de adaptar la gramática «sin cambiar el lenguaje que genera».
 
-## 7. Los logros son interruptores independientes
+## 7. Los logros no son configurables
 
-El compilador tiene que poder ejecutarse y testearse con **0, 1 o N logros en cualquier
-combinación**, y la de cero logros debe reproducir exactamente la especificación base de la
-cátedra.
+**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
+siempre. La gramática está escrita en base a todos los logros y sólo así: no tiene reglas dinámicas
+que aparecen y desaparecen según los logros.**
 
-`ConfiguracionDelCompilador` envuelve un `EnumSet<Logro>` con los 14 logros conmutables de las dos
-etapas, configurable por CLI (`--logros=ninguno`, `--logros=ternario,for`, `--logros=etapa1`) y por
-la propiedad de sistema `-Dlogros` para los tests. El nombre de cada logro es el mismo flag con el
-que la gramática marca sus producciones, para que el enum y `minijava-ll1-logros.g` se lean uno
-contra el otro.
+Lo dictaminó el profesor, revirtiendo la decisión anterior. El argumento es de mantenimiento: la
+gramática se complejizaba sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo —volver a
+marcar producción por producción— con más chance de error.
 
-Los tests llevan `@RequiereLogro` / `@RequiereLogroApagado`, implementadas como `ExecutionCondition`
-de JUnit 5: **saltean** el test cuando el logro no corresponde, no lo fallan — un test que falla por
-un logro apagado estaría fallando por algo que el compilador no tiene que hacer. El corpus declara
-lo mismo en `resources/lexico/requisitos-de-logros.txt`, y un test verifica que cada requisito
-declarado corresponda a una dependencia real.
+En la práctica desapareció bastante código: el paquete `minijava.comun.config` entero
+(`Logro`, `ConfiguracionDelCompilador`, `ParserDeConfiguracion`), las anotaciones de test
+`@RequiereLogro` / `@RequiereLogroApagado` con su `ExecutionCondition`, los manifiestos
+`requisitos-de-logros.txt` del corpus, la opción `--logros=` y la propiedad `-Dlogros`, y las marcas
+`@+`/`@-` del `.g` con el modo `--combinatoria` que las recorría. `--etapa=N` sobrevive, porque es
+lo que elige entre el módulo principal léxico y el sintáctico.
 
-A nivel gramática esa condición está verificada en las 1024 combinaciones; a nivel código, en 16
-configuraciones de la suite. Por cada logro hay el par completo de tests: el caso que pasa con el
-logro prendido y el que verifica el comportamiento base con el logro apagado.
+El núcleo sin logros sigue existiendo como **gramática**, no como configuración:
+`compilador/gramatica/minijava-ll1.g`. El compilador no lo consume; está para que
+`equivalencia_de_lenguajes.py` demuestre por Earley que corregir la gramática de la cátedra a LL(1)
+no cambió el lenguaje.
 
 ## 8. Impacto sobre el Analizador Léxico
 
@@ -273,15 +269,11 @@ Cuatro logros exigen tokens que **no figuran en «Aspectos Léxicos de MiniJava�
 | `?` | Operador Ternario E2 | es un error léxico |
 | `->` | MiniLambdas E2 | se reconoce como `-` seguido de `>` |
 
-Se agregan **condicionados al interruptor de su logro**, de modo que con el logro apagado el
-comportamiento léxico de la Etapa 1 queda intacto y verificable. `TablaDeLexemas` conoce el
-vocabulario completo y declara qué logro habilita cada token (`logroQueLoHabilita`); quien decide es
-el punto de reconocimiento: `EstadoIdMV` para `for` y `private`, `EstadoInicial` para el `?`, y
-`EstadoOperadorConSufijoOpcional` para el `->`. **No toca** el patrón State, ni el driver, ni el
-manejo de errores, ni el `SourceManager`, y no introduce estado mutable.
-
-Los tokens de floats **no** entran en ese mapa: el logro Floats I gobierna la forma del literal
-desde los estados numéricos, y `float` es palabra reservada aun con el logro apagado.
+Se agregan al vocabulario sin condición, así que la columna de la derecha describe lo que pasaba en
+la Etapa 1 y no una configuración alcanzable hoy. `TablaDeLexemas` conoce el vocabulario completo, y
+quien reconoce cada uno es el estado que corresponde: `EstadoIdMV` para `for` y `private`,
+`EstadoInicial` para el `?`, y `EstadoOperadorConSufijoOpcional` para el `->`. **No toca** el patrón
+State, ni el driver, ni el manejo de errores, ni el `SourceManager`, y no introduce estado mutable.
 
 Los tokens `:`, `++` y `--` ya existían desde la Etapa 1; `++` y `--` estaban en el léxico sin
 ninguna regla de la gramática que los usara, y el logro de posfijos es el que se los da.

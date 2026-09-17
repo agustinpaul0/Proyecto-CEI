@@ -1,6 +1,5 @@
 package minijava.aplicacion;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
 import minijava.comun.io.ManejadorDeArchivo;
 import minijava.comun.io.ManejadorDeArchivoEficiente;
 import minijava.comun.salida.Salida;
@@ -19,20 +18,18 @@ public final class ModuloPrincipalSintactico {
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
     private final Salida salida;
-    private final ConfiguracionDelCompilador configuracion;
     private final FormateadorDeError formateadorDeError;
 
-    public ModuloPrincipalSintactico(Salida salida, ConfiguracionDelCompilador configuracion) {
+    public ModuloPrincipalSintactico(Salida salida) {
         this.salida = salida;
-        this.configuracion = configuracion;
-        this.formateadorDeError = new FormateadorDeError(configuracion);
+        this.formateadorDeError = new FormateadorDeError();
     }
 
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);
         var analizador = new AnalizadorSintactico(
-                new AnalizadorLexico(new ContextoLexico(manejador, configuracion)), configuracion);
+                new AnalizadorLexico(new ContextoLexico(manejador)));
 
         try {
             List<ExcepcionSintactica> errores = analizador.analizar();

@@ -29,21 +29,18 @@ public final class EstadoEntero implements EstadoLexico {
             contexto.avanzar();
             return new Continuar(INSTANCIA);
         }
-        // Sin el logro Floats I, '.', 'e'/'E' y los sufijos cierran el intLiteral.
-        if (contexto.getConfiguracion().floatsHabilitados()) {
-            if (actual == '.') {
-                contexto.avanzar();
-                return new Continuar(EstadoFloatConPunto.INSTANCIA);
-            }
-            if (actual == 'e' || actual == 'E') {
-                contexto.avanzar();
-                return new Continuar(EstadoFloatExponenteInicio.INSTANCIA);
-            }
-            if (EstadosFloat.esSufijoFloat(actual)) {
-                int linea = contexto.getLinea();
-                contexto.avanzar();
-                return new Emitir(new Token(TipoDeToken.FLOAT_LITERAL, contexto.getLexema(), linea));
-            }
+        if (actual == '.') {
+            contexto.avanzar();
+            return new Continuar(EstadoFloatConPunto.INSTANCIA);
+        }
+        if (actual == 'e' || actual == 'E') {
+            contexto.avanzar();
+            return new Continuar(EstadoFloatExponenteInicio.INSTANCIA);
+        }
+        if (EstadosFloat.esSufijoFloat(actual)) {
+            int linea = contexto.getLinea();
+            contexto.avanzar();
+            return new Emitir(new Token(TipoDeToken.FLOAT_LITERAL, contexto.getLexema(), linea));
         }
 
         String lexema = contexto.getLexema();

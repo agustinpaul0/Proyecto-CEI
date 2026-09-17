@@ -1,0 +1,2 @@
+interface XY4 {
+}

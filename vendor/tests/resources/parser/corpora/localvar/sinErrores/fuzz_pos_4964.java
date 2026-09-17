@@ -1,0 +1,2 @@
+class XP implements Jy {
+}

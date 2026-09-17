@@ -1,0 +1,2 @@
+interface Mb < N > {
+}

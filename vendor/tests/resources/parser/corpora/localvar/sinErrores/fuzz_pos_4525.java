@@ -1,0 +1,2 @@
+interface VU < M > {
+}

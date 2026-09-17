@@ -1,0 +1,2 @@
+class XwgLk_ < R > {
+}

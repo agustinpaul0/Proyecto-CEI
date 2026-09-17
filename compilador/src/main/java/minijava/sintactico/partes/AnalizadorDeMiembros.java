@@ -1,6 +1,5 @@
 package minijava.sintactico.partes;
 
-import minijava.comun.config.Logro;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
@@ -15,24 +14,43 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         super(sintaxis);
     }
 
-    // Miembro -> VisibilidadOpcional MiembroSinVisibilidad   [+visibilidad]
-    // Miembro -> MiembroSinVisibilidad | Constructor         [-visibilidad]
+    // Miembro -> Visibilidad MiembroTrasVisibilidad
+    // Miembro -> static VisibilidadOpcional TipoMetodo Metodo
+    // Miembro -> MiembroSinModificadores
     //
-    // Sin el logro, el `public` sólo aparece en el constructor y es lo que lo
-    // distingue del resto: es la regla original de la cátedra.
+    // Los dos órdenes valen, como en Java: `public static` y `static public`. Que
+    // la visibilidad aparezca a un solo lado de `static` es lo que impide repetir
+    // el modificador, sin necesitar un chequeo fuera de la gramática.
     public void miembro() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.VISIBILIDAD)) {
+        if (estaEn(PrimerosDeMiembros.MIEMBRO_VISIBILIDAD)) {
+            visibilidad();
+            miembroTrasVisibilidad();
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_STATIC)) {
+            match(TipoDeToken.PR_STATIC);
             visibilidadOpcional();
-            miembroSinVisibilidad();
-            return;
-        }
-        if (estaEn(PrimerosDeMiembros.MIEMBRO_CONSTRUCTOR)) {
-            constructor();
-        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_MIEMBRO_SIN_VISIBILIDAD)) {
-            miembroSinVisibilidad();
+            tipoMetodo();
+            metodo();
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_MIEMBRO_SIN_MODIFICADORES)) {
+            miembroSinModificadores();
         } else {
-            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_CONSTRUCTOR,
-                    PrimerosDeMiembros.MIEMBRO_MIEMBRO_SIN_VISIBILIDAD);
+            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_VISIBILIDAD,
+                    PrimerosDeMiembros.MIEMBRO_STATIC,
+                    PrimerosDeMiembros.MIEMBRO_MIEMBRO_SIN_MODIFICADORES);
+        }
+    }
+
+    // MiembroTrasVisibilidad -> static TipoMetodo Metodo
+    // MiembroTrasVisibilidad -> MiembroSinModificadores
+    private void miembroTrasVisibilidad() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_STATIC)) {
+            match(TipoDeToken.PR_STATIC);
+            tipoMetodo();
+            metodo();
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_MIEMBRO_SIN_MODIFICADORES)) {
+            miembroSinModificadores();
+        } else {
+            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_STATIC,
+                    PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_MIEMBRO_SIN_MODIFICADORES);
         }
     }
 
@@ -69,52 +87,49 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         sintaxis.sentencias().bloque();
     }
 
-    // VisibilidadOpcional -> public | private | EPSILON   [+visibilidad]
-    private void visibilidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeMiembros.VISIBILIDAD_OPCIONAL_PUBLIC)) {
+    // Visibilidad -> public | private
+    private void visibilidad() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeMiembros.VISIBILIDAD_PUBLIC)) {
             match(TipoDeToken.PR_PUBLIC);
-        } else if (estaEn(PrimerosDeMiembros.VISIBILIDAD_OPCIONAL_PRIVATE)) {
+        } else if (estaEn(PrimerosDeMiembros.VISIBILIDAD_PRIVATE)) {
             match(TipoDeToken.PR_PRIVATE);
+        } else {
+            throw errorEsperando(PrimerosDeMiembros.VISIBILIDAD_PUBLIC,
+                    PrimerosDeMiembros.VISIBILIDAD_PRIVATE);
+        }
+    }
+
+    // VisibilidadOpcional -> Visibilidad | EPSILON
+    private void visibilidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeMiembros.VISIBILIDAD_OPCIONAL_VISIBILIDAD)) {
+            visibilidad();
         } else {
             // VisibilidadOpcional -> EPSILON
         }
     }
 
-    // Constructor -> public idClase CuerpoDeMetodo   [-visibilidad]
-    private void constructor() throws ExcepcionLexica, ExcepcionSintactica {
-        match(TipoDeToken.PR_PUBLIC);
-        match(TipoDeToken.ID_CLASE);
-        cuerpoDeMetodo();
-    }
-
-    // MiembroSinVisibilidad -> static TipoMetodo Metodo
-    //                        | void Metodo
-    //                        | TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
-    //                        | idGen DimensionesOpcionales idMetVar AtributoOMetodo
-    //                        | idClase MiembroDesdeIdClase
-    private void miembroSinVisibilidad() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_STATIC)) {
-            match(TipoDeToken.PR_STATIC);
-            tipoMetodo();
-            metodo();
-        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_VOID)) {
+    // MiembroSinModificadores -> void Metodo
+    //                          | TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
+    //                          | idGen DimensionesOpcionales idMetVar AtributoOMetodo
+    //                          | idClase MiembroDesdeIdClase
+    private void miembroSinModificadores() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_VOID)) {
             match(TipoDeToken.PR_VOID);
             metodo();
-        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_TIPO_PRIMITIVO)) {
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO)) {
             sintaxis.tipos().tipoPrimitivo();
             declaradorDeMiembro();
-        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_ID_GEN)) {
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
             declaradorDeMiembro();
-        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_ID_CLASE)) {
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
             miembroDesdeIdClase();
         } else {
-            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_STATIC,
-                    PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_VOID,
-                    PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_TIPO_PRIMITIVO,
-                    PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_ID_GEN,
-                    PrimerosDeMiembros.MIEMBRO_SIN_VISIBILIDAD_ID_CLASE);
+            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_VOID,
+                    PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO,
+                    PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_GEN,
+                    PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_CLASE);
         }
     }
 
@@ -124,13 +139,13 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         atributoOMetodo();
     }
 
-    // MiembroDesdeIdClase -> CuerpoDeMetodo   [+visibilidad]
+    // MiembroDesdeIdClase -> CuerpoDeMetodo
     // MiembroDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar AtributoOMetodo
     //
-    // Con visibilidad el constructor ya no lleva `public` propio, así que compite
-    // con el atributo o método de tipo referencia por el token idClase.
+    // El constructor ya no lleva `public` propio —lo absorbió <Visibilidad>—, así
+    // que compite con el atributo o método de tipo referencia por el token idClase.
     private void miembroDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.VISIBILIDAD) && estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO)) {
+        if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO)) {
             cuerpoDeMetodo();
             return;
         }
@@ -148,10 +163,10 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         }
     }
 
-    // InicializacionDeAtributo -> = ExpresionCondicionalOLambda   [+atrinit]
+    // InicializacionDeAtributo -> = ExpresionCondicionalOLambda
     // InicializacionDeAtributo -> EPSILON
     private void inicializacionDeAtributo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.ATRINIT) && estaEn(PrimerosDeMiembros.INICIALIZACION_DE_ATRIBUTO_ASIGNACION)) {
+        if (estaEn(PrimerosDeMiembros.INICIALIZACION_DE_ATRIBUTO_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
             sintaxis.expresiones().expresionCondicionalOLambda();
         } else {
@@ -165,10 +180,10 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         cuerpoDeMetodo();
     }
 
-    // PublicOpcional -> public   [+visibilidad]
+    // PublicOpcional -> public
     // PublicOpcional -> EPSILON
     private void publicOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (hayLogro(Logro.VISIBILIDAD) && estaEn(PrimerosDeMiembros.PUBLIC_OPCIONAL_PUBLIC)) {
+        if (estaEn(PrimerosDeMiembros.PUBLIC_OPCIONAL_PUBLIC)) {
             match(TipoDeToken.PR_PUBLIC);
         } else {
             // PublicOpcional -> EPSILON

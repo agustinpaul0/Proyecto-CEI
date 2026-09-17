@@ -1,8 +1,5 @@
 package minijava.sintactico;
 
-import minijava.comun.config.Logro;
-import minijava.logros.RequiereLogro;
-import minijava.logros.RequiereLogroApagado;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -12,7 +9,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.file.Path;
 
-import minijava.logros.ConfiguracionDeLaCorrida;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,7 +38,6 @@ class ExpresionesTest extends BaseDeAnalisis {
     }
 
     @Test
-    @RequiereLogro(Logro.FLOAT)
     void conFloatsUnLiteralFlotanteEsUnOperando(@TempDir Path dir) {
         aceptarExpresion(dir, "1.5");
     }
@@ -105,7 +100,6 @@ class ExpresionesTest extends BaseDeAnalisis {
     // -------------------------------------------------------------- ternario ---
 
     @Test
-    @RequiereLogro(Logro.TERNARIO)
     void conTernarioSeAceptaElOperadorCondicional(@TempDir Path dir) {
         aceptarExpresion(dir, "a ? b : c");
         aceptarExpresion(dir, "(edad >= 18) ? true : false");
@@ -113,7 +107,6 @@ class ExpresionesTest extends BaseDeAnalisis {
 
     // Asociativo a derecha, como en Java: `a ? b : c ? d : e` es `a ? b : (c ? d : e)`.
     @Test
-    @RequiereLogro(Logro.TERNARIO)
     void elTernarioAnidaEnLasDosRamas(@TempDir Path dir) {
         aceptarExpresion(dir, "a ? b ? c : d : e");
         aceptarExpresion(dir, "a ? b : c ? d : e");
@@ -122,18 +115,7 @@ class ExpresionesTest extends BaseDeAnalisis {
 
     // Sin el logro el `?` ni siquiera es un token de MiniJava, así que el fuente
     // se rechaza en el LÉXICO y nunca llega al analizador. Que el rechazo sea
-    // léxico y no sintáctico es lo correcto: el símbolo no existe en el lenguaje
-    // base. El caso léxico está cubierto en TokensDeLaEtapaDosTest.
     @Test
-    @RequiereLogroApagado(Logro.TERNARIO)
-    void sinTernarioUnFuenteConSignoDePreguntaSeRechaza(@TempDir Path dir) {
-        assertThrows(Exception.class,
-                () -> analizar(dir, envolverEnMetodo("var x = a ? b : c;"),
-                        ConfiguracionDeLaCorrida.actual()));
-    }
-
-    @Test
-    @RequiereLogro(Logro.TERNARIO)
     void unTernarioSinRamaFalsaSeRechaza(@TempDir Path dir) {
         assertEquals(";", rechazarExpresion(dir, "a ? b"));
     }
@@ -142,7 +124,6 @@ class ExpresionesTest extends BaseDeAnalisis {
     // derecha una ConditionalExpression. O sea que la asignación entra en el
     // medio y no a la derecha, que es exactamente lo que hace javac.
     @Test
-    @RequiereLogro(Logro.TERNARIO)
     void laAsignacionEntraEnElOperandoDelMedio(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("var y = a ? b = 1 : c;"));
         aceptar(dir, envolverEnMetodo("var y = a ? b = c + 1 : d;"));
@@ -152,13 +133,11 @@ class ExpresionesTest extends BaseDeAnalisis {
     // una ExpresionCondicional, así que `a = b = c` no vale ni dentro del medio
     // del ternario. Es la regla de la gramática original, que el logro no cambia.
     @Test
-    @RequiereLogro(Logro.TERNARIO)
     void elOperandoDelMedioNoEncadenaAsignaciones(@TempDir Path dir) {
         assertEquals("=", rechazarExpresion(dir, "a ? b = c = 1 : d"));
     }
 
     @Test
-    @RequiereLogro(Logro.TERNARIO)
     void laAsignacionNoEntraEnElOperandoDerecho(@TempDir Path dir) {
         assertEquals("=", rechazarExpresion(dir, "a ? b : c = 1"));
     }
@@ -166,7 +145,6 @@ class ExpresionesTest extends BaseDeAnalisis {
     // -------------------------------------------------------------- posfijos ---
 
     @Test
-    @RequiereLogro(Logro.POSFIJO)
     void conPosfijosSeAceptanIncrementoYDecremento(@TempDir Path dir) {
         aceptar(dir, envolverEnMetodo("x++;"));
         aceptar(dir, envolverEnMetodo("x--;"));
@@ -174,15 +152,8 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo("a[0]++;"));
     }
 
-    @Test
-    @RequiereLogroApagado(Logro.POSFIJO)
-    void sinPosfijosElIncrementoSeRechaza(@TempDir Path dir) {
-        assertEquals("++", rechazar(dir, envolverEnMetodo("x++;")).getLexemaOfensivo());
-    }
-
     // El posfijo va sobre Referencia y no sobre Operando: `5++` no tiene sentido.
     @Test
-    @RequiereLogro(Logro.POSFIJO)
     void unLiteralNoAdmitePosfijo(@TempDir Path dir) {
         assertEquals("++", rechazarExpresion(dir, "5++"));
     }
@@ -199,7 +170,6 @@ class ExpresionesTest extends BaseDeAnalisis {
 
     // Un solo posfijo por referencia: `x++++` no es válido.
     @Test
-    @RequiereLogro(Logro.POSFIJO)
     void noSeEncadenanDosPosfijos(@TempDir Path dir) {
         assertEquals("++", rechazar(dir, envolverEnMetodo("x++++;")).getLexemaOfensivo());
     }
@@ -225,51 +195,46 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptarExpresion(dir, "new int[3][4][5]");
     }
 
+    // El inicializador se le cuelga a las dimensiones CON tamaño, que es la forma
+    // que MiniJava base ya tenía. No hay `new int[]`.
     @Test
-    @RequiereLogro(Logro.ARRINIT)
-    void conInicializacionDeArreglosSeAceptaElInicializador(@TempDir Path dir) {
-        aceptarExpresion(dir, "new int[]{1, 2, 3}");
-        aceptarExpresion(dir, "new int[]{}");
-        aceptarExpresion(dir, "new int[]{a + 1, m1()}");
+    void elInicializadorSeCuelgaDeLaCreacionConTamanio(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[3]{1, 2, 3}");
+        aceptarExpresion(dir, "new int[0]{}");
+        aceptarExpresion(dir, "new int[2]{a + 1, m1()}");
     }
 
-    // El logro dice «como en Java» y sólo restringe DÓNDE, no cuántas dimensiones.
+    // Anidable: una dimensión más, un nivel más de llaves.
     @Test
-    @RequiereLogro(Logro.ARRINIT)
     void elInicializadorDeArreglosEsAnidable(@TempDir Path dir) {
-        aceptarExpresion(dir, "new int[][]{{1, 2}, {3, 4}}");
-        aceptarExpresion(dir, "new int[][][]{{{1}}}");
+        aceptarExpresion(dir, "new int[2][2]{{1, 2}, {3, 4}}");
+        aceptarExpresion(dir, "new int[1][1][1]{{{1}}}");
     }
 
+    // Toda dimensión de una creación lleva su tamaño, como en MiniJava base: el
+    // corchete vacío no existe ni siquiera con inicializador.
     @Test
-    @RequiereLogroApagado(Logro.ARRINIT)
-    void sinInicializacionDeArreglosElCorcheteVacioSeRechaza(@TempDir Path dir) {
+    void elCorcheteVacioNoSeAdmiteEnUnaCreacion(@TempDir Path dir) {
         assertEquals("]", rechazarExpresion(dir, "new int[]{1, 2}"));
+        assertEquals("]", rechazarExpresion(dir, "new int[]"));
+        assertEquals("]", rechazarExpresion(dir, "new int[][]{{1, 2}, {3, 4}}"));
     }
 
     // El inicializador sólo se admite dentro de un `new`, nunca suelto.
     @Test
-    @RequiereLogro(Logro.ARRINIT)
     void elInicializadorNoSeAdmiteFueraDeUnNew(@TempDir Path dir) {
         assertEquals("{", rechazarExpresion(dir, "{1, 2}"));
     }
 
     @Test
-    @RequiereLogro(Logro.GENERICO)
     void conGenericidadAvanzadaSeAceptaElDiamante(@TempDir Path dir) {
         aceptarExpresion(dir, "new Lista<>()");
     }
 
     // El diamante sólo vale al instanciar una clase genérica: `new C<>[3]` no.
     @Test
-    @RequiereLogro(Logro.GENERICO)
     void elDiamanteNoSeAdmiteAlCrearUnArreglo(@TempDir Path dir) {
         assertEquals("[", rechazarExpresion(dir, "new Lista<>[3]"));
     }
 
-    @Test
-    @RequiereLogroApagado(Logro.GENERICO)
-    void sinGenericidadAvanzadaElDiamanteSeRechaza(@TempDir Path dir) {
-        assertEquals(">", rechazarExpresion(dir, "new Lista<>()"));
-    }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Genera la gramática ANTLR que consume el fuzzer, desde la gramática del proyecto.
 
-    python3 herramientas/gramatica_a_antlr.py gramatica/minijava-ll1-logros.g \
+    python3 herramientas/gramatica_a_antlr.py gramatica/minijava-ll1-final.g \
             --logros todos > herramientas/fuzz/MiniJava.g4
 
 La usa Grammarinator para dos cosas: derivar fuentes MiniJava al azar y volver a
@@ -48,27 +48,15 @@ def parser_antlr(g):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("gramatica")
-    ap.add_argument("--logros", default="todos",
-                    help="'todos', 'ninguno' o una lista separada por comas")
     args = ap.parse_args()
 
-    texto = Path(args.gramatica).read_text(encoding="utf-8")
-    if args.logros == "todos":
-        logros = {"visibilidad", "atrinit", "varclasica", "for", "ternario",
-                  "posfijo", "lambda", "arrinit", "generico", "float"}
-    elif args.logros == "ninguno":
-        logros = set()
-    else:
-        logros = {nombre.strip() for nombre in args.logros.split(",") if nombre.strip()}
-
-    g = parsear(texto, logros=logros)
+    g = parsear(Path(args.gramatica).read_text(encoding="utf-8"))
     print("// GENERADO por herramientas/gramatica_a_antlr.py desde")
-    print(f"// {args.gramatica} con los logros: {','.join(sorted(logros)) or 'ninguno'}.")
-    print("// No editar a mano: se regenera.")
+    print(f"// {args.gramatica}. No editar a mano: se regenera.")
     print("grammar MiniJava;")
     print()
     print(parser_antlr(g))
-    print(externas.lexer_antlr(logros))
+    print(externas.lexer_antlr())
 
 
 if __name__ == "__main__":

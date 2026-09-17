@@ -1,7 +1,5 @@
 package minijava.aplicacion;
 
-import minijava.comun.config.ConfiguracionDelCompilador;
-import minijava.comun.config.Logro;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -94,71 +92,4 @@ class ModuloPrincipalLexicoTest {
         assertTrue(lineas.stream().anyMatch(l -> l.contains("idMV,v2,")));
     }
 
-    // Desactivado: el comportamiento base de la cátedra, "reportarse y finalizar".
-    @Test
-    void conMultiDeteccionDesactivadaSeDetieneEnElPrimerError(@TempDir Path dir) throws IOException {
-        Path archivo = escribir(dir, "v1 # v2 @ v3");
-        SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.MULTI_DETECCION);
-
-        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
-
-        List<String> lineas = salida.getLineas();
-        assertTrue(lineas.contains("[Error:#|1]"));
-        assertTrue(lineas.stream().noneMatch(l -> l.equals("[Error:@|1]")));
-        assertTrue(lineas.stream().noneMatch(l -> l.contains("idMV,v2,")));
-    }
-
-    @Test
-    void conReporteEleganteDesactivadoSoloImprimeElCodigoDeContrato(@TempDir Path dir)
-            throws IOException {
-        Path archivo = escribir(dir, "v1 # v2");
-        SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.REPORTE_ELEGANTE);
-
-        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
-
-        List<String> lineas = salida.getLineas();
-        assertTrue(lineas.contains("[Error:#|1]"));
-        assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Error Léxico")));
-        assertTrue(lineas.stream().noneMatch(l -> l.startsWith("Detalle:")));
-    }
-
-    // Regresión: la configuración no llegaba al léxico, porque ModuloPrincipalLexico usaba
-    // el constructor que asume DEFAULT. Los tests de arriba no lo detectaban: sus
-    // dos flags se resuelven fuera del léxico. Estos ejercitan los que sí lee el AF.
-    @Test
-    void laConfiguracionLlegaAlLexicoConLosFloatsDeshabilitados(@TempDir Path dir)
-            throws IOException {
-        Path archivo = escribir(dir, "1.5");
-        SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.FLOAT);
-
-        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
-
-        List<String> lineas = salida.getLineas();
-        assertEquals(List.of(
-                "(intLiteral,1,1)",
-                "(punto,.,1)",
-                "(intLiteral,5,1)",
-                "(EOF,$,1)",
-                "",
-                "[SinErrores]"
-        ), lineas);
-    }
-
-    @Test
-    void laConfiguracionLlegaAlLexicoConElUnicodeDeshabilitado(@TempDir Path dir)
-            throws IOException {
-        // En un charLiteral: sin el logro, "\\u" deja de ser el marcador de un
-        // escape de 6 caracteres y el literal queda con más de un carácter.
-        Path archivo = escribir(dir, "'\\" + "u0041'");
-        SalidaEnMemoria salida = new SalidaEnMemoria();
-        var configuracion = ConfiguracionDelCompilador.todos().sin(Logro.UNICODES);
-
-        new ModuloPrincipalLexico(salida, configuracion).ejecutar(archivo.toString());
-
-        List<String> lineas = salida.getLineas();
-        assertTrue(lineas.stream().anyMatch(l -> l.startsWith("[Error:")));
-    }
 }

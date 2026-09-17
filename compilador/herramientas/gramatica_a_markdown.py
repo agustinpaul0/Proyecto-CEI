@@ -4,7 +4,7 @@
 Se genera desde el .g y no se escribe a mano para que el documento y lo que el
 verificador comprueba no puedan divergir.
 
-    python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-logros.g
+    python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g
 """
 import sys
 

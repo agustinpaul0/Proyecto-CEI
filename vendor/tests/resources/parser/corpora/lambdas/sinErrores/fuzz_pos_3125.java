@@ -1,0 +1,2 @@
+interface Qp < T > {
+}

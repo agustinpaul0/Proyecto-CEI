@@ -3,7 +3,7 @@
 La memoria operativa de este proyecto vive en `AGENTS.md`. Se importa entera acá abajo.
 
 Antes de tocar nada, leer también
-[`documentacion/proyecto/README.md`](documentacion/proyecto/README.md): las cuatro reglas que no se
+[`documentacion/proyecto/README.md`](documentacion/proyecto/README.md): las tres reglas que no se
 negocian y el índice de los documentos normativos.
 
 Precedencia ante conflicto: `AGENTS.md` y `documentacion/proyecto/*.md` (las normas de este

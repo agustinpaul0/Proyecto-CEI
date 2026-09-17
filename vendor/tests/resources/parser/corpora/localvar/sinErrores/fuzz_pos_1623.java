@@ -1,0 +1,2 @@
+class OGN_ < B > {
+}

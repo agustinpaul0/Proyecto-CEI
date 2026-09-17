@@ -1,0 +1,2 @@
+interface Yh < M > {
+}

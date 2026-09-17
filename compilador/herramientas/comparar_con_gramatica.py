@@ -29,22 +29,14 @@ sys.path.insert(0, "herramientas")
 from aceptar_fuente import aceptar_con_posicion, tokenizar  # noqa: E402
 from primeros import analizar, parsear  # noqa: E402
 
-GRAMATICA = "gramatica/minijava-ll1-logros.g"
+GRAMATICA = "gramatica/minijava-ll1-final.g"
 JAR = "target/Compilador.jar"
 
-# La gramatica se parsea CON los logros prendidos: sin fijarlos quedan activas
-# a la vez las producciones @+ y las @-, que son alternativas excluyentes.
-LOGROS = {"visibilidad", "atrinit", "varclasica", "for", "ternario", "posfijo",
-          "lambda", "arrinit", "generico", "float"}
-
-# Los cuatro chequeos que el analizador hace y la gramática no puede expresar. Un
+# Los dos chequeos que el analizador hace y la gramática no puede expresar. Un
 # caso que los ejercita declara el motivo en el mensaje, así que se reconocen por
 # ahí y no por un patrón sobre el fuente, que amnistiaba de más.
 MOTIVOS_DECLARADOS = (
-    "no se permite this dentro de una lambda",
-    "no se permite capturar la variable",
     "un parametro de lambda tiene que ser un identificador",
-    "esta repetido en la lambda",
     "una lambda no puede ser operando de",
 )
 
@@ -57,7 +49,7 @@ def divergencia_declarada(salida_java):
 
 
 def veredicto_de_java(ruta):
-    salida = subprocess.run(["java", "-jar", JAR, "--logros=todos", ruta],
+    salida = subprocess.run(["java", "-jar", JAR, ruta],
                             capture_output=True, text=True).stdout
     return ruta, salida
 
@@ -65,7 +57,7 @@ def veredicto_de_java(ruta):
 def main():
     patron = sys.argv[1] if len(sys.argv) > 1 else "resources/*Errores/*.java"
     with open(GRAMATICA, encoding="utf-8") as archivo:
-        g = parsear(archivo.read(), logros=LOGROS)
+        g = parsear(archivo.read())
     vaciables, primeros_nt, _ = analizar(g)
 
     rutas = sorted(glob.glob(patron))

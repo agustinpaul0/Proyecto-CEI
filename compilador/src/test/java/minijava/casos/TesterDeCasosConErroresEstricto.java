@@ -1,8 +1,6 @@
 package minijava.casos;
 
 import minijava.aplicacion.ModuloPrincipalLexico;
-import minijava.casos.RequisitosDeLogrosDelCaso.Fase;
-import minijava.logros.ConfiguracionDeLaCorrida;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
@@ -46,11 +44,6 @@ class TesterDeCasosConErroresEstricto {
     @ParameterizedTest(name = "{0}")
     @MethodSource("casos")
     void elCasoProduceExactamenteLosErroresYTokensDeclarados(Path caso) throws IOException {
-        var requisitos = RequisitosDeLogrosDelCaso.de(Fase.LEXICO, caso);
-        var configuracion = ConfiguracionDeLaCorrida.actual();
-        assumeTrue(requisitos.seCumplenEn(configuracion),
-                () -> caso + ": no aplica a esta configuracion de logros ("
-                        + requisitos.describirIncumplidos(configuracion) + ")");
 
         Cabecera cabecera = leerCabecera(caso);
         List<String> salida = ejecutar(caso);
@@ -92,7 +85,7 @@ class TesterDeCasosConErroresEstricto {
 
     private List<String> ejecutar(Path caso) throws IOException {
         SalidaEnMemoria salida = new SalidaEnMemoria();
-        new ModuloPrincipalLexico(salida, ConfiguracionDeLaCorrida.actual()).ejecutar(caso.toString());
+        new ModuloPrincipalLexico(salida).ejecutar(caso.toString());
         List<String> lineas = salida.getLineas();
         VolcadoDeCasos.volcar(caso.toString(), lineas);
         return lineas;

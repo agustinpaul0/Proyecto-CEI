@@ -7,8 +7,8 @@ desde ella, y escriben casos de corpus en lote.
 
 | Herramienta | Para qué |
 |---|---|
-| `primeros.py` | El verificador: vaciables, Primeros, LL(1), combinatoria de logros, registro de ambigüedades, simulador del Esquema Simple. |
-| `equivalencia_de_lenguajes.py` | Con un reconocedor de Earley, que la gramática final con cero logros y la de la cátedra **generen el mismo lenguaje**. |
+| `primeros.py` | El verificador: vaciables, Primeros, LL(1), registro de ambigüedades, simulador del Esquema Simple. |
+| `equivalencia_de_lenguajes.py` | Con un reconocedor de Earley, que el núcleo LL(1) sin logros (`minijava-ll1.g`) y la de la cátedra **generen el mismo lenguaje**. |
 | `auditar_analizador.py` | Que las producciones que cada método del analizador cita en su comentario sean **exactamente** las de la gramática. |
 | `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el mismo veredicto y el mismo token de rechazo sobre el corpus. |
 | `aceptar_fuente.py` | Corre la gramática sobre un fuente MiniJava real. |
@@ -58,7 +58,7 @@ haber ido a mirar por qué.
 ## `primeros_a_java.py` — genera los Primeros que usa el analizador
 
 ```bash
-python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-logros.g
+python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
 ```
 
 Escribe `src/main/java/minijava/sintactico/primeros/Primeros.java`: una constante por producción

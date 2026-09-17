@@ -1,0 +1,2 @@
+interface TH < K > {
+}

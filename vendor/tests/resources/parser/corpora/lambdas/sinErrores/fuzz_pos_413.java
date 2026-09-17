@@ -1,0 +1,2 @@
+interface VZ < E > {
+}

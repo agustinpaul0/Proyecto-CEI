@@ -2,7 +2,7 @@
 """Audita que el analizador y la gramatica no hayan divergido.
 
 Cada metodo de no terminal cita arriba las producciones que traduce. Este
-script compara esas citas contra gramatica/minijava-ll1-logros.g y falla si:
+script compara esas citas contra gramatica/minijava-ll1-final.g y falla si:
 
   - una produccion de la gramatica no la cita ningun metodo (esta sin implementar
     o quedo huerfana);
@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from primeros import EPSILON, dividir_en_alternativas, parsear  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
-GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-logros.g"
+GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-final.g"
 PARTES = RAIZ / "src" / "main" / "java" / "minijava" / "sintactico" / "partes"
 
 # Las citas escriben el flag entre corchetes: `// Sentencia -> For   [+for]`.
@@ -34,7 +34,7 @@ def normalizar(izquierda, cuerpo):
 
 
 def leer_gramatica():
-    return parsear(GRAMATICA.read_text(encoding="utf-8"), logros=None)
+    return parsear(GRAMATICA.read_text(encoding="utf-8"))
 
 
 def producciones_de_la_gramatica(g):

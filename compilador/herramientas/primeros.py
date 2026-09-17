@@ -97,32 +97,14 @@ def dividir_en_alternativas(tokens):
     return alternativas
 
 
-def parsear(texto, logros=None):
-    """Parsea la gramática, quedándose con las producciones activas.
-
-    Una producción puede llevar una marca al final:
-        @+nombre   existe sólo si el logro `nombre` está PRENDIDO
-        @-nombre   existe sólo si el logro `nombre` está APAGADO
-    Sin marca, existe siempre.
-
-    `logros` es el conjunto de logros prendidos; None significa todos.
-    """
+def parsear(texto):
+    """Parsea la gramática: una producción por línea, sin variantes."""
     producciones = []
     inicial = None
     for numero, linea in enumerate(texto.splitlines(), start=1):
         linea = linea.split("#", 1)[0].strip()
         if not linea:
             continue
-        marca = None
-        if "@" in linea:
-            linea, _, marca = linea.partition("@")
-            linea, marca = linea.strip(), marca.strip()
-            if marca[:1] not in "+-" or len(marca) < 2:
-                raise SystemExit(f"linea {numero}: marca invalida '@{marca}'")
-        if marca is not None and logros is not None:
-            prendido = marca[1:] in logros
-            if (marca[0] == "+") != prendido:
-                continue
         if "->" not in linea:
             raise SystemExit(f"linea {numero}: falta '->' en: {linea}")
         izquierda, derecha = linea.split("->", 1)
@@ -393,8 +375,8 @@ def aceptar_detallado(g, vaciables, primeros_nt, tokens):
     Es el mismo algoritmo que va a tener el parser: para un NT se elige la
     producción que tenga al token actual en los Primeros de su cuerpo, y si
     ninguna lo tiene pero el NT es vaciable, no se hace nada (slides 52-54).
-    Sirve para comprobar que la gramática acepta lo que los logros piden y
-    rechaza lo que prohíben, antes de escribir una línea de Java.
+    Sirve para comprobar qué acepta y qué rechaza la gramática antes de escribir
+    una línea de Java.
     """
     pila = [g.inicial]
     i = 0
@@ -425,25 +407,22 @@ def aceptar_detallado(g, vaciables, primeros_nt, tokens):
     return True, "aceptada", i
 
 
-def informar_ambiguedades(texto, disponibles):
-    """Recorre las 2^n configuraciones juntando toda ambigüedad que aparezca y
-    la contrasta con AMBIGUEDADES_DECLARADAS."""
-    total = 1 << len(disponibles)
+def informar_ambiguedades(texto):
+    """Junta toda ambigüedad de la gramática y la contrasta con
+    AMBIGUEDADES_DECLARADAS."""
     detectadas = {}
-    for mascara in range(total):
-        encendidos = {n for i, n in enumerate(disponibles) if mascara & (1 << i)}
-        g = parsear(texto, encendidos)
-        vac = calcular_vaciables(g)
-        pri = calcular_primeros_nt(g, vac)
-        sig = calcular_siguientes(g, vac, pri)
-        for nt, _, _, choque in ambiguedades(g, vac, pri, sig):
-            detectadas.setdefault(nt, set()).update(choque)
+    g = parsear(texto)
+    vac = calcular_vaciables(g)
+    pri = calcular_primeros_nt(g, vac)
+    sig = calcular_siguientes(g, vac, pri)
+    for nt, _, _, choque in ambiguedades(g, vac, pri, sig):
+        detectadas.setdefault(nt, set()).update(choque)
 
     print("DIAGNOSTICO OFFLINE — no forma parte del metodo de implementacion.")
     print("El analizador sintactico decide SOLO con Primeros (Esquema Simple,")
     print("Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item")
     print("«no es ambigua o es arreglable» del checklist de Clase 4 slide 41.\n")
-    print(f"Ambiguedades detectadas en las {total} configuraciones: {len(detectadas)}\n")
+    print(f"Ambiguedades detectadas: {len(detectadas)}\n")
     for nt in sorted(detectadas):
         estado = "declarada" if nt in AMBIGUEDADES_DECLARADAS else "*** NO DECLARADA ***"
         print(f"  <{nt}>  pisado por {formatear(detectadas[nt])}   [{estado}]")
@@ -464,44 +443,11 @@ def informar_ambiguedades(texto, disponibles):
     return 0
 
 
-def verificar_combinatoria(texto, disponibles):
-    """LL(1) en las 2^n configuraciones de logros. Es la garantía de atomicidad:
-    ningún logro puede depender de que otro esté prendido."""
-    total = 1 << len(disponibles)
-    print(f"{len(disponibles)} logros -> {total} configuraciones\n")
-    fallidas = []
-    for mascara in range(total):
-        encendidos = {
-            nombre for i, nombre in enumerate(disponibles) if mascara & (1 << i)
-        }
-        g = parsear(texto, encendidos)
-        _, _, conflictos = analizar(g)
-        if conflictos:
-            fallidas.append((encendidos, conflictos))
-    if fallidas:
-        print(f"FALLAN {len(fallidas)} de {total} configuraciones:\n")
-        for encendidos, conflictos in fallidas[:10]:
-            etiqueta = ", ".join(sorted(encendidos)) or "(ninguno)"
-            print(f"  con {{{etiqueta}}}: {len(conflictos)} conflicto(s)")
-            for nt, uno, otro, choque in conflictos[:3]:
-                print(f"      <{nt}>: {' '.join(uno)}  /  {' '.join(otro)}")
-                print(f"          interseccion = {formatear(choque)}")
-            print()
-        return 1
-    print(f"LAS {total} CONFIGURACIONES SON LL(1).")
-    print("Cada logro se puede prender y apagar de forma independiente.")
-    return 0
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("gramatica")
     parser.add_argument("--nt", help="mostrar solo este no terminal")
     parser.add_argument("--markdown", action="store_true", help="tabla lista para el informe")
-    parser.add_argument(
-        "--logros",
-        help="lista separada por comas de logros PRENDIDOS; 'ninguno' o 'todos'",
-    )
     parser.add_argument(
         "--aceptar",
         metavar="TOKENS",
@@ -514,11 +460,6 @@ def main():
              "Usa Siguientes, que NO son parte del metodo de implementacion.",
     )
     parser.add_argument(
-        "--combinatoria",
-        action="store_true",
-        help="verifica LL(1) en TODA combinacion de logros (2^n configuraciones)",
-    )
-    parser.add_argument(
         "--longitudes",
         nargs="*",
         metavar="NT",
@@ -529,32 +470,12 @@ def main():
     with open(args.gramatica, encoding="utf-8") as archivo:
         texto = archivo.read()
 
-    disponibles = sorted(set(re.findall(r"@[+-](\w+)", texto)))
-
-    if args.combinatoria:
-        return verificar_combinatoria(texto, disponibles)
-
-    if args.logros is None or args.logros == "todos":
-        encendidos = set(disponibles)
-    elif args.logros == "ninguno":
-        encendidos = set()
-    else:
-        encendidos = {x.strip() for x in args.logros.split(",") if x.strip()}
-        desconocidos = encendidos - set(disponibles)
-        if desconocidos:
-            raise SystemExit(
-                f"logro(s) desconocido(s): {', '.join(sorted(desconocidos))}\n"
-                f"disponibles: {', '.join(disponibles)}"
-            )
-    if disponibles:
-        prendidos = ", ".join(sorted(encendidos)) if encendidos else "(ninguno)"
-        print(f"Logros prendidos: {prendidos}\n")
-    g = parsear(texto, encendidos if disponibles else None)
+    g = parsear(texto)
 
     vaciables, primeros_nt, conflictos = analizar(g)
 
     if args.ambiguedades:
-        return informar_ambiguedades(texto, disponibles)
+        return informar_ambiguedades(texto)
 
     if args.aceptar is not None:
         ok, motivo = aceptar(g, vaciables, primeros_nt, args.aceptar.split())
