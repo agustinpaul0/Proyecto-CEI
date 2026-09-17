@@ -357,14 +357,18 @@ def main():
             print(r"\section{%s}" % titulo)
             print(latex_de(intro))
             print()
-        print(r"\subsection*{\nt{%s}}" % nt)
-        print(r"\begin{producciones}")
+        # Compacto a propósito: el nombre del no terminal va una sola vez como
+        # encabezado corrido, las producciones debajo sin repetir el lado
+        # izquierdo, y la explicación en cuerpo chico. Es un documento de
+        # consulta; con \subsection por cada uno de los 112 ocupaba el doble.
+        print(r"\par\medskip\noindent\textbf{\nt{%s}}\nobreak\par\nobreak" % nt)
+        print(r"\begingroup\small\setlength{\leftskip}{1.1em}\raggedright")
+        print(r"\hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000")
         for cuerpo in g.por_izquierda[nt]:
             derecha = " ".join(render(s, nts) for s in cuerpo)
-            print(r"\regla{%s}{%s}" % (nt, derecha))
-        print(r"\end{producciones}")
-        print(latex_de(EXPLICACION[nt]))
-        print()
+            print(r"\par\hangindent=1.6em\hangafter=1\noindent\deriva{} %s" % derecha)
+        print(r"\par\endgroup")
+        print(r"{\setlength{\leftskip}{1.1em}\noindent %s\par}" % latex_de(EXPLICACION[nt]))
 
     print(r"\end{document}")
 

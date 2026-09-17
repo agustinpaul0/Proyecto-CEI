@@ -560,5 +560,7 @@ esté bien formada; que un método tenga cuerpo y una interfaz no.
 
 El último caso merece atención: el logro *MiniLambdas E2* prohíbe la captura de variables locales
 y parámetros, pero **eso no es decidible sintácticamente** — el parser no sabe qué nombres están
-en alcance. Lo único que el sintáctico puede rechazar de ese logro es la **forma**: parámetros sin
-tipo, cuerpo de una única expresión, sin llaves.
+en alcance —, así que queda para el semántico. Del logro, el sintáctico impone la **forma**
+(parámetros sin tipo, cuerpo de una única expresión, sin llaves) más dos restricciones que tampoco
+son expresables en la gramática pero sí decidibles con lo que se acaba de leer: que el parámetro sea
+un identificador sin tipo y que una lambda parentizada no lleve cola.

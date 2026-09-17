@@ -54,7 +54,7 @@ El corpus del sintáctico —`resources/sinErrores/` y `resources/conErrores/`�
 y la distinción importa:
 
 - **Escrito a mano** (~120 casos): lo que un generador al azar no busca. El archivo vacío, el de
-  sólo comentarios, la clase sin miembros, `for(;;)`, `new int[]{}`, cien bloques anidados, el
+  sólo comentarios, la clase sin miembros, `for(;;)`, `new int[0]{}`, cien bloques anidados, el
   error en el primer token, el error en el último, el `$` del EOF. **Cada expectativa se predice
   antes de correr el compilador**: si no coincide, o el caso estaba mal escrito o el compilador
   tiene un defecto, y las dos cosas hay que mirarlas.

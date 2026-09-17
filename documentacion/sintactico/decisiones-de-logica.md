@@ -24,7 +24,7 @@ elegir un significado.
 Cuerpos idénticos, y `<Sentencia>` los usa en dos alternativas también idénticas: **toda**
 sentencia-expresión tiene dos árboles de derivación.
 
-**Decisión:** se colapsan en una única alternativa, `<SentenciaExpresion>`. No achica el lenguaje
+**Decisión:** se colapsan en una única alternativa. No achica el lenguaje
 —lo genera exactamente igual, con un árbol por sentencia en lugar de dos— y distinguir una
 asignación de una llamada requiere conocer el significado de la expresión, que es análisis
 semántico. `5 = x;` atraviesa el analizador sintáctico, igual que en la gramática original.

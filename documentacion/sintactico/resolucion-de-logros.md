@@ -67,35 +67,16 @@ Las partes que resuelve el analizador y no la gramática están detalladas en
 permisividad del primer parámetro está en
 [`decisiones-de-logica.md` §9](decisiones-de-logica.md).
 
-**Lo que se difiere al semántico, por indicación del profesor.** El `this` —explícito e
-implícito—, la captura de variables locales y de parámetros, y que los parámetros de una lambda no
-se repitan **no los controla esta etapa**: son restricciones de significado, el logro no las pide, y
-con la tabla de símbolos del semántico se resuelven mucho más directo. El sintáctico las acepta
-todas:
+**Lo que se difiere al semántico, por indicación del profesor.** El `this` —explícito e implícito—,
+la captura de variables locales y de parámetros, y que los parámetros no se repitan **no los
+controla esta etapa**: son restricciones de significado, el logro no las pide, y con la tabla de
+símbolos del semántico se resuelven mucho más directo. `x -> this.campo`, `x -> x + n`,
+`x -> y -> x` y `(a, a) -> a` se aceptan.
 
-```
-x -> this.campo      se acepta      (el `this` lo controla el semántico)
-x -> x + n           se acepta      (`n` puede ser un campo, una local o nada: no se sabe acá)
-x -> y -> x          se acepta
-(a, a) -> a          se acepta      (el nombre repetido lo controla el semántico)
-```
-
-El motivo técnico de fondo es que ninguna de las tres es decidible con información local:
-`x -> campo` y `x -> n` son **la misma forma sintáctica**, y para saber si `n` es una captura hay
-que resolver el nombre contra su declaración. `x -> ayuda(x)` es el ejemplo extremo: es un `this`
-implícito si `ayuda` es de instancia y no lo es si es `static`.
-
-Lo que **sí** se controla acá son las dos restricciones que son de forma y no de significado:
-
-```
-(a + 1) -> a         se rechaza     «un parametro de lambda tiene que ser un identificador»
-(x -> x).m()         se rechaza     «una lambda no puede ser operando de .»
-```
-
-Ninguna de las dos es expresable en una gramática libre de contexto, y las dos se deciden con lo
-que el analizador acaba de leer. Al irse el control de capturas se borró `RestriccionesDeLambda`
-entera —era la lógica más compleja del analizador—: la pila de «capturas en duda», que existía para
-diferir el chequeo hasta saber si un paréntesis era una lista de parámetros, dejó de tener motivo.
+El motivo técnico es que ninguna es decidible con información local: `x -> campo` y `x -> n` son la
+misma forma sintáctica. El desarrollo completo, con la frontera exacta y los ejemplos, está en
+[`decisiones-de-deteccion-de-errores.md` §3](decisiones-de-deteccion-de-errores.md) — acá no se
+repite.
 
 **Requiere el token `->`**, que no existe en el léxico de la Etapa 1.
 

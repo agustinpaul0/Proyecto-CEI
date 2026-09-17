@@ -14,12 +14,10 @@ MiniJava diverge de Java a propósito.
 **Fuente**: consulta directa al profesor. `float` **no figura en ningún PDF** de la cátedra — se
 buscó explícitamente — y se agrega por confirmación del docente.
 
-**Decisión revertida, y vale la pena documentarla**: en una primera versión se agregó también
-`double` como palabra reservada, mapeada al mismo tipo de token que `float`, interpretando "tratemos
-`float` y `double` como lo mismo" como "ambas palabras son reservadas". Esa lectura era incorrecta:
-lo que significa es que MiniJava tiene **un solo** tipo de dato de punto flotante. `double` sigue
-siendo un identificador común (`idMV`). El único lugar donde el concepto "double" aparece en la
-sintaxis de MiniJava son los sufijos `d`/`D` de un literal float, heredados de Java.
+**Lectura descartada**: interpretar "tratemos `float` y `double` como lo mismo" como "ambas
+palabras son reservadas". Lo que significa es que MiniJava tiene **un solo** tipo de dato de punto
+flotante, así que `double` es un identificador común (`idMV`). El único lugar donde el concepto
+aparece en la sintaxis son los sufijos `d`/`D` de un literal float, heredados de Java.
 
 ### 3.2. `floatLiteral` — la gramática completa se derivó de una sola frase
 

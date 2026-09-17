@@ -592,78 +592,56 @@ Dos corolarios que se aplicaron:
 Se listaron todos los NT **vaciables** usados desde más de un padre, porque son justamente
 aquellos donde el «no hago nada» del Esquema Simple significa algo distinto según el contexto:
 
-```bash
-python3 herramientas/primeros.py gramatica/minijava-ll1.g   # + el script de auditoría
-```
-
-Resultados y veredicto:
-
 | NT vaciable compartido | Padres | Veredicto |
 |---|---|---|
 | `<ListaClases>`, `<ListaMiembros>`, `<ListaSentencias>`, `<ListaMetodosInterfaz>`, `<Resto…>` | se incluyen a sí mismos | recursión propia, legítimo |
 | `<GenericidadOpcional>` | Clase, Interfaz | misma construcción (declaración de parámetro de tipo) |
 | `<DimensionesOpcionales>` | Tipo, sí misma | legítimo |
-| `<ArgsActualesOpcional>` (versión anterior) | Encadenado, AccesoVarOLlamadaMetodo | **DEFECTO — corregido, ver 3.bis.2** |
-| `<TipoGenericoOpcional>` | TipoReferencia, ArregloOInstancia | **DEFECTO LATENTE — ver 3.bis.3** |
+| «`<ArgsActuales>` o nada» | encadenado y acceso a variable | **dos construcciones distintas: van separadas (3.bis.2)** |
+| el genérico | posición de tipo y posición de instanciación | **se separan por el diamante (3.bis.3)** |
 
-### 3.bis.2 Defecto encontrado y corregido: el punto de decisión compartido
+### 3.bis.2 «`<ArgsActuales>` o nada» son dos no terminales, no uno
 
-En una primera versión de esta transformación, R3 y F7 resolvían su disyuntiva con el **mismo**
-no terminal:
+La disyuntiva «argumentos actuales, o nada» aparece en dos lugares con la misma forma:
 
 ```
-<Encadenado> ::= . idMetVar <ArgsActualesOpcional>
-<AccesoVarOLlamadaMetodo> ::= idMetVar <ArgsActualesOpcional>
-<ArgsActualesOpcional> ::= <ArgsActuales> | ε
+<Encadenado> ::= . idMetVar ( <ArgsActuales> | ε )
+<AccesoVarOLlamada> ::= idMetVar ( <ArgsActuales> | ε )
 ```
 
-Se había justificado como una señal de buena abstracción. **Es al revés.** El `ε` de
-`<ArgsActualesOpcional>` significa dos cosas distintas según quién lo llame:
+**Alternativa descartada:** un único NT compartido. Parece buena abstracción y es al revés, porque
+su `ε` significa dos cosas distintas:
 
-- desde `<Encadenado>`: era un `<VarEncadenada>` — acceso a un **atributo** de otro objeto;
-- desde `<AccesoVarOLlamadaMetodo>`: era un `<AccesoVar>` — acceso a una **variable** local, un
-  parámetro o un atributo propio.
+- desde el encadenado: acceso a un **atributo de otro objeto**;
+- desde el acceso a variable: **variable local, parámetro o atributo propio**.
 
-Son dos nodos de AST distintos, con reglas de resolución de nombres distintas. Un único método
-del parser tendría que preguntarse quién lo llamó para saber qué construir — exactamente el
-acoplamiento que la slide 40 advierte.
-
-**Corrección:** un NT dedicado por contexto.
+Son dos nodos de AST distintos, con reglas de resolución de nombres distintas. Un único método del
+parser tendría que preguntarse quién lo llamó para saber qué construir: exactamente el acoplamiento
+que la slide 40 advierte. Van dos NT dedicados:
 
 ```
 <Encadenado> ::= . idMetVar <EncadenadoAtributoOMetodo>
-<EncadenadoAtributoOMetodo> ::= <ArgsActuales>   (era <MetodoEncadenado>)
-                              | ε                (era <VarEncadenada>)
+<EncadenadoAtributoOMetodo> ::= <ArgsActuales> | ε
 
-<AccesoVarOLlamadaMetodo> ::= idMetVar <AccesoOLlamada>
-<AccesoOLlamada> ::= <ArgsActuales>   (era <LlamadaMetodo>)
-                   | ε                (era <AccesoVar>)
+<AccesoVarOLlamada> ::= idMetVar <AccesoLlamada>
+<AccesoLlamada> ::= <ArgsActuales> | ε
 ```
 
-Cuesta un no terminal más y hace que los cuatro NT originales sean recuperables sin ambigüedad
-desde el nombre del método que decide. Con el mismo criterio se renombraron
-`<RestoCreacion>`/`<RestoCreacionConIdClase>` a
-`<ArregloOInstancia>`/`<ArregloOInstanciaDeClase>`, y se extrajo `<CuerpoDeMetodo>`.
+Cuesta un no terminal más y hace que los cuatro NT de la gramática original sean recuperables sin
+ambigüedad desde el nombre del método que decide. Con el mismo criterio, `<ArregloOInstancia>` y
+`<ArregloOInstanciaDeClase>` llevan nombres que dicen qué deciden, y `<CuerpoDeMetodo>` se extrajo
+porque sí es literalmente la misma construcción en los tres lugares donde aparece.
 
-### 3.bis.3 Defecto latente: `<TipoGenericoOpcional>` en dos contextos
+### 3.bis.3 El genérico en posición de tipo y en posición de instanciación
 
-`<TipoGenericoOpcional>` se usa desde `<TipoReferencia>` (posición de **tipo**: `List<Persona> x;`)
-y desde `<ArregloOInstancia>` (posición de **instanciación**: `new List<Persona>()`). Hoy es la
-misma construcción y compartirlo es correcto.
+El genérico se usa desde `<TipoReferencia>` (posición de **tipo**: `List<Persona> x;`) y desde
+`<ArregloOInstancia>` (posición de **instanciación**: `new List<Persona>()`). Sin logros es la misma
+construcción y compartirlo sería correcto.
 
-**Deja de serlo con el logro Genericidad Avanzada E2**, que dice: *«La notación Diamante solo
-puede utilizarse al instanciar una Clase Genérica»*. O sea que `<>` es válido en la segunda
-posición y no en la primera. Compartir el NT obligaría a aceptar `List<> x;` y rechazarlo en el
-semántico. Separándolos, la restricción del logro queda **impuesta por la gramática**:
-
-```
-<TipoGenericoOpcional> ::= < <InstanciadoOParametrico> > | ε              (posición de tipo)
-<TipoGenericoDeInstanciacion> ::= < <ArgumentoDeTipoODiamante> > | ε      (sólo bajo new)
-<ArgumentoDeTipoODiamante> ::= <InstanciadoOParametrico> | ε              (ε = diamante <>)
-```
-
-Se aplica en la sección de logros. Vale la pena registrar el hallazgo acá porque es el mismo
-patrón que 3.bis.2 detectado **antes** de que cause daño.
+**Deja de serlo con Genericidad Avanzada E2**, que dice: *«La notación Diamante solo puede utilizarse
+al instanciar una Clase Genérica»*. O sea que `<>` es válido en la segunda posición y no en la
+primera. Compartir el NT obligaría a aceptar `List<> x;` y rechazarlo en el semántico; separándolos,
+la restricción del logro queda **impuesta por la gramática**. Se aplica en la sección de logros.
 
 ### 3.bis.4 Trampa evitada: la transformación «natural» de `<Expresion>` agranda el lenguaje
 
@@ -980,28 +958,36 @@ Del otro lado, ningún `<Primario>` puede ya ser una lambda:
 > operando —, y distinguirlos en la gramática exigiría clonar la cadena de colas en su variante
 > «el contenido del paréntesis fue una lambda».
 >
-> Lo mismo con *«no se permite la captura de variables locales, parámetros, ni el uso de `this`»*:
-> **no es decidible sintácticamente**, el parser no sabe qué nombres están en alcance. Lo único
-> del logro que el sintáctico impone es la forma.
+> En cambio *«no se permite la captura de variables locales, parámetros, ni el uso de `this`»* **no
+> es decidible sintácticamente** —el parser no sabe qué nombres están en alcance— y queda para el
+> analizador semántico, por indicación del profesor.
 >
-> Las cuatro las cierra el analizador con lo que acaba de leer; están en
+> Las dos que sí cierra el analizador están en
 > [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
 
 ### 5.7 Inicializacion de Arreglos E2
 
-**Transformación.** Después del `[` de una creación de arreglo, o viene una expresión (tamaño) o
-viene el `]` seguido del inicializador. Un token de desempate.
+**Transformación.** Toda dimensión conserva su `[ <Expresion> ]`, que es la forma de MiniJava base
+(`DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]`), y el
+inicializador se le cuelga al final:
 
 ```
-<CreacionDeArreglo> ::= [ <RestoCreacionDeArreglo>
-<RestoCreacionDeArreglo> ::= <Expresion> ] <DimensionesConTamanioOpcional>
-                           | ] { <ListaExpsOpcional> }
+<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>
+<DimensionesConTamanio> ::= [ <Expresion> ] <DimensionesConTamanioOpcional>
+<InicializadorDeArregloOpcional> ::= <InicializadorDeArreglo> | ε
+<InicializadorDeArreglo> ::= { <ListaElementosOpcional> }
+<ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>
 ```
 
-`{` y `}` alrededor de una `<ListaExpsOpcional>` reusa la lista de expresiones que ya existe para
-los argumentos actuales — es la misma construcción, así que compartirla es correcto.
-*«Sólo se permite como parte de una expresión de creación utilizando `new`»* queda impuesto por
-la gramática: `<CreacionDeArreglo>` sólo es alcanzable desde `<Creacion>`.
+Así `new int[2][2]{{1,2},{3,4}}` es válido y `new int[]{1,2,3}` no. **Diverge de Java**, que
+prohíbe tamaño e inicializador juntos (JLS §15.10.1); es deliberado, para no ampliar la forma de las
+dimensiones que MiniJava ya tenía definida — el detalle está en
+[`decisiones-de-logica.md`](decisiones-de-logica.md) §7.
+
+Un elemento puede ser una expresión o, a su vez, otro inicializador: por eso es anidable, y las dos
+alternativas son disjuntas porque una expresión nunca empieza con `{`. *«Sólo se permite como parte
+de una expresión de creación utilizando `new`»* queda impuesto por la gramática:
+`<InicializadorDeArreglo>` sólo es alcanzable desde `<Creacion>`.
 
 ### 5.8 Genericidad Avanzada E2
 
@@ -1031,7 +1017,7 @@ separando el genérico en posición de tipo del genérico bajo `new`:
                        | <ArgumentoDeTipo> > <ArregloOInstanciaDeClase>
 ```
 
-Es el defecto latente que se había registrado en 3.bis.3, resuelto. Resultado verificado:
+Es la separación que anticipaba 3.bis.3. Resultado verificado:
 
 | Entrada | Veredicto |
 |---|---|

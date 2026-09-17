@@ -3,10 +3,10 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La etapa está **terminada**: la gramática verificada, los 111 no terminales
-> implementados, los diez logros —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el
-> token exacto y las cuatro restricciones de MiniLambdas que la gramática no puede expresar. El
-> verificación está en [`README.md`](README.md).
+> **Estado.** La etapa está **terminada**: los 112 no terminales implementados, los diez logros
+> —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el token exacto y las dos
+> restricciones de MiniLambdas que la gramática no puede expresar. La verificación completa está en
+> [`README.md`](README.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
 
@@ -98,9 +98,10 @@ Cuatro cosas que conviene tener presentes:
 - **`match` es el único lugar que avanza**, junto con `descartar()`, que usa el Modo Pánico
   justamente para tirar entrada. Ningún método toca el léxico directamente, y por eso la posición
   del error es siempre la del token actual, sin bookkeeping extra.
-- **La recursión a derecha se traduce con un `while`.** Clase 5 slide 59 muestra el método
-  llamándose a sí mismo; acá se usa un bucle, que deriva la misma cadena y no hace depender de la
-  pila de la JVM una cadena larga de operadores o una lista larga de argumentos.
+- **La recursión a derecha se traduce con recursión**, como en Clase 5 slide 59, en los diez lugares
+  donde la gramática tiene `X -> α X | ε`. Hubo una versión con `while` y la revirtió el profesor:
+  aleja el código del esquema que se extiende en el semántico. El analizador no se toma **ninguna**
+  libertad respecto del Esquema Simple.
 
 ## 4. El flujo completo
 
@@ -148,7 +149,7 @@ la gramática cambia, se regenera.
 
 ## 5.1. Cómo se divide el analizador
 
-Un analizador descendente recursivo tiene un método por no terminal, y con 111 no terminales una
+Un analizador descendente recursivo tiene un método por no terminal, y con 112 no terminales una
 sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
 por sección:
 
@@ -218,7 +219,7 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1879 fuentes** del
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1953 fuentes** del
 corpus versionado coinciden en todas.
 
 Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser

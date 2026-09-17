@@ -46,17 +46,16 @@ Al factorizar un prefijo hay dos caminos:
 
 Dos disyuntivas con la misma pinta pero distinto significado **no** se comparten.
 
-`<Encadenado>` y `<AccesoVarOLlamadaMetodo>` terminan los dos en «`<ArgsActuales>` o nada». Podría
-ser el mismo no terminal. No lo es, porque su `ε` significa cosas distintas:
+`<EncadenadoAtributoOMetodo>` y `<AccesoLlamada>` terminan los dos en «`<ArgsActuales>` o nada».
+Podría ser el mismo no terminal. No lo es, porque su `ε` significa cosas distintas:
 
 | Desde | `ε` significa | Nodo del AST |
 |---|---|---|
-| `<Encadenado>` | era un `<VarEncadenada>` | acceso a un atributo de **otro** objeto |
-| `<AccesoVarLlamadaOLambda>` | era un `<AccesoVar>` | acceso a una variable local, parámetro o atributo propio |
+| `<EncadenadoAtributoOMetodo>` | era un acceso encadenado | atributo de **otro** objeto |
+| `<AccesoLlamada>` | era un acceso a variable | variable local, parámetro o atributo propio |
 
 Son dos resoluciones de nombre distintas. Compartir el no terminal obligaría a que un único método
-del analizador se preguntara quién lo llamó para saber qué construir. Van
-`<EncadenadoAtributoOMetodo>` y `<AccesoLlamadaOLambda>`, separados.
+del analizador se preguntara quién lo llamó para saber qué construir.
 
 Lo mismo con las inicializaciones: `<InicializacionDeAtributo>` e `<InicializacionDeDeclarador>`
 tienen cuerpos idénticos y son no terminales distintos, porque pertenecen a **logros distintos** y
