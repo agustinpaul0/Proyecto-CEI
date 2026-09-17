@@ -12,7 +12,7 @@ código.
 | Analizador | una clase por sección de la gramática; cita 230 de 230 producciones |
 | Corpus | 1953 fuentes propias (73 importadas de un corpus ajeno), más 81 casos de gramática, los 8 de la cátedra y 28.089 externos |
 | Suite | 5904 tests; cobertura 98,6 % de líneas y 94,4 % de ramas |
-| Informe | `etapas/etapa-2/entregables/`, 41 páginas |
+| Informe | `etapas/etapa-2/entregables/`, 37 páginas |
 
 El objeto central de esta etapa es la **gramática**: se parte de la que publica la cátedra, se la
 diagnostica, se la corrige a LL(1) y se la extiende con los logros. Los cuatro primeros documentos

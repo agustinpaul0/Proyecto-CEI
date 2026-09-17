@@ -50,7 +50,7 @@ Simple de Clase 5, con los **diez logros implementables por código** más el *c
 | Corpus propio | 1953 fuentes, 81 casos de gramática, 8 de la cátedra |
 | Corpus externo | 28.089 fuentes de Giuliano Taormina; 28.086 coinciden, 1 familia declarada |
 | Suite | 5904 tests; 98,8 % de líneas, 94,5 % de ramas; mutación 89 % |
-| Informe | `etapas/etapa-2/entregables/`, 41 páginas |
+| Informe | `etapas/etapa-2/entregables/`, 37 páginas |
 
 ### Decisiones cerradas en esta etapa
 
