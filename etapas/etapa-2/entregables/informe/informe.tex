@@ -1708,28 +1708,31 @@ quitando \nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
 
 Todas las verificaciones anteriores comparten un límite: las implementaciones que se contrastan
 salen del \emph{mismo} archivo de gramática, así que comparten sus decisiones. El contraste que
-cierra ese hueco usa un corpus de \textbf{30.000 fuentes generados a partir de otra gramática} de
+cierra ese hueco usa un corpus de \textbf{28.766 fuentes generados a partir de otra gramática} de
 \textsc{MiniJava}, que no comparte con este trabajo ni el código ni los criterios.
 
 \begin{decision}{el corpus y su generador son de Giuliano Taormina}
-El \emph{fuzzer} que produjo esos 30.000 casos, y la gramática de la que se derivan, los escribió
+El \emph{fuzzer} que produjo el corpus original de 30.000 casos, y la gramática de la que se
+derivan, los escribió
 \textbf{Giuliano Taormina}, compañero de la materia, que los compartió para que cada uno pudiera
 contrastar su analizador. No son material de este trabajo: acá sólo se corrió el compilador contra
 ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
 \end{decision}
 
-\textbf{27.793 coinciden exactamente.} Los 2.207 restantes caen en cuatro familias, todas
-declaradas y verificadas a mano:
+\textbf{27.793 coinciden exactamente.} Los 973 restantes caen en cuatro familias, todas declaradas
+y verificadas a mano:
 
 \begin{center}
 \begin{tabular}{@{}p{0.30\linewidth}rp{0.56\linewidth}@{}}
 \toprule
 \textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
 \midrule
-\texttt{"a\textbackslash\textbackslash"} & 1852 &
+\texttt{"a\textbackslash\textbackslash"} & 618 &
 \textbf{Este trabajo}, por lectura de la especificación: \emph{Aspectos Léxicos} §2.3.3 da una regla
 \textbf{posicional} ---la comilla de cierre nunca está antecedida por \texttt{\textbackslash}--- y no
-una de apareamiento. Su generador asume la semántica de Java. \\[4pt]
+una de apareamiento. Su generador asume la semántica de Java. Los 1.234 casos en que él aceptaba y
+acá se rechaza se sacaron del corpus por repetir esta misma divergencia; quedan los que los dos
+rechazan en distinto token, porque el literal que no cierra se lleva puesto el resto del renglón. \\[4pt]
 \texttt{new Clase<Arg>()} y \texttt{new Clase<>()} & 255 &
 \textbf{Este trabajo.} El primero lo genera la gramática de la cátedra
 (\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}); el segundo lo habilita

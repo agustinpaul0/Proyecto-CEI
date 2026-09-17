@@ -10,7 +10,7 @@ código.
 | Gramática | 109 no terminales, 227 producciones, 60 terminales; **única**, con todos los logros incorporados y verificada LL(1) |
 | Ambigüedades | 3, todas declaradas con su regla de resolución |
 | Analizador | una clase por sección de la gramática; cita 227 de 227 producciones |
-| Corpus | 1953 fuentes propias (73 importadas de un corpus ajeno), más 81 casos de gramática, los 8 de la cátedra y 30.000 externos |
+| Corpus | 1953 fuentes propias (73 importadas de un corpus ajeno), más 81 casos de gramática, los 8 de la cátedra y 28.766 externos |
 | Suite | 5901 tests; cobertura 98,6 % de líneas y 94,4 % de ramas |
 | Informe | `etapas/etapa-2/entregables/`, 47 páginas |
 

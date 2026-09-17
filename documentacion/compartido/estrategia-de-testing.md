@@ -186,7 +186,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `ExpresionesTest` | Las capas de precedencia, ternario, posfijos, creación, inicializadores, diamante. |
 | `LambdasTest` | El logro MiniLambdas entero: las dos restricciones que el analizador verifica, y las tres que se difieren al semántico y acá se aceptan. |
 | `ParentesisYLambdaTest` | La combinatoria de `(x -> y)` según lo que siga al paréntesis: cuándo es toda la expresión, cuándo sería un operando y por qué se rechaza. |
-| `CorpusExternoTest` | 30.000 fuentes generados a partir de la gramática de otra persona, con las cinco divergencias declaradas. |
+| `CorpusExternoTest` | 28.766 fuentes generados a partir de la gramática de otra persona, con las cuatro divergencias declaradas. |
 | `ModoPanicoTest` | Que la recuperación reporte todos los errores, avance siempre y no cambie el primero. |
 | `CasosDeLaCatedraTest` | Los ocho fuentes que la cátedra adjunta, cada error en el token exacto. |
 | `catedra.TesterDeCasosSintacticos{Sin,Con}Errores` | Los testers de la cátedra sobre el corpus, con su criterio intacto. |
@@ -224,39 +224,43 @@ Etapa 1 y la Etapa 2 incorporados, siempre, así que la suite tiene una sola con
 
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
-ese hueco corriendo el compilador contra **30.000 fuentes generados a partir de otra gramática** de
+ese hueco corriendo el compilador contra **28.766 fuentes generados a partir de otra gramática** de
 MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos y se clasifica cada divergencia.
-> La carpeta **no se versiona** —son 174 MB— y el test se saltea si no está.
+> La carpeta **no se versiona** —son 133 MB— y el test se saltea si no está.
 
-De esos 30.000, **26.291 coinciden exactamente**. Los 3.709 restantes caen en cinco familias, todas
+De esos 28.766, **27.793 coinciden exactamente**. Los 973 restantes caen en cuatro familias, todas
 verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el test comprueba es que
-**no aparezca una sexta**.
+**no aparezca una quinta**.
 
 | Familia | Casos | Qué la explica |
 |---|---:|---|
-| `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]` | 2434 | **Dos lecturas del enunciado del logro**, las dos defendibles. Ver abajo. |
-| `"a\\"` | 987 | **Este proyecto**, por lectura de la especificación. §2.3.3 da una regla posicional —la comilla de cierre nunca está antecedida por `\`— y no una de apareamiento; su *fuzzer* asume la semántica de Java. Ver [`decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) §3.5. |
-| `new Clase<Arg>()` | 162 | **Este proyecto.** La gramática de la cátedra lo genera (`LlamadaConstructor -> new TipoReferencia ArgsActuales`) y la suya lo rechaza. Ojo con la notación: `C` de una sola letra es un `idGen`, no un `idClase`, así que `new C<T>()` es inválido en las dos. |
-| `public void m(){}`, constructor sin `public` | 6 | **Ninguno**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
-| Ambos rechazan, en distinto token | 120 | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
+| `"a\\"` | 618 | **Este proyecto**, por lectura de la especificación. §2.3.3 da una regla posicional —la comilla de cierre nunca está antecedida por `\`— y no una de apareamiento; su *fuzzer* asume la semántica de Java. Ver [`decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) §3.5. |
+| `new Clase<Arg>()` y `new Clase<>()` | 255 | **Este proyecto.** El primero lo genera la gramática de la cátedra (`LlamadaConstructor -> new TipoReferencia ArgsActuales`); el segundo lo habilita el logro de genericidad, que admite el diamante al instanciar. Ojo con la notación: `C` de una sola letra es un `idGen`, no un `idClase`, así que `new C<T>()` es inválido en las dos. |
+| `public void m(){}`, constructor sin `public` | 7 | **Ninguno**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
+| Ambos rechazan, en distinto token | 93 | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
 
-**La familia grande no es un defecto de ninguno de los dos.** MiniJava base ya define que cualquier
-expresión parentizada es un `<Primario>` (`<ExpresionParentizada> ::= ( <Expresion> )`) y que un
-`<Primario>` arrastra cadena (`<Referencia> ::= <Referencia> <MetodoEncadenado>`). Si el logro
-agrega la lambda como alternativa de `<Expresion>`, `(x -> y).m()` **se deriva solo**. Acá la lambda
-se produce en un nivel nuevo por encima de ese `<Expresion>`, siguiendo al JLS y a `javac`, y eso es
-lo que la deja afuera del paréntesis. Cuál pesa más —el hueco se llena como en Java, o la
-consecuencia mecánica de una regla que la base ya fijaba— es una decisión de lenguaje, y está
-declarada como tal.
+**Hubo una quinta familia, y era la mayor**: 2.434 casos de `(x -> y).m()`, `(x -> y) + 1` y
+`(x -> y)[0]`, que este proyecto rechazaba siguiendo al JLS y el suyo aceptaba. Se revisó el
+argumento y **el suyo tenía razón**: MiniJava base ya define que cualquier expresión parentizada es
+un `<Primario>` (`<ExpresionParentizada> ::= ( <Expresion> )`) y que un `<Primario>` arrastra cadena
+(`<Referencia> ::= <Referencia> <MetodoEncadenado>`), así que con la lambda como alternativa de
+`<Expresion>` esos tres **se derivan solos**. Se corrigió, y con eso las coincidencias pasaron de
+26.291 a 27.793.
+
+**El corpus se podó una vez.** Los 1.234 casos de la primera familia en que el suyo aceptaba y acá
+se rechazaba se borraron: repetían la misma divergencia sin agregar nada. Los que quedan son los que
+los dos rechazan, en distinto token, porque el literal que no cierra se lleva puesto el resto del
+renglón. Por eso el total dice 28.766 y no los 30.000 originales.
 
 Los **73 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
 `resources/` con el prefijo `ext`—; los generados no se copian ni se versionan.
 
-`ParentesisYLambdaTest` destila la primera familia en 39 casos legibles, que son los que protegen
-contra una regresión: toda la combinatoria de `(x -> y)` según lo que venga después del paréntesis.
+`ParentesisYLambdaTest` destila esa familia desaparecida en 43 casos legibles, que son los que
+protegen contra una regresión: toda la combinatoria de `(x -> y)` según lo que venga después del
+paréntesis.
 
 ### La verificación diferencial contra la gramática
 

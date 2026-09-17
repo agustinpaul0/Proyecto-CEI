@@ -48,7 +48,7 @@ Simple de Clase 5, con los **diez logros implementables por código** más el *c
 | Ambigüedades | 3, todas declaradas con su regla de resolución |
 | Analizador | una clase por sección; cita 227 de 227 producciones |
 | Corpus propio | 1953 fuentes, 81 casos de gramática, 8 de la cátedra |
-| Corpus externo | 30.000 fuentes de Giuliano Taormina; 27.793 coinciden, 4 familias declaradas |
+| Corpus externo | 28.766 fuentes de Giuliano Taormina; 27.793 coinciden, 4 familias declaradas |
 | Suite | 5901 tests; 98,8 % de líneas, 94,5 % de ramas; mutación 89 % |
 | Informe | `etapas/etapa-2/entregables/`, 47 páginas |
 

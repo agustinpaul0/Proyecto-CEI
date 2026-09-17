@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-// Verificación diferencial contra un corpus AJENO: 30.000 fuentes generados por
+// Verificación diferencial contra un corpus AJENO: 28.766 fuentes generados por
 // fuzzing a partir de otra gramática de MiniJava, en `vendor/tests/`. Es el mismo
 // argumento que `comparar_con_gramatica.py` —dos implementaciones independientes
 // tienen que coincidir— pero con una gramática que no salió de este proyecto, así
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 //
 // Los casos escritos a mano de ese corpus (73, los `ext*` de resources/) ya están
 // importados y se verifican con el resto. Acá van los generados, que NO se copian
-// ni se versionan: son 174 MB.
+// ni se versionan: son 133 MB.
 //
 // El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
@@ -52,6 +52,11 @@ class CorpusExternoTest {
         // una barra no cancela a la anterior y el literal no cierra. Su fuzzer
         // asume la semántica de Java. Está documentado en
         // documentacion/lexico/decisiones-de-logica.md §3.5.
+        //
+        // Los 1234 casos en que él ACEPTABA y acá se rechaza se sacaron del corpus:
+        // no aportaban nada más que esta misma divergencia repetida. Los que
+        // quedan son los que los dos rechazan, pero en distinto token, porque el
+        // literal que no cierra se lleva puesto el resto del renglón.
         STRING_TERMINADO_EN_BARRA,
 
         // `new Clase<Arg>()` y `new Clase<>()`. El primero lo genera la gramática

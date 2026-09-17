@@ -127,10 +127,16 @@ public final class AnalizadorDeLambdas extends ParteDelAnalizador {
         return new Candidato(primero, fueUnIdMetVarSinTipo);
     }
 
-    // Un parámetro de lambda tiene que ser un identificador sin tipo: `(a) -> a` es
-    // una lambda y `(a + 1) -> a` no. La gramática no puede distinguirlos —los dos
-    // son una Expresion hasta ver el `->`—, así que lo verifica el analizador.
-    // Que el nombre no se repita SÍ es del semántico, y no se mira acá.
+    // Sólo el PRIMER parámetro llega hasta acá, y por eso el chequeo existe: como
+    // `(` abre tanto una lambda como una expresión parentizada, se lo leyó como
+    // Expresion, y hay que confirmar que fue un identificador sin tipo. `(a) -> a`
+    // es una lambda y `(a + 1) -> a` no.
+    //
+    // Del segundo en adelante no hay ambigüedad posible, así que la gramática
+    // escribe `idMetVar` como terminal y los rechaza sola: `(x, int y) -> x` muere
+    // en el match, sin pasar por acá.
+    //
+    // Que el nombre no se repita SÍ es del semántico: `(x, x) -> x` se acepta.
     private void exigirParametro(Candidato candidato) throws ExcepcionSintactica {
         if (!candidato.esIdMetVarSinTipo()) {
             throw ExcepcionSintactica.porRestriccion(candidato.token(),
