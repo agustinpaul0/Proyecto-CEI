@@ -1045,7 +1045,7 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades  
 bash herramientas/casos-gramatica.sh                                              # 81/81
 ```
 
-- **109 no terminales, 227 producciones, 60 terminales.**
+- **110 no terminales, 230 producciones, 60 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
 - **81 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
   debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` se rechaza,
@@ -1054,5 +1054,5 @@ bash herramientas/casos-gramatica.sh                                            
   `public private` no, `new int[2]{1,2}` se acepta y `new int[]{1,2}` no.
 
 El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
-**de 60 a 109 no terminales y de 126 a 227 producciones**, sin ninguna ambigüedad sin declarar y sin
+**de 60 a 110 no terminales y de 126 a 230 producciones**, sin ninguna ambigüedad sin declarar y sin
 ningún conflicto de predicción.

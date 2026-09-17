@@ -207,7 +207,11 @@ EXPLICACION = {
                        "a propósito: `5++` no tiene sentido y la gramática lo rechaza sola.",
     "Primitivo": "Los literales. `floatLiteral` es el agregado del logro de floats.",
     "ExpresionSinIdClase": "INSERTADO. Una expresión que NO puede empezar con `idClase`, porque "
-                           "ese token ya lo consumió `<Sentencia>` al factorizar.",
+                           "ese token ya lo consumió `<Sentencia>` al factorizar. Sus dos últimas "
+                           "producciones son las cabezas ambiguas `idMetVar` y `(` en su versión "
+                           "que admite lambda: de ahí que `p -> x;` sea una sentencia válida. El "
+                           "`<RestoExpresion>` de atrás es lo único que las distingue de las de "
+                           "`<Expresion>`, porque acá la expresión sí lleva el `=`.",
     "ColaTrasOperando": "INSERTADO. La cola completa después de un operando, con asignación.",
     "ColaTrasOperandoSinAsignacion": "INSERTADO. La misma cola pero sin el `=`, para los "
                                      "contextos donde una asignación no es válida.",
@@ -230,6 +234,10 @@ EXPLICACION = {
                 "`<Parentizada>` contiene una `<Expresion>` completa.",
     "LlamadaMetodoEstatico": "`Clase.metodo(args)`.",
     "PrimarioSinIdClase": "INSERTADO. Los primarios que no empiezan con `idClase`.",
+    "PrimarioSinIdClaseNiLambda": "INSERTADO. Los tres primarios que, además, no pueden empezar "
+                                  "una lambda. Existen aparte porque `<ExpresionSinIdClase>` "
+                                  "necesita justo eso: las otras dos cabezas las toma en su "
+                                  "variante que sí la admite.",
     "Parentizada": "Un paréntesis común, con una `<Expresion>` completa adentro —lambda "
                    "incluida—, tal cual la regla original. Como un `<Primario>` arrastra cadena, "
                    "de acá sale que `(x -> y).m()` sea válido. Java lo rechaza; se respetó el "

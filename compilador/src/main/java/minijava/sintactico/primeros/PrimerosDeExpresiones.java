@@ -186,10 +186,16 @@ public final class PrimerosDeExpresiones {
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL,
             TipoDeToken.INT_LITERAL, TipoDeToken.PR_NULL, TipoDeToken.PR_TRUE);
 
-    // ExpresionSinIdClase -> PrimarioSinIdClase ColaDeExpresionDesdePrimario
-    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE = de(
-            TipoDeToken.PAREN_A, TipoDeToken.ID_MV, TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING,
-            TipoDeToken.PR_THIS);
+    // ExpresionSinIdClase -> PrimarioSinIdClaseNiLambda ColaDeExpresionDesdePrimario
+    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA = de(
+            TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS);
+
+    // ExpresionSinIdClase -> idMetVar AccesoLlamadaOLambda RestoExpresion
+    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_ID_MET_VAR = de(TipoDeToken.ID_MV);
+
+    // ExpresionSinIdClase -> ParentizadaOLambda RestoExpresion
+    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA = de(
+            TipoDeToken.PAREN_A);
 
     // ColaTrasOperando -> ColaTrasOperandoSinAsignacion RestoExpresion
     public static final ConjuntoDePrimeros COLA_TRAS_OPERANDO_COLA_TRAS_OPERANDO_SIN_ASIGNACION = de(

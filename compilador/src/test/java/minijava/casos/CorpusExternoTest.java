@@ -35,9 +35,13 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 // importados y se verifican con el resto. Acá van los generados, que NO se copian
 // ni se versionan.
 //
-// El corpus original traía 30.000 casos. Se podaron los 1.854 que divergían por la
-// lectura de la barra invertida en un literal —una sola discrepancia repetida, ver
-// abajo—, así que quedan 28.146.
+// El corpus original traía 30.000 casos y se podó. Se sacaron los que divergían
+// por la lectura de la barra invertida en un literal —Aspectos Léxicos §2.3.3 da
+// una regla POSICIONAL y no de apareamiento, así que acá el literal no cierra—, y
+// después, ya revisados uno por uno, los que divergían por construcciones que su
+// gramática no tiene: los genéricos al instanciar, el logro de Visibilidad
+// Mejorada, y un puñado que las dos rechazan en distinto token. Ninguno escondía
+// un defecto propio.
 //
 // El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
@@ -47,75 +51,25 @@ class CorpusExternoTest {
             Path.of("..", "vendor", "tests", "resources", "parser", "corpora");
     private static final List<String> GENERADOS = List.of("base", "lambdas", "localvar");
 
-    // Las cinco familias en que las dos gramáticas difieren, cada una verificada
-    // a mano. Un caso que cae en una de ellas no se compara: lo que este test
-    // prueba es que NO aparezca una sexta.
+    // La única familia en que las dos gramáticas difieren, verificada a mano. Un
+    // caso que cae en ella no se compara: lo que este test prueba es que NO
+    // aparezca una segunda.
     private enum Divergencia {
 
-        // `p -> x;` y `() -> x;` como sentencia suelta, que su gramática acepta y
-        // ésta no. LA DIVERGENCIA ABIERTA: acá el equivocado es este proyecto.
-        // MiniJava base sí deriva `Sentencia -> Expresion ;`, porque
-        // `Asignacion -> Expresion` y `Llamada -> Expresion` son eso y nada más
-        // —los nombres sugieren la restricción de JLS 14.8, las producciones no
-        // la imponen—. Este analizador ya sigue ese molde: acepta `1 + 2;` y
-        // `true;`, que javac rechaza. Con la lambda en <Expresion>, `p -> x;`
-        // debería derivar, y encima `(p -> x);` hoy se acepta.
-        //
-        // El motivo es de implementación: <ExpresionSinIdClase>, el no terminal
-        // que usa la sentencia, se factorizó contra la declaración de variable
-        // local y quedó sin las dos cabezas que llevan a la lambda. Anotado para
-        // consultar; ver documentacion/sintactico/decisiones-de-logica.md §2.2.
-        LAMBDA_COMO_SENTENCIA,
-
-        // `(x -> y).m()` y compañía, al revés que la anterior: acá se aceptan y su
+        // `(x -> y).m()`, `(x -> y) + 1` y `(x -> y)[0]`: acá se aceptan y su
         // gramática los rechaza. MiniJava base define que toda expresión
-        // parentizada es un <Primario> y que un <Primario> arrastra cadena, así que
-        // salen solos. Java los rechaza; se eligió respetar el molde de la base.
-        // Ver documentacion/sintactico/decisiones-de-logica.md §2.2.
-        LAMBDA_PARENTIZADA,
-
-        // `new Clase<Arg>()` y `new Clase<>()`. El primero lo genera la gramática
-        // de la cátedra (`LlamadaConstructor -> new TipoReferencia ArgsActuales`,
-        // con `TipoReferencia -> idClase TipoGenericoOpcional`); el segundo lo
-        // habilita el logro de genericidad, que sólo admite el diamante al
-        // instanciar. La otra gramática rechaza los dos.
-        //
-        // Ojo con la notación: `C` de una sola letra es un idGen y no un idClase,
-        // así que `new C<T>()` lo rechazan las dos implementaciones.
-        CREACION_GENERICA,
-
-        // Sus corpus `base` y `localvar` se generaron sin el logro de Visibilidad
-        // Mejorada, así que para él `public` sólo puede encabezar un constructor:
-        // `public void m(){}`, `public int f;` y `public static void m(){}` son
-        // errores, y un constructor SIN `public` también. Acá los cuatro son
-        // válidos.
-        SIN_VISIBILIDAD_MEJORADA,
-
-        // Lo que queda son casos que las dos implementaciones RECHAZAN, en un
-        // token distinto porque su gramática cubre menos construcciones. Que las
-        // dos rechacen es lo único comparable acá.
-        RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN
+        // parentizada es un <Primario> y que un <Primario> arrastra cadena, así
+        // que salen solos. Java los rechaza; se eligió respetar el molde de la
+        // base. Ver documentacion/sintactico/decisiones-de-logica.md §2.2.
+        LAMBDA_PARENTIZADA
     }
 
-    // Todas se evalúan contra UN renglón —aquel donde la divergencia se manifiesta,
-    // ver `renglonDeLaDivergencia`— y no contra el fuente entero. Con el fuente
-    // entero un `new Xx<Y>()` perdido en la línea 30 se llevaba puesta la
-    // clasificación de un error de la línea 17, y la familia real quedaba tapada.
-
-    // Una lambda al principio del renglón: `p -> …`, `() -> …`, `(a, b) -> …`.
-    private static final Pattern LAMBDA_AL_INICIO =
-            Pattern.compile("^\\s*(\\(\\s*\\)|\\w+|\\([^()]*\\))\\s*->");
-    // Una lambda adentro de un paréntesis, en cualquier posición del renglón.
+    // Se evalúa contra UN renglón —aquel donde la divergencia se manifiesta, ver
+    // `renglonDeLaDivergencia`— y no contra el fuente entero. Con el fuente entero
+    // un `new Xx<Y>()` perdido en la línea 30 se llevaba puesta la clasificación
+    // de un error de la línea 17, y la familia real quedaba tapada.
     private static final Pattern LAMBDA_ENTRE_PARENTESIS =
             Pattern.compile("\\(\\s*[\\w\\s,()]*->");
-    // `new Clase<Arg>(` o `new Clase<>(`. El nombre es un idClase: mayúscula MÁS
-    // de un carácter. Entre los ángulos, un idGen, un idClase, o nada.
-    private static final Pattern CREACION_GENERICA =
-            Pattern.compile("new\\s+[A-Z]\\w+\\s*<\\s*(?:[A-Z]\\w*\\s*)?>\\s*\\(");
-    // Las dos formas que el logro de Visibilidad Mejorada habilita y la otra
-    // gramática no tiene: un miembro con modificador, y un constructor sin `public`.
-    private static final Pattern MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC =
-            Pattern.compile("^\\s*(public|private|static)\\b|^\\s*[A-Z]\\w*\\s*\\(");
     private static final Pattern MARCA_DE_ERROR = Pattern.compile("\\[Error:.*\\|(\\d+)]");
 
     @Test
@@ -180,20 +134,8 @@ class CorpusExternoTest {
     private static Divergencia divergenciaDe(String fuente, String salida) {
         boolean yoRechazo = salida.contains("[Error:");
         String renglon = renglonDeLaDivergencia(fuente, salida, yoRechazo);
-
-        if (yoRechazo && LAMBDA_AL_INICIO.matcher(renglon).find()) {
-            return Divergencia.LAMBDA_COMO_SENTENCIA;
-        }
-        if (!yoRechazo && LAMBDA_ENTRE_PARENTESIS.matcher(renglon).find()) {
-            return Divergencia.LAMBDA_PARENTIZADA;
-        }
-        if (CREACION_GENERICA.matcher(renglon).find()) {
-            return Divergencia.CREACION_GENERICA;
-        }
-        if (MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC.matcher(renglon).find()) {
-            return Divergencia.SIN_VISIBILIDAD_MEJORADA;
-        }
-        return yoRechazo ? Divergencia.RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN : null;
+        return !yoRechazo && LAMBDA_ENTRE_PARENTESIS.matcher(renglon).find()
+                ? Divergencia.LAMBDA_PARENTIZADA : null;
     }
 
     // El renglón donde la divergencia se manifiesta: el de MI primer error si

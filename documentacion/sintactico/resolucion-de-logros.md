@@ -156,7 +156,7 @@ logro es el que se los da.
 > igual que en Java»*
 
 `<InicializacionDeAtributo>` en la cola del atributo. Es un no terminal **dedicado**, distinto del
-de las variables locales, porque son logros distintos y tienen que poder prenderse por separado.
+de las variables locales, porque son logros distintos y el semántico va a querer distinguirlos.
 
 ## 8. Inicializacion de Arreglos E2
 

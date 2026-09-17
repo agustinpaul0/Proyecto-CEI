@@ -237,16 +237,32 @@ class LambdasTest extends BaseDeAnalisis {
         aceptarLambda(dir, expresion);
     }
 
-    // En Java una sentencia-expresión es un StatementExpression, que nunca es una
-    // lambda: `x -> x;` suelto es «not a statement».
+    // Una lambda suelta SÍ es una sentencia, y diverge de Java a propósito.
+    // MiniJava base define `Sentencia -> Asignacion ;` con `Asignacion ->
+    // Expresion`: los nombres sugieren la restricción de JLS 14.8 —`javac` dice
+    // «not a statement»—, las producciones no la imponen. Este analizador ya
+    // seguía ese molde para `1 + 2;` y `true;`; con la lambda en <Expresion>,
+    // `x -> x;` se deriva igual. Ver decisiones-de-logica.md §2.2.
     @ParameterizedTest
     @ValueSource(strings = {
             "x -> x;",
             "(a, b) -> a;",
             "() -> 1;",
+            "x -> x.m();",
+            "() -> a = b;",
     })
-    void unaLambdaSueltaNoEsUnaSentencia(String sentencia, @TempDir Path dir) {
-        rechazar(dir, envolverEnMetodo(sentencia));
+    void unaLambdaSueltaEsUnaSentencia(String sentencia, @TempDir Path dir) {
+        aceptar(dir, envolverEnMetodo(sentencia));
+    }
+
+    // Lo mismo en el encabezado del for, que usa el mismo no terminal.
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "for (x -> x; a; b) ;",
+            "for (() -> 1; a; b) ;",
+    })
+    void unaLambdaTambienEsLaInicializacionDeUnFor(String sentencia, @TempDir Path dir) {
+        aceptar(dir, envolverEnMetodo(sentencia));
     }
 
     // El lado derecho de un `=` es una Expression del JLS, así que admite lambda;

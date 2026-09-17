@@ -49,30 +49,44 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         }
     }
 
-    // PrimarioSinIdClase -> this | stringLiteral | Parentizada
-    //                     | AccesoVarOLlamada | Creacion
+    // PrimarioSinIdClase -> PrimarioSinIdClaseNiLambda | Parentizada
+    //                     | AccesoVarOLlamada
     //
     // Ninguna de estas alternativas ES una lambda por sí misma: la lambda se
     // produce en el nivel más alto, no acá. Ésa es la corrección de precedencia,
     // y lo que hace que `1 + x -> x` no derive. Lo que sí la alcanza es
     // Parentizada, porque su contenido es una Expresion completa.
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
-            match(TipoDeToken.PR_THIS);
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
-            match(TipoDeToken.LIT_STRING);
+        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA)) {
+            primarioSinIdClaseNiLambda();
         } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA)) {
             parentizada();
         } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA)) {
             accesoVarOLlamada();
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION)) {
+        } else {
+            throw errorEsperando(
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA);
+        }
+    }
+
+    // PrimarioSinIdClaseNiLambda -> this | stringLiteral | Creacion
+    //
+    // Las tres cabezas que no pueden empezar una lambda. Están aparte porque
+    // ExpresionSinIdClase necesita justo eso: las otras dos las toma en su
+    // variante que sí la admite.
+    public void primarioSinIdClaseNiLambda() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS)) {
+            match(TipoDeToken.PR_THIS);
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL)) {
+            match(TipoDeToken.LIT_STRING);
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION)) {
             sintaxis.creacion().creacion();
         } else {
-            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION);
+            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION);
         }
     }
 

@@ -325,8 +325,8 @@ hizo esa verificación, y apareció una ambigüedad más además de las dos ante
 
 \begin{decision}{los Siguientes son un diagnóstico, no parte del método}
 Detectar una ambigüedad exige mirar el contexto en que aparece un no terminal anulable. Ese
-cálculo se hizo \textbf{una sola vez y fuera del compilador}, con la herramienta descripta en la
-sección~\ref{sec:verificacion}, con el único fin de auditar el ítem del checklist.
+cálculo se hizo \textbf{una sola vez y fuera del compilador}, con una herramienta aparte, con el
+único fin de auditar el ítem del checklist.
 
 \textbf{El analizador decide sólo con Primeros}, como enseña la cátedra: los Siguientes no
 aparecen en la gramática, ni en la elección de producciones, ni en una línea del código. Una vez
@@ -997,6 +997,43 @@ con \tl{\{}, la gramática \textbf{rechaza} \texttt{x -> \{ \dots \}} sin ningú
 
 Requiere el token \tl{->}, que no existe en el léxico de la Etapa 1.
 
+\begin{decision}{una lambda suelta SÍ es una sentencia}
+\label{sec:lambda-sentencia}
+Mismo criterio que la decisión de abajo, aplicado al otro lugar donde aparece. \textsc{MiniJava}
+base define la sentencia-expresión así:
+
+\begin{producciones}
+\regla{Sentencia}{\nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;}}
+\regla{Asignacion}{\nt{Expresion}}
+\regla{Llamada}{\nt{Expresion}}
+\end{producciones}
+
+Los nombres sugieren la restricción de JLS 14.8 ---en Java una sentencia-expresión sólo puede ser
+una asignación, un incremento, una llamada o un \tl{new}---, pero las producciones no la imponen:
+los dos no terminales son \nt{Expresion} y nada más. De ahí que este analizador acepte
+\texttt{1 + 2;}, \texttt{true;} y \texttt{"x";}, que \texttt{javac} rechaza. Con la lambda como
+alternativa de \nt{Expresion}, \texttt{p -> x;} se deriva por el mismo camino.
+
+\paso{Lo que costó en la gramática} El no terminal que usa la sentencia, \nt{ExpresionSinIdClase},
+está duplicado del general para competir contra la declaración de variable local ---\texttt{C x;}
+contra \texttt{C.m();}---, y esa copia tenía las dos cabezas ambiguas, \texttt{idMetVar} y \tl{(},
+en su versión sin lambda. Reemplazarlas por las que sí la admiten alcanza:
+
+\begin{producciones}
+\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClaseNiLambda} \nt{ColaDeExpresionDesdePrimario}}
+\regla{ExpresionSinIdClase}{\tl{idMetVar} \nt{AccesoLlamadaOLambda} \nt{RestoExpresion}}
+\regla{ExpresionSinIdClase}{\nt{ParentizadaOLambda} \nt{RestoExpresion}}
+\end{producciones}
+
+El \nt{RestoExpresion} de atrás es lo único que las distingue de las de \nt{Expresion}: acá la
+expresión sí lleva el \tl{=} de la asignación, y
+\nt{ColaDeExpresionDesdePrimario} $\equiv$ \nt{ColaDesdePrimarioSinAsignacion} \nt{RestoExpresion},
+así que las ramas que no son lambda derivan exactamente lo mismo que antes.
+
+Como \nt{ExpresionSinIdClase} es también la inicialización del \texttt{for},
+\texttt{for (p -> x; a; b)} queda válido por el mismo cambio.
+\end{decision}
+
 \begin{decision}{una lambda entre paréntesis SÍ es un operando}
 \label{sec:lambda-parentizada}
 Es la decisión más discutible del logro, y va con su fundamento porque diverge de Java.
@@ -1308,8 +1345,8 @@ patrón State ni el driver del autómata: \texttt{EstadoIdMV} reconoce \tl{for} 
 La gramática completa resultante, en la misma notación del documento que publica la cátedra. Es la
 única gramática del compilador y no lleva ninguna marca: todas las producciones existen siempre.
 
-Se \textbf{genera} desde el mismo archivo que verifica la herramienta de la
-sección~\ref{sec:verificacion}, así que el informe y lo que se comprueba no pueden divergir.
+Se \textbf{genera} desde el mismo archivo de gramática que consume el analizador, así que el
+informe y lo que se comprueba no pueden divergir.
 
 \input{generado/gramatica-final}
 
@@ -1319,7 +1356,7 @@ sección~\ref{sec:verificacion}, así que el informe y lo que se comprueba no pu
 % ===========================================================================
 
 
-Las tres ambigüedades del registro de la sección~\ref{sec:verificacion} se resuelven todas por
+Las tres ambigüedades del registro se resuelven todas por
 regla de implementación ---la vía que autoriza Clase 4, slide 49--- y todas de la misma forma:
 \textbf{voraz}, consumiendo todo lo que se pueda:
 
@@ -1416,7 +1453,7 @@ Creacion, Argumentos\}} & Una sección de la gramática cada una, entre 99 y 173
 
 Que el código y la gramática no se separen no depende de la disciplina: cada método cita arriba las
 producciones que traduce, y \texttt{auditar\_analizador.py} falla si una producción no la implementa
-nadie o si un comentario quedó viejo (sección~\ref{sec:verificacion}).
+nadie o si un comentario quedó viejo.
 
 \subsection{Los tipos de error que detecta}
 
@@ -1501,307 +1538,6 @@ Una opción desconocida se informa por salida estándar y \textbf{no} aborta:
 los testers de la cátedra invocan \texttt{main()} dentro del mismo proceso, y una excepción o un
 \texttt{System.exit()} matarían la corrida entera. Por el mismo motivo el compilador no llama nunca
 a \texttt{System.exit()}.
-
-% ===========================================================================
-\section{Verificación}
-\label{sec:verificacion}
-% ===========================================================================
-
-Los conjuntos de Primeros se calcularon a mano y se contrastaron con \texttt{herramientas/primeros.py},
-escrita para este trabajo. La herramienta \textbf{contrasta} la cuenta manual, no la reemplaza: cuando
-las dos difirieron, primero se resolvió cuál estaba equivocada.
-
-\subsection{Condición LL(1)}
-
-\begin{consola}
-$ python3 herramientas/primeros.py gramatica/minijava-base.g
---- 60 no terminales, 126 producciones, 51 terminales ---
-NO ES LL(1): 16 conflicto(s)
-
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g
---- 109 no terminales, 227 producciones, 60 terminales ---
-ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
-\end{consola}
-
-\subsection{Ambigüedad frente a conflicto de predicción}
-
-Para distinguir los dos defectos de la sección~\ref{sec:dos-defectos} se comparan los rangos de
-longitud derivable: si no se solapan, los lenguajes son disjuntos y no puede haber ambigüedad.
-
-\begin{consola}
-$ python3 herramientas/primeros.py gramatica/minijava-base.g \
-      --longitudes VarEncadenada MetodoEncadenado
-<VarEncadenada>: entre 2 y 2 tokens
-<MetodoEncadenado>: entre 4 y inf tokens
-
-Los rangos NO se solapan: ninguna cadena puede estar en los dos
-lenguajes, asi que <VarEncadenada> y <MetodoEncadenado> NO son ambiguos
-entre si. Si comparten prefijo izquierdo es un conflicto de PREDICCION
-(LL(1)), no de ambiguedad, y se arregla factorizando.
-\end{consola}
-
-\subsection{Registro de ambigüedades}
-
-La condición LL(1) que verifica el apartado anterior es la de la cátedra: disjunción de Primeros.
-El ítem «no es ambigua, o es arreglable» del checklist de Clase 4, slide 41, es otro, y se audita
-aparte. La herramienta junta toda ambigüedad que aparezca y \textbf{exige que cada una esté
-declarada con su regla de resolución}: si aparece una nueva, falla.
-
-\begin{consola}
-$ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades
-DIAGNOSTICO OFFLINE - no forma parte del metodo de implementacion.
-El analizador sintactico decide SOLO con Primeros (Esquema Simple,
-Clase 5). Los Siguientes se usan aca, y solo aca, para auditar el item
-"no es ambigua o es arreglable" del checklist de Clase 4 slide 41.
-
-Ambiguedades detectadas: 3
-
-  <DimensionesConTamanioOpcional>  ...  [declarada]
-  <ElseOpcional>                   ...  [declarada]
-  <RestoExpresion>                 ...  [declarada]
-
-Todas las ambiguedades detectadas estan declaradas con su regla de resolucion.
-\end{consola}
-
-Eso permite afirmar, con evidencia y no por revisión a ojo, que \textbf{éstas son todas las
-ambigüedades de la gramática} y que cada una tiene una resolución explícita.
-
-\subsection{Casos de aceptación y rechazo}
-
-La herramienta incluye un simulador del esquema de traducción --- elige la producción cuyo cuerpo
-tiene al token actual en sus Primeros, y si ninguna lo tiene pero el no terminal es vaciable, no
-hace nada --- que permite probar la gramática \textbf{antes} de escribir el analizador. Se
-verifican \textbf{81 casos}: por cada construcción, la sintaxis que debe aceptar y la que debe
-rechazar.
-
-\begin{consola}
-$ bash herramientas/casos-gramatica.sh
---- nucleo ---
-  ok    clase vacia
-  ok    if/else anidado
-  ok    encadenamiento
---- cada construccion contra su propia sintaxis ---
-  ok    x -> x            (1 param sin parentesis)
-  ok    ( ) -> 1          (0 params)
-  ok    ( a ) -> a        (1 param con parentesis)
-  ok    ( a , b ) -> a    (2 params)
-  ok    ( a ) + 1         (parentizada, NO lambda)
-  ok    cuerpo con llaves NO se permite
-  ok    parametro con tipo NO se permite
-  ok    List < List < Persona > > x ;  (anidado)
-  ok    new List < > ( )               (diamante)
-  ok    List < > x ;    diamante en posicion de TIPO
-  ok    new List < > [ 3 ]  diamante con arreglo
---- orden de modificadores: los dos, como en Java ---
-  ok    public static void f(){}
-  ok    static public void f(){}
-  ok    public private void f(){}
-  ok    static static void f(){}
-...
-TODOS LOS CASOS PASAN.
-\end{consola}
-
-Los casos que fijan las decisiones difíciles de este informe son, entre otros: \texttt{a = b = c}
-se rechaza (no asociatividad de la asignación); \texttt{( a ) + 1} se acepta como expresión
-parentizada y \texttt{( a ) -> a} como lambda, decidiéndose con un solo token; \texttt{List<> x;}
-se rechaza y \texttt{new List<>()} se acepta; \texttt{static public} y \texttt{public static} se
-aceptan los dos y \texttt{public private} no; \texttt{new int[2]\{1,2\}} se acepta y
-\texttt{new int[]\{1,2\}} no.
-
-\subsection{Validación contra los casos de la cátedra}
-
-La verificación más fuerte no usa casos propios. La herramienta
-\texttt{aceptar\_fuente.py} tokeniza un fuente \textbf{real} con el analizador léxico de la
-Etapa 1 y le pasa la secuencia de tokens al simulador, de modo que la gramática se puede probar
-contra los ocho casos entregados con los testers de esta etapa antes de que exista el analizador
-sintáctico.
-
-\begin{consola}
-$ python3 herramientas/aceptar_fuente.py \
-      ../vendor/testersSintactico/resources/*/*.java
-  ok    sintCorrecto01.java      acepta
-  ok    sintCorrecto02.java      acepta
-  ok    sintCorrecto03.java      acepta
-  ok    sintCorrecto04.java      acepta
-  ok    sintError01.java         rechaza  [Error:,|3] ==
-        se esperaba `{` y se encontro `,`
-  ok    sintError02.java         rechaza  [Error:clasesita|3] ==
-        se esperaba `idClase` y se encontro `idMetVar`
-  ok    sintError03.java         rechaza  [Error:hola|5] ==
-        se esperaba `;` y se encontro `idMetVar`
-  ok    sintError04.java         rechaza  [Error:else|7] ==
-        se esperaba `}` y se encontro `else`
-
-TODOS LOS CASOS PASAN.
-\end{consola}
-
-Los cuatro casos válidos se aceptan y los cuatro inválidos se rechazan. Además ---y esto es lo
-que importa para la corrección--- el rechazo se produce \textbf{en el token exacto} que declara la
-expectativa de cada caso: el \texttt{==} indica que el código \texttt{[Error:lexema|línea]}
-derivado de la gramática coincide con el que la cátedra espera en los cuatro. La gramática no sólo
-reconoce el lenguaje correcto: falla donde tiene que fallar.
-
-\subsection{Tres reconocedores independientes de la misma gramática}
-\label{sec:tres-reconocedores}
-
-El argumento de corrección más fuerte no es que el analizador acepte una lista de casos, sino que
-\textbf{tres implementaciones escritas por separado coincidan}. Las tres salen del mismo archivo de
-gramática y no comparten una línea de código:
-
-\begin{description}
-  \item[El analizador de la entrega] Java, descendente recursivo, Esquema Simple de Clase 5.
-        Elige mirando los Primeros que \texttt{primeros\_a\_java.py} genera desde la gramática.
-  \item[El simulador] Python, con pila explícita, en \texttt{primeros.py}. Imita el mismo esquema
-        pero sin recursión, y existía antes que el analizador.
-  \item[El oráculo JavaCC] generado por \texttt{gramatica\_a\_javacc.py}. JavaCC es un generador de
-        parsers de terceros: se le da la gramática y escribe el parser. Con \texttt{LOOKAHEAD = 1}
-        usa exactamente la misma técnica.
-\end{description}
-
-\begin{decision}{qué prueba, y qué no prueba, que JavaCC no emita avisos}
-JavaCC avisa \texttt{Choice conflict involving two expansions} cuando dos alternativas de un mismo
-no terminal empiezan con el mismo token. Sobre la gramática final \textbf{no emite ninguno}, lo que
-es una confirmación independiente ---de una herramienta que calculó los conjuntos por su cuenta
-sobre las 227 producciones--- de la condición LL(1) de la cátedra: disjunción de Primeros.
-
-\textbf{No confirma la condición fuerte.} Verificado con dos gramáticas de control: ante
-\nt{S} $\to$ \tl{a} \tl{b} $\mid$ \tl{a} \tl{c} avisa; ante \nt{Opt} $\to$ \tl{b} $\mid$
-$\varepsilon$ seguido de \tl{b} ---un conflicto Primeros--Siguientes--- no avisa nada. Las tres
-ambigüedades declaradas son de esa segunda clase, así que su silencio no dice nada sobre ellas.
-
-\textbf{Lo que sí lo hace útil como oráculo} es cómo resuelve lo que no puede predecir: toma la
-primera alternativa que coincide, que es la misma resolución voraz que aplica este analizador. Por
-eso las tres coinciden también en los casos ambiguos, y por eso el oráculo puede etiquetar el
-corpus.
-\end{decision}
-
-\subsection{Equivalencia de lenguajes con la gramática de la cátedra}
-
-Clase 4 exige adaptar la gramática \emph{«sin cambiar el lenguaje que genera»}. Eliminar recursión
-a izquierda y factorizar lo preservan \emph{en teoría}; \texttt{equivalencia\_de\_lenguajes.py} lo
-comprueba \emph{en la práctica} sobre las dos gramáticas concretas. La comparación es contra el
-\textbf{núcleo LL(1) sin logros}, \texttt{minijava-ll1.g}: es lo que tiene que generar el mismo
-lenguaje que la cátedra, porque los logros por definición lo agrandan. Ese archivo no lo consume el
-compilador; existe exactamente para esto.
-
-La herramienta deriva una cadena por cada producción de cada gramática ---dos por cada producción
-anidable, porque un solo uso no distingue \texttt{a = b} de \texttt{a = b = c}--- y verifica que la
-otra la acepte. Como la gramática base no es LL(1), reconocerla necesita un algoritmo que tolere
-recursión a izquierda y ambigüedad: se usa un \textbf{reconocedor de Earley}.
-
-\begin{consola}
-$ python3 herramientas/equivalencia_de_lenguajes.py
-minijava-base.g: 126/126 producciones ejercitadas, 0 inertes
-minijava-ll1.g:  135/135 producciones ejercitadas, 0 inertes
-
-551 mutantes comparados en las dos gramaticas.
-LAS DOS GRAMATICAS GENERAN EL MISMO LENGUAJE: toda produccion de cada una fue
-ejercitada y la otra estuvo de acuerdo.
-\end{consola}
-
-La cobertura por producción es lo que le da fuerza al chequeo: se validó contra dos controles
-negativos ---uno que ensancha el lenguaje permitiendo \texttt{a = b = c} y otro que lo angosta
-quitando \nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
-
-\subsection{Contraste con un corpus ajeno}
-\label{sec:corpus-externo}
-
-Todas las verificaciones anteriores comparten un límite: las implementaciones que se contrastan
-salen del \emph{mismo} archivo de gramática, así que comparten sus decisiones. El contraste que
-cierra ese hueco usa un corpus de \textbf{28.146 fuentes generados a partir de otra gramática} de
-\textsc{MiniJava}, que no comparte con este trabajo ni el código ni los criterios.
-
-\begin{decision}{el corpus y su generador son de Giuliano Taormina}
-El \emph{fuzzer} que produjo el corpus original de 30.000 casos, y la gramática de la que se
-derivan, los escribió \textbf{Giuliano Taormina}, compañero de la materia, que los compartió para
-que cada uno pudiera contrastar su analizador. No son material de este trabajo: acá sólo se corrió
-el compilador contra ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
-\end{decision}
-
-\textbf{27.793 coinciden exactamente.} Los 353 restantes caen en cinco familias, todas declaradas y
-verificadas a mano:
-
-\begin{center}
-\begin{tabular}{@{}p{0.26\linewidth}rp{0.60\linewidth}@{}}
-\toprule
-\textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
-\midrule
-\texttt{p -> x;} como sentencia & 213 &
-\textbf{Este trabajo, y es una inconsistencia abierta.} Ver el recuadro de abajo. \\[4pt]
-\texttt{(x -> y).m()} & 3 &
-\textbf{Este trabajo}, a propósito y al revés que la anterior: acá se acepta y su gramática lo
-rechaza. Ver la decisión de la sección~\ref{sec:lambda-parentizada}. \\[4pt]
-\texttt{new Clase<Arg>()} y \texttt{new Clase<>()} & 49 &
-\textbf{Este trabajo.} El primero lo genera la gramática de la cátedra
-(\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}); el segundo lo habilita
-el logro de genericidad, que admite el diamante al instanciar. \\[4pt]
-\texttt{public void m()\{\}}, constructor sin \tl{public} & 34 &
-\textbf{Su generador}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
-Los dos rechazan, en distinto token & 54 &
-\textbf{Ninguno}: su gramática cubre menos construcciones, así que el primer token que no encaja es
-otro. \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\begin{decision}{la lambda como sentencia: acá la gramática base manda lo contrario}
-\label{sec:lambda-sentencia}
-Es la única divergencia que queda \textbf{sin resolver}, y la más grande. \textsc{MiniJava} base
-define la sentencia-expresión así:
-
-\begin{producciones}
-\regla{Sentencia}{\nt{Asignacion} \tl{;} \alt{} \nt{Llamada} \tl{;}}
-\regla{Asignacion}{\nt{Expresion}}
-\regla{Llamada}{\nt{Expresion}}
-\end{producciones}
-
-Los nombres sugieren la restricción de JLS 14.8 ---en Java una sentencia-expresión sólo puede ser
-una asignación, un incremento, una llamada o un \tl{new}---, pero las producciones no la imponen:
-los dos no terminales son \nt{Expresion} y nada más. De hecho este analizador ya sigue ese molde y
-acepta \texttt{1 + 2;}, \texttt{true;} y \texttt{"x";}, que \texttt{javac} rechaza.
-
-Entonces, por el mismo argumento de la sección~\ref{sec:lambda-parentizada}: si el logro agrega la
-lambda como alternativa de \nt{Expresion}, \texttt{p -> x;} \textbf{se deriva solo}. Hoy se rechaza,
-y de forma incoherente ---\texttt{(p -> x);} sí se acepta, porque ahí la lambda entra por
-\nt{Parentizada}---. El motivo es de implementación y no de criterio: el no terminal de expresión
-que usa la sentencia, \nt{ExpresionSinIdClase}, se factorizó contra la declaración de variable local
-y quedó sin las dos cabezas que llevan a la lambda.
-
-Corregirlo es darle esas dos cabezas, las mismas que ya usa
-\nt{ExpresionDesdePrimarioOLambda}. Queda anotado para consultar junto con el resto.
-\end{decision}
-
-\begin{decision}{clasificar por renglón, no por archivo}
-La primera versión de esta clasificación miraba el \emph{fuente entero}: si en cualquier parte del
-archivo aparecía un \texttt{new Xx<Y>()}, el caso caía en esa familia aunque el error estuviera
-treinta renglones más arriba y no tuviera nada que ver. Con eso la familia de la lambda como
-sentencia ---la mayor con diferencia--- quedaba enteramente tapada, y el «cero sin declarar» del
-test decía menos de lo que parecía.
-
-Ahora se clasifica un solo renglón: el del primer error propio, o el que el caso declara si acá no
-hubo ninguno. Es el único que puede explicar por qué las dos difieren.
-\end{decision}
-
-\begin{decision}{el corpus se podó una vez}
-Había una sexta familia, y era la mayor de todas: 1.854 casos de \texttt{"a\textbackslash\textbackslash"}.
-\emph{Aspectos Léxicos} §2.3.3 da una regla \textbf{posicional} ---la comilla de cierre nunca está
-antecedida por \texttt{\textbackslash}--- y no una de apareamiento, así que acá una barra no cancela
-a la anterior y el literal no cierra; su generador asume la semántica de Java. Se sacaron del corpus
-por repetir una sola discrepancia miles de veces, y de ahí que el total diga 28.146 y no 30.000.
-\end{decision}
-
-Las cinco están declaradas en el test, que falla si aparece una sexta. Es la misma disciplina que
-el registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
-
-Cada método del analizador lleva arriba, en un comentario, las producciones que traduce.
-\texttt{auditar\_analizador.py} compara esas citas contra la gramática y falla si una producción no
-la implementa nadie o si un comentario quedó viejo:
-
-\begin{consola}
-$ python3 herramientas/auditar_analizador.py
-227 producciones en la gramatica, 227 citadas por el analizador.
-EL ANALIZADOR CITA EXACTAMENTE LAS PRODUCCIONES DE LA GRAMATICA.
-\end{consola}
 
 % ===========================================================================
 \section{Decisiones tomadas con criterio propio}
@@ -2042,7 +1778,7 @@ desde ahí y no se editan a mano, para que no puedan divergir.
 
   \item[\texttt{gramatica\_a\_javacc.py} y \texttt{gramatica\_a\_antlr.py}] Traducen la gramática a
         los formatos de dos generadores de parsers de terceros. El parser JavaCC es el
-        \textbf{oráculo} que etiqueta el corpus generado (sección~\ref{sec:tres-reconocedores}); la
+        \textbf{oráculo} que etiqueta el corpus generado de etiquetado del corpus; la
         gramática ANTLR alimenta al generador de casos.
 
   \item[\texttt{equivalencia\_de\_lenguajes.py}] Un \textbf{reconocedor de Earley} escrito para este

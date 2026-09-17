@@ -298,14 +298,25 @@ Primitivo -> floatLiteral
 # (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
 # se comparten con la jerarquía normal, así que no hay lógica repetida.
 #
-# NO admite lambda en la RAIZ: los dos contextos donde se usa son sentencia-
-# expresion e inicializacion del for, y MiniJava base restringe la sentencia a
-# `<Asignacion> | <Llamada>`, no a una <Expresion> cualquiera. Una lambda sí
-# puede aparecer adentro, via `( Expresion )`, igual que en la base.
+# SI admite lambda en la raiz. MiniJava base define `Sentencia -> Asignacion ;`
+# y `Asignacion -> Expresion`, o sea que la sentencia-expresion es una
+# <Expresion> cualquiera: los nombres <Asignacion> y <Llamada> sugieren la
+# restriccion de JLS 14.8, las producciones no la imponen. Con la lambda como
+# alternativa de <Expresion>, `p -> x;` se deriva solo. Java lo rechaza («not a
+# statement»); se eligio respetar el molde de la base, igual que en
+# <Parentizada>. Ver decisiones-de-logica.md §2.2.
+#
+# Las dos ultimas reemplazan lo que antes entraba por <PrimarioSinIdClase>: son
+# las mismas dos cabezas ambiguas que factoriza <ExpresionDesdePrimarioOLambda>,
+# `idMetVar` y `(`. El `RestoExpresion` de atras es lo unico que las distingue
+# de alla, porque aca la expresion SI lleva el `=` de la asignacion:
+# `ColaDeExpresionDesdePrimario` == `ColaDesdePrimarioSinAsignacion RestoExpresion`.
 
 ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
 ExpresionSinIdClase -> Primitivo ColaTrasOperando
-ExpresionSinIdClase -> PrimarioSinIdClase ColaDeExpresionDesdePrimario
+ExpresionSinIdClase -> PrimarioSinIdClaseNiLambda ColaDeExpresionDesdePrimario
+ExpresionSinIdClase -> idMetVar AccesoLlamadaOLambda RestoExpresion
+ExpresionSinIdClase -> ParentizadaOLambda RestoExpresion
 
 # La cola se parte en dos para que el nivel <ExpresionCondicionalOLambda> pueda
 # reusarla sin arrastrar el `=`, que ahí no corresponde.
@@ -340,11 +351,16 @@ Primario -> PrimarioSinIdClase
 
 LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
 
-PrimarioSinIdClase -> this
-PrimarioSinIdClase -> stringLiteral
+PrimarioSinIdClase -> PrimarioSinIdClaseNiLambda
 PrimarioSinIdClase -> Parentizada
 PrimarioSinIdClase -> AccesoVarOLlamada
-PrimarioSinIdClase -> Creacion
+
+# Las tres cabezas que NO pueden empezar una lambda. Estan aparte porque
+# <ExpresionSinIdClase> necesita justo eso: las otras dos las toma en su
+# variante que admite lambda.
+PrimarioSinIdClaseNiLambda -> this
+PrimarioSinIdClaseNiLambda -> stringLiteral
+PrimarioSinIdClaseNiLambda -> Creacion
 
 # El contenido es una <Expresion> completa, lambda incluida, tal cual la regla
 # original: `ExpresionParentizada -> ( Expresion )`, y `Primario ->

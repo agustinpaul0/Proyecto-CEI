@@ -1,21 +1,16 @@
-# Gramática LL(1) final de MiniJava
+> Gramática LL(1) FINAL de MiniJava.
 
-Gramática corregida y **verificada** de MiniJava, en la notación BNF-extendida del PDF de la
-cátedra. Es la **única** gramática del compilador, y describe MiniJava con todos los logros de la
-Etapa 1 y de la Etapa 2 incorporados: ninguna producción aparece o desaparece según una
-configuración.
+> python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
 
-- El origen, sin tocar, está en [`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md).
-- Para entender qué hace cada regla y qué estaba roto: [`guia-de-la-gramatica.md`](defectos-de-la-gramatica-original.md).
-- El paso a paso de cada corrección: [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md).
+> Ésta es la ÚNICA gramática del compilador, y describe MiniJava con todos los
+> logros de la Etapa 1 y de la Etapa 2 incorporados. No hay producciones que
+> aparezcan y desaparezcan según una configuración: lo que está escrito acá es
+> exactamente lo que el analizador reconoce, siempre.
 
-**Este documento se genera** desde `compilador/gramatica/minijava-ll1-final.g`, que es el mismo
-archivo que verifica el script — no se edita a mano, para que no puedan divergir:
+> El núcleo sin logros vive aparte, en minijava-ll1.g, y no lo consume el
+> compilador: existe sólo para que equivalencia_de_lenguajes.py demuestre que
+> genera el mismo lenguaje que la gramática de la cátedra (minijava-base.g).
 
-```bash
-cd compilador
-python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --sin-cabecera
-```
 <Inicial> ::= <ListaClases> **eof**  
 
 <ListaClases> ::= <Clase> <ListaClases> | <Interfaz> <ListaClases> | ε  
@@ -311,14 +306,25 @@ python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --si
 > (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
 > se comparten con la jerarquía normal, así que no hay lógica repetida.
 
-> NO admite lambda en la RAIZ: los dos contextos donde se usa son sentencia-
-> expresion e inicializacion del for, y MiniJava base restringe la sentencia a
-> `<Asignacion> | <Llamada>`, no a una <Expresion> cualquiera. Una lambda sí
-> puede aparecer adentro, via `( Expresion )`, igual que en la base.
+> SI admite lambda en la raiz. MiniJava base define `Sentencia -> Asignacion ;`
+> y `Asignacion -> Expresion`, o sea que la sentencia-expresion es una
+> <Expresion> cualquiera: los nombres <Asignacion> y <Llamada> sugieren la
+> restriccion de JLS 14.8, las producciones no la imponen. Con la lambda como
+> alternativa de <Expresion>, `p -> x;` se deriva solo. Java lo rechaza («not a
+> statement»); se eligio respetar el molde de la base, igual que en
+> <Parentizada>. Ver decisiones-de-logica.md §2.2.
+
+> Las dos ultimas reemplazan lo que antes entraba por <PrimarioSinIdClase>: son
+> las mismas dos cabezas ambiguas que factoriza <ExpresionDesdePrimarioOLambda>,
+> `idMetVar` y `(`. El `RestoExpresion` de atras es lo unico que las distingue
+> de alla, porque aca la expresion SI lleva el `=` de la asignacion:
+> `ColaDeExpresionDesdePrimario` == `ColaDesdePrimarioSinAsignacion RestoExpresion`.
 
 <ExpresionSinIdClase> ::= <OperadorUnario> <Operando> <ColaTrasOperando>  
 <ExpresionSinIdClase> ::= <Primitivo> <ColaTrasOperando>  
-<ExpresionSinIdClase> ::= <PrimarioSinIdClase> <ColaDeExpresionDesdePrimario>  
+<ExpresionSinIdClase> ::= <PrimarioSinIdClaseNiLambda> <ColaDeExpresionDesdePrimario>  
+<ExpresionSinIdClase> ::= **idMetVar** <AccesoLlamadaOLambda> <RestoExpresion>  
+<ExpresionSinIdClase> ::= <ParentizadaOLambda> <RestoExpresion>  
 
 > La cola se parte en dos para que el nivel <ExpresionCondicionalOLambda> pueda
 > reusarla sin arrastrar el `=`, que ahí no corresponde.
@@ -353,11 +359,17 @@ python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --si
 
 <LlamadaMetodoEstatico> ::= **idClase** `.` **idMetVar** <ArgsActuales>  
 
-<PrimarioSinIdClase> ::= **this**  
-<PrimarioSinIdClase> ::= **stringLiteral**  
+<PrimarioSinIdClase> ::= <PrimarioSinIdClaseNiLambda>  
 <PrimarioSinIdClase> ::= <Parentizada>  
 <PrimarioSinIdClase> ::= <AccesoVarOLlamada>  
-<PrimarioSinIdClase> ::= <Creacion>  
+
+> Las tres cabezas que NO pueden empezar una lambda. Estan aparte porque
+> <ExpresionSinIdClase> necesita justo eso: las otras dos las toma en su
+> variante que admite lambda.
+
+<PrimarioSinIdClaseNiLambda> ::= **this**  
+<PrimarioSinIdClaseNiLambda> ::= **stringLiteral**  
+<PrimarioSinIdClaseNiLambda> ::= <Creacion>  
 
 > El contenido es una <Expresion> completa, lambda incluida, tal cual la regla
 > original: `ExpresionParentizada -> ( Expresion )`, y `Primario ->

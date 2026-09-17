@@ -157,16 +157,11 @@ def producciones(ruta):
     primera = next((i for i, (t, _) in enumerate(bloques) if t == "regla"), 0)
     bloques = bloques[primera:]
 
+    # Los comentarios del .g NO se emiten: la seccion del informe que consume
+    # esto es la gramatica final y nada mas, solo reglas de produccion. El porque
+    # de cada regla vive en la seccion del paso a paso, que es la que discute.
     for clase, contenido in bloques:
         if clase == "comentario":
-            titulo = ""
-            if contenido and contenido[0].startswith(TITULO):
-                titulo = r"\textbf{%s.} " % texto_comentario(
-                    contenido[0][len(TITULO):].rstrip("."), nts)
-                contenido = contenido[1:]
-            prosa = texto_comentario(" ".join(contenido), nts)
-            print(r"\noindent{\small %s%s\par}" % (titulo, prosa))
-            print()
             continue
         print(r"\begin{producciones}")
         for cuerpo, marca in contenido:

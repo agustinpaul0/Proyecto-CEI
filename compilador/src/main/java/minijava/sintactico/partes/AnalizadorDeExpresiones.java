@@ -246,11 +246,18 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
     //                      | Primitivo ColaTrasOperando
-    //                      | PrimarioSinIdClase ColaDeExpresionDesdePrimario
+    //                      | PrimarioSinIdClaseNiLambda ColaDeExpresionDesdePrimario
+    //                      | idMetVar AccesoLlamadaOLambda RestoExpresion
+    //                      | ParentizadaOLambda RestoExpresion
     //
     // Se usa donde una expresión compite con una declaración de variable local.
     // Sólo duplica las CABEZAS: todas las colas se comparten con la jerarquía
     // normal, así que no hay lógica repetida.
+    //
+    // Las dos últimas son las mismas cabezas ambiguas que factoriza
+    // expresionDesdePrimarioOLambda(), `idMetVar` y `(`, y por eso `p -> x;` es
+    // una sentencia válida. El `restoExpresion()` de atrás es lo único que las
+    // distingue de allá: acá la expresión sí lleva el `=` de la asignación.
     public void expresionSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
             operadorUnario();
@@ -259,13 +266,24 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
             primitivo();
             colaTrasOperando();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE)) {
-            sintaxis.referencias().primarioSinIdClase();
+        } else if (estaEn(
+                PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA)) {
+            sintaxis.referencias().primarioSinIdClaseNiLambda();
             colaDeExpresionDesdePrimario();
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_ID_MET_VAR)) {
+            Token nombre = actual();
+            match(TipoDeToken.ID_MV);
+            sintaxis.lambdas().accesoLlamadaOLambda(nombre);
+            restoExpresion();
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
+            sintaxis.lambdas().parentizadaOLambda();
+            restoExpresion();
         } else {
             throw errorEsperando(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
                     PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO,
-                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE);
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA,
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_ID_MET_VAR,
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA);
         }
     }
 

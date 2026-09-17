@@ -5,8 +5,6 @@
 \regla{Interfaz}{\tl{interface} \tl{idClase} \nt{GenericidadOpcional} \nt{ExtensionOpcional} \tl{\{} \nt{ListaMetodosInterfaz} \tl{\}}}
 \end{producciones}
 
-\noindent{\small Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con la genericidad avanzada.\par}
-
 \begin{producciones}
 \regla{GenericidadOpcional}{\tl{<} \tl{idGen} \tl{>} \alt{} \eps}
 \regla{HerenciaOpcional}{\tl{extends} \nt{TipoReferencia} \alt{} \tl{implements} \nt{TipoReferencia} \alt{} \eps}
@@ -15,15 +13,11 @@
 \regla{ListaMetodosInterfaz}{\nt{MetodoInterfaz} \nt{ListaMetodosInterfaz} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small La visibilidad se factoriza al frente de los tres tipos de miembro. Eso hace que el \texttt{public} del <Constructor> original quede absorbido por \nt{Visibilidad}, y que <Constructor> pase a competir con \nt{Tipo} por el token idClase: \texttt{C()\{\}} (constructor) vs \texttt{C x;} (atributo de tipo C).\par}
-
 \begin{producciones}
 \regla{Miembro}{\nt{Visibilidad} \nt{MiembroTrasVisibilidad}}
 \regla{Miembro}{\tl{static} \nt{VisibilidadOpcional} \nt{TipoMetodo} \nt{Metodo}}
 \regla{Miembro}{\nt{MiembroSinModificadores}}
 \end{producciones}
-
-\noindent{\small Los dos ordenes valen, como en Java: \texttt{public static} y \texttt{static public}. Que la visibilidad aparezca a un solo lado de \texttt{static} es lo que impide repetir el modificador —\texttt{public private void m()\{\}} no deriva—, sin necesitar un chequeo fuera de la gramatica.\par}
 
 \begin{producciones}
 \regla{MiembroTrasVisibilidad}{\tl{static} \nt{TipoMetodo} \nt{Metodo}}
@@ -36,40 +30,28 @@
 \regla{MiembroSinModificadores}{\tl{idClase} \nt{MiembroDesdeIdClase}}
 \end{producciones}
 
-\noindent{\small El NT insertado que decide entre constructor y miembro con tipo de referencia. Con visibilidad el constructor ya no lleva \texttt{public} propio, así que compite con el atributo/método de tipo referencia por el token idClase.\par}
-
 \begin{producciones}
 \regla{MiembroDesdeIdClase}{\nt{CuerpoDeMetodo}}
 \regla{MiembroDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{AtributoOMetodo}}
 \end{producciones}
-
-\noindent{\small El NT insertado que decide entre atributo y método.\par}
 
 \begin{producciones}
 \regla{AtributoOMetodo}{\nt{InicializacionDeAtributo} \tl{;}}
 \regla{AtributoOMetodo}{\nt{CuerpoDeMetodo}}
 \end{producciones}
 
-\noindent{\small NT dedicado y no compartido con la inicialización de una variable local: son construcciones distintas y el semántico las trata distinto.\par}
-
 \begin{producciones}
 \regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
-\noindent{\small \nt{Metodo} sobrevive como no terminal propio y lo comparten la rama static y la rama void, así que el semántico tiene UN solo lugar donde construir el nodo de método para esas dos formas. La tercera forma (tipo de referencia) ya consumió el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.\par}
-
 \begin{producciones}
 \regla{Metodo}{\tl{idMetVar} \nt{CuerpoDeMetodo}}
 \end{producciones}
 
-\noindent{\small Se comparte a propósito: es la misma construcción en método, método static y constructor.\par}
-
 \begin{producciones}
 \regla{CuerpoDeMetodo}{\nt{ArgsFormales} \nt{Bloque}}
 \end{producciones}
-
-\noindent{\small Los métodos de interfaz admiten \texttt{public} pero no \texttt{private}, que es lo que hace Java: verificado con javac, un método de interfaz \texttt{private} exige cuerpo («missing method body, or declare abstract»), y MiniJava no tiene forma de escribir ese cuerpo —\nt{MetodoInterfaz} termina en \texttt{;} en la especificación original—. O sea que un \texttt{private} acá sería siempre la forma que Java rechaza.\par}
 
 \begin{producciones}
 \regla{MetodoInterfaz}{\nt{PublicOpcional} \nt{TipoMetodo} \tl{idMetVar} \nt{ArgsFormales} \tl{;}}
@@ -82,20 +64,14 @@
 \regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}
 \end{producciones}
 
-\noindent{\small \texttt{float} es token del léxico desde la Etapa 1 pero no estaba en la gramática; sin esta alternativa el \texttt{float} del léxico queda inutilizable.\par}
-
 \begin{producciones}
 \regla{TipoPrimitivo}{\tl{boolean} \alt{} \tl{char} \alt{} \tl{int}}
 \regla{TipoPrimitivo}{\tl{float}}
 \end{producciones}
 
-\noindent{\small En POSICIÓN DE TIPO no se admite el diamante: \texttt{List<> x;} es inválido.\par}
-
 \begin{producciones}
 \regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
 \end{producciones}
-
-\noindent{\small la recursión por \nt{TipoGenericoOpcional} es la que habilita el anidamiento \texttt{List<List<Persona>{}>}.\par}
 
 \begin{producciones}
 \regla{ArgumentoDeTipo}{\tl{idGen}}
@@ -106,8 +82,6 @@
 \regla{RestoListaArgsFormales}{\tl{,} \nt{ArgFormal} \nt{RestoListaArgsFormales} \alt{} \eps}
 \regla{ArgFormal}{\nt{Tipo} \tl{idMetVar}}
 \end{producciones}
-
-\noindent{\small Una declaración local puede empezar con idClase (\texttt{C x;}), y una sentencia-expresión también (\texttt{C.m();}). Se factoriza ese idClase y el desempate lo hace el token siguiente: \texttt{.} es expresión, cualquier otro es declaración. La rama de expresión reusa \nt{ColaDeExpresionDesdePrimario} para no duplicar la jerarquía de expresiones.\par}
 
 \begin{producciones}
 \regla{Bloque}{\tl{\{} \nt{ListaSentencias} \tl{\}}}
@@ -121,8 +95,6 @@
 \regla{Sentencia}{\nt{For}}
 \end{producciones}
 
-\noindent{\small Sin variables locales clásicas, una sentencia-expresión puede empezar con idClase sin competir con nada: es la regla original.\par}
-
 \begin{producciones}
 \regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}
 \regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
@@ -132,8 +104,6 @@
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}
 \regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda}}
 \end{producciones}
-
-\noindent{\small Varias variables por sentencia, cada una con inicialización opcional: \texttt{int x,y,z = 10;}\par}
 
 \begin{producciones}
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}
@@ -147,8 +117,6 @@
 \regla{While}{\tl{while} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia}}
 \end{producciones}
 
-\noindent{\small Una sola sentencia/expresión por separador. El \texttt{:} distingue el for de iteradores del estándar, y aparece justo después del declarador, así que el desempate es de un solo token.\par}
-
 \begin{producciones}
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
 \regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
@@ -161,8 +129,6 @@
 \regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}
 \end{producciones}
 
-\noindent{\small El \texttt{:} distingue el for de iteradores del estándar, y está a un solo token.\par}
-
 \begin{producciones}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
 \regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}
@@ -171,26 +137,18 @@
 \regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small Una sola expresión por separador.\par}
-
 \begin{producciones}
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \end{producciones}
-
-\noindent{\small Las expresiones se organizan en capas, de menor a mayor precedencia: \nt{Expresion} es la asignación (no asociativa, como en la gramática original); <ExpresionCondicional> el ternario; <ExpresionCompuesta> los operadores binarios, en un solo nivel como en el original; \nt{ExpresionBasica} los operadores unarios prefijos; y \nt{Operando} un literal, o una referencia con posfijo opcional. La lambda NO es una capa de esta jerarquía ni un \nt{Primario}: es una alternativa del nivel MÁS ALTO, igual que en el JLS, que define \texttt{Expression: LambdaExpression | AssignmentExpression}. Por eso \texttt{->} no tiene precedencia contra ningún operador —no compite con ellos, vive arriba de todos—, y \texttt{1 + x -> x}, \texttt{- x -> x} y \texttt{a == x -> x} son inválidos, como en Java. Las dos cabezas que una lambda comparte con una expresión normal, \texttt{idMetVar} y \texttt{(}, se factorizan en \nt{ExpresionDesdePrimarioOLambda}. Todo lado derecho de un \texttt{=} —el de la asignación y el de los cinco inicializadores— es una \nt{ExpresionCondicionalOLambda} y no una \nt{Expresion}. Eso preserva lo que la regla original conseguía usando <ExpresionCompuesta>: que \texttt{a = b = c} no sea válido.\par}
 
 \begin{producciones}
 \regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
 \end{producciones}
 
-\noindent{\small El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática original pone <ExpresionCompuesta> ahí, o sea que \texttt{a = b = c} NO es válido. Admite lambda porque el JLS define \texttt{Assignment: LeftHandSide = Expression}.\par}
-
 \begin{producciones}
 \regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
 \regla{OperadorAsignacion}{\tl{=}}
 \end{producciones}
-
-\noindent{\small El nivel del JLS \texttt{LambdaExpression | ConditionalExpression}: admite lambda, no admite \texttt{=} en la raíz. Es el operando de los seis \texttt{=} y el tercer operando del ternario. Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de siempre; las dos que sí —\texttt{idMetVar} y \texttt{(}— se factorizan. La cola se comparte con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.\par}
 
 \begin{producciones}
 \regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
@@ -204,8 +162,6 @@
 \regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}
 \end{producciones}
 
-\noindent{\small Asociativo a derecha, como en Java. El operando del MEDIO es una \nt{Expresion} y el de la derecha una \nt{ExpresionCondicionalOLambda}, tal cual el JLS 15.25: en Java \texttt{a ? b = 1 : c} es válido, \texttt{a ? b : c = d} no lo es, y \texttt{a ? b : x -> x} sí —la producción del JLS es \texttt{? Expression : LambdaExpression}—. No rompe LL(1) porque Primeros(Expresion) no contiene \texttt{:}.\par}
-
 \begin{producciones}
 \regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}
 \regla{RestoCondicional}{\eps}
@@ -218,8 +174,6 @@
 \regla{Operando}{\nt{Referencia} \nt{PosfijoOpcional}}
 \end{producciones}
 
-\noindent{\small Va sobre \nt{Referencia} y no sobre \nt{Operando}: \texttt{5++} no tiene sentido.\par}
-
 \begin{producciones}
 \regla{PosfijoOpcional}{\tl{++}}
 \regla{PosfijoOpcional}{\tl{-{}-}}
@@ -228,15 +182,13 @@
 \regla{Primitivo}{\tl{floatLiteral}}
 \end{producciones}
 
-\noindent{\small \textbf{Expresión que no puede empezar con idClase.} Se usa donde una expresión compite con una declaración de variable local (sentencia y encabezado del for). Sólo duplica las \emph{cabezas}: todas las colas se comparten con la jerarquía normal, así que no hay lógica repetida. NO admite lambda en la RAIZ: los dos contextos donde se usa son sentencia- expresion e inicializacion del for, y MiniJava base restringe la sentencia a \texttt{<Asignacion> | <Llamada>}, no a una \nt{Expresion} cualquiera. Una lambda sí puede aparecer adentro, via \texttt{( Expresion )}, igual que en la base.\par}
-
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
 \regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}}
-\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}
+\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClaseNiLambda} \nt{ColaDeExpresionDesdePrimario}}
+\regla{ExpresionSinIdClase}{\tl{idMetVar} \nt{AccesoLlamadaOLambda} \nt{RestoExpresion}}
+\regla{ExpresionSinIdClase}{\nt{ParentizadaOLambda} \nt{RestoExpresion}}
 \end{producciones}
-
-\noindent{\small La cola se parte en dos para que el nivel \nt{ExpresionCondicionalOLambda} pueda reusarla sin arrastrar el \texttt{=}, que ahí no corresponde.\par}
 
 \begin{producciones}
 \regla{ColaTrasOperando}{\nt{ColaTrasOperandoSinAsignacion} \nt{RestoExpresion}}
@@ -244,8 +196,6 @@
 \regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}
 \regla{ColaDesdePrimarioSinAsignacion}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperandoSinAsignacion}}
 \end{producciones}
-
-\noindent{\small Ningún \nt{Primario} puede ser una lambda: ésa es exactamente la corrección de precedencia. Un \nt{Primario} es un operando, y una lambda no puede serlo.\par}
 
 \begin{producciones}
 \regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
@@ -255,35 +205,31 @@
 \regla{Encadenado}{\tl{.} \tl{idMetVar} \nt{EncadenadoAtributoOMetodo}}
 \end{producciones}
 
-\noindent{\small Dedicado a este contexto: vacío = era <VarEncadenada>, con argumentos = era <MetodoEncadenado>.\par}
-
 \begin{producciones}
 \regla{EncadenadoAtributoOMetodo}{\nt{ArgsActuales} \alt{} \eps}
 \regla{AccesoArreglo}{\tl{[} \nt{Expresion} \tl{]}}
 \regla{Primario}{\nt{LlamadaMetodoEstatico}}
 \regla{Primario}{\nt{PrimarioSinIdClase}}
 \regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
-\regla{PrimarioSinIdClase}{\tl{this}}
-\regla{PrimarioSinIdClase}{\tl{stringLiteral}}
+\regla{PrimarioSinIdClase}{\nt{PrimarioSinIdClaseNiLambda}}
 \regla{PrimarioSinIdClase}{\nt{Parentizada}}
 \regla{PrimarioSinIdClase}{\nt{AccesoVarOLlamada}}
-\regla{PrimarioSinIdClase}{\nt{Creacion}}
 \end{producciones}
 
-\noindent{\small El contenido es una \nt{Expresion} completa, lambda incluida, tal cual la regla original: \texttt{ExpresionParentizada -> ( Expresion )}, y \texttt{Primario -> ExpresionParentizada}. MiniJava base ya define que cualquier expresion parentizada es un primario y que un primario arrastra cadena, asi que \texttt{(x -> y).m()} y \texttt{(x -> y) + 1} se derivan solos. DIVERGE de Java, que los rechaza con «lambda expression not expected here» porque ahi la lambda es alternativa de Expression y nunca un Primary. Se eligio respetar el molde de la gramatica base antes que la forma de Java: la base define esta estructura, y el criterio del proyecto es no despegarse de lo que la base ya dictamino.\par}
+\begin{producciones}
+\regla{PrimarioSinIdClaseNiLambda}{\tl{this}}
+\regla{PrimarioSinIdClaseNiLambda}{\tl{stringLiteral}}
+\regla{PrimarioSinIdClaseNiLambda}{\nt{Creacion}}
+\end{producciones}
 
 \begin{producciones}
 \regla{Parentizada}{\tl{(} \nt{Expresion} \tl{)}}
 \end{producciones}
 
-\noindent{\small Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era <LlamadaMetodo>.\par}
-
 \begin{producciones}
 \regla{AccesoVarOLlamada}{\tl{idMetVar} \nt{AccesoLlamada}}
 \regla{AccesoLlamada}{\nt{ArgsActuales} \alt{} \eps}
 \end{producciones}
-
-\noindent{\small Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía. \texttt{(} abre tanto una expresión parentizada como la lista de parámetros de una lambda. Parece necesitar lookahead ilimitado (\texttt{(a,b,c) ->} vs \texttt{(a+b)}), pero NO lo necesita: - \texttt{( )}      sólo puede ser una lambda de cero parámetros; - \texttt{( e , …}  sólo puede ser una lambda: MiniJava no tiene operador coma; - \texttt{( e )}    se decide con el token que sigue al \texttt{)}: \texttt{->} es lambda, cualquier otro es una expresión parentizada. Con eso alcanza un token de lookahead en cada punto. Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.\par}
 
 \begin{producciones}
 \regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}
@@ -299,8 +245,6 @@
 \regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}
 \end{producciones}
 
-\noindent{\small Una única expresión, sin llaves.\par}
-
 \begin{producciones}
 \regla{CuerpoLambda}{\nt{Expresion}}
 \regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
@@ -312,8 +256,6 @@
 \regla{CreacionDesdeIdClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small el diamante \texttt{<>} sólo se admite acá, en la rama que va a ArgsActuales: \texttt{new C<>()} es válido y \texttt{new C<>[3]} no. La restricción queda impuesta por la gramática, no delegada al semántico.\par}
-
 \begin{producciones}
 \regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}
 \regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}
@@ -321,15 +263,11 @@
 \regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}}
 \end{producciones}
 
-\noindent{\small Toda dimension de una creacion conserva su \texttt{[ Expresion ]}, que es la forma de MiniJava base: \texttt{CrearArreglo -> new TipoBase DimensionesConTamanio} con \texttt{DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]}. El logro de inicializacion NO afloja esa exigencia: le cuelga el inicializador al final. Asi \texttt{new int[2][2]\{\{1,2\},\{3,4\}\}} es valido y \texttt{new int[]\{1,2,3\}} no. Esto DIVERGE de Java, que prohibe tamanio e inicializador juntos (JLS 15.10.1, verificado con javac: «array creation with both dimension expression and initialization is illegal»). Es una decision deliberada: se prefirio no ampliar la forma de las dimensiones que MiniJava ya tenia definida. Revertirla es cambiar CreacionDeArreglo y nada mas.\par}
-
 \begin{producciones}
 \regla{CreacionDeArreglo}{\nt{DimensionesConTamanio} \nt{InicializadorDeArregloOpcional}}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
 \end{producciones}
-
-\noindent{\small El inicializador es anidable: un elemento puede ser una expresion o, a su vez, otro inicializador. Solo es alcanzable desde \nt{Creacion}, que es lo unico que el logro restringe sobre donde puede aparecer.\par}
 
 \begin{producciones}
 \regla{InicializadorDeArregloOpcional}{\nt{InicializadorDeArreglo} \alt{} \eps}
@@ -339,8 +277,6 @@
 \regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}
 \regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
 \end{producciones}
-
-\noindent{\small Sección propia y no parte de la creación: la lista de argumentos de una llamada la usan por igual el \texttt{new}, el encadenado, la llamada estática y el encabezado del for.\par}
 
 \begin{producciones}
 \regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}

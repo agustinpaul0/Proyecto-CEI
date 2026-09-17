@@ -51,11 +51,9 @@ public final class PrimerosDeReferencias {
     // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
     public static final ConjuntoDePrimeros LLAMADA_METODO_ESTATICO_ID_CLASE = de(TipoDeToken.ID_CLASE);
 
-    // PrimarioSinIdClase -> this
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_THIS = de(TipoDeToken.PR_THIS);
-
-    // PrimarioSinIdClase -> stringLiteral
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_STRING_LITERAL = de(TipoDeToken.LIT_STRING);
+    // PrimarioSinIdClase -> PrimarioSinIdClaseNiLambda
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA = de(
+            TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS);
 
     // PrimarioSinIdClase -> Parentizada
     public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PARENTIZADA = de(TipoDeToken.PAREN_A);
@@ -63,8 +61,15 @@ public final class PrimerosDeReferencias {
     // PrimarioSinIdClase -> AccesoVarOLlamada
     public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA = de(TipoDeToken.ID_MV);
 
-    // PrimarioSinIdClase -> Creacion
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_CREACION = de(TipoDeToken.PR_NEW);
+    // PrimarioSinIdClaseNiLambda -> this
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS = de(TipoDeToken.PR_THIS);
+
+    // PrimarioSinIdClaseNiLambda -> stringLiteral
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL = de(
+            TipoDeToken.LIT_STRING);
+
+    // PrimarioSinIdClaseNiLambda -> Creacion
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION = de(TipoDeToken.PR_NEW);
 
     // Parentizada -> ( Expresion )
     public static final ConjuntoDePrimeros PARENTIZADA_PAREN_A = de(TipoDeToken.PAREN_A);

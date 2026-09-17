@@ -3,7 +3,7 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La etapa está **terminada**: los 109 no terminales implementados, los diez logros
+> **Estado.** La etapa está **terminada**: los 110 no terminales implementados, los diez logros
 > —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el token exacto y las dos
 > restricciones de MiniLambdas que la gramática no puede expresar. La verificación completa está en
 > [`README.md`](README.md).
@@ -149,7 +149,7 @@ la gramática cambia, se regenera.
 
 ## 5.1. Cómo se divide el analizador
 
-Un analizador descendente recursivo tiene un método por no terminal, y con 109 no terminales una
+Un analizador descendente recursivo tiene un método por no terminal, y con 110 no terminales una
 sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
 por sección:
 
