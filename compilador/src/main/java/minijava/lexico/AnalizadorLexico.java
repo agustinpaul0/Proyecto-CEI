@@ -23,7 +23,8 @@ public final class AnalizadorLexico {
     }
 
     // Driver iterativo: mismo AF que encadena la cátedra, sin su profundidad de
-    // pila. No hay paso de recuperación (agents/manejo-de-errores.md).
+    // pila. No hay paso de recuperación
+    // (documentacion/compartido/manejo-de-errores.md).
     public Token proximoToken() throws ExcepcionLexica {
         contexto.iniciarNuevoToken();
         EstadoLexico estado = EstadoInicial.INSTANCIA;

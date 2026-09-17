@@ -52,8 +52,10 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     // PrimarioSinIdClase -> this | stringLiteral | Parentizada
     //                     | AccesoVarOLlamada | Creacion
     //
-    // Ningún Primario puede ser una lambda: un Primario es un operando, y en Java
-    // una lambda nunca lo es. Ésa es exactamente la corrección de precedencia.
+    // Ninguna de estas alternativas ES una lambda por sí misma: la lambda se
+    // produce en el nivel más alto, no acá. Ésa es la corrección de precedencia,
+    // y lo que hace que `1 + x -> x` no derive. Lo que sí la alcanza es
+    // Parentizada, porque su contenido es una Expresion completa.
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
             match(TipoDeToken.PR_THIS);

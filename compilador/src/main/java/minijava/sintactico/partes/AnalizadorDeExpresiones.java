@@ -11,12 +11,13 @@ import minijava.sintactico.primeros.PrimerosDeExpresiones;
 // ternario, los operadores binarios —en un solo nivel, como en la gramática
 // original—, los unarios prefijos y el operando.
 //
-// La lambda NO es una de estas capas ni un Primario: es una alternativa del
-// nivel más alto, como en el JLS («Expression: LambdaExpression |
-// AssignmentExpression»). Por eso `->` no compite en precedencia con ningún
-// operador, y `1 + x -> x`, `- x -> x` y `a == x -> x` son errores, igual que en
-// Java. Las dos cabezas que comparte con una expresión normal, `idMetVar` y `(`,
-// se factorizan en expresionDesdePrimarioOLambda().
+// La lambda NO es una de estas capas: es una alternativa del nivel más alto,
+// como en el JLS («Expression: LambdaExpression | AssignmentExpression»). Por eso
+// `->` no compite en precedencia con ningún operador, y `1 + x -> x`,
+// `- x -> x` y `a == x -> x` son errores, igual que en Java. Entre paréntesis sí
+// llega a ser operando, porque ahí entra por Primario: ver Parentizada en
+// AnalizadorDeReferencias. Las dos cabezas que comparte con una expresión
+// normal, `idMetVar` y `(`, se factorizan en expresionDesdePrimarioOLambda().
 public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     public AnalizadorDeExpresiones(Sintaxis sintaxis) {

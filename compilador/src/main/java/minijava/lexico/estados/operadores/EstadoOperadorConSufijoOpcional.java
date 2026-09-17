@@ -25,8 +25,9 @@ public final class EstadoOperadorConSufijoOpcional implements EstadoLexico {
 
     private final char sufijo;
 
-    // El sufijo alternativo y el token que lo justifica, para que la habilitación
-    // se consulte por token y no por un booleano suelto. Null si no hay segundo.
+    // El segundo sufijo se nombra por el TOKEN que forma y no por su carácter: el
+    // carácter sale de la tabla, así que el lexema largo no se escribe dos veces.
+    // Null si el estado no tiene segundo sufijo.
     private final TipoDeToken tokenDelSufijoAlternativo;
 
     private EstadoOperadorConSufijoOpcional(char sufijo) {

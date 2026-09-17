@@ -165,7 +165,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     // ElseOpcional -> else Sentencia | EPSILON
     //
     // Dangling else: se toma la rama `else` apenas se ve el token, así que liga al
-    // `if` más cercano. Es una de las siete ambigüedades declaradas, resuelta por
+    // `if` más cercano. Es una de las tres ambigüedades declaradas, resuelta por
     // regla de implementación (Clase 4, slide 49) y no reescribiendo la gramática.
     private void sentenciaIf() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PR_IF);

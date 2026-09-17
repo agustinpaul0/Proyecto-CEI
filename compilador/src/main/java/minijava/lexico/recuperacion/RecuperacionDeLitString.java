@@ -3,7 +3,8 @@ package minijava.lexico.recuperacion;
 import minijava.lexico.contexto.ContextoLexico;
 
 // Modo pánico ante un escape mal formado en un litString: descarta hasta la
-// comilla de cierre, que es el token de sincronización (decisiones.md §4.3).
+// comilla de cierre, que es el token de sincronización
+// (documentacion/lexico/decisiones-de-deteccion-de-errores.md §4.3).
 // Descarta y no avanza: el lexema reportado es el armado hasta el error.
 public final class RecuperacionDeLitString {
 

@@ -16,7 +16,7 @@ import minijava.lexico.contexto.ContextoLexico;
 //  - una barra tras otra barra deja el estado como está, porque la comilla que
 //    venga después sigue estando antecedida por una barra: "a\\" no cierra;
 //  - por eso mismo un string no puede terminar con la secuencia \", y ahí es
-//    donde diverge de Java (decisiones.md §7).
+//    donde diverge de Java (documentacion/lexico/decisiones-de-logica.md §7).
 //
 // La única excepción es el escape Unicode, que sí se valida: es un logro, y su
 // criterio quedó confirmado por el profesor.

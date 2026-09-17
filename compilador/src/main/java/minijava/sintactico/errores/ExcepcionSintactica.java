@@ -25,10 +25,10 @@ public final class ExcepcionSintactica extends Exception {
         this.esperado = esperado;
     }
 
-    // Los chequeos que la gramática no puede expresar —el `this` y la captura de
-    // variables dentro de una lambda— no rechazan por «se esperaba otro token»,
-    // así que declaran el motivo en prosa. El código [Error:lexema|linea] es el
-    // mismo, que es lo que la cátedra compara.
+    // El único chequeo que la gramática no puede expresar —que el parámetro de
+    // una lambda sea un identificador sin tipo— no rechaza por «se esperaba otro
+    // token», así que declara el motivo en prosa. El código [Error:lexema|linea]
+    // es el mismo, que es lo que la cátedra compara.
     public static ExcepcionSintactica porRestriccion(Token encontrado, String motivo) {
         return new ExcepcionSintactica(encontrado, motivo,
                 "Error Sintactico en linea " + encontrado.linea() + ": " + motivo

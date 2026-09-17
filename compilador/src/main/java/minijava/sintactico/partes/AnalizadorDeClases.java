@@ -59,8 +59,8 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // GenericidadOpcional -> < idGen > | EPSILON
     //
-    // Una clase o interfaz sigue limitada a UN parámetro de tipo, también con el
-    // logro de genericidad avanzada.
+    // Una clase o interfaz está limitada a UN parámetro de tipo: el logro de
+    // genericidad avanzada agrega el anidamiento, no la cantidad.
     private void genericidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeClases.GENERICIDAD_OPCIONAL_MENOR)) {
             match(TipoDeToken.OP_MENOR);
@@ -107,6 +107,9 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     }
 
     // ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
+    //
+    // Sincroniza con el contexto de los miembros: los dos son listas adentro de
+    // una llave y reanudan en los mismos tokens.
     private void listaMetodosInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
         if (!estaEn(PrimerosDeClases.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
             return;

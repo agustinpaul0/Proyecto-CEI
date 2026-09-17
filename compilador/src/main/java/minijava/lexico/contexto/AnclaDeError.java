@@ -4,7 +4,7 @@ package minijava.lexico.contexto;
 // formas de construir una ExcepcionLexica. El criterio es el de javac, verificado
 // ejecutándolo: si el mensaje habla de un carácter ofensivo puntual el '^' va a
 // ese carácter; si habla de la construcción entera, a donde ésta empieza.
-// Tabla completa de qué error usa cuál: agents/manejo-de-errores.md.
+// Tabla completa de qué error usa cuál: documentacion/compartido/manejo-de-errores.md.
 public enum AnclaDeError {
 
     // El ofensivo es el lookahead y todavía no se consumió.

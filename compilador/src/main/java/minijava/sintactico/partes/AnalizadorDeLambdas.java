@@ -11,8 +11,7 @@ import minijava.sintactico.primeros.PrimerosDeLambdas;
 //
 // La lambda se produce en el nivel MÁS ALTO de la jerarquía, así que sin
 // paréntesis no es operando: `1 + x -> x` no deriva. Entre paréntesis sí lo es,
-// porque
-// MiniJava base define `ExpresionParentizada -> ( Expresion )` y
+// porque MiniJava base define `ExpresionParentizada -> ( Expresion )` y
 // `Primario -> ExpresionParentizada`, y un Primario arrastra cadena: de ahí que
 // `(x -> y).m()` sea válido. Java lo rechaza; se eligió respetar el molde de la
 // gramática base. Ver decisiones-de-logica.md §2.2.

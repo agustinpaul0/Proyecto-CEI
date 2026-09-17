@@ -9,8 +9,8 @@ import minijava.sintactico.primeros.ConjuntoDePrimeros;
 import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
 import minijava.sintactico.recuperacion.RecuperadorDePanico;
 
-// Lo que toda sección de la gramática necesita: el token actual, el match, los
-// logros y el acceso a las demás secciones. No aporta ninguna regla propia.
+// Lo que toda sección de la gramática necesita: el token actual, el match y el
+// acceso a las demás secciones. No aporta ninguna regla propia.
 //
 // Los métodos de entrada se delegan uno a uno en vez de exponer la
 // EntradaDeTokens, para que cada método de no terminal se lea como el esquema de

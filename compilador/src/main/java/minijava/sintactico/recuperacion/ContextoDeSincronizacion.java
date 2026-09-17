@@ -12,9 +12,10 @@ import java.util.Set;
 // Pautas Etapa 2, slide 40: «se espera que se sincronice con el siguiente punto
 // y coma, llave de cierre, o llave que abre segun el contexto».
 //
-// Los tres contextos son las tres listas de la gramática que pueden repetir un
-// elemento —clases, miembros y sentencias—, que es donde tiene sentido descartar
-// un elemento roto y seguir con el siguiente.
+// Son tres porque hay tres formas de reanudar, no tres listas: las cuatro listas
+// de la gramática que repiten un elemento son las de clases, miembros, métodos de
+// interfaz y sentencias, y las dos del medio sincronizan igual —adentro de una
+// llave, contra `;` y `}`—, así que comparten contexto.
 //
 // A los tokens de la slide se les suman los PRIMEROS del elemento de la lista.
 // Sin eso, `int x` al que le falta el `;` se lleva puesto el método que viene

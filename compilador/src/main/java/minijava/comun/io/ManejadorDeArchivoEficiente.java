@@ -10,7 +10,8 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 // Logro "Manejador de Archivos Eficiente": el fuente se carga entero y se sirve
-// carácter a carácter. Por qué el de la cátedra no alcanza: documentacion/manejador-de-archivo.md.
+// carácter a carácter. Por qué el de la cátedra no alcanza:
+// documentacion/compartido/manejador-de-archivo-eficiente.md.
 public final class ManejadorDeArchivoEficiente implements ManejadorDeArchivo {
 
     private char[] contenido;

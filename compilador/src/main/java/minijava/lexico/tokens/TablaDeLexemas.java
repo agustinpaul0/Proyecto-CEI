@@ -14,7 +14,7 @@ import java.util.Set;
 // El reparto de trabajo que habilita esta tabla: el autómata delimita el lexema
 // (maximal munch, lo único que la tabla no puede decidir: no distingue '>' de
 // '>='), y la tabla lo nombra. Es la técnica que la cátedra enseña para las
-// palabras clave (Clase 02, slides 62-63), generalizada a los 49.
+// palabras clave (Clase 02, slides 62-63), generalizada a los 53.
 public final class TablaDeLexemas {
 
     private static final Set<String> PALABRAS_CLAVE;
@@ -44,7 +44,8 @@ public final class TablaDeLexemas {
         palabrasClave.put("true", TipoDeToken.PR_TRUE);
         palabrasClave.put("false", TipoDeToken.PR_FALSE);
         // No figura en Aspectos Léxicos: se agrega por confirmación directa del
-        // profesor. 'double' NO es reservada (decisiones.md §3.1).
+        // profesor. 'double' NO es reservada
+        // (documentacion/lexico/decisiones-de-logica.md §3.1).
         palabrasClave.put("float", TipoDeToken.PR_FLOAT);
         // Tampoco figuran en Aspectos Léxicos: las trae la Etapa 2. En la Etapa 1
         // eran idMetVar.
