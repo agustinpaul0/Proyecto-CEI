@@ -1735,33 +1735,65 @@ contrastar su analizador. No son material de este trabajo: acá sólo se corrió
 ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
 \end{decision}
 
-\textbf{26.291 coinciden exactamente.} Los 3.709 restantes caen en cinco familias, y ninguna es un
-defecto de este analizador:
+\textbf{26.291 coinciden exactamente.} Los 3.709 restantes caen en cinco familias, todas declaradas
+y verificadas a mano:
 
 \begin{center}
-\begin{tabular}{@{}p{0.34\linewidth}rp{0.52\linewidth}@{}}
+\begin{tabular}{@{}p{0.32\linewidth}rp{0.54\linewidth}@{}}
 \toprule
-\textbf{Familia} & \textbf{Casos} & \textbf{Quién tiene razón} \\
+\textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
 \midrule
 \texttt{(x -> y).m()}, \texttt{(x -> y) + 1}, \texttt{(x -> y)[0]} & 2434 &
-\textbf{Este trabajo.} Su gramática produce la lambda en \nt{Primario}, así que una lambda
-parentizada puede ser operando; acá vive en \nt{Expresion}, como el JLS. Verificado con
-\texttt{javac}: \emph{«lambda expression not expected here»} en los tres. \\[4pt]
+\textbf{Dos lecturas del enunciado del logro}, y las dos defendibles. Ver la discusión de abajo. \\[4pt]
 \texttt{"a\textbackslash\textbackslash"} & 987 &
 \textbf{Este trabajo}, por lectura de la especificación: \emph{Aspectos Léxicos} §2.3.3 da una regla
 \textbf{posicional} ---la comilla de cierre nunca está antecedida por \texttt{\textbackslash}--- y no
 una de apareamiento. Su generador asume la semántica de Java. \\[4pt]
-\texttt{new C<T>()} & 162 &
-\textbf{Este trabajo.} La gramática de la cátedra lo genera y la suya lo rechaza. \\[4pt]
-\texttt{public void m()\{\}}, constructor sin \tl{public} & 126 &
+\texttt{new Clase<Arg>()} & 162 &
+\textbf{Este trabajo.} La gramática de la cátedra lo genera
+(\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}, con
+\regla{TipoReferencia}{\tl{idClase} \nt{TipoGenericoOpcional}}) y la suya lo rechaza. \\[4pt]
+\texttt{public void m()\{\}}, constructor sin \tl{public} & 6 &
 \textbf{Ninguno}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
-Los dos rechazan, en distinto token & resto &
+Los dos rechazan, en distinto token & 120 &
 \textbf{Ninguno}: su gramática cubre menos construcciones, así que el primer token que no encaja es
 otro. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
+\begin{decision}{la lambda parentizada con cola: dos lecturas del mismo enunciado}
+La familia más grande no es un defecto de ninguno de los dos analizadores: es que el enunciado del
+logro admite dos lecturas, y cada uno tomó una.
+
+\textbf{La lectura de la otra implementación.} \textsc{MiniJava} base ya define que \emph{cualquier}
+expresión parentizada es un \nt{Primario}, y que un \nt{Primario} arrastra cadena:
+
+\begin{producciones}
+\regla{Primario}{\nt{ExpresionParentizada}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
+\regla{Referencia}{\nt{Referencia} \nt{MetodoEncadenado}}
+\end{producciones}
+
+Si el logro agrega la lambda como alternativa de \nt{Expresion} ---que es el único no terminal de
+expresión que la gramática tiene---, entonces \texttt{(x -> y).m()} \textbf{se deriva solo}, sin
+tocar ninguna regla. Restringirlo obliga a achicar \nt{ExpresionParentizada}, o sea a modificar una
+regla que la especificación ya daba.
+
+\textbf{La lectura de este trabajo.} El logro dice \emph{«con una sintaxis similar a la utilizada en
+Java»}, y en Java la lambda no es un \emph{Primary}: el JLS la define como alternativa de
+\emph{Expression}, el nivel más alto. \texttt{javac} rechaza los tres casos con \emph{«lambda
+expression not expected here»}. Como \textsc{MiniJava} base no tiene lambdas, dónde va en la
+jerarquía es un hueco, y la regla de la cátedra para los huecos es «como en Java». Acá la lambda se
+produce en un nivel \textbf{nuevo, por encima} del \nt{Expresion} original, así que
+\nt{ExpresionParentizada} sigue conteniendo exactamente lo que contenía ---lo que cambia es que hay
+un nivel más arriba que ella no alcanza---.
+
+\textbf{Cuál pesa más} depende de si se considera que la ubicación de la lambda es un hueco de la
+especificación (y entonces manda Java) o una consecuencia mecánica de reglas que la especificación
+ya fijó (y entonces manda la base). Este trabajo tomó la primera; queda declarado que la segunda es
+defendible.
+\end{decision}
 Las cinco están declaradas en el test, que falla si aparece una sexta. Es la misma disciplina que el
 registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
 

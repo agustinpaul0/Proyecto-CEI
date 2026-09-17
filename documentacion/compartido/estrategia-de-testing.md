@@ -235,13 +235,22 @@ De esos 30.000, **26.291 coinciden exactamente**. Los 3.709 restantes caen en ci
 verificadas a mano y declaradas en el enum `Divergencia` del test; lo que el test comprueba es que
 **no aparezca una sexta**.
 
-| Familia | Casos | Quién tiene razón |
+| Familia | Casos | Qué la explica |
 |---|---:|---|
-| `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]` | 2434 | **Este proyecto.** Su gramática produce la lambda en `<Primario>`, así que una lambda parentizada puede ser operando. Acá vive en `<Expresion>`, como el JLS. Verificado con `javac`: *«lambda expression not expected here»* en los tres. |
+| `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]` | 2434 | **Dos lecturas del enunciado del logro**, las dos defendibles. Ver abajo. |
 | `"a\\"` | 987 | **Este proyecto**, por lectura de la especificación. §2.3.3 da una regla posicional —la comilla de cierre nunca está antecedida por `\`— y no una de apareamiento; su *fuzzer* asume la semántica de Java. Ver [`decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) §3.5. |
-| `new C<T>()` | 162 | **Este proyecto.** La gramática de la cátedra lo genera (`LlamadaConstructor -> new TipoReferencia ArgsActuales`) y la suya lo rechaza. |
-| `public void m(){}`, constructor sin `public` | 126 | **Ninguno**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
-| Ambos rechazan, en distinto token | resto | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
+| `new Clase<Arg>()` | 162 | **Este proyecto.** La gramática de la cátedra lo genera (`LlamadaConstructor -> new TipoReferencia ArgsActuales`) y la suya lo rechaza. Ojo con la notación: `C` de una sola letra es un `idGen`, no un `idClase`, así que `new C<T>()` es inválido en las dos. |
+| `public void m(){}`, constructor sin `public` | 6 | **Ninguno**: sus corpus se generaron sin el logro de Visibilidad Mejorada. |
+| Ambos rechazan, en distinto token | 120 | **Ninguno**: su gramática cubre menos construcciones, así que el primer token que no encaja es otro. |
+
+**La familia grande no es un defecto de ninguno de los dos.** MiniJava base ya define que cualquier
+expresión parentizada es un `<Primario>` (`<ExpresionParentizada> ::= ( <Expresion> )`) y que un
+`<Primario>` arrastra cadena (`<Referencia> ::= <Referencia> <MetodoEncadenado>`). Si el logro
+agrega la lambda como alternativa de `<Expresion>`, `(x -> y).m()` **se deriva solo**. Acá la lambda
+se produce en un nivel nuevo por encima de ese `<Expresion>`, siguiendo al JLS y a `javac`, y eso es
+lo que la deja afuera del paréntesis. Cuál pesa más —el hueco se llena como en Java, o la
+consecuencia mecánica de una regla que la base ya fijaba— es una decisión de lenguaje, y está
+declarada como tal.
 
 Los **73 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
 `resources/` con el prefijo `ext`—; los generados no se copian ni se versionan.

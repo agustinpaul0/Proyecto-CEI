@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -45,11 +47,16 @@ class CorpusExternoTest {
     // es que NO aparezca una sexta.
     private enum Divergencia {
 
-        // `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]`. Su gramática produce la
-        // lambda en <Primario>, así que una lambda parentizada puede ser operando.
-        // Acá vive en <Expresion>, como el JLS, y el analizador cierra el hueco
-        // del paréntesis. Verificado con javac: «lambda expression not expected
-        // here» en los tres casos.
+        // `(x -> y).m()`, `(x -> y) + 1`, `(x -> y)[0]`. NO es un defecto de ninguna
+        // de las dos: el enunciado del logro admite dos lecturas.
+        //
+        // MiniJava base ya define que cualquier expresión parentizada es un
+        // <Primario> y que un <Primario> arrastra cadena, así que agregar la
+        // lambda como alternativa de <Expresion> hace que `(x -> y).m()` se derive
+        // solo. Acá la lambda se produce en un nivel NUEVO por encima de ese
+        // <Expresion>, porque el logro dice «sintaxis similar a la utilizada en
+        // Java» y javac rechaza los tres con «lambda expression not expected
+        // here». La discusión completa está en el informe, §11.8.
         LAMBDA_COMO_OPERANDO,
 
         // `"a\\"`. Aspectos Léxicos §2.3.3 da una regla POSICIONAL —la comilla de
@@ -59,10 +66,11 @@ class CorpusExternoTest {
         // documentacion/lexico/decisiones-de-logica.md §3.5.
         STRING_TERMINADO_EN_BARRA,
 
-        // `new C<T>()`. La gramática de la cátedra lo genera
+        // `new Clase<Arg>()`. La gramática de la cátedra lo genera
         // (`LlamadaConstructor -> new TipoReferencia ArgsActuales`, con
         // `TipoReferencia -> idClase TipoGenericoOpcional`), y su gramática lo
-        // rechaza.
+        // rechaza. Ojo con la notación: `C` de una sola letra es un idGen y no un
+        // idClase, así que `new C<T>()` lo rechazan las dos.
         CREACION_GENERICA_CON_ARGUMENTO,
 
         // Sus corpus `base` y `localvar` se generaron sin el logro de Visibilidad
@@ -79,8 +87,13 @@ class CorpusExternoTest {
     }
 
     private static final Pattern BARRA_ANTES_DE_CERRAR = Pattern.compile("\\\\\\\\\"");
+    // `new Clase<Arg>(`. El nombre de la clase es un idClase, o sea mayúscula MÁS
+    // de un carácter: `new C<T>(` con `C` de una sola letra es un idGen y no una
+    // clase, así que no es esta familia —lo rechazan las dos gramáticas—. Adentro
+    // de los ángulos vale idGen o idClase, que es lo que dice la regla original
+    // (`InstanciadoOParametrico -> idGen | idClase`).
     private static final Pattern CREACION_GENERICA =
-            Pattern.compile("new\\s+[A-Z]\\w*\\s*<\\s*\\w+\\s*>\\s*\\(");
+            Pattern.compile("new\\s+[A-Z]\\w+\\s*<\\s*[A-Z]\\w*\\s*>\\s*\\(");
     // Las dos formas que el logro de Visibilidad Mejorada habilita y la otra
     // gramática no tiene: un miembro con modificador, y un constructor sin `public`.
     private static final Pattern MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC =
@@ -92,8 +105,8 @@ class CorpusExternoTest {
                 "el corpus externo no está presente: " + CORPORA.toAbsolutePath().normalize());
 
         List<String> sinDeclarar = new ArrayList<>();
+        Map<Divergencia, Integer> porFamilia = new EnumMap<>(Divergencia.class);
         int comparados = 0;
-        int declarados = 0;
 
         for (String corpus : GENERADOS) {
             for (boolean valido : new boolean[] { true, false }) {
@@ -110,8 +123,9 @@ class CorpusExternoTest {
                         if (coincide(fuente, salida, valido)) {
                             continue;
                         }
-                        if (divergenciaDe(fuente, salida) != null) {
-                            declarados++;
+                        Divergencia divergencia = divergenciaDe(fuente, salida);
+                        if (divergencia != null) {
+                            porFamilia.merge(divergencia, 1, Integer::sum);
                             continue;
                         }
                         sinDeclarar.add(corpus + "/" + caso.getFileName() + ": " + primerRenglon(salida));
@@ -120,8 +134,12 @@ class CorpusExternoTest {
             }
         }
 
-        System.out.printf("corpus externo: %d casos, %d divergencias declaradas, %d sin declarar%n",
-                comparados, declarados, sinDeclarar.size());
+        int declarados = porFamilia.values().stream().mapToInt(Integer::intValue).sum();
+        System.out.printf("corpus externo: %d casos, %d coinciden, %d divergencias declaradas, "
+                + "%d sin declarar%n", comparados, comparados - declarados - sinDeclarar.size(),
+                declarados, sinDeclarar.size());
+        porFamilia.forEach((familia, cuantos) ->
+                System.out.printf("    %6d  %s%n", cuantos, familia));
         assertEquals(List.of(), sinDeclarar.size() > 20 ? sinDeclarar.subList(0, 20) : sinDeclarar,
                 "aparecieron divergencias que no están en el enum Divergencia");
     }
