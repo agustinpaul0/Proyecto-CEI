@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-// Verificación diferencial contra un corpus AJENO: 28.766 fuentes generados por
-// fuzzing a partir de otra gramática de MiniJava, en `vendor/tests/`. Es el mismo
+// Verificación diferencial contra un corpus AJENO: fuentes generados por fuzzing
+// a partir de otra gramática de MiniJava, en `vendor/tests/`. Es el mismo
 // argumento que `comparar_con_gramatica.py` —dos implementaciones independientes
 // tienen que coincidir— pero con una gramática que no salió de este proyecto, así
 // que no comparte ni siquiera las decisiones.
@@ -32,7 +33,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 //
 // Los casos escritos a mano de ese corpus (73, los `ext*` de resources/) ya están
 // importados y se verifican con el resto. Acá van los generados, que NO se copian
-// ni se versionan: son 133 MB.
+// ni se versionan.
+//
+// El corpus original traía 30.000 casos. Se podaron los 1.854 que divergían por la
+// lectura de la barra invertida en un literal —una sola discrepancia repetida, ver
+// abajo—, así que quedan 28.146.
 //
 // El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
@@ -42,22 +47,24 @@ class CorpusExternoTest {
             Path.of("..", "vendor", "tests", "resources", "parser", "corpora");
     private static final List<String> GENERADOS = List.of("base", "lambdas", "localvar");
 
-    // Las cuatro familias en que las dos gramáticas difieren, cada una verificada
+    // Las cinco familias en que las dos gramáticas difieren, cada una verificada
     // a mano. Un caso que cae en una de ellas no se compara: lo que este test
-    // prueba es que NO aparezca una quinta.
+    // prueba es que NO aparezca una sexta.
     private enum Divergencia {
 
-        // `"a\\"`. Aspectos Léxicos §2.3.3 da una regla POSICIONAL —la comilla de
-        // cierre nunca está antecedida por `\`— y no una de apareamiento, así que
-        // una barra no cancela a la anterior y el literal no cierra. Su fuzzer
-        // asume la semántica de Java. Está documentado en
-        // documentacion/lexico/decisiones-de-logica.md §3.5.
-        //
-        // Los 1234 casos en que él ACEPTABA y acá se rechaza se sacaron del corpus:
-        // no aportaban nada más que esta misma divergencia repetida. Los que
-        // quedan son los que los dos rechazan, pero en distinto token, porque el
-        // literal que no cierra se lleva puesto el resto del renglón.
-        STRING_TERMINADO_EN_BARRA,
+        // `p -> x;` y `() -> x;` como sentencia suelta, que su gramática acepta.
+        // Acá no: MiniJava base no tiene `Sentencia -> Expresion ;`, tiene
+        // `Asignacion ;` y `Llamada ;`, que es la misma restricción que JLS 14.8
+        // —`javac` dice «not a statement»—. La lambda entra por <Expresion>, y a
+        // <Expresion> una sentencia sólo llega por esas dos formas.
+        LAMBDA_COMO_SENTENCIA,
+
+        // `(x -> y).m()` y compañía, al revés que la anterior: acá se aceptan y su
+        // gramática los rechaza. MiniJava base define que toda expresión
+        // parentizada es un <Primario> y que un <Primario> arrastra cadena, así que
+        // salen solos. Java los rechaza; se eligió respetar el molde de la base.
+        // Ver documentacion/sintactico/decisiones-de-logica.md §2.2.
+        LAMBDA_PARENTIZADA,
 
         // `new Clase<Arg>()` y `new Clase<>()`. El primero lo genera la gramática
         // de la cátedra (`LlamadaConstructor -> new TipoReferencia ArgsActuales`,
@@ -82,20 +89,26 @@ class CorpusExternoTest {
         RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN
     }
 
-    private static final Pattern BARRA_ANTES_DE_CERRAR = Pattern.compile("\\\\\\\\\"");
-    // `new Clase<Arg>(`. El nombre de la clase es un idClase, o sea mayúscula MÁS
-    // de un carácter: `new C<T>(` con `C` de una sola letra es un idGen y no una
-    // clase, así que no es esta familia —lo rechazan las dos gramáticas—. Adentro
-    // de los ángulos vale idGen o idClase, que es lo que dice la regla original
-    // (`InstanciadoOParametrico -> idGen | idClase`).
-    // El nombre de la clase es un idClase: mayúscula MÁS de un carácter. Entre los
-    // ángulos, un idGen, un idClase, o nada —el diamante—.
+    // Todas se evalúan contra UN renglón —aquel donde la divergencia se manifiesta,
+    // ver `renglonDeLaDivergencia`— y no contra el fuente entero. Con el fuente
+    // entero un `new Xx<Y>()` perdido en la línea 30 se llevaba puesta la
+    // clasificación de un error de la línea 17, y la familia real quedaba tapada.
+
+    // Una lambda al principio del renglón: `p -> …`, `() -> …`, `(a, b) -> …`.
+    private static final Pattern LAMBDA_AL_INICIO =
+            Pattern.compile("^\\s*(\\(\\s*\\)|\\w+|\\([^()]*\\))\\s*->");
+    // Una lambda adentro de un paréntesis, en cualquier posición del renglón.
+    private static final Pattern LAMBDA_ENTRE_PARENTESIS =
+            Pattern.compile("\\(\\s*[\\w\\s,()]*->");
+    // `new Clase<Arg>(` o `new Clase<>(`. El nombre es un idClase: mayúscula MÁS
+    // de un carácter. Entre los ángulos, un idGen, un idClase, o nada.
     private static final Pattern CREACION_GENERICA =
             Pattern.compile("new\\s+[A-Z]\\w+\\s*<\\s*(?:[A-Z]\\w*\\s*)?>\\s*\\(");
     // Las dos formas que el logro de Visibilidad Mejorada habilita y la otra
     // gramática no tiene: un miembro con modificador, y un constructor sin `public`.
     private static final Pattern MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC =
             Pattern.compile("^\\s*(public|private|static)\\b|^\\s*[A-Z]\\w*\\s*\\(");
+    private static final Pattern MARCA_DE_ERROR = Pattern.compile("\\[Error:.*\\|(\\d+)]");
 
     @Test
     void elCorpusExternoNoRevelaNingunaDivergenciaSinDeclarar() throws IOException {
@@ -153,37 +166,44 @@ class CorpusExternoTest {
         if (valido) {
             return salida.contains("[SinErrores]");
         }
-        String declarado = fuente.split("\n", 2)[0].replaceFirst("^/+", "").trim();
-        return salida.contains(declarado);
+        return salida.contains(veredictoDeclarado(fuente));
     }
 
     private static Divergencia divergenciaDe(String fuente, String salida) {
-        if (BARRA_ANTES_DE_CERRAR.matcher(fuente).find()) {
-            return Divergencia.STRING_TERMINADO_EN_BARRA;
+        boolean yoRechazo = salida.contains("[Error:");
+        String renglon = renglonDeLaDivergencia(fuente, salida, yoRechazo);
+
+        if (yoRechazo && LAMBDA_AL_INICIO.matcher(renglon).find()) {
+            return Divergencia.LAMBDA_COMO_SENTENCIA;
         }
-        if (CREACION_GENERICA.matcher(fuente).find()) {
+        if (!yoRechazo && LAMBDA_ENTRE_PARENTESIS.matcher(renglon).find()) {
+            return Divergencia.LAMBDA_PARENTIZADA;
+        }
+        if (CREACION_GENERICA.matcher(renglon).find()) {
             return Divergencia.CREACION_GENERICA;
         }
-        if (salida.contains("[Error:")) {
-            return Divergencia.RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN;
+        if (MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC.matcher(renglon).find()) {
+            return Divergencia.SIN_VISIBILIDAD_MEJORADA;
         }
-        // Acepté y él rechaza: sólo vale si el renglón que él señala lleva un
-        // modificador de visibilidad, que es lo que su gramática no tiene.
-        return señalaUnMiembroConVisibilidad(fuente) ? Divergencia.SIN_VISIBILIDAD_MEJORADA : null;
+        return yoRechazo ? Divergencia.RECHAZAN_LAS_DOS_EN_DISTINTO_TOKEN : null;
     }
 
-    // El caso declara `[Error:<lexema>|<línea>]`; se mira ese renglón del fuente.
-    private static boolean señalaUnMiembroConVisibilidad(String fuente) {
+    // El renglón donde la divergencia se manifiesta: el de MI primer error si
+    // rechacé, y si no el que el caso declara. Es lo que se clasifica, porque el
+    // resto del fuente no tiene nada que ver con por qué las dos difieren.
+    private static String renglonDeLaDivergencia(String fuente, String salida, boolean yoRechazo) {
         String[] renglones = fuente.split("\n", -1);
-        var marca = Pattern.compile("\\[Error:.*\\|(\\d+)]").matcher(renglones[0]);
-        if (!marca.find()) {
-            return false;
-        }
-        int linea = Integer.parseInt(marca.group(1));
-        if (linea < 1 || linea > renglones.length) {
-            return false;
-        }
-        return MODIFICADOR_O_CONSTRUCTOR_SIN_PUBLIC.matcher(renglones[linea - 1]).find();
+        int linea = lineaDe(yoRechazo ? salida : veredictoDeclarado(fuente));
+        return linea >= 1 && linea <= renglones.length ? renglones[linea - 1] : "";
+    }
+
+    private static int lineaDe(String conMarcaDeError) {
+        Matcher marca = MARCA_DE_ERROR.matcher(conMarcaDeError);
+        return marca.find() ? Integer.parseInt(marca.group(1)) : -1;
+    }
+
+    private static String veredictoDeclarado(String fuente) {
+        return fuente.split("\n", 2)[0].replaceFirst("^/+", "").trim();
     }
 
     private static String leer(Path caso) throws IOException {

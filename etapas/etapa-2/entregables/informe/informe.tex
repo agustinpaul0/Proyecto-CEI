@@ -1708,54 +1708,64 @@ quitando \nt{Sentencia} $\to$ \nt{Bloque}--- y los detecta a los dos.
 
 Todas las verificaciones anteriores comparten un límite: las implementaciones que se contrastan
 salen del \emph{mismo} archivo de gramática, así que comparten sus decisiones. El contraste que
-cierra ese hueco usa un corpus de \textbf{28.766 fuentes generados a partir de otra gramática} de
+cierra ese hueco usa un corpus de \textbf{28.146 fuentes generados a partir de otra gramática} de
 \textsc{MiniJava}, que no comparte con este trabajo ni el código ni los criterios.
 
 \begin{decision}{el corpus y su generador son de Giuliano Taormina}
 El \emph{fuzzer} que produjo el corpus original de 30.000 casos, y la gramática de la que se
-derivan, los escribió
-\textbf{Giuliano Taormina}, compañero de la materia, que los compartió para que cada uno pudiera
-contrastar su analizador. No son material de este trabajo: acá sólo se corrió el compilador contra
-ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
+derivan, los escribió \textbf{Giuliano Taormina}, compañero de la materia, que los compartió para
+que cada uno pudiera contrastar su analizador. No son material de este trabajo: acá sólo se corrió
+el compilador contra ellos y se clasificó cada divergencia. El crédito de la herramienta es suyo.
 \end{decision}
 
-\textbf{27.793 coinciden exactamente.} Los 973 restantes caen en cuatro familias, todas declaradas
-y verificadas a mano:
+\textbf{27.793 coinciden exactamente.} Los 353 restantes caen en cinco familias, todas declaradas y
+verificadas a mano:
 
 \begin{center}
-\begin{tabular}{@{}p{0.30\linewidth}rp{0.56\linewidth}@{}}
+\begin{tabular}{@{}p{0.26\linewidth}rp{0.60\linewidth}@{}}
 \toprule
 \textbf{Familia} & \textbf{Casos} & \textbf{Qué la explica} \\
 \midrule
-\texttt{"a\textbackslash\textbackslash"} & 618 &
-\textbf{Este trabajo}, por lectura de la especificación: \emph{Aspectos Léxicos} §2.3.3 da una regla
-\textbf{posicional} ---la comilla de cierre nunca está antecedida por \texttt{\textbackslash}--- y no
-una de apareamiento. Su generador asume la semántica de Java. Los 1.234 casos en que él aceptaba y
-acá se rechaza se sacaron del corpus por repetir esta misma divergencia; quedan los que los dos
-rechazan en distinto token, porque el literal que no cierra se lleva puesto el resto del renglón. \\[4pt]
-\texttt{new Clase<Arg>()} y \texttt{new Clase<>()} & 255 &
+\texttt{p -> x;} como sentencia & 213 &
+\textbf{Su generador.} \textsc{MiniJava} base no tiene \regla{Sentencia}{\nt{Expresion} \tl{;}}: tiene
+\nt{Asignacion} y \nt{Llamada}, que es la misma restricción de JLS 14.8 ---\texttt{javac} contesta
+\emph{«not a statement»}---. Una lambda suelta no es sentencia ni acá ni en Java. \\[4pt]
+\texttt{(x -> y).m()} & 3 &
+\textbf{Este trabajo}, a propósito y al revés que la anterior: acá se acepta y su gramática lo
+rechaza. Ver la decisión de la sección~\ref{sec:lambda-parentizada}. \\[4pt]
+\texttt{new Clase<Arg>()} y \texttt{new Clase<>()} & 49 &
 \textbf{Este trabajo.} El primero lo genera la gramática de la cátedra
 (\regla{LlamadaConstructor}{\tl{new} \nt{TipoReferencia} \nt{ArgsActuales}}); el segundo lo habilita
 el logro de genericidad, que admite el diamante al instanciar. \\[4pt]
-\texttt{public void m()\{\}}, constructor sin \tl{public} & 7 &
-\textbf{Ninguno}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
-Los dos rechazan, en distinto token & 93 &
+\texttt{public void m()\{\}}, constructor sin \tl{public} & 34 &
+\textbf{Su generador}: sus corpus se generaron sin el logro de \emph{Visibilidad Mejorada}. \\[4pt]
+Los dos rechazan, en distinto token & 54 &
 \textbf{Ninguno}: su gramática cubre menos construcciones, así que el primer token que no encaja es
 otro. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\begin{decision}{la familia más grande desapareció}
-Hasta hace poco había una quinta familia, y era la mayor: 2.434 casos de \texttt{(x -> y).m()},
-\texttt{(x -> y) + 1} y \texttt{(x -> y)[0]}, que esta implementación rechazaba siguiendo al JLS y
-la otra aceptaba. Se revisó el argumento y \textbf{la otra tenía razón}: \textsc{MiniJava} base ya
-define que cualquier expresión parentizada es un \nt{Primario} y que un \nt{Primario} arrastra
-cadena, así que esos tres se derivan solos. Se corrigió ---la discusión está en
-la sección~\ref{sec:logros}--- y con eso las coincidencias pasaron de 26.291 a 27.793.
+\begin{decision}{clasificar por renglón, no por archivo}
+La primera versión de esta clasificación miraba el \emph{fuente entero}: si en cualquier parte del
+archivo aparecía un \texttt{new Xx<Y>()}, el caso caía en esa familia aunque el error estuviera
+treinta renglones más arriba y no tuviera nada que ver. Con eso la familia de la lambda como
+sentencia ---la mayor con diferencia--- quedaba enteramente tapada, y el «cero sin declarar» del
+test decía menos de lo que parecía.
+
+Ahora se clasifica un solo renglón: el del primer error propio, o el que el caso declara si acá no
+hubo ninguno. Es el único que puede explicar por qué las dos difieren.
 \end{decision}
 
-Las cuatro están declaradas en el test, que falla si aparece una quinta. Es la misma disciplina que
+\begin{decision}{el corpus se podó una vez}
+Había una sexta familia, y era la mayor de todas: 1.854 casos de \texttt{"a\textbackslash\textbackslash"}.
+\emph{Aspectos Léxicos} §2.3.3 da una regla \textbf{posicional} ---la comilla de cierre nunca está
+antecedida por \texttt{\textbackslash}--- y no una de apareamiento, así que acá una barra no cancela
+a la anterior y el literal no cierra; su generador asume la semántica de Java. Se sacaron del corpus
+por repetir una sola discrepancia miles de veces, y de ahí que el total diga 28.146 y no 30.000.
+\end{decision}
+
+Las cinco están declaradas en el test, que falla si aparece una sexta. Es la misma disciplina que
 el registro de ambigüedades: la divergencia conocida se documenta, la desconocida rompe la suite.
 
 Cada método del analizador lleva arriba, en un comentario, las producciones que traduce.
