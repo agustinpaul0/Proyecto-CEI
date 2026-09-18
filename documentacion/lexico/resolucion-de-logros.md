@@ -20,11 +20,8 @@ activos**.
 | 7. Good Job! I | consecuencia de lo anterior | — |
 | 8. Entrega Anticipada Léxica | hito de calendario | — |
 
-Hubo una versión en la que los cuatro vivían detrás de un `ConfiguracionDelCompilador` y podían
-apagarse uno por uno, para poder demostrar el comportamiento base además del de cada logro. **El
-profesor lo revirtió** al empezar la Etapa 2: complejizaba la gramática sin necesidad y cada etapa
-nueva obligaría a rehacerlo. El comportamiento base que pide la consigna queda documentado acá y en
-el informe, no ejecutable.
+Los logros están siempre activos. El comportamiento base que pide la consigna queda documentado
+acá y en el informe, no ejecutable.
 
 ## 1. Floats I
 

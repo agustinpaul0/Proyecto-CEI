@@ -1,6 +1,6 @@
 # Gramática LL(1) FINAL de MiniJava.
 #
-#     python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
+#     python3 herramientas/primeros.py gramatica/minijava-ll1-final.g
 #
 # Ésta es la ÚNICA gramática del compilador. No hay producciones que aparezcan
 # y desaparezcan según una configuración: lo que está escrito acá es

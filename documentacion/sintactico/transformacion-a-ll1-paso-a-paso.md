@@ -957,12 +957,12 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # todas declaradas
-bash herramientas/casos-gramatica.sh                                              # 67/67
+bash herramientas/casos-gramatica.sh                                              # 70/70
 ```
 
 - **100 no terminales, 207 producciones, 59 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
-- **67 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
+- **70 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
   debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` y
   `a ? b : c = d` se rechazan, `List<> x;` se rechaza y `new List<>()` se acepta, `static public` y
   `public static` se aceptan los dos y `public private` no, `new int[]{1,2}` se acepta y

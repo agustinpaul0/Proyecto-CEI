@@ -430,29 +430,26 @@ el desplazamiento de la cabecera. **Las expectativas se predicen antes de correr
 lo primero es decidir si el equivocado es el oráculo o el compilador. Varios casos del corpus salen
 de haber predicho mal y haber ido a mirar por qué.
 
-### El volcado de la salida por caso, y por qué vuelve a estar prendido
+### El volcado de la salida por caso
 
-`484d0fc` había apagado el flag `fullCompilerOutputPrintingInEachTest` de los testers de la cátedra
-porque "llenaba de ruido cada corrida". El costo real de eso apareció después: con los cuatro
-runners de corpus mudos, la única forma de ver qué reporta el compilador sobre un caso es romperle
-el assert. Se revierte, pero con un interruptor y en los cuatro runners, no sólo en los dos de la
-cátedra: `minijava.casos.VolcadoDeCasos`, `-Dvolcado=completo|resumen|off` (completo por defecto,
+Con los runners de corpus mudos, la única forma de ver qué reporta el compilador sobre un caso sería
+romperle el assert. Por eso los cuatro vuelcan la salida, con un interruptor:
+`minijava.casos.VolcadoDeCasos`, `-Dvolcado=completo|resumen|off` (completo por defecto,
 declarado en el `pom.xml` para que llegue al JVM forkeado). Cada caso imprime su encabezado, la
 salida entera del compilador y un pie con los conteos; cada suite cierra con
 `resources/<dir>: N casos procesados, M con errores`.
 
-Los tests **unitarios** del sintáctico no pasaban por ahí: trabajan con la `ExcepcionSintactica` y
-no con la consola, así que correr `ExpresionesTest` desde el IDE no mostraba nada de lo que el
-compilador diría sobre ese fuente. `BaseDeAnalisis` ahora también vuelca, y lo hace corriendo el
+Los tests **unitarios** del sintáctico trabajan con la `ExcepcionSintactica` y no con la consola,
+así que `BaseDeAnalisis` también vuelca, y lo hace corriendo el
 **módulo principal** sobre el mismo archivo en vez de reconstruir el texto: lo que se lee en la
 consola es exactamente lo que imprimiría `java -jar Compilador.jar`. Sólo lo corre si el volcado
 está prendido, así que con `-Dvolcado=off` no se paga nada.
 
 ```
------ class C1 { void m(){ var f = 1 + x -> x; } }
-Error Sintactico en linea 3: se esperaba ; se encontro "->"
+----- class C1 { void m(){ a ? b : c = 1; } }
+Error Sintactico en linea 3: se esperaba ; se encontro "="
 
-[Error:->|3]
+[Error:=|3]
 ----- 1 error
 ```
 

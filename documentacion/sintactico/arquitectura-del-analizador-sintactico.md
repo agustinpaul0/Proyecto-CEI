@@ -1,7 +1,7 @@
 # Arquitectura del Analizador Sintáctico
 
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
-cómo queda organizado el código para que las cinco etapas conviyan.
+cómo queda organizado el código para que las cinco etapas convivan.
 
 > **Estado.** La etapa está **terminada**: los 100 no terminales implementados, los nueve logros
 > —Modo Pánico incluido— y los 8 casos de la cátedra pasando con el token exacto. La verificación
@@ -98,8 +98,8 @@ Cuatro cosas que conviene tener presentes:
   justamente para tirar entrada. Ningún método toca el léxico directamente, y por eso la posición
   del error es siempre la del token actual, sin bookkeeping extra.
 - **La recursión a derecha se traduce con recursión**, como en Clase 5 slide 59, en los diez lugares
-  donde la gramática tiene `X -> α X | ε`. Hubo una versión con `while` y la revirtió el profesor:
-  aleja el código del esquema que se extiende en el semántico. El analizador no se toma **ninguna**
+  donde la gramática tiene `X -> α X | ε`. Un `while` derivaría lo mismo, pero alejaría el código
+  del esquema que se extiende en el semántico. El analizador no se toma **ninguna**
   libertad respecto del Esquema Simple.
 
 ## 4. El flujo completo
@@ -135,7 +135,7 @@ static final ConjuntoDePrimeros PRIMEROS_EXPRESION_BASICA = de(
 El motivo es que el código se pueda leer contra la gramática del informe renglón por renglón, y que
 un cambio en la gramática tenga un único lugar donde reflejarse.
 
-Las 220 constantes —una por producción— **se generan**, no se escriben:
+Las 207 constantes —una por producción— **se generan**, no se escriben:
 
 ```bash
 python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
@@ -217,7 +217,7 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **1953 fuentes** del
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **10.250 fuentes** del
 corpus versionado coinciden en todas.
 
 Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser
@@ -225,30 +225,21 @@ con **JavaCC**: un generador de terceros que con `LOOKAHEAD = 1` usa exactamente
 Es el oráculo con el que se etiqueta el corpus generado, así que cada caso del corpus lleva la
 expectativa de una implementación distinta de la que la verifica.
 
-Las únicas divergencias posibles son las de los chequeos que una gramática libre de contexto no
-puede expresar, donde el analizador es deliberadamente más restrictivo, y van **declaradas** en la
-herramienta con su motivo: una divergencia sin declarar la hace fallar. Es el mismo criterio que el
-registro de ambigüedades del verificador.
+Ninguna divergencia es admisible: el analizador no tiene chequeos fuera de la gramática, así que
+cualquier diferencia de veredicto o de token hace fallar la herramienta.
 
 Una cuarta verificación cierra el otro extremo: `herramientas/equivalencia_de_lenguajes.py`
-comprueba con un reconocedor de Earley que la gramática final con cero logros y la de la cátedra
-**generen el mismo lenguaje**, derivando una cadena por cada producción de cada una. Es la respuesta
-a la exigencia de Clase 4 de adaptar la gramática «sin cambiar el lenguaje que genera».
+comprueba con un reconocedor de Earley que el núcleo sin logros (`minijava-ll1.g`) y la gramática de
+la cátedra **generen el mismo lenguaje**, derivando una cadena por cada producción de cada una, y que
+la gramática final acepte todas esas cadenas: los logros agregan lenguaje, no quitan. Es la
+respuesta a la exigencia de Clase 4 de adaptar la gramática «sin cambiar el lenguaje que genera».
 
 ## 7. Los logros no son configurables
 
-Lo dictaminó el profesor, revirtiendo la decisión anterior. El argumento es de mantenimiento: la
-gramática se complejizaba sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo —volver a
-marcar producción por producción— con más chance de error.
+La gramática es una sola, y ni la línea de comandos ni los tests tienen forma de elegir logros.
+`--etapa=N` es la única opción, y elige entre el módulo principal léxico y el sintáctico.
 
-En la práctica desapareció bastante código: el paquete `minijava.comun.config` entero
-(`Logro`, `ConfiguracionDelCompilador`, `ParserDeConfiguracion`), las anotaciones de test
-`@RequiereLogro` / `@RequiereLogroApagado` con su `ExecutionCondition`, los manifiestos
-`requisitos-de-logros.txt` del corpus, la opción `--logros=` y la propiedad `-Dlogros`, y las marcas
-`@+`/`@-` del `.g` con el modo `--combinatoria` que las recorría. `--etapa=N` sobrevive, porque es
-lo que elige entre el módulo principal léxico y el sintáctico.
-
-El núcleo sin logros sigue existiendo como **gramática**, no como configuración:
+El núcleo sin logros existe como **gramática**, no como configuración:
 `compilador/gramatica/minijava-ll1.g`. El compilador no lo consume; está para que
 `equivalencia_de_lenguajes.py` demuestre por Earley que corregir la gramática de la cátedra a LL(1)
 no cambió el lenguaje.

@@ -14,24 +14,23 @@ técnico vive en `documentacion/`, acá va sólo el estado.
 Los 8 logros están implementados: Floats I, Unicodes, Multi-detección de Errores, Reporte de Error
 Elegante, Manejador de Archivos Eficiente, Imbatibilidad Léxica, Good Job! I y Entrega Anticipada.
 
-Sigue siendo ejecutable de forma aislada con `--etapa=1`, y su corpus completo (158 casos) vive en
+Es ejecutable de forma aislada con `--etapa=1`, y su corpus completo (158 casos) vive en
 `compilador/resources/lexico/`. `mvn test -Pfase-lexico` lo corre entero.
 
 ### Lo único abierto
 
-**El léxico de `--etapa=1` creció.** Al sacar la configurabilidad de logros —orden del profesor— ya
-no hay forma de decir «sólo el vocabulario de la Etapa 1», así que `--etapa=1` hoy reconoce también
-los tres tokens que agrega la Etapa 2:
+**`--etapa=1` reconoce también los tres tokens que agrega la Etapa 2**: no hay forma de pedir
+sólo el vocabulario de la Etapa 1.
 
-| Entrada | Etapa 1 como se entregó | Hoy |
+| Entrada | Etapa 1 como se entregó | `--etapa=1` |
 |---|---|---|
 | `for` | `idMV` | `pr_for` |
 | `private` | `idMV` | `pr_private` |
 | `?` | error léxico | `signoPregunta` |
 
-Para todo el resto del vocabulario el comportamiento es idéntico. Dos casos del corpus léxico se
-ajustaron por esto, y son exactamente los que ejercitaban el `?`. **No afecta a la corrección ya
-hecha** —esa fue sobre el jar entregado en su momento—, pero conviene tenerlo presente.
+Para todo el resto del vocabulario el comportamiento es idéntico, y ningún caso del corpus léxico
+usa el `?` como carácter inválido. **No afecta a la corrección ya hecha** —esa fue sobre el jar
+entregado en su momento—, pero conviene tenerlo presente.
 
 ---
 
@@ -45,9 +44,9 @@ Simple de Clase 5.
 | Gramática | 100 no terminales, 207 producciones, 59 terminales; LL(1) verificada |
 | Ambigüedades | 2, las dos declaradas con su regla de resolución |
 | Analizador | una clase por sección; cita 207 de 207 producciones |
-| Corpus propio | 10.246 fuentes (10.043 generadas con Grammarinator), 67 casos de gramática, 8 de la cátedra |
+| Corpus propio | 10.250 fuentes (10.043 generadas con Grammarinator), 70 casos de gramática, 8 de la cátedra |
 | Corpus externo | 16.512 fuentes de Giuliano Taormina; coinciden todos |
-| Suite | 26.221 tests; 98,6 % de líneas, 94,2 % de ramas; mutación 91 % |
+| Suite | 26.234 tests; 98,6 % de líneas, 94,2 % de ramas; mutación 91 % |
 | Informe | `etapas/etapa-2/entregables/`, 32 páginas |
 
 ### Decisiones cerradas en esta etapa

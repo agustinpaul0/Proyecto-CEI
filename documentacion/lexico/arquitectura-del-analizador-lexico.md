@@ -258,16 +258,10 @@ fachada conserva exactamente la misma API que usaban.
 
 ### 5.3. Los logros no son configurables
 
-Hubo una versión en la que los cuatro logros de comportamiento —*Floats I*, *Unicodes*, *Reporte de
-Error Elegante* y *Multi-detección*— vivían detrás de un `ConfiguracionDelCompilador`, para poder
-demostrar que el compilador cumplía tanto la consigna base como los logros. **El profesor lo
-revirtió** al empezar la Etapa 2: complejizaba la gramática sin necesidad, y cada etapa nueva
-obligaría a rehacer el trabajo.
-
-Con eso desapareció el paquete `minijava.comun.config` entero, la opción `--logros=`, la propiedad
-`-Dlogros` de los tests y los manifiestos `requisitos-de-logros.txt` del corpus. Los estados del
-autómata dejaron de consultar nada: `EstadoEntero` pasa al float sin preguntar, y los dos estados de
-escape leen `\uXXXX` siempre.
+Los cuatro logros de comportamiento —*Floats I*, *Unicodes*, *Reporte de Error Elegante* y
+*Multi-detección*— están siempre activos, y los estados del autómata no consultan ninguna
+configuración: `EstadoEntero` pasa al float sin preguntar, y los dos estados de escape leen
+`\uXXXX` siempre.
 
 ### 5.4. Sin `System.exit()` y sin estado estático mutable
 

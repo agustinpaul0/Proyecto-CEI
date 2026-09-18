@@ -14,9 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 //   completo (default)  encabezado + salida entera del compilador + pie con los conteos
 //   resumen             una línea por caso y sólo sus códigos [Error:...]
 //   off                 nada
-//
-// Vuelve a prender lo que 484d0fc había apagado (el flag de los testers de la
-// cátedra), pero ahora apagable desde la línea de comandos y en los cuatro runners.
 public final class VolcadoDeCasos {
 
     private static final String MODO = normalizar(System.getProperty("volcado", "completo"));

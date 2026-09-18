@@ -14,7 +14,7 @@ sintaxis de uno se le da al simulador la cadena de tokens que ese logro habilita
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g \
         --aceptar "class idClase { void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
-bash herramientas/casos-gramatica.sh          # los 67 casos de aceptacion y rechazo
+bash herramientas/casos-gramatica.sh          # los 70 casos de aceptacion y rechazo
 ```
 
 ---
@@ -130,8 +130,9 @@ instanciación, no delegado al semántico. La tabla de qué acepta y qué rechaz
 
 No toca la gramática: es enteramente implementación, y está siempre activa.
 
-**Implementado.** Tres puntos de recuperación, y sólo tres: las tres listas de la gramática que
-repiten un elemento (`ListaClases`, `ListaMiembros` y `ListaSentencias`). Sincroniza con los tokens
+**Implementado.** Cuatro puntos de recuperación, y sólo cuatro: las cuatro listas de la gramática
+que repiten un elemento (`ListaClases`, `ListaMiembros`, `ListaMetodosInterfaz` y
+`ListaSentencias`). Sincroniza con los tokens
 que nombra la consigna **más los Primeros del elemento de la lista** —sin eso, un `int x` al que le
 falta el `;` se lleva puesto el método que viene después, porque el análisis falla justo en el
 `void` con el que empieza el miembro siguiente y correcto— y cuenta las llaves mientras descarta,

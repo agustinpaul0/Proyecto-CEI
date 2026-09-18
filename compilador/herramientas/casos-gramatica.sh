@@ -78,7 +78,7 @@ probar NO "new int [ ]  (sin tamanio ni inicializador)"        "$M var idMetVar 
 probar SI "new int [ ] { 1 , }  (coma final, como en Java)"   "$M var idMetVar = new int [ ] { intLiteral , } ; } } eof"
 probar SI "new int [ ] { , }"            "$M var idMetVar = new int [ ] { , } ; } } eof"
 probar NO "new int [ ] { 1 , , }"        "$M var idMetVar = new int [ ] { intLiteral , , } ; } } eof"
-probar SI "new int [ 3 ] sigue andando"  "$M var idMetVar = new int [ intLiteral ] ; } } eof"
+probar SI "new int [ 3 ]  (base)"         "$M var idMetVar = new int [ intLiteral ] ; } } eof"
 probar SI "new int [ 3 ] [ 4 ]"          "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] ; } } eof"
 
 echo "--- Genericidad Avanzada ---"
@@ -113,6 +113,9 @@ probar SI "new int[]{1,2}"             "$M var idMetVar = new int [ ] { intLiter
 probar SI "new int[][]{{1},{2}}"       "$M var idMetVar = new int [ ] [ ] { { intLiteral } , { intLiteral } } ; } } eof"
 probar SI "new int[][][]{{{1}}}"       "$M var idMetVar = new int [ ] [ ] [ ] { { { intLiteral } } } ; } } eof"
 probar NO "new int[2][2]{{1},{2}}  con tamanio" "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] { { intLiteral } , { intLiteral } } ; } } eof"
+probar SI "new int[][]{}"                "$M var idMetVar = new int [ ] [ ] { } ; } } eof"
+probar SI "new int[][]{{}}"              "$M var idMetVar = new int [ ] [ ] { { } } ; } } eof"
+probar NO "new int[][]{{}{}}  sin coma"  "$M var idMetVar = new int [ ] [ ] { { } { } } ; } } eof"
 probar NO "new int[2][]  dimension vacia sin inicializador" "$M var idMetVar = new int [ intLiteral ] [ ] ; } } eof"
 probar NO "new int[][2]{}"             "$M var idMetVar = new int [ ] [ intLiteral ] { } ; } } eof"
 

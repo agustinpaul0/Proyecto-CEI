@@ -32,7 +32,7 @@ python3 herramientas/primeros.py gramatica/minijava-base.g          # NO ES LL(1
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g    # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # registro
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --nt Miembro     # un NT
-bash herramientas/casos-gramatica.sh                                # 81 casos
+bash herramientas/casos-gramatica.sh                                # 70 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java
 python3 herramientas/equivalencia_de_lenguajes.py   # mismo lenguaje que la de la cátedra
 python3 herramientas/auditar_analizador.py          # el código cita exactamente estas producciones
@@ -44,8 +44,8 @@ Después de cualquier cambio hay que **regenerar** los documentos derivados y el
 la gramática, nunca editarlos a mano:
 
 ```bash
-python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --sin-cabecera \
-    > ../documentacion/sintactico/gramatica-ll1-final.md      # (con su cabecera, ver el archivo)
+python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g \
+    > ../documentacion/sintactico/gramatica-ll1-final.md
 python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-final.g producciones \
     > ../etapas/etapa-2/entregables/informe/generado/gramatica-final.tex
 python3 herramientas/gramatica_a_latex.py gramatica/minijava-ll1-final.g primeros \

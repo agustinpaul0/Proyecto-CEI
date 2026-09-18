@@ -265,6 +265,13 @@ def casos_de_expresiones():
         " var d = new int[][]{{1,2},{3,4}}; var e = new int[][][]{{{1}}};"))
     correcto("inicializadorDeArregloConComaFinal", envolver(
         "var a = new int[]{1,2,}; var b = new int[]{,}; var c = new int[][]{{1,},{2},};"))
+    correcto("inicializadorDeArregloConListasVacias", envolver(
+        "var a = new int[][]{}; var b = new int[][]{{}}; var c = new int[][]{{},{}};"
+        " var d = new int[][][]{{},{{}}};"))
+    # Que el anidamiento coincida con las dimensiones es un chequeo de tipos: el
+    # parser de javac acepta los dos y el error lo da el analisis semantico.
+    correcto("inicializadorConAnidamientoDistintoDeLasDimensiones", envolver(
+        "var a = new int[]{{}}; var b = new int[][]{1};"))
     correcto("genericosAnidados",
              "class C1 { Lista<Lista<Persona>> x; Lista<Lista<Lista<T>>> y; }\n")
     correcto("diamanteAlInstanciar", envolver("var x = new Lista<>();"))
@@ -293,6 +300,8 @@ def casos_de_expresiones():
     con_error("inicializadorConDimensionConTamanio", envolver("var x = new int[3]{1,2,3};"),
               "{", 3)
     con_error("inicializadorConComasDeMas", envolver("var x = new int[]{1,,};"), ",", 3)
+    con_error("inicializadorSinComaEntreListas", envolver("var x = new int[][]{{}{}};"), "{", 3)
+    con_error("inicializadorSinComaEntreElementos", envolver("var x = new int[]{1 2};"), "2", 3)
     con_error("inicializadorFueraDeNew", envolver("var x = {1,2};"), "{", 3)
     con_error("diamanteEnPosicionDeTipo", "class C1 { Lista<> x; }\n", ">", 1)
     con_error("diamanteAlCrearArreglo", envolver("var x = new Lista<>[3];"), "[", 3)

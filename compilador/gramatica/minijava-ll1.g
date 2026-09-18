@@ -6,7 +6,7 @@
 #
 #     python3 herramientas/primeros.py gramatica/minijava-ll1.g
 #
-# Las extensiones de los logros viven en minijava-ll1-logros.g.
+# Las extensiones de los logros viven en minijava-ll1-final.g.
 
 Inicial -> ListaClases eof
 

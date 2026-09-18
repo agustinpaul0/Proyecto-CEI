@@ -82,10 +82,12 @@ los reporte todos. Está siempre activa.
 
 ### 4.1. Dónde se recupera
 
-En **tres lugares y sólo tres**: las tres listas de la gramática que repiten un elemento
-—`ListaClases`, `ListaMiembros` (y `ListaMetodosInterfaz`) y `ListaSentencias`—. Es donde tiene
+En **cuatro lugares y sólo cuatro**: las cuatro listas de la gramática que repiten un elemento
+—`ListaClases`, `ListaMiembros`, `ListaMetodosInterfaz` y `ListaSentencias`—. Es donde tiene
 sentido descartar un elemento roto y seguir con el siguiente, y mantenerlo ahí evita que el
-`try/catch` se desparrame por las nueve secciones del analizador.
+`try/catch` se desparrame por las nueve secciones del analizador. Las de miembros y de métodos de
+interfaz sincronizan igual —adentro de una llave, contra `;` y `}`— y comparten contexto, así que
+los contextos de sincronización son tres.
 
 ### 4.2. Con qué se sincroniza
 

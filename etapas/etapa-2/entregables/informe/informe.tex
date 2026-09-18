@@ -98,10 +98,7 @@ sección~\ref{sec:frontera-semantico}.
 
 Los nueve logros de la tabla están \textbf{siempre activos}, y el compilador no es configurable: no
 hay opción de línea de comandos ni propiedad de sistema para elegir con cuáles correr, y la
-gramática no tiene producciones que aparezcan y desaparezcan. Hubo una versión anterior en la que
-cada logro era un interruptor independiente; se revirtió por indicación del profesor, porque
-complejizaba la gramática sin necesidad y cada etapa nueva obligaría a rehacer el trabajo con más
-chance de error.
+gramática no tiene producciones que aparezcan y desaparezcan.
 
 \begin{center}
 \begin{tabular}{@{}lp{0.62\linewidth}@{}}
@@ -574,13 +571,12 @@ todo el prefijo. Misma situación que en R3 y misma resolución, con un no termi
 \end{producciones}
 
 \begin{decision}{un punto de decisión por contexto, aunque la forma coincida}
-Una versión anterior de esta transformación resolvía R3 y F7 con el \emph{mismo} no terminal
-\nt{ArgsActualesOpcional}, y se había justificado como una buena abstracción. Es al revés: su
-\eps{} significa dos cosas distintas según quién lo llame --- desde \nt{Encadenado} era un
-\nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde \nt{AccesoVarOLlamadaMetodo}
-era un \nt{AccesoVar}, acceso a una variable local, un parámetro o un atributo propio. Son dos
-nodos distintos, con reglas de resolución de nombres distintas, y un único método del analizador
-tendría que preguntarse quién lo llamó para saber cuál construir. Se separaron en
+Resolver R3 y F7 con el \emph{mismo} no terminal \nt{ArgsActualesOpcional} parece una buena
+abstracción y no lo es: su \eps{} significaría dos cosas distintas según quién lo llame --- desde
+\nt{Encadenado}, un \nt{VarEncadenada}, acceso a un atributo de \emph{otro} objeto; desde
+\nt{AccesoVarOLlamadaMetodo}, un \nt{AccesoVar}, acceso a una variable local, un parámetro o un
+atributo propio. Son dos nodos distintos, con reglas de resolución de nombres distintas, y un único
+método del analizador tendría que preguntarse quién lo llamó para saber cuál construir. Van separados en
 \nt{EncadenadoAtributoOMetodo} y \nt{AccesoOLlamada}: cuesta un no terminal más y deja los cuatro
 no terminales originales recuperables desde el nombre del método que decide.
 \end{decision}
@@ -1085,7 +1081,7 @@ Compilacion Exitosa
 Hay una sola opción más, que no hace falta para la corrección de esta etapa:
 
 \begin{consola}
-# La Etapa 1 sigue siendo ejecutable sola: vuelca la lista de tokens.
+# La Etapa 1 sola: vuelca la lista de tokens.
 $ java -jar target/Compilador.jar --etapa=1 programa1.java
 \end{consola}
 
@@ -1248,10 +1244,10 @@ Orden de inicialización y alcance de lo que se referencia. \\
         es justamente el punto de decisión que la Etapa 3 va a necesitar.
 
   \item[La recursión a derecha se traduce con recursión.] Clase 5 slide 59 muestra el método de
-        \nt{E'} llamándose a sí mismo, y así está en los trece lugares donde la gramática tiene
-        \nt{X} $\to$ $\alpha$ \nt{X} $\mid$ \eps{}. Hubo una versión con \texttt{while} y se
-        revirtió: deriva la misma cadena, pero aleja el código del esquema que se extiende en el
-        semántico. El analizador no se toma \textbf{ninguna} libertad respecto del Esquema Simple.
+        \nt{E'} llamándose a sí mismo, y así está en los diez lugares donde la gramática tiene
+        \nt{X} $\to$ $\alpha$ \nt{X} $\mid$ \eps{}. Un \texttt{while} derivaría la misma cadena,
+        pero alejaría el código del esquema que se extiende en el semántico. El analizador no se
+        toma \textbf{ninguna} libertad respecto del Esquema Simple.
 
   \item[Modo Pánico: sólo en las listas.] Se recupera únicamente en los cuatro no terminales que
         repiten un elemento ---clases, miembros, métodos de interfaz y sentencias---, así el manejo

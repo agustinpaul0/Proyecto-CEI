@@ -227,6 +227,29 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptarExpresion(dir, "new int[][]{{1}, {}}");
     }
 
+    @Test
+    void elInicializadorAnidadoAdmiteListasVacias(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[][]{}");
+        aceptarExpresion(dir, "new int[][]{{}}");
+        aceptarExpresion(dir, "new int[][]{{}, {}}");
+        aceptarExpresion(dir, "new int[][][]{{}, {{}}}");
+    }
+
+    @Test
+    void losElementosDelInicializadorVanSeparadosPorComas(@TempDir Path dir) {
+        assertEquals("{", rechazarExpresion(dir, "new int[][]{{}{}}"));
+        assertEquals("{", rechazarExpresion(dir, "new int[][]{{1}{2}}"));
+        assertEquals("2", rechazarExpresion(dir, "new int[]{1 2}"));
+    }
+
+    // Que el anidamiento coincida con las dimensiones es un chequeo de tipos: el
+    // parser de javac acepta los dos, y el error lo da el análisis semántico.
+    @Test
+    void elAnidamientoDelInicializadorNoSeChequeaContraLasDimensiones(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[]{{}}");
+        aceptarExpresion(dir, "new int[][]{1}");
+    }
+
     // La coma final es opcional, como en Java (JLS 10.6).
     @Test
     void elInicializadorAdmiteLaComaFinal(@TempDir Path dir) {

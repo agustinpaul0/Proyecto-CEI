@@ -87,19 +87,15 @@ aparte.
 ## 5. Dónde vive cada logro
 
 **Los logros no son configurables.** La gramática es una sola: no hay producciones que aparezcan y
-desaparezcan según nada. Lo dictaminó el profesor, y revirtió la decisión anterior —que cada logro
-fuera un interruptor independiente, con la gramática llevando las dos formas marcadas
-`@+logro`/`@-logro`—. El motivo: complejiza la gramática sin necesidad, y cada etapa nueva obligaría
-a rehacer el trabajo con más chance de error.
+desaparezcan según nada.
 
-Lo que sí sobrevive de aquella decisión es **dónde** aterriza cada logro, porque es lo que hace la
-gramática legible: cada uno agrega una capa o unas alternativas identificables, y no reescribe las
+Lo que sí importa es **dónde** aterriza cada logro, porque es lo que hace la gramática legible: cada uno agrega una capa o unas alternativas identificables, y no reescribe las
 reglas de al lado. El ternario es `<RestoCondicional>` y la capa `<ExpresionCondicional>`; los
 posfijos, `<PosfijoOpcional>`; la inicialización de arreglos, `<RestoCreacionDeArreglo>` y el bloque
 de `<InicializadorDeArreglo>`. Dos logros que necesitan una construcción parecida llevan cada uno la
 suya.
 
-El núcleo sin logros existe todavía, pero **fuera del compilador**: es
+El núcleo sin logros vive **fuera del compilador**: es
 `compilador/gramatica/minijava-ll1.g`, y está sólo para que `equivalencia_de_lenguajes.py`
 demuestre que corregir la gramática de la cátedra a LL(1) no cambió el lenguaje.
 

@@ -23,12 +23,7 @@ Están desarrolladas en [`flujo-de-trabajo.md`](flujo-de-trabajo.md); acá el re
 
 ## Los logros no son configurables
 
-Hubo una cuarta regla —«cada logro es un interruptor independiente», con el compilador corriendo
-con 0, 1 o N logros en cualquier combinación— y **el profesor la revirtió**: complejiza la
-gramática sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo con más chance de
-error.
-
-No existen `--logros=` en la línea de comandos, `-Dlogros=` en los tests, ni marcas `@+`/`@-` en
-el `.g`. El núcleo sin logros sobrevive en un archivo aparte, `compilador/gramatica/minijava-ll1.g`,
+Ni la línea de comandos, ni los tests, ni el `.g` tienen forma de elegir logros. El núcleo sin
+logros vive en un archivo aparte, `compilador/gramatica/minijava-ll1.g`,
 que el compilador no consume: está sólo para que `equivalencia_de_lenguajes.py` demuestre que
 genera el mismo lenguaje que la gramática de la cátedra.

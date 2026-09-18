@@ -17,8 +17,8 @@ sys.path.insert(0, "herramientas")
 from primeros import EPSILON, parsear  # noqa: E402
 from gramatica_a_latex import escapar, render  # noqa: E402
 
-# Las ocho secciones del `.g`, con el no terminal que abre cada una. El orden es
-# el del archivo, que es el orden en que conviene leerlas.
+# Las secciones del `.g`, con el no terminal que abre cada una; los `for` van con
+# las sentencias. El orden es el del archivo, que es el orden en que conviene leerlas.
 SECCIONES = [
     ("Clases e interfaces", "Inicial",
      "El nivel de arriba: un programa es una lista de clases e interfaces, y nada más. "
@@ -53,7 +53,8 @@ EXPLICACION = {
                "del fin de archivo. Exigir el `eof` es lo que hace que sobre basura después "
                "de la última llave sea un error y no se ignore en silencio.",
     "ListaClases": "Cero o más clases o interfaces, en cualquier orden y mezcladas. Que derive "
-                   "a ε es lo que hace válido el archivo vacío.",
+                   "a ε es lo que hace válido el archivo vacío. Uno de los cuatro puntos donde el "
+                   "analizador recupera en Modo Pánico.",
     "Clase": "Una clase: nombre, parámetro de tipo opcional, herencia opcional y el cuerpo "
              "entre llaves.",
     "Interfaz": "Una interfaz. Se diferencia de la clase en dos cosas: sólo puede `extends` "
@@ -65,9 +66,10 @@ EXPLICACION = {
                         "ni varias. Java admite `extends A implements B, C`; MiniJava no, y no "
                         "se amplía. Que el padre sea realmente una clase lo verifica el semántico.",
     "ExtensionOpcional": "Lo mismo para la interfaz, que sólo puede `extends`.",
-    "ListaMiembros": "Cero o más miembros de una clase. Uno de los tres puntos donde el "
-                     "analizador recupera en Modo Pánico.",
-    "ListaMetodosInterfaz": "Cero o más firmas de método en una interfaz.",
+    "ListaMiembros": "Cero o más miembros de una clase. Otro de los puntos de recuperación "
+                     "en Modo Pánico.",
+    "ListaMetodosInterfaz": "Cero o más firmas de método en una interfaz. Otro de los "
+                            "puntos de recuperación en Modo Pánico.",
 
     # --- Miembros ---
     "Miembro": "La cabeza de la factorización de los miembros. Tres alternativas con Primeros "
@@ -135,7 +137,7 @@ EXPLICACION = {
 
     # --- Sentencias ---
     "Bloque": "Sentencias entre llaves.",
-    "ListaSentencias": "Cero o más sentencias. El tercer punto de recuperación en Modo Pánico.",
+    "ListaSentencias": "Cero o más sentencias. Otro de los puntos de recuperación en Modo Pánico.",
     "Sentencia": "Las once formas de sentencia, todas con Primeros disjuntos. Las cuatro "
                  "últimas son la factorización del `idClase`: una declaración local (`C x;`) y "
                  "una sentencia-expresión (`C.m();`) empiezan igual.",
