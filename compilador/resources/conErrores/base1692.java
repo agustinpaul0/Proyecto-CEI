@@ -1,0 +1,2 @@
+///[Error:{|2]
+interface Q55 { } class Rh < O > { } interface A05_x7_ { } interface UB extends O_ { public float [ ] [ ] [ ] k_ ( ) ; } interface E_r < L > { } interface HGH { } class V6 extends UM { void hx ( ) { ; } } { return ; } interface U___ { } interface CB extends O_lw { A9 xq ( ) ; } interface K26_ { void bez ( ) ; } interface N_ { public T6_3 dyh5 ( ) ; } interface C_U < H > { } interface G8 < W > extends DO8 < X > { public void pu2X ( ) ; }

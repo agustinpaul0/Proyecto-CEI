@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface V4 { void z_ ( ) ; } class K2 implements KL7 < J > { } public H_d ( ) { } class IM { static W l ( ) { return ; } }
+///[Error:,|2]
+interface Ps extends Tk { } class OCY_y8r { } class F8_ < Q > extends Ny__ { K_a_1 ( ) { } void f_u ( D7__ < E_ > l ) { } } interface Sr extends A7 { } class R74 < N > extends Is < S > { Z hl1 = 54489 ; static K [ ] q ( int [ ] v ) { } static void ns ( ) { { } g_O_ , pa ; { ; } { } return ; ; } private void y ( ) { for ( ; ; ) ; return ; ; } } interface Uh { } class Wch implements G1u < Exzv > { } interface Mlf_ < A > { }

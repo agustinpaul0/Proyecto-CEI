@@ -1,2 +1,2 @@
-///[Error:M|2]
-class RB8N_ extends K_ { } interface UX extends S6_ < U > { Aa < M > y ( ) ; } interface FT extends D_cSQOi { } M interface I1 < N > { }
+///[Error:public|2]
+public void h ( ) ; public void nN ( char [ ] s , Dw < K > o ) ; interface Pbwal extends FgH { public V [ ] [ ] [ ] [ ] [ ] [ ] u73 ( char r ) ; void d8y ( ) ; } interface F_ < J > { public void z_a7x ( ) ; public void q_g7PI ( ) ; } class P_ implements U5 { }

@@ -51,37 +51,34 @@ public final class PrimerosDeReferencias {
     // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
     public static final ConjuntoDePrimeros LLAMADA_METODO_ESTATICO_ID_CLASE = de(TipoDeToken.ID_CLASE);
 
-    // PrimarioSinIdClase -> PrimarioSinIdClaseNiLambda
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA = de(
-            TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS);
+    // PrimarioSinIdClase -> this
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_THIS = de(TipoDeToken.PR_THIS);
 
-    // PrimarioSinIdClase -> Parentizada
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_PARENTIZADA = de(TipoDeToken.PAREN_A);
+    // PrimarioSinIdClase -> stringLiteral
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_STRING_LITERAL = de(TipoDeToken.LIT_STRING);
 
-    // PrimarioSinIdClase -> AccesoVarOLlamada
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA = de(TipoDeToken.ID_MV);
+    // PrimarioSinIdClase -> ExpresionParentizada
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_EXPRESION_PARENTIZADA = de(
+            TipoDeToken.PAREN_A);
 
-    // PrimarioSinIdClaseNiLambda -> this
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS = de(TipoDeToken.PR_THIS);
+    // PrimarioSinIdClase -> AccesoVarOLlamadaMetodo
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA_METODO = de(
+            TipoDeToken.ID_MV);
 
-    // PrimarioSinIdClaseNiLambda -> stringLiteral
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL = de(
-            TipoDeToken.LIT_STRING);
+    // PrimarioSinIdClase -> Creacion
+    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_CREACION = de(TipoDeToken.PR_NEW);
 
-    // PrimarioSinIdClaseNiLambda -> Creacion
-    public static final ConjuntoDePrimeros PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION = de(TipoDeToken.PR_NEW);
+    // ExpresionParentizada -> ( Expresion )
+    public static final ConjuntoDePrimeros EXPRESION_PARENTIZADA_PAREN_A = de(TipoDeToken.PAREN_A);
 
-    // Parentizada -> ( Expresion )
-    public static final ConjuntoDePrimeros PARENTIZADA_PAREN_A = de(TipoDeToken.PAREN_A);
+    // AccesoVarOLlamadaMetodo -> idMetVar AccesoOLlamada
+    public static final ConjuntoDePrimeros ACCESO_VAR_OLLAMADA_METODO_ID_MET_VAR = de(TipoDeToken.ID_MV);
 
-    // AccesoVarOLlamada -> idMetVar AccesoLlamada
-    public static final ConjuntoDePrimeros ACCESO_VAR_OLLAMADA_ID_MET_VAR = de(TipoDeToken.ID_MV);
+    // AccesoOLlamada -> ArgsActuales
+    public static final ConjuntoDePrimeros ACCESO_OLLAMADA_ARGS_ACTUALES = de(TipoDeToken.PAREN_A);
 
-    // AccesoLlamada -> ArgsActuales
-    public static final ConjuntoDePrimeros ACCESO_LLAMADA_ARGS_ACTUALES = de(TipoDeToken.PAREN_A);
-
-    // AccesoLlamada -> EPSILON
-    public static final ConjuntoDePrimeros ACCESO_LLAMADA = de();
+    // AccesoOLlamada -> EPSILON
+    public static final ConjuntoDePrimeros ACCESO_OLLAMADA = de();
 
     private PrimerosDeReferencias() {
     }

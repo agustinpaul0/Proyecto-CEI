@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface V0 extends P3 < W8e > { void l ( ) ; }
+class O4 < F > { } class R0 < U > implements WZfhi__ { Lc2_58 ( A y ) { if ( + 'f' ) for ( boolean [ ] c1 ; ; ) YpT___ [ ] [ ] n ; } } interface VZ extends U4 { public void d ( ) ; }

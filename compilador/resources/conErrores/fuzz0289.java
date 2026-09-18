@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface M_B < Z > { public void i ( Z o_v , boolean h ) ; public void a9 ; } interface Y6z extends M84 < B > { public void d ( ) ; } interface C0 < B > { }
+///[Error:private|2]
+interface RmXB extends IO { } class V0Tj_EU_VT_ < L > extends A_14 { W [ ] t_I ; } private

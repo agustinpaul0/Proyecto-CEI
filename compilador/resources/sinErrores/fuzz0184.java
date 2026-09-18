@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class M1 < L > extends QC_Lm36 < K > { public void t_jM_ ( char nv ) { ; } void k ( ) { while ( null <= false > + null = 2981 * - false ) ; } private SD_ < M > [ ] [ ] [ ] wV ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Qmd { char j ( ) ; void u ( int [ ] [ ] [ ] k ) ; } interface Y80 < B > extends LWv { public char a_7 ( S6 < LQ > [ ] [ ] [ ] bF ) ; }

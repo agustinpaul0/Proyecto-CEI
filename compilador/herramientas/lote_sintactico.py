@@ -261,8 +261,10 @@ def casos_de_expresiones():
         "var a = new Clase(); var b = new Clase(1, 2); var c = new int[3];"
         " var d = new int[3][4]; var e = new Clase[3]; var f = new T[2];"))
     correcto("inicializadorDeArreglo", envolver(
-        "var a = new int[0]{}; var b = new int[1]{1}; var c = new int[3]{1,2,3};"
-        " var d = new int[2][2]{{1,2},{3,4}}; var e = new int[1][1][1]{{{1}}};"))
+        "var a = new int[]{}; var b = new int[]{1}; var c = new int[]{1,2,3};"
+        " var d = new int[][]{{1,2},{3,4}}; var e = new int[][][]{{{1}}};"))
+    correcto("inicializadorDeArregloConComaFinal", envolver(
+        "var a = new int[]{1,2,}; var b = new int[]{,}; var c = new int[][]{{1,},{2},};"))
     correcto("genericosAnidados",
              "class C1 { Lista<Lista<Persona>> x; Lista<Lista<Lista<T>>> y; }\n")
     correcto("diamanteAlInstanciar", envolver("var x = new Lista<>();"))
@@ -285,9 +287,12 @@ def casos_de_expresiones():
     con_error("newDeClaseSinNadaDetras", envolver("var x = new Persona;"), ";", 3)
     # Y despues de cerrar el generico, `[` o `(`.
     con_error("newGenericoSinNadaDetras", envolver("var x = new Lista<T>;"), ";", 3)
-    # `new int[]` no existe: toda dimension de una creacion lleva su tamanio, y el
-    # inicializador se cuelga despues.
-    con_error("newConArregloSinDimension", envolver("var x = new int[];"), "]", 3)
+    # Sin inicializador, toda dimension de una creacion lleva su tamanio.
+    con_error("newConArregloSinDimension", envolver("var x = new int[];"), ";", 3)
+    # Con inicializador, ninguna la lleva, como en Java.
+    con_error("inicializadorConDimensionConTamanio", envolver("var x = new int[3]{1,2,3};"),
+              "{", 3)
+    con_error("inicializadorConComasDeMas", envolver("var x = new int[]{1,,};"), ",", 3)
     con_error("inicializadorFueraDeNew", envolver("var x = {1,2};"), "{", 3)
     con_error("diamanteEnPosicionDeTipo", "class C1 { Lista<> x; }\n", ">", 1)
     con_error("diamanteAlCrearArreglo", envolver("var x = new Lista<>[3];"), "[", 3)
@@ -296,20 +301,7 @@ def casos_de_expresiones():
     con_error("llamadaEstaticaSinArgumentos", envolver("var x = Clase.m1;"), ";", 3)
 
 
-def casos_de_lambdas_y_fors():
-    correcto("cadaFormaDeLambda", envolver(
-        "var a = () -> 1; var b = x -> x; var c = (x) -> x; var d = (x, y) -> x;"
-        " var e = (x, y, z) -> z;"))
-    correcto("lambdaConMuchosParametros", envolver(
-        "var f = (" + ", ".join(f"p{i}" for i in range(50)) + ") -> p0;"))
-    correcto("lambdaAnidada", envolver("var f = x -> y -> y;"))
-    correcto("lambdaConCuerpoCompuesto", envolver("var f = x -> x + x * x;"))
-    correcto("parentizadaSigueSiendoParentizada", envolver("var x = (a) + 1;"))
-    correcto("lambdaQueLlamaUnMetodoDelParametro", envolver("var f = x -> x.metodo();"))
-    correcto("lambdaQueLlamaUnMetodoEstatico", envolver("var f = x -> Clase.metodo(x);"))
-    # La llamada sin punto queda para el semantico: podria ser un metodo static.
-    correcto("lambdaConLlamadaSinPunto", envolver("var f = x -> metodo(x);"))
-    correcto("lambdaComoArgumento", envolver("m1(x -> x, () -> 1);"))
+def casos_de_fors():
     correcto("cadaFormaDeFor", envolver(
         "for(;;) ; for(var i = 0; ; ) ; for(; i < 10; ) ; for(; ; i) ;"
         " for(var i = 0; i < 10; i) ; for(var e : lista) ;"))
@@ -319,18 +311,6 @@ def casos_de_lambdas_y_fors():
     correcto("forsAnidados", envolver("for(;;) for(;;) for(;;) ;"))
     correcto("forConBloque", envolver("for(int i = 0; i < 10; i++) { m1(); m2(); }"))
 
-    con_error("lambdaConCuerpoDeLlaves", envolver("var f = x -> { return x; };"), "{", 3)
-    con_error("lambdaConParametroTipado", envolver("var f = (int x) -> x;"), "int", 3)
-    con_error("lambdaConParametroQueNoEsIdentificador", envolver("var f = (a + 1) -> a;"),
-              "a", 3)
-    # El `this`, la captura de variables y los parametros repetidos NO los mira el
-    # sintactico: son restricciones de significado y las resuelve el semantico.
-    correcto("lambdaConParametroRepetido", envolver("var f = (a, a) -> a;"))
-    correcto("thisExplicitoEnLambda", envolver("var f = x -> this.campo;"))
-    correcto("capturaDeVariableEnLambda", envolver("var f = x -> x + n;"))
-    correcto("lambdaAnidadaQueUsaElParametroDeAfuera", envolver("var f = x -> y -> x;"))
-    con_error("lambdaSinCuerpo", envolver("var f = x -> ;"), ";", 3)
-    con_error("flechaSinLambda", envolver("var f = 1 -> 2;"), "->", 3)
     con_error("forConDosExpresionesPorSeparador", envolver("for(var i = 0, j = 0; ; ) ;"),
               ",", 3)
     con_error("forDeIteradoresConClausulas", envolver("for(var e : lista; ; ) ;"), ";", 3)
@@ -350,17 +330,15 @@ def casos_combinados():
   public Registro(Lista<T> iniciales){
     int i, j, total = 0;
     for(int k = 0; k < 10; k++) {
-      var f = (a, b) -> a;
       total = k > 5 ? k : total;
     }
     for(T elemento : iniciales) {
       this.cuenta++;
     }
-    var matriz = new int[2][2]{{1,2},{3,4}};
+    var matriz = new int[][]{{1,2},{3,4}};
   }
 
   private Lista<T> filtrar(Lista<T> origen, int limite){
-    var predicado = x -> x;
     return origen;
   }
 }
@@ -420,7 +398,7 @@ def main():
     casos_de_miembros()
     casos_de_sentencias()
     casos_de_expresiones()
-    casos_de_lambdas_y_fors()
+    casos_de_fors()
     casos_combinados()
 
     despues = (len(list(SIN_ERRORES.glob("*.java"))), len(list(CON_ERRORES.glob("*.java"))))

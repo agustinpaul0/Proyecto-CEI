@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface N4 { void k ( X [ ] s__ , char [ ] [ ] d_54q , J [ ] [ ] e5S_ , ZC_ s_ , int [ ] [ ] s , int [ ] [ ] [ ] [ ] c , int f_c , int d , Y_ [ ] [ ] [ ] jb , float j ) ; float [ ] s96_fR ( ) ; Wz__ZL < MHw__0_ > [ ] ohI3 ( ) ; L [ ] [ ] [ ] [ ] [ ] [ ] w6W ( ) ; G a__0 ( boolean [ ] [ ] e ) ; } class XI < G > { public void d ( T ) { char n ; while ( ! null ) char r ; } float j ; B z ( ) { if ( ! true ) G [ ] [ ] v , k_ ; } public S a ( ) { } }
+///[Error:extends|2]
+class Z4 extends Gm5 < C_ > { } class Iy implements QV < J4 > { } extends E_8 class S6 < S > extends X_9vr { }

@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class K0 extends MZj < X > { } class CKqt extends ON_ < G7b > { static void ur ( ) { } } interface C_7f < T > extends C5 < Np > { IKO_z__6_v_ < R > t ( int [ ] [ ] [ ] [ ] [ ] [ ] c4 ) ; } interface X_ { } interface I_A_ extends { void lv ( ) ; K_b_ < R > l ( ) ; } interface MC < U > { boolean w_8_0C ( ) ; void ts ( UgfZ_x < Y0_44556E_f0 > [ ] [ ] b ) ; }
+class DS6 < T > implements K_bxA { static int [ ] [ ] [ ] x { } public void i ( WmC [ ] h ) { "\'~B\r" -- >= - false ; var l = + '\r' ; } }

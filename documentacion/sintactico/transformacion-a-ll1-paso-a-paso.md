@@ -606,7 +606,7 @@ La disyuntiva «argumentos actuales, o nada» aparece en dos lugares con la mism
 
 ```
 <Encadenado> ::= . idMetVar ( <ArgsActuales> | ε )
-<AccesoVarOLlamada> ::= idMetVar ( <ArgsActuales> | ε )
+<AccesoVarOLlamadaMetodo> ::= idMetVar ( <ArgsActuales> | ε )
 ```
 
 **Alternativa descartada:** un único NT compartido. Parece buena abstracción y es al revés, porque
@@ -623,8 +623,8 @@ que la slide 40 advierte. Van dos NT dedicados:
 <Encadenado> ::= . idMetVar <EncadenadoAtributoOMetodo>
 <EncadenadoAtributoOMetodo> ::= <ArgsActuales> | ε
 
-<AccesoVarOLlamada> ::= idMetVar <AccesoLlamada>
-<AccesoLlamada> ::= <ArgsActuales> | ε
+<AccesoVarOLlamadaMetodo> ::= idMetVar <AccesoOLlamada>
+<AccesoOLlamada> ::= <ArgsActuales> | ε
 ```
 
 Cuesta un no terminal más y hace que los cuatro NT de la gramática original sean recuperables sin
@@ -691,7 +691,7 @@ y hay que resolverlos sin romper lo que ya andaba.
 
 ### 5.0 Cada logro aterriza en su propio lugar
 
-La gramática es **una sola** y tiene todos los logros incorporados: no hay configuraciones, ni
+La gramática es **una sola**: no hay configuraciones, ni
 marcas, ni producciones que aparezcan y desaparezcan. Lo que sí se mantiene, porque es lo que la
 deja legible y lo que va a facilitar la Etapa 3, es que cada logro aterrice en un lugar
 identificable:
@@ -784,16 +784,15 @@ capturan las colas compartidas:
                         | <Primitivo> <ColaTrasOperando>
                         | <PrimarioSinIdClase> <ColaDeExpresionDesdePrimario>
 
-<ColaTrasOperando> ::= <RestoExpresionCompuesta> <RestoCondicional> <RestoExpresion>
+<ColaTrasOperando> ::= <RestoExpresionCompuesta> <RestoExpresion>
 <ColaDeExpresionDesdePrimario> ::= <RestoReferencia> <PosfijoOpcional> <ColaTrasOperando>
-<PrimarioSinIdClase> ::= this | stringLiteral | <Parentizada>
-                       | <AccesoVarOLlamada> | <Creacion>
+<PrimarioSinIdClase> ::= this | stringLiteral | <ExpresionParentizada>
+                       | <AccesoVarOLlamadaMetodo> | <Creacion>
 ```
 
 y `<Primario> ::= <LlamadaMetodoEstatico> | <PrimarioSinIdClase>`, que es la única forma de
 `<Primario>` que empieza con `idClase`. **Sólo se duplican las cabezas**: todas las colas
-(`<RestoReferencia>`, `<RestoExpresionCompuesta>`, `<RestoCondicional>`, `<RestoExpresion>`,
-`<PosfijoOpcional>`) se comparten con la jerarquía normal, así que no hay lógica repetida y un
+(`<RestoReferencia>`, `<RestoExpresionCompuesta>`, `<RestoExpresion>`, `<PosfijoOpcional>`) se comparten con la jerarquía normal, así que no hay lógica repetida y un
 cambio futuro en las expresiones no hay que espejarlo.
 
 > **Alternativa descartada:** dar al parser **dos** tokens de lookahead sólo en este punto (mirar
@@ -837,20 +836,29 @@ precedencia de Java: la asignación es más baja que el ternario, y el ternario 
 binarios.
 
 ```
-<Expresion> ::= <ExpresionCondicional> <RestoExpresion>
-<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicional> | ε
+<Expresion> ::= <ExpresionCompuesta> <RestoExpresion>
+<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicional> | <RestoCondicional>
 
 <ExpresionCondicional> ::= <ExpresionCompuesta> <RestoCondicional>
-<RestoCondicional> ::= ? <ExpresionCondicional> : <ExpresionCondicional> | ε
+<RestoCondicional> ::= ? <Expresion> : <ExpresionCondicional> | ε
 ```
 
-Asociativo a **derecha** (`a ? b : c ? d : e` es `a ? b : (c ? d : e)`), porque la rama del `:`
-vuelve a `<ExpresionCondicional>`, que puede tener su propio `<RestoCondicional>`.
+`<Expresion>` conserva la forma de F1: el lado izquierdo del `=` es una `<ExpresionCompuesta>`, como
+en la gramática original, así que `a ? b : c = d` no deriva —y `javac` tampoco lo acepta—. Después
+del primer operando viene un `=` o el ternario. El lado derecho del `=` es una
+`<ExpresionCondicional>`: admite el ternario, que es lo que pide el ejemplo del logro
+(`esMayor = (edad >= 18) ? true : false;`), y no admite otro `=`, así que `a = b = c` no deriva.
+Los cinco inicializadores (`<VarLocal>`, `<InicializacionDeAtributo>`, `<InicializacionDeDeclarador>`
+y los dos del `for`) pasan de `<ExpresionCompuesta>` a `<ExpresionCondicional>` por el mismo motivo.
+
+Los operandos del ternario son los del JLS §15.25: el del medio es una `<Expresion>` completa y el de
+la derecha una `<ExpresionCondicional>`, así que `a ? b = 1 : c` es válido y `a ? b : c = d` no. Es
+asociativo a **derecha** (`a ? b : c ? d : e` es `a ? b : (c ? d : e)`), porque la rama del `:` es
+otra `<ExpresionCondicional>`, con su propio `<RestoCondicional>`.
 
 **Por qué la capa no molesta.** Si se le quitara el `?`, `<RestoCondicional>` quedaría **sólo con `ε`**
-y `<ExpresionCondicional>` se vuelve un alias de `<ExpresionCompuesta>`: la capa desaparece sin
-dejar rastro y sin tocar ninguna otra regla. Ésa es la forma barata de hacer un logro atómico —
-que su desactivación sea *quitar alternativas*, no *cambiar de estructura*.
+y la gramática sería exactamente la de F1. Ésa es la forma barata de hacer un logro atómico —que su
+desactivación sea *quitar alternativas*, no *cambiar de estructura*.
 
 ### 5.5 Operadores Posifijos E2
 
@@ -862,138 +870,46 @@ que su desactivación sea *quitar alternativas*, no *cambiar de estructura*.
 Va sobre `<Referencia>` y **no** sobre `<Operando>`: `5++` no tiene sentido. Misma técnica de
 forma que el ternario: sin sus dos alternativas, `<PosfijoOpcional>` queda en `ε`.
 
-### 5.6 MiniLambdas E2
+### 5.6 Inicializacion de Arreglos E2
 
-El logro que **parece** necesitar lookahead ilimitado y no lo necesita.
-
-**Defectos que crea.** Dos.
-
-El primero es **dónde vive la lambda**. La ubicación que se impone sola es `<Primario>` —la lambda
-aparece donde aparece un valor—, y es la equivocada: `<Primario>` es la ranura de un *operando*, y
-una lambda **suelta** no puede serlo. El JLS la define como alternativa de `Expression`, el nivel
-**más alto** de la jerarquía, nunca como `Primary`. Puesta en `<Primario>`, `1 + x -> x`,
-`- x -> x` y `a == x -> x` pasarían el análisis, y `javac` los rechaza con *«lambda expression not
-expected here»*. La lambda va entonces en el nivel de `<Expresion>`.
-
-Eso **no** alcanza para dejar afuera `(x -> x).m()`, y es deliberado: MiniJava base ya define que
-cualquier expresión parentizada es un `<Primario>` y que un `<Primario>` arrastra cadena, así que
-una lambda **entre paréntesis** sí es operando. El detalle está en
-[`decisiones-de-logica.md`](decisiones-de-logica.md#22-dónde-vive-la-lambda).
-
-El segundo es el **lookahead**. El `(` abre tanto una expresión parentizada como la lista de
-parámetros de una lambda, y `idMetVar` abre tanto un acceso a variable como una lambda de un
-parámetro. `(a, b, c) -> x` contra `(a + b)` sugiere que hay que escanear hasta el `)` para
-decidir.
-
-**Análisis.** No hace falta, porque los casos se separan solos:
-
-| Entrada | Decisión | Con cuántos tokens |
-|---|---|---|
-| `( )` | sólo puede ser lambda de cero parámetros | 1 (el `)`) |
-| `( e , …` | sólo puede ser lambda: **MiniJava no tiene operador coma** | 1 (la `,`) |
-| `( e )` | lo decide el token **después** del `)`: `->` es lambda | 1 (el `->`) |
-| `x -> …` | lo decide el token después del `idMetVar` | 1 (el `->`) |
-
-La clave es que el `->` viene **inmediatamente** después del `)`, así que en el momento de
-decidir sigue siendo un token de lookahead.
-
-**Transformación**
+**Transformación.** Las dos formas de crear un arreglo empiezan con `[`, y se factoriza. Con una
+expresión adentro es la creación de MiniJava base, con **toda** dimensión con su tamaño
+(`DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]`). Con el corchete
+vacío es la forma de Java con inicializador (JLS §15.10.1), donde **ninguna** dimensión lleva
+tamaño:
 
 ```
-<Expresion> ::= <ExpresionCondicionalOLambda> <RestoExpresion>
-<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicionalOLambda> | ε
-
-<ExpresionCondicionalOLambda> ::= <OperadorUnario> <Operando> <ColaTrasOperandoSinAsignacion>
-                                | <Primitivo> <ColaTrasOperandoSinAsignacion>
-                                | <ExpresionDesdePrimarioOLambda>
-
-<ExpresionDesdePrimarioOLambda> ::= idMetVar <AccesoLlamadaOLambda>
-                                  | <ParentizadaOLambda>
-                                  | this <ColaDesdePrimarioSinAsignacion>
-                                  | stringLiteral <ColaDesdePrimarioSinAsignacion>
-                                  | <Creacion> <ColaDesdePrimarioSinAsignacion>
-                                  | idClase . idMetVar <ArgsActuales> <ColaDesdePrimarioSinAsignacion>
-
-<AccesoLlamadaOLambda> ::= -> <CuerpoLambda>
-                         | <AccesoLlamada> <ColaDesdePrimarioSinAsignacion>
-
-<ParentizadaOLambda> ::= ( <ContenidoDeParentesis>
-<ContenidoDeParentesis> ::= ) -> <CuerpoLambda>
-                          | <Expresion> <RestoDeParentesis>
-<RestoDeParentesis> ::= ) <FinDeParentizadaOLambda>
-                      | , <ListaParametrosLambda> ) -> <CuerpoLambda>
-<FinDeParentizadaOLambda> ::= -> <CuerpoLambda>
-                            | <ColaDesdePrimarioSinAsignacion>
-<CuerpoLambda> ::= <Expresion>
-
-<ColaTrasOperando> ::= <ColaTrasOperandoSinAsignacion> <RestoExpresion>
-<ColaTrasOperandoSinAsignacion> ::= <RestoExpresionCompuesta> <RestoCondicional>
-<ColaDesdePrimarioSinAsignacion> ::= <RestoReferencia> <PosfijoOpcional>
-                                     <ColaTrasOperandoSinAsignacion>
-```
-
-`<ExpresionCondicionalOLambda>` es el nivel `LambdaExpression | ConditionalExpression` del JLS:
-admite lambda y no admite `=`. Es el operando de los seis `=` de la gramática y el tercer operando
-del ternario. Sólo duplica las **cabezas**; las colas se comparten, igual que en
-`<ExpresionSinIdClase>`.
-
-Del otro lado, ningún `<Primario>` es una lambda **por sí mismo** —pero el paréntesis sigue
-admitiendo una `<Expresion>` completa, tal cual la regla original:
-
-```
-<Parentizada> ::= ( <Expresion> )
-<AccesoVarOLlamada> ::= idMetVar <AccesoLlamada>
-<AccesoLlamada> ::= <ArgsActuales> | ε
-```
-
-`<CuerpoLambda> ::= <Expresion>` es la lectura literal de *«el cuerpo debe estar formado por una
-única expresión, no se permiten cuerpos delimitados por llaves»*: como no hay alternativa con
-`{`, la gramática **rechaza** `x -> { … }` sin ningún chequeo adicional.
-
-> **Permisividad declarada.** En `( a , b ) -> x`, el `a` se deriva como `<Expresion>`, no como
-> parámetro, así que `( a + 1 , b ) -> x` **pasa el sintáctico**. Rechazarlo requiere saber que
-> esa expresión tiene que ser un identificador suelto, y eso es un chequeo del semántico. Es la
-> misma clase de permisividad que la gramática original ya tiene con `5 = x;`.
->
-> En cambio *«no se permite la captura de variables locales, parámetros, ni el uso de `this`»* **no
-> es decidible sintácticamente** —el parser no sabe qué nombres están en alcance— y queda para el
-> analizador semántico, por indicación del profesor.
->
-> La única que sí cierra el analizador está en
-> [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
-
-### 5.7 Inicializacion de Arreglos E2
-
-**Transformación.** Toda dimensión conserva su `[ <Expresion> ]`, que es la forma de MiniJava base
-(`DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]`), y el
-inicializador se le cuelga al final:
-
-```
-<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>
-<DimensionesConTamanio> ::= [ <Expresion> ] <DimensionesConTamanioOpcional>
-<InicializadorDeArregloOpcional> ::= <InicializadorDeArreglo> | ε
+<CreacionDeArreglo> ::= [ <RestoCreacionDeArreglo>
+<RestoCreacionDeArreglo> ::= <Expresion> ] <DimensionesConTamanioOpcional>
+                           | ] <DimensionesOpcionales> <InicializadorDeArreglo>
 <InicializadorDeArreglo> ::= { <ListaElementosOpcional> }
+<ListaElementosOpcional> ::= <ListaElementos> | , | ε
+<ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>
+<RestoListaElementos> ::= , <ElementosTrasComa> | ε
+<ElementosTrasComa> ::= <ElementoInicializador> <RestoListaElementos> | ε
 <ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>
 ```
 
-Así `new int[2][2]{{1,2},{3,4}}` es válido y `new int[]{1,2,3}` no. **Diverge de Java**, que
-prohíbe tamaño e inicializador juntos (JLS §15.10.1); es deliberado, para no ampliar la forma de las
-dimensiones que MiniJava ya tenía definida — el detalle está en
-[`decisiones-de-logica.md`](decisiones-de-logica.md) §7.
+Así `new int[][]{{1,2},{3,4}}` es válido y `new int[2][2]{{1,2},{3,4}}` no, igual que en Java
+(`javac`: *«array creation with both dimension expression and initialization is illegal»*). Sin
+inicializador rige la base: `new int[2][]` no es válido. La coma final es opcional, como en Java
+(JLS §10.6): `{1, 2,}` y `{,}` son válidos; `<ElementosTrasComa>` es lo que la permite sin conflicto
+de predicción. `<DimensionesConTamanio>` y `<DimensionesConTamanioOpcional>` son las del núcleo, sin
+cambios.
 
 Un elemento puede ser una expresión o, a su vez, otro inicializador: por eso es anidable, y las dos
 alternativas son disjuntas porque una expresión nunca empieza con `{`. *«Sólo se permite como parte
 de una expresión de creación utilizando `new`»* queda impuesto por la gramática:
 `<InicializadorDeArreglo>` sólo es alcanzable desde `<Creacion>`.
 
-### 5.8 Genericidad Avanzada E2
+### 5.7 Genericidad Avanzada E2
 
 Dos cosas distintas: anidamiento y diamante.
 
 **Anidamiento.** Sale de una sola recursión:
 
 ```
-<ArgumentoDeTipo> ::= idGen | idClase <TipoGenericoOpcional>
+<InstanciadoOParametrico> ::= idGen | idClase <TipoGenericoOpcional>
 ```
 
 Sin esa recursión la segunda alternativa sería `idClase` a secas y el anidamiento desaparecería.
@@ -1005,13 +921,12 @@ utilizarse al instanciar una Clase Genérica»*. Se impone **por gramática**, n
 separando el genérico en posición de tipo del genérico bajo `new`:
 
 ```
-<TipoGenericoOpcional> ::= < <ArgumentoDeTipo> > | ε          (posición de tipo: sin diamante)
+<TipoGenericoOpcional> ::= < <InstanciadoOParametrico> > | ε          (posición de tipo: sin diamante)
 
 <CreacionDesdeIdClase> ::= < <GenericoDeCreacion>
-                         | <CreacionDeArreglo>
-                         | <ArgsActuales>
+                         | <ArregloOInstanciaDeClase>
 <GenericoDeCreacion> ::= > <ArgsActuales>                     ← el diamante, y sólo hacia ArgsActuales
-                       | <ArgumentoDeTipo> > <ArregloOInstanciaDeClase>
+                       | <InstanciadoOParametrico> > <ArregloOInstanciaDeClase>
 ```
 
 Es la separación que anticipaba 3.bis.3. Resultado verificado:
@@ -1025,7 +940,7 @@ Es la separación que anticipaba 3.bis.3. Resultado verificado:
 | `new List<>[3]` | **rechaza** (diamante con arreglo) |
 | `new List<Persona>[3]` | acepta |
 
-### 5.9 Floats (carry-over de la Etapa 1)
+### 5.8 Floats (carry-over de la Etapa 1)
 
 ```
 <TipoPrimitivo> ::= boolean | char | int | float
@@ -1042,17 +957,17 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # todas declaradas
-bash herramientas/casos-gramatica.sh                                              # 81/81
+bash herramientas/casos-gramatica.sh                                              # 67/67
 ```
 
-- **110 no terminales, 230 producciones, 60 terminales.**
+- **100 no terminales, 207 producciones, 59 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
-- **81 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
-  debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` se rechaza,
-  `( a ) + 1` se acepta como expresión parentizada y `( a ) -> a` como lambda, `List<> x;` se
-  rechaza y `new List<>()` se acepta, `static public` y `public static` se aceptan los dos y
-  `public private` no, `new int[2]{1,2}` se acepta y `new int[]{1,2}` no.
+- **67 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
+  debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` y
+  `a ? b : c = d` se rechazan, `List<> x;` se rechaza y `new List<>()` se acepta, `static public` y
+  `public static` se aceptan los dos y `public private` no, `new int[]{1,2}` se acepta y
+  `new int[2]{1,2}` no.
 
 El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
-**de 60 a 110 no terminales y de 126 a 230 producciones**, sin ninguna ambigüedad sin declarar y sin
+**de 60 a 100 no terminales y de 126 a 207 producciones**, sin ninguna ambigüedad sin declarar y sin
 ningún conflicto de predicción.

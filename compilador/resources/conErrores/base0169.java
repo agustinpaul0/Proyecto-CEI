@@ -1,2 +1,2 @@
-///[Error:I_y|2]
-I_y
+///[Error:{|2]
+interface L_ extends { }

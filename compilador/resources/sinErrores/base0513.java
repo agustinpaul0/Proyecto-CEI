@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class AQC < V > implements U6g < W > { U_5M xC ( Qd [ ] [ ] [ ] [ ] l_ , J [ ] l ) { Q [ ] c_tO_Gv ; Q [ ] q ; } private J ct2r ( I [ ] dm ) { } } interface GyK { } class O_ < B > { void a0n ( ) { return ; if ( true ) char [ ] [ ] [ ] rI8 , we ; for ( ; ; ) char pp , b , iy ; } Q hR = + 896863 ? ")" . s -- : + OC . s ( ) || true ; private void h ( J y_ ) { } }

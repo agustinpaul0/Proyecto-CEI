@@ -1,2 +1,2 @@
-///[Error:G_|2]
-G_
+///[Error:>|2]
+class G5__A < Q > { } class X1 < V > implements V_8 < CVd < > > { }

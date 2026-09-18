@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Ai__ < W > implements Z_ { } class RQO621F extends GK < Kf > { } interface N___ < V > extends E7_ { } interface P_ { void j ( C32 < Z > a , int [ ] xL ) ; char [ ] [ ] [ ] w7fu ( JWK g2 , W_J q ) ; void b ( J_xB1 [ ] [ ] [ ] d_7 , boolean [ ] [ ] x8v , L l ) ; boolean [ ] c ( ) ; } class OK < I > extends J__ { } class Kb_ < Y > implements C__3 { boolean [ ] sRe_ ; public N4 ( WGOk [ ] i_ ) { ; } }
+interface Cu_c < W > extends K2K_9 < U_b < C > > { void m ( Ry < H > s ) ; public P_5t_i__k_G < J > [ ] pP ( ) ; }

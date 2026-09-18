@@ -72,33 +72,33 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
         }
     }
 
-    // TipoGenericoOpcional -> < ArgumentoDeTipo > | EPSILON
+    // TipoGenericoOpcional -> < InstanciadoOParametrico > | EPSILON
     //
     // En POSICIÓN DE TIPO no se admite el diamante: `List<> x;` es inválido.
     public void tipoGenericoOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeTipos.TIPO_GENERICO_OPCIONAL_MENOR)) {
             match(TipoDeToken.OP_MENOR);
-            argumentoDeTipo();
+            instanciadoOParametrico();
             match(TipoDeToken.OP_MAYOR);
         } else {
             // TipoGenericoOpcional -> EPSILON
         }
     }
 
-    // ArgumentoDeTipo -> idGen
-    // ArgumentoDeTipo -> idClase TipoGenericoOpcional
+    // InstanciadoOParametrico -> idGen
+    // InstanciadoOParametrico -> idClase TipoGenericoOpcional
     //
     // La recursión por TipoGenericoOpcional es la que habilita el anidamiento
     // `List<List<Persona>>`.
-    public void argumentoDeTipo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN)) {
+    public void instanciadoOParametrico() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
-        } else if (estaEn(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE)) {
+        } else if (estaEn(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
             tipoGenericoOpcional();
         } else {
-            throw errorEsperando(PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN,
-                    PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE);
+            throw errorEsperando(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_GEN,
+                    PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE);
         }
     }
 

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Af0 < S > { } class D_ < N > implements Vd { } interface L7_ < N > { } class TL < X > implements < R > { }
+///[Error:h|2]
+class L_a < M > { } interface U9Cb44 extends Ym < C > { public void i ( S15 [ ] j , R [ ] s , h ) ; } interface WDu_D1 < J > { } interface UN_ < Y > { }

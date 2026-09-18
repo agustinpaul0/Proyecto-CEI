@@ -158,7 +158,7 @@ class AnalizadorSintacticoTest extends BaseDeAnalisis {
     // ------------------------------------------------------ error dentro de <> ---
 
     @Test
-    void unArgumentoDeTipoInvalidoNombraLasAlternativasPosibles(@TempDir Path dir) {
+    void unInstanciadoOParametricoInvalidoNombraLasAlternativasPosibles(@TempDir Path dir) {
         ExcepcionSintactica excepcion = rechazar(dir, "class C1 extends Base<9> {}");
 
         assertEquals("9", excepcion.getLexemaOfensivo());

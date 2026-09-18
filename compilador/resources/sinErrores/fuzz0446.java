@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface MR < W > extends J7 { } class A_mY_ < T > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface K5 < I > extends A_ { public void u ( E [ ] c ) ; public void y ( M8 < T > i , C [ ] bDwc , P c_ , char [ ] [ ] s_9 ) ; }

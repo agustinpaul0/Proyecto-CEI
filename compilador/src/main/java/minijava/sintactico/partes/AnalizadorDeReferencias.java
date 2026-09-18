@@ -2,7 +2,6 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
-import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeReferencias;
@@ -49,75 +48,52 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
         }
     }
 
-    // PrimarioSinIdClase -> PrimarioSinIdClaseNiLambda | Parentizada
-    //                     | AccesoVarOLlamada
-    //
-    // Ninguna de estas alternativas ES una lambda por sí misma: la lambda se
-    // produce en el nivel más alto, no acá. Ésa es la corrección de precedencia,
-    // y lo que hace que `1 + x -> x` no derive. Lo que sí la alcanza es
-    // Parentizada, porque su contenido es una Expresion completa.
+    // PrimarioSinIdClase -> this | stringLiteral | ExpresionParentizada
+    //                     | AccesoVarOLlamadaMetodo | Creacion
     public void primarioSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA)) {
-            primarioSinIdClaseNiLambda();
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA)) {
-            parentizada();
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA)) {
-            accesoVarOLlamada();
-        } else {
-            throw errorEsperando(
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_PARENTIZADA,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA);
-        }
-    }
-
-    // PrimarioSinIdClaseNiLambda -> this | stringLiteral | Creacion
-    //
-    // Las tres cabezas que no pueden empezar una lambda. Están aparte porque
-    // ExpresionSinIdClase necesita justo eso: las otras dos las toma en su
-    // variante que sí la admite.
-    public void primarioSinIdClaseNiLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS)) {
+        if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS)) {
             match(TipoDeToken.PR_THIS);
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL)) {
             match(TipoDeToken.LIT_STRING);
-        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION)) {
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_EXPRESION_PARENTIZADA)) {
+            expresionParentizada();
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA_METODO)) {
+            accesoVarOLlamadaMetodo();
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION)) {
             sintaxis.creacion().creacion();
         } else {
-            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_THIS,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_STRING_LITERAL,
-                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_NI_LAMBDA_CREACION);
+            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_THIS,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_STRING_LITERAL,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_EXPRESION_PARENTIZADA,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_ACCESO_VAR_OLLAMADA_METODO,
+                    PrimerosDeReferencias.PRIMARIO_SIN_ID_CLASE_CREACION);
         }
     }
 
-    // Parentizada -> ( Expresion )
-    //
-    // El contenido es una Expresion completa, lambda incluida, tal cual la regla
-    // original de la cátedra. Como un Primario arrastra cadena, de ahí sale que
-    // `(x -> y).m()` y `(x -> y) + 1` sean válidos. Java los rechaza; se eligió
-    // respetar el molde de la gramática base. Ver decisiones-de-logica.md §2.2.
-    private void parentizada() throws ExcepcionLexica, ExcepcionSintactica {
+    // ExpresionParentizada -> ( Expresion )
+    private void expresionParentizada() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
         sintaxis.expresiones().expresion();
         match(TipoDeToken.PAREN_C);
     }
 
-    // AccesoVarOLlamada -> idMetVar AccesoLlamada
-    private void accesoVarOLlamada() throws ExcepcionLexica, ExcepcionSintactica {
-        Token nombre = actual();
+    // AccesoVarOLlamadaMetodo -> idMetVar AccesoOLlamada
+    private void accesoVarOLlamadaMetodo() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.ID_MV);
-        accesoLlamada(nombre);
+        accesoOLlamada();
     }
 
-    // AccesoLlamada -> ArgsActuales | EPSILON
+    // AccesoOLlamada -> ArgsActuales | EPSILON
     //
     // El no terminal dedicado distingue los dos usos de un idMetVar: con
     // argumentos es una llamada, sin ellos un acceso a variable. Cuál de los dos
     // nombra algo declarado, y si ese algo es alcanzable desde donde se lo usa,
     // lo resuelve el analizador semántico.
-    public void accesoLlamada(Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeReferencias.ACCESO_LLAMADA_ARGS_ACTUALES)) {
+    private void accesoOLlamada() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeReferencias.ACCESO_OLLAMADA_ARGS_ACTUALES)) {
             sintaxis.argumentos().argsActuales();
+        } else {
+            // AccesoOLlamada -> EPSILON
         }
     }
 

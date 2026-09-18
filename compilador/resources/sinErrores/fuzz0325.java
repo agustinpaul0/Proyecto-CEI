@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class YF6 < B > implements D_y3__7 < R > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface IL extends Ag466_ { public void t ( int p6s98 ) ; } interface Ng < K > extends I5__ { }

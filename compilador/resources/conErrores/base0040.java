@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-class Y_ extends Nd_S1 < Ve > { } interface Kv_ { boolean [ ] [ ] [ ] [ ] mk_ ( ) ; } interface AH0v { Uc < Y > w_7 ( boolean [ ] [ ] [ ] [ ] i ) ; } boolean [ ] f ( LG_ r ) { } class MA < E > extends OQ3 { } class V_5 { char fT_ ( ) { } static void y ( ) { } } class KK < D > implements V_73T < G99f_ > { }
+///[Error:>|2]
+interface AI_ < > { V_t_ < T > b ( ) ; public void uv_ ( WD < K > [ ] cu , float [ ] p ) ; } interface JgZR < H > extends G3 < K > { public char [ ] vC ( A k , F f_ , char q ) ; } interface L7 { public void d ( ) ; }

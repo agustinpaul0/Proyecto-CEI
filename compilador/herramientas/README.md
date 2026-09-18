@@ -77,8 +77,3 @@ Corre el analizador sintáctico en Java y el simulador del Esquema Simple sobre 
 exige el **mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Responde la pregunta
 que deja un analizador escrito a mano: ¿reconoce el mismo lenguaje que la gramática verificada, o
 uno parecido?
-
-El analizador es deliberadamente más restrictivo en los chequeos que una gramática libre de contexto
-no puede expresar —los del logro MiniLambdas—. Esas divergencias van **declaradas** en la
-herramienta con su motivo; una sin declarar la hace fallar, igual que el registro de ambigüedades
-del verificador.

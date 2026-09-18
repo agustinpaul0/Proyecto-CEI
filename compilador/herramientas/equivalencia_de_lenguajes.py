@@ -23,6 +23,11 @@ dos controles negativos, uno que ensancha el lenguaje de la final (permitir
 `a = b = c`) y otro que lo angosta (sacar `Sentencia -> Bloque`); los dos se
 detectan.
 
+Por último se comprueba que la gramática FINAL, con los logros, contenga todo el
+lenguaje de la cátedra: toda cadena derivada de la base, con cada producción
+ejercitada, la tiene que aceptar. Los logros agregan construcciones; ninguno puede
+quitar una que la base define.
+
 Uso, desde compilador/:
     python3 herramientas/equivalencia_de_lenguajes.py
     python3 herramientas/equivalencia_de_lenguajes.py --extra 400 --semilla 7
@@ -38,6 +43,7 @@ from primeros import EPSILON, calcular_vaciables, parsear  # noqa: E402
 RAIZ = Path(__file__).resolve().parent.parent
 BASE = RAIZ / "gramatica" / "minijava-base.g"
 NUCLEO = RAIZ / "gramatica" / "minijava-ll1.g"
+FINAL = RAIZ / "gramatica" / "minijava-ll1-final.g"
 
 
 # --- Reconocedor de Earley ---------------------------------------------------
@@ -337,6 +343,23 @@ def comparar(base, final, extra, semilla):
     return resumen, fallos
 
 
+def perdidas_por_la_final(base, final, extra, semilla):
+    """Las cadenas de la base que la gramática final rechaza."""
+    azar = random.Random(semilla)
+    generador = Generador(base, azar)
+    cadenas = []
+    for objetivo in generador.todas_las_producciones():
+        for veces in (1, 2) if generador.es_recursiva(objetivo) else (1,):
+            cadena = generador.generar(objetivo, veces)
+            if cadena is not None:
+                cadenas.append(cadena)
+    for _ in range(extra):
+        cadena = generador.generar()
+        if cadena is not None:
+            cadenas.append(cadena)
+    return len(cadenas), [c for c in cadenas if not reconoce(final, c)]
+
+
 def cobertura(g, semilla):
     """Cuántas producciones se pudieron ejercitar, cuáles quedaron inertes por ser
     de un no terminal inalcanzable, y cuáles no se pudieron ejercitar sin
@@ -391,6 +414,15 @@ def main():
         return 1
     print("LAS DOS GRAMATICAS GENERAN EL MISMO LENGUAJE: "
           "toda produccion de cada una fue ejercitada y la otra estuvo de acuerdo.")
+
+    total, perdidas = perdidas_por_la_final(
+        base, parsear(FINAL.read_text(encoding="utf-8")), args.extra * 10, args.semilla)
+    for cadena in perdidas[:20]:
+        print(f"  PERDIDA  {' '.join(cadena)}")
+    if perdidas:
+        print(f"{len(perdidas)} de {total} cadenas de la base RECHAZADAS por la gramatica final.")
+        return 1
+    print(f"LA GRAMATICA FINAL CONTIENE A LA BASE: acepta las {total} cadenas derivadas de ella.")
     return 0
 
 

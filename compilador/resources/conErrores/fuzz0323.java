@@ -1,2 +1,2 @@
-///[Error:Y9_F|2]
-class DFt implements S_ < I > { } Y9_F
+///[Error:public|2]
+class RSfXi implements Y_ < BD > { static private void public static void k_Y ( ) { } }

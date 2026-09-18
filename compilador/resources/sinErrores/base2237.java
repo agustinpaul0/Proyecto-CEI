@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class Jsi { private static I [ ] z ( B v ) { return '\f' + this -- % + '\\' ; char [ ] [ ] k ; } static P l ( ) { } static private I [ ] y ( ) { var z_8_ = - Xq . gdT ( ) ? - null : ! null + null ; for ( + '\"' ; ; ) var d = + null ; ; float n , c ; } static Y5i o6 ( ) { while ( - 5F = - false ) Rt_ . sf ( ) . n ( ) ; } static private float [ ] [ ] [ ] q ( J_ < UlJ2f > [ ] [ ] [ ] r__ ) { while ( '\'' % ! false ) { } } } interface V4u__ extends Gh { }

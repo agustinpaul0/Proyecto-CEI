@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface AM { public NW < W > u_L ( ) ; } class Fa__O8 < N > { static public void z9_xa ( T r ) { } static private void qv__ ( ) { var bZ = true <= 58078 / '\t' ? 'd' : false > + null ; } static void j_ ( ) { } static private void n ( ) { X p = null , cZ , v ; int pH , a , iS ; - "" ; char [ ] tv ; X [ ] [ ] z ; for ( ; ; ) ; } } class FY_ { }

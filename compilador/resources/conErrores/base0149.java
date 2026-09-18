@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class D0y < M > implements ID { } class N1f < O > extends Tbb_a { void a ( ) { - this ; } Q [ ] [ ] [ ] q ; } interface T8 < V > extends { } class Yw_W < C > extends Ioqw { } interface Lb extends Zn__40 { }
+class XD < F > implements Ts < I > { } class ME < R > { } class A4 < J > implements W69 < D > { Q [ ] u97c ( int p ) { return ! ':' < false ; } } interface Jw < H > extends B5I { public B [ ] q ( ) ; } class V_7 < E > { WN { for ( float [ ] u0 ; ; ) R [ ] [ ] [ ] [ ] a60 ; } } class VB < W > implements Q_2 < V > { } class E7 < G > implements Aa0n_om < F > { void t_ ( A q58VD ) { } } class K_z < K > { public static void e ( ) { { ; } char j ; ; } }

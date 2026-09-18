@@ -38,24 +38,21 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
         }
     }
 
-    // CreacionDesdeIdClase -> < GenericoDeCreacion | CreacionDeArreglo | ArgsActuales
+    // CreacionDesdeIdClase -> < GenericoDeCreacion | ArregloOInstanciaDeClase
     private void creacionDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_MENOR)) {
             match(TipoDeToken.OP_MENOR);
             genericoDeCreacion();
-        } else if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_CREACION_DE_ARREGLO)) {
-            creacionDeArreglo();
-        } else if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARGS_ACTUALES)) {
-            sintaxis.argumentos().argsActuales();
+        } else if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARREGLO_OINSTANCIA_DE_CLASE)) {
+            arregloOInstanciaDeClase();
         } else {
             throw errorEsperando(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_MENOR,
-                    PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_CREACION_DE_ARREGLO,
-                    PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARGS_ACTUALES);
+                    PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARREGLO_OINSTANCIA_DE_CLASE);
         }
     }
 
     // GenericoDeCreacion -> > ArgsActuales
-    // GenericoDeCreacion -> ArgumentoDeTipo > ArregloOInstanciaDeClase
+    // GenericoDeCreacion -> InstanciadoOParametrico > ArregloOInstanciaDeClase
     //
     // El diamante `<>` se admite sólo en la rama que va a ArgsActuales: `new C<>()`
     // es válido y `new C<>[3]` no. La restricción del logro la impone la gramática,
@@ -66,7 +63,7 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
             sintaxis.argumentos().argsActuales();
             return;
         }
-        sintaxis.tipos().argumentoDeTipo();
+        sintaxis.tipos().instanciadoOParametrico();
         match(TipoDeToken.OP_MAYOR);
         arregloOInstanciaDeClase();
     }
@@ -83,14 +80,30 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
         }
     }
 
-    // CreacionDeArreglo -> DimensionesConTamanio InicializadorDeArregloOpcional
-    //
-    // Toda dimensión lleva su tamaño, como en MiniJava base; el inicializador se
-    // le cuelga al final. `new int[2][2]{{1,2},{3,4}}` es válido y
-    // `new int[]{1,2,3}` no: ver el comentario de la producción en el .g.
+    // CreacionDeArreglo -> [ RestoCreacionDeArreglo
     private void creacionDeArreglo() throws ExcepcionLexica, ExcepcionSintactica {
-        dimensionesConTamanio();
-        inicializadorDeArregloOpcional();
+        match(TipoDeToken.CORCHETE_A);
+        restoCreacionDeArreglo();
+    }
+
+    // RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional
+    // RestoCreacionDeArreglo -> ] DimensionesOpcionales InicializadorDeArreglo
+    //
+    // Con tamaño es la creación de MiniJava base; sin tamaño, la de Java con
+    // inicializador, donde ninguna dimensión lleva tamaño (JLS 15.10.1).
+    private void restoCreacionDeArreglo() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_EXPRESION)) {
+            sintaxis.expresiones().expresion();
+            match(TipoDeToken.CORCHETE_C);
+            dimensionesConTamanioOpcional();
+        } else if (estaEn(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_CORCHETE_C)) {
+            match(TipoDeToken.CORCHETE_C);
+            sintaxis.tipos().dimensionesOpcionales();
+            inicializadorDeArreglo();
+        } else {
+            throw errorEsperando(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_EXPRESION,
+                    PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_CORCHETE_C);
+        }
     }
 
     // DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
@@ -114,42 +127,51 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
         }
     }
 
-    // InicializadorDeArregloOpcional -> InicializadorDeArreglo | EPSILON
-    private void inicializadorDeArregloOpcional() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeCreacion.INICIALIZADOR_DE_ARREGLO_OPCIONAL_INICIALIZADOR_DE_ARREGLO)) {
-            inicializadorDeArreglo();
-        } else {
-            // InicializadorDeArregloOpcional -> EPSILON
-        }
-    }
-
     // InicializadorDeArreglo -> { ListaElementosOpcional }
-    // ListaElementosOpcional -> ListaElementos | EPSILON
-    // ListaElementos -> ElementoInicializador RestoListaElementos
     private void inicializadorDeArreglo() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.LLAVE_A);
-        if (estaEn(PrimerosDeCreacion.LISTA_ELEMENTOS_ELEMENTO_INICIALIZADOR)) {
-            elementoInicializador();
-            restoListaElementos();
-        } else {
-            // ListaElementosOpcional -> EPSILON
-        }
+        listaElementosOpcional();
         match(TipoDeToken.LLAVE_C);
     }
 
-    // RestoListaElementos -> , ElementoInicializador RestoListaElementos | EPSILON
-    private void restoListaElementos() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!estaEn(PrimerosDeCreacion.RESTO_LISTA_ELEMENTOS_COMA)) {
-            return;
+    // ListaElementosOpcional -> ListaElementos | , | EPSILON
+    // ListaElementos -> ElementoInicializador RestoListaElementos
+    private void listaElementosOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeCreacion.LISTA_ELEMENTOS_OPCIONAL_LISTA_ELEMENTOS)) {
+            elementoInicializador();
+            restoListaElementos();
+        } else if (estaEn(PrimerosDeCreacion.LISTA_ELEMENTOS_OPCIONAL_COMA)) {
+            match(TipoDeToken.COMA);
+        } else {
+            // ListaElementosOpcional -> EPSILON
         }
-        match(TipoDeToken.COMA);
-        elementoInicializador();
-        restoListaElementos();
+    }
+
+    // RestoListaElementos -> , ElementosTrasComa | EPSILON
+    private void restoListaElementos() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeCreacion.RESTO_LISTA_ELEMENTOS_COMA)) {
+            match(TipoDeToken.COMA);
+            elementosTrasComa();
+        } else {
+            // RestoListaElementos -> EPSILON
+        }
+    }
+
+    // ElementosTrasComa -> ElementoInicializador RestoListaElementos | EPSILON
+    //
+    // La coma final es opcional, como en Java (JLS 10.6): `{1, 2,}` es válido.
+    private void elementosTrasComa() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeCreacion.ELEMENTOS_TRAS_COMA_ELEMENTO_INICIALIZADOR)) {
+            elementoInicializador();
+            restoListaElementos();
+        } else {
+            // ElementosTrasComa -> EPSILON
+        }
     }
 
     // ElementoInicializador -> Expresion | InicializadorDeArreglo
     //
-    // El inicializador es anidable: `new int[2][2]{{1,2},{3,4}}`.
+    // El inicializador es anidable: `new int[][]{{1,2},{3,4}}`.
     private void elementoInicializador() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_INICIALIZADOR_DE_ARREGLO)) {
             inicializadorDeArreglo();

@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface M6 extends P0j { } static void np ( Y xy1 ) { P_ . g ( ) . v_35 > + null ; }
+///[Error:public|2]
+class X_p implements FV < G > { } interface P9 < B > { void lg_0 ( X [ ] [ ] w ) ; } public

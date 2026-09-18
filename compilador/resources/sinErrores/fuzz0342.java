@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface RJ extends Jb < Tn > { void t ( Z6 < R > [ ] [ ] [ ] k , char [ ] r ) ; } class M53 { public void x ( ) { ONX__ gQ = false ; float [ ] m , y = true ; { B s , e ; } } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class T5 < V > extends J_ { } interface W_ { }

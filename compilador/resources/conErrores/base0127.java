@@ -1,2 +1,2 @@
-///[Error:W|2]
-W interface Nl < R > { }
+///[Error:O|2]
+class Ja implements W7 { X l_ = + G_ . u ( ) ++ ; } O class L_ < V > extends Kre < Y > { }

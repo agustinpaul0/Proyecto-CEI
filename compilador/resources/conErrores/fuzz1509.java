@@ -1,0 +1,2 @@
+///[Error:Bc2_|2]
+class Uo { H l ( WDz_ y_ ) { for ( ; this > false - ! null ; - "" + 6769 && - null = + false ) if ( this * ! false = true ) I [ ] [ ] [ ] q , yh , d ; else { } } T [ ] [ ] [ ] [ ] [ ] [ ] [ ] f ( H f_9z , char l , P0I [ ] [ ] p ) { } static void y ( A4 ro , char [ ] f ) { } } class MY extends W2_n_ { } interface Wr { public float d ( ) ; public CNy < X > [ ] c_ ( ) ; } interface Sw8 { public ZFPz7_i < YK < X > > wp4I ( ) ; } Bc2_

@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface IzP { } interface C9_ < I > extends GM < U > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface P_ { char [ ] t ( Wq r6 ) ; }

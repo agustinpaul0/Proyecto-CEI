@@ -1,2 +1,2 @@
-///[Error:)|2]
-class ZIi < M > { public Jt ( boolean [ ] [ ] [ ] mM8 , TC < T9R > [ ] [ ] [ ] i8Ri ) { return false ; while ( + null ) if ( ! 'S' >= - null = null ) ; else ; if ( "" = 5273 ) ; if ( 'i' = ) return ; return ; var p = false ; ; return ; ; ; return ; ; } }
+///[Error:static|2]
+interface AG < E > { P_ [ ] bZD ( ) ; } class Ds { } interface ZvV extends H10J_0 < P > { } class H2 extends U_ { Y j_1X ( ) { } public static boolean [ ] [ ] [ ] [ ] d ( float [ ] z_ , int a4z7 ) { } static void t ( O [ ] [ ] d ) { } void rW ( ) { } private O [ ] [ ] d ; void mB ( ) static S u2j ( ) { } boolean [ ] yb9 ( ) { ; } public Y6_X7 ( ) { } public static void o ( ) { } P__3M1 tY ; }

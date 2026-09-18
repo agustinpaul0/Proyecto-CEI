@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class PBN { } interface M_ < B > { } class Vl < T > implements AZf { } interface D3 { } interface O_ { }
+class SH implements S91 < GLwCK > { public static void q ( int [ ] g ) { } boolean x = null / 681 ; }

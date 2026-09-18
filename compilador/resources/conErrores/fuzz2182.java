@@ -1,0 +1,2 @@
+///[Error:HG|2]
+class Z34 < I > extends Heb < Mz > { } interface C_j < C > extends G__a < XOq > { } interface Yt < S > extends O5 < DIPT > { } class Oj { } HG class PtT0 < Z > { private K [ ] [ ] [ ] [ ] v04 ; private static void b ( ) { } static Y__F < T > [ ] [ ] [ ] jAb ( ) { } static M [ ] [ ] f ( ) { I_ [ ] [ ] ft ; for ( ; ; ) ; } void r9 ( ) { } static void y ( ) { } boolean a_ ; Va ( ) { } static public void j_i ( ) { } }

@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface Fb { void w39 ( ) ; boolean m ( ) ; public void e ( int b3 , boolean e , K9 [ ] m ) ; char [ ] tZ ( Wm_ < Lh > [ ] [ ] [ ] [ ] s_m , int [ ] t_ , int mqd5 , X6Gf9 < UfZa > [ ] [ ] th2 ) ; public void o ( C__K < E_ > [ ] v , H_ < Y_ > yN9T0W ) ; } class R_5_sY implements JU2_ { } class TH implements W_R_6X { int m ( ) { } }

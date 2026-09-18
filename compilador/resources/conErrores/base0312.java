@@ -1,2 +1,2 @@
-///[Error:WZ|2]
-WZ interface X_ < S > extends S_ { void lh_ ( ) ; }
+///[Error:W__|2]
+interface A9Z extends FD < W > { } W__

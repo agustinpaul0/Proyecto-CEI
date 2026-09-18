@@ -1,0 +1,2 @@
+///[Error:static|2]
+static char z07 ( O__ [ ] [ ] [ ] i35 ) { return ; ; } class G__6 implements HT { static void l_ ( ) { { var l = - 'm' % + true ; } while ( ! 54F != this ++ ) for ( G o ; ; ) I t ; } Z o ; } interface Ccq4_ < K > { public void gh ( ) ; } interface G0 extends T6O { public WuS a ( int [ ] [ ] [ ] [ ] t_2 ) ; Wa z ( G [ ] [ ] [ ] j , OiE < ZO > [ ] gE , float zY ) ; char [ ] t84_ ( S b , BitDQ5 [ ] [ ] yv77_ ) ; } interface G9W extends X__U { }

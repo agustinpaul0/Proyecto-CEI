@@ -1,2 +1,2 @@
-///[Error:if|2]
-class C_ implements Y_ { public K7 ( F o ) { } public LpL ( ) if ( + T1 . i ( ) / + true ) ! false + ! true = + false ; else ; public K_ ( ) { var mxk = ! '\n' ; return ! null ; } } class Z_ implements FC { static F s2 ( ) { } }
+///[Error:public|2]
+class J__HI23 < C > implements Lap < A0E7_ > { } class E_ implements Cf < Q > { } interface X1 < D > extends Q_d { } public W j ( N [ ] p1_ ) ; void m_p4 ( ) ; char [ ] wz ( ) ; interface Dm { public H [ ] [ ] [ ] c ( S nt_ , char u_s ) ; } interface A7 { } class R4 implements Z6 { }

@@ -1,0 +1,2 @@
+///[Error:float|2]
+class C_K { static void r ( TG0z_ < QZ_X < K > > q9_Q , float to_ , int [ ] y ) { { if ( this -- = false ) while ( - null ) for ( B [ ] [ ] p ; ; ) int [ ] [ ] m ; else Q q ; { } } for ( this ++ || true <= - null ; ! 'e' - null ; ) return ; } } interface J4_l < Z > extends M_1 { } interface FvV7 extends Sy < P > { void v ( L [ ] jfG3r ) ; public E_ r ( O p07 , H [ ] g0 ) ; } class HSi extends Eh { } float interface X_1c____ < S > { }

@@ -1,2 +1,2 @@
-///[Error:05407|2]
-interface P8_ { } class Hc < Z > extends A0 { 05407 }
+///[Error:,|2]
+interface Zd_ < Y > { public char [ ] s ( K [ ] , F q7 ) ; }

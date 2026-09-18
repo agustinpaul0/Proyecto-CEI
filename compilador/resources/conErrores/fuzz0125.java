@@ -1,2 +1,2 @@
-///[Error:GM|2]
-interface IzP { } GM < U >
+///[Error:}|2]
+class O9 { } class IL implements An3e_ { public static S b }

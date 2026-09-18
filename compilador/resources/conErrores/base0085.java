@@ -1,2 +1,2 @@
-///[Error:var|2]
-var p = + "" > + false < false ;
+///[Error:V0|2]
+V0

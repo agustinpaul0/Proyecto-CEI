@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
@@ -25,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Los cuatro tokens que NO figuran en «Aspectos Léxicos de MiniJava» y que el
+// Los tres tokens que NO figuran en «Aspectos Léxicos de MiniJava» y que el
 // compilador reconoce porque los necesitan los logros de la Etapa 2: `for`,
-// `private`, `?` y `->`.
+// `private` y `?`.
 @Tag("lexico")
 class TokensDeLaEtapaDosTest {
 
@@ -106,62 +105,15 @@ class TokensDeLaEtapaDosTest {
                 tokens.stream().map(Token::tipo).toList());
     }
 
-    // ----------------------------------------------------------------- -> ---
-
-    @Test
-    void laFlechaEsUnSoloToken(@TempDir Path dir) throws Exception {
-        Token token = tokenizar(dir, "->")
-                .getFirst();
-
-        assertEquals(TipoDeToken.OP_FLECHA, token.tipo());
-        assertEquals("->", token.lexema());
-    }
-
-    // Maximal munch: `-` compite con `--` y con `->`, y gana el más largo que
-    // exista. `-->` es `--` seguido de `>`, no `-` y `->`.
-    @ParameterizedTest
-    @CsvSource(delimiter = '|', value = {
-            "-    | op-",
-            "--   | op_decremento",
-            "->   | op_flecha",
-            "-=   | op-",
-            "---  | op_decremento",
-    })
-    void elMenosSigueEligiendoElLexemaMasLargoQueExiste(String fuente, String nombreEsperado)
-            throws Exception {
-        Path dir = Files.createTempDirectory("mj");
-        Token token = tokenizar(dir, fuente).getFirst();
-
-        assertEquals(nombreEsperado, token.tipo().getNombre());
-    }
-
-    @Test
-    void laFlechaPegadaAOtrosTokensSeSeparaBien(@TempDir Path dir) throws Exception {
-        List<Token> tokens = tokenizar(dir, "(x)->x+1");
-
-        assertEquals(List.of(TipoDeToken.PAREN_A, TipoDeToken.ID_MV, TipoDeToken.PAREN_C,
-                        TipoDeToken.OP_FLECHA, TipoDeToken.ID_MV, TipoDeToken.OP_SUMA,
-                        TipoDeToken.INT_LITERAL, TipoDeToken.EOF),
-                tokens.stream().map(Token::tipo).toList());
-    }
-
-    // El '>' de la flecha no puede robarle el sufijo a `>=`: son estados distintos.
-    @Test
-    void elSufijoDeLaFlechaNoAfectaAlOperadorMayorIgual(@TempDir Path dir) throws Exception {
-        List<Token> tokens = tokenizar(dir, "a >= b");
-
-        assertEquals(TipoDeToken.OP_MAYOR_IGUAL, tokens.get(1).tipo());
-    }
-
     // ------------------------------------------------------- combinaciones ---
 
-    // Los cuatro conviven sin pisarse en un mismo fuente.
+    // Los tres conviven sin pisarse en un mismo fuente.
     @Test
-    void losCuatroTokensNuevosConvivenEnUnMismoFuente(@TempDir Path dir) throws Exception {
-        List<Token> tokens = tokenizar(dir, "private for ? ->");
+    void losTresTokensNuevosConvivenEnUnMismoFuente(@TempDir Path dir) throws Exception {
+        List<Token> tokens = tokenizar(dir, "private for ?");
 
         assertEquals(List.of(TipoDeToken.PR_PRIVATE, TipoDeToken.PR_FOR,
-                        TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.OP_FLECHA, TipoDeToken.EOF),
+                        TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.EOF),
                 tokens.stream().map(Token::tipo).toList());
     }
 

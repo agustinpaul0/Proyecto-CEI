@@ -1,2 +1,2 @@
-///[Error:C_|2]
-C_
+///[Error:{|2]
+class D6 implements { }

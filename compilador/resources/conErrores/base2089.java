@@ -1,0 +1,2 @@
+///[Error:;|2]
+interface YgFQ_bk5_ < Q > { } interface Nn_2 < L > extends WU { public void un_P ( ) ; } interface R1 { int d ( ) ; } class NJUGq_g implements U3 < B > { void n ( ) { I h , n4 , a_ , h__ ; Z [ ] [ ] cc ; for ( + false ; ; ) return ; } F ; K dS0_ ; } class S_9D { }

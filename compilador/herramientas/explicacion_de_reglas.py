@@ -33,11 +33,10 @@ SECCIONES = [
      "El cuerpo de un método. La factorización del `idClase` es la única parte complicada: "
      "una declaración local y una sentencia-expresión pueden empezar igual."),
     ("Expresiones", "Expresion",
-     "La jerarquía de precedencias, de arriba hacia abajo: asignación, lambda, ternario, "
-     "operadores binarios, unarios, operando. Cada capa admite menos que la de arriba."),
+     "La jerarquía de precedencias, de arriba hacia abajo: asignación, ternario, operadores "
+     "binarios, unarios, operando. Cada capa admite menos que la de arriba."),
     ("Referencias y primarios", "Referencia",
-     "El encadenamiento (`a.b.c()[0]`) y los operandos atómicos. Acá viven también las "
-     "producciones que desambiguan el paréntesis de una lambda."),
+     "El encadenamiento (`a.b.c()[0]`) y los operandos atómicos."),
     ("Creación", "Creacion",
      "Todo lo que sigue a un `new`: instancia, arreglo, genérico y el inicializador."),
     ("Argumentos actuales", "ArgsActuales",
@@ -122,18 +121,17 @@ EXPLICACION = {
                      "Etapa 1 siga sirviendo en ésta.",
     "TipoGenericoOpcional": "El `<T>` de un tipo. En posición de TIPO no se admite el diamante: "
                             "`List<> x;` es inválido, y eso lo impone la gramática porque esta "
-                            "producción exige un `<ArgumentoDeTipo>` entre los ángulos.",
-    "ArgumentoDeTipo": "Lo que va adentro de los ángulos. La recursión por "
-                       "`<TipoGenericoOpcional>` es lo que habilita el anidamiento "
-                       "`List<List<Persona>>` del logro de genericidad avanzada.",
+                            "producción exige un `<InstanciadoOParametrico>` entre los ángulos.",
+    "InstanciadoOParametrico": "Lo que va adentro de los ángulos. La recursión por "
+                               "`<TipoGenericoOpcional>` es lo que habilita el anidamiento "
+                               "`List<List<Persona>>` del logro de genericidad avanzada.",
     "ArgsFormales": "La lista de parámetros de un método o constructor, entre paréntesis.",
     "ListaArgsFormalesOpcional": "INSERTADO. La lista puede estar vacía: `m()`.",
     "ListaArgsFormales": "Al menos un parámetro. La recursión a izquierda de la regla original "
                          "se eliminó pasándola a derecha.",
     "RestoListaArgsFormales": "INSERTADO por la eliminación de recursión a izquierda. Cero o más "
                               "`, parámetro`.",
-    "ArgFormal": "Un parámetro: tipo y nombre. Siempre lleva tipo — a diferencia del parámetro "
-                 "de una lambda, que nunca lo lleva.",
+    "ArgFormal": "Un parámetro: tipo y nombre.",
 
     # --- Sentencias ---
     "Bloque": "Sentencias entre llaves.",
@@ -177,22 +175,22 @@ EXPLICACION = {
                            "incremento, las dos opcionales. `for(;;)` es válido.",
 
     # --- Expresiones ---
-    "Expresion": "El nivel MÁS ALTO de la jerarquía: admite una lambda y admite un `=`. Es el "
-                 "equivalente de `Expression` en el JLS.",
-    "RestoExpresion": "INSERTADO. El `= expresión` opcional. Que el lado derecho sea una "
-                      "`<ExpresionCondicionalOLambda>` y no una `<Expresion>` es lo que impide "
-                      "`a = b = c`, tal cual la gramática original.",
+    "Expresion": "El nivel MÁS ALTO de la jerarquía: una `<ExpresionCompuesta>` seguida de un "
+                 "`=` o de un ternario. Que el lado izquierdo del `=` sea una "
+                 "`<ExpresionCompuesta>` es la regla original: `a ? b : c = d` no deriva.",
+    "RestoExpresion": "INSERTADO por la factorización. Lo que sigue al primer operando: un "
+                      "`= expresión` o un ternario, los dos opcionales. Que el lado derecho del "
+                      "`=` sea una `<ExpresionCondicional>` y no una `<Expresion>` es lo que "
+                      "impide `a = b = c`, tal cual la gramática original.",
     "OperadorAsignacion": "Sólo `=`. MiniJava no tiene `+=` ni los demás compuestos.",
-    "ExpresionCondicionalOLambda": "El nivel `LambdaExpression | ConditionalExpression` del JLS: "
-                                   "admite lambda y NO admite `=`. Es el operando del `=` y el "
-                                   "tercero del ternario.",
-    "ExpresionDesdePrimarioOLambda": "INSERTADO. Las seis cabezas de una expresión que puede ser "
-                                     "una lambda. Las dos que dan trabajo son `idMetVar` y `(`, "
-                                     "que abren tanto una lambda como una expresión normal.",
+    "ExpresionCondicional": "INSERTADO. La capa del ternario: es el lado derecho de los seis "
+                            "`=` y el tercer operando del ternario. Admite el ternario y NO "
+                            "admite `=`.",
     "RestoCondicional": "INSERTADO. El `? a : b` opcional. Asociativo a DERECHA, como en Java, "
-                        "porque la rama del `:` vuelve a este mismo nivel. El operando del medio "
-                        "es una `<Expresion>` completa y el de la derecha no, que es exactamente "
-                        "lo que acepta y rechaza javac.",
+                        "porque la rama del `:` es otra `<ExpresionCondicional>`. El operando del "
+                        "medio es una `<Expresion>` completa y el de la derecha no, que es "
+                        "exactamente lo que acepta y rechaza javac.",
+    "ExpresionCompuesta": "La capa de los operadores binarios.",
     "RestoExpresionCompuesta": "INSERTADO por la eliminación de recursión a izquierda. Cero o "
                                "más `operador operando`.",
     "OperadorBinario": "Los trece binarios en UN SOLO nivel: MiniJava no define precedencia "
@@ -207,19 +205,11 @@ EXPLICACION = {
                        "a propósito: `5++` no tiene sentido y la gramática lo rechaza sola.",
     "Primitivo": "Los literales. `floatLiteral` es el agregado del logro de floats.",
     "ExpresionSinIdClase": "INSERTADO. Una expresión que NO puede empezar con `idClase`, porque "
-                           "ese token ya lo consumió `<Sentencia>` al factorizar. Sus dos últimas "
-                           "producciones son las cabezas ambiguas `idMetVar` y `(` en su versión "
-                           "que admite lambda: de ahí que `p -> x;` sea una sentencia válida. El "
-                           "`<RestoExpresion>` de atrás es lo único que las distingue de las de "
-                           "`<Expresion>`, porque acá la expresión sí lleva el `=`.",
-    "ColaTrasOperando": "INSERTADO. La cola completa después de un operando, con asignación.",
-    "ColaTrasOperandoSinAsignacion": "INSERTADO. La misma cola pero sin el `=`, para los "
-                                     "contextos donde una asignación no es válida.",
+                           "ese token lo consume `<Sentencia>` al factorizar.",
+    "ColaTrasOperando": "INSERTADO. La cola completa después de un operando: los operadores "
+                        "binarios que siguen y el `=` o el ternario.",
     "ColaDeExpresionDesdePrimario": "INSERTADO. Lo que puede seguir a un primario: "
                                     "encadenamiento, posfijo y el resto de la expresión.",
-    "ColaDesdePrimarioSinAsignacion": "INSERTADO. Ídem sin asignación. Los pares "
-                                      "con/sin asignación existen porque el lado derecho de un "
-                                      "`=` y el cuerpo de una lambda no admiten otro `=`.",
 
     # --- Referencias y primarios ---
     "Referencia": "Un primario con su cadena de encadenamientos y accesos a arreglo.",
@@ -229,44 +219,15 @@ EXPLICACION = {
     "EncadenadoAtributoOMetodo": "INSERTADO. El `(` decide: con argumentos es una llamada, sin "
                                  "ellos un acceso a atributo.",
     "AccesoArreglo": "Un `[expresión]`. Que el receptor sea realmente un arreglo es semántico.",
-    "Primario": "Un operando atómico. Una lambda SIN paréntesis nunca es un primario —ésa es la "
-                "corrección de precedencia del logro—, pero entre paréntesis sí, porque "
-                "`<Parentizada>` contiene una `<Expresion>` completa.",
+    "Primario": "Un operando atómico.",
     "LlamadaMetodoEstatico": "`Clase.metodo(args)`.",
     "PrimarioSinIdClase": "INSERTADO. Los primarios que no empiezan con `idClase`.",
-    "PrimarioSinIdClaseNiLambda": "INSERTADO. Los tres primarios que, además, no pueden empezar "
-                                  "una lambda. Existen aparte porque `<ExpresionSinIdClase>` "
-                                  "necesita justo eso: las otras dos cabezas las toma en su "
-                                  "variante que sí la admite.",
-    "Parentizada": "Un paréntesis común, con una `<Expresion>` completa adentro —lambda "
-                   "incluida—, tal cual la regla original. Como un `<Primario>` arrastra cadena, "
-                   "de acá sale que `(x -> y).m()` sea válido. Java lo rechaza; se respetó el "
-                   "molde de la gramática base.",
-    "AccesoVarOLlamada": "Un `idMetVar` que puede ser una variable o una llamada.",
-    "AccesoLlamada": "INSERTADO. El `(args)` opcional que distingue los dos usos.",
-    "AccesoLlamadaOLambda": "INSERTADO. La versión que además admite `->`: acá se decide si el "
-                            "`idMetVar` que se acaba de leer era el único parámetro de una "
-                            "lambda o el arranque de una expresión normal. Un token de "
-                            "anticipación.",
-    "ParentizadaOLambda": "INSERTADO. El `(` que puede abrir una expresión parentizada o la "
-                          "lista de parámetros de una lambda.",
-    "ContenidoDeParentesis": "INSERTADO. Dos alternativas: un `)` inmediato sólo puede ser una "
-                             "lambda de cero parámetros; cualquier otra cosa se lee como "
-                             "expresión y se decide después.",
-    "RestoDeParentesis": "INSERTADO. Una `,` sólo puede ser una lambda, porque MiniJava no tiene "
-                         "operador coma. Es el segundo de los cuatro puntos donde parecía hacer "
-                         "falta anticipación ilimitada y alcanza con un token.",
-    "FinDeParentizadaOLambda": "INSERTADO. Cerrado el paréntesis, un `->` lo vuelve una lambda y "
-                               "cualquier otra cosa lo deja como expresión parentizada. Es el "
-                               "cuarto punto de decisión, y el que hace que no haga falta "
-                               "escanear hasta el `)`.",
-    "ListaParametrosLambda": "Los parámetros de una lambda, sin tipo. Del segundo en adelante la "
-                             "gramática exige `idMetVar`; que el PRIMERO también lo sea lo "
-                             "verifica el analizador, porque hasta ver el `->` es una expresión.",
-    "RestoListaParametrosLambda": "INSERTADO. Cero o más `, parámetro`.",
-    "CuerpoLambda": "Una única expresión, sin llaves. Como no hay alternativa con `{`, la "
-                    "gramática rechaza `x -> { return x; }` sin ningún chequeo adicional. Es "
-                    "voraz: `x -> a + b` es `x -> (a + b)`.",
+    "ExpresionParentizada": "Un paréntesis, con una `<Expresion>` completa adentro, tal cual la "
+                            "regla original.",
+    "AccesoVarOLlamadaMetodo": "INSERTADO por la factorización de `<AccesoVar>` y "
+                               "`<LlamadaMetodo>`: un `idMetVar` que puede ser una variable o "
+                               "una llamada.",
+    "AccesoOLlamada": "INSERTADO. El `(args)` opcional que distingue los dos usos.",
 
     # --- Creación ---
     "Creacion": "Todo lo que empieza con `new`.",
@@ -280,26 +241,30 @@ EXPLICACION = {
                           "restricción del logro queda impuesta por la gramática, no delegada al "
                           "semántico.",
     "ArregloOInstanciaDeClase": "INSERTADO. Cerrado el genérico, arreglo o instancia.",
-    "CreacionDeArreglo": "La creación de un arreglo: sus dimensiones y un inicializador "
-                         "opcional. Acá está la divergencia deliberada con Java, y es de una "
-                         "sola producción.",
+    "CreacionDeArreglo": "La creación de un arreglo. El `[` es común a sus dos formas y se "
+                         "factoriza.",
+    "RestoCreacionDeArreglo": "INSERTADO. Lo que sigue al primer `[`: una expresión es la forma "
+                              "de MiniJava base, con toda dimensión con su tamaño; un `]` es la "
+                              "forma de Java con inicializador, donde ninguna dimensión lleva "
+                              "tamaño. `new int[][]{{1,2},{3,4}}` es válido y "
+                              "`new int[2][2]{{1,2},{3,4}}` no, como en Java.",
     "DimensionesConTamanio": "Al menos una dimensión, y TODAS con su tamaño — es la forma de "
-                             "MiniJava base, que no tiene corchete vacío en una creación. "
-                             "`new int[2][2]{{1,2},{3,4}}` es válido y `new int[]{1,2,3}` no, al "
-                             "revés que en Java. Se eligió no ampliar una construcción que la "
-                             "especificación ya definía.",
+                             "MiniJava base, que no tiene corchete vacío en una creación sin "
+                             "inicializador: `new int[2][]` no es válido.",
     "DimensionesConTamanioOpcional": "INSERTADO por la factorización. Las dimensiones que "
                                      "siguen. Es la ambigüedad heredada de `new int[3][4]`: el "
                                      "`[` se consume como otra dimensión de la creación y no "
                                      "como un acceso al arreglo recién creado, que es lo que "
                                      "hace Java.",
-    "InicializadorDeArregloOpcional": "INSERTADO. El `{...}` opcional que el logro agrega.",
     "InicializadorDeArreglo": "Las llaves con los elementos. Sólo es alcanzable desde "
                               "`<Creacion>`, y eso es lo que impone la restricción del logro de "
                               "que valga únicamente bajo `new`.",
-    "ListaElementosOpcional": "INSERTADO. El inicializador puede estar vacío: `new int[0]{}`.",
+    "ListaElementosOpcional": "INSERTADO. El inicializador puede estar vacío (`new int[]{}`) o "
+                              "tener sólo la coma final (`new int[]{,}`), como en Java.",
     "ListaElementos": "Al menos un elemento.",
     "RestoListaElementos": "INSERTADO. Cero o más `, elemento`.",
+    "ElementosTrasComa": "INSERTADO. Después de una coma puede venir otro elemento o nada: la "
+                         "coma final es opcional, como en Java (JLS 10.6).",
     "ElementoInicializador": "Un elemento es una expresión o, a su vez, otro inicializador: por "
                              "eso el inicializador es anidable. Las dos alternativas son "
                              "disjuntas porque una expresión nunca empieza con `{`.",
@@ -307,8 +272,7 @@ EXPLICACION = {
     # --- Argumentos actuales ---
     "ArgsActuales": "Los argumentos de una llamada, entre paréntesis.",
     "ListaExpsOpcional": "INSERTADO. La lista puede estar vacía: `m()`.",
-    "ListaExps": "Al menos un argumento. Cada uno es una `<Expresion>` completa, así que una "
-                 "lambda es un argumento válido: `f(x -> x)`.",
+    "ListaExps": "Al menos un argumento. Cada uno es una `<Expresion>` completa.",
     "RestoListaExps": "INSERTADO por la eliminación de recursión a izquierda. Cero o más "
                       "`, expresión`.",
 }
@@ -389,9 +353,8 @@ CARATULA = r"""
 \end{center}
 
 \noindent
-Documento de estudio, no de entrega. Recorre la gramática LL(1) final ---núcleo corregido más
-todos los logros de la Etapa 1 y la Etapa 2--- no terminal por no terminal, en el mismo orden en
-que está escrita.
+Documento de estudio, no de entrega. Recorre la gramática LL(1) final no terminal por no
+terminal, en el mismo orden en que está escrita.
 
 \medskip\noindent
 Las producciones \textbf{se generan} desde \texttt{compilador/gramatica/minijava-ll1-final.g}, así

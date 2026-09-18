@@ -1,2 +1,2 @@
-///[Error:-|2]
-class NL extends J0 < G > { public M47 ( int [ ] [ ] [ ] ii , boolean [ ] wu0MUr3 ) - public PA ( P [ ] kS , char [ ] [ ] [ ] [ ] [ ] mq6_ ) { { if ( ! true ) { } var y = true ; } } } interface JJ_ extends QDQ { void c ( ) ; void h ( H_ a_w_ ) ; } class Zp < D > implements H_m { } interface Yb { void b9Yv_ ( ) ; } class W__St < O > implements Ly { static void e ( A [ ] qcFct , K_T [ ] [ ] lz ) { ; return ; } static char c ( boolean [ ] q ) { } }
+///[Error:a|2]
+interface F65XI extends Y9hX { void w ( ) ; W q_H ( ) ; void i ( W [ ] [ ] u_w , float [ ] y , X [ ] [ ] [ ] [ ] [ ] [ ] [ ] l4 ) ; } interface QG { void wO ( I t , Z [ ] apO0 ) ; } interface L0 extends S_T { public a ( ) ; }

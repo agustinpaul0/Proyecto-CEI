@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Z594c7v_2 { Y [ ] [ ] z7j_ ( ) ; } class R__8e_r implements BG < T > { } class EEq extends X5 < V > { public O_ ( boolean [ ] s1__H , J k , QO < L > g ) { } }
+class DB < D > implements F_z6_8_7 { EMTM9B o ( Kz < U_UX > [ ] x_ ) { ; if ( '\f' * 7d ) I [ ] [ ] [ ] [ ] [ ] v_X22 ; else B0350_ [ ] v ; while ( false <= false ) return ; } }

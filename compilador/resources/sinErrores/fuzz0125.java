@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface L_ extends Fb { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface CMZ < R > { }

@@ -1,2 +1,2 @@
-///[Error:c|2]
-class L_a < Z > extends SV < HR > { public G6 ( ) { var i = - null ; } } class VO implements NT { } interface CC extends K_ { } class A_ < X > { } interface Sr < W > { } class Ioi < Y > extends Gl { } class W5 < X > extends N0 { public J1 ( c ) { ; return ; } public H_Js ( ) { ; } } interface Ra extends Hi < Atj_ > { } class Pu_ extends Fy < LC5 > { }
+///[Error:int|2]
+class JU < X > implements PF < U > { void int [ ] r7AX ( ) { P0 . k__ ( ) . s -- == "" ++ = null ; } } class Av6 < N > extends Qk_d < U > { private J v ( ) { } } class O2_ extends N_ < XK > { } class G_ extends ZI < V > { }

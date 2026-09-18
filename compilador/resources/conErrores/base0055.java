@@ -1,2 +1,2 @@
 ///[Error:int|2]
-class S_ < A > implements Hx_ { } interface IO_ { } interface PxS < F > extends N2 { char e ( char [ ] [ ] [ ] [ ] [ ] [ ] [ ] ey3 , char [ ] u ) ; G73 wN ( ) ; void i int [ ] ; void y ( U aK , I [ ] yusJ ) ; } interface U9 < Y > extends MIMII_B_m { boolean w ( ) ; Zf s ( T [ ] [ ] [ ] [ ] g1J4_d_14 , EA < Cc > [ ] [ ] gr ) ; boolean [ ] o_l ( ) ; } class PT < U > extends H5_4 < V6 > { } interface Uh2vT_ < J > extends V_ { }
+interface C_ extends Nle { public void l_ ( B t ) ; Q djU__w5 ( F [ ] [ ] l , ES [ ] qf ) ; } class INb6_2s { static void h ( XY7Vi [ ] dU8 ) { } V x ; BEv_F___k_ int c ; } class TG4 extends V_ < Idl < N_S__r < TZ > > > { } class YYb_uNI < W > implements Yz { }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface V0 extends P3 < W8e > { void l ; }
+///[Error:R_|2]
+interface G_ extends X_W_ { I__4_ < R_ > [ ] u ( ) ; } R_

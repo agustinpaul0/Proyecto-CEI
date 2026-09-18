@@ -1,2 +1,2 @@
-///[Error:N|2]
-interface Whr { } N
+///[Error:RHP|2]
+RHP class Q_k { }

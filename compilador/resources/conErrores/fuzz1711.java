@@ -1,0 +1,2 @@
+///[Error:void|2]
+class F6 < A > extends Zu_jx < QHI_ < BLt_i9 < Vt < AJI4 > > > > { } void g ( XXmq__V_ < V > [ ] [ ] e ) ; class Y56 < Q > { LD < U > [ ] [ ] k_ ( Go g3 , boolean [ ] [ ] n ) { var v_h97 = '\r' ; for ( L [ ] o ; ; ) for ( ; ; ) { } this . w0_dna ; IG7Y0 . k ( ) -- ; for ( ; ; ) ; { } } static public void hX ( float r91_ , X [ ] [ ] [ ] [ ] h_ ) { ; } Y [ ] [ ] [ ] f ( B_ [ ] [ ] [ ] [ ] p66e ) { } } class X0s < Z > implements S_ < H4 > { static private void b ( ) { return '\n' ; } }

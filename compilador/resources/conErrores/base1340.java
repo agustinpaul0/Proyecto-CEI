@@ -1,0 +1,2 @@
+///[Error:>|2]
+class I_2__ < A > implements MD < Y_U < I0u5v > > { } class IA0 { static public float [ ] [ ] yW ( ) { } } class IP < > extends B7R1G_Z < I > { private float e_w ( ) { T g_m3Yq , x , a8E_l ; } } class ZcV__n implements SL < Xi < H7 > > { public static void t ( boolean [ ] [ ] f ) { } void uX ( ) { } } interface Gx_ { } class D__Y implements UG { } interface B_ < A > extends I_ { void r ( X [ ] k ) ; }

@@ -1,2 +1,2 @@
 ///[Error:}|2]
-interface B_K6 < P > extends S_V__ { Sn } interface Fk { }
+interface Fn { S i ( ) ; public void b ( U ap , Ye pn_26 ) ; void u ( ) ; A }

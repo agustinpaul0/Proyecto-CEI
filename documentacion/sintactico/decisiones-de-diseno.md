@@ -46,13 +46,13 @@ Al factorizar un prefijo hay dos caminos:
 
 Dos disyuntivas con la misma pinta pero distinto significado **no** se comparten.
 
-`<EncadenadoAtributoOMetodo>` y `<AccesoLlamada>` terminan los dos en «`<ArgsActuales>` o nada».
+`<EncadenadoAtributoOMetodo>` y `<AccesoOLlamada>` terminan los dos en «`<ArgsActuales>` o nada».
 Podría ser el mismo no terminal. No lo es, porque su `ε` significa cosas distintas:
 
 | Desde | `ε` significa | Nodo del AST |
 |---|---|---|
 | `<EncadenadoAtributoOMetodo>` | era un acceso encadenado | atributo de **otro** objeto |
-| `<AccesoLlamada>` | era un acceso a variable | variable local, parámetro o atributo propio |
+| `<AccesoOLlamada>` | era un acceso a variable | variable local, parámetro o atributo propio |
 
 Son dos resoluciones de nombre distintas. Compartir el no terminal obligaría a que un único método
 del analizador se preguntara quién lo llamó para saber qué construir.
@@ -86,18 +86,18 @@ aparte.
 
 ## 5. Dónde vive cada logro
 
-**Los logros no son configurables.** La gramática es una sola y describe MiniJava con todos los de
-la Etapa 1 y la Etapa 2 incorporados: no hay producciones que aparezcan y desaparezcan según nada.
-Lo dictaminó el profesor, y revirtió la decisión anterior —que cada logro fuera un interruptor
-independiente, con la gramática llevando las dos formas marcadas `@+logro`/`@-logro`—. El motivo:
-complejiza la gramática sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo con más
-chance de error.
+**Los logros no son configurables.** La gramática es una sola: no hay producciones que aparezcan y
+desaparezcan según nada. Lo dictaminó el profesor, y revirtió la decisión anterior —que cada logro
+fuera un interruptor independiente, con la gramática llevando las dos formas marcadas
+`@+logro`/`@-logro`—. El motivo: complejiza la gramática sin necesidad, y cada etapa nueva obligaría
+a rehacer el trabajo con más chance de error.
 
 Lo que sí sobrevive de aquella decisión es **dónde** aterriza cada logro, porque es lo que hace la
 gramática legible: cada uno agrega una capa o unas alternativas identificables, y no reescribe las
 reglas de al lado. El ternario es `<RestoCondicional>` y la capa `<ExpresionCondicional>`; los
-posfijos, `<PosfijoOpcional>`; las lambdas, el bloque de `<ParentizadaOLambda>`. Dos logros que
-necesitan una construcción parecida llevan cada uno la suya.
+posfijos, `<PosfijoOpcional>`; la inicialización de arreglos, `<RestoCreacionDeArreglo>` y el bloque
+de `<InicializadorDeArreglo>`. Dos logros que necesitan una construcción parecida llevan cada uno la
+suya.
 
 El núcleo sin logros existe todavía, pero **fuera del compilador**: es
 `compilador/gramatica/minijava-ll1.g`, y está sólo para que `equivalencia_de_lenguajes.py`
@@ -151,29 +151,14 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   punto de decisión que el semántico de la Etapa 3 necesita. Un NT de decisión por contexto,
   aunque dos contextos tengan la misma forma.
 - Un solo `Main` con selector de etapa, no dos jars.
-- Los cuatro tokens léxicos nuevos de la Etapa 2 —`for`, `private`, `?` y `->`— existen siempre.
+- Los tres tokens léxicos nuevos de la Etapa 2 —`for`, `private` y `?`— existen siempre.
 - La ambigüedad `<Asignacion>`/`<Llamada>` se colapsa en una sentencia-expresión; distinguirlas es
   trabajo del semántico. El *dangling else* se resuelve por regla de implementación: la rama
   `else` va primero, y liga al `if` más cercano.
 - Los métodos de interfaz admiten `public` y no `private`, y **son siempre abstractos**: ningún
   logro de esta etapa les agrega cuerpo.
-- El `this` dentro de una lambda —explícito e implícito—, la captura de variables locales y de
-  parámetros, y que los parámetros de una lambda no se repitan **quedan para el analizador
-  semántico**. Lo indicó el profesor: son controles de significado, ahí se resuelven más fácil, y
-  el logro de esta etapa no los pide. El sintáctico los acepta todos. Se borró con ellos el módulo
-  `RestriccionesDeLambda`, que era la lógica más compleja del analizador: la pila de capturas en
-  duda existía sólo para diferir ese chequeo.
-- De las restricciones de lambda **sobrevive una**, porque es de forma y no de significado: que el
-  primer parámetro sea un identificador sin tipo (`(a+1) -> a` se rechaza). No es expresable en una
-  gramática libre de contexto y se decide con lo que el analizador acaba de leer.
-- **Una lambda entre paréntesis SÍ es un operando**: `(x -> y).m()` y `(x -> y) + 1` se aceptan,
-  aunque Java los rechace. Sale de la gramática base, que define `ExpresionParentizada -> ( Expresion )`
-  y `Primario -> ExpresionParentizada`. Sin paréntesis sigue sin serlo: `1 + x -> x` no deriva.
-- Las tres ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
+- Las dos ambigüedades de la gramática se resuelven **voraz**, por regla de implementación, y
   están declaradas en el verificador. Ninguna se resuelve reescribiendo la gramática.
-- **La lambda se produce en el nivel de `<Expresion>`, nunca en `<Primario>`**, como el JLS. No es
-  un operando: `1 + x -> x`, `- x -> x`, `(x -> x) + 1` y `(x -> x).m()` se rechazan, igual que en
-  Java. No se vuelve a discutir.
 - **Ningún método de no terminal omite el `else` final de su cadena de Primeros.** Si el no terminal
   no es anulable, ese `else` es el error (Clase 5, slide 39); si alguna parte derecha deriva a ε, es
   un `else` vacío con la producción citada al lado —el «no hago nada :)» de la slide 52—, que es
@@ -182,12 +167,14 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   `static private`. Que la visibilidad aparezca a un solo lado del `static` es lo que impide repetir
   el modificador, sin ningún chequeo fuera de la gramática. `protected` no se implementa: no está en
   MiniJava y el profesor indicó no agregarlo.
-- **Toda dimensión de una creación de arreglo lleva su tamaño**, como en MiniJava base
-  (`CrearArreglo -> new TipoBase DimensionesConTamanio`), y el inicializador se le cuelga al final:
-  `new int[2][2]{{1,2},{3,4}}` es válido y `new int[]{1,2,3}` no. El inicializador es anidable.
-  Esto **diverge de Java**, que prohíbe tamaño e inicializador juntos (JLS §15.10.1, verificado con
-  `javac`); es deliberado, para no ampliar la forma de las dimensiones que MiniJava ya tenía
-  definida. Queda aislado en `<CreacionDeArreglo>` por si hay que revertirlo.
+- **La inicialización de arreglos es la de Java**: con inicializador ninguna dimensión lleva tamaño
+  (JLS §15.10.1), así que `new int[][]{{1,2},{3,4}}` es válido y `new int[2][2]{{1,2},{3,4}}` no; la
+  coma final es opcional (JLS §10.6). Lo confirmó el profesor. Sin inicializador rige la creación de
+  MiniJava base (`CrearArreglo -> new TipoBase DimensionesConTamanio`): toda dimensión con su tamaño,
+  así que `new int[2][]` no es válido.
+- **El lado izquierdo del `=` es una `<ExpresionCompuesta>`**, como en la gramática original: un
+  ternario no lo es, así que `a ? b : c = d` no deriva, igual que en Java. Los lados derechos son
+  `<ExpresionCondicional>`: admiten el ternario y no otro `=`.
 - `int x[]` **no existe**: las dimensiones van pegadas al tipo base y nunca al nombre, que es lo que
   define MiniJava base. No se amplía.
 - Una clase hereda de **una** clase o implementa **una** interfaz, nunca las dos ni varias: es

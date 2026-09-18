@@ -1,2 +1,2 @@
-///[Error:{|2]
-class ZQq3F < M > extends { }
+///[Error:v|2]
+interface NWP_m < K > extends J0 { v ( A zQ ) ; }

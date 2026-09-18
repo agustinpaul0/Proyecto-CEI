@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Xu < R > { } class KX < J > extends T_ { } class H96_VjT0_g0 { T [ ] j_ ( ) { while ( ! 7392 <= true = false ) return ; for ( false ; ; ) { char f ; } } public P h ( int e , Z k , float c , char [ ] q8 ) { } } class I1k { } interface O5 < T > extends TL { public KW < C > [ ] [ ] pu3X ( H b ) ; } interface W_ < Z > extends V_0 { YO_ < Eh_ < S0_ > > wA ( E_ < Rk > [ ] k_M ) ; public U [ ] [ ] [ ] m ( JwK51 [ ] [ ] z ) ; public void p9 ( ) ; float r ( ) ; void e ( ) ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Y5 { } class Fe6n__ { public float qc ; A___gnM [ ] [ ] oJ ( ) { return true ; } C p ; } interface C_ extends UH { } interface C38__ < E > extends Jh { } interface GH extends L8 < V8_3__ > { }

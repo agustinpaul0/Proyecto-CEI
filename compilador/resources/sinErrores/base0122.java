@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Kyy < A > extends P_ { F [ ] b ( ) ; void o ( ) ; void z ( char x_h9 ) ; Pmj_ < G > [ ] k ( XRp < L > pu ) ; }
+class ZqQ extends A_l { } class C6 < H > extends Z2 { private void kK ( ) { ; } } class QT extends Qm < Q > { } interface G_S < T > { } class G9a78IIT { } class AH < Q > extends Nr < HD > { }

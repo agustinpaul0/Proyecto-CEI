@@ -1,2 +1,2 @@
-///[Error:public|2]
-class H_N_e8te < V > extends H0 { } public N_ < E_fL3 < C > > [ ] [ ] [ ] [ ] [ ] q8N ;
+///[Error:(|2]
+class EF < R > { static public float ( Mz < ZGq > [ ] y_ , float [ ] uUPo , Em < L > [ ] [ ] e ) { float b = "\b" -- ; } }

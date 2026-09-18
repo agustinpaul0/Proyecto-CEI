@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < X > { } class Z_ implements Tx < W > { public float [ ] t1q = - null ; }
+///[Error:>|2]
+interface Aw extends Ilkx < V1 < > > { } class P_e < A > extends P2lU { }

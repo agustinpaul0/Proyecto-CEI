@@ -1,2 +1,2 @@
-///[Error:++|2]
-class V8F3h_sx2J_a_vLep0 { private I [ ] v ++ }
+///[Error:f_|2]
+class K_MH < W > implements S4_ { static public f_ ( Q b1 ) { return ; } } class U4 extends Bq < OO < D_y1 < A > > > { }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Dd < > { } class IZ_ < N > { public float [ ] [ ] [ ] [ ] [ ] [ ] [ ] t = 20348 ; } interface Jq { }
+///[Error:I__|2]
+I__ class EV extends D1 { }

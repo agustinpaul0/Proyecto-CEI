@@ -1,0 +1,2 @@
+///[Error:K_|2]
+interface E4 { } class Wx implements W5 { } class D_ < I > extends NsQ_ { private S [ ] [ ] g ( ) { } private static T j7DB_ ( ) { int [ ] w ; if ( null ) L__ . zh__ ( ) -- ; } } interface SY35_ < D > { } K_ < M > interface F_ { K3_5 xc ( ) ; } class Q5_0 < V > { static private float o_ ( ) { for ( R a ; ; ) float [ ] n , o ; } } class M_i < S > implements HN_ < OC_ > { } interface N26 < D > extends V0J < U > { }

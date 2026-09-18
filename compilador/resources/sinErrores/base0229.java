@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface DPdVe9Q_Yb < W > extends E_f < D > { CO0 < O1_ > [ ] [ ] [ ] w2 ( ) ; O [ ] a ( ) ; }
+class V7 extends AA57 < C5 > { } interface K0 < Y > extends W_ { public void k ( ) ; }

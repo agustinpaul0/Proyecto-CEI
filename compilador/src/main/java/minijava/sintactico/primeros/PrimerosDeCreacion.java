@@ -29,18 +29,15 @@ public final class PrimerosDeCreacion {
     // CreacionDesdeIdClase -> < GenericoDeCreacion
     public static final ConjuntoDePrimeros CREACION_DESDE_ID_CLASE_MENOR = de(TipoDeToken.OP_MENOR);
 
-    // CreacionDesdeIdClase -> CreacionDeArreglo
-    public static final ConjuntoDePrimeros CREACION_DESDE_ID_CLASE_CREACION_DE_ARREGLO = de(
-            TipoDeToken.CORCHETE_A);
-
-    // CreacionDesdeIdClase -> ArgsActuales
-    public static final ConjuntoDePrimeros CREACION_DESDE_ID_CLASE_ARGS_ACTUALES = de(TipoDeToken.PAREN_A);
+    // CreacionDesdeIdClase -> ArregloOInstanciaDeClase
+    public static final ConjuntoDePrimeros CREACION_DESDE_ID_CLASE_ARREGLO_OINSTANCIA_DE_CLASE = de(
+            TipoDeToken.PAREN_A, TipoDeToken.CORCHETE_A);
 
     // GenericoDeCreacion -> > ArgsActuales
     public static final ConjuntoDePrimeros GENERICO_DE_CREACION_MAYOR = de(TipoDeToken.OP_MAYOR);
 
-    // GenericoDeCreacion -> ArgumentoDeTipo > ArregloOInstanciaDeClase
-    public static final ConjuntoDePrimeros GENERICO_DE_CREACION_ARGUMENTO_DE_TIPO = de(
+    // GenericoDeCreacion -> InstanciadoOParametrico > ArregloOInstanciaDeClase
+    public static final ConjuntoDePrimeros GENERICO_DE_CREACION_INSTANCIADO_OPARAMETRICO = de(
             TipoDeToken.ID_CLASE, TipoDeToken.ID_GEN);
 
     // ArregloOInstanciaDeClase -> CreacionDeArreglo
@@ -51,9 +48,18 @@ public final class PrimerosDeCreacion {
     public static final ConjuntoDePrimeros ARREGLO_OINSTANCIA_DE_CLASE_ARGS_ACTUALES = de(
             TipoDeToken.PAREN_A);
 
-    // CreacionDeArreglo -> DimensionesConTamanio InicializadorDeArregloOpcional
-    public static final ConjuntoDePrimeros CREACION_DE_ARREGLO_DIMENSIONES_CON_TAMANIO = de(
-            TipoDeToken.CORCHETE_A);
+    // CreacionDeArreglo -> [ RestoCreacionDeArreglo
+    public static final ConjuntoDePrimeros CREACION_DE_ARREGLO_CORCHETE_A = de(TipoDeToken.CORCHETE_A);
+
+    // RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional
+    public static final ConjuntoDePrimeros RESTO_CREACION_DE_ARREGLO_EXPRESION = de(
+            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
+            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
+            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
+            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
+
+    // RestoCreacionDeArreglo -> ] DimensionesOpcionales InicializadorDeArreglo
+    public static final ConjuntoDePrimeros RESTO_CREACION_DE_ARREGLO_CORCHETE_C = de(TipoDeToken.CORCHETE_C);
 
     // DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
     public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_CORCHETE_A = de(TipoDeToken.CORCHETE_A);
@@ -65,13 +71,6 @@ public final class PrimerosDeCreacion {
     // DimensionesConTamanioOpcional -> EPSILON
     public static final ConjuntoDePrimeros DIMENSIONES_CON_TAMANIO_OPCIONAL = de();
 
-    // InicializadorDeArregloOpcional -> InicializadorDeArreglo
-    public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_OPCIONAL_INICIALIZADOR_DE_ARREGLO = de(
-            TipoDeToken.LLAVE_A);
-
-    // InicializadorDeArregloOpcional -> EPSILON
-    public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_OPCIONAL = de();
-
     // InicializadorDeArreglo -> { ListaElementosOpcional }
     public static final ConjuntoDePrimeros INICIALIZADOR_DE_ARREGLO_LLAVE_A = de(TipoDeToken.LLAVE_A);
 
@@ -81,6 +80,9 @@ public final class PrimerosDeCreacion {
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE, TipoDeToken.LLAVE_A);
+
+    // ListaElementosOpcional -> ,
+    public static final ConjuntoDePrimeros LISTA_ELEMENTOS_OPCIONAL_COMA = de(TipoDeToken.COMA);
 
     // ListaElementosOpcional -> EPSILON
     public static final ConjuntoDePrimeros LISTA_ELEMENTOS_OPCIONAL = de();
@@ -92,11 +94,21 @@ public final class PrimerosDeCreacion {
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE, TipoDeToken.LLAVE_A);
 
-    // RestoListaElementos -> , ElementoInicializador RestoListaElementos
+    // RestoListaElementos -> , ElementosTrasComa
     public static final ConjuntoDePrimeros RESTO_LISTA_ELEMENTOS_COMA = de(TipoDeToken.COMA);
 
     // RestoListaElementos -> EPSILON
     public static final ConjuntoDePrimeros RESTO_LISTA_ELEMENTOS = de();
+
+    // ElementosTrasComa -> ElementoInicializador RestoListaElementos
+    public static final ConjuntoDePrimeros ELEMENTOS_TRAS_COMA_ELEMENTO_INICIALIZADOR = de(
+            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
+            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
+            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
+            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE, TipoDeToken.LLAVE_A);
+
+    // ElementosTrasComa -> EPSILON
+    public static final ConjuntoDePrimeros ELEMENTOS_TRAS_COMA = de();
 
     // ElementoInicializador -> Expresion
     public static final ConjuntoDePrimeros ELEMENTO_INICIALIZADOR_EXPRESION = de(

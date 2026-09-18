@@ -17,9 +17,8 @@ Cómo funciona, de punta a punta:
    del analizador en Java y del simulador en Python— dice qué veredicto
    corresponde, y de ahí sale la expectativa `[Error:lexema|linea]` del caso.
 
-Hay un solo oráculo, porque hay una sola gramática: el compilador reconoce
-MiniJava con todos los logros de la Etapa 1 y la Etapa 2, siempre. Un caso entra
-al corpus si el oráculo y el generador coinciden en su veredicto.
+Hay un solo oráculo, porque hay una sola gramática. Un caso entra al corpus si
+el oráculo y el generador coinciden en su veredicto.
 """
 import argparse
 import hashlib
@@ -178,7 +177,7 @@ def oraculo_de_control():
     return classpath
 
 
-def generar(args, classpaths, prefijo):
+def generar(args, classpaths, prefijo, semilla, vistos):
     generador = TRABAJO / "generador"
     shutil.rmtree(generador, ignore_errors=True)
     generador.mkdir(parents=True)
@@ -192,13 +191,12 @@ def generar(args, classpaths, prefijo):
     etapa.mkdir()
 
     print(f"[{prefijo}] generando {args.positivos} positivos...")
-    generar_arboles(generador, args.positivos, args.profundidad, args.semilla,
+    generar_arboles(generador, args.positivos, args.profundidad, semilla,
                     str(etapa / "pos_%d.java"))
-    vistos = set()
     candidatos = sin_repetidos(list(etapa.glob("pos_*.java")), vistos)
     positivos = publicar_positivos(
         candidatos, [consultar_oraculo(cp, candidatos) for cp in classpaths],
-        args.semilla, prefijo)
+        semilla, prefijo)
     print(f"[{prefijo}]   {len(positivos)} positivos publicados")
 
     print(f"[{prefijo}] armando la poblacion de arboles...")
@@ -214,7 +212,7 @@ def generar(args, classpaths, prefijo):
     print(f"[{prefijo}] mutando para {args.negativos} negativos...")
     shutil.rmtree(etapa, ignore_errors=True)
     etapa.mkdir()
-    generar_arboles(generador, args.negativos * 3, args.profundidad, args.semilla + 1,
+    generar_arboles(generador, args.negativos * 3, args.profundidad, semilla + 1,
                     str(etapa / "neg_%d.java"), poblacion=arboles)
     candidatos = sin_repetidos(list(etapa.glob("neg_*.java")), vistos)
     negativos = publicar_negativos(candidatos, classpaths, prefijo)
@@ -238,13 +236,17 @@ def main():
         for viejo in list(carpeta.glob("fuzz*.java")) + list(carpeta.glob("base*.java")):
             viejo.unlink()
 
-    # Dos lotes con la misma gramática y el mismo oráculo, con semillas distintas:
-    # `base` sale de derivar el árbol, `fuzz` de mutarlo.
+    # Dos lotes con la misma gramática y el mismo oráculo. Grammarinator siembra el
+    # caso i con `semilla + i`, así que la semilla del segundo lote se aleja más
+    # casos de los que genera el primero; y los dos comparten los fuentes vistos,
+    # así que ningún caso se repite entre lotes.
     print("compilando el oraculo de control...")
     control = [oraculo_de_control()]
 
-    base = generar(args, control, "base")
-    fuzz = generar(args, control, "fuzz")
+    vistos = set()
+    separacion = args.positivos + 3 * args.negativos + 1
+    base = generar(args, control, "base", args.semilla, vistos)
+    fuzz = generar(args, control, "fuzz", args.semilla + separacion, vistos)
 
     print(f"\nlote base: {len(base[0])} positivos y {len(base[1])} negativos.")
     print(f"lote fuzz: {len(fuzz[0])} positivos y {len(fuzz[1])} negativos.")

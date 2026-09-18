@@ -1,0 +1,2 @@
+///[Error:)|2]
+class V4 < H > extends P_ { H o ; } class CRX_X < P > implements JAhNE < P > { private static void a_7_ ( boolean u , O u0 , De < Q > y8 ) { } } class Gj_670 { static void yS ( ) { return ; } } interface J_ < Q > { } class RA03V < C > extends Gcat__6 < Pk_ < V0 < E > > > { static private void z ( ) { while ( - ) for ( G5_ u_ ; ; ) Lqc [ ] jD ; Zge_c < J > k ; this . o_vs ; } static void z_ ( ) { } static char t_ ( ) { } }

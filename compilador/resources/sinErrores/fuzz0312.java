@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Bn < D > implements H_lj6 < Z > { private YqhUf < F > a = '\'' && + 38111 ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface H6 { public void t ( ) ; } interface B___S < L > extends UV < K > { void hZ ( ) ; } class L__ { static public int [ ] [ ] [ ] [ ] [ ] [ ] [ ] u ( ) { } }

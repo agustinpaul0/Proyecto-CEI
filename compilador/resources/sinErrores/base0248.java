@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class FM4R extends HL < Id > { N [ ] [ ] [ ] [ ] j ( ) { } static void b ( ) { { } } int sF ; public Yu_ ( ) { } public Ft ( ) { var hZQ = false ; { { } ; } return ; return ; { } return ; { } ; } public CU ( int s , X c_z , O h7ys0g ) { } static K [ ] [ ] w ( char [ ] fpsMD ) { } public AV_DD ( ) { } }
+interface KN extends N5W1sAa < A > { public void qS ( ) ; void kjy ( ) ; } class X9U8 < J > { static Q j ( ) { } } class TR implements S_ { } interface C2 < U > { void q ( boolean g , U eT ) ; } class P2 < P > implements K8_ { } class V_ extends Tw7 { int po = - true != ! null ? null >= null : 63623 + + false ; } class Nh implements IK { }

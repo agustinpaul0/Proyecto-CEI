@@ -1,2 +1,2 @@
-///[Error:(|2]
-( D [ ] w ) { while ( ! this = ! true ) null ; } interface Tx < I > extends O_ { void d ( V [ ] k , L_g_ bF , int [ ] c , UW [ ] q ) ; } class Q8 < N > { } class K44 < T > extends W_1 < D_dv9y > { }
+///[Error:static|2]
+interface CR < A > { } class X4 extends M_ { public static Uz < FF_Q_ < D_ > > [ ] [ ] [ ] a ( ) { } public static void static public K [ ] z ( U z , float [ ] y , R q , boolean eJ ) { } }

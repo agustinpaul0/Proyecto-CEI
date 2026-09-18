@@ -1,2 +1,2 @@
-///[Error:Y6|2]
-Y6 < JLoN > class T8_ extends H_db { }
+///[Error:E|2]
+interface RR extends E { }

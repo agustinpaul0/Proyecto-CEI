@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Yf66 < F > extends N18 < L8_ > { void i3 ( ) ; } interface Tk_ { char h ( int v , K z2 ) ; UF_ < ZGo > [ ] [ ] [ ] p ( char [ ] [ ] [ ] , B j_ ) ; void k ( ZP x , O [ ] k , int [ ] lr9 , M4 < V > d_ , P [ ] j ) ; void yj4 ( ) ; }
+///[Error:mge_|2]
+interface Pt_ { boolean p ( ) ; public void qre ( ) ; } class H4f_ extends ZU < Ws > { } interface WJX extends Su_ < N > { K f ( Zp3_ jd ) ; } interface TD extends Vm { } class A8 implements Z_ { static void w ( mge_ ) { char [ ] j = + null ; } } interface Ag extends U_kzR { }

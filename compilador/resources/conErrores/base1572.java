@@ -1,0 +1,2 @@
+///[Error:static|2]
+class Hc_W < F > { } class K8m implements P_S { static void i6_ ( char [ ] xE ) static void v ( ) { } D f_ = ! true + this ++ ? false != ! this ++ / - '\b' || null = null && null : + N_B . vErn ( ) -- ; Pow_ ( ) { if ( null ) { } else ; for ( TNa_ [ ] [ ] i_ ; ; ) J o_ , f ; { { } } boolean yr , d1e_U ; } } interface Flu < C > extends K__ { public void x8v ( V_ < G > [ ] n ) ; } interface JjF__c < O > extends M__ { void e ( char [ ] o ) ; public B__r x_5 ( boolean jN ) ; }

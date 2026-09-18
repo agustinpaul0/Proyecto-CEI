@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface XJ { public void y ( S [ ] p , C_ [ ] m , char q , T f ) ; } interface IF extends V885 < E > { I [ ] r ( Y [ ] [ ] [ ] [ ] [ ] b_5G , char e , S b ) ; } interface YD_5 extends Z_D { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface X1 < J > extends AG { public void sn ( EK u9 , L_ < J7 < So9 > > e ) ; void o ( H [ ] k9_ ) ; } class W____U__ extends O0 < NC < X_ < Q > > > { float q_ ( ) { } static void j ( T r ) { } static UTrl [ ] [ ] e7 ( ) { } } class Vi { private static void y ( char [ ] [ ] [ ] [ ] rq_ ) { ; } static void u7 ( K_ < F > ke ) { } void t ( ) { } public O_ ( ) { } private static void e ( ) { } }

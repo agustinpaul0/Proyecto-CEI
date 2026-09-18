@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Oj < N > { public U [ ] yL_n ; public Q_ [ ] b ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Q6R < W > implements Eb < V > { }

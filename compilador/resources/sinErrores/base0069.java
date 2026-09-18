@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class P38 { static void v3 ( ) { return ! 776 ; } static void pV ( ) { } public RJ ( ) { ; } X a ( ) { var w = 71399 ; } }
+interface L1 < O > extends F7t { } interface GR { public boolean [ ] d_h ( W_ < Zx_ > l ) ; public void l ( ) ; } class G_ extends Jb < N > { public void v_ ( ) { } }

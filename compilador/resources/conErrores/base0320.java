@@ -1,2 +1,2 @@
-///[Error:I_|2]
-interface XJ { Y__ < C > [ ] c ( ) ; } class M_I_ < X > { } I_
+///[Error:X|2]
+interface TxR { } X [ ] dy

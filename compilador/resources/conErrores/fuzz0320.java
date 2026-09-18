@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Ya < D > implements Sk { public void w0oi ( [ ] q ) { } }
+///[Error:OnPv_r|2]
+OnPv_r

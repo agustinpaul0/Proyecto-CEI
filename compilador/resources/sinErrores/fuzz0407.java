@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface I__3 { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class VTa implements QBq < M > { }

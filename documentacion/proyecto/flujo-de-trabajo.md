@@ -59,10 +59,6 @@ y en el último). La estrategia completa está en [`testing.md`](../compartido/e
 
 ### Los logros no son configurables
 
-**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
-siempre, y no es configurable. La gramática está escrita en base a todos los logros y sólo así: no
-tiene reglas dinámicas que aparecen y desaparecen según los logros.**
-
 Lo dictaminó el profesor: poder elegir con qué logros correr complejiza la gramática sin necesidad,
 y cada etapa nueva obligaría a rehacer el trabajo con más chance de error. No hay `--logros=`, ni
 `-Dlogros=`, ni marcas `@+`/`@-` en el `.g`. Al agregar una construcción nueva se la incorpora a la

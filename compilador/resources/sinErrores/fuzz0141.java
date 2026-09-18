@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Af0 < S > { } class D_ < N > implements Vd { } interface L7_ < N > { } class TL < X > implements HH1w < R > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface G_8 extends Gk { } interface KG_1__p < D > extends NqOKTR < J > { } class T4p8_ < U > extends R8c { void nH ( ) { } V9 ( J [ ] [ ] [ ] [ ] [ ] g_ , Hv [ ] n5 ) { for ( int s ; ; ) { } return ; S tG ; UvT d , d ; } }

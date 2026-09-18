@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Ox < N > implements MEww < R > { }
+class Q_T < Y > extends R_ < H0va > { } class S2 < A > { boolean [ ] t ( ) { } } class XoH extends Pq < E9 > { } class Tm < D > implements Es < N > { private A aI_B ( int [ ] kR , boolean o ) { if ( true ) f_W -- ; else { } - 0.3674e+8 ; } private H7_n < I > y_ = this ++ ? true : ! false ; static private void aNp ( ) { } boolean s ( ) { { ; ; } } } class G_ implements QO < V_U > { }

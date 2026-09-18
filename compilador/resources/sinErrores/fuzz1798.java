@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Xw { } class USB implements N3V < L > { private static I1 b ( ) { } } class Y_ implements H_eU { static public void gK ( ) { ( null ) . o . tR ( ) ++ - null || ! ' ' || false = false ; } } interface M23 < T > { } interface O_ < E > extends XP_ < Lr0 < JW > > { public void p_p ( ) ; public void oW ( Sm_da < S > p_ ) ; void u_lV ( Fx6__9 < G > [ ] s_ ) ; void lhH ( Z j ) ; }

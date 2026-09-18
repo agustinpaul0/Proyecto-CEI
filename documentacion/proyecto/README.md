@@ -28,10 +28,6 @@ con 0, 1 o N logros en cualquier combinación— y **el profesor la revirtió**:
 gramática sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo con más chance de
 error.
 
-**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
-siempre, y no es configurable. La gramática está escrita en base a todos los logros y sólo así: no
-tiene reglas dinámicas que aparecen y desaparecen según los logros.**
-
 No existen `--logros=` en la línea de comandos, `-Dlogros=` en los tests, ni marcas `@+`/`@-` en
 el `.g`. El núcleo sin logros sobrevive en un archivo aparte, `compilador/gramatica/minijava-ll1.g`,
 que el compilador no consume: está sólo para que `equivalencia_de_lenguajes.py` demuestre que

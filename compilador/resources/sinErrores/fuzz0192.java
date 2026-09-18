@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Mb < V > { Ta ( ) { X mV = true ; } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface H94b extends Om { }

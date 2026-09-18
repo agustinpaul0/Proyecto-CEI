@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class W3 extends H2 { S [ ] s9 ; char [ ] u_ = ! '\n' ; public void y ( boolean [ ] [ ] [ ] [ ] u , Ln3 [ ] v1gVz , T_9 b1A , int [ ] [ ] z ) { char [ ] [ ] g = null , i ; while ( null ) ; float y ; for ( G [ ] i ; ; ) ; + true ; } } class W_ < A > implements Fki { void b ( ) { } } interface H_ extends M__PV < U > { } interface EX { } class EDmiu < Q > implements Q_ < R > { }

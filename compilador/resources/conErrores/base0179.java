@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface F4 extends Eq < > { void s ( ) ; }
+///[Error:u__|2]
+interface M_ extends Dr_s9 { u__ ( char [ ] [ ] c ) ; }

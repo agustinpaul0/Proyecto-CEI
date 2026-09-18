@@ -1,2 +1,2 @@
-///[Error:x|2]
-interface Zo { } class V_ extends M9_ < F8A > { } interface VWa extends Y9 { } interface O_N_1 { void d4 ( x ) ; }
+///[Error:>|2]
+interface T6 { } class R1 < R > extends J5 < > { } interface QH { D_ p8H ( M1 < E > [ ] [ ] p ) ; } class Vb_ < T > { } class Z_ implements EHAE < Y_ < Z2 < E > > > { M [ ] v = + r ++ ; }

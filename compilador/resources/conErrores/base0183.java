@@ -1,2 +1,2 @@
-///[Error:H|2]
-interface E_84 { } interface U__ < Z > { } H
+///[Error:>|2]
+interface G22__3 < B > extends MD2G6 < > { }

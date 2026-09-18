@@ -1,2 +1,2 @@
-///[Error:F02|2]
-class Bx < G > implements Q0_ { private void jm F02 . ut_D ( ) . xDJ }
+///[Error:P0|2]
+interface Po extends Cx0_7z_ { char g ( ) ; F_ [ ] [ ] giG6_ ( ) ; public boolean [ ] s9c_FW P0 < X_ > ; } interface G0 extends Ayp { }

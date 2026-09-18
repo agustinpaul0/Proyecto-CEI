@@ -1,2 +1,2 @@
-///[Error:[|2]
-class FOQt extends Y6 < JLoN > { [ ] }
+///[Error:{|2]
+interface Z_5 extends { }

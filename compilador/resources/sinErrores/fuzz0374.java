@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class OR_ < W > implements QS { } interface Nl < R > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface O3 extends Jq { }

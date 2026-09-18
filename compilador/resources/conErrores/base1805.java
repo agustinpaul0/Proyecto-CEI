@@ -1,0 +1,2 @@
+///[Error:void|2]
+class WG9 implements RKv { public U_8 ( ) { L [ ] mYs_ ; this . e0 . pc . r . h ++ ; ; } public static void iQ_ ( ) { float [ ] j , b = - 913231 < true ; while ( false / true || ! false ) Kj9 . x5 ( ) -- ; } static L__S < J > lw ( BlR [ ] [ ] u , H_Jq s ) { X [ ] ly ; if ( + "" -- * - null = false ) int gh , g_ , gd9 ; var h = true ; var x = false ; } } class FI_y3 implements Gn9_d < L0 < R_ < L_4 > > > { static E [ ] [ ] w_ ( X z ) { } private char uZ ( ) { return - null ; } } class GR < N > implements ZjC_ { } class A03 { } interface Wy { } void

@@ -1,2 +1,2 @@
-///[Error:}|2]
-class BE extends SU9 { private X [ ] n = - So__ . v_ ( ) ++ < j ( ) . wBu . aZ . raH ( ) -- ; } class Un5 < R > implements Wm { private X s_9_ } class Q2 implements S_ { }
+///[Error:<|2]
+interface U2 extends P_8 { void z ( ) ; P [ ] [ ] lL ( ) ; } class < C > { } interface R_92m < B > { }

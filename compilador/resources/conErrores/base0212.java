@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface EO < F > { } interface Q8 extends E_ < > { } class I1__ < D > { public G01 ( boolean m , SSM b_ , X ty ) { if ( 'w' * + true + - null ) + false ; if ( true = - true ) var u55 = - null ; } public H1 ( I_ < S > [ ] [ ] [ ] x , boolean [ ] [ ] b , V2_ [ ] j6 , int [ ] nV ) { while ( ! null <= false ) { } } } interface Vx_ extends Xy { } interface Eb < I > extends P96_ < Z > { } interface Gz < M > extends KgzW { } class Z1 < K > { }
+///[Error:extends|2]
+class extends IAR < A_ < GC > > { } interface X_ { public Kn a ( int hE ) ; void s ( ) ; public void r ( int s_gq , Gw < IU < B > > i262 , int [ ] [ ] [ ] w , char [ ] [ ] v ) ; } interface MwEU < H > extends OC < X_ < Y > > { public void j_ ( ) ; } interface M_1__ < F > extends M_B { public void t ( boolean [ ] x ) ; public BRK [ ] [ ] z ( E [ ] [ ] y3U , O [ ] u_ ) ; }

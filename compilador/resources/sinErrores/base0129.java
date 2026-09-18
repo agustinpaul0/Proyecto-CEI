@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface J2_ { } class ZE3o < Z > extends BP < QWv > { } interface Z__ < M > extends Z2 { } class U3w < K > extends ZI < VD > { }
+class Ki implements XOV < H > { static void a ( ) { for ( U z__U = this * '\"' ? ! true : false ; ; ) 9739166 * ! "" . hSZ -- / 03364 = - 4868D ; } }

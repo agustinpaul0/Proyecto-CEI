@@ -1,2 +1,2 @@
 ///[Error:<|2]
-class Z5_f < L > implements DCcA { } < L >
+interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] o4 ( ) { } } < T >

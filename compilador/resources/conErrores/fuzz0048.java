@@ -1,2 +1,2 @@
-///[Error:.|2]
-class F7 implements Y8 { void s2_ ( K zL7 , char [ ] nY , Lm4_70_ [ ] mP , EC o ) { float [ ] a , a = false ; 17.9e+0 ? - null : 18777 = - true ; float sd , q6I_ ; Yp_K_ . rY4 ( ) -- ; { } { } ; boolean [ ] [ ] [ ] q_62_c ; { } } private int b ( int b , int m_l ) { var y = ! true > - true ; ; . qkPi ( ) . a ( ) ++ ; } }
+///[Error:[|2]
+class G_ implements Aq < D > { static void awgP ( [ ] [ ] bz ) { } char [ ] [ ] [ ] k35_ ( ) { } N [ ] i ( C [ ] hNW , U_ t5 , H [ ] [ ] l ) { } GG_ ( ) { null < ! false ; - M9 . n40 ( ) ; } void p ( N k , U_ r__ , float or5 ) { if ( true ) return ; else ; } }

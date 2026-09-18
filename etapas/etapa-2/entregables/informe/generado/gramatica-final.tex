@@ -41,7 +41,7 @@
 \end{producciones}
 
 \begin{producciones}
-\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicionalOLambda}}
+\regla{InicializacionDeAtributo}{\tl{=} \nt{ExpresionCondicional}}
 \regla{InicializacionDeAtributo}{\eps}
 \end{producciones}
 
@@ -70,12 +70,12 @@
 \end{producciones}
 
 \begin{producciones}
-\regla{TipoGenericoOpcional}{\tl{<} \nt{ArgumentoDeTipo} \tl{>} \alt{} \eps}
+\regla{TipoGenericoOpcional}{\tl{<} \nt{InstanciadoOParametrico} \tl{>} \alt{} \eps}
 \end{producciones}
 
 \begin{producciones}
-\regla{ArgumentoDeTipo}{\tl{idGen}}
-\regla{ArgumentoDeTipo}{\tl{idClase} \nt{TipoGenericoOpcional}}
+\regla{InstanciadoOParametrico}{\tl{idGen}}
+\regla{InstanciadoOParametrico}{\tl{idClase} \nt{TipoGenericoOpcional}}
 \regla{ArgsFormales}{\tl{(} \nt{ListaArgsFormalesOpcional} \tl{)}}
 \regla{ListaArgsFormalesOpcional}{\nt{ListaArgsFormales} \alt{} \eps}
 \regla{ListaArgsFormales}{\nt{ArgFormal} \nt{RestoListaArgsFormales}}
@@ -102,14 +102,14 @@
 \regla{Sentencia}{\tl{idClase} \nt{SentenciaDesdeIdClase}}
 \regla{SentenciaDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
 \regla{SentenciaDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;}}
-\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda}}
+\regla{VarLocal}{\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional}}
 \end{producciones}
 
 \begin{producciones}
 \regla{ListaDeclaradores}{\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}
 \regla{RestoListaDeclaradores}{\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores}}
 \regla{RestoListaDeclaradores}{\eps}
-\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
+\regla{InicializacionDeDeclarador}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}
 \regla{Return}{\tl{return} \nt{ExpresionOpcional}}
 \regla{ExpresionOpcional}{\nt{Expresion} \alt{} \eps}
 \regla{If}{\tl{if} \tl{(} \nt{Expresion} \tl{)} \nt{Sentencia} \nt{ElseOpcional}}
@@ -131,10 +131,10 @@
 
 \begin{producciones}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
-\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}
 \regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}
 \regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
+\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}
 \end{producciones}
 
 \begin{producciones}
@@ -142,29 +142,23 @@
 \end{producciones}
 
 \begin{producciones}
-\regla{Expresion}{\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion}}
+\regla{Expresion}{\nt{ExpresionCompuesta} \nt{RestoExpresion}}
 \end{producciones}
 
 \begin{producciones}
-\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \alt{} \eps}
+\regla{RestoExpresion}{\nt{OperadorAsignacion} \nt{ExpresionCondicional}}
+\regla{RestoExpresion}{\nt{RestoCondicional}}
 \regla{OperadorAsignacion}{\tl{=}}
 \end{producciones}
 
 \begin{producciones}
-\regla{ExpresionCondicionalOLambda}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion}}
-\regla{ExpresionCondicionalOLambda}{\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion}}
-\regla{ExpresionCondicionalOLambda}{\nt{ExpresionDesdePrimarioOLambda}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{this} \nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{stringLiteral} \nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ExpresionDesdePrimarioOLambda}{\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ExpresionDesdePrimarioOLambda}{\tl{idMetVar} \nt{AccesoLlamadaOLambda}}
-\regla{ExpresionDesdePrimarioOLambda}{\nt{ParentizadaOLambda}}
+\regla{ExpresionCondicional}{\nt{ExpresionCompuesta} \nt{RestoCondicional}}
 \end{producciones}
 
 \begin{producciones}
-\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda}}
+\regla{RestoCondicional}{\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional}}
 \regla{RestoCondicional}{\eps}
+\regla{ExpresionCompuesta}{\nt{ExpresionBasica} \nt{RestoExpresionCompuesta}}
 \regla{RestoExpresionCompuesta}{\nt{OperadorBinario} \nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \alt{} \eps}
 \regla{OperadorBinario}{\tl{||} \alt{} \tl{\&\&} \alt{} \tl{==} \alt{} \tl{!=} \alt{} \tl{<} \alt{} \tl{>} \alt{} \tl{<=} \alt{} \tl{>=} \alt{} \tl{+} \alt{} \tl{-} \alt{} \tl{*} \alt{} \tl{/} \alt{} \tl{\%}}
 \regla{ExpresionBasica}{\nt{OperadorUnario} \nt{Operando}}
@@ -185,19 +179,9 @@
 \begin{producciones}
 \regla{ExpresionSinIdClase}{\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperando}}
 \regla{ExpresionSinIdClase}{\nt{Primitivo} \nt{ColaTrasOperando}}
-\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClaseNiLambda} \nt{ColaDeExpresionDesdePrimario}}
-\regla{ExpresionSinIdClase}{\tl{idMetVar} \nt{AccesoLlamadaOLambda} \nt{RestoExpresion}}
-\regla{ExpresionSinIdClase}{\nt{ParentizadaOLambda} \nt{RestoExpresion}}
-\end{producciones}
-
-\begin{producciones}
-\regla{ColaTrasOperando}{\nt{ColaTrasOperandoSinAsignacion} \nt{RestoExpresion}}
-\regla{ColaTrasOperandoSinAsignacion}{\nt{RestoExpresionCompuesta} \nt{RestoCondicional}}
+\regla{ExpresionSinIdClase}{\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario}}
+\regla{ColaTrasOperando}{\nt{RestoExpresionCompuesta} \nt{RestoExpresion}}
 \regla{ColaDeExpresionDesdePrimario}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando}}
-\regla{ColaDesdePrimarioSinAsignacion}{\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperandoSinAsignacion}}
-\end{producciones}
-
-\begin{producciones}
 \regla{Referencia}{\nt{Primario} \nt{RestoReferencia}}
 \regla{RestoReferencia}{\nt{Encadenado} \nt{RestoReferencia}}
 \regla{RestoReferencia}{\nt{AccesoArreglo} \nt{RestoReferencia}}
@@ -211,70 +195,49 @@
 \regla{Primario}{\nt{LlamadaMetodoEstatico}}
 \regla{Primario}{\nt{PrimarioSinIdClase}}
 \regla{LlamadaMetodoEstatico}{\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales}}
-\regla{PrimarioSinIdClase}{\nt{PrimarioSinIdClaseNiLambda}}
-\regla{PrimarioSinIdClase}{\nt{Parentizada}}
-\regla{PrimarioSinIdClase}{\nt{AccesoVarOLlamada}}
+\regla{PrimarioSinIdClase}{\tl{this}}
+\regla{PrimarioSinIdClase}{\tl{stringLiteral}}
+\regla{PrimarioSinIdClase}{\nt{ExpresionParentizada}}
+\regla{PrimarioSinIdClase}{\nt{AccesoVarOLlamadaMetodo}}
+\regla{PrimarioSinIdClase}{\nt{Creacion}}
+\regla{ExpresionParentizada}{\tl{(} \nt{Expresion} \tl{)}}
 \end{producciones}
 
 \begin{producciones}
-\regla{PrimarioSinIdClaseNiLambda}{\tl{this}}
-\regla{PrimarioSinIdClaseNiLambda}{\tl{stringLiteral}}
-\regla{PrimarioSinIdClaseNiLambda}{\nt{Creacion}}
+\regla{AccesoVarOLlamadaMetodo}{\tl{idMetVar} \nt{AccesoOLlamada}}
 \end{producciones}
 
 \begin{producciones}
-\regla{Parentizada}{\tl{(} \nt{Expresion} \tl{)}}
-\end{producciones}
-
-\begin{producciones}
-\regla{AccesoVarOLlamada}{\tl{idMetVar} \nt{AccesoLlamada}}
-\regla{AccesoLlamada}{\nt{ArgsActuales} \alt{} \eps}
-\end{producciones}
-
-\begin{producciones}
-\regla{AccesoLlamadaOLambda}{\tl{->} \nt{CuerpoLambda}}
-\regla{AccesoLlamadaOLambda}{\nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ParentizadaOLambda}{\tl{(} \nt{ContenidoDeParentesis}}
-\regla{ContenidoDeParentesis}{\tl{)} \tl{->} \nt{CuerpoLambda}}
-\regla{ContenidoDeParentesis}{\nt{Expresion} \nt{RestoDeParentesis}}
-\regla{RestoDeParentesis}{\tl{)} \nt{FinDeParentizadaOLambda}}
-\regla{RestoDeParentesis}{\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda}}
-\regla{FinDeParentizadaOLambda}{\tl{->} \nt{CuerpoLambda}}
-\regla{FinDeParentizadaOLambda}{\nt{ColaDesdePrimarioSinAsignacion}}
-\regla{ListaParametrosLambda}{\tl{idMetVar} \nt{RestoListaParametrosLambda}}
-\regla{RestoListaParametrosLambda}{\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \alt{} \eps}
-\end{producciones}
-
-\begin{producciones}
-\regla{CuerpoLambda}{\nt{Expresion}}
+\regla{AccesoOLlamada}{\nt{ArgsActuales} \alt{} \eps}
 \regla{Creacion}{\tl{new} \nt{ArregloOInstancia}}
 \regla{ArregloOInstancia}{\nt{TipoPrimitivo} \nt{CreacionDeArreglo}}
 \regla{ArregloOInstancia}{\tl{idGen} \nt{CreacionDeArreglo}}
 \regla{ArregloOInstancia}{\tl{idClase} \nt{CreacionDesdeIdClase}}
 \regla{CreacionDesdeIdClase}{\tl{<} \nt{GenericoDeCreacion}}
-\regla{CreacionDesdeIdClase}{\nt{CreacionDeArreglo}}
-\regla{CreacionDesdeIdClase}{\nt{ArgsActuales}}
+\regla{CreacionDesdeIdClase}{\nt{ArregloOInstanciaDeClase}}
 \end{producciones}
 
 \begin{producciones}
 \regla{GenericoDeCreacion}{\tl{>} \nt{ArgsActuales}}
-\regla{GenericoDeCreacion}{\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase}}
+\regla{GenericoDeCreacion}{\nt{InstanciadoOParametrico} \tl{>} \nt{ArregloOInstanciaDeClase}}
 \regla{ArregloOInstanciaDeClase}{\nt{CreacionDeArreglo}}
 \regla{ArregloOInstanciaDeClase}{\nt{ArgsActuales}}
 \end{producciones}
 
 \begin{producciones}
-\regla{CreacionDeArreglo}{\nt{DimensionesConTamanio} \nt{InicializadorDeArregloOpcional}}
+\regla{CreacionDeArreglo}{\tl{[} \nt{RestoCreacionDeArreglo}}
+\regla{RestoCreacionDeArreglo}{\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
+\regla{RestoCreacionDeArreglo}{\tl{]} \nt{DimensionesOpcionales} \nt{InicializadorDeArreglo}}
 \regla{DimensionesConTamanio}{\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional}}
 \regla{DimensionesConTamanioOpcional}{\nt{DimensionesConTamanio} \alt{} \eps}
 \end{producciones}
 
 \begin{producciones}
-\regla{InicializadorDeArregloOpcional}{\nt{InicializadorDeArreglo} \alt{} \eps}
 \regla{InicializadorDeArreglo}{\tl{\{} \nt{ListaElementosOpcional} \tl{\}}}
-\regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \eps}
+\regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \tl{,} \alt{} \eps}
 \regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}
-\regla{RestoListaElementos}{\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}
+\regla{RestoListaElementos}{\tl{,} \nt{ElementosTrasComa} \alt{} \eps}
+\regla{ElementosTrasComa}{\nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}
 \regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
 \end{producciones}
 

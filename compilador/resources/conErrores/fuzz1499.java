@@ -1,0 +1,2 @@
+///[Error:[|2]
+interface Ulm_ < H > { void de ( X k ) ; } class Q3 < S > extends OH < P > { } [ ] [ ] interface B6_ < S > extends Vfh < S6W > { } class R_ implements Z_ { } class U__ < S > extends D_ < NN > { static public void e ( P2o [ ] q ) { for ( Y [ ] [ ] kDD ; ; ) for ( U [ ] c ; ; ) int [ ] [ ] oS__C1 ; boolean k_ ; return ; ; return ; } static void i ( M [ ] [ ] [ ] w ) { } static boolean e ( ) { } A oF = null ; static public void t ( ) { for ( ; ; ) ; return ; ; } static void m9f ( ) { } }

@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class Kj8876v3C62 { } class L8 extends G_lz2ji { } class Bo < N > { R_k < J5 > [ ] z ( ) { return true ; while ( + false ) return ; } } interface YX extends ES9 { void zf ( float [ ] b ) ; public X [ ] r ( SD < X > c__b ) ; } class NW36X { char [ ] x ( ) { return ; } public static U [ ] [ ] [ ] [ ] vGF3 ( W [ ] [ ] i , boolean [ ] [ ] l ) { int [ ] z ; K0 . bj ( ) -- ; ; } int m_ ( ) { } }

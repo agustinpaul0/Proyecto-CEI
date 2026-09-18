@@ -1,2 +1,2 @@
-///[Error:<|2]
-< Y >
+///[Error:.|2]
+class F__A { private void . v }

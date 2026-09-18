@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface K_poE extends Z_ { C96A [ ] [ ] d_Z_6M ( ) ; char [ ] aF_T ( ) ; void q6 ( Bb < Ye < Y5e > > [ ] sx , char e , boolean v9_ ) ; void zz7j_UBD ( Z [ ] [ ] [ ] m ) ; public char [ ] [ ] v ( ) ; void c ( ) ; } class T2 < Y > { void a ( char t4j_N5 ) { } B [ ] r ; } class A_ < Y > implements U8 < M > { private void o ( char o ) { H_u_ . o ( ) . dqO_4 ++ == ! true ; } }

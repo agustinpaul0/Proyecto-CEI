@@ -2,7 +2,6 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
-import minijava.lexico.tokens.Token;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeExpresiones;
@@ -10,118 +9,65 @@ import minijava.sintactico.primeros.PrimerosDeExpresiones;
 // Las capas de expresión, de menor a mayor precedencia: la asignación, el
 // ternario, los operadores binarios —en un solo nivel, como en la gramática
 // original—, los unarios prefijos y el operando.
-//
-// La lambda NO es una de estas capas: es una alternativa del nivel más alto,
-// como en el JLS («Expression: LambdaExpression | AssignmentExpression»). Por eso
-// `->` no compite en precedencia con ningún operador, y `1 + x -> x`,
-// `- x -> x` y `a == x -> x` son errores, igual que en Java. Entre paréntesis sí
-// llega a ser operando, porque ahí entra por Primario: ver Parentizada en
-// AnalizadorDeReferencias. Las dos cabezas que comparte con una expresión
-// normal, `idMetVar` y `(`, se factorizan en expresionDesdePrimarioOLambda().
 public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     public AnalizadorDeExpresiones(Sintaxis sintaxis) {
         super(sintaxis);
     }
 
-    // Expresion -> ExpresionCondicionalOLambda RestoExpresion
+    // Expresion -> ExpresionCompuesta RestoExpresion
+    //
+    // El lado izquierdo del `=` es una ExpresionCompuesta, como en la gramática
+    // original: `a ? b : c = d` no deriva.
     public void expresion() throws ExcepcionLexica, ExcepcionSintactica {
-        expresionCondicionalOLambda();
+        expresionCompuesta();
         restoExpresion();
     }
 
-    // RestoExpresion -> OperadorAsignacion ExpresionCondicionalOLambda | EPSILON
+    // RestoExpresion -> OperadorAsignacion ExpresionCondicional
+    // RestoExpresion -> RestoCondicional
     // OperadorAsignacion -> =
     //
-    // El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática
+    // El lado derecho es ExpresionCondicional y NO Expresion: la gramática
     // original pone ExpresionCompuesta ahí, o sea que `a = b = c` no es válido.
-    // Admite lambda porque el JLS define `Assignment: LeftHandSide = Expression`.
     private void restoExpresion() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            expresionCondicionalOLambda();
+            expresionCondicional();
         } else {
-            // RestoExpresion -> EPSILON
+            restoCondicional();
         }
     }
 
-    // ExpresionCondicionalOLambda -> OperadorUnario Operando ColaTrasOperandoSinAsignacion
-    //                              | Primitivo ColaTrasOperandoSinAsignacion
-    //                              | ExpresionDesdePrimarioOLambda
+    // ExpresionCondicional -> ExpresionCompuesta RestoCondicional
     //
-    // El nivel del JLS `LambdaExpression | ConditionalExpression`: admite lambda
-    // y no admite `=` en la raíz. Es el operando de los seis `=` y el tercer
-    // operando del ternario. Sólo duplica las CABEZAS; las colas se comparten.
-    public void expresionCondicionalOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO)) {
-            operadorUnario();
-            operando();
-            colaTrasOperandoSinAsignacion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_PRIMITIVO)) {
-            primitivo();
-            colaTrasOperandoSinAsignacion();
-        } else {
-            expresionDesdePrimarioOLambda();
-        }
+    // Es el lado derecho de los seis `=` y el tercer operando del ternario.
+    public void expresionCondicional() throws ExcepcionLexica, ExcepcionSintactica {
+        expresionCompuesta();
+        restoCondicional();
     }
 
-    // ExpresionDesdePrimarioOLambda -> idClase . idMetVar ArgsActuales ColaDesdePrimarioSinAsignacion
-    //                                | this ColaDesdePrimarioSinAsignacion
-    //                                | stringLiteral ColaDesdePrimarioSinAsignacion
-    //                                | Creacion ColaDesdePrimarioSinAsignacion
-    //                                | idMetVar AccesoLlamadaOLambda
-    //                                | ParentizadaOLambda
-    //
-    // Las cuatro primeras cabezas no pueden empezar una lambda y delegan en la
-    // jerarquía de siempre. Las dos últimas, `idMetVar` y `(`, son las que una
-    // lambda comparte con una expresión normal: ahí está todo el trabajo de
-    // factorización del logro.
-    private void expresionDesdePrimarioOLambda() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_ID_CLASE)) {
-            match(TipoDeToken.ID_CLASE);
-            match(TipoDeToken.PUNTO);
-            match(TipoDeToken.ID_MV);
-            sintaxis.argumentos().argsActuales();
-            colaDesdePrimarioSinAsignacion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_THIS)) {
-            match(TipoDeToken.PR_THIS);
-            colaDesdePrimarioSinAsignacion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_STRING_LITERAL)) {
-            match(TipoDeToken.LIT_STRING);
-            colaDesdePrimarioSinAsignacion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_CREACION)) {
-            sintaxis.creacion().creacion();
-            colaDesdePrimarioSinAsignacion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_ID_MET_VAR)) {
-            Token nombre = actual();
-            match(TipoDeToken.ID_MV);
-            sintaxis.lambdas().accesoLlamadaOLambda(nombre);
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_DESDE_PRIMARIO_OLAMBDA_PARENTIZADA_OLAMBDA)) {
-            sintaxis.lambdas().parentizadaOLambda();
-        } else {
-            throw errorEsperando(
-                    PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO,
-                    PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_PRIMITIVO,
-                    PrimerosDeExpresiones.EXPRESION_CONDICIONAL_OLAMBDA_EXPRESION_DESDE_PRIMARIO_OLAMBDA);
-        }
-    }
-
-    // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
+    // RestoCondicional -> ? Expresion : ExpresionCondicional
     // RestoCondicional -> EPSILON
     //
     // La recursión sobre ExpresionCondicional en la rama derecha es lo que lo
     // hace asociativo a derecha. El operando del medio es una Expresion completa,
-    // como en el JLS 15.25: `a ? b = 1 : c` es válido, `a ? b : c = d` no, y
-    // `a ? b : x -> x` sí —la producción del JLS es `? Expression : LambdaExpression`—.
+    // como en el JLS 15.25: `a ? b = 1 : c` es válido y `a ? b : c = d` no.
     private void restoCondicional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA)) {
             match(TipoDeToken.SIGNO_PREGUNTA);
             expresion();
             match(TipoDeToken.DOS_PUNTOS);
-            expresionCondicionalOLambda();
+            expresionCondicional();
         } else {
             // RestoCondicional -> EPSILON
         }
+    }
+
+    // ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
+    private void expresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
+        expresionBasica();
+        restoExpresionCompuesta();
     }
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta
@@ -246,18 +192,11 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
     //                      | Primitivo ColaTrasOperando
-    //                      | PrimarioSinIdClaseNiLambda ColaDeExpresionDesdePrimario
-    //                      | idMetVar AccesoLlamadaOLambda RestoExpresion
-    //                      | ParentizadaOLambda RestoExpresion
+    //                      | PrimarioSinIdClase ColaDeExpresionDesdePrimario
     //
     // Se usa donde una expresión compite con una declaración de variable local.
     // Sólo duplica las CABEZAS: todas las colas se comparten con la jerarquía
     // normal, así que no hay lógica repetida.
-    //
-    // Las dos últimas son las mismas cabezas ambiguas que factoriza
-    // expresionDesdePrimarioOLambda(), `idMetVar` y `(`, y por eso `p -> x;` es
-    // una sentencia válida. El `restoExpresion()` de atrás es lo único que las
-    // distingue de allá: acá la expresión sí lleva el `=` de la asignación.
     public void expresionSinIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO)) {
             operadorUnario();
@@ -266,40 +205,20 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO)) {
             primitivo();
             colaTrasOperando();
-        } else if (estaEn(
-                PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA)) {
-            sintaxis.referencias().primarioSinIdClaseNiLambda();
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE)) {
+            sintaxis.referencias().primarioSinIdClase();
             colaDeExpresionDesdePrimario();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_ID_MET_VAR)) {
-            Token nombre = actual();
-            match(TipoDeToken.ID_MV);
-            sintaxis.lambdas().accesoLlamadaOLambda(nombre);
-            restoExpresion();
-        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA)) {
-            sintaxis.lambdas().parentizadaOLambda();
-            restoExpresion();
         } else {
             throw errorEsperando(PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_OPERADOR_UNARIO,
                     PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMITIVO,
-                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA,
-                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_ID_MET_VAR,
-                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA);
+                    PrimerosDeExpresiones.EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE);
         }
     }
 
-    // ColaTrasOperando -> ColaTrasOperandoSinAsignacion RestoExpresion
+    // ColaTrasOperando -> RestoExpresionCompuesta RestoExpresion
     private void colaTrasOperando() throws ExcepcionLexica, ExcepcionSintactica {
-        colaTrasOperandoSinAsignacion();
-        restoExpresion();
-    }
-
-    // ColaTrasOperandoSinAsignacion -> RestoExpresionCompuesta RestoCondicional
-    //
-    // La cola se parte en dos para que ExpresionCondicionalOLambda pueda reusarla
-    // sin arrastrar el `=`, que en ese nivel no corresponde.
-    private void colaTrasOperandoSinAsignacion() throws ExcepcionLexica, ExcepcionSintactica {
         restoExpresionCompuesta();
-        restoCondicional();
+        restoExpresion();
     }
 
     // ColaDeExpresionDesdePrimario -> RestoReferencia PosfijoOpcional ColaTrasOperando
@@ -307,13 +226,5 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
         sintaxis.referencias().restoReferencia();
         posfijoOpcional();
         colaTrasOperando();
-    }
-
-    // ColaDesdePrimarioSinAsignacion -> RestoReferencia PosfijoOpcional
-    //                                   ColaTrasOperandoSinAsignacion
-    public void colaDesdePrimarioSinAsignacion() throws ExcepcionLexica, ExcepcionSintactica {
-        sintaxis.referencias().restoReferencia();
-        posfijoOpcional();
-        colaTrasOperandoSinAsignacion();
     }
 }

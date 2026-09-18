@@ -1,2 +1,2 @@
-///[Error:(|2]
-class V0_h < Z > extends NR < UY < VB_Vqb > > { } class T_ { } interface A9 extends YN < Q97v_ > { M [ ] l ( ) ; void ( ) ; } interface Gaj { } interface G3H < T > extends J1d { }
+///[Error:boolean|2]
+interface PdM3O_9 { public U lyH_l ( ) ; public void nj ( boolean [ ] by4_ , int [ ] y_5 ) ; } interface F_ { public void e ( Kb [ ] [ ] [ ] [ ] [ ] c , F [ ] gA , int [ ] fVKK0 ) ; } class AL { } class FCS < U > implements K8 < Y0d < Z3 < A_5_ > > > { private O x ( C g ) { } } class WS implements LOm0 { void nf ( Q [ ] k , float [ ] t ) { var y = - false ; return ; } } interface W8e_4 < U > extends GRp8 { } boolean class S_ { static void g_8 ( ) { } } class Ou6 < N > { } class N__3 implements Z7 { static private void b ( ) { } }

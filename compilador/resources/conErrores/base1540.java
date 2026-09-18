@@ -1,0 +1,2 @@
+///[Error:public|2]
+interface Q8t < O > extends VF < A > { } class Fs < U > extends ZP { } interface U55 < O > { public void vV_A ( ) ; } interface M_nv < C > extends Ic6 < D > { public P y ( J4 n , F [ ] [ ] n , int srhV , Y o ) ; public void h ( int p99_d , boolean c_ ) ; void public boolean t ( ) ; F wE ( boolean [ ] [ ] l0_Dp , T [ ] w ) ; } class Fo implements Y2_q3_76 { private Lv < B9x > u3 = - true || null ; }

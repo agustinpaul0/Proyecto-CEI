@@ -1,2 +1,2 @@
-///[Error:YW|2]
-YW interface SU < K > extends Yg < V > { } class TS implements K_7 < Du < O > > { }
+///[Error:w44|2]
+interface CFS { public w44 ( ) ; }

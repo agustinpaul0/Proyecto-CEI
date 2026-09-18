@@ -1,0 +1,2 @@
+///[Error:IC|2]
+interface I7 { C [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] e ( V [ ] o1 ) ; public void r ( char [ ] [ ] gM_K ) ; public void qV ( float aI ) ; void fG ( boolean f ) ; } class J_lS < M > implements N0 < Z > { static public void qC ( K [ ] [ ] [ ] v , QM [ ] lN_ ) { 2461 || - K_ . qY93 ( ) . o4 ( ) . x ++ == C_ . v ( ) . b8 = - "" ++ && ! 'P' * - true ? + false : false ; for ( var s_ : true % null ) this -- ; if ( ! "" ++ = - true ) ; G g ; } } class H_ implements CS_ { } class WM < B > extends RCE3_ { } interface It extends B2 { } IC

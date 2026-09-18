@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class CYC { }
+interface JOx8 { float [ ] v5j__ ( ) ; } interface DW < I > { }

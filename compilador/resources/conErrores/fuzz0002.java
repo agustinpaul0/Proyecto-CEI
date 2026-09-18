@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface U222 { void rv_ ( boolean [ ] p , O e , M [ ] ue ) ; void ( ) ; }
+///[Error:E_|2]
+E_ interface Q2T < V > extends N1_U < Qw > { } class C6 < H > extends Oj2V_ { }

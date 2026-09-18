@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Er_n extends VA_ { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class T4 { } class V7 implements F_ { static public Yy c ( ) { boolean [ ] l ; for ( Yj7 [ ] w : ! true ) var p = '\\' - null ; } }

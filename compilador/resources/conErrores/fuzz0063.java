@@ -1,2 +1,2 @@
-///[Error:{|2]
-class NL extends J0 < G > { void j7 ( ) { V [ ] p = 464536 - + true && - true , h6_597q ; } private float [ ] [ ] y ( J [ ] pD__ , int [ ] [ ] wI , Cw0 < S_ajy_ > fy ) { if ( "" ++ ) for ( H [ ] [ ] [ ] e ; ; ) float [ ] h , h ; ; } } class FW implements { public float [ ] [ ] [ ] r ; O u ; } class C_v_ { static void zSt ( T [ ] [ ] z , boolean e , A [ ] qcFct , K_T [ ] [ ] lz ) { var c4Er = '\"' > null ; } }
+///[Error:extends|2]
+interface T_1 extends AP < C_ > { Rk [ ] [ ] m ( UHTEC_ < U > tN7 ) ; void g ( char x ) ; public void bx_Erd ( ) ; public XI [ ] [ ] l ( V g , V [ ] [ ] [ ] n_ , V__ [ ] [ ] y , char d ) ; void d_ ( ) ; } extends D0___ < Eudd < N > > interface H4_k < A > extends VR { } class G_UJ < V > implements Z_ { private OY ( R g ) { } static private F7 w5 ( int [ ] [ ] z8 ) { } static private void fS2_pQ_ ( char [ ] [ ] c , int h , float n ) { true ; } }

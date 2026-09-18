@@ -1,0 +1,2 @@
+///[Error:static|2]
+class Y_t_ < Q > { private H vB_ ; static private Zd < G > [ ] [ ] lL ( ) { } static V a ( S8 s ) { V i ; return - 01d ; PL < Jh < E > > [ ] [ ] r , qA_ ; while ( - true ) return ; 4438 ; } } class CU < E > implements G_2 { public W3H ( ) { return - 33109 ; A [ ] b = false , x ; } public static void k ( ) { } } class W_n implements B_ < DF < N > > { private void static private void w ( P [ ] nw42bo ) { } private R o_ = + Px . hL ( ) . j ++ ; }

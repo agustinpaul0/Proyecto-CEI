@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Mg < U > { }
+class ZE implements Eh < T_X < TP < FmGB < C2f < Ny > > > > > { static public void w ( H_I__ [ ] j , PgQ [ ] u ) { ; { } char ho8 ; return '\b' ; } private void gxb ( W [ ] m ) { m ( ) . w ; if ( ! 429 ) { for ( ; ; ) ; } C [ ] [ ] [ ] [ ] [ ] b_I , o ; false ; boolean [ ] k27 ; } void y ( Z f , X [ ] [ ] [ ] s ) { char [ ] iS = ! 61725 <= - null , zR89 = null ; } int [ ] m ( ) { var kkrL = 544081 > + true ; } }

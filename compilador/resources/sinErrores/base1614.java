@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface CT extends O_ { public V c ( ) ; void p ( float o__ ) ; void b ( boolean f ) ; } class Kfjo { static private boolean [ ] iA ( int gw , Ln < Y > [ ] [ ] [ ] wi ) { } static public void x9 ( ) { T [ ] [ ] w ; } K [ ] r = true + Ufa . tJ8_ ( ) ++ ? ! 4d > this > - '\b' = 1.f >= - true : true <= "" ++ / null != ! null ? 7196796 : - 3D % false ; }

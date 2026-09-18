@@ -1,2 +1,2 @@
-///[Error:F8|2]
-F8
+///[Error:;|2]
+interface Y_ extends HN { float [ ] [ ] e ; } class J_ implements EZ < J > { }

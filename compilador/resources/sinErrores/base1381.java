@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class PL { } class YO1 < T > implements Ek < Y___ > { char n ( char [ ] [ ] ozG , char f_ , char [ ] [ ] u , boolean qD , boolean [ ] c ) { var kv = this . p ++ * "" ; } static void kyqA ( DPp < Ed < B1 > > l , Z za , float l ) { var cxz_j = + RW_1 . e ( ) ++ > ! null % true % + true ; } Ey < Gb9Z < M > > [ ] p ( E s , Y5L [ ] d_Q1k , H i ) { } WU__Wi e ( ) { return ; { } } } interface CW { } class Kx796 < U > { }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-void s ( Z_2 < J_ < E > > [ ] s7_ , JM62_Z < S_P < Jonp > > p ) ; interface Q_ < K > extends W_UN { } interface D_ extends S_H { M [ ] [ ] b ( T0 [ ] l4 ) ; } interface J3 < K > extends K_t < U > { }
+///[Error:px_|2]
+class Wx extends GK_d < X8 < J > > { } interface Y_EJr < P > extends JcLbyP_7 { } interface C6 < M > extends IG < M3 > { SU v_ ( J [ ] [ ] e , boolean [ ] p ) ; public void w ( px_ , I_ [ ] c ) ; void d ( ) ; void n0 ( ) ; }

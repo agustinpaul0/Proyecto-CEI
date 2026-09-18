@@ -1,0 +1,2 @@
+///[Error:.|2]
+interface W5 extends F1_ { } interface G_ < B > { } class U_ { static UEP_ [ ] cf ( ) { . xs int [ ] [ ] h_ , f , b , z , k9__ ; } I_t ( ) { } public J tM = J_ . ty ( ) . u ++ ; static private Cz w ( ) { if ( true ) int [ ] [ ] [ ] [ ] v , n602 ; else return ; } } class TEcyIr { } interface Dz < A > extends NC7_Wo < JK > { } class S4 implements U_M_G_ { } interface C_ < K > { public void u ( ) ; } class A_ < K > implements P4z < F > { }

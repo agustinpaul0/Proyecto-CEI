@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface YN < H > extends M6c { void jM ( ) ; int public void eDe ( S4 < Z_7 > [ ] [ ] [ ] [ ] t2_ , Z57 < C > p , P [ ] [ ] pn00_5 , L [ ] [ ] [ ] r ) ; } class X_ < Z > implements Gx { } interface K0 extends S1 { }
+///[Error:q|2]
+q ( B o_ , R_ [ ] [ ] iC , float [ ] [ ] q , Cz_ [ ] [ ] x_ , F6 [ ] [ ] [ ] zD1 , char [ ] [ ] s5 ) { }

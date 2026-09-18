@@ -100,11 +100,11 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         restoListaDeclaradores();
     }
 
-    // InicializacionDeDeclarador -> = ExpresionCondicionalOLambda | EPSILON
+    // InicializacionDeDeclarador -> = ExpresionCondicional | EPSILON
     private void inicializacionDeDeclarador() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeSentencias.INICIALIZACION_DE_DECLARADOR_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicionalOLambda();
+            sintaxis.expresiones().expresionCondicional();
         } else {
             // InicializacionDeDeclarador -> EPSILON
         }
@@ -147,12 +147,12 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
         }
     }
 
-    // VarLocal -> var idMetVar = ExpresionCondicionalOLambda
+    // VarLocal -> var idMetVar = ExpresionCondicional
     private void varLocal() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PR_VAR);
         match(TipoDeToken.ID_MV);
         match(TipoDeToken.OP_ASIGNACION);
-        sintaxis.expresiones().expresionCondicionalOLambda();
+        sintaxis.expresiones().expresionCondicional();
     }
 
     // Return -> return ExpresionOpcional

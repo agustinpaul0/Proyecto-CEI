@@ -1,2 +1,2 @@
-///[Error:SAT|2]
-SAT interface N_ extends DB3_ { } class TAY < H > implements P4 { } interface Mp extends E_j { }
+///[Error:(|2]
+class Co < V > extends D2 { private float [ ] ( float [ ] l ) { } } interface Zd_ extends T_p { void i_y ( ) ; X t ( ) ; O_ qN ( float n , CL_ [ ] n , J j , int z ) ; } class Kpx < Z > { }

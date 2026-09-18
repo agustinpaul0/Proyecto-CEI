@@ -1,2 +1,2 @@
-///[Error:.|2]
-class Jn < J > implements Vt { private void uNA1X . o }
+///[Error:>|2]
+class FSP_ < > { }

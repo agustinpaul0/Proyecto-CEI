@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class ZG < X > { } class Z_ implements Tx < W > { public float [ ] t1q = - null ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class D_ extends AK < O > { void d ( boolean [ ] u ) { } }

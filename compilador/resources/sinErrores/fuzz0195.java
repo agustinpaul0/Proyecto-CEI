@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class ERAy implements W_ < J > { public J_ ( Kl < RZ > aGp2 ) { } public void h ( CNt o , Y m ) { } } class C_ { private I q_9 ( ) { } } class N__53 implements G_C5kj < M > { static void k1k ( ) { return - false ; "rQ\b\'OF\'" . o ( ) . d4Q_n . x -- && ! true ; } } class K_4 extends Z8 < Qr_EK < K91 < P > > > { static void o ( ) { W [ ] o ; } public E_W_ ( IT s9 ) { var b = - false ; for ( 23.90951 ; ; ) return ; } public H_YS7mp ( E [ ] l_ ) { for ( true ; ; ) return ; ; this ++ ; } public void xL ( ) { } } interface Ab < W > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Cmv extends S_ { }

@@ -1,2 +1,2 @@
-///[Error:!|2]
-! 3. = false class X__D_h implements Y4 < X89 > { } interface CY extends V_ { }
+///[Error:z_a|2]
+interface Ci < G > extends GB_ { X [ ] i ( boolean [ ] [ ] [ ] z , z_a ) ; }

@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface CU < C > { } interface K4 < S > extends YW { } interface O5 < C > { } interface JX < X > extends T10_z { public void v5_0B ( ) ; } interface K_1JznZdf < S > { } class JB < P > { } interface R_ { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface O85 < S > extends Rg7 { } interface R_ extends CC4mK8 < O4 < UFAcy < S > > > { H [ ] [ ] t ( ) ; }

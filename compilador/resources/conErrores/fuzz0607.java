@@ -1,0 +1,2 @@
+///[Error:(|2]
+class NR6 extends U_9J < I > { Y98 < C > o ( int v , char [ ] [ ] [ ] e , W s , char o , O [ ] g7 ) { ; } static void p ( int k , WD_M < ZQN_ < N > > n__B ) { char [ ] [ ] q = 747 ; if ( ! this . n -- ) U a ; for ( var t4b6 : false ) CM . u ( ) -- ; } } interface Gt extends Yp8 { public T_ < Y__E_ < JP_O > > [ ] ( YFi07 a ) ; public I [ ] p ( ) ; void n ( ) ; } interface Ut7 extends G_ < MD > { Jbf bV ( ) ; void m1 ( ) ; void a ( int yT4 ) ; }

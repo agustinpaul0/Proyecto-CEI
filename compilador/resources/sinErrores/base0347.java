@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class NL extends J0 < G > { public M47 ( int [ ] [ ] [ ] ii , boolean [ ] wu0MUr3 ) { var d = - 59628 ; if ( ! false ) { } } public PA ( P [ ] kS , char [ ] [ ] [ ] [ ] [ ] mq6_ ) { { if ( ! true ) { } var y = true ; } } } interface JJ_ extends QDQ { void c ( ) ; void h ( H_ a_w_ ) ; } class Zp < D > implements H_m { } interface Yb { void b9Yv_ ( ) ; } class W__St < O > implements Ly { static void e ( A [ ] qcFct , K_T [ ] [ ] lz ) { ; return ; } static char c ( boolean [ ] q ) { } }
+interface U8_q < Y > extends GI < Y > { void e___ ( Ll4_ < F > [ ] q ) ; }

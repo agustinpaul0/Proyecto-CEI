@@ -1,2 +1,2 @@
-///[Error:W|2]
-W class Q_3 { }
+///[Error:<|2]
+interface H_ extends < TbI < U > > { void m ( ) ; I w ( ) ; }

@@ -1,2 +1,2 @@
 ///[Error:extends|2]
-interface AG < E > { P_ [ ] bZD ( ) ; } class Ds { } interface ZvV extends H10J_0 < P > { } class H2 extends U_ { Y j_1X ( ) { } public static boolean [ ] [ ] [ ] [ ] [ ] d ( float [ ] z_ , int a4z7 ) { } private V27R_ < Fg < R_W > > [ ] c ; } class A_rUx < H > extends U_ < QQ_ > { } interface Y2j { boolean yb9 ( ) ; } extends XC < Rh > interface TF4 < X > { } interface R0 < J > extends I_ { void n ( ) ; void v ( Q e ) ; public void e ( ) ; } interface N8 < Z > { } class BI < Q > extends UVM { public void r_7 ( ) { ; } public Q2g ( ) { } boolean l ( ) { } }
+extends R__ < TRz_ < G4 < T > > > interface Ml extends T_M { }

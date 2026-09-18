@@ -1,2 +1,2 @@
-///[Error:N|2]
-N interface Y05E { char [ ] [ ] [ ] [ ] h_ ( ) ; }
+///[Error:SR|2]
+class I9 < U > { } SR

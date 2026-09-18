@@ -34,7 +34,6 @@ OPERADORES = [
     (">=", "OP_MAYOR_IGUAL", None), ("<=", "OP_MENOR_IGUAL", None),
     ("&&", "OP_AND", None), ("||", "OP_OR", None),
     ("++", "OP_INCREMENTO", None), ("--", "OP_DECREMENTO", None),
-    ("->", "OP_FLECHA", "lambda"),
     (">", "OP_MAYOR", None), ("<", "OP_MENOR", None), ("!", "OP_NEGACION", None),
     ("=", "OP_ASIGNACION", None), ("%", "OP_MODULO", None), ("+", "OP_SUMA", None),
     ("-", "OP_RESTA", None), ("*", "OP_MULT", None), ("/", "OP_DIV", None),
@@ -122,7 +121,7 @@ def lexer_antlr():
     # Uno a nueve dígitos: diez ya es un error léxico y el fuzzer no debe generarlo.
     lineas.append("INT_LITERAL : DIGITO DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? DIGITO? ;")
     lineas.append("CHAR_LITERAL : '\\'' ( CHAR_COMUN | ESCAPE ) '\\'' ;")
-    lineas.append("LIT_STRING : '\"' ( STRING_COMUN | ESCAPE )* '\"' ;")
+    lineas.append("LIT_STRING : '\"' ( STRING_COMUN | ESCAPE_DE_STRING )* '\"' ;")
     lineas.append("ID_CLASE : MAYUS ( MAYUS | MINUS | DIGITO | '_' )+ ;")
     lineas.append("ID_GEN : MAYUS ;")
     lineas.append("ID_MV : MINUS ( MAYUS | MINUS | DIGITO | '_' )* ;")
@@ -138,6 +137,10 @@ def lexer_antlr():
     # Sin `\\uXXXX`: el escape Unicode es un asunto LÉXICO y no de esta etapa. Lo
     # cubre entero el corpus léxico.
     lineas.append("fragment ESCAPE : '\\\\' [btnfr\"'\\\\] ;")
+    # Adentro de un string no se escapa la barra: Aspectos Léxicos §2.3.3 da una
+    # regla posicional —la comilla de cierre nunca está antecedida por `\`—, así
+    # que `"\\"` no cierra en MiniJava y sí en un oráculo que sigue a Java.
+    lineas.append("fragment ESCAPE_DE_STRING : '\\\\' [btnfr\"'] ;")
     lineas.append("fragment EXPONENTE : [eE] [+-]? DIGITO+ ;")
     lineas.append("fragment SUFIJO : [fFdD] ;")
     lineas.append("")
@@ -173,7 +176,7 @@ def lexer_javacc():
     entradas.append("<INT_LITERAL: (<DIGITO>) (<DIGITO>)? (<DIGITO>)? (<DIGITO>)? (<DIGITO>)?"
                     " (<DIGITO>)? (<DIGITO>)? (<DIGITO>)? (<DIGITO>)?>")
     entradas.append('<CHAR_LITERAL: "\'" ( <CHAR_COMUN> | <ESCAPE> ) "\'">')
-    entradas.append('<LIT_STRING: "\\"" ( <STRING_COMUN> | <ESCAPE> )* "\\"">')
+    entradas.append('<LIT_STRING: "\\"" ( <STRING_COMUN> | <ESCAPE_DE_STRING> )* "\\"">')
     entradas.append("<ID_CLASE: <MAYUS> ( <MAYUS> | <MINUS> | <DIGITO> | \"_\" )+>")
     entradas.append("<ID_GEN: <MAYUS>>")
     entradas.append("<ID_MV: <MINUS> ( <MAYUS> | <MINUS> | <DIGITO> | \"_\" )*>")
@@ -183,6 +186,7 @@ def lexer_javacc():
     entradas.append('<#CHAR_COMUN: ["\\u0020"-"\\u0026","\\u0028"-"\\u005b","\\u005d"-"\\u007e"]>')
     entradas.append('<#STRING_COMUN: ["\\u0020"-"\\u0021","\\u0023"-"\\u005b","\\u005d"-"\\u007e"]>')
     entradas.append('<#ESCAPE: "\\\\" ["b","t","n","f","r","\\"","\'","\\\\"]>')
+    entradas.append('<#ESCAPE_DE_STRING: "\\\\" ["b","t","n","f","r","\\"","\'"]>')
     entradas.append('<#EXPONENTE: ["e","E"] (["+","-"])? (<DIGITO>)+>')
     entradas.append('<#SUFIJO: ["f","F","d","D"]>')
     for i, entrada in enumerate(entradas):

@@ -534,8 +534,8 @@ encadenamiento (indexar un arreglo existente). Nunca compiten.
 
 - `++` y `--` son tokens del léxico sin ninguna regla que los use.
 - `float` y `floatLiteral` tampoco tienen lugar, y el léxico de la Etapa 1 los emite.
-- `for`, `private`, `?` y `->` no están **ni en la gramática ni en el léxico**: los agregan cuatro
-  de los logros de la Etapa 2.
+- `for`, `private` y `?` no están **ni en la gramática ni en el léxico**: los agregan tres de los
+  logros de la Etapa 2.
 
 ## 9. Qué chequea y qué no chequea el analizador sintáctico
 
@@ -556,11 +556,3 @@ esté bien formada; que un método tenga cuerpo y una interfaz no.
 | `m(1,2,3)` con `m` de un argumento | aridad contra la declaración |
 | `int x; int x;` | duplicados |
 | `return;` en un método `int` | compatibilidad del retorno |
-| una lambda que usa una variable de afuera | **captura de variables** |
-
-El último caso merece atención: el logro *MiniLambdas E2* prohíbe la captura de variables locales
-y parámetros, pero **eso no es decidible sintácticamente** — el parser no sabe qué nombres están
-en alcance —, así que queda para el semántico. Del logro, el sintáctico impone la **forma**
-(parámetros sin tipo, cuerpo de una única expresión, sin llaves) más dos restricciones que tampoco
-son expresables en la gramática pero sí decidibles con lo que se acaba de leer: que el parámetro sea
-un identificador sin tipo.

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface H6L < V > { void s1k_nm ( H_ < DonE > [ ] [ ] [ ] [ ] b , K7 [ ] [ ] p7 ) ; void j ( Mr < R > [ ] [ ] [ ] [ ] [ ] u_t , C_ < > [ ] [ ] [ ] s_ ) ; J1 < SzJ > nS ( ) ; S y_ ( ) ; } class P_p { } interface KEH < J > extends Y7_ < A > { } class Utj implements U1_ < J > { public Oc_ ( Kw [ ] g_4 , Y [ ] [ ] [ ] [ ] pkn ) { } }
+///[Error:{|2]
+interface C9M extends { }

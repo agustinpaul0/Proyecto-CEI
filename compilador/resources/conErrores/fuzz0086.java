@@ -1,2 +1,2 @@
-///[Error:(|2]
-( boolean [ ] [ ] vk ) { }
+///[Error:Gj|2]
+Gj

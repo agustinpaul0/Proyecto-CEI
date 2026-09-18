@@ -1,2 +1,2 @@
-///[Error:<|2]
-class B9 < J > implements D9p_0 { } interface Q6 extends < J > { void r ( ) ; }
+///[Error:if|2]
+if ( - WPy . aHb_d_ ( ) -- < 08730 = true > - 'p' ) { ; } interface M8 < G > { } interface Yz_ < C > { }

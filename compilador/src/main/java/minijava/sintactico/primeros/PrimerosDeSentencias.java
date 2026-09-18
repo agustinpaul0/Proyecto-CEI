@@ -74,7 +74,7 @@ public final class PrimerosDeSentencias {
     // SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;
     public static final ConjuntoDePrimeros SENTENCIA_DESDE_ID_CLASE_PUNTO = de(TipoDeToken.PUNTO);
 
-    // VarLocal -> var idMetVar = ExpresionCondicionalOLambda
+    // VarLocal -> var idMetVar = ExpresionCondicional
     public static final ConjuntoDePrimeros VAR_LOCAL_VAR = de(TipoDeToken.PR_VAR);
 
     // ListaDeclaradores -> idMetVar InicializacionDeDeclarador RestoListaDeclaradores
@@ -86,7 +86,7 @@ public final class PrimerosDeSentencias {
     // RestoListaDeclaradores -> EPSILON
     public static final ConjuntoDePrimeros RESTO_LISTA_DECLARADORES = de();
 
-    // InicializacionDeDeclarador -> = ExpresionCondicionalOLambda
+    // InicializacionDeDeclarador -> = ExpresionCondicional
     public static final ConjuntoDePrimeros INICIALIZACION_DE_DECLARADOR_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
 

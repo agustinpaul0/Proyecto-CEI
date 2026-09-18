@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Z2A { } interface M_ < K > { }
+class F__2 { float h ; POALx_ < E > [ ] [ ] gN3J ; }

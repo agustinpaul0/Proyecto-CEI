@@ -1,2 +1,2 @@
-///[Error:i|2]
-class Cp { public PgV1 ( ) { } } interface DVj { } interface Hh extends OdR < C > { void o ( ) ; } interface DzMS < Q > { LM [ ] [ ] [ ] k8rP2 ( ) ; } class T_ extends UhQ { void c ( i ) { } } interface Gh_ extends D_ { }
+///[Error:b3|2]
+class V_f < K > extends TH { static public b3 ( L a ) { } S a = NX . z ( ) [ - false ] . z_ . c ( ) ++ ; } interface E2 < A > extends Ra0_A { } interface Y_ extends O_plfl < L > { }

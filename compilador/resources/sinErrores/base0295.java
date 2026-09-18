@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface T2 { int [ ] j_ ( ) ; void u34 ( ) ; } class SmWC implements D_ { D x ( ) { } } interface Mh < T > extends Jkx0yO { } interface O0zlr { } interface A_r < K > extends W1s3 < F > { } interface Wd { } interface T_ < U > { void mb ( int w , boolean [ ] m2I , O_O [ ] p ) ; S [ ] [ ] [ ] z ( B kc5H , P u ) ; boolean m ( boolean [ ] [ ] q ) ; }
+interface KP03Fn_ < I > { } class Q_ < C > { static private void l ( ) { if ( - true || + 13099 && "" = 2189587 ? ! false : - true ) while ( ! this ) while ( + true ) DfI_ . j ( ) -- ; else if ( + 725 && ! null ) return ; else for ( ; ; ) ; } } interface P_Xs extends Ac_42 < P84 > { } class C_ < S > extends Fs_D8 { }

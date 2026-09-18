@@ -1,2 +1,2 @@
-///[Error:j_|2]
-interface Yf66 < F > extends N18 < L8_ > { void i3 ( ) ; } interface Tk_ { char h ( int v , K z2 ) ; j_ void k ( ZP x , O [ ] k , int [ ] lr9 , M4 < V > d_ , P [ ] j ) ; void yj4 ( ) ; }
+///[Error:IW9|2]
+class Qqu_ implements Yj < I > { } class FI_ < Q > { static boolean [ ] [ ] j IW9 < P0 > { { } return ; } } class J0 < E > implements DM { } interface Y2ukP8c { } interface O7_ < K > { } interface D3 { }

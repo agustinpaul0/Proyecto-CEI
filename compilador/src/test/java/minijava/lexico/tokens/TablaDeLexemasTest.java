@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// La tabla es la ÚNICA fuente de la correspondencia tipo <-> lexema para los 53
+// La tabla es la ÚNICA fuente de la correspondencia tipo <-> lexema para los 52
 // tokens que la tienen fija. Estos dos tests la cierran por los dos lados: que no
 // falte ninguno, y que el autómata emita para cada uno lo que la tabla promete.
 @Tag("lexico")
@@ -32,7 +32,7 @@ class TablaDeLexemasTest {
             TipoDeToken.LIT_STRING, TipoDeToken.FLOAT_LITERAL);
 
     @Test
-    void cadaUnoDeLos60TokensOTieneLexemaFijoOEsDeLexemaVariable() {
+    void cadaUnoDeLos59TokensOTieneLexemaFijoOEsDeLexemaVariable() {
         for (TipoDeToken tipo : TipoDeToken.values()) {
             boolean fijo = TablaDeLexemas.lexemaFijoDe(tipo).isPresent();
             boolean variable = DE_LEXEMA_VARIABLE.contains(tipo);
@@ -43,9 +43,9 @@ class TablaDeLexemasTest {
     }
 
     @Test
-    void laTablaCubreExactamenteLos53DeLexemaFijo() {
-        assertEquals(60, TipoDeToken.values().length);
-        assertEquals(53, TablaDeLexemas.lexemasFijos().size());
+    void laTablaCubreExactamenteLos52DeLexemaFijo() {
+        assertEquals(59, TipoDeToken.values().length);
+        assertEquals(52, TablaDeLexemas.lexemasFijos().size());
         assertEquals(23, TablaDeLexemas.palabrasClave().size());
     }
 

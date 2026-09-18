@@ -1,0 +1,2 @@
+///[Error:{|2]
+interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } interface Zq < M > extends A2 { public void k ( ) ; } class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ qF ( T [ ] [ ] k , boolean gE ) { var u = true ; for ( B2 h9 ; ; ) M t ; char y_ , t , zs_p__ ; { } } static void o { } private static QW < F_uLDp < Yj > > [ ] kB ( ) { } private boolean x ( ) { C [ ] rp ; } public static int z ( ) { boolean y_9 ; ; } public static Y w3Ys ( ) { { } ; } public float [ ] b_3kO_ ; void a ( ) { } }

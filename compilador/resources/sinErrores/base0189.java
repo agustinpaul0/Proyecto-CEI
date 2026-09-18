@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class W3G < Z > implements Df < L_ > { } interface B1Pk__ < Q > extends G_ { void ov7_d ( H f8I ) ; void pl ( ) ; } interface HjW__ < I > extends F_ < Z1 > { void p9 ( char [ ] h2_ , M_EQG < K > [ ] [ ] n , C [ ] c7 , char [ ] u , char pjV5p , OELNN t , H3ZO_ [ ] u ) ; } interface Gc { } interface Pi extends MW < ZqsDY3__ > { char e ( int [ ] h ) ; } interface COi_45 { } interface D_ { void pp ( ) ; }
+interface O_ extends UC < M > { } interface G_5_ < G > { } class Bs < H > extends J_ < P > { }

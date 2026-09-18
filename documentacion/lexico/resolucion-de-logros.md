@@ -5,7 +5,7 @@ está implementado y **cómo verificarlo** ejecutando algo concreto.
 
 El proyecto persigue **los ocho desde el primer día**, no como agregados posteriores sobre un mínimo
 producto viable. Los cuatro que cambian el comportamiento observable del compilador están **siempre
-activos**: el compilador reconoce MiniJava con todos los logros incorporados y no es configurable.
+activos**.
 
 ## Resumen
 

@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface F_9_ extends CL { } interface RJ < W > extends BGp < F > { } class L_38 < Z > { int [ ] a ; } ( A q9 )
+///[Error:<|2]
+interface KpH extends Ftt < GO__a < < V > > > { }

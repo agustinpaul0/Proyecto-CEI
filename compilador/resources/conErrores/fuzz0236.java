@@ -1,2 +1,2 @@
-///[Error:{|2]
-class HKvD_5 < W > { } class { }
+///[Error:[|2]
+class Y4 implements Gd < X > { static private int [ ] [ ] giu ( Y c ) { for ( i [ ! false ] != 5446 = + null ; this && 34.040f = - null ; "" -- - null ) ; return + true = true ; if ( ! false ? ! false : + true ) while ( - true ) Ub [ ] n , o , d ; else var e = false ; } private void dt ( ) { ; return - false ; } ABc t ; } interface Q4r extends Rz2 { public void m ( ) ; [ ] [ ] [ ] [ ] public Sv [ ] h ( ) ; }

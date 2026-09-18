@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Q2 { void b5 ( L [ ] c , V_ i ) ; }
+interface C4 < R > extends VP < U > { } interface W7 < V > extends Lg < Y > { } class J_V { static private float b ( ) { } X e ( float [ ] qyc ) { } } interface W52 extends V1j { }

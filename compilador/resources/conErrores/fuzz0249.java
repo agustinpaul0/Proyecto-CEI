@@ -1,2 +1,2 @@
 ///[Error:[|2]
-[ ] class X_ < Z > implements Gx { } interface K0 extends S1 { }
+interface L5 extends Y_ { public [ ] [ ] [ ] [ ] g ( ) ; O [ ] [ ] ro6 ( boolean o , N [ ] a , int [ ] [ ] [ ] [ ] [ ] n ) ; }

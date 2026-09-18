@@ -1,2 +1,2 @@
-///[Error:void|2]
-void k ( ) { var r = "" ; } class H_8 implements MMh < P1 < Qs13X5 > > { } interface VB { }
+///[Error:TBc|2]
+interface LR < B > extends N_Gx < V > { } class B_ < P > extends VO < Y > { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] q TBc ( ) { { } } }

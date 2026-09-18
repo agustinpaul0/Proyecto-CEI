@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface PI_4 < U > { void e ( ) ; } interface KI { M [ ] [ ] [ ] [ ] yh_ ( ) ; } class Gf7 implements Eo1M3T { } interface In extends P_8 < Zf4 < X_ > > { void f__ ( ) ; public void jS ( D_GUh__q < H > k ) ; } class R0b extends R4E { } interface Bw < S > extends R9 < E > { public void j ( P [ ] z , M_8S q_U ) ; } class Em extends ZMw < S > { } interface Ux extends P_OJ < RU1 < B83N > > { }

@@ -13,64 +13,42 @@ import static minijava.sintactico.primeros.ConjuntoDePrimeros.de;
 // el analizador se lea contra la gramatica del informe renglon por renglon.
 public final class PrimerosDeExpresiones {
 
-    // Expresion -> ExpresionCondicionalOLambda RestoExpresion
-    public static final ConjuntoDePrimeros EXPRESION_EXPRESION_CONDICIONAL_OLAMBDA = de(
+    // Expresion -> ExpresionCompuesta RestoExpresion
+    public static final ConjuntoDePrimeros EXPRESION_EXPRESION_COMPUESTA = de(
             TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // RestoExpresion -> OperadorAsignacion ExpresionCondicionalOLambda
+    // RestoExpresion -> OperadorAsignacion ExpresionCondicional
     public static final ConjuntoDePrimeros RESTO_EXPRESION_OPERADOR_ASIGNACION = de(
             TipoDeToken.OP_ASIGNACION);
 
-    // RestoExpresion -> EPSILON
-    public static final ConjuntoDePrimeros RESTO_EXPRESION = de();
+    // RestoExpresion -> RestoCondicional
+    public static final ConjuntoDePrimeros RESTO_EXPRESION_RESTO_CONDICIONAL = de(TipoDeToken.SIGNO_PREGUNTA);
 
     // OperadorAsignacion -> =
     public static final ConjuntoDePrimeros OPERADOR_ASIGNACION_ASIGNACION = de(TipoDeToken.OP_ASIGNACION);
 
-    // ExpresionCondicionalOLambda -> OperadorUnario Operando ColaTrasOperandoSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_CONDICIONAL_OLAMBDA_OPERADOR_UNARIO = de(
-            TipoDeToken.OP_NEGACION, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA);
+    // ExpresionCondicional -> ExpresionCompuesta RestoCondicional
+    public static final ConjuntoDePrimeros EXPRESION_CONDICIONAL_EXPRESION_COMPUESTA = de(
+            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
+            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
+            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
+            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // ExpresionCondicionalOLambda -> Primitivo ColaTrasOperandoSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_CONDICIONAL_OLAMBDA_PRIMITIVO = de(
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL,
-            TipoDeToken.INT_LITERAL, TipoDeToken.PR_NULL, TipoDeToken.PR_TRUE);
-
-    // ExpresionCondicionalOLambda -> ExpresionDesdePrimarioOLambda
-    public static final ConjuntoDePrimeros EXPRESION_CONDICIONAL_OLAMBDA_EXPRESION_DESDE_PRIMARIO_OLAMBDA = de(
-            TipoDeToken.PAREN_A, TipoDeToken.ID_CLASE, TipoDeToken.ID_MV, TipoDeToken.PR_NEW,
-            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS);
-
-    // ExpresionDesdePrimarioOLambda -> idClase . idMetVar ArgsActuales ColaDesdePrimarioSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_ID_CLASE = de(
-            TipoDeToken.ID_CLASE);
-
-    // ExpresionDesdePrimarioOLambda -> this ColaDesdePrimarioSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_THIS = de(TipoDeToken.PR_THIS);
-
-    // ExpresionDesdePrimarioOLambda -> stringLiteral ColaDesdePrimarioSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_STRING_LITERAL = de(
-            TipoDeToken.LIT_STRING);
-
-    // ExpresionDesdePrimarioOLambda -> Creacion ColaDesdePrimarioSinAsignacion
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_CREACION = de(TipoDeToken.PR_NEW);
-
-    // ExpresionDesdePrimarioOLambda -> idMetVar AccesoLlamadaOLambda
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_ID_MET_VAR = de(
-            TipoDeToken.ID_MV);
-
-    // ExpresionDesdePrimarioOLambda -> ParentizadaOLambda
-    public static final ConjuntoDePrimeros EXPRESION_DESDE_PRIMARIO_OLAMBDA_PARENTIZADA_OLAMBDA = de(
-            TipoDeToken.PAREN_A);
-
-    // RestoCondicional -> ? Expresion : ExpresionCondicionalOLambda
+    // RestoCondicional -> ? Expresion : ExpresionCondicional
     public static final ConjuntoDePrimeros RESTO_CONDICIONAL_SIGNO_PREGUNTA = de(TipoDeToken.SIGNO_PREGUNTA);
 
     // RestoCondicional -> EPSILON
     public static final ConjuntoDePrimeros RESTO_CONDICIONAL = de();
+
+    // ExpresionCompuesta -> ExpresionBasica RestoExpresionCompuesta
+    public static final ConjuntoDePrimeros EXPRESION_COMPUESTA_EXPRESION_BASICA = de(
+            TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
+            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
+            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
+            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta
     public static final ConjuntoDePrimeros RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO = de(
@@ -186,30 +164,17 @@ public final class PrimerosDeExpresiones {
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL,
             TipoDeToken.INT_LITERAL, TipoDeToken.PR_NULL, TipoDeToken.PR_TRUE);
 
-    // ExpresionSinIdClase -> PrimarioSinIdClaseNiLambda ColaDeExpresionDesdePrimario
-    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE_NI_LAMBDA = de(
-            TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS);
+    // ExpresionSinIdClase -> PrimarioSinIdClase ColaDeExpresionDesdePrimario
+    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PRIMARIO_SIN_ID_CLASE = de(
+            TipoDeToken.PAREN_A, TipoDeToken.ID_MV, TipoDeToken.PR_NEW, TipoDeToken.LIT_STRING,
+            TipoDeToken.PR_THIS);
 
-    // ExpresionSinIdClase -> idMetVar AccesoLlamadaOLambda RestoExpresion
-    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_ID_MET_VAR = de(TipoDeToken.ID_MV);
-
-    // ExpresionSinIdClase -> ParentizadaOLambda RestoExpresion
-    public static final ConjuntoDePrimeros EXPRESION_SIN_ID_CLASE_PARENTIZADA_OLAMBDA = de(
-            TipoDeToken.PAREN_A);
-
-    // ColaTrasOperando -> ColaTrasOperandoSinAsignacion RestoExpresion
-    public static final ConjuntoDePrimeros COLA_TRAS_OPERANDO_COLA_TRAS_OPERANDO_SIN_ASIGNACION = de(
+    // ColaTrasOperando -> RestoExpresionCompuesta RestoExpresion
+    public static final ConjuntoDePrimeros COLA_TRAS_OPERANDO_RESTO_EXPRESION_COMPUESTA = de(
             TipoDeToken.OP_DISTINTO, TipoDeToken.OP_MODULO, TipoDeToken.OP_AND, TipoDeToken.OP_MULT,
             TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA, TipoDeToken.OP_DIV, TipoDeToken.OP_MENOR,
             TipoDeToken.OP_MENOR_IGUAL, TipoDeToken.OP_ASIGNACION, TipoDeToken.OP_IGUAL,
             TipoDeToken.OP_MAYOR, TipoDeToken.OP_MAYOR_IGUAL, TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.OP_OR);
-
-    // ColaTrasOperandoSinAsignacion -> RestoExpresionCompuesta RestoCondicional
-    public static final ConjuntoDePrimeros COLA_TRAS_OPERANDO_SIN_ASIGNACION_RESTO_EXPRESION_COMPUESTA = de(
-            TipoDeToken.OP_DISTINTO, TipoDeToken.OP_MODULO, TipoDeToken.OP_AND, TipoDeToken.OP_MULT,
-            TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA, TipoDeToken.OP_DIV, TipoDeToken.OP_MENOR,
-            TipoDeToken.OP_MENOR_IGUAL, TipoDeToken.OP_IGUAL, TipoDeToken.OP_MAYOR,
-            TipoDeToken.OP_MAYOR_IGUAL, TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.OP_OR);
 
     // ColaDeExpresionDesdePrimario -> RestoReferencia PosfijoOpcional ColaTrasOperando
     public static final ConjuntoDePrimeros COLA_DE_EXPRESION_DESDE_PRIMARIO_RESTO_REFERENCIA = de(
@@ -219,14 +184,6 @@ public final class PrimerosDeExpresiones {
             TipoDeToken.OP_ASIGNACION, TipoDeToken.OP_IGUAL, TipoDeToken.OP_MAYOR,
             TipoDeToken.OP_MAYOR_IGUAL, TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.CORCHETE_A,
             TipoDeToken.OP_OR);
-
-    // ColaDesdePrimarioSinAsignacion -> RestoReferencia PosfijoOpcional ColaTrasOperandoSinAsignacion
-    public static final ConjuntoDePrimeros COLA_DESDE_PRIMARIO_SIN_ASIGNACION_RESTO_REFERENCIA = de(
-            TipoDeToken.OP_DISTINTO, TipoDeToken.OP_MODULO, TipoDeToken.OP_AND, TipoDeToken.OP_MULT,
-            TipoDeToken.OP_SUMA, TipoDeToken.OP_INCREMENTO, TipoDeToken.OP_RESTA, TipoDeToken.OP_DECREMENTO,
-            TipoDeToken.PUNTO, TipoDeToken.OP_DIV, TipoDeToken.OP_MENOR, TipoDeToken.OP_MENOR_IGUAL,
-            TipoDeToken.OP_IGUAL, TipoDeToken.OP_MAYOR, TipoDeToken.OP_MAYOR_IGUAL,
-            TipoDeToken.SIGNO_PREGUNTA, TipoDeToken.CORCHETE_A, TipoDeToken.OP_OR);
 
     private PrimerosDeExpresiones() {
     }

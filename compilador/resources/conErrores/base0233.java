@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface E_84 { } interface U__ < Z > { } interface H4 < H > extends { X [ ] de ( ) ; }
+///[Error:extends|2]
+class J_TJ < S > { boolean x ( int k ) { } } interface extends Kl { public void s ( ) ; } interface T_2oG { }

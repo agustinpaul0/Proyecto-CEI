@@ -1,2 +1,2 @@
-///[Error:public|2]
-class ZG < X > { } class Z_ implements Tx < W > { int [ ] t1q ; void h ( N4 < MX9n > [ ] m ) public USlN_ ( char [ ] [ ] i ) { } }
+///[Error:<|2]
+interface YB extends < F0R_ > { } class O1M < J > { private static D z_ ( int [ ] x6_ , B o ) { } }

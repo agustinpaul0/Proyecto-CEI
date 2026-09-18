@@ -1,0 +1,2 @@
+///[Error:(|2]
+interface W4V extends Dr < I > { } interface N_6_ extends I_ < G > { ( Y sk ) } interface FN0jbd { void yY1p ( V [ ] n_Y , M o ) ; } interface E43 extends J5D46ZL { void l ( I_ < A > b ) ; void nX ( ) ; public X [ ] [ ] l ( float t ) ; } interface E_ { boolean d_ ( ) ; } class Fi < I > implements Q_U { static private T0p < D_8 < I > > p ( P k , A_5 nu ) { true / true ; K [ ] mp ; ; int k_oeJZ_X ; } } class R_ < I > extends X_ < Y > { }

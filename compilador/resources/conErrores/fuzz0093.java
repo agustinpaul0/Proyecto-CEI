@@ -1,2 +1,2 @@
-///[Error:V2|2]
-class W4 < Q > extends I3 < MS < EWL > > { } V2 < I >
+///[Error:}|2]
+class U5 { static void yy6 ( ) { } private void e ( float q ) { null % - 'i' == false - - true ; } S aX ( ) }

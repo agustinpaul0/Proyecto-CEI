@@ -1,2 +1,2 @@
-///[Error:{|2]
-class KN < W > implements JJ5_ < D6 > { } interface L6 < A > { public char [ ] j ( ) ; } interface F0 extends Wk7iP < W > { } class E8f7 extends W_G4 { { } }
+///[Error:,|2]
+class Y6u_ { static public void y6 , G [ ] gN } class H1_ { }

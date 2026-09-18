@@ -1,0 +1,2 @@
+///[Error:{|2]
+class Ib < Z > extends G0_s < D > { static private ZN m_ { } private D [ ] jJ5l ( U [ ] [ ] [ ] l6 , V2 < C2Kla8_h > [ ] [ ] [ ] i ) { if ( + this -- < 1F ) while ( false ) B [ ] s ; } } interface DT < Y > { } class M3q < F > implements H__l_g1 { static void lnN ( ) { } char x = + "" . i ( ) ++ == 3e+7d && false && this < - false == + true ? '%' > + this ++ = null <= ! true : - "" . n ++ % "" -- - 'M' < true ? ! true != + true : null ; public static NwM [ ] [ ] b ( ) { boolean m ; } }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Af0 < S > { } class D_ < N > implements Vd { } interface L7_ < N > { } class TL < X > implements HH1w < > { }
+///[Error:static|2]
+class DmH { static E__ [ ] [ ] [ ] [ ] m ( ) { { } } private void static void y_ ( X [ ] [ ] wn , boolean [ ] c , Ek [ ] eN ) { while ( + E_ . m ( ) -- ? true : false ) var z = + 035389 ; } public O_S < T > j ; static public NC [ ] x ( ) { } } class E_ < P > { }

@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class ERAy implements W_ < J > { J_ < U > kk8_9gp2 ( ) { return - false / - false ; } public Y6 ( ) { } } class C_ { public X1 ( ) { } } class YN { B_53 [ ] [ ] aW ; public BVRj ( Kxi_ < C > l ) { var e5 = true + + null ; while ( - true ) { { } } } static void hN ( int [ ] [ ] q ) { } }
+interface G4_Q3 { } class IG_ < U > implements P0sf < A > { private static void wg ( XM [ ] o , int n_N , S e ) { ; } static void p ( char [ ] [ ] [ ] [ ] q ) { } } class C1lA60 < H > { private static W i ( ) { for ( int lLP ; ; ) ; for ( + this ++ ; ; ) ; } }

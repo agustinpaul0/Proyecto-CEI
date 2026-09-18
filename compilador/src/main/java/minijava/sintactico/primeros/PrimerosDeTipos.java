@@ -49,17 +49,17 @@ public final class PrimerosDeTipos {
     // TipoPrimitivo -> float
     public static final ConjuntoDePrimeros TIPO_PRIMITIVO_FLOAT = de(TipoDeToken.PR_FLOAT);
 
-    // TipoGenericoOpcional -> < ArgumentoDeTipo >
+    // TipoGenericoOpcional -> < InstanciadoOParametrico >
     public static final ConjuntoDePrimeros TIPO_GENERICO_OPCIONAL_MENOR = de(TipoDeToken.OP_MENOR);
 
     // TipoGenericoOpcional -> EPSILON
     public static final ConjuntoDePrimeros TIPO_GENERICO_OPCIONAL = de();
 
-    // ArgumentoDeTipo -> idGen
-    public static final ConjuntoDePrimeros ARGUMENTO_DE_TIPO_ID_GEN = de(TipoDeToken.ID_GEN);
+    // InstanciadoOParametrico -> idGen
+    public static final ConjuntoDePrimeros INSTANCIADO_OPARAMETRICO_ID_GEN = de(TipoDeToken.ID_GEN);
 
-    // ArgumentoDeTipo -> idClase TipoGenericoOpcional
-    public static final ConjuntoDePrimeros ARGUMENTO_DE_TIPO_ID_CLASE = de(TipoDeToken.ID_CLASE);
+    // InstanciadoOParametrico -> idClase TipoGenericoOpcional
+    public static final ConjuntoDePrimeros INSTANCIADO_OPARAMETRICO_ID_CLASE = de(TipoDeToken.ID_CLASE);
 
     // ArgsFormales -> ( ListaArgsFormalesOpcional )
     public static final ConjuntoDePrimeros ARGS_FORMALES_PAREN_A = de(TipoDeToken.PAREN_A);

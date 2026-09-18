@@ -1,2 +1,2 @@
-///[Error:p|2]
-class SO16 < L > { } interface UA { } interface MG7 { } interface VujzVK { void s3 ( ) ; void f ( ) ; } p
+///[Error:>|2]
+class Y_B implements H5a { } class UK extends O_ < U > { int [ ] b = "k" . jSs ( ) . fW ( ) . lI ( ) . xA . q ; } interface X2 < > { public void qDx ( ) ; public void m ( ) ; I [ ] p ( ) ; }

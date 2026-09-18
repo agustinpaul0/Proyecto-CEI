@@ -328,10 +328,6 @@ AMBIGUEDADES_DECLARADAS = {
     "DimensionesConTamanioOpcional":
         "`new int[3][4]` — heredada de la gramática de la cátedra; se resuelve voraz, "
         "consumiendo el `[` como otra dimensión de la creación, que es lo que hace Java",
-    "RestoExpresion":
-        "cuerpo de lambda voraz — `x -> a = b` es `x -> (a = b)`. Es la única que sobrevive "
-        "de la familia del cuerpo de lambda: al vivir la lambda en el nivel más alto de la "
-        "jerarquía, la única cola externa que todavía compite con el cuerpo es la del `=`",
 }
 
 

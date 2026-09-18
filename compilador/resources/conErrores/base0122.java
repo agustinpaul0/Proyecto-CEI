@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface B4 < Q > { } interface K6 extends { }
+///[Error:D5|2]
+interface HO { } D5

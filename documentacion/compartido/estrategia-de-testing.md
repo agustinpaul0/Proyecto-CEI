@@ -53,14 +53,16 @@ porque cada mutante volvería a correr miles de casos parametrizados.
 El corpus del sintáctico —`resources/sinErrores/` y `resources/conErrores/`— tiene dos orígenes,
 y la distinción importa:
 
-- **Escrito a mano** (~120 casos): lo que un generador al azar no busca. El archivo vacío, el de
-  sólo comentarios, la clase sin miembros, `for(;;)`, `new int[0]{}`, cien bloques anidados, el
+- **Escrito a mano** (~200 casos, 55 de ellos importados de un corpus ajeno): lo que un generador
+  al azar no busca. El archivo vacío, el de sólo comentarios, la clase sin miembros, `for(;;)`,
+  `new int[]{,}`, cien bloques anidados, el
   error en el primer token, el error en el último, el `$` del EOF. **Cada expectativa se predice
   antes de correr el compilador**: si no coincide, o el caso estaba mal escrito o el compilador
   tiene un defecto, y las dos cosas hay que mirarlas.
-- **Generado** (~1700 casos): Grammarinator deriva programas al azar de la gramática, los vuelve a
-  parsear en árboles y los muta; el oráculo JavaCC dice qué veredicto corresponde. Un caso entra
-  sólo si todos los oráculos de control coinciden. Se regenera con `make fuzz` desde una semilla
+- **Generado** (~10.000 casos): Grammarinator deriva programas al azar de la gramática, los vuelve
+  a parsear en árboles y los muta; el oráculo JavaCC dice qué veredicto corresponde. Un caso entra
+  sólo si todos los oráculos de control coinciden. Son dos lotes, `base` y `fuzz`, con semillas
+  separadas y sin casos repetidos entre ellos. Se regenera con `make fuzz` desde una semilla
   versionada.
 
 ## 3. Las invariantes, que son lo más valioso de la suite
@@ -184,9 +186,8 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `AnalizadorSintacticoTest` | Nivel clase e interfaz, el `$` del EOF, el formato del mensaje, genericidad anidada. |
 | `MiembrosYSentenciasTest` | Miembros, visibilidad, atributos inicializados, sentencias, variables clásicas, fors. |
 | `ExpresionesTest` | Las capas de precedencia, ternario, posfijos, creación, inicializadores, diamante. |
-| `LambdasTest` | El logro MiniLambdas entero: las dos restricciones que el analizador verifica, y las tres que se difieren al semántico y acá se aceptan. |
-| `ParentesisYLambdaTest` | La combinatoria de `(x -> y)` según lo que siga al paréntesis: cuándo es toda la expresión, cuándo sería un operando y por qué se rechaza. |
-| `CorpusExternoTest` | 28.089 fuentes generados a partir de la gramática de otra persona, con la única divergencia declarada. |
+| `LenguajeDeLaBaseYDeLosLogrosTest` | El lenguaje, regla por regla: lo que define la gramática de la cátedra y, donde no define nada, Java. Cada caso nombra la regla que decide su veredicto. |
+| `CorpusExternoTest` | 16.512 fuentes generados a partir de la gramática de otra persona; tienen que coincidir todos. |
 | `ModoPanicoTest` | Que la recuperación reporte todos los errores, avance siempre y no cambie el primero. |
 | `CasosDeLaCatedraTest` | Los ocho fuentes que la cátedra adjunta, cada error en el token exacto. |
 | `catedra.TesterDeCasosSintacticos{Sin,Con}Errores` | Los testers de la cátedra sobre el corpus, con su criterio intacto. |
@@ -217,61 +218,36 @@ mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en las dos
 mvn test -Pfase-sintactico   # sólo el sintáctico
 ```
 
-No hay forma de elegir con qué logros correr: el compilador reconoce MiniJava con todos los de la
-Etapa 1 y la Etapa 2 incorporados, siempre, así que la suite tiene una sola configuración.
+No hay forma de elegir con qué logros correr: la suite tiene una sola configuración.
 
 ### La verificación diferencial contra un corpus ajeno
 
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
-ese hueco corriendo el compilador contra **28.089 fuentes generados a partir de otra gramática** de
+ese hueco corriendo el compilador contra **16.512 fuentes generados a partir de otra gramática** de
 MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
-> de este proyecto: acá sólo se corre el compilador contra ellos y se clasifica cada divergencia.
-> La carpeta **no se versiona** —son 127 MB, y la atribución está en su `CREDITOS.md`— y el test se saltea si no está.
+> de este proyecto: acá sólo se corre el compilador contra ellos.
+> La carpeta **no se versiona** —la atribución está en su `CREDITOS.md`— y el test se saltea si no está.
 
-De esos 28.089, **28.086 coinciden exactamente**. Las 3 divergencias restantes son una sola
-familia, declarada en el enum `Divergencia` del test; lo que el test comprueba es que **no aparezca
-una segunda**.
-
-| Familia | Casos | Qué la explica |
-|---|---:|---|
-| `(x -> y).m()` | 3 | **Este proyecto**, a propósito. MiniJava base define que toda expresión parentizada es un `<Primario>` y que un `<Primario>` arrastra cadena, así que sale solo; su gramática lo rechaza, igual que Java. Ver [`decisiones-de-logica.md`](../sintactico/decisiones-de-logica.md) §2.2. |
+**Coinciden los 16.512**, y el test exige que no aparezca ninguna divergencia.
 
 **El corpus se podó, y cada poda está justificada.** El original traía 30.000 casos:
 
 - **~1.854 por la barra invertida en un literal.** §2.3.3 da una regla posicional —la comilla de
   cierre nunca está antecedida por `\`— y no una de apareamiento, así que acá el literal no cierra;
   su *fuzzer* asume la semántica de Java. Una sola discrepancia repetida miles de veces.
+- **11.577 que usan construcciones que la gramática de este proyecto no tiene**: su gramática las
+  genera, así que el veredicto de su generador no aplica acá.
 - **57 más, revisados uno por uno**: genéricos al instanciar (`new Clase<Arg>()`, que la gramática
   de la cátedra genera y la suya no), el logro de Visibilidad Mejorada (sus corpus `base` y
   `localvar` se generaron sin él), y un puñado que las dos implementaciones rechazan en distinto
   token porque su gramática cubre menos. **Ninguno escondía un defecto propio**: se verificó caso
   por caso qué construcción lo explicaba.
 
-**Dos familias desaparecieron al corregir el analizador, no al podar el corpus.** Las dos eran la
-misma discusión: dónde deja entrar la base a la lambda.
-
-- 2.434 casos de `(x -> y).m()`, que este proyecto rechazaba siguiendo al JLS.
-- 213 casos de `p -> x;` como sentencia suelta, ídem.
-
-En los dos, el suyo tenía razón: MiniJava base define `ExpresionParentizada -> ( Expresion )`,
-`Asignacion -> Expresion` y `Llamada -> Expresion`, así que con la lambda en `<Expresion>` los dos
-se derivan solos. Se corrigieron, y las coincidencias pasaron de 26.291 a 28.086.
-
-**Se clasifica un renglón, no el archivo.** La primera versión miraba el fuente entero: si en
-cualquier parte aparecía un `new Xx<Y>()`, el caso caía en esa familia aunque el error estuviera
-treinta renglones más arriba. Con eso la familia de la lambda como sentencia —la mayor— quedaba
-tapada entera. Ahora se mira el renglón del primer error propio, o el que el caso declara si acá no
-hubo ninguno.
-
-Los **73 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
+Los **55 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
 `resources/` con el prefijo `ext`—; los generados no se copian ni se versionan.
-
-`ParentesisYLambdaTest` destila la familia de `(x -> y)` en 43 casos legibles, que son los que
-protegen contra una regresión: toda la combinatoria de `(x -> y)` según lo que venga después del
-paréntesis.
 
 ### La verificación diferencial contra la gramática
 
@@ -281,9 +257,8 @@ la responde corriendo el analizador en Java y el simulador del Esquema Simple so
 fuentes, y exigiendo el mismo veredicto y el mismo token de rechazo.
 
 Es la prueba más fuerte de la suite del sintáctico: no depende de que a alguien se le ocurra el caso
-correcto, sino de que dos implementaciones independientes coincidan. Las divergencias deliberadas
-—los chequeos que la gramática no puede expresar— van declaradas en la herramienta; una sin declarar
-la hace fallar.
+correcto, sino de que dos implementaciones independientes coincidan. Cualquier divergencia la hace
+fallar.
 
 Los testers de la cátedra están escritos con JUnit 4; corren junto a los propios (JUnit 5) gracias al
 *vintage engine*, sin necesidad de tocarlos.
@@ -467,7 +442,7 @@ salida entera del compilador y un pie con los conteos; cada suite cierra con
 `resources/<dir>: N casos procesados, M con errores`.
 
 Los tests **unitarios** del sintáctico no pasaban por ahí: trabajan con la `ExcepcionSintactica` y
-no con la consola, así que correr `LambdasTest` desde el IDE no mostraba nada de lo que el
+no con la consola, así que correr `ExpresionesTest` desde el IDE no mostraba nada de lo que el
 compilador diría sobre ese fuente. `BaseDeAnalisis` ahora también vuelca, y lo hace corriendo el
 **módulo principal** sobre el mismo archivo en vez de reconstruir el texto: lo que se lee en la
 consola es exactamente lo que imprimiría `java -jar Compilador.jar`. Sólo lo corre si el volcado

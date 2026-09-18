@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface S9 { void b ( boolean j , int k , No j , boolean vfWCT , int [ ] v ) ; void k ( ) ; L yzu ( int p1 , YZ o ) ; DO [ ] m_ ( ) ; J_EB_ [ ] [ ] x ( J [ ] [ ] [ ] [ ] h6 ) ; }
+interface D8_ extends W_ { public boolean z_ ( ) ; } class KYPy < R > extends G9L__ { } interface XYE { public O [ ] a8Sc_H ( S9 < Z > rLp ) ; } class K4 extends XV7 < J__ > { S q = 'e' ; } interface SE_f_5 { void w ( ) ; void g ( ) ; void jt ( ) ; P8J < I7_ < Rt > > [ ] m__ ( ) ; } interface Sa { }

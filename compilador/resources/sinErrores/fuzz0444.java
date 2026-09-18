@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Ae < D > { } class Vz_0 implements Huq { private C5 < Y > [ ] [ ] j = ! true ? ! null / "" : CKGO . drF ( ) -- ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class H_CN { static boolean [ ] x ( ) { } static private void fQIE ( boolean [ ] yz ) { return ; } }

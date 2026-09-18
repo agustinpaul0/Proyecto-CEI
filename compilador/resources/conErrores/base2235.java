@@ -1,0 +1,2 @@
+///[Error:static|2]
+class Sy_3 implements OT < H > { } class BE implements Ie { static L g ( ) { } static void u9 ( int g4 , J i , Z [ ] w ) { } private K_7 k ( L [ ] m , W p ) static void b8 ( int [ ] [ ] [ ] [ ] q_0_j ) { } private static void z ( ) { M i2o ; for ( ; ; ) ; } Yo42p_O < UD < Ze8 > > d ( ) { + null ; C g ; { } ; } } interface HL extends B3_2 { } interface XH < K > { void cAxp_E4bw ( char [ ] [ ] [ ] [ ] d_ , P d , float [ ] c8C ) ; P [ ] mb07aM ( float [ ] ba6 ) ; public W vr_ ( ) ; }

@@ -18,8 +18,8 @@ ANTLR       := $(JARS)/antlr.jar
 JAVACC_URL  := https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/7.0.13/javacc-7.0.13.jar
 ANTLR_URL   := https://repo1.maven.org/maven2/org/antlr/antlr4/4.13.2/antlr4-4.13.2-complete.jar
 
-POSITIVOS   ?= 700
-NEGATIVOS   ?= 700
+POSITIVOS   ?= 4100
+NEGATIVOS   ?= 4100
 SEMILLA     ?= 20260923
 
 .PHONY: venv jars fuzz limpiar
@@ -43,7 +43,7 @@ jars: $(JAVACC) $(ANTLR)
 
 fuzz: $(LISTO) jars
 	python3 herramientas/generar_corpus_fuzz.py \
-		--positivos $(POSITIVOS) --negativos $(NEGATIVOS) --semilla $(SEMILLA) --limpiar
+		--positivos $(POSITIVOS) --negativos $(NEGATIVOS) --semilla $(SEMILLA)
 
 limpiar:
 	rm -rf herramientas/fuzz/trabajo

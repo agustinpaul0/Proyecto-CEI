@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface YW extends V8 < P > { } interface SU < K > extends Yg < V > { } class TS implements K_7 < Du > { U_OZ [ ] v } class ID extends PM < U_ > { }
+///[Error:(|2]
+interface A70B < W > { Q [ ] f ( K [ ] [ ] e8 ) ; T [ ] ( ) ; } interface Y_W_3t < O > { }

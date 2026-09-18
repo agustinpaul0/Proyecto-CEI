@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class HKvD_5 < W > { } class Q_3 { }
+interface G_ extends Tu < WNR > { } interface QERe < V > extends J3___ { }

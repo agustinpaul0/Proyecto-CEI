@@ -1,0 +1,2 @@
+///[Error:,|2]
+interface SI2 extends Z10C_ { } class B7 < P > implements JQ < XN93_d3 > { private Y0 [ ] glJR_ ( ) { U l , f ; { } for ( boolean u ; ; ) A9 [ ] t ; N [ ] w ; Rr j_7_ ; { } { } } private static void ag_ ( M [ ] [ ] b__ ) { } } class L_r_ implements C7_ < MK < G > > { } class Q__ extends Iw { char [ ] [ ] m8 ( int [ ] [ ] c38A_7 ) { } } interface D0PUzo extends R2 < WPZ > { J [ ] kGf ( EJ < Oo_ > j , I f_ ) ; LZ < T > [ ] t ( E [ ] [ ] [ ] [ ] [ ] x ) ; public void x ( float [ ] [ ] , J [ ] n , float j0_5 ) ; } class NAEC < N > extends LI { }

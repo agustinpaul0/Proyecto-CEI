@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface L2 extends L0E < L5_ > { void b ( int [ ] [ ] d ) ; void ko ( boolean [ ] [ ] r ) ; boolean b ( ) ; } interface A9 extends VT { void o ( ) ; } ( )
+///[Error:}|2]
+class Wx < F > extends Ym { } class O_h implements Wu { static C [ ] [ ] k9 ( ) { } static void q ( ) { 17 = - false ; while ( ! "" -- != - '\"' <= + null ) true > true ; ! false ; return ; H6h6 < Z > zg , x7S ; return ; ; } } interface Px extends Nb < Q > { char } interface Hwsz__b { } interface LT < J > extends H_ { public O [ ] rZM ( ) ; }

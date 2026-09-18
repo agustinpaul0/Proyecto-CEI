@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class CNaV implements LY < P8 > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface R_ extends Da_hO { }

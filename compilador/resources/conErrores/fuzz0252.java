@@ -1,2 +1,2 @@
-///[Error:{|2]
-class K0 extends MZj < X > { } class CKqt extends ON_ < G7b < F > > { public void j9 ( ) { } public G7f ( ) { ; } } class Xp implements B_KO_z__6_v_ < R > { } interface { }
+///[Error:extends|2]
+interface P7 { public void s__U0 ( Xs < Tj < WA1 < J > > > y ) ; } extends Pl class Vk_K_ { }

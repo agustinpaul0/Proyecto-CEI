@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Ox < N > implements MEww < > { }
+///[Error:G_86|2]
+G_86

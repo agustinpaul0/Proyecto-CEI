@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Xu < R > { } class KX < J > extends T_ { } class H96_VjT0_g0 { T [ ] j_ ( ) { while ( ! 7392 <= true = false ) return ; for ( false ; ; ) { char f ; } } public P h ( int e , Z k , float c , char [ ] q8 ) { } } class I1k { } interface O5 < T > extends TL { public KW < C > [ ] [ ] pu3X ( H b ) ; } void
+///[Error:;|2]
+class Lx_ < Q > implements H_ < CD < X > > { M sITQ ( ) { } G [ ] [ ] bFm ( ) { } static void g ( ) { while ( - D_xy . z3 ( ) && 6.f = ! true && false ) char ; } } class A__ < O > { static public Y [ ] weUFS__uH1 ( ) { } private static void dv ( P uT_ , char xd ) { } static S [ ] [ ] j ( ) { } }

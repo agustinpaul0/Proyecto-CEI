@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends AM
+///[Error:++|2]
+class Ks < R > implements W_v < Bw < G > > { static char [ ] db ( ) { if ( ! ++ ? - "" : 29e+833F <= 7. <= - true ? + null : - false ) { } else return '\\' ; for ( S t ; ! null ; ) if ( this ) while ( ! null ) OT v , m62 ; D h , i__ , xV5g = + null , t6_ , q ; '\b' = ! false ; } static private X_e < C_ < L72Y < RT > > > [ ] q ( ) { if ( + BZ_0T6_ . k ( ) = this ) boolean [ ] [ ] xPT = 59F ; else ZfU4 < HH < GS > > [ ] [ ] [ ] r , g ; } B9 < F > y = + 30521 / - SN . i3 ( ) . i_ ( ) . w ++ ? "T/" . tK ++ / "" ++ != true == null : + null ? - 's' % null : ! null == ! true ; }

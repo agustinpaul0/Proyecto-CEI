@@ -1,2 +1,2 @@
-///[Error:T|2]
-class X_c6_ { } class Tr < C > { public K0 ( ) { } } class Zc9P < B > implements K0T < G > { } interface K8 < S > { P9v_ i ( ) ; } interface J4__ < D > { } class YrTOK_G < L > extends UC_UCh { } class V_65 < G > implements VD4 < I > { } T o interface Y5_ extends PNs < P1_ > { void zD ( Hj [ ] m ) ; } interface G1_ { A5Dz < F5 > o5H_ ( ) ; int iT_ ( ) ; } interface D7 extends Q8 < R > { } class Kp implements B7 < M_4 > { public Rd__ ( ) { } static void h7 ( ) { } F [ ] z ; char u4_O ; } class U9Z < Y > { } class W4 < E > implements Oc { } interface L27 < C > { } interface H_ extends Vwu_F { void g ( ) ; } class KJ { } class M_Fh { }
+///[Error:(|2]
+interface B95 < O > { } interface FdVlHWIB < A > { void ( ) ; }

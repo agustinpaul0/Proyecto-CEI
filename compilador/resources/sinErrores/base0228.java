@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class C____ extends RF < F > { }
+interface Da < J > { } class OH implements Gt < M > { private void b9I ( R_ r ) { while ( - null = + true ) for ( char uc ; ; ) for ( char [ ] b_Pp ; ; ) for ( ; ; ) ; } } interface A_j < D > { V4E o ( ) ; A e ( ) ; public M_8I < K > [ ] f ( ) ; public float y ( Lnq < SMB_ > [ ] p , A [ ] h ) ; } interface FG < U > extends MI < B > { void h ( C_ i ) ; }

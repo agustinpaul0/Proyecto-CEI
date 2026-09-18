@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class C_ extends LM { public E4 [ ] h ; } class P5 < G > { } class VOj8 < D > extends H_ { } class XL < Y > implements S_ < E_ > { private static O_ < K > ue5 ( J_8C < D > [ ] [ ] j ) { OXO < S > [ ] x ; var p = false ; + '\\' ; Tg < U > wSu ; C9O [ ] j ; return ; ; ; } static BS af_ ( ) { ; } void u2 ( char [ ] [ ] l_ , E [ ] [ ] k ) { } static private void sj ( G t ) { } } class Q07r < G > { } interface Wo < Y > { }

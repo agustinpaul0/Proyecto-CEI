@@ -6,17 +6,15 @@ class Registro<T> extends Base<T> {
   public Registro(Lista<T> iniciales){
     int i, j, total = 0;
     for(int k = 0; k < 10; k++) {
-      var f = (a, b) -> a;
       total = k > 5 ? k : total;
     }
     for(T elemento : iniciales) {
       this.cuenta++;
     }
-    var matriz = new int[2][2]{{1,2},{3,4}};
+    var matriz = new int[][]{{1,2},{3,4}};
   }
 
   private Lista<T> filtrar(Lista<T> origen, int limite){
-    var predicado = x -> x;
     return origen;
   }
 }

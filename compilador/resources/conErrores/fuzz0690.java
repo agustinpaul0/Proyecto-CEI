@@ -1,0 +1,2 @@
+///[Error:char|2]
+interface RE < G > { } class M1 < J > implements LQ < Pqa < B > > { private C e ( char dg ) { return + false ; 07e304d + false && - false ; H [ ] [ ] mMZFR ; } static void o ( Hm mSR , P [ ] [ ] g ) { } } class T_hQ < B > implements Y9 { void cn ( ) { } } interface Pu_ extends Ps_ { K c ( U r , boolean zx ) ; } class R_5 < M > implements K5lp { } interface C_H { } class FcR { } char class X_w__6 extends Z3 < V > { } class Y4_7_a1_ implements GJD < Af > { } interface YCen < U > extends K4 { void j ( ) ; } interface K707 < J > { }

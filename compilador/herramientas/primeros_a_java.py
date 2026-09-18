@@ -32,7 +32,6 @@ POR_SECCION = OrderedDict((
     ("Fors! E2", "PrimerosDeFors"),
     ("EXPRESIONES", "PrimerosDeExpresiones"),
     ("REFERENCIAS Y PRIMARIOS", "PrimerosDeReferencias"),
-    ("MiniLambdas E2", "PrimerosDeLambdas"),
     ("CREACIÓN", "PrimerosDeCreacion"),
     ("ARGUMENTOS ACTUALES", "PrimerosDeArgumentos"),
 ))
@@ -45,7 +44,6 @@ DESCRIPCION = {
     "PrimerosDeFors": "La sentencia for, estandar y de iteradores.",
     "PrimerosDeExpresiones": "Las capas de precedencia de las expresiones.",
     "PrimerosDeReferencias": "Las referencias, los primarios y el encadenamiento.",
-    "PrimerosDeLambdas": "Las lambdas y la desambiguacion del parentesis.",
     "PrimerosDeCreacion": "Las expresiones de creacion.",
     "PrimerosDeArgumentos": "La lista de argumentos actuales de una llamada.",
 }
@@ -69,7 +67,7 @@ POR_TERMINAL = {
     "==": "OP_IGUAL", ">=": "OP_MAYOR_IGUAL", "<=": "OP_MENOR_IGUAL",
     "!=": "OP_DISTINTO", "&&": "OP_AND", "||": "OP_OR", "%": "OP_MODULO",
     "+": "OP_SUMA", "-": "OP_RESTA", "*": "OP_MULT", "/": "OP_DIV",
-    "++": "OP_INCREMENTO", "--": "OP_DECREMENTO", "->": "OP_FLECHA",
+    "++": "OP_INCREMENTO", "--": "OP_DECREMENTO",
     "?": "SIGNO_PREGUNTA",
     "eof": "EOF",
 }
@@ -84,7 +82,7 @@ NOMBRE_DE_SIMBOLO = {
     "==": "IGUAL", ">=": "MAYOR_IGUAL", "<=": "MENOR_IGUAL", "!=": "DISTINTO",
     "&&": "AND", "||": "OR", "%": "MODULO", "+": "SUMA", "-": "RESTA",
     "*": "MULT", "/": "DIV", "++": "INCREMENTO", "--": "DECREMENTO",
-    "->": "FLECHA", "?": "SIGNO_PREGUNTA",
+    "?": "SIGNO_PREGUNTA",
 }
 
 

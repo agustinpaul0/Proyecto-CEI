@@ -57,6 +57,10 @@ probar SI "ternario anidado a derecha" "$C void idMetVar ( ) { idMetVar = true ?
 # `a ? b : c = d` no lo es. Regla «lo no especificado es igual a Java».
 probar SI "asignacion en el operando del medio"  "$C void idMetVar ( ) { idMetVar = true ? idMetVar = intLiteral : intLiteral ; } } eof"
 probar NO "asignacion en el operando derecho"    "$C void idMetVar ( ) { idMetVar = true ? intLiteral : idMetVar = intLiteral ; } } eof"
+# El lado izquierdo del '=' es una ExpresionCompuesta, como en la gramatica
+# original: un ternario no lo es, y entre parentesis si.
+probar NO "c ? a : b = d ;  ternario como lado izquierdo"  "$M true ? idMetVar : idMetVar = intLiteral ; } } eof"
+probar SI "( c ? a : b ) = d ;  parentizado es primario"   "$M ( true ? idMetVar : idMetVar ) = intLiteral ; } } eof"
 probar SI "el medio admite otro ternario"        "$C void idMetVar ( ) { idMetVar = true ? false ? intLiteral : intLiteral : intLiteral ; } } eof"
 # El ternario tiene que llegar a TODO lado derecho de un '=', no solo al de la
 # asignacion: los cinco inicializadores tambien.
@@ -66,27 +70,14 @@ probar SI "local clasica: int x = c ? a : b ;" "$C void idMetVar ( ) { int idMet
 probar SI "for ( var i = c ? a : b ; ; )"      "$C void idMetVar ( ) { for ( var idMetVar = true ? intLiteral : intLiteral ; ; ) ; } } eof"
 probar SI "x ++"                    "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
 
-echo "--- MiniLambdas (el caso que parecia necesitar lookahead ilimitado) ---"
-probar SI "x -> x            (1 param sin parentesis)" "$M var idMetVar = idMetVar -> idMetVar ; } } eof"
-probar SI "( ) -> 1          (0 params)"               "$M var idMetVar = ( ) -> intLiteral ; } } eof"
-probar SI "( a ) -> a        (1 param con parentesis)" "$M var idMetVar = ( idMetVar ) -> idMetVar ; } } eof"
-probar SI "( a , b ) -> a    (2 params)"               "$M var idMetVar = ( idMetVar , idMetVar ) -> idMetVar ; } } eof"
-probar SI "( a ) + 1         (parentizada, NO lambda)" "$M var idMetVar = ( idMetVar ) + intLiteral ; } } eof"
-probar SI "( a + b )         (parentizada compleja)"   "$M var idMetVar = ( idMetVar + idMetVar ) ; } } eof"
-probar SI "lambda como argumento"                      "$M idMetVar ( idMetVar -> idMetVar ) ; } } eof"
-probar SI "x -> y -> e   (currificada)"                "$M var idMetVar = idMetVar -> idMetVar -> intLiteral ; } } eof"
-probar SI "c ? x->e : y->e   (en un ternario)" "$M var idMetVar = true ? idMetVar -> intLiteral : idMetVar -> intLiteral ; } } eof"
-probar SI "( ) -> e   con cero parametros"             "$M var idMetVar = ( ) -> intLiteral ; } } eof"
-probar NO "(a, int b) -> e   2do parametro con tipo"   "$M var idMetVar = ( idMetVar , int idMetVar ) -> intLiteral ; } } eof"
-probar NO "(a, b+1) -> e   2do parametro no es id"     "$M var idMetVar = ( idMetVar , idMetVar + intLiteral ) -> intLiteral ; } } eof"
-probar NO "cuerpo con llaves NO se permite"            "$M var idMetVar = idMetVar -> { } ; } } eof"
-probar NO "parametro con tipo NO se permite"           "$M var idMetVar = ( int idMetVar ) -> idMetVar ; } } eof"
-probar SI "( a ) sigue andando"          "$M var idMetVar = ( idMetVar ) ; } } eof"
-
 echo "--- Inicializacion de Arreglos ---"
-probar SI "new int [ 2 ] { 1 , 2 }"      "$M var idMetVar = new int [ intLiteral ] { intLiteral , intLiteral } ; } } eof"
-probar SI "new int [ 0 ] { }  (vacio)"   "$M var idMetVar = new int [ intLiteral ] { } ; } } eof"
-probar NO "new int [ ] { 1 , 2 }"        "$M var idMetVar = new int [ ] { intLiteral , intLiteral } ; } } eof"
+probar SI "new int [ ] { 1 , 2 }"        "$M var idMetVar = new int [ ] { intLiteral , intLiteral } ; } } eof"
+probar SI "new int [ ] { }  (vacio)"     "$M var idMetVar = new int [ ] { } ; } } eof"
+probar NO "new int [ 2 ] { 1 , 2 }  (tamanio con inicializador)" "$M var idMetVar = new int [ intLiteral ] { intLiteral , intLiteral } ; } } eof"
+probar NO "new int [ ]  (sin tamanio ni inicializador)"        "$M var idMetVar = new int [ ] ; } } eof"
+probar SI "new int [ ] { 1 , }  (coma final, como en Java)"   "$M var idMetVar = new int [ ] { intLiteral , } ; } } eof"
+probar SI "new int [ ] { , }"            "$M var idMetVar = new int [ ] { , } ; } } eof"
+probar NO "new int [ ] { 1 , , }"        "$M var idMetVar = new int [ ] { intLiteral , , } ; } } eof"
 probar SI "new int [ 3 ] sigue andando"  "$M var idMetVar = new int [ intLiteral ] ; } } eof"
 probar SI "new int [ 3 ] [ 4 ]"          "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] ; } } eof"
 
@@ -116,19 +107,14 @@ probar SI "dangling else: if(a) if(b) s; else t;" \
   "$M if ( true ) if ( false ) ; else ; } } eof"
 probar SI "new int[3][4]  (heredada de la catedra)" \
   "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] ; } } eof"
-probar SI "x -> a + b     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar + idMetVar ; } } eof"
-probar SI "x -> a.m()     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar . idMetVar ( ) ; } } eof"
-probar SI "x -> a[0]      (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar [ intLiteral ] ; } } eof"
-probar SI "x -> a = b     (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar = idMetVar ; } } eof"
-probar SI "x -> a ? b : c (cuerpo voraz)"  "$M var idMetVar = idMetVar -> true ? intLiteral : intLiteral ; } } eof"
-probar SI "x -> a++       (cuerpo voraz)"  "$M var idMetVar = idMetVar -> idMetVar ++ ; } } eof"
 
 echo "--- inicializacion de arreglos multidimensional (como en Java) ---"
-probar SI "new int[2]{1,2}"            "$M var idMetVar = new int [ intLiteral ] { intLiteral , intLiteral } ; } } eof"
-probar SI "new int[2][2]{{1},{2}}"     "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] { { intLiteral } , { intLiteral } } ; } } eof"
-probar SI "new int[1][1][1]{{{1}}}"    "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] [ intLiteral ] { { { intLiteral } } } ; } } eof"
-probar SI "new int[0]{}   vacio"       "$M var idMetVar = new int [ intLiteral ] { } ; } } eof"
-probar NO "new int[][]{{1},{2}}  sin tamanio" "$M var idMetVar = new int [ ] [ ] { { intLiteral } , { intLiteral } } ; } } eof"
+probar SI "new int[]{1,2}"             "$M var idMetVar = new int [ ] { intLiteral , intLiteral } ; } } eof"
+probar SI "new int[][]{{1},{2}}"       "$M var idMetVar = new int [ ] [ ] { { intLiteral } , { intLiteral } } ; } } eof"
+probar SI "new int[][][]{{{1}}}"       "$M var idMetVar = new int [ ] [ ] [ ] { { { intLiteral } } } ; } } eof"
+probar NO "new int[2][2]{{1},{2}}  con tamanio" "$M var idMetVar = new int [ intLiteral ] [ intLiteral ] { { intLiteral } , { intLiteral } } ; } } eof"
+probar NO "new int[2][]  dimension vacia sin inicializador" "$M var idMetVar = new int [ intLiteral ] [ ] ; } } eof"
+probar NO "new int[][2]{}"             "$M var idMetVar = new int [ ] [ intLiteral ] { } ; } } eof"
 
 echo "--- orden de modificadores: los dos, como en Java ---"
 probar SI "public static void f(){}"   "$C public static void idMetVar ( ) { } } eof"

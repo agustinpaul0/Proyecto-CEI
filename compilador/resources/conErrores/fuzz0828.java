@@ -1,0 +1,2 @@
+///[Error:L_|2]
+class We extends D_I_ { } class Q0 extends R_V4 { } class Do < W > implements INr2 { static private void q L_ < O_x8 > } interface X0 < O > extends D_51L_ < PXU < P_ < F > > > { void r ( U e , H6 [ ] j2 ) ; } interface SHS < T > { H6 ntJ_ ( ) ; void i_kh ( U [ ] [ ] m8 , float [ ] [ ] g , Q__l b3 ) ; } interface Q3 { } class S_ < R > extends B_7 { static void f ( ) { { } } static void d_ ( H t ) { } }

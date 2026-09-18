@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Y0C71 implements T8f__W { } class Rr < V > implements Xr { D_ h ; static void kUb ( ) { } } interface Y0 < X > extends Bw { void uMt3i_ ( int cj , D t ) ; } interface Yo4 extends U0 { } class S__ implements HCb_1 { } class Ofn_Ot7_ < W > implements DX { public IQ ( [ ] [ ] [ ] [ ] ) { } } class P8m < Y > { int d ; } class TI < I > extends Z5V6 { public M1A ( boolean [ ] vj ) { { ; ; } { } } public TJk ( ) { return ; } }
+///[Error:<|2]
+class Xi7_ { } interface Zv < K > extends < I_3 > { } class V____o { static private B c ( ) { P0 . f82 ( ! null ) * - "" -- ; } }

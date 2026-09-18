@@ -1,2 +1,2 @@
-///[Error:>|2]
-class D_ < > { }
+///[Error:{|2]
+interface Y3 extends { float [ ] e_ ( ) ; }

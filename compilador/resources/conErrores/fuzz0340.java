@@ -1,2 +1,2 @@
-///[Error:MMh|2]
-class U_ extends Idi_ { void k ( ) { var r = "" ; } } MMh < P1 < Qs13X5 > > interface VB { }
+///[Error:OY|2]
+class Za { static public void iz3 ( int jD_8 ) { } static public void OY } class Q__3 < V > extends Po_ < Z1 < Jv > > { }

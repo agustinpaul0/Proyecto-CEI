@@ -1,2 +1,2 @@
-///[Error:T|2]
-class VZ implements N5U { public OY ( int [ ] z , T tTk ) { } } T
+///[Error:extends|2]
+class extends Gn { } interface J5 { public void f ( ) ; void o_ ( ) ; public void g ( L y ) ; public char g8 ( ) ; }

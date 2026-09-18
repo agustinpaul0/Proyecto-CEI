@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface AM3_B_J < R > extends ZUQO { } interface F_ < G > extends F_ < Y > { char [ ] [ ] n ( float v0 ) ; Z_ < Wk4_ > e ( ) ; void xrd ( ) ; int [ ] [ ] [ ] mi ( F wP1y_ ) ; } interface C_7 < V > { public void g ( C_N [ ] sR , V [ ] p , int [ ] [ ] [ ] [ ] [ ] y , int b1 , Q1_4 j , float d ) ; void d ( ) ; public void f ( E s ) ; P o ( JP7_x [ ] [ ] b0 , V8 < Bp_n > n_9 , Tk [ ] x10 , P_ gR , float jC ) ; public void h_ ( N rX , boolean w , X [ ] l , char mvw7t0 ) ; Ol48 [ ] k ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-< Z_ >
+///[Error:{|2]
+class Yv7 { } class J67Vz < E > implements { }

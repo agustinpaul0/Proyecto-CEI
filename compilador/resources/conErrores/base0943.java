@@ -1,0 +1,2 @@
+///[Error:.|2]
+interface Bs2 { boolean [ ] x ( ) ; } class OL1 < F > extends Czf { } class Ym < Q > implements A_Z < U > { } class R__ < E > implements W__ < ZD > { public float y ; static private boolean [ ] a_G ( boolean [ ] p ) { PJ . c . bd0F ( ) . gIPGt ++ && + true ; "" ++ ; } public char [ ] [ ] [ ] h = ! "" ; } class LhI extends Yd { private static void m2 ( ) { } void g_ ( ) { return ; T4 . w ( ) ++ ; for ( ; ; ) return ; } }

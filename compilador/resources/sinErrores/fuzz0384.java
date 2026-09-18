@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Uh_ implements Bi < Y3 > { private static void y ( R [ ] [ ] [ ] l7 , F [ ] [ ] [ ] [ ] [ ] [ ] [ ] x , char [ ] f , YO < P6 > fp ) { } public To__7 ( ) { } void n_ ( Y p , N [ ] bk , M6B_ w , E n , K [ ] m0 ) { { } } private G [ ] [ ] fG = J__ . p ( ) ++ || ! IN . s69 ( ) . vm ( ) . yOu_ -- ? this = ! 4237 <= + true : ! this -- ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface O_8I6c { void s_ ( ) ; } interface H5___ < H > { } interface K5h0 extends F_ < Pe__x0G > { public int [ ] [ ] [ ] [ ] v ( JM < J > [ ] j__Y , P wn_030y0u1 ) ; }

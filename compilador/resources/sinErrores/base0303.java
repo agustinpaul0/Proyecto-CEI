@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class U4 implements AH { } class L23U < H > implements Ph < D_ > { }
+class S4_7_mi6 < W > extends UQ { QOL ( PH r ) { } private USmP ( Z z ) { } private DX_J0 ( F [ ] d8__1 ) { G [ ] p ; this ++ ; for ( null ; ; ) O l_0 , s_81f ; { } for ( ; ; ) ; } } class Fx { }

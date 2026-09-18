@@ -1,0 +1,2 @@
+///[Error:<|2]
+class H9 < Q > { Iz_aC p ; } interface L_0x { } class AR01__ < X > extends VT { private static void hZ ( ) { if ( "" -- % ! 82039 ) P a , h ; else F scm_F ; SF7rd . h ( ) ; } private static void f_ ( ) { } } class UJ extends J_U < < MI7 > > { } class A_6 { } class Id implements O__B { } interface Gg_j < A > extends PLa { }

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface MR < W > extends { } class A_mY_ < T > { }
+///[Error:<|2]
+interface E1 < K > { } < E >

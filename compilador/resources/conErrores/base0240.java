@@ -1,2 +1,2 @@
-///[Error:}|2]
-class A__sk extends XW_ < G > { I } class Tl < K > extends V4uA8 { }
+///[Error:+|2]
++ '\r' - - "" . t ( ) . j <= + Isg . i ( ) . hr_1 -- * + this ++

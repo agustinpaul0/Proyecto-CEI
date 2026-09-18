@@ -1,2 +1,2 @@
-///[Error:VQ|2]
-VQ
+///[Error:{|2]
+interface Uo_ extends TU0 { } class { }

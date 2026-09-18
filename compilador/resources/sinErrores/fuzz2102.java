@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface JX < L > extends JL < F > { char w_1 ( ) ; void g_ ( ) ; public float j2 ( boolean b0526_ , float [ ] [ ] [ ] twH ) ; Y rNaCho ( ) ; void gX ( A_ y ) ; } class H__f implements Hv4 { } class MP0d < J > extends A8__ < T > { static YL1e sTo ( ) { return - false ; if ( this / + '\t' = null ) var oX = null ; else "M" -- ; } public static void lc ( ) { ; for ( ; ; ) boolean [ ] u_ ; } } class OOq < P > implements Zq < A > { }

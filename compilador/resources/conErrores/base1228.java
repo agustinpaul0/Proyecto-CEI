@@ -1,0 +1,2 @@
+///[Error:<|2]
+class Rr extends D9 { private P [ ] x ( ) { for ( true ; ; null ) ; } private static void fm ( ) { int iek = - this -- ? - null : ! null , f , u_ = null ; J tw = + true || + null , if_ = true ; } } interface UV < W > extends UJn < Pt1 < M99I > > { public void k ( ) ; } interface V_ { V e ( ) ; } interface FB < Y > { } class Jm___ < B > implements GKv4rieF < J > { } < R4_r_U4_802 < S > > interface IqJEC1_4 < I > extends DP_7 { void i_ ( ) ; } interface V_ { } class UZ_5 < W > { } class Fj { }

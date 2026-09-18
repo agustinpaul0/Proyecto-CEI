@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class L_3 { B_ < I > gB_M_ ; } interface B_ extends Eu < Y > { }
+class E0 extends YH < R_j > { } class Dk_ implements CT { void p ( char e8 ) { if ( this -- = ! null || false ) if ( ! false ) F i5x ; else return ; } } class P__ extends Q_uF9_ < U0 < P > > { } class W2U implements Jc9 < Sy10_ < B > > { } class Yw extends Dm_r { } class Hh_1 < L > extends Bw { public void e ( J m_V1w_ ) { } }

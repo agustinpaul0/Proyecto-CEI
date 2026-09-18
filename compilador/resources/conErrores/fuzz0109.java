@@ -1,2 +1,2 @@
-///[Error:--|2]
-class WR implements L7 { E x ( Fh_w < E > [ ] v ) { if ( -- ) { return ; } { 'R' ; for ( ; ; ) "\r" ; } } float [ ] [ ] [ ] km_ ; }
+///[Error:COq9|2]
+COq9 < MK >

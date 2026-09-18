@@ -258,9 +258,6 @@ fachada conserva exactamente la misma API que usaban.
 
 ### 5.3. Los logros no son configurables
 
-**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2, siempre,
-y no es configurable.**
-
 Hubo una versión en la que los cuatro logros de comportamiento —*Floats I*, *Unicodes*, *Reporte de
 Error Elegante* y *Multi-detección*— vivían detrás de un `ConfiguracionDelCompilador`, para poder
 demostrar que el compilador cumplía tanto la consigna base como los logros. **El profesor lo

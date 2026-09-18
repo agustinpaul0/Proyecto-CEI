@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class ZX extends Xl { static void mq ( Z [ ] aT ) { for ( Y g_O = + '\"' >= - true ? true : false ; ; '\f' ) if ( this ++ = - 2.F ) while ( true / - null ) - 53836 ; } } class J7Bx__ implements M_ < R0M > { N2a_ ( ) { this -- < this % 138074 || false ; } private static char wy ( ) { { } if ( + null && - null ) null ; ; } L [ ] e ( ) { } public static void cvz ( char t1 , Qe [ ] b_ ) { } }

@@ -1,2 +1,2 @@
-///[Error:-|2]
-class E25 < T > extends I8_ { char [ ] [ ] [ ] xiA ; Tv < E > [ ] eE__ ; - true }
+///[Error:Ev|2]
+Ev interface Vxf4 < M > extends C4 { X n ( boolean [ ] pC , C_ < F_R < J > > [ ] [ ] m ) ; } class Sew < M > { }

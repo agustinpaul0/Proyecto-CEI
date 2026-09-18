@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class I9 < U > { } class Z0 implements SR { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class EOEK5t < L > { private static J n__0tL ( ) { } } interface O_S_1 { }

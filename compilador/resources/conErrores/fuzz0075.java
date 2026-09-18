@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface QX < P > { } class MM3l7V implements L5_ { public static boolean [ ] h__ { char [ ] v = this -- < false ; } }
+///[Error:}|2]
+class N_w__ < A > implements KAc { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] u ( M [ ] w2 , Z uUt , C n ) }

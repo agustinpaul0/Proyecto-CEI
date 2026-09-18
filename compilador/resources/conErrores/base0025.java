@@ -1,2 +1,2 @@
-///[Error:Qo|2]
-Qo p ( ) ;
+///[Error:<|2]
+interface Z2A { } < K >

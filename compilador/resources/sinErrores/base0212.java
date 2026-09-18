@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Bt < B > implements Xqy < Y > { public T_ ( PF__op [ ] [ ] [ ] p ) { return ; ; } }
+interface DQ < D > extends Zm < Z > { boolean [ ] [ ] [ ] [ ] [ ] p2r ( Zu < P___ < Y_ > > w , V_ [ ] [ ] [ ] v ) ; public void em19 ( ) ; }

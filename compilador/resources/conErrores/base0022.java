@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface H_Y < N > { Z [ ] [ ] wSp ( ) ; void m ( ) ; } class Ow_ extends C5e < Dm > { R [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] kGwg ( char [ ] [ ] nTgZ , char [ ] i_ ) { while ( + 80709 = true < ) while ( - null ) { return ; } } } interface U_B < C > extends HV_ < N6N6 > { }
+///[Error:}|2]
+interface I1_ extends P_r { } interface G3 extends MJ { } class D__07Zk < W > { } class Gg < K > extends AO9H_ { } class U_p_K extends Z7 < A > { static void }

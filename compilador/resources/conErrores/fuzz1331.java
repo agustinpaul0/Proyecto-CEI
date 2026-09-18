@@ -1,0 +1,2 @@
+///[Error:(|2]
+interface Y5 { } ( ) { return true ; } interface C_ extends UH { } interface C38__ < E > extends Jh { } interface GH extends L8 < V8_3__ > { }

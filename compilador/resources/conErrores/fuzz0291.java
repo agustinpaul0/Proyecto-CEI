@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < D > extends NU { }
+///[Error:Ii8|2]
+Ii8 < R >

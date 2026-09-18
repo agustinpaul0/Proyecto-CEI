@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface FHRJ { }
+class ZT extends GD2 < Ar8 > { }

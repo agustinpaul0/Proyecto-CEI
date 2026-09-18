@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface XOK__ < Z > extends QX15__ { public int ti_ ( ) ; Y [ ] [ ] d_e1_l6 ( W6 cx4 , S [ ] v , KF_ < X > s , int [ ] [ ] [ ] [ ] [ ] v2 , G [ ] [ ] [ ] tV , char z , E_ y , U z5 , G z ) ; void p ( Y n6_ ) ; } interface JB { } class J99 implements Kmt < I_wfT4b < B > > { } class U0_ { public float d_ ; static boolean c ( ) { } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Yx < I > { static float i ( S [ ] [ ] a7833 , V v , W1u [ ] u ) { int f , b ; } } class W72YL < U > extends Wgiw4 { } class DD implements T__rmN < X5I > { }

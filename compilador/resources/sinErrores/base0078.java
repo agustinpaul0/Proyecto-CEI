@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class HKb48 < E > extends V8 { } interface S3 < T > extends DF { void wc ( ) ; void ex_ ( int a , L nJ_ ) ; }
+interface V_r { I_T [ ] t ( ) ; K_ < H > g2S ( boolean y7_G , float [ ] [ ] xGa , int s4 , V g ) ; } class X_ < K > { } interface Yg_ extends B8V { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] v ( char [ ] l5 , float [ ] [ ] [ ] [ ] m , W [ ] a_ ) ; } class B6 implements SJk_kl__ < Ibw_ > { } interface GG6 < E > { }

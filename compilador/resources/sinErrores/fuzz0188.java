@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Zx < K > { } class A_ extends I7C_ < ETNOK < QF < A > > > { private static boolean [ ] [ ] z_E ( ) { } public int [ ] [ ] c ; private void k_4 ( ) { ; } private void m ( boolean x ) { return ; } private static ZS < Q6_1 > t ( I s ) { ; } } interface Zqk { public void e ( ) ; public void o_0 ( ) ; } interface Td < U > { void z_ ( I [ ] g2 ) ; } class Pz_5TJ_ < Q > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class AM_ < F > implements R4U_ { static M_y [ ] [ ] l ( ) { '9' = ! false ? ! 62780. % true : '@' ; } } class PcB < D > extends Vp_ < He8 < C0_ > > { }

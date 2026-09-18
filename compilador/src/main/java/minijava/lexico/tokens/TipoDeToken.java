@@ -1,6 +1,6 @@
 package minijava.lexico.tokens;
 
-// Los 56 tokens de la Etapa 1, más los 4 que introducen los logros de la Etapa 2.
+// Los 56 tokens de la Etapa 1, más los 3 que introducen los logros de la Etapa 2.
 // El String de cada valor es el nombre que se imprime en (NombreToken,Lexema,
 // NroLinea): cambiarlo cambia la salida del compilador.
 public enum TipoDeToken {
@@ -29,7 +29,7 @@ public enum TipoDeToken {
     OP_MENOR_IGUAL("op_menorIgual"), OP_DISTINTO("op_distinto"), OP_AND("op_and"),
     OP_OR("op_or"), OP_MODULO("op_modulo"), OP_SUMA("op+"), OP_RESTA("op-"),
     OP_MULT("op_mult"), OP_DIV("op_div"), OP_INCREMENTO("op_incremento"),
-    OP_DECREMENTO("op_decremento"), OP_FLECHA("op_flecha"),
+    OP_DECREMENTO("op_decremento"),
 
     SIGNO_PREGUNTA("signoPregunta"),
 

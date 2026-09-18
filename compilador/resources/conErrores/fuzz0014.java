@@ -1,2 +1,2 @@
-///[Error:>=|2]
-class Eu < Q > extends Brj < Vw > { } interface Yv < F > { } interface Y__O < R > extends J_2 { public boolean [ ] [ ] [ ] [ ] c ( W9 z ) ; } class YN extends QP_ { private M [ ] b = '%' ? ! "" -- > ! '\f' = ! >= - null : + '`' && "" -- ? true : - null >= + null ; }
+///[Error:extends|2]
+class extends X_IV { } class Ub < V > { } class QY < A > { } interface Nj extends H_ < Yp > { }

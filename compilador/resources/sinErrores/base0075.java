@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Eu < Q > extends Brj < Vw > { }
+interface J__Ne_ < F > { boolean l ( int vo , AlF_N3____Zl3TNt [ ] z ) ; }

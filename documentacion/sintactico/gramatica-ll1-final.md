@@ -2,9 +2,8 @@
 
 > python3 herramientas/primeros.py gramatica/minijava-ll1-logros.g
 
-> Ésta es la ÚNICA gramática del compilador, y describe MiniJava con todos los
-> logros de la Etapa 1 y de la Etapa 2 incorporados. No hay producciones que
-> aparezcan y desaparezcan según una configuración: lo que está escrito acá es
+> Ésta es la ÚNICA gramática del compilador. No hay producciones que aparezcan
+> y desaparezcan según una configuración: lo que está escrito acá es
 > exactamente lo que el analizador reconoce, siempre.
 
 > El núcleo sin logros vive aparte, en minijava-ll1.g, y no lo consume el
@@ -74,7 +73,7 @@
 > NT dedicado y no compartido con la inicialización de una variable local: son
 > construcciones distintas y el semántico las trata distinto.
 
-<InicializacionDeAtributo> ::= `=` <ExpresionCondicionalOLambda>  
+<InicializacionDeAtributo> ::= `=` <ExpresionCondicional>  
 <InicializacionDeAtributo> ::= ε  
 
 > <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
@@ -120,13 +119,13 @@
 
 > En POSICIÓN DE TIPO no se admite el diamante: `List<> x;` es inválido.
 
-<TipoGenericoOpcional> ::= `<` <ArgumentoDeTipo> `>` | ε  
+<TipoGenericoOpcional> ::= `<` <InstanciadoOParametrico> `>` | ε  
 
 > la recursión por <TipoGenericoOpcional> es la que habilita el
 > anidamiento `List<List<Persona>>`.
 
-<ArgumentoDeTipo> ::= **idGen**  
-<ArgumentoDeTipo> ::= **idClase** <TipoGenericoOpcional>  
+<InstanciadoOParametrico> ::= **idGen**  
+<InstanciadoOParametrico> ::= **idClase** <TipoGenericoOpcional>  
 
 <ArgsFormales> ::= `(` <ListaArgsFormalesOpcional> `)`  
 
@@ -167,7 +166,7 @@
 <SentenciaDesdeIdClase> ::= <TipoGenericoOpcional> <DimensionesOpcionales> <ListaDeclaradores> `;`  
 <SentenciaDesdeIdClase> ::= `.` **idMetVar** <ArgsActuales> <ColaDeExpresionDesdePrimario> `;`  
 
-<VarLocal> ::= **var** **idMetVar** `=` <ExpresionCondicionalOLambda>  
+<VarLocal> ::= **var** **idMetVar** `=` <ExpresionCondicional>  
 
 > Varias variables por sentencia, cada una con inicialización opcional:
 > `int x,y,z = 10;`
@@ -176,7 +175,7 @@
 <RestoListaDeclaradores> ::= `,` **idMetVar** <InicializacionDeDeclarador> <RestoListaDeclaradores>  
 <RestoListaDeclaradores> ::= ε  
 
-<InicializacionDeDeclarador> ::= `=` <ExpresionCondicionalOLambda> | ε  
+<InicializacionDeDeclarador> ::= `=` <ExpresionCondicional> | ε  
 
 <Return> ::= **return** <ExpresionOpcional>  
 
@@ -207,12 +206,12 @@
 > El `:` distingue el for de iteradores del estándar, y está a un solo token.
 
 <EncabezadoForTrasVar> ::= `:` <Expresion>  
-<EncabezadoForTrasVar> ::= `=` <ExpresionCondicionalOLambda> <ClausulasFinalesFor>  
+<EncabezadoForTrasVar> ::= `=` <ExpresionCondicional> <ClausulasFinalesFor>  
 
 <EncabezadoForTrasDeclarador> ::= `:` <Expresion>  
 <EncabezadoForTrasDeclarador> ::= <InicializacionDeDeclaradorFor> <ClausulasFinalesFor>  
 
-<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCondicionalOLambda> | ε  
+<InicializacionDeDeclaradorFor> ::= `=` <ExpresionCondicional> | ε  
 
 > Una sola expresión por separador.
 
@@ -226,59 +225,39 @@
 > operadores unarios prefijos; y <Operando> un literal, o una referencia con
 > posfijo opcional.
 
-> La lambda NO es una capa de esta jerarquía ni un <Primario>: es una
-> alternativa del nivel MÁS ALTO, igual que en el JLS, que define
-> `Expression: LambdaExpression | AssignmentExpression`. Por eso `->` no tiene
-> precedencia contra ningún operador —no compite con ellos, vive arriba de
-> todos—, y `1 + x -> x`, `- x -> x` y `a == x -> x` son inválidos, como en
-> Java. Las dos cabezas que una lambda comparte con una expresión normal,
-> `idMetVar` y `(`, se factorizan en <ExpresionDesdePrimarioOLambda>.
+> La regla original es `Expresion -> ExpresionCompuesta = ExpresionCompuesta |
+> ExpresionCompuesta`, factorizada. El lado izquierdo del `=` es una
+> <ExpresionCompuesta>, como en la base: `a ? b : c = d` no deriva, igual que
+> en Java.
 
-> Todo lado derecho de un `=` —el de la asignación y el de los cinco
-> inicializadores— es una <ExpresionCondicionalOLambda> y no una <Expresion>.
-> Eso preserva lo que la regla original conseguía usando <ExpresionCompuesta>:
-> que `a = b = c` no sea válido.
+<Expresion> ::= <ExpresionCompuesta> <RestoExpresion>  
 
-<Expresion> ::= <ExpresionCondicionalOLambda> <RestoExpresion>  
+> El lado derecho es ExpresionCondicional y NO Expresion: la gramática original
+> pone <ExpresionCompuesta> ahí, o sea que `a = b = c` NO es válido. Sin `=`, lo
+> que puede seguir es el ternario.
 
-> El lado derecho es ExpresionCondicionalOLambda y NO Expresion: la gramática
-> original pone <ExpresionCompuesta> ahí, o sea que `a = b = c` NO es válido.
-> Admite lambda porque el JLS define `Assignment: LeftHandSide = Expression`.
-
-<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicionalOLambda> | ε  
+<RestoExpresion> ::= <OperadorAsignacion> <ExpresionCondicional>  
+<RestoExpresion> ::= <RestoCondicional>  
 
 <OperadorAsignacion> ::= `=`  
 
-> ---------------------------------------------------------------------------
-> El nivel del JLS `LambdaExpression | ConditionalExpression`: admite lambda,
-> no admite `=` en la raíz. Es el operando de los seis `=` y el tercer operando
-> del ternario.
+> Todo lado derecho de un `=` —el de la asignación y el de los cinco
+> inicializadores— es una <ExpresionCondicional>: admite el ternario y no admite
+> otro `=`.
 
-> Las cabezas que NO pueden empezar una lambda delegan en la jerarquía de
-> siempre; las dos que sí —`idMetVar` y `(`— se factorizan. La cola se comparte
-> con esa jerarquía, así que no hay lógica duplicada: sólo las cabezas.
-
-<ExpresionCondicionalOLambda> ::= <OperadorUnario> <Operando> <ColaTrasOperandoSinAsignacion>  
-<ExpresionCondicionalOLambda> ::= <Primitivo> <ColaTrasOperandoSinAsignacion>  
-<ExpresionCondicionalOLambda> ::= <ExpresionDesdePrimarioOLambda>  
-
-<ExpresionDesdePrimarioOLambda> ::= **idClase** `.` **idMetVar** <ArgsActuales> <ColaDesdePrimarioSinAsignacion>  
-<ExpresionDesdePrimarioOLambda> ::= **this** <ColaDesdePrimarioSinAsignacion>  
-<ExpresionDesdePrimarioOLambda> ::= **stringLiteral** <ColaDesdePrimarioSinAsignacion>  
-<ExpresionDesdePrimarioOLambda> ::= <Creacion> <ColaDesdePrimarioSinAsignacion>  
-<ExpresionDesdePrimarioOLambda> ::= **idMetVar** <AccesoLlamadaOLambda>  
-<ExpresionDesdePrimarioOLambda> ::= <ParentizadaOLambda>  
+<ExpresionCondicional> ::= <ExpresionCompuesta> <RestoCondicional>  
 
 > Asociativo a derecha, como en Java.
 
 > El operando del MEDIO es una <Expresion> y el de la derecha una
-> <ExpresionCondicionalOLambda>, tal cual el JLS 15.25: en Java `a ? b = 1 : c`
-> es válido, `a ? b : c = d` no lo es, y `a ? b : x -> x` sí —la producción del
-> JLS es `? Expression : LambdaExpression`—. No rompe LL(1) porque
-> Primeros(Expresion) no contiene `:`.
+> <ExpresionCondicional>, tal cual el JLS 15.25: en Java `a ? b = 1 : c` es
+> válido y `a ? b : c = d` no lo es. No rompe LL(1) porque Primeros(Expresion)
+> no contiene `:`.
 
-<RestoCondicional> ::= `?` <Expresion> `:` <ExpresionCondicionalOLambda>  
+<RestoCondicional> ::= `?` <Expresion> `:` <ExpresionCondicional>  
 <RestoCondicional> ::= ε  
+
+<ExpresionCompuesta> ::= <ExpresionBasica> <RestoExpresionCompuesta>  
 
 <RestoExpresionCompuesta> ::= <OperadorBinario> <ExpresionBasica> <RestoExpresionCompuesta> | ε  
 
@@ -306,38 +285,15 @@
 > (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
 > se comparten con la jerarquía normal, así que no hay lógica repetida.
 
-> SI admite lambda en la raiz. MiniJava base define `Sentencia -> Asignacion ;`
-> y `Asignacion -> Expresion`, o sea que la sentencia-expresion es una
-> <Expresion> cualquiera: los nombres <Asignacion> y <Llamada> sugieren la
-> restriccion de JLS 14.8, las producciones no la imponen. Con la lambda como
-> alternativa de <Expresion>, `p -> x;` se deriva solo. Java lo rechaza («not a
-> statement»); se eligio respetar el molde de la base, igual que en
-> <Parentizada>. Ver decisiones-de-logica.md §2.2.
-
-> Las dos ultimas reemplazan lo que antes entraba por <PrimarioSinIdClase>: son
-> las mismas dos cabezas ambiguas que factoriza <ExpresionDesdePrimarioOLambda>,
-> `idMetVar` y `(`. El `RestoExpresion` de atras es lo unico que las distingue
-> de alla, porque aca la expresion SI lleva el `=` de la asignacion:
-> `ColaDeExpresionDesdePrimario` == `ColaDesdePrimarioSinAsignacion RestoExpresion`.
-
 <ExpresionSinIdClase> ::= <OperadorUnario> <Operando> <ColaTrasOperando>  
 <ExpresionSinIdClase> ::= <Primitivo> <ColaTrasOperando>  
-<ExpresionSinIdClase> ::= <PrimarioSinIdClaseNiLambda> <ColaDeExpresionDesdePrimario>  
-<ExpresionSinIdClase> ::= **idMetVar** <AccesoLlamadaOLambda> <RestoExpresion>  
-<ExpresionSinIdClase> ::= <ParentizadaOLambda> <RestoExpresion>  
+<ExpresionSinIdClase> ::= <PrimarioSinIdClase> <ColaDeExpresionDesdePrimario>  
 
-> La cola se parte en dos para que el nivel <ExpresionCondicionalOLambda> pueda
-> reusarla sin arrastrar el `=`, que ahí no corresponde.
-
-<ColaTrasOperando> ::= <ColaTrasOperandoSinAsignacion> <RestoExpresion>  
-<ColaTrasOperandoSinAsignacion> ::= <RestoExpresionCompuesta> <RestoCondicional>  
+<ColaTrasOperando> ::= <RestoExpresionCompuesta> <RestoExpresion>  
 
 <ColaDeExpresionDesdePrimario> ::= <RestoReferencia> <PosfijoOpcional> <ColaTrasOperando>  
-<ColaDesdePrimarioSinAsignacion> ::= <RestoReferencia> <PosfijoOpcional> <ColaTrasOperandoSinAsignacion>  
 
 > REFERENCIAS Y PRIMARIOS
-> Ningún <Primario> puede ser una lambda: ésa es exactamente la corrección de
-> precedencia. Un <Primario> es un operando, y una lambda no puede serlo.
 
 <Referencia> ::= <Primario> <RestoReferencia>  
 
@@ -359,73 +315,23 @@
 
 <LlamadaMetodoEstatico> ::= **idClase** `.` **idMetVar** <ArgsActuales>  
 
-<PrimarioSinIdClase> ::= <PrimarioSinIdClaseNiLambda>  
-<PrimarioSinIdClase> ::= <Parentizada>  
-<PrimarioSinIdClase> ::= <AccesoVarOLlamada>  
+<PrimarioSinIdClase> ::= **this**  
+<PrimarioSinIdClase> ::= **stringLiteral**  
+<PrimarioSinIdClase> ::= <ExpresionParentizada>  
+<PrimarioSinIdClase> ::= <AccesoVarOLlamadaMetodo>  
+<PrimarioSinIdClase> ::= <Creacion>  
 
-> Las tres cabezas que NO pueden empezar una lambda. Estan aparte porque
-> <ExpresionSinIdClase> necesita justo eso: las otras dos las toma en su
-> variante que admite lambda.
+<ExpresionParentizada> ::= `(` <Expresion> `)`  
 
-<PrimarioSinIdClaseNiLambda> ::= **this**  
-<PrimarioSinIdClaseNiLambda> ::= **stringLiteral**  
-<PrimarioSinIdClaseNiLambda> ::= <Creacion>  
+> AccesoVar (idMetVar) y LlamadaMetodo (idMetVar ArgsActuales) comparten todo el
+> prefijo.
 
-> El contenido es una <Expresion> completa, lambda incluida, tal cual la regla
-> original: `ExpresionParentizada -> ( Expresion )`, y `Primario ->
-> ExpresionParentizada`. MiniJava base ya define que cualquier expresion
-> parentizada es un primario y que un primario arrastra cadena, asi que
-> `(x -> y).m()` y `(x -> y) + 1` se derivan solos.
-
-> DIVERGE de Java, que los rechaza con «lambda expression not expected here»
-> porque ahi la lambda es alternativa de Expression y nunca un Primary. Se
-> eligio respetar el molde de la gramatica base antes que la forma de Java: la
-> base define esta estructura, y el criterio del proyecto es no despegarse de
-> lo que la base ya dictamino.
-
-<Parentizada> ::= `(` <Expresion> `)`  
+<AccesoVarOLlamadaMetodo> ::= **idMetVar** <AccesoOLlamada>  
 
 > Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era
 > <LlamadaMetodo>.
 
-<AccesoVarOLlamada> ::= **idMetVar** <AccesoLlamada>  
-<AccesoLlamada> ::= <ArgsActuales> | ε  
-
-> MiniLambdas E2
-> Las dos cabezas ambiguas, resueltas en el nivel más alto de la jerarquía.
-
-> `(` abre tanto una expresión parentizada como la lista de parámetros de una
-> lambda. Parece necesitar lookahead ilimitado (`(a,b,c) ->` vs `(a+b)`), pero
-> NO lo necesita:
-> - `( )`      sólo puede ser una lambda de cero parámetros;
-> - `( e , …`  sólo puede ser una lambda: MiniJava no tiene operador coma;
-> - `( e )`    se decide con el token que sigue al `)`: `->` es lambda,
-> cualquier otro es una expresión parentizada.
-> Con eso alcanza un token de lookahead en cada punto.
-
-> Con flecha = lambda de un parámetro sin paréntesis; si no, es el <AccesoVar> o
-> la <LlamadaMetodo> de siempre, con la cola de expresión que le corresponde.
-
-<AccesoLlamadaOLambda> ::= `->` <CuerpoLambda>  
-<AccesoLlamadaOLambda> ::= <AccesoLlamada> <ColaDesdePrimarioSinAsignacion>  
-
-<ParentizadaOLambda> ::= `(` <ContenidoDeParentesis>  
-
-<ContenidoDeParentesis> ::= `)` `->` <CuerpoLambda>  
-<ContenidoDeParentesis> ::= <Expresion> <RestoDeParentesis>  
-
-<RestoDeParentesis> ::= `)` <FinDeParentizadaOLambda>  
-<RestoDeParentesis> ::= `,` <ListaParametrosLambda> `)` `->` <CuerpoLambda>  
-
-<FinDeParentizadaOLambda> ::= `->` <CuerpoLambda>  
-<FinDeParentizadaOLambda> ::= <ColaDesdePrimarioSinAsignacion>  
-
-<ListaParametrosLambda> ::= **idMetVar** <RestoListaParametrosLambda>  
-<RestoListaParametrosLambda> ::= `,` **idMetVar** <RestoListaParametrosLambda> | ε  
-
-> Una única expresión, sin llaves.
-
-<CuerpoLambda> ::= <Expresion>  
+<AccesoOLlamada> ::= <ArgsActuales> | ε  
 
 > CREACIÓN
 
@@ -436,45 +342,41 @@
 <ArregloOInstancia> ::= **idClase** <CreacionDesdeIdClase>  
 
 <CreacionDesdeIdClase> ::= `<` <GenericoDeCreacion>  
-<CreacionDesdeIdClase> ::= <CreacionDeArreglo>  
-<CreacionDesdeIdClase> ::= <ArgsActuales>  
+<CreacionDesdeIdClase> ::= <ArregloOInstanciaDeClase>  
 
 > el diamante `<>` sólo se admite acá, en la rama que va a
 > ArgsActuales: `new C<>()` es válido y `new C<>[3]` no. La restricción queda
 > impuesta por la gramática, no delegada al semántico.
 
 <GenericoDeCreacion> ::= `>` <ArgsActuales>  
-<GenericoDeCreacion> ::= <ArgumentoDeTipo> `>` <ArregloOInstanciaDeClase>  
+<GenericoDeCreacion> ::= <InstanciadoOParametrico> `>` <ArregloOInstanciaDeClase>  
 
 <ArregloOInstanciaDeClase> ::= <CreacionDeArreglo>  
 <ArregloOInstanciaDeClase> ::= <ArgsActuales>  
 
-> Toda dimension de una creacion conserva su `[ Expresion ]`, que es la forma de
-> MiniJava base: `CrearArreglo -> new TipoBase DimensionesConTamanio` con
-> `DimensionesConTamanio -> [ Expresion ] DimensionesConTamanio | [ Expresion ]`.
-> El logro de inicializacion NO afloja esa exigencia: le cuelga el inicializador
-> al final. Asi `new int[2][2]{{1,2},{3,4}}` es valido y `new int[]{1,2,3}` no.
+> Con tamaño es la creación de MiniJava base: `CrearArreglo -> new TipoBase
+> DimensionesConTamanio`, con toda dimensión con su `[ Expresion ]`. Sin tamaño es
+> la forma de Java con inicializador (JLS 15.10.1): ninguna dimensión lleva tamaño,
+> así que `new int[][]{{1,2},{3,4}}` es válido y `new int[2][2]{{1,2},{3,4}}` no.
 
-> Esto DIVERGE de Java, que prohibe tamanio e inicializador juntos (JLS 15.10.1,
-> verificado con javac: «array creation with both dimension expression and
-> initialization is illegal»). Es una decision deliberada: se prefirio no ampliar
-> la forma de las dimensiones que MiniJava ya tenia definida. Revertirla es
-> cambiar CreacionDeArreglo y nada mas.
+<CreacionDeArreglo> ::= `[` <RestoCreacionDeArreglo>  
 
-<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>  
+<RestoCreacionDeArreglo> ::= <Expresion> `]` <DimensionesConTamanioOpcional>  
+<RestoCreacionDeArreglo> ::= `]` <DimensionesOpcionales> <InicializadorDeArreglo>  
 
 <DimensionesConTamanio> ::= `[` <Expresion> `]` <DimensionesConTamanioOpcional>  
 <DimensionesConTamanioOpcional> ::= <DimensionesConTamanio> | ε  
 
 > El inicializador es anidable: un elemento puede ser una expresion o, a su vez,
 > otro inicializador. Solo es alcanzable desde <Creacion>, que es lo unico que el
-> logro restringe sobre donde puede aparecer.
+> logro restringe sobre donde puede aparecer. Admite la coma final, como en Java
+> (JLS 10.6): `{1, 2,}` y `{,}` son validos.
 
-<InicializadorDeArregloOpcional> ::= <InicializadorDeArreglo> | ε  
 <InicializadorDeArreglo> ::= `{` <ListaElementosOpcional> `}`  
-<ListaElementosOpcional> ::= <ListaElementos> | ε  
+<ListaElementosOpcional> ::= <ListaElementos> | `,` | ε  
 <ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>  
-<RestoListaElementos> ::= `,` <ElementoInicializador> <RestoListaElementos> | ε  
+<RestoListaElementos> ::= `,` <ElementosTrasComa> | ε  
+<ElementosTrasComa> ::= <ElementoInicializador> <RestoListaElementos> | ε  
 <ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>  
 
 > ARGUMENTOS ACTUALES

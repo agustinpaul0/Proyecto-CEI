@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface D_ < > { }
+///[Error:)|2]
+class GOd { float [ ] [ ] y ( L3 [ ] ) { } }

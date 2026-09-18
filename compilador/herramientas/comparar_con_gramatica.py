@@ -10,13 +10,6 @@ reconocedor: el simulador del Esquema Simple, escrito en Python sobre la
 gramática. Que los tres coincidan —mismo veredicto y, cuando rechazan, el mismo
 token— es lo que sostiene que el analizador reconozca EXACTAMENTE el lenguaje que
 la gramática define, y no uno parecido.
-
-DIVERGENCIAS DECLARADAS
------------------------
-El analizador es deliberadamente MÁS restrictivo que la gramática en los cuatro
-chequeos que una gramática libre de contexto no puede expresar. La gramática
-acepta y el analizador rechaza; nunca al revés. Se reconocen por el mensaje del
-caso, no por que el fuente contenga una flecha.
 """
 import concurrent.futures
 import glob
@@ -31,20 +24,6 @@ from primeros import analizar, parsear  # noqa: E402
 
 GRAMATICA = "gramatica/minijava-ll1-final.g"
 JAR = "target/Compilador.jar"
-
-# El unico chequeo que el analizador hace y la gramatica no puede expresar: que el
-# primer parametro de una lambda sea un identificador sin tipo. Se reconoce por el
-# motivo del mensaje y no por un patron sobre el fuente, que amnistiaba de mas.
-MOTIVOS_DECLARADOS = (
-    "un parametro de lambda tiene que ser un identificador",
-)
-
-
-def divergencia_declarada(salida_java):
-    for motivo in MOTIVOS_DECLARADOS:
-        if motivo in salida_java:
-            return motivo
-    return None
 
 
 def veredicto_de_java(ruta):
@@ -65,7 +44,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=hilos) as ejecutor:
         salidas = dict(ejecutor.map(veredicto_de_java, rutas))
 
-    comparados = fallos = declaradas = salteados = 0
+    comparados = fallos = salteados = 0
     for ruta in rutas:
         tokens, errores_lexicos = tokenizar(ruta)
         if errores_lexicos:
@@ -79,9 +58,6 @@ def main():
         comparados += 1
 
         if ok_gramatica and not ok_java:
-            if divergencia_declarada(salida):
-                declaradas += 1
-                continue
             fallos += 1
             print(f"DIVERGE {ruta}: la gramatica acepta y el analizador rechaza")
             print(f"        java: {primera}")
@@ -97,10 +73,10 @@ def main():
                 print(f"        gramatica={codigo}  java={primera}")
 
     print()
-    print(f"{comparados} fuentes comparadas, {declaradas} divergencias declaradas, "
-          f"{fallos} sin declarar, {salteados} salteadas por errores lexicos")
+    print(f"{comparados} fuentes comparadas, {fallos} divergencias, "
+          f"{salteados} salteadas por errores lexicos")
     print("EL ANALIZADOR Y LA GRAMATICA COINCIDEN." if not fallos
-          else f"{fallos} DIVERGENCIA(S) NO DECLARADA(S).")
+          else f"{fallos} DIVERGENCIA(S).")
     return fallos
 
 

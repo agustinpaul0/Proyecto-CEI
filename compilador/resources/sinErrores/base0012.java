@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface I_ < V > extends U_ { void o0_ ( D7W_5 m5 ) ; C_Q____ < Q > yd ( C_ < G > [ ] [ ] vM ) ; void pejK ( ) ; }
+class U9 < R > extends A5_ < Eeb > { public U_ ( ) { if ( 485 ) if ( ! 'G' >= ! false ) k . u -- ; else while ( - false ) return ; for ( boolean [ ] [ ] [ ] f5 ; ; ) Dxc < W_ < N_ > > e ; } public static K [ ] s ( ) { ; } }

@@ -5,7 +5,6 @@ import minijava.sintactico.partes.AnalizadorDeClases;
 import minijava.sintactico.partes.AnalizadorDeCreacion;
 import minijava.sintactico.partes.AnalizadorDeExpresiones;
 import minijava.sintactico.partes.AnalizadorDeFors;
-import minijava.sintactico.partes.AnalizadorDeLambdas;
 import minijava.sintactico.partes.AnalizadorDeMiembros;
 import minijava.sintactico.partes.AnalizadorDeReferencias;
 import minijava.sintactico.partes.AnalizadorDeSentencias;
@@ -15,11 +14,11 @@ import minijava.sintactico.recuperacion.RecuperadorDePanico;
 // Las nueve secciones de la gramática, cableadas.
 //
 // La gramática de MiniJava tiene recursión mutua entre secciones —una sentencia
-// contiene expresiones, una expresión contiene lambdas, y el cuerpo de una
-// lambda vuelve a ser una expresión—, así que las partes no se pueden inyectar
-// unas en otras por constructor sin un ciclo. Cada parte recibe esta fachada y
-// le pide el colaborador EN EL MOMENTO de usarlo, que es cuando ya está
-// construido.
+// contiene expresiones, una expresión contiene referencias, y una expresión
+// parentizada contiene otra expresión—, así que las partes no se pueden
+// inyectar unas en otras por constructor sin un ciclo. Cada parte recibe
+// esta fachada y le pide el colaborador EN EL MOMENTO de usarlo, que es cuando
+// ya está construido.
 public final class Sintaxis {
 
     private final EntradaDeTokens entrada;
@@ -32,7 +31,6 @@ public final class Sintaxis {
     private final AnalizadorDeFors fors;
     private final AnalizadorDeExpresiones expresiones;
     private final AnalizadorDeReferencias referencias;
-    private final AnalizadorDeLambdas lambdas;
     private final AnalizadorDeCreacion creacion;
     private final AnalizadorDeArgumentos argumentos;
 
@@ -47,7 +45,6 @@ public final class Sintaxis {
         this.fors = new AnalizadorDeFors(this);
         this.expresiones = new AnalizadorDeExpresiones(this);
         this.referencias = new AnalizadorDeReferencias(this);
-        this.lambdas = new AnalizadorDeLambdas(this);
         this.creacion = new AnalizadorDeCreacion(this);
         this.argumentos = new AnalizadorDeArgumentos(this);
     }
@@ -86,10 +83,6 @@ public final class Sintaxis {
 
     public AnalizadorDeReferencias referencias() {
         return referencias;
-    }
-
-    public AnalizadorDeLambdas lambdas() {
-        return lambdas;
     }
 
     public AnalizadorDeCreacion creacion() {

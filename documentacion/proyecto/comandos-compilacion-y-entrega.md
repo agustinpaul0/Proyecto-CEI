@@ -32,8 +32,7 @@ java -jar target/Compilador.jar programa1.java
 java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErrores01.java
 ```
 
-`--etapa` es la única opción: **no hay forma de elegir con qué logros correr**, porque el
-compilador reconoce MiniJava con todos los de la Etapa 1 y la Etapa 2 incorporados, siempre.
+`--etapa` es la única opción: **no hay forma de elegir con qué logros correr**.
 
 Una opción desconocida se informa por `System.out` y **no** aborta: los testers de la cátedra
 invocan `main()` in-process y una excepción mataría la corrida entera.
@@ -52,8 +51,8 @@ zip -r ../Etapa2-Paul.zip . -x 'target/*' '.venv/*' 'herramientas/fuzz/jars/*' \
                                 'herramientas/fuzz/trabajo/*'
 ```
 
-Son **1953 archivos y medio megabyte** de corpus, y los testers de la cátedra los procesan en unos
-4 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
+Son **10.246 archivos y unos 2,6 megabytes** de corpus, y los testers de la cátedra los procesan en
+unos 3 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en
 `resources/sinErrores/`, así que sobre esta entrega encontraría los casos del sintáctico. Es

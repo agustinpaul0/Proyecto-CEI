@@ -1,2 +1,2 @@
-///[Error:J|2]
-interface Whr { } J
+///[Error:O5d|2]
+O5d

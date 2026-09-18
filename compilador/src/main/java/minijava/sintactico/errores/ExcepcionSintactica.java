@@ -14,25 +14,11 @@ public final class ExcepcionSintactica extends Exception {
     private final String esperado;
 
     public ExcepcionSintactica(Token encontrado, String esperado) {
-        this(encontrado, esperado, "Error Sintactico en linea " + encontrado.linea()
+        super("Error Sintactico en linea " + encontrado.linea()
                 + ": se esperaba " + esperado
                 + " se encontro \"" + encontrado.lexema() + "\"");
-    }
-
-    private ExcepcionSintactica(Token encontrado, String esperado, String mensaje) {
-        super(mensaje);
         this.encontrado = encontrado;
         this.esperado = esperado;
-    }
-
-    // El único chequeo que la gramática no puede expresar —que el parámetro de
-    // una lambda sea un identificador sin tipo— no rechaza por «se esperaba otro
-    // token», así que declara el motivo en prosa. El código [Error:lexema|linea]
-    // es el mismo, que es lo que la cátedra compara.
-    public static ExcepcionSintactica porRestriccion(Token encontrado, String motivo) {
-        return new ExcepcionSintactica(encontrado, motivo,
-                "Error Sintactico en linea " + encontrado.linea() + ": " + motivo
-                        + ", se encontro \"" + encontrado.lexema() + "\"");
     }
 
     public ExcepcionSintactica(Token encontrado, List<String> alternativas) {

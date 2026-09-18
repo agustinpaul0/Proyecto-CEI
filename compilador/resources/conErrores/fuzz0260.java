@@ -1,2 +1,2 @@
-///[Error:d|2]
-interface A_3h9 < N > extends J_ { public void bI0 ( ) ; public d ( ) ; }
+///[Error:(|2]
+interface P78_ { public S [ ] ( ) ; void d ( E m , Ge [ ] al ) ; }

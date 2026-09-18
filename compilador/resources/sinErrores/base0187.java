@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class HI8 implements E2K8 { } interface AL9vGyj_ < C > { void t ( ) ; } class DU___ implements F_ { }
+interface Mm < F > extends Jc < E > { } class A2 < O > extends K4p9gxsS_ < L_ < T > > { M n5 = true - null ; }

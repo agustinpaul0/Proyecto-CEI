@@ -93,11 +93,10 @@ class ConjuntoDePrimerosTest {
         assertEquals(Set.of(TipoDeToken.PR_EXTENDS), PrimerosDeClases.HERENCIA_OPCIONAL_EXTENDS.getTokens());
         assertEquals(Set.of(TipoDeToken.PR_IMPLEMENTS),
                 PrimerosDeClases.HERENCIA_OPCIONAL_IMPLEMENTS.getTokens());
-        assertEquals(Set.of(TipoDeToken.ID_GEN), PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_GEN.getTokens());
-        assertEquals(Set.of(TipoDeToken.ID_CLASE), PrimerosDeTipos.ARGUMENTO_DE_TIPO_ID_CLASE.getTokens());
+        assertEquals(Set.of(TipoDeToken.ID_GEN), PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_GEN.getTokens());
+        assertEquals(Set.of(TipoDeToken.ID_CLASE), PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE.getTokens());
         assertEquals(Set.of(TipoDeToken.SIGNO_PREGUNTA),
                 PrimerosDeExpresiones.RESTO_CONDICIONAL_SIGNO_PREGUNTA.getTokens());
-        assertEquals(Set.of(TipoDeToken.OP_FLECHA), PrimerosDeLambdas.ACCESO_LLAMADA_OLAMBDA_FLECHA.getTokens());
     }
 
     // Los trece operadores binarios van en un solo nivel de precedencia, como en

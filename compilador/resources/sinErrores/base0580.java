@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class RD__ extends ZX_ < H > { static void v ( V2 < S > [ ] b ) { if ( Fo . b ( ) ? ! 7.37826335F = + null : 'I' != true - true ? + null : - null ) I_ . n ( true ) [ - null ] ++ ; } } class I6 extends H_LH < N_ > { private int [ ] e ; private char l_ ; } class Gd_ < N > extends V1 { static float wM ( Orb___ < Q > [ ] c3 ) { '\\' = ! 'y' < - false ; var w5Y9L = "" ++ ? false : null ; var q = ! '\r' % true ; while ( false ) int [ ] e8_0N , z_3w1X ; } } class Jm < Z > { }

@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface ZO < S > extends O_a { OqmD < T > [ ] [ ] g5 ( ) ; void e ( ) ; void hafr ( U [ ] [ ] a_n_ , X [ ] y , Z [ ] [ ] [ ] b ) ; } class Ut { OIx < Z > v1 ; public U_ ( ) { } public static void l ( ) { } public E8 < E > [ ] [ ] [ ] [ ] q ( char m_ , int [ ] [ ] n ) { } public WV ( char [ ] [ ] [ ] y , M [ ] q ) { { true ; ; } } KHS y ( ) { ; } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Gf4 extends P0 < I > { }

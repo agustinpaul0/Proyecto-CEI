@@ -54,7 +54,7 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{InicializacionDeAtributo} \tl{;} \hfill $\{$ \tl{;}, \tl{=} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{CuerpoDeMetodo} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{InicializacionDeAtributo} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicional} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{Metodo} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{CuerpoDeMetodo} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
@@ -85,9 +85,9 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{int} \hfill $\{$ \tl{int} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{float} \hfill $\{$ \tl{float} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{TipoGenericoOpcional} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{<} \nt{ArgumentoDeTipo} \tl{>} \hfill $\{$ \tl{<} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{<} \nt{InstanciadoOParametrico} \tl{>} \hfill $\{$ \tl{<} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ArgumentoDeTipo} \deriva{}\nobreak\par
+\par\medskip\nobreak\noindent\nt{InstanciadoOParametrico} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idGen} \hfill $\{$ \tl{idGen} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idClase} \nt{TipoGenericoOpcional} \hfill $\{$ \tl{idClase} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ArgsFormales} \deriva{}\nobreak\par
@@ -123,14 +123,14 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;} \hfill $\{$ \tl{<}, \tl{[}, \tl{idMetVar} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \tl{;} \hfill $\{$ \tl{.} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{VarLocal} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{var} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{var} \tl{idMetVar} \tl{=} \nt{ExpresionCondicional} \hfill $\{$ \tl{var} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ListaDeclaradores} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{RestoListaDeclaradores} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \tl{idMetVar} \nt{InicializacionDeDeclarador} \nt{RestoListaDeclaradores} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{InicializacionDeDeclarador} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicional} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{Return} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{return} \nt{ExpresionOpcional} \hfill $\{$ \tl{return} $\}$\par\leftskip=0pt
@@ -158,39 +158,26 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor} \hfill $\{$ \tl{.} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{EncabezadoForTrasVar} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{:} \nt{Expresion} \hfill $\{$ \tl{:} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicionalOLambda} \nt{ClausulasFinalesFor} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{EncabezadoForTrasDeclarador} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{:} \nt{Expresion} \hfill $\{$ \tl{:} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor} \hfill $\{$ \tl{;}, \tl{=} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{InicializacionDeDeclaradorFor} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \nt{ExpresionCondicional} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ClausulasFinalesFor} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional} \hfill $\{$ \tl{;} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{Expresion} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionCondicionalOLambda} \nt{RestoExpresion} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ExpresionSinLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionCondicional} \nt{RestoExpresion} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionCompuesta} \nt{RestoExpresion} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{RestoExpresion} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{OperadorAsignacion} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{OperadorAsignacion} \nt{ExpresionCondicional} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{RestoCondicional} \hfill $\{$ \tl{?}, \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{OperadorAsignacion} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{=} \hfill $\{$ \tl{=} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ExpresionCondicionalOLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{OperadorUnario} \nt{Operando} \nt{ColaTrasOperandoSinAsignacion} \hfill $\{$ \tl{!}, \tl{+}, \tl{-} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Primitivo} \nt{ColaTrasOperandoSinAsignacion} \hfill $\{$ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionDesdePrimarioOLambda} \hfill $\{$ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ExpresionDesdePrimarioOLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idClase} \tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{idClase} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{this} \nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{this} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{stringLiteral} \nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{stringLiteral} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Creacion} \nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{new} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{AccesoLlamadaOLambda} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ParentizadaOLambda} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ExpresionCondicional} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionCompuesta} \nt{RestoCondicional} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{RestoCondicional} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicionalOLambda} \hfill $\{$ \tl{?} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{?} \nt{Expresion} \tl{:} \nt{ExpresionCondicional} \hfill $\{$ \tl{?} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ExpresionCompuesta} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionBasica} \nt{RestoExpresionCompuesta} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
@@ -237,13 +224,9 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Primitivo} \nt{ColaTrasOperando} \hfill $\{$ \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{intLiteral}, \tl{null}, \tl{true} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{PrimarioSinIdClase} \nt{ColaDeExpresionDesdePrimario} \hfill $\{$ \tl{(}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ColaTrasOperando} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ColaTrasOperandoSinAsignacion} \nt{RestoExpresion} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ColaTrasOperandoSinAsignacion} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{RestoExpresionCompuesta} \nt{RestoCondicional} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{RestoExpresionCompuesta} \nt{RestoExpresion} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{-}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{||}, \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ColaDeExpresionDesdePrimario} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperando} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ColaDesdePrimarioSinAsignacion} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{RestoReferencia} \nt{PosfijoOpcional} \nt{ColaTrasOperandoSinAsignacion} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{Referencia} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Primario} \nt{RestoReferencia} \hfill $\{$ \tl{(}, \tl{idClase}, \tl{idMetVar}, \tl{new}, \tl{stringLiteral}, \tl{this} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{RestoReferencia} \deriva{}\nobreak\par
@@ -265,37 +248,16 @@
 \par\medskip\nobreak\noindent\nt{PrimarioSinIdClase} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{this} \hfill $\{$ \tl{this} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{stringLiteral} \hfill $\{$ \tl{stringLiteral} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Parentizada} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{AccesoVarOLlamada} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ExpresionParentizada} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{AccesoVarOLlamadaMetodo} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Creacion} \hfill $\{$ \tl{new} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{Parentizada} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{(} \nt{ExpresionSinLambda} \tl{)} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{AccesoVarOLlamada} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{AccesoLlamada} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{AccesoLlamada} \deriva{}\nobreak\par
+\par\medskip\nobreak\noindent\nt{ExpresionParentizada} \deriva{}\nobreak\par
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{(} \nt{Expresion} \tl{)} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
+\par\medskip\nobreak\noindent\nt{AccesoVarOLlamadaMetodo} \deriva{}\nobreak\par
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{AccesoOLlamada} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
+\par\medskip\nobreak\noindent\nt{AccesoOLlamada} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ArgsActuales} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{AccesoLlamadaOLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{->} \nt{CuerpoLambda} \hfill $\{$ \tl{->} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{AccesoLlamada} \nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{(}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ParentizadaOLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{(} \nt{ContenidoDeParentesis} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ContenidoDeParentesis} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{)} \tl{->} \nt{CuerpoLambda} \hfill $\{$ \tl{)} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Expresion} \nt{RestoDeParentesis} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{RestoDeParentesis} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{)} \nt{FinDeParentizadaOLambda} \hfill $\{$ \tl{)} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \nt{ListaParametrosLambda} \tl{)} \tl{->} \nt{CuerpoLambda} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{FinDeParentizadaOLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{->} \nt{CuerpoLambda} \hfill $\{$ \tl{->} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ColaDesdePrimarioSinAsignacion} \hfill $\{$ \tl{!=}, \tl{\%}, \tl{\&\&}, \tl{*}, \tl{+}, \tl{++}, \tl{-}, \tl{-{}-}, \tl{.}, \tl{/}, \tl{<}, \tl{<=}, \tl{==}, \tl{>}, \tl{>=}, \tl{?}, \tl{[}, \tl{||}, \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{ListaParametrosLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idMetVar} \nt{RestoListaParametrosLambda} \hfill $\{$ \tl{idMetVar} $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{RestoListaParametrosLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \tl{idMetVar} \nt{RestoListaParametrosLambda} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{CuerpoLambda} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Expresion} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{Creacion} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{new} \nt{ArregloOInstancia} \hfill $\{$ \tl{new} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ArregloOInstancia} \deriva{}\nobreak\par
@@ -304,33 +266,36 @@
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{idClase} \nt{CreacionDesdeIdClase} \hfill $\{$ \tl{idClase} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{CreacionDesdeIdClase} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{<} \nt{GenericoDeCreacion} \hfill $\{$ \tl{<} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{CreacionDeArreglo} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ArgsActuales} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ArregloOInstanciaDeClase} \hfill $\{$ \tl{(}, \tl{[} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{GenericoDeCreacion} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{>} \nt{ArgsActuales} \hfill $\{$ \tl{>} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ArgumentoDeTipo} \tl{>} \nt{ArregloOInstanciaDeClase} \hfill $\{$ \tl{idClase}, \tl{idGen} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{InstanciadoOParametrico} \tl{>} \nt{ArregloOInstanciaDeClase} \hfill $\{$ \tl{idClase}, \tl{idGen} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ArregloOInstanciaDeClase} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{CreacionDeArreglo} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ArgsActuales} \hfill $\{$ \tl{(} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{CreacionDeArreglo} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{DimensionesConTamanio} \nt{InicializadorDeArregloOpcional} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{[} \nt{RestoCreacionDeArreglo} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
+\par\medskip\nobreak\noindent\nt{RestoCreacionDeArreglo} \deriva{}\nobreak\par
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{]} \nt{DimensionesOpcionales} \nt{InicializadorDeArreglo} \hfill $\{$ \tl{]} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{DimensionesConTamanio} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{[} \nt{Expresion} \tl{]} \nt{DimensionesConTamanioOpcional} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{DimensionesConTamanioOpcional} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{DimensionesConTamanio} \hfill $\{$ \tl{[} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
-\par\medskip\nobreak\noindent\nt{InicializadorDeArregloOpcional} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{InicializadorDeArreglo} \hfill $\{$ \tl{\{} $\}$\par\leftskip=0pt
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{InicializadorDeArreglo} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{\{} \nt{ListaElementosOpcional} \tl{\}} \hfill $\{$ \tl{\{} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ListaElementosOpcional} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ListaElementos} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{\{} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ListaElementos} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ElementoInicializador} \nt{RestoListaElementos} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{\{} $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{RestoListaElementos} \deriva{}\nobreak\par
-\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \nt{ElementoInicializador} \nt{RestoListaElementos} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\tl{,} \nt{ElementosTrasComa} \hfill $\{$ \tl{,} $\}$\par\leftskip=0pt
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
+\par\medskip\nobreak\noindent\nt{ElementosTrasComa} \deriva{}\nobreak\par
+\par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{ElementoInicializador} \nt{RestoListaElementos} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true}, \tl{\{} $\}$\par\leftskip=0pt
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\eps \hfill $\{$ \eps $\}$\par\leftskip=0pt
 \par\medskip\nobreak\noindent\nt{ElementoInicializador} \deriva{}\nobreak\par
 \par\leftskip=1.2em\hangindent=2.4em\hangafter=1\noindent\nt{Expresion} \hfill $\{$ \tl{!}, \tl{(}, \tl{+}, \tl{-}, \tl{charLiteral}, \tl{false}, \tl{floatLiteral}, \tl{idClase}, \tl{idMetVar}, \tl{intLiteral}, \tl{new}, \tl{null}, \tl{stringLiteral}, \tl{this}, \tl{true} $\}$\par\leftskip=0pt

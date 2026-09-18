@@ -1,2 +1,2 @@
-///[Error:B|2]
-B [ ] [ ] [ ] [ ] on ; class P9 < W > { }
+///[Error:-|2]
+class Ua6t < A > implements B_ < Q > { public void rPR57 ( ) - 4520 }

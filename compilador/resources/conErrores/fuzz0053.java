@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Y_a < L > extends ESb1_o_ < I_ < RI_ > > { I0 [ ] [ ] ( ) ; }
+///[Error:)|2]
+interface Z_91 < T > extends Q_g { public void y ( P s ) ; public void l ( Y95 ) ; } class Rg < X > extends EW { }

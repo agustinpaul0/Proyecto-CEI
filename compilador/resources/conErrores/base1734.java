@@ -1,0 +1,2 @@
+///[Error:N_bJw|2]
+class Dk implements DZ5 < G > { private int t ( boolean y ) { } } N_bJw [ ] c ; interface WP < O > { public void h ( ) ; } class WEw < G > implements V_0 < ME > { } interface BB { } class ZL9EO { public void q ( float [ ] b4_ ) { H [ ] [ ] z5it7 , w9 , z8V9w ; ; return ; } } class Qz_ < J > implements Dr { private R1f ( ) { 5F ; } } class J8 < L > extends Fi < K_TN < Q > > { } interface KkJ { } class DP_m extends OZ8 { }

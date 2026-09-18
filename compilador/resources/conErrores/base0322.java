@@ -1,2 +1,2 @@
-///[Error:Te|2]
-class St87 < R > { } Te
+///[Error:MG|2]
+interface O8_ < B > extends Dt_Um < A > { } interface FL < M > extends F_ < Z_ > { } MG

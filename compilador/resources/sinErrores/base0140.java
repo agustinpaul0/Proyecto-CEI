@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class E___ < E > implements H_u91 < Sn > { }
+interface L_ { public void y ( int m , L_ [ ] m , X [ ] k , Y f6M , float [ ] k ) ; } class UO < V > { }

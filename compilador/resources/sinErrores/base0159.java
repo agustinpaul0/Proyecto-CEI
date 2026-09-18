@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class LH < D > implements U_R_K < Q > { public QH ( ) { } } class Ky implements QG0 { static U fOB ( ) { ; } }
+class Wr_rk < P > extends BEl < B_ > { static void o8 ( ) { } private static V_ [ ] [ ] u ( ) { return true = null ; } }

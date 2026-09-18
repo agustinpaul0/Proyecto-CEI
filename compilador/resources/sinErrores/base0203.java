@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class W_ < T > extends NF { public I_D5 ( ) { { if ( '^' ) var iC = true ; else ; ; } } char tF4 ( ) { var n = + Qk7 . fe ( ) ; } }
+interface Tb9 < O > extends Qp { }

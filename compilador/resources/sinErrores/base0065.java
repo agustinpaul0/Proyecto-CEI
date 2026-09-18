@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Dqv implements LP { public L_5 ( ) { } }
+class XqH < Y > implements Y_ < S > { int hu_l ; public static int e_ ( H_ < M38O > s ) { } public void x ( boolean q_u ) { } static public void y4_4_g4 ( ) { float t , q_5 = ! false , tQ , t2 , z0 ; false ; ROq . r_K ( ) . uO ( ) ++ ; for ( V_ x ; ; ) return ; } void b ( ) { V m , t ; } private static void k ( V rd , int sx3 ) { { } T [ ] [ ] w_0 ; X yi , dXl ; } void g ( float o ) { } }

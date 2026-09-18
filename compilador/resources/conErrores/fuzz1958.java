@@ -1,0 +1,2 @@
+///[Error:k_|2]
+interface Q2_h_S < Z > extends B1_4I < CHo < Yp < Bb_ > > > { void j3s_ ( Gj < O1 < I > > [ ] c4n____ ) ; public boolean [ ] [ ] n ( ) ; public E__ < VK__ < M > > [ ] [ ] [ ] [ ] l ( ) ; } class Jum < Q > implements Rt < X > { } class EKI < T > implements V0 < Jk > { } interface Xf { I [ ] k ( ) ; void a_ ( ) ; void u_1 ( MN_ < N > b , O ng , I [ ] [ ] [ ] [ ] n ) ; k_ } class EI implements C___G < L > { }

@@ -1,2 +1,2 @@
-///[Error:Nm45|2]
-Nm45
+///[Error:Tb|2]
+interface P_r6L__2 < I > { public Vd [ ] [ ] z_w ( ) ; public void u ( ) ; public IlTQHfU < V > [ ] kZ31 ( ) ; } class R5 extends X5_ < NZA > { public static char dYy Tb } interface Nn < E > { } class L7 { static private KFbo [ ] i_ ( Y [ ] sp , float g ) { } static public G_aT < BH > [ ] c ( ) { while ( - true ) char [ ] [ ] [ ] g ; } int [ ] [ ] nJYY8 ; } class C_r < P > extends UO1F7 { }

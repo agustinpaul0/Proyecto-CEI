@@ -1,0 +1,2 @@
+///[Error:[|2]
+interface A___5 < J > { } class WE extends J_ { } class H2 < K > extends Z_ { VKY_6 < U > [ ] [ ] s ; public Ap ( char [ ] l , boolean [ ] q ) { } static private [ ] n_H_ ( G [ ] [ ] [ ] [ ] s ) { } static char b__ ( ) { boolean [ ] w ; float [ ] [ ] [ ] [ ] a , y , o , n ; } public static void lF ( float [ ] [ ] e_ ) { Jh . x ( ) ++ ; } } class B7G < Z > implements G9z < Z > { private Cb < W > [ ] ze ; }

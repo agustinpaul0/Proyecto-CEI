@@ -1,0 +1,2 @@
+///[Error:public|2]
+interface EJ56k extends I_C { } class V8 extends ZL { void f_F ( ) { ; } static public boolean k0_a_ ( ) { float x = true + null ? + false : true , k , r = true , oR7 ; var vDEe = + "" ++ > true * + null ; } void public T c ; void v ( ) { } } interface N0 < N > { void x0 ( U6 < U_ > c ) ; } class C_ < X > extends Oq < F > { } interface SP { } interface R_T < Z > extends Vo8D < O > { void g ( ) ; } class E_59 < B > extends WW_0 < Q1t > { }

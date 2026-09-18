@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Zh3 < C > implements Pm < K > { } class R6 < F > extends XE { public boolean [ ] g = this -- ? - null || EqU___ . j ( ) . g < + false = ! true ? - true : + null : + '?' ; private static F t ( ) { } private static void j ( ) { { ; } } } class B_1eX { void cu ( AoGf__ < G > [ ] [ ] [ ] nju2x ) { } static void na ( ) { } } interface G__85 { }

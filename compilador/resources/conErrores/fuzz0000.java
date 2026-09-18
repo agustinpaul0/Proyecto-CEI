@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends JJZ class K7 < I > extends B0_ < T_ > { }
+///[Error:Oc|2]
+Oc interface GuNt_S < M > extends TD < X9 < K > > { public int [ ] [ ] [ ] w ( ) ; }

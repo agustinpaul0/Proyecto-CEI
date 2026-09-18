@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface JTj extends Hb5_ < G4 > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Ip_p < R > { } class KAmfc < Y > implements T3 { }

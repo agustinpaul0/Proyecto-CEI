@@ -1,2 +1,2 @@
-///[Error:void|2]
-class B9 < J > implements D9p_0 { } void r ( ) ;
+///[Error:Gn|2]
+Gn interface J5 { public void f ( ) ; void o_ ( ) ; public void g ( L y ) ; public char g8 ( ) ; }

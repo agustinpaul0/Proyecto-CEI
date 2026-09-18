@@ -1,2 +1,2 @@
-///[Error:oH|2]
-interface YK_ extends Sy_0hOYj_ { void aoO ( oH ) ; }
+///[Error:{|2]
+class TG { } class Au_ extends { float [ ] or_ ; }

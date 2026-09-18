@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class S_ < A > implements Hx_ { } interface IO_ { } interface PxS < F > extends N2 { char e ( char [ ] [ ] [ ] [ ] [ ] [ ] [ ] ey3 , char [ ] u ) ; G73 wN ( ) ; void i ( int [ ] f , boolean qT ) ; void y ( U aK , I [ ] yusJ ) ; } interface U9 < Y > extends MIMII_B_m { boolean w ( ) ; Zf s ( T [ ] [ ] [ ] [ ] g1J4_d_14 , EA < Cc > [ ] [ ] gr ) ; boolean [ ] o_l ( ) ; } class PT < U > extends H5_4 < V6 > { } interface Uh2vT_ < J > extends V_ { }
+class WC21 < O > { static void at ( char [ ] eD ) { } }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface V5_ < R > extends O__pJa_u { M e9 ( ) ; D3 < O > u ( ) ; } class < B > { } class BDCo_C { }
+///[Error:G|2]
+G class Uo_ < D > implements Kl { } interface VS { } class B__ { public static void k ( ) { } }

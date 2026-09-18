@@ -1,2 +1,2 @@
-///[Error:public|2]
-public RJ ( ) { ; }
+///[Error:Fb|2]
+Fb

@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class MVJ < B > implements X_ { private C7S [ ] n_4v ( DV_o gU0 ) { } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Y86 extends X2 { F e ( I [ ] y , V z , char [ ] q ) ; } interface ZL { }

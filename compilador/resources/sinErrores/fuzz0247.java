@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class GJ < F > implements I4luq { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class Pix { }

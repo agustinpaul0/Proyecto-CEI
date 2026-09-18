@@ -1,2 +1,2 @@
 ///[Error:{|2]
-interface O3 { } class Aw < R > { } interface LLhn extends I6 < Zm > { } interface G2bC__E extends Z3r { void x ( ) ; } class Qad_ < T > implements B9_0 < RP > { Zw [ ] [ ] [ ] z ; Q u__ ( O [ ] [ ] [ ] gpx ) { ; ; } public C1 { return ; } boolean [ ] cS689 ( ) { ; } } interface Dk < Q > extends J_ < A > { M [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] gG ( L z , Zl_ [ ] [ ] [ ] c ) ; void u ( char [ ] [ ] [ ] y6 , I m ) ; }
+class MY implements Po < TV > { static void p { } }

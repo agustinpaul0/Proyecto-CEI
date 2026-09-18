@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface L9 { } public void a ( ) ; interface Z_ < N > extends Z9O < Z_ > { } interface RRsnH extends H_Ob < A > { }
+///[Error:<|2]
+interface L16 extends Y0 { } interface CW extends < Ax < M > > { boolean tQ ( ) ; } interface VZ9 extends UKecQ { } class Yn implements W_ { }

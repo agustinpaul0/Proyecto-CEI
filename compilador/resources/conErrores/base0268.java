@@ -1,2 +1,2 @@
-///[Error:;|2]
-class W_ < T > extends NF { public I_D5 ( ) { { if ( '^' ) var iC = true ; else ; ; } } char tF4 ( ) { var n = + ; } }
+///[Error:>|2]
+interface OxA extends Ng5 < ZZ < > > { } interface A_m < Q > { }

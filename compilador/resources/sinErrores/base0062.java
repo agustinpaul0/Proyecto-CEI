@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Qx { boolean h_m_ ( ) ; } class QG < K > { }
+class C2_ < I > implements CQ { void m ( ) { } }

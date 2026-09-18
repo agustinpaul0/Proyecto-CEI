@@ -1,2 +1,2 @@
-///[Error:(|2]
-class RI { public void p ( ) { for ( ; 'w' != null = + null ; ) { { return ; ; ; } } } char [ ] a ; P l ; public Y l ( ) { } ( ) }
+///[Error:{|2]
+class O_U implements { int y ( O xZ , X [ ] [ ] l_Dd_O ) { for ( ; true = true ; ! false ) if ( this -- ) { } } } class MN < P > { } class Igb extends GW_2_ { }

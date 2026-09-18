@@ -34,9 +34,9 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 - **Etapa 1** (entregada y **corregida**, sin errores ni observaciones): Analizador Léxico + Módulo Principal cliente
   por consola. Tiene que seguir siendo ejecutable y testeable de forma aislada.
 - **Etapa 2** (terminada, entrega 23/09/2026): Analizador Sintáctico Descendente Recursivo
-  Predictivo LL(1), con los diez logros implementables por código. **El estado y la verificación
-  están en [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las
-  decisiones cerradas, en
+  Predictivo LL(1). **El estado y la verificación están en
+  [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las decisiones
+  cerradas, en
   [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md).**
 - Etapas 3-5: sin especificación todavía (aparecerán en `etapas/etapa-3/` etc. cuando se publiquen).
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
@@ -50,10 +50,8 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por
 clase — sin límite numérico de líneas, ver [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)),
-identificadores/comentarios en español, apuntar a **todos los logros desde el día 1** (no MVP primero
-y logros después) y **todos prendidos siempre, sin forma de elegirlos**, **los tests son más
-importantes que el código** — máxima cobertura de líneas y de
-ramas, máxima cantidad de casos, happy paths y edge cases siempre.
+identificadores/comentarios en español, **los tests son más importantes que el código** — máxima
+cobertura de líneas y de ramas, máxima cantidad de casos, happy paths y edge cases siempre.
 
 **Comentarios: cero por defecto.** El objetivo es que el código se explique solo; un comentario se
 escribe **únicamente** cuando el código no puede decir lo que hace falta por sí mismo — una decisión

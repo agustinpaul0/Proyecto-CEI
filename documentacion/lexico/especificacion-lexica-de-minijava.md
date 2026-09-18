@@ -20,9 +20,9 @@ qué se tomó— están en [`decisiones.md`](decisiones-de-logica.md) §7.
 ## 1. Los 56 tokens, de un vistazo
 
 > Los 56 son los que define «Aspectos Léxicos de MiniJava», o sea el alcance de la Etapa 1. La
-> Etapa 2 agrega cuatro que no figuran ahí y que existen porque los necesitan sus logros —`for`,
-> `private`, `?` y `->`—. Este documento describe el vocabulario de la Etapa 1; el de los cuatro
-> nuevos está en
+> Etapa 2 agrega tres que no figuran ahí y que existen porque los necesitan sus logros —`for`,
+> `private` y `?`—. Este documento describe el vocabulario de la Etapa 1; el de los tres nuevos
+> está en
 > [`../sintactico/arquitectura-del-analizador-sintactico.md`](../sintactico/arquitectura-del-analizador-sintactico.md).
 
 | Familia | Cantidad | Tokens |
@@ -604,5 +604,4 @@ mencionarlas en el informe.
 | Entrega Anticipada | hito de calendario. |
 
 Los cuatro logros de comportamiento (floats, unicode, reporte elegante, multi-detección) están
-**siempre activos**: el compilador reconoce MiniJava con todos los logros incorporados y no es
-configurable.
+**siempre activos**.

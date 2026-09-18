@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class DWG implements Jn_Mt__ < B > { public IL ( K_ < H > uU2 ) { while ( '\t' = false || true ) E h ; float [ ] [ ] [ ] l4_ ; } } interface Dh1ve < T > extends W6 < A__ > { } class H2 < D > { private P0_ ( boolean s ) { var av = + null != ! true ; } char t = '\t' < true || + 957693 && "" <= + 537187388 != + true ; static private char x ( J qqI ) { } } class R821C0 { } class S_ < K > { }

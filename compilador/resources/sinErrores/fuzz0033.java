@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface P8_ { } class Hc < Z > extends A0 { float xad1oY = 05407 ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Gwf_m < R > { public void t ( ) ; public Tq [ ] [ ] e ( ) ; }

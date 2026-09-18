@@ -39,8 +39,8 @@ cercano — **que es la regla de Java**.
 
 ## 2. Ambigüedades que quedan en la gramática final
 
-Además de las dos anteriores, hay cinco más. Ninguna es un defecto oculto: están detectadas,
-declaradas con su regla de resolución, y el verificador **falla** si aparece una que no lo esté.
+Además del *dangling else*, queda una. Las dos están detectadas, declaradas con su regla de
+resolución, y el verificador **falla** si aparece una que no lo esté.
 
 ### 2.1. `new int[3][4]` — heredada de la cátedra
 
@@ -63,54 +63,6 @@ construcción.
 
 Es una ambigüedad **de la gramática de la cátedra**, no introducida por la transformación.
 
-### 2.2. Dónde vive la lambda, y la ambigüedad que le queda
-
-La ubicación que se impone sola al leer el logro es `<Primario>`: la lambda aparece donde aparece
-un valor, y `<Primario>` es el no terminal de los valores. **Es la equivocada**, y trae dos
-problemas de distinto peso.
-
-**El grave: el lenguaje queda más grande que el de Java.** `<Primario>` es la ranura de un
-*operando*. Si la lambda es un `<Primario>`, entonces es un operando válido de cualquier operador,
-y estas cinco formas pasan el análisis:
-
-| Forma | Con la lambda en `<Primario>` | Java (`javac`) |
-|---|---|---|
-| `1 + x -> x` | acepta como `1 + (x -> x)` | `lambda expression not expected here` |
-| `a == x -> x` | acepta | rechaza |
-| `- x -> x`, `! x -> x` | acepta | rechaza |
-| `(x -> x) + 1` | acepta | rechaza |
-| `(x -> x).m()` | acepta | rechaza |
-
-El JLS define `Expression: LambdaExpression | AssignmentExpression`: la lambda es alternativa del
-nivel **más alto** de la jerarquía, nunca un `Primary`. Dicho de otra forma, `->` no tiene
-precedencia contra los operadores binarios ni unarios **porque no compite con ellos** — vive arriba
-de todos. Por la regla «lo no especificado es igual a Java», eso decide la ubicación.
-
-**El menor: la ambigüedad del cuerpo.** `x -> a + b` tiene dos derivaciones si la lambda es un
-operando —`x -> (a + b)` y `(x -> a) + b`—, porque la cola de la expresión que la contiene compite
-con la cola de su cuerpo. Contagia a los cinco no terminales de cola: `<RestoExpresion>` (`=`),
-`<RestoExpresionCompuesta>` (los 13 binarios), `<RestoReferencia>` (`.` y `[`),
-`<RestoCondicional>` (`?`) y `<PosfijoOpcional>` (`++`, `--`).
-
-**Decisión: la lambda se produce en el nivel de `<Expresion>`.** Cuesta factorizar las dos cabezas
-que comparte con una expresión normal —`idMetVar` y `(`— contra la cola de expresión, con la misma
-técnica que `<ExpresionSinIdClase>`: catorce producciones nuevas y ninguna lógica duplicada, porque
-todas las colas se comparten. A cambio:
-
-- el lenguaje reconocido pasa a ser el de Java en los cinco casos de la tabla;
-- **cuatro de las cinco ambigüedades desaparecen de raíz**, en vez de resolverse por regla.
-
-La que sobrevive es la del `=`: `x -> a = b` es `x -> (a = b)`, porque `<RestoExpresion>` es la
-única cola externa que todavía compite con el cuerpo. Se resuelve **voraz**, que es lo que hace
-Java y lo que un descendente recursivo hace por construcción. Clase 4, slide 49 autoriza
-expresamente resolver una ambigüedad con una regla de implementación, que es la vía que el proyecto
-ya usa para el `else`.
-
-Queda un hueco que la gramática no alcanza a cerrar y que cierra el analizador: el contenido de un
-paréntesis **sí** puede ser una lambda —`f((x -> x))` es válido en Java—, así que `(x -> x).m()`
-atraviesa la gramática. El detalle, con la regla de la raíz y su límite declarado, está en
-[`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
-
 ## 3. Alcance del operador ternario
 
 La gramática original usa `<ExpresionCompuesta>` como lado derecho de un `=` en **los seis lugares**
@@ -121,12 +73,21 @@ encadenada.
 Al insertar la capa del ternario *por encima* de `<ExpresionCompuesta>`, esos seis quedarían sin
 acceso al operador.
 
-**Decisión:** los seis pasan a `<ExpresionCondicional>`, exactamente un escalón más arriba. Sigue
-sin admitir un `=`, así que `a = b = c` se sigue rechazando; pero admite el ternario, así que
-`var x = c ? a : b;` es válido igual que `x = c ? a : b;`. La capa nueva no le saca nada al
-lenguaje de la cátedra: sólo le agrega el ternario.
+**Decisión:** los seis lados derechos pasan a `<ExpresionCondicional>`, exactamente un escalón más
+arriba. No admite un `=`, así que `a = b = c` no deriva; pero admite el ternario, así que
+`var x = c ? a : b;` es válido igual que `x = c ? a : b;`.
 
-El ternario es **asociativo a derecha**, como en Java: `a ? b : c ? d : e` es `a ? b : (c ? d : e)`.
+El **lado izquierdo** del `=` es una `<ExpresionCompuesta>`, como en la gramática original: un
+ternario no lo es, así que `a ? b : c = d` no deriva —`javac` tampoco lo acepta: *«unexpected type,
+required: variable»*—. Entre paréntesis el ternario es un primario, y por lo tanto una
+`<ExpresionCompuesta>`: `(a ? b : c) = d` deriva, igual que `a + b = c` en la gramática original.
+Que el lado izquierdo sea una variable lo controla el semántico.
+
+La capa nueva no le saca nada al lenguaje de la cátedra: sólo le agrega el ternario.
+
+Los operandos son los del JLS §15.25: el del medio es una `<Expresion>` completa y el de la derecha
+una `<ExpresionCondicional>`, así que `a ? b = 1 : c` es válido y `a ? b : c = d` no. El ternario es
+**asociativo a derecha**, como en Java: `a ? b : c ? d : e` es `a ? b : (c ? d : e)`.
 
 ## 4. Precedencia de operadores binarios: no hay
 
@@ -181,53 +142,52 @@ La visibilidad aparece a **un solo lado** del `static`, así que `public private
 `static static void m(){}` y `public static private void m(){}` no derivan. Y `static` sigue
 aplicando sólo a métodos, como en MiniJava base: no hay atributos estáticos.
 
-## 7. Inicialización de arreglos: con el tamaño puesto, y anidable
+## 7. Inicialización de arreglos: como en Java, y anidable
 
 El logro dice *«permite la inicialización de Arreglos al momento de su construcción **como en
-Java**. Sólo se permite como parte de una expresión de creación utilizando `new`»*. La única
-restricción que enuncia es **dónde**, no cuántas dimensiones.
+Java**. Sólo se permite como parte de una expresión de creación utilizando `new`»*.
 
-Pero hay un choque, y conviene dejarlo escrito porque no tiene salida limpia. MiniJava base define
-la creación así:
+MiniJava base define la creación **sin** inicializador, con toda dimensión con su tamaño:
 
 ```
 CrearArreglo ::= new TipoBase DimensionesConTamanio
 DimensionesConTamanio ::= [ Expresion ] DimensionesConTamanio | [ Expresion ]
 ```
 
-**Toda dimensión lleva su tamaño**, y el corchete vacío no existe. Java, en cambio, exige lo
-contrario cuando hay inicializador: `new int[]{1,2,3}` compila y `new int[2]{1,2}` no —verificado
-con `javac`: *«array creation with both dimension expression and initialization is illegal»*, JLS
-§15.10.1—. O sea que no se puede a la vez respetar la forma de las dimensiones que MiniJava ya
-tenía definida y el «como en Java» del logro.
+La creación **con** inicializador no la define, así que es la de Java (JLS §15.10.1): ninguna
+dimensión lleva tamaño —verificado con `javac`: *«array creation with both dimension expression and
+initialization is illegal»*—. El profesor lo confirmó: se hace igual que en Java.
 
-**Decisión:** gana MiniJava base. Se deja `<DimensionesConTamanio>` tal cual y el inicializador se
-le cuelga al final, opcional. El inicializador es anidable: un elemento puede ser una expresión o,
-a su vez, otro inicializador.
-
-```
-<CreacionDeArreglo> ::= <DimensionesConTamanio> <InicializadorDeArregloOpcional>
-```
+**Decisión:** las dos formas empiezan con `[` y se factorizan. Con una expresión adentro es la
+creación de la base; con el corchete vacío, la de Java con inicializador. El inicializador es
+anidable —un elemento puede ser una expresión o, a su vez, otro inicializador— y admite la coma
+final, como en Java (JLS §10.6).
 
 ```
-new int[3]              válido      (la forma de siempre)
-new int[3][4]           válido
-new int[3]{1, 2, 3}     válido
-new int[2][2]{{1,2}, {3,4}}   válido
-new int[0]{}            válido
-
-new int[]{1, 2, 3}      INVÁLIDO    (no hay corchete vacío en una creación)
-new int[]               INVÁLIDO
-new int[][]{{1,2}}      INVÁLIDO
+<CreacionDeArreglo> ::= [ <RestoCreacionDeArreglo>
+<RestoCreacionDeArreglo> ::= <Expresion> ] <DimensionesConTamanioOpcional>
+                           | ] <DimensionesOpcionales> <InicializadorDeArreglo>
 ```
 
-El criterio general del proyecto —lo que MiniJava no define se comporta como en Java— **no aplica
-acá**, porque MiniJava sí define la forma de las dimensiones. Adoptar la forma de Java sería
-ampliar el lenguaje en una construcción ya especificada. La divergencia queda aislada en
-`<CreacionDeArreglo>`: revertirla es cambiar esa producción y nada más.
+```
+new int[3]                    válido      (MiniJava base)
+new int[3][4]                 válido
+new int[]{1, 2, 3}            válido
+new int[][]{{1,2}, {3,4}}     válido
+new int[]{}                   válido
+new int[]{1, 2,}              válido      (coma final)
+new int[]{,}                  válido
+
+new int[2]{1, 2}              INVÁLIDO    (tamaño e inicializador juntos)
+new int[2][2]{{1,2}, {3,4}}   INVÁLIDO
+new int[]                     INVÁLIDO    (ni tamaño ni inicializador)
+new int[2][]                  INVÁLIDO    (sin inicializador, toda dimensión con tamaño: la base)
+new int[]{1,,}                INVÁLIDO
+```
 
 La restricción de que el inicializador sólo valga bajo `new` queda impuesta **por la gramática**:
-sólo es alcanzable desde `<Creacion>`.
+sólo es alcanzable desde `<Creacion>`. `int[] x = {1, 2};`, que Java acepta en una declaración, no es
+válido: el logro lo prohíbe.
 
 ## 8. Genericidad: el diamante sólo al instanciar
 
@@ -249,29 +209,7 @@ Una clase o interfaz sigue limitada a **un único** parámetro de tipo, como dic
 `List<List<Persona>>` cierra con dos `>` separados: el léxico no define ningún token `>>`, así que
 *maximal munch* entrega dos `>` y no hay nada que resolver del lado sintáctico.
 
-## 9. Permisividad declarada de las lambdas
-
-En `(a, b) -> x`, el primer elemento se deriva como `<Expresion>`, no como parámetro. En
-consecuencia `(a+1) -> x` y `(a+1, b) -> x` **atraviesan el analizador**.
-
-Está forzado por LL(1): `(a)` como expresión parentizada y `(a)` como lista de parámetros son
-indistinguibles hasta ver el token *después* del `)`, y para entonces `a` ya se parseó como
-expresión. Cerrarlo en la gramática exigiría duplicar la cadena de colas de expresión en su
-variante «no vacía», unos siete no terminales clonados.
-
-Del mismo origen sale la segunda: ese contenido entre paréntesis **puede** ser una lambda, porque
-`f((x -> x))` es válido en Java, así que `(x -> x).m()` y `(x -> x) + 1` también atraviesan la
-gramática aunque `javac` los rechace.
-
-**Decisión:** las dos se cierran con un chequeo en el analizador —que lo parseado entre paréntesis
-haya sido exactamente un `idMetVar`— y no en la
-gramática. El detalle está en
-[`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md).
-
-Del segundo parámetro en adelante la gramática **sí** exige identificador: `(a, b+1) -> x` y
-`(a, int b) -> x` se rechazan.
-
-## 10. `float` y `floatLiteral`: carry-over de la Etapa 1
+## 9. `float` y `floatLiteral`: carry-over de la Etapa 1
 
 El léxico emite `pr_float` y `floatLiteral` desde la Etapa 1, por un logro de aquella etapa, pero
 la gramática de la cátedra no los tiene en `<TipoPrimitivo>` ni en `<Primitivo>`. Sin extenderla,

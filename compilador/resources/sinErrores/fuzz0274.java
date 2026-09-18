@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Ya < D > implements Sk { public void w0oi ( char [ ] q ) { } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface G62 { Z_ < Q_ < J > > [ ] pK9 ( boolean [ ] [ ] [ ] [ ] [ ] [ ] x , A l , boolean [ ] v , Tg_S5 bg ) ; } interface DHv < N > { }

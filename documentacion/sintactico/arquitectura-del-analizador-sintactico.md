@@ -3,10 +3,9 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas conviyan.
 
-> **Estado.** La etapa está **terminada**: los 110 no terminales implementados, los diez logros
-> —Modo Pánico incluido—, los 8 casos de la cátedra pasando con el token exacto y las dos
-> restricciones de MiniLambdas que la gramática no puede expresar. La verificación completa está en
-> [`README.md`](README.md).
+> **Estado.** La etapa está **terminada**: los 100 no terminales implementados, los nueve logros
+> —Modo Pánico incluido— y los 8 casos de la cátedra pasando con el token exacto. La verificación
+> completa está en [`README.md`](README.md).
 
 ## 1. La técnica: Descendente Recursivo Predictivo, Esquema Simple
 
@@ -75,7 +74,7 @@ public void match(TipoDeToken esperado) {
 ```
 
 Vive en `EntradaDeTokens`, que es el lookahead del analizador y **el único punto que consume
-entrada**. Como las reglas están repartidas en diez secciones, cada una llega a él por un método
+entrada**. Como las reglas están repartidas en nueve secciones, cada una llega a él por un método
 puente de una línea en `ParteDelAnalizador`:
 
 ```java
@@ -149,7 +148,7 @@ la gramática cambia, se regenera.
 
 ## 5.1. Cómo se divide el analizador
 
-Un analizador descendente recursivo tiene un método por no terminal, y con 110 no terminales una
+Un analizador descendente recursivo tiene un método por no terminal, y con 100 no terminales una
 sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
 por sección:
 
@@ -157,18 +156,17 @@ por sección:
 sintactico/
   AnalizadorSintactico    el arranque y el contrato de uso
   EntradaDeTokens         el lookahead y el único punto que consume entrada
-  RestriccionesDeLambda   el estado de los chequeos extra-gramaticales
   Sintaxis                cablea las nueve partes
   errores/                ExcepcionSintactica
   primeros/               ConjuntoDePrimeros + Primeros (generado)
   partes/                 AnalizadorDeClases, DeMiembros, DeTipos, DeSentencias,
-                          DeFors, DeExpresiones, DeReferencias, DeLambdas, DeCreacion
+                          DeFors, DeExpresiones, DeReferencias, DeCreacion, DeArgumentos
 ```
 
 **Por qué hay una fachada `Sintaxis` y no inyección directa.** La gramática tiene recursión mutua
-entre secciones: una sentencia contiene expresiones, una expresión contiene lambdas, y el cuerpo de
-una lambda vuelve a ser una expresión. Con inyección por constructor eso es un ciclo que no se puede
-construir. Cada parte recibe la fachada y le pide el colaborador **en el momento de usarlo**, que es
+entre secciones: una sentencia contiene expresiones, una expresión contiene referencias, y una
+expresión parentizada contiene otra expresión. Con inyección por constructor eso es un ciclo que no
+se puede construir. Cada parte recibe la fachada y le pide el colaborador **en el momento de usarlo**, que es
 cuando ya está construido; así no hacen falta setters ni construcción en dos fases.
 
 **Por qué `EntradaDeTokens` está separada.** Es el único objeto con estado de posición —el token
@@ -239,10 +237,6 @@ a la exigencia de Clase 4 de adaptar la gramática «sin cambiar el lenguaje que
 
 ## 7. Los logros no son configurables
 
-**El compilador funciona exclusivamente con todos los logros de la Etapa 1 y de la Etapa 2,
-siempre. La gramática está escrita en base a todos los logros y sólo así: no tiene reglas dinámicas
-que aparecen y desaparecen según los logros.**
-
 Lo dictaminó el profesor, revirtiendo la decisión anterior. El argumento es de mantenimiento: la
 gramática se complejizaba sin necesidad, y cada etapa nueva obligaría a rehacer el trabajo —volver a
 marcar producción por producción— con más chance de error.
@@ -261,19 +255,18 @@ no cambió el lenguaje.
 
 ## 8. Impacto sobre el Analizador Léxico
 
-Cuatro logros exigen tokens que **no figuran en «Aspectos Léxicos de MiniJava»**:
+Tres logros exigen tokens que **no figuran en «Aspectos Léxicos de MiniJava»**:
 
 | Elemento | Logro | Estado en la Etapa 1 |
 |---|---|---|
 | `for` | Fors! E2 | se reconoce como `idMetVar` |
 | `private` | Visibilidad Mejorada E2 | se reconoce como `idMetVar` |
 | `?` | Operador Ternario E2 | es un error léxico |
-| `->` | MiniLambdas E2 | se reconoce como `-` seguido de `>` |
 
 Se agregan al vocabulario sin condición, así que la columna de la derecha describe lo que pasaba en
 la Etapa 1 y no una configuración alcanzable hoy. `TablaDeLexemas` conoce el vocabulario completo, y
-quien reconoce cada uno es el estado que corresponde: `EstadoIdMV` para `for` y `private`,
-`EstadoInicial` para el `?`, y `EstadoOperadorConSufijoOpcional` para el `->`. **No toca** el patrón
+quien reconoce cada uno es el estado que corresponde: `EstadoIdMV` para `for` y `private`, y
+`EstadoInicial` para el `?`. **No toca** el patrón
 State, ni el driver, ni el manejo de errores, ni el `SourceManager`, y no introduce estado mutable.
 
 Los tokens `:`, `++` y `--` ya existían desde la Etapa 1; `++` y `--` estaban en el léxico sin

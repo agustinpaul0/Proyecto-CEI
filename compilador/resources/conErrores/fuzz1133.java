@@ -1,0 +1,2 @@
+///[Error:Zd|2]
+interface X3__ extends B1 { } class VZ < A > { } class H0 < B > { void j ( ) { return ; { null ; } } } class PD2 < A > extends G7__ { static VZ3c [ ] vE ( ) { true * - true <= 55 = true ; float y = null , y_c3s_ ; } C4__14 ( ) { } static void jt ( float x ) Zd [ ] s_ , ng94 , s ; static private E n ( ) { "" -- ; true ; int n ; } public static void v ( ) { } } class N_ { } interface M_ { } interface A66O_k extends F__ { } class QK < B > extends WP4 { } interface KK < B > extends F7E54_ < QV4n < R > > { } class K5 < Z > extends QF { }

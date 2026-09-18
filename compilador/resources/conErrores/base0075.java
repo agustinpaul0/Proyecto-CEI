@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface M__V { EC < UW_0y__ > ( ) ; void b ( char dt__ ) ; }
+///[Error:return|2]
+class D_ extends RA2 { } return ! 08F

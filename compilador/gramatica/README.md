@@ -8,7 +8,7 @@ de `documentacion/sintactico/` y las tablas del informe se generan desde acá.
 |---|---|
 | `minijava-base.g` | Transcripción de la gramática de la cátedra, tal cual el PDF. **No es LL(1)**: existe para que el verificador lo demuestre — reporta 16 conflictos en 10 no terminales. |
 | `minijava-ll1.g` | El núcleo corregido a LL(1), **sin logros**. El compilador no lo consume: existe para que `equivalencia_de_lenguajes.py` demuestre que corregir la gramática de la cátedra no cambió el lenguaje. |
-| `minijava-ll1-final.g` | **La gramática vigente, y la única que el compilador implementa.** MiniJava con todos los logros de la Etapa 1 y de la Etapa 2 incorporados. |
+| `minijava-ll1-final.g` | **La gramática vigente, y la única que el compilador implementa.** |
 
 ## El formato
 

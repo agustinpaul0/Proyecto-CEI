@@ -47,10 +47,6 @@ public abstract class ParteDelAnalizador {
         return sintaxis.entrada().marca();
     }
 
-    protected final boolean consumioUnSoloTokenDesde(int marca) {
-        return sintaxis.entrada().consumioUnSoloTokenDesde(marca);
-    }
-
     protected final boolean estaEn(ConjuntoDePrimeros primeros) {
         return sintaxis.entrada().estaEn(primeros);
     }

@@ -1,2 +1,2 @@
-///[Error:zF|2]
-class C_ { int [ ] t ( Rg < G2 > [ ] d , QC0 [ ] [ ] o , R [ ] [ ] [ ] g8 , Xr [ ] kw7__ , J [ ] [ ] [ ] [ ] c , float w2__ , zF ) { } } class X7P5 extends G2Q < F > { Dr < W > [ ] d ( ) { for ( B5_ < Zl27 > [ ] ks ; ; ) var o = null ; } } class KR7V_F extends Mc { public N0 ( ) { new K [ ] [ ] [ ] { } . p ( ) ; var k_ = 3f ; ; } }
+///[Error:Y8|2]
+Y8 ( int n0TyZ5M ) { } interface C_ < X > { void l ( ) ; public void oUc ( O b0m066 ) ; }

@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+class DP_ { } class QJK_x implements I8_ { public static int [ ] n ( ) { while ( Hj_u . g ( ) . r_f ++ = true <= null ) O w , k ; return ; } static void k7 ( ) { var dx = 340 > 53301 ; if ( null ) while ( false ) return ; N0 . r ( ) . zm6 ( ) . s -- % null ; } } interface Te < Q > { } interface GM < C > { } class VSR < L > extends P_X { static public void zmp ( boolean jz4d7 ) { } } interface O_ < G > extends CFD { }

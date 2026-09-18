@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Ny extends A_ < K > { private boolean [ ] jZ_ ( ) { { } } } class Z7 < O > implements { static void l_U_ ( ) { } }
+///[Error:&&|2]
+interface O__ { } class G_ < M > implements PU_ { float qn ( char z , float [ ] f ) { var n = ! "\'V" -- ; W2t < O > [ ] j , f , n ; { } while ( ! true ) A n__g , n ; } float vQ = Xj_V . z ( ) . y ( ) . h8_ . c ( ) ++ <= + false ? && + this . a -- >= "" -- * false ? - null % + true : + 2.79D > + false : + null != ! 036.9 != + false % true ? - "" -- == ! null && ! false : null ? true : false ; static void q ( int ufo33V ) { var c = ! 4E-696 % '}' ; ; while ( ! true ) ; } }

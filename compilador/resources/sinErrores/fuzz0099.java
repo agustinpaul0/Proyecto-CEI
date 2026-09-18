@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Sc < T > { } interface OA7 < M > extends OY < KGh > { public char [ ] [ ] ha ( Wr2 < C > [ ] hb ) ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface NM { void c ( char a ) ; void a ( O l ) ; S zL ( ) ; } class Do implements H0el_ { } interface Z0CV { public void k ( ) ; public void l ( Y774 [ ] [ ] [ ] [ ] [ ] x1 ) ; }

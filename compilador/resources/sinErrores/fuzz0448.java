@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class H_W_ < S > { private void oJ ( OZ__ < B > [ ] [ ] g ) { return 01162155 - false = true <= true ; } public void ag ( ) { E zg0 = ! this -- != true || false ; { return ; Xa_9 . p ( ) -- ; "" -- ; Z [ ] [ ] d ; ; ; } while ( ! null ) for ( T859kq_jQ [ ] [ ] go ; ; ) for ( ; ; ) ; Be_ [ ] [ ] y6 ; T [ ] dp ; } } class A_ { } interface TKp { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface QDI < M > extends J9 { }

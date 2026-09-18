@@ -1,2 +1,2 @@
-///[Error:>|2]
-class G90c implements CY < > { }
+///[Error:WJ|2]
+WJ

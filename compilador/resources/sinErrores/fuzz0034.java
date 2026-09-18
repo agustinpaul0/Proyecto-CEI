@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface Ob_ < J > { Y gE8_51 ( U m , Q5 sl9_Z , VZ7 [ ] [ ] [ ] o_E , D bD , boolean [ ] e ) ; public void t ( ) ; Jp__ < U > [ ] x ( ) ; public void hHk6V ( boolean [ ] q2 ) ; void f ( char [ ] [ ] [ ] i , K_ s , B5__ e8_3 , KN5 b ) ; public Q [ ] h ( ) ; } class M_k extends VW { private K [ ] i_ ( Q [ ] wbpz ) { } } class H1 < A > { } interface LT3 extends Jg { } class D_8 extends E8 { } interface Mt_67 { public void kL ( ) ; F [ ] [ ] [ ] [ ] w_ ( TX < F_A > [ ] [ ] i4_J ) ; public void wyQi ( ) ; public void x ( J f0 , char [ ] v_j ) ; }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class O7_ < T > implements U2 { }

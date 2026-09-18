@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class H7 implements W_V < E > { public boolean [ ] d7 ; private float d = N5 . l ( ) -- ; } class B6e_ { } interface Ud < Z > extends Sw__ { } class X404_n < I > extends Z_ < Z > { } class P_s < N > implements VIe < U > { public void y ( ) { } private void w ( Q zF_ ) { } A t8 ( ) { return ; G [ ] m ; float [ ] t8vY3 ; } public float [ ] [ ] m ; void b ( ) { P t0qPkLA ; } } interface N1 < J > { void bg ( V [ ] mx ) ; void fe ( ) ; } interface S9_ extends JN { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Gih_4 < G > { }

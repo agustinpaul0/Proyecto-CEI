@@ -1,2 +1,2 @@
-///[Error:<|2]
-class J_U_ extends < YX > { } interface Ni < M > extends OK { } class Ov < T > implements N_8B { } class DiXP < S > { public H7 ( ) { } char [ ] [ ] e60 ( M [ ] pwB ) { } } class GB < F > { public CM ( boolean g ) { if ( + true ) ; else ; ; } } interface BC < V > { }
+///[Error:)|2]
+class Dk_PS implements Z_ { E [ ] g_l ( int q , boolean [ ] [ ] [ ] [ ] [ ] f ) { } void w ( ) { true = 1f > ! true ; return ; if ( + null || ! ) { } else int o_t ; } void m ( Sy rr5B07 ) { } } class GT_ < C > implements N60 { }

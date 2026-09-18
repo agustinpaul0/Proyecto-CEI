@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface TNGYeW < M > extends Eeo < E0F > { Sy < V > m ; }
+///[Error:for|2]
+class Id_58 implements ZS_2 { public P_ < F > t4 ( ) { } boolean [ ] [ ] [ ] uZ for ( float [ ] [ ] t = false ; ; ) return null ; G iqTX ; }

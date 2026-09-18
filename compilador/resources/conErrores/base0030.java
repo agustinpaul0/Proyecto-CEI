@@ -1,2 +1,2 @@
-///[Error:L_K|2]
-L_K
+///[Error:=|2]
+interface RL < F > { } = + true

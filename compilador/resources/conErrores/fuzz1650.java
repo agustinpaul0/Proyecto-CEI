@@ -1,0 +1,2 @@
+///[Error:<|2]
+class M56 extends Y0 < M > { } class Ub { } class C3 implements Vai { int sO ( Bx82__ < X95CfS_Lj > xD ) { for ( var h = + null ; ; ) + U_H . w ( ) ; } public static void p ( ) { } W_ ( Akm [ ] m , R5O_ [ ] g , float [ ] w ) { } static private void l7l ( MGs w_ , Q8VpE c ) { return ; } static void c ( ) { this . j ; A [ ] [ ] cpG , h , c6_ ; { } { } { } } static F h ( boolean [ ] e2U_ ) { } static public float h ( ) { } } class W14Z < B > implements C8 < < JG > > { private static S [ ] [ ] [ ] s ( ) { } } interface Du { } interface Cl < Q > extends I_ { }

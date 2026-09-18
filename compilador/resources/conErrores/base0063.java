@@ -1,2 +1,2 @@
-///[Error:En|2]
-En
+///[Error:>|2]
+interface Eyj < > extends JK < M > { }

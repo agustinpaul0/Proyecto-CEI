@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class O_ { } class L_4 < K > { } class Jt { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface FN_7h < M > extends U5r < H > { public D8_ < T__ < JoZc < B > > > [ ] xQK3_z ( ) ; }

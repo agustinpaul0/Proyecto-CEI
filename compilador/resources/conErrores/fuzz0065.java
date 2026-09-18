@@ -1,2 +1,2 @@
-///[Error:P|2]
-P
+///[Error:<|2]
+class EIAQ extends < D > { }

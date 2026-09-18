@@ -1,0 +1,2 @@
+///[Error:}|2]
+class WHU < M > { } class Iq < I > extends R__ < I > { static private char [ ] [ ] [ ] [ ] c ( boolean s ) { } } class H_ < Y > { private static void mf ( X [ ] [ ] [ ] [ ] [ ] a , Vw < S > [ ] [ ] [ ] n_ ) { while ( - "" ++ ) return ; if ( '7' - ! true ) m . d -- ; else X [ ] [ ] [ ] lsf ; if ( + null ) boolean [ ] h , k , j_ ; else 93551234 ; S0 [ ] rQh , c2 ; for ( G pD ; ; ) char [ ] [ ] f ; } } interface O_d4 extends RNZRg { Z [ ] [ ] [ ] } interface D_ extends PP < EB > { } class A4x_3_ { }

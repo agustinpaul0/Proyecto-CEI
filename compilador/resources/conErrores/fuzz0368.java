@@ -1,2 +1,2 @@
-///[Error:&&|2]
-class MROS7m extends ST { private PR ( N [ ] [ ] [ ] i_ ) { ; i_iuV ++ ; - false ; Q b , a ; } F p ( boolean [ ] [ ] uM0qI_uFTG ) { && } }
+///[Error:FPv|2]
+interface Ws { SJ_F5Oz amp24 FPv ; }

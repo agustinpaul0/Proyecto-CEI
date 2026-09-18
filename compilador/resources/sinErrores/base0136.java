@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class V_ < Y > extends TMy { }
+class QdY8 extends KRr { }

@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Bn < D > implements H_lj6 < Z > { public M_m ( char [ ] f ) { var f = - Nu_GN . l ( ) . r ( ) . x ( ) && 2061 && null - ! "" || true >= false ; while ( TE7 . if_ ( ) + this % ! false || ! null = null ) var g4K = this ; { ; } while ( + false * null ) ; } }
+interface O_96 < I > { public void u ( B [ ] jd ) ; Qy < T__ < L > > [ ] [ ] q_2 ( ) ; } interface Rc extends RraX < A6vv_1 < Rw < F > > > { VJ < Ne3O > [ ] [ ] a ( ) ; public D [ ] [ ] [ ] [ ] [ ] [ ] eZr9Z70 ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:g|2]
-interface L8 { int [ ] [ ] u ( F7 < O_ > i ) ; void z_P_ ( K [ ] [ ] i , E_ < B > bF25 , g , boolean [ ] [ ] a , int [ ] i , char [ ] s_CF_gx , boolean [ ] [ ] [ ] [ ] zm13 ) ; int [ ] w ( K v_ , Rcdu_ < G > [ ] h ) ; } interface E5 { }
+///[Error:void|2]
+class N_ < O > implements Fw_ { } class MbM < M > { } void u ( ) ; interface WI < R > extends N_ { void y__ ( ) ; } class T0 < G > { char [ ] [ ] u4 ( char h , char [ ] eg , M u ) { } }

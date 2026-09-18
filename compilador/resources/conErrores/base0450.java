@@ -1,0 +1,2 @@
+///[Error:extends|2]
+class OI2_ < A > implements Y8 { static public boolean lz ( int tR ) { } Z bm ( ) { } } extends DY_ < O_IM < T > > class Li < S > implements XU < V > { void vH5_qKb_Jb ( ) { } } class O_ < F > implements C77_y3 < I0 > { static M i ( int kk ) { ; for ( Qy_ . c8_ ( ) . p -- ; ; ) return ; } } class Dcv { static float z ( ) { return false ; } static RE < S > [ ] r ( int b , B [ ] hl ) { } }

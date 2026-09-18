@@ -1,2 +1,2 @@
-///[Error:int|2]
-class G3 < C > { } int
+///[Error:<|2]
+< B > class W__R < J > implements D7 { }

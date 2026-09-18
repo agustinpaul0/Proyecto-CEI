@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Z5_f < L > implements DCcA { } interface ATw < L > extends S73 { }
+interface I_ < V > extends U_ { PZ s_ ( int g5 ) ; }

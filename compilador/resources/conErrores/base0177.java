@@ -1,2 +1,2 @@
-///[Error:JJZ|2]
-JJZ
+///[Error:<|2]
+interface QX < P > { } class MM3l7V implements L5_ { public static boolean h__ ( B [ ] i0K4_ ) { char [ ] v = < false ? false : - null , vm1XOz ; } } interface LnK_ { void g_ ( KM [ ] [ ] [ ] w , VR [ ] [ ] t , KL_ [ ] xhv ) ; } class V__ extends Hl < Y5 < NpYGL < D6 < LI2t > > > > { char pu__Q = - "" . c ( ) -- != - 5451513f / - false ? + B_ . l2A ( ) -- ? + false : + true : - '\"' ? - 372036 : ! false ; char ll ; } class ZWT < K > implements U1 < G > { static public void eKFG ( ) { for ( char w5 ; ; ) { { } } } }

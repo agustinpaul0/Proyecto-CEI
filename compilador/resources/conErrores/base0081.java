@@ -1,2 +1,2 @@
-///[Error:l|2]
-interface Wpi < T > extends N_t_iD_xZW { l ( L [ ] nJP2755 ) ; } class Za < G > { } class L4 < C > { } class PZ implements K_ < W > { }
+///[Error:}|2]
+class VC__ < O > implements CTn { } class Woi6 < Z > { static void yK ( char [ ] w , TjX_ < I > k_ , char z , E2 [ ] [ ] [ ] [ ] d9u ) }

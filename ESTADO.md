@@ -3,7 +3,7 @@
 Dónde está cada etapa y qué queda por resolver. Se actualiza al cerrar cualquier tarea; el detalle
 técnico vive en `documentacion/`, acá va sólo el estado.
 
-**Última actualización:** 17/09/2026
+**Última actualización:** 18/09/2026
 
 ---
 
@@ -21,59 +21,45 @@ Sigue siendo ejecutable de forma aislada con `--etapa=1`, y su corpus completo (
 
 **El léxico de `--etapa=1` creció.** Al sacar la configurabilidad de logros —orden del profesor— ya
 no hay forma de decir «sólo el vocabulario de la Etapa 1», así que `--etapa=1` hoy reconoce también
-los cuatro tokens que agrega la Etapa 2:
+los tres tokens que agrega la Etapa 2:
 
 | Entrada | Etapa 1 como se entregó | Hoy |
 |---|---|---|
 | `for` | `idMV` | `pr_for` |
 | `private` | `idMV` | `pr_private` |
 | `?` | error léxico | `signoPregunta` |
-| `->` | `op-` + `op_mayor` | `op_flecha` |
 
-Para todo el resto del vocabulario el comportamiento es idéntico. Tres casos del corpus léxico se
-ajustaron por esto, y son exactamente los tres que ejercitaban esos tokens. **No afecta a la
-corrección ya hecha** —esa fue sobre el jar entregado en su momento—, pero conviene tenerlo
-presente y está anotado para consultar (ver *Dudas abiertas*).
+Para todo el resto del vocabulario el comportamiento es idéntico. Dos casos del corpus léxico se
+ajustaron por esto, y son exactamente los que ejercitaban el `?`. **No afecta a la corrección ya
+hecha** —esa fue sobre el jar entregado en su momento—, pero conviene tenerlo presente.
 
 ---
 
 ## Etapa 2 — Analizador Sintáctico
 
 **TERMINADA.** Entrega 23/09/2026. Analizador Descendente Recursivo Predictivo LL(1), Esquema
-Simple de Clase 5, con los **diez logros implementables por código** más el *carry-over* de floats.
+Simple de Clase 5.
 
 | | |
 |---|---|
-| Gramática | 110 no terminales, 230 producciones, 60 terminales; LL(1) verificada |
-| Ambigüedades | 3, todas declaradas con su regla de resolución |
-| Analizador | una clase por sección; cita 230 de 230 producciones |
-| Corpus propio | 1953 fuentes, 81 casos de gramática, 8 de la cátedra |
-| Corpus externo | 28.089 fuentes de Giuliano Taormina; 28.086 coinciden, 1 familia declarada |
-| Suite | 5904 tests; 98,8 % de líneas, 94,5 % de ramas; mutación 89 % |
-| Informe | `etapas/etapa-2/entregables/`, 37 páginas |
+| Gramática | 100 no terminales, 207 producciones, 59 terminales; LL(1) verificada |
+| Ambigüedades | 2, las dos declaradas con su regla de resolución |
+| Analizador | una clase por sección; cita 207 de 207 producciones |
+| Corpus propio | 10.246 fuentes (10.043 generadas con Grammarinator), 67 casos de gramática, 8 de la cátedra |
+| Corpus externo | 16.512 fuentes de Giuliano Taormina; coinciden todos |
+| Suite | 26.221 tests; 98,6 % de líneas, 94,2 % de ramas; mutación 91 % |
+| Informe | `etapas/etapa-2/entregables/`, 32 páginas |
 
 ### Decisiones cerradas en esta etapa
 
-- Los logros **no son configurables**: el compilador reconoce MiniJava con todos los de la Etapa 1
-  y la Etapa 2 incorporados, siempre.
+- Los logros **no son configurables**.
 - `public static` y `static public` son los dos válidos; repetir el modificador no. `protected` no
   se implementa.
 - La recursión a derecha se traduce **con recursión**, no con `while`, en los diez lugares.
-- El `this`, la captura de variables y los parámetros repetidos de una lambda **van al semántico**.
-- La lambda entra donde la base la deja entrar: entre paréntesis es operando y suelta es sentencia.
+- La inicialización de arreglos es **la de Java**, como confirmó el profesor: `new int[][]{{1,2},{3,4}}`
+  vale y `new int[2][2]{{1,2},{3,4}}` no. Sin inicializador rige la base: toda dimensión con tamaño.
+- El lado izquierdo de un `=` es una `ExpresionCompuesta`, como en la base: `a ? b : c = d` no deriva.
 - **No hay atributos estáticos**: `static` es `ModificadorOpcional` de `Metodo` y de nada más.
-
-### Lo que queda abierto
-
-Tres puntos de lenguaje donde la especificación admite más de una lectura. Los tres están
-implementados y declarados, pero **conviene confirmarlos** (ver *Dudas abiertas*):
-
-1. **Inicialización de arreglos.** Hoy toda dimensión conserva su tamaño y el inicializador se
-   cuelga al final: `new int[2][2]{{1,2},{3,4}}` vale y `new int[]{1,2,3}` no. Diverge de Java.
-2. **La lambda donde la base la deja entrar.** `p -> x;` como sentencia y `(x -> y).m()` como
-   operando se **aceptan**: los dos salen solos de la base, que define `Asignacion -> Expresion`
-   y `ExpresionParentizada -> ( Expresion )`. Divergen de Java, que rechaza los dos. Sin
-   paréntesis la lambda sigue sin ser operando: `1 + x -> x` no deriva.
 
 ---
 
@@ -95,23 +81,8 @@ siguientes.
 ### Lo que la Etapa 2 le dejó pendiente
 
 Todo lo que exige resolver un nombre contra su declaración. El inventario completo, con ejemplos,
-está en el informe (§12.2) y en
-[`documentacion/sintactico/decisiones-de-deteccion-de-errores.md`](documentacion/sintactico/decisiones-de-deteccion-de-errores.md).
-Lo más específico de esta etapa:
+está en el informe (§12.2). Lo más específico de esta etapa:
 
-- `this` explícito e implícito dentro de una lambda;
-- captura de variables locales y parámetros dentro de una lambda;
-- parámetros de una lambda con nombre repetido;
 - que el padre de un `extends` sea una clase y lo de un `implements` una interfaz;
-- que la cantidad de elementos de un inicializador de arreglo coincida con el tamaño declarado.
-
----
-
-## Dudas abiertas para consultar
-
-Están desarrolladas en `~/downloads/dudas.pdf`. En una línea cada una:
-
-1. **Arreglos** — ¿el inicializador se cuelga de dimensiones con tamaño (base MiniJava) o exige
-   corchete vacío (Java)?
-2. **La lambda** — `p -> x;` y `(x -> y).m()` se aceptan, respetando el molde de la base; ¿está
-   bien, o el «como en Java» del logro pesa más? Incluye qué costaría el cambio contrario.
+- que el lado izquierdo de un `=` y el operando de un `++` o `--` sean variables: `(a ? b : c) = d`
+  y `m()++` pasan el sintáctico, igual que `a + b = c` en la gramática de la cátedra.

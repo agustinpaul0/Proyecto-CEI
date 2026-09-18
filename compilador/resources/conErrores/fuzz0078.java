@@ -1,2 +1,2 @@
-///[Error:>|2]
-class QF < > extends U38 { } class H3E implements PDX { }
+///[Error:extends|2]
+interface ZD { } extends CP

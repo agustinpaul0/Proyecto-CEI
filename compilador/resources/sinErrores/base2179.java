@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface TG_ extends Kc { } class S02 implements Z2HHc < A > { static C [ ] [ ] h ( S28_8 [ ] c ) { + false || 678 * - 7504 == "" + 90408 % ! null = ! 75.e9F ; var h_ = 'f' ? - true / false : null ; } static private void m_8_ ( O [ ] [ ] v ) { } static void a2 ( B0 d8 ) { 'N' || + 4285877 / + 3. / - null ; } static void r ( ) { ; return ; for ( Qo wu ; ; ) return ; } }

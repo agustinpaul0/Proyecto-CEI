@@ -1,0 +1,2 @@
+///[Error:{|2]
+class E7 < J > extends I_ { static void c ( O2 k ) { var j = ! q ++ ? + false % ! "" -- < - 82901 : ! "1\t" . g -- ? 24 != + false : '8' ; var yT = 842579 % - "vB\ro" ; var y = BhO . n7_783 ( ) -- || 5d ; for ( ; + null ; null ) int lB , j6__ , z ; while ( + 95.10f - - true ) H4 < X_ > n ; return ; } public static Q [ ] [ ] [ ] f ( char q_ , X g ) { J [ ] [ ] [ ] p , b = + 9278 * ! null , t7_l = true ; } private static void d ( J1 y , Z [ ] b__ ) { } } interface Upr1 < Y > extends { public void q_ ( Y v6 ) ; }

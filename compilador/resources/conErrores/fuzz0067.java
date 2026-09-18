@@ -1,2 +1,2 @@
-///[Error:wW_46y|2]
-class U_ < E > extends Gf < O4 > { } wW_46y ( ) { C xg ; } class R074 implements S_ < Zw_w > { }
+///[Error:char|2]
+interface Su_ extends W6__H9Rt82__n_9 { } interface G_ < D > { } char [ ] [ ] d ( ) { } class Vt5 < M > { public T [ ] [ ] [ ] [ ] oA ( float [ ] [ ] [ ] j , F [ ] [ ] [ ] hE7z ) { while ( - null ) fn -- ; } private static void s9 ( ) { } }

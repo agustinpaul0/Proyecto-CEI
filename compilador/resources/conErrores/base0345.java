@@ -1,2 +1,2 @@
-///[Error:<|2]
-class U7 implements Nz { } interface MWT { void xw_Q_ ( char prF3L , N [ ] j_ ) ; } interface XF < K > { } interface Zv < P > extends < J_ > { G7_ < Y > gR1 ( Vr e , boolean tU , char [ ] r , int p ) ; } interface J__ { } class Dkk implements B3 < We > { public ZC ( ) { } }
+///[Error:E|2]
+class Ey0 < C > { static public void E a , w = 36 ? true : + true ; private Y6_4 ( L [ ] sJ ) { } } class YI < D > implements E__ { public static E [ ] y ( Z [ ] s_T_ , U [ ] xB ) { ; } public char h ( ) { } }

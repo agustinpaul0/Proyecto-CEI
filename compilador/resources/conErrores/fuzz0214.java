@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Ai__ < W > implements Z_ { } class RQO621F extends GK < > { } interface Fe_ < V > extends E7_ { } interface P_ { Lx < E_Z < C > > [ ] t ( ) ; } class Uvf { }
+///[Error:;|2]
+class Tr_ implements Z0w_7 { float [ ] [ ] r = ; }

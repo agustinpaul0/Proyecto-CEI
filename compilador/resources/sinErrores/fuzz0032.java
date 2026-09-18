@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface XM { } interface IrK extends V_ { public void g7 ( ) ; } class LX { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface I1 < P > { public void g_2 ( char [ ] [ ] [ ] i ) ; void s ( Y g , G b ) ; public void ko ( ) ; B__9369 < Z > [ ] [ ] [ ] [ ] [ ] e ( ) ; void y ( I [ ] h ) ; public A t ( ) ; }

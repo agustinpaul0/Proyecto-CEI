@@ -129,9 +129,9 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo("var y = a ? b = c + 1 : d;"));
     }
 
-    // Una sola asignación, no una cadena: el lado derecho de un `=` sigue siendo
-    // una ExpresionCondicional, así que `a = b = c` no vale ni dentro del medio
-    // del ternario. Es la regla de la gramática original, que el logro no cambia.
+    // Una sola asignación, no una cadena: el lado derecho de un `=` es una
+    // ExpresionCondicional, así que `a = b = c` no vale ni dentro del medio del
+    // ternario. Es la regla de la gramática original.
     @Test
     void elOperandoDelMedioNoEncadenaAsignaciones(@TempDir Path dir) {
         assertEquals("=", rechazarExpresion(dir, "a ? b = c = 1 : d"));
@@ -140,6 +140,21 @@ class ExpresionesTest extends BaseDeAnalisis {
     @Test
     void laAsignacionNoEntraEnElOperandoDerecho(@TempDir Path dir) {
         assertEquals("=", rechazarExpresion(dir, "a ? b : c = 1"));
+    }
+
+    // El lado izquierdo del `=` es una ExpresionCompuesta, como en la gramática
+    // original, y un ternario no lo es. javac también lo rechaza.
+    @Test
+    void unTernarioNoEsElLadoIzquierdoDeUnaAsignacion(@TempDir Path dir) {
+        assertEquals("=", rechazar(dir, envolverEnMetodo("a ? b : c = 1;")).getLexemaOfensivo());
+        assertEquals("=", rechazar(dir, envolverEnMetodo("a + b ? c : d = 1;")).getLexemaOfensivo());
+    }
+
+    // Entre paréntesis el ternario es un primario, o sea una ExpresionCompuesta:
+    // la gramática original lo admite como lado izquierdo, igual que `a + b = 1`.
+    @Test
+    void unTernarioParentizadoEsUnLadoIzquierdoValido(@TempDir Path dir) {
+        aceptar(dir, envolverEnMetodo("(a ? b : c) = 1;"));
     }
 
     // -------------------------------------------------------------- posfijos ---
@@ -195,29 +210,60 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptarExpresion(dir, "new int[3][4][5]");
     }
 
-    // El inicializador se le cuelga a las dimensiones CON tamaño, que es la forma
-    // que MiniJava base ya tenía. No hay `new int[]`.
+    // Con inicializador ninguna dimensión lleva tamaño, como en Java (JLS 15.10.1).
     @Test
-    void elInicializadorSeCuelgaDeLaCreacionConTamanio(@TempDir Path dir) {
-        aceptarExpresion(dir, "new int[3]{1, 2, 3}");
-        aceptarExpresion(dir, "new int[0]{}");
-        aceptarExpresion(dir, "new int[2]{a + 1, m1()}");
+    void elInicializadorVaConDimensionesSinTamanio(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[]{1, 2, 3}");
+        aceptarExpresion(dir, "new int[]{}");
+        aceptarExpresion(dir, "new int[]{a + 1, m1()}");
+        aceptarExpresion(dir, "new Clase[]{a, b}");
     }
 
     // Anidable: una dimensión más, un nivel más de llaves.
     @Test
     void elInicializadorDeArreglosEsAnidable(@TempDir Path dir) {
-        aceptarExpresion(dir, "new int[2][2]{{1, 2}, {3, 4}}");
-        aceptarExpresion(dir, "new int[1][1][1]{{{1}}}");
+        aceptarExpresion(dir, "new int[][]{{1, 2}, {3, 4}}");
+        aceptarExpresion(dir, "new int[][][]{{{1}}}");
+        aceptarExpresion(dir, "new int[][]{{1}, {}}");
     }
 
-    // Toda dimensión de una creación lleva su tamaño, como en MiniJava base: el
-    // corchete vacío no existe ni siquiera con inicializador.
+    // La coma final es opcional, como en Java (JLS 10.6).
     @Test
-    void elCorcheteVacioNoSeAdmiteEnUnaCreacion(@TempDir Path dir) {
-        assertEquals("]", rechazarExpresion(dir, "new int[]{1, 2}"));
-        assertEquals("]", rechazarExpresion(dir, "new int[]"));
-        assertEquals("]", rechazarExpresion(dir, "new int[][]{{1, 2}, {3, 4}}"));
+    void elInicializadorAdmiteLaComaFinal(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[]{1, 2,}");
+        aceptarExpresion(dir, "new int[]{,}");
+        aceptarExpresion(dir, "new int[][]{{1,}, {2},}");
+    }
+
+    @Test
+    void elInicializadorNoAdmiteComasDeMas(@TempDir Path dir) {
+        assertEquals(",", rechazarExpresion(dir, "new int[]{1,,}"));
+        assertEquals("1", rechazarExpresion(dir, "new int[]{,1}"));
+        assertEquals(",", rechazarExpresion(dir, "new int[]{,,}"));
+    }
+
+    // Tamaño e inicializador no van juntos: javac rechaza «array creation with both
+    // dimension expression and initialization is illegal».
+    @Test
+    void elInicializadorNoAdmiteDimensionesConTamanio(@TempDir Path dir) {
+        assertEquals("{", rechazarExpresion(dir, "new int[3]{1, 2, 3}"));
+        assertEquals("{", rechazarExpresion(dir, "new int[2][2]{{1, 2}, {3, 4}}"));
+    }
+
+    // Sin inicializador toda dimensión lleva su tamaño, como en MiniJava base.
+    @Test
+    void sinInicializadorTodaDimensionLlevaTamanio(@TempDir Path dir) {
+        assertEquals(";", rechazarExpresion(dir, "new int[]"));
+        assertEquals("]", rechazarExpresion(dir, "new int[2][]"));
+        assertEquals("2", rechazarExpresion(dir, "new int[][2]{}"));
+    }
+
+    // Un arreglo inicializado es un primario como cualquier creación: arrastra
+    // cadena, igual que en Java.
+    @Test
+    void unArregloInicializadoArrastraCadena(@TempDir Path dir) {
+        aceptarExpresion(dir, "new int[]{1, 2}.length");
+        aceptarExpresion(dir, "new int[]{1, 2}[0]");
     }
 
     // El inicializador sólo se admite dentro de un `new`, nunca suelto.

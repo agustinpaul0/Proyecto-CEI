@@ -1,2 +1,2 @@
-///[Error:)|2]
-class B2 implements Wr { public static int q ( Z v_d , int [ ] w , char [ ] u ) { } A3QL ( ) { return ; while ( - null ) var z = true ; float [ ] [ ] [ ] g_h , k_b ; float d , l , j ; C7 . r ( ) . w -- ; } public void j5_s ( ) { } RU7 ( ) { var e = false ; } } class LM < Y > { public static void s ( ) { while ( null = true <= + true ) while ( null ) char [ ] [ ] [ ] tBS , r ; if ( ) { { } } { return ; } } }
+///[Error:}|2]
+interface KW { public D8 [ ] [ ] k ( ) ; public }

@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
+interface ZZ < R > extends EBI < M_ > { MY [ ] [ ] x0_ ( ) ; P6 [ ] y ( ) ; C b ( float [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] iC ) ; } interface K8y0__ extends Lq < U > { char j ( N [ ] [ ] [ ] z_ , R6_ < P > [ ] u ) ; L_ < U_ < YnU_D_P < S1__rH > > > [ ] [ ] [ ] [ ] d__ ( ) ; public void t ( CD < W0 > [ ] d ) ; public boolean [ ] p ( BA_1 < Ng_a < EY > > f ) ; }

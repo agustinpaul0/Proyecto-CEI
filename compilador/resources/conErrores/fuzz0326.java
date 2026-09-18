@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Wp93 < H > { } interface H302 extends < M > { W [ ] [ ] y_ ( O [ ] n ) ; } class G_ < W > { } class BE < E > { U [ ] r ( G7 yu , Lm [ ] h_ ) { } }
+///[Error:void|2]
+interface Q_5 { } void class FW8u { }

@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface < S > extends J_R2y < Z_ > { }
+interface Gc8R < Z > { void z ( N [ ] [ ] s ) ; } class H__6 < M > extends < F > { }

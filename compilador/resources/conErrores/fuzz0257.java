@@ -1,2 +1,2 @@
-///[Error:M|2]
-interface U222 { void rv_ M [ ] ; void p ( ) ; }
+///[Error:Qp|2]
+Qp < Rg___ > interface B_ extends RJV2 { void g ( ) ; void h3 ( ) ; public void n ( ) ; }

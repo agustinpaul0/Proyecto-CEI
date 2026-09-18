@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface TNGYeW < M > extends { public void y ( V_8_R__ [ ] s , boolean [ ] [ ] [ ] n ) ; }
+///[Error:cq|2]
+class T_ < L > { private W [ ] [ ] [ ] [ ] s ( ) { } } class Q__1 implements R5 < O_Lk > { private static void l ( cq ) { } }

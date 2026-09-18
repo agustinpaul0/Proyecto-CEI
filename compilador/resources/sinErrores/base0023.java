@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface XR extends XkJ { } interface L_ { }
+interface YD extends Ny_ { }

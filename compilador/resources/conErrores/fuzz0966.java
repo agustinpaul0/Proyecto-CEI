@@ -1,0 +1,2 @@
+///[Error:}|2]
+class GY < E > implements ME { public A iM ; I [ ] uQG ( U [ ] [ ] u ) { } static private int i_ ( ) { for ( var k_5s = 1.14575F ; ; ) } } interface L_C extends O_XWn < RfK12 < Mn < B_ > > > { public K p ( ) ; } class Vy < E > implements G1iJ__ { private void v ( Z iG ) { float [ ] [ ] [ ] [ ] [ ] x = true ; } } interface V_ { public void d ( int [ ] ztox , G__lCJ < S_s < R > > [ ] r_0M ) ; } class U5 implements P6_z { static void q ( ) { } } interface D_ < G > { }

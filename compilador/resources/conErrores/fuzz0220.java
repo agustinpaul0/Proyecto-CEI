@@ -1,2 +1,2 @@
-///[Error:U|2]
-interface IzP { } U
+///[Error:;|2]
+interface C_ extends T1 < M > { } class X3Q < T > { } class UA extends AS_0l_3 < R_ > { } interface Uo < M > extends P_ < Z9v > { void t ( ) ; void i0 ( ) ; } class Mt < A > extends Bi < A2 > { OUTV ( ) { while ( + false ) for ( char z_ ; ; ) { } } static O [ ] h ( R0 oPJ , char [ ] fd_ , G r6 ) { } static public E [ ] [ ] [ ] [ ] g2 ( E h ) { } public void qe ( ) { } void f ( ) { } public float ; }

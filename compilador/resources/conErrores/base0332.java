@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface Zx < K > { } public QF ( boolean brJz_E ) { } class SK < T > implements XUmB5 < I > { int [ ] [ ] p ( Bb_ [ ] q , Ww < B > t , I s ) { ; } } interface Zqk { E yz ( char [ ] [ ] z , int [ ] [ ] [ ] yi ) ; } class I432 { boolean iMF ( Y [ ] [ ] u , Tg9 [ ] i ) { } O n ( boolean [ ] f , char [ ] q ) { ; } public Ph ( boolean [ ] q ) { return ; return ; ; ; } } interface P_ extends V3q { }
+///[Error:V_b0|2]
+interface Y__ < V > extends B__ < H > { } V_b0 class Doj < W > { public static HGU [ ] [ ] a57 ( V x , N e ) { N [ ] su ; { for ( boolean l ; ; ) ; } var k = ! false ; this ++ ; int [ ] cc ; C x ; } }

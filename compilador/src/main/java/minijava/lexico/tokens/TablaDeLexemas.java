@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-// 53 de los 60 tokens tienen lexema FIJO: el tipo y el lexema se determinan
+// 52 de los 59 tokens tienen lexema FIJO: el tipo y el lexema se determinan
 // mutuamente. Los 7 restantes —los identificadores y los cuatro literales— leen
 // su lexema del fuente y no entran acá.
 //
 // El reparto de trabajo que habilita esta tabla: el autómata delimita el lexema
 // (maximal munch, lo único que la tabla no puede decidir: no distingue '>' de
 // '>='), y la tabla lo nombra. Es la técnica que la cátedra enseña para las
-// palabras clave (Clase 02, slides 62-63), generalizada a los 53.
+// palabras clave (Clase 02, slides 62-63), generalizada a los 52.
 public final class TablaDeLexemas {
 
     private static final Set<String> PALABRAS_CLAVE;
@@ -83,9 +83,8 @@ public final class TablaDeLexemas {
         porLexema.put("++", TipoDeToken.OP_INCREMENTO);
         porLexema.put("--", TipoDeToken.OP_DECREMENTO);
 
-        // Los otros dos de la Etapa 2, que no figuran en Aspectos Léxicos: sin
-        // ellos '?' sería un símbolo inválido y "->" se leería como op- y op_mayor.
-        porLexema.put("->", TipoDeToken.OP_FLECHA);
+        // El otro de la Etapa 2, que no figura en Aspectos Léxicos: sin él '?'
+        // sería un símbolo inválido.
         porLexema.put("?", TipoDeToken.SIGNO_PREGUNTA);
 
         // Aspectos Léxicos §2.5: "El End of File es un token mas, su y lexema es $".

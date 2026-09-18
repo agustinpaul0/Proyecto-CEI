@@ -225,5 +225,5 @@ Se registran acá, no se corrigen acá.
    léxicamente son dos tokens (`corcheteA` y `corcheteC`): «Aspectos Léxicos MiniJava 2026» no
    define ningún token `[]`. Acá se transcribe como `[ ]`, que es lo que el parser va a tener
    que matchear. Es la única desviación deliberada de la literalidad del PDF en este documento.
-7. **No hay `for`, ni `private`, ni `?`, ni `->`**, coherente con «Aspectos Léxicos MiniJava
-   2026», que tampoco los tiene. Los agregan cuatro de los logros de Etapa 2.
+7. **No hay `for`, ni `private`, ni `?`**, coherente con «Aspectos Léxicos MiniJava 2026», que
+   tampoco los tiene. Los agregan tres de los logros de Etapa 2.

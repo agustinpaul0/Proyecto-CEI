@@ -1,2 +1,2 @@
-///[Error:j|2]
-interface Ja { int g___ ( XbW8 f ) ; void ha ( ) ; j W [ ] [ ] [ ] k9 ( ) ; void xQ4aD ( Z aH ) ; } class AY extends I3 { } interface X7aq extends K_ < H > { } class J__2f2 < U > extends V_1c_7 { void c_ ( ) { } void v ( Lv s_25 , Y n ) { } char s ; public Ns ( ) { } } class H__ extends V_ < E_x_ > { } interface W_0 extends V4 { } interface W_ < V > extends Gx { } interface TW2aQ < X > extends N5 { void lJ6_8 ( int i , W7 [ ] [ ] [ ] g_ , T j ) ; I [ ] sp ( Z_d m , Q [ ] [ ] r3 ) ; } class Gou_Q < F > implements YZ { U [ ] e ( ) { } public N_ ( ) { } public HVU ( ) { } }
+///[Error:>|2]
+class O9JnF < > { }

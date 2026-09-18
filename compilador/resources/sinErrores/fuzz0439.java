@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface L2 extends L0E < L5_ < B_X > > { } interface Zr_43B8 extends P16 { public void t ( ) ; void tza ( D e ) ; public int v_y ( int y_ ) ; Q i ( ) ; } class Nn implements I_2P < S > { H mBl ( ) { } void p3 ( ) { return ; null > - true ; } private char x ( ) { N x , p , nF , t9E ; for ( 'I' ; ; ) V [ ] b51 ; for ( D [ ] ig ; ; ) G [ ] [ ] n ; ; } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface H9 < C > extends A0__z { }

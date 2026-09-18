@@ -1,2 +1,2 @@
-///[Error:AZf|2]
-class PBN { } interface M_ < B > { } AZf interface D3 { } interface O_ { }
+///[Error:public|2]
+class HU < U > { public public static void p ( ) { return ; } }

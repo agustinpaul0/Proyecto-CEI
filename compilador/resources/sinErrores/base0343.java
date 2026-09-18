@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class O8 implements T_ < YY_8JO_ > { void e_Py_Phv ( ) { } } interface E2N { P dT_g82c5_z ( ) ; boolean [ ] [ ] [ ] j ( ) ; void po ( LBa j ) ; void h ( ) ; W_q < N__T_ > [ ] g ( ) ; }
+interface JB46j4 < O > { public void f___1 ( boolean [ ] r_ ) ; } class NV implements To { static void d ( I4__ < R > a4 ) { } } class N_0l { } class J_ < J > { }

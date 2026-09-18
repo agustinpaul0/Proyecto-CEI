@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class J_ extends Gn { } interface J5 { F zH ( ) ; void xE__ ( B j , boolean [ ] [ ] g8 ) ; }
+interface ZD < C > extends G_ < A > { void c ( Y ph , float x , I [ ] [ ] m ) ; } class C8rw < X > implements Q25_k { } class J2P023 extends L_jf2_ { }

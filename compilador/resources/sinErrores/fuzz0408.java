@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface T_q < H > { } class B____ { } interface KG { public void d6 ( ) ; } class Bat < D > implements T5 < E_ < T > > { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class F__ extends J6_b0 { } class X0s_T { static F jdn_ ( SUY_ b1_ ) { this >= ! 8972e-066f >= "" ++ - null >= ! false ; return + false > '\'' / true ; } private int [ ] [ ] o_5 ( G e ) { } }

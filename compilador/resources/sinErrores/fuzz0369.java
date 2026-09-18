@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class DYs < I > extends H_ { private I ke ( boolean [ ] [ ] vk ) { } private static void vLM8F ( ) { } }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface Us < A > extends DrA_ < F > { O g ( char n ) ; } interface DK < V > extends XfC < V > { public void r ( M ss ) ; } class UL implements I_ { } interface OS { }

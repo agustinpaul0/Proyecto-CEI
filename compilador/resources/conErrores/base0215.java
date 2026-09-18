@@ -1,2 +1,2 @@
 ///[Error:>|2]
-class YF6 < > implements D_y3__7 < R > { }
+interface I_Fq < > extends C_M_ < P > { } interface Gq { }

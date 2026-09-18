@@ -1,2 +1,2 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface J1 < G > { B jV ( int [ ] c ) ; } class YO < K > { private Q_ ( ) { } } class ANI < Q > implements L_ { }
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+interface K6_Q < Z > extends Nf < D > { void t ( ) ; }

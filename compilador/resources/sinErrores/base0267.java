@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class WR implements L7 { public TV_ ( Fh_w < E > [ ] v ) { return ; } int [ ] y6 ( L [ ] [ ] [ ] r_ ) { } public QM ( ) { } static R__ a_0 ( ) { ! true ; ; ; } } interface Q5 { void i ( ) ; O9 [ ] l15 ( int z_ , H [ ] [ ] [ ] zs ) ; } class Y_7 < L > extends Vtv5_ { } class DG8 extends S_ { } interface I4 { W t ( ) ; } class YV extends HIR2 { public HW ( ZJ [ ] [ ] cfw__7 , WY [ ] hBL6 , char q ) { } void y ( ) { ; } } interface Q___k < P > extends T_ < X > { char g_ ( ) ; }
+interface XM { } interface IrK extends V_ { public void g7 ( ) ; } class LX { }

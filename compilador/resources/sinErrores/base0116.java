@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface L__ extends F_ < I > { void kl ( Iq [ ] d , V a ) ; KW [ ] [ ] m ( ) ; void e__k ( boolean [ ] [ ] [ ] r , V8 p97 ) ; B c ( ) ; }
+class UY < M > extends Y2 < I > { public I_ ( char w_ ) { ; } } class VT implements A_ < H > { public boolean c89 ( ) { V vtc ; } } class Lf < P > implements RnjH < O > { } interface F__ < A > extends X1P__3 < N > { public int e ( ) ; public char w ( char [ ] id ) ; }

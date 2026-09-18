@@ -1,2 +1,2 @@
-///[Error:L5|2]
-class F1 < G > extends SM3_ { public T0kTR_ L5 < W > } class Bb_ < G > implements To_Y < H > { } class Y_ < E > { }
+///[Error:N|2]
+N class NH_c < V > implements SB_ < R0R > { } class Y0L extends M_ < N_J_ > { } class Ulb0 { }

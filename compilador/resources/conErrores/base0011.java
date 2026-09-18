@@ -1,2 +1,2 @@
-///[Error:public|2]
-public I_ ( ) { - this && true = - false ; ; }
+///[Error:>|2]
+class Ky < > implements Ur < Y > { } interface WN < O > { public void ji2b ( ) ; } class Pf < C > { }

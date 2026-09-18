@@ -1,2 +1,2 @@
-///[Error:>|2]
-class U4 implements AH { } class L23U < H > implements Ph < D_ > { } class YX_ { static boolean [ ] f ( float d ) { } } class ZVN < > extends K_1_c_ < TZ < X > > { } class Fmzu extends KD { }
+///[Error:x|2]
+interface Vg < F > { void p ( Z i ) ; public void zC8 ( ) ; x ( ) ; public char [ ] vn ( char [ ] [ ] k3 ) ; public void o ( ) ; public N [ ] mM8 ( E [ ] dW7h , Y [ ] [ ] i2 ) ; } interface QiI { public void j_ ( ) ; void f ( X r1k ) ; } class V9w { } interface Ls { }

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends E_ < U >
+///[Error:O|2]
+O

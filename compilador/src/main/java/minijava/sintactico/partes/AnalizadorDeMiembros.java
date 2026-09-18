@@ -163,12 +163,12 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         }
     }
 
-    // InicializacionDeAtributo -> = ExpresionCondicionalOLambda
+    // InicializacionDeAtributo -> = ExpresionCondicional
     // InicializacionDeAtributo -> EPSILON
     private void inicializacionDeAtributo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.INICIALIZACION_DE_ATRIBUTO_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);
-            sintaxis.expresiones().expresionCondicionalOLambda();
+            sintaxis.expresiones().expresionCondicional();
         } else {
             // InicializacionDeAtributo -> EPSILON
         }

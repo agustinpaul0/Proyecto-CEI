@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface MR < W > extends J7 { } class A_mY_ < T > { }
+interface Ha8_ < F > { } interface Z9T < K > { } interface C_ap4 { public U r ( ) ; }

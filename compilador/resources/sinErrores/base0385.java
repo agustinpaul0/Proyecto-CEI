@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface B4 < Q > { } interface K6 extends Du1OM { }
+class N7 extends Ln6 { } class M_ < U > extends Mz6_1 { static public void y ( ) { G [ ] [ ] [ ] [ ] w88 = H1 . fYQ_ ( ) / this ? ! true : '\'' ; { } int uE , b ; float [ ] cK ; "\r" ; } static public void cE ( ) { } void xZ ( ) { while ( + 5494947 % true ) float w_4 ; { XZ [ ] m ; } } } class M7 implements Zv_ < CP > { } interface HBU__d { public void gV_B ( ) ; void i ( ) ; } interface Xd_K2_ { public float [ ] [ ] s ( int pLR , G2 s_Ue1__ , T6 z6Bu ) ; } interface C55 < F > { }

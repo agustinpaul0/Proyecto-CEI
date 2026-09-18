@@ -1,2 +1,2 @@
-///[Error:I|2]
-class A__sk extends XW_ < G > { public O9 I g { ; } } class Tl < K > extends V4uA8 { }
+///[Error:true|2]
+class R_ < W > extends R816A < V > { } true interface P_C4W < S > extends Kt { }

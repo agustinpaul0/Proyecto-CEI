@@ -1,0 +1,2 @@
+///[Error:static|2]
+interface Kw extends Pl < Qv > { } class Co implements L_l < S > { public N [ ] [ ] [ ] r__3 ( ) { } } class Xp_NVo5 < G > { NQN3_ < R_I < Zq < C0 > > > d_Bqz_ ( ) { return ! false ; ; for ( L yX ; ; ) float [ ] [ ] s , k ; } XF_1 ( Zu < X > h , B5q9R s ) { boolean m ; Vq . g ( ) ; } public static float dA static private float c_ ( ) { } } interface K8 { void u ( ) ; void t9q ( int s ) ; public void tP ( ) ; public void m ( K_ g ) ; boolean k ( Q [ ] n ) ; }

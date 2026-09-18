@@ -1,0 +1,2 @@
+// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
+class D_ extends Ag { void gL34 ( ) { } } interface XIl6 < Y > extends V_8q { } interface GB < K > extends K_9N_4 < Q > { public void g ( ) ; } interface S_ { } interface QZ9I0QA { public void v ( ) ; } interface Sb < O > extends An < Y_ > { public void lH ( ) ; public void w2i ( int z ) ; void y ( ) ; public void jxt ( float [ ] [ ] [ ] g , char o ) ; }

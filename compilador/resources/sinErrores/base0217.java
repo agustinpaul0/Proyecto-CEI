@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Op665 < F > implements Ye < V_LU > { } interface J__s < F > { } interface H__3l < S > extends I5 { void d ( Z b , D_ < IH > ydp76 ) ; VSI___ k ( L d ) ; void l ( char e ) ; void nv_ ( Ioj [ ] [ ] m4 , char pJ ) ; int qSP_ ( boolean w7Ar ) ; }
+interface DuGn < G > extends F_JpU < I2 < Z > > { } interface ECV extends S_5G < B > { void c ( ) ; } interface Qt < P > extends V_ < NDE_B < Nl > > { public void aX ( ) ; public C1 < E > [ ] [ ] rV ( ) ; public void l1wF ( ) ; Z v ( ) ; }

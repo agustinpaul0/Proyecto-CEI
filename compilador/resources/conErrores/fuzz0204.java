@@ -1,2 +1,2 @@
-///[Error:+|2]
-class Dz < X > { + }
+///[Error:Zy|2]
+Zy
