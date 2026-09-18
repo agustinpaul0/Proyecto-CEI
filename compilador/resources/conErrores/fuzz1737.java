@@ -1,2 +1,2 @@
-///[Error:<|2]
-class K659 < C > { private B_ [ ] v ; } interface G_ < B > { Xt < BS > [ ] z ( ) ; } interface Ct_2 { } < S >
+///[Error:;|2]
+interface S2B_ < Q > extends Jd < Mp < YVyB < U3J < L > > > > { K [ ] o ( ) ; float [ ] q_ ; public void nw ( ) ; }

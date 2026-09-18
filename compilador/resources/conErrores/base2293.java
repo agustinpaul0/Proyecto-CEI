@@ -1,2 +1,2 @@
-///[Error:{|2]
-class D_ extends { } class D3_ { static private int [ ] jlD ( ) { for ( var j8F = ! null > 1. || + null ; true ; ) boolean t , qQG_ ; var y = this . jw -- * - '\"' ? 005 && ! true : ! false + + false ; } }
+///[Error:eAZ|2]
+interface Z7 < M > { } class O2 < I > { } interface V9W { void f1 ( eAZ ) ; }

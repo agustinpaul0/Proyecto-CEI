@@ -93,9 +93,6 @@
 \regla{Sentencia}{\nt{While}}
 \regla{Sentencia}{\nt{Bloque}}
 \regla{Sentencia}{\nt{For}}
-\end{producciones}
-
-\begin{producciones}
 \regla{Sentencia}{\nt{ExpresionSinIdClase} \tl{;}}
 \regla{Sentencia}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
 \regla{Sentencia}{\tl{idGen} \nt{DimensionesOpcionales} \nt{ListaDeclaradores} \tl{;}}
@@ -121,20 +118,12 @@
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
 \regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
-\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
-\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
-\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}
-\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}
-\regla{EncabezadoForDesdeIdClase}{\nt{TipoGenericoOpcional} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
-\regla{EncabezadoForDesdeIdClase}{\tl{.} \tl{idMetVar} \nt{ArgsActuales} \nt{ColaDeExpresionDesdePrimario} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoFor}{\nt{Expresion} \nt{ClausulasFinalesFor}}
 \end{producciones}
 
 \begin{producciones}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
 \regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCondicional} \nt{ClausulasFinalesFor}}
-\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}
-\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}
-\regla{InicializacionDeDeclaradorFor}{\tl{=} \nt{ExpresionCondicional} \alt{} \eps}
 \end{producciones}
 
 \begin{producciones}

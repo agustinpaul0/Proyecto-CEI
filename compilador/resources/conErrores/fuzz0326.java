@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Q_5 { } void class FW8u { }
+///[Error:public|2]
+class RSfXi implements Y_ < BD > { static private void public static void k_Y ( ) { } }

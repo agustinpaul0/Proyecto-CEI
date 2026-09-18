@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface J_ < P > { } interface LZ17 extends FPg { ( M_ [ ] [ ] k ) }
+///[Error:J_Q|2]
+J_Q interface NhS3 < Y > { public O n ( L n ) ; }

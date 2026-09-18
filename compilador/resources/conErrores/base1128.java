@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Q_ < V > implements Ev { } interface Vxf4 < M > extends C4 { X n ( [ ] pC , C_ < F_R < J > > [ ] [ ] m ) ; } class Sew < M > { }
+///[Error:void|2]
+class RK < V > implements T__ < JM_Z < Y > > { } void v_ ( ) ; interface Bhc < L > { }

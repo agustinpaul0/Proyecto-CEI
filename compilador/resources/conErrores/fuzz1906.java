@@ -1,2 +1,2 @@
-///[Error:F|2]
-F interface XD extends C_ { }
+///[Error:}|2]
+interface JC extends DA { } interface At < F > extends T_ { } class S_ < N > implements RR < Wk < Kd > > { int u ( ) { int y , eA_ = + false ; } private static void t ( ) } interface Ch8ai < S > extends N6 { UB < Z > i ( int [ ] zo ) ; } interface B_I extends LziP < W > { } interface Eq < O > { } interface Fj < E > extends M2_71 < I > { public B c ( ) ; public int [ ] t5l ( ) ; } class F__ extends G_ { }

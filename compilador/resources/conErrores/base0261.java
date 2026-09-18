@@ -1,2 +1,2 @@
-///[Error:C|2]
-C [ ] class W_6S9 < W > implements Ys < To1 > { void e ( C [ ] m ) { new BX < > ( ) ; while ( false = null ) while ( + true ) I [ ] j_W_A ; while ( + false ) boolean [ ] [ ] puL_z ; { return ; { } return ; ; } for ( char k ; ; ) I [ ] k7Rm_ , a ; } } interface I_ < J > extends CN_Y { } class XS { static public T [ ] c ( ) { ; } static void x ( float [ ] [ ] [ ] sG6 , Jp s_ ) { new R [ ] [ ] { } ++ / true ; } } interface MjhKXA5 < Q > extends Lp < U > { public int [ ] [ ] [ ] g0 ( I e1A ) ; } class Xj extends H7 { public void a0 ( K h ) { } }
+///[Error:oo|2]
+class Y_frz < D > extends Lc < S8ew5 < Gg < G > > > { static public void q ( V s , boolean [ ] w , oo ) { } private H_ [ ] xG = "QS" ++ ; }

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Puntos donde MiniJava se aparta de Java a propósito. Están todos en la tabla de
-// agents/especificacion-lexica.md y van en el informe.
+// documentacion/lexico/especificacion-lexica-de-minijava.md y van en el informe.
 @Tag("lexico")
 class DivergenciasConJavaTest {
 

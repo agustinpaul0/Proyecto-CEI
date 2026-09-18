@@ -1,2 +1,2 @@
-///[Error:return|2]
-class YP9 < I > extends Xcj < Ng_ > { public W_ a__A ( char [ ] v , A [ ] d_ , WQ [ ] w11 , Z [ ] iHq_ ) { } D9 e_m3__G36 ( TpW_g < N > [ ] ovL , YNO [ ] w__ ) return ; } interface V_N extends UoycI04_nyV { public void nXk ( float j ) ; } class Ax1_Y { Ebd ( I [ ] a , C [ ] [ ] [ ] [ ] [ ] p_ ) { ; } static private Zy e ( ) { } int [ ] [ ] k ( ) { for ( G w ; ; ) for ( ; ; ) return ; } static void g ( X f_4 , T [ ] cAo29f_ , W k ) { } }
+///[Error:{|2]
+interface B2 extends { }

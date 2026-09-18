@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-class A_A1 extends Gb { } interface Ph < D > { } boolean [ ] [ ] [ ] [ ] [ ] [ ] interface S_ < H > extends P_ < K > { public int a91_ ( ) ; }
+///[Error:void|2]
+interface Vx7 < T > extends C8 { P void j ( int [ ] [ ] [ ] lI0 , B4__ < JJ > q ) ; void z_ ( ) ; } class U_4 { }

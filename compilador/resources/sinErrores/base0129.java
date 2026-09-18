@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Ki implements XOV < H > { static void a ( ) { for ( U z__U = this * '\"' ? ! true : false ; ; ) 9739166 * ! "" . hSZ -- / 03364 = - 4868D ; } }
+class Ki implements XOV < H > { static void a ( ) { for ( var u = + 12.1E+0f && - 57893 <= ! '\'' ? - 7831 && ! null : - 333.6d ; - 4868D ; ) boolean q5 ; return En . amS ( ) . eqn0 ++ ; while ( I_ . ltU ( ) ++ >= "" -- % 4f || - false ? null : - true ) true ; } }

@@ -1,2 +1,2 @@
-///[Error:X|2]
-interface N9XZz { } X
+///[Error:V_LK|2]
+V_LK interface Ou < K > extends R____ < T > { }

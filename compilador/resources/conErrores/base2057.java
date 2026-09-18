@@ -1,2 +1,2 @@
-///[Error:i5x|2]
-class E0 extends YH < R_j > { } i5x class P__ extends Q_uF9_ < U0 < P > > { } class W2U implements Jc9 < Sy10_ < B > > { } class Yw extends Dm_r { } class Hh_1 < L > extends Bw { public void e ( J m_V1w_ ) { } }
+///[Error:{|2]
+class D_6 < M > implements { H_ ( ) { } } interface M0 extends FE < H > { public void q ( float n , PO i26 ) ; }

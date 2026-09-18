@@ -1,2 +1,2 @@
-///[Error:}|2]
-class T_ < Y > { static void h }
+///[Error:void|2]
+void interface Mb9 extends Ea < Y > { } class BCW4QW { }

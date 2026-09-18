@@ -1,2 +1,2 @@
-///[Error:return|2]
-interface DI_d_2 < D > extends Y_ { } class HY_e < N > implements Ou8q { } class V_ < V > implements Hu < R_ < E > > { } interface B_Hy < J > extends K8T5__ { } return ; class SkTr_ implements AR < V_ < Q3E < Y > > > { L n = "?" . e7 ++ ; boolean [ ] [ ] m ( ) { int v ; } }
+///[Error:float|2]
+float class P_XhCzpc < C > extends Yf { static int q ( int [ ] [ ] pb511___ , F f_ , C6 < CC > [ ] m92d , X c ) { ; } } interface V9 < F > extends L8 { }

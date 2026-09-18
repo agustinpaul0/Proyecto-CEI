@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) interface NG { public M_8 < T3 < B9nth > > [ ] n ( Kml [ ] [ ] x , L x , H w , char kK2 ) ; public float [ ] b ( int w ) ; } class I9x_d implements DP < Y7_R > { public H [ ] s ( W [ ] [ ] [ ] [ ] [ ] u ) { if ( true ) boolean [ ] n , m_ ; else for ( ; ; ) return ; } boolean [ ] [ ] [ ] z ( ) { } } interface KgT extends S_s566 < Z > { } class Lq extends ZPuS < Q > { static void zc_T ( float [ ] [ ] [ ] h , float [ ] [ ] y , O [ ] [ ] [ ] j_ ) { } public static void q1_zS08X ( ) { Xi . n ( ) ; ; } } interface O_jU extends V_ < BU_ > { void j ( H [ ] wb ) ; public void y ( ) ; X n ( XZ fJ , float a6_ ) ; public U [ ] u3 ( int [ ] v , char h ) ; }
+///[Error:extends|2]
+interface EI5X extends Ls { public void z ( F_f < K > [ ] i_a0y ) ; public float aC ( ) ; } class extends B_ { }

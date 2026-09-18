@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Sb implements WMg < > { }
+///[Error:X|2]
+interface TxR { } X [ ] dy

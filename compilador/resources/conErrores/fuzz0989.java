@@ -1,2 +1,2 @@
-///[Error:<|2]
-< Z_j < Tl_ < O > > >
+///[Error:(|2]
+interface Z_ < I > { public void r ( float [ ] [ ] [ ] [ ] gyH_W8b ) ; void ( ) ; }

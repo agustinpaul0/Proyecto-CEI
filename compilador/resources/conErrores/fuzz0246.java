@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface KM < Y > extends D7Q < Z_ > { public void pi ( ) ; } interface T_ { public void mnGT ( ) ; } class extends A8 { }
+///[Error:public|2]
+interface D_ { } public void j_Om4p_w ( ) ; interface YG extends T_ { } interface V_ < J > extends H6s2d { }

@@ -1,2 +1,2 @@
-///[Error:}|2]
-class IG < M > implements D8 { public static V }
+///[Error:(|2]
+interface B95 < O > { } interface FdVlHWIB < A > { void ( ) ; }

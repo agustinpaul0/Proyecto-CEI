@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Sk implements WA < H > { } class Zc_1 { } class D60 implements T_K < Taa_ > { static public void { for ( T [ ] z : null ) return false ; for ( T [ ] d : null ) - false || - true ; } C f ( I h ) { while ( false ) Ch . cXB3IE ( ) . c ++ ; } }
+///[Error:[|2]
+class Up < J > { static R_lHf [ ] [ ] j_ ( ) { return ; if ( 498330 ? 991 : + false < true ) ; return ; if ( "" ++ = - true ) { } I_xx . lZ ( ) ++ == + true ; { } V [ ] [ ] [ ] u ; ; Q [ ] a , a ; { } } private static void w ( float i , E9_ < J8_z___s > f ) { { } LD [ ] wB_P ; } } interface O_ { public void x ( D6_ < L_0U6_1 > wI ) ; } class Fj_ { private static Q j ( ) { } } interface Vt9 extends N_ { public C x ( R lJ , boolean [ ] y , float [ ] w , char [ ] f , [ ] bzO5o0_T3 , O_l3_ [ ] [ ] [ ] nAyC ) ; }

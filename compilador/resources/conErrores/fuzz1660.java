@@ -1,2 +1,2 @@
-///[Error:j|2]
-interface OE { public j ( ) ; }
+///[Error:}|2]
+interface H_S < P > { A }

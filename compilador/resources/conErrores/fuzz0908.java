@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface RNtU { } class U7x < J > extends E_ < W > { static SE5 [ ] [ ] jsb ( ) { N ; } } interface U5 { void n ( ) ; void z ( char [ ] uX , GM < U9 < VW > > x ) ; }
+///[Error:<|2]
+class O_ < C > extends < RP < F > > { } interface Jphf { } class A_ < O > extends W_ { } class LE implements RL { } interface DQ < C > { }

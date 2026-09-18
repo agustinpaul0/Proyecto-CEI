@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface Z6 { } interface W1O8 < O > { public float g__ int vu1F ; public int t ( ) ; } class E_7_ < K > { Wf ( E2 b ) { } static private void z ( ) { for ( int [ ] o7_ ; ; ) A [ ] eoc ; } }
+///[Error:to_XN2_|2]
+class BV < C > implements K_ < GME < S > > { } interface WK extends Jkl < IO < MG < M > > > { L y ( ) ; } interface Gx extends BB { to_XN2_ ( boolean i ) ; void s ( ) ; public void u ( ) ; void s ( J4 m5 ) ; }

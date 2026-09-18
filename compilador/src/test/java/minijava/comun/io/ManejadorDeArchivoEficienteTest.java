@@ -45,7 +45,7 @@ class ManejadorDeArchivoEficienteTest {
     }
 
     // getLineNumber() describe el carácter DEVUELTO, no el próximo: mientras el
-    // '\n' es el último devuelto la línea sigue siendo la suya. El léxico depende
+    // '\n' es el último devuelto la línea es la suya. El léxico depende
     // de eso — un estado que mira el '\n' como lookahead reporta su propia línea.
     @Test
     void elSaltoDeLineaTodaviaPerteneceALaLineaQueTermina(@TempDir Path dir) throws IOException {

@@ -1,2 +1,2 @@
-///[Error:S|2]
-class L_ < I > implements Yd < RW_T > { } class R5t < Z > implements Ff { private H [ ] h4 ( ) { } void p ( ) { } public A [ ] foR S [ ] [ ] [ ] g8 ; } class W_ < Q > { }
+///[Error:CE0|2]
+interface LE__ extends OW8 { } interface R_ < I > { } CE0 class Il < N > extends FI { E b_ ( ) { } } class W46dpc extends I1PR { }

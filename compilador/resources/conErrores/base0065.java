@@ -1,2 +1,2 @@
-///[Error:Yq2|2]
-class UF_ < N > { } Yq2
+///[Error:>|2]
+interface Eyj < > extends JK < M > { }

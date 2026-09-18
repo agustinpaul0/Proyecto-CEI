@@ -1,2 +1,2 @@
-///[Error:;|2]
-class V7 extends AA57 < C5 > { } interface K0 < Y > extends W_ { public void k ; }
+///[Error:[|2]
+interface M_qp_ extends O0g { } interface Vv < K > { } [ ] [ ]

@@ -1,2 +1,2 @@
-///[Error:null|2]
-class ND6 implements Pt_ < PC > { } class PN implements Yf_ { static public void null F woM ( ) { } }
+///[Error:{|2]
+interface JG53_ < M > { } class I_ < J > extends { }

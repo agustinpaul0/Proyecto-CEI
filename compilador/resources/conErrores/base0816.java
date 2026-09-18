@@ -1,2 +1,2 @@
-///[Error:%|2]
-class M_ { } class R0 < T > implements Qq { UA ( ) { + null - + % null = 6767 ; } }
+///[Error:B|2]
+class CW < Y > implements B { } interface V_B < J > { } interface L8_ < O > { public C6C_ b ( ) ; }

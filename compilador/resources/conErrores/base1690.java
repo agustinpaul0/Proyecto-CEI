@@ -1,2 +1,2 @@
-///[Error:static|2]
-static Ild_ t_ ( ) { }
+///[Error:++|2]
+class N1 < W > extends Kl { char [ ] y_B ( ET gcx , FU4 < P > fj0O ) { return "\bT\'" -- == '0' || 77296 < null ; { ; for ( ; ; ) - false ; } } public void ++ private RHP0 < I > [ ] s ( ) { } L__ c ( ) { for ( ; ; ) float [ ] [ ] z__0I_ ; return ; return ; } public int [ ] [ ] [ ] y ; public static void h_ ( char v , boolean [ ] [ ] f_t ) { { ; } A [ ] [ ] [ ] [ ] u , j , o_W ; for ( ; ; ) { } float j ; } } interface A_68 { public void s_ ( ) ; public void f ( U [ ] uw_ ) ; } interface P_ < B > extends LDK_Z < W > { void fI ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Pj extends K6_ { void ijD ; } interface S6n extends FbJz_ { }
+///[Error:>|2]
+class H1 < > implements G_m < H > { }

@@ -1,2 +1,2 @@
-///[Error:M5|2]
-M5
+///[Error:>|2]
+interface Z__B < K > { } class InI < B > { static private char g ( int [ ] w_1 ) { return > ! this ++ || ! 's' = 032. ; } char g = - 'o' ? 872841.e-19D : + "" ++ ? + true != false = true : "" ? false : null ; G [ ] wFZkRY ( ) { } static private void jO ( ) { } static public void t ( int [ ] [ ] v ) { for ( ; ; ) return ; 61e+8 ; ; return ; for ( ; ; ) ; ; } private static char y_3P ( ) { ; { ; } } N_063 ( ) { } V_ v ( ) { } } class D_ implements KpG < N__ > { } class Fm_ < M > implements CD < F > { static public void in ( ) { } }

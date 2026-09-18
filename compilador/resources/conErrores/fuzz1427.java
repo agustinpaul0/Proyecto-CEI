@@ -1,2 +1,2 @@
-///[Error:Yk|2]
-class O_Ho extends O_ { } class I5 implements Ue7_Yc { } class Iq2 extends II < AVW > { } class Dmp < F > { static W qpRkO Yk }
+///[Error:?|2]
+interface A1 extends Y_ { public void r ( ) ; } class U_ extends P__qJ < Q > { } class F6FZ_ < F > extends L1_ < X > { N [ ] i ? true : null }

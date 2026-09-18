@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Qmd { char j ( ) ; void u ( int [ ] [ ] [ ] k ) ; } interface Y80 < B > extends LWv { public char a_7 ; }
+///[Error:JvP|2]
+interface Nwuq < X > extends Ui88gn < SI > { public void rW ( ) ; public D s ( ) ; } JvP

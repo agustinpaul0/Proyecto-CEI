@@ -1,2 +1,2 @@
-///[Error:YR|2]
-YR
+///[Error:QWv|2]
+interface J2_ { } QWv

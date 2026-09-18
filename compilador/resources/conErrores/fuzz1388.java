@@ -1,2 +1,2 @@
-///[Error:this|2]
-class J6uB_ < F > extends Ik_ < M > { boolean [ ] [ ] r ( int [ ] [ ] [ ] b ) this ++ }
+///[Error:)|2]
+interface Gc8R < Z > { void z ( N [ ] [ ] ) ; } class H__6 < M > extends E__n < F > { }

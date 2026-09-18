@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface X_Y < B > { } class LlM < H > implements { char [ ] [ ] i ; } interface QoB2k { }
+///[Error:extends|2]
+class Z4 extends Gm5 < C_ > { } class Iy implements QV < J4 > { } extends E_8 class S6 < S > extends X_9vr { }

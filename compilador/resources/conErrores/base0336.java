@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface RF { } interface Zf_H { } interface Z3 { } class WA1 extends N0 { D [ ] oO ; void i__ ( ) { } static void b ( ) { ; } private static L2 ; } interface Iq < F > { }
+///[Error:int|2]
+class JU < X > implements PF < U > { void int [ ] r7AX ( ) { P0 . k__ ( ) . s -- == "" ++ = null ; } } class Av6 < N > extends Qk_d < U > { private J v ( ) { } } class O2_ extends N_ < XK > { } class G_ extends ZI < V > { }

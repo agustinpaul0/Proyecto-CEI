@@ -15,7 +15,7 @@ import minijava.sintactico.recuperacion.RecuperadorDePanico;
 // Los métodos de entrada se delegan uno a uno en vez de exponer la
 // EntradaDeTokens, para que cada método de no terminal se lea como el esquema de
 // Clase 5 (slide 57): `match(x)` para los terminales y una llamada para los no
-// terminales. Quién consume la entrada sigue siendo EntradaDeTokens y nadie más.
+// terminales. Quien consume la entrada es EntradaDeTokens y nadie más.
 //
 // Por la misma razón, NINGÚN método de no terminal omite el `else` final de su
 // cadena de Primeros. Si el no terminal NO es anulable, ese else es el error

@@ -1,2 +1,2 @@
-///[Error:public|2]
-class Sl < J > { } public O y_ ( ) ; class Jc implements Lz { } interface FC5 < Z > { }
+///[Error:}|2]
+class S19 < W > implements A9C < S_ < B_ > > { } class QS { private void pu }

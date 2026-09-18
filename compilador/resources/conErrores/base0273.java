@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Q_ extends Qh { S g ( K73Y < M0 < Qgy < F > > > [ ] [ ] y , QT < K_ < U > > iP , AE [ ] [ ] [ ] o ) ; public G_t < K > kyM ( BN [ ] c , K [ ] [ ] [ ] g , , char v_ , G u ) ; public IU8__z3 < H > zf ( char g5h_ ) ; void z ( ) ; } interface T8_o extends WP8 < A > { float [ ] uV ( P zO_U ) ; } interface R_4 < H > extends L_ < MEA > { void p06 ( ) ; public void v ( ) ; void leW ( ) ; Jb < Pr_X < C > > y ( B [ ] c3 ) ; } class SG { } class SR_ < K > implements S4 { static public void o ( J9aCK v6 , S_ [ ] [ ] i_b16B ) { Ul_Sqgh < Zx > [ ] [ ] [ ] [ ] oS ; } } class Sg3 { }
+///[Error:char|2]
+interface I4 < H > { } interface G1 < W > extends D_ < Qi9 < A > > { public void q ( ) ; } interface V_3 < G > { } char class HU extends V_ { } interface Pha4 { } interface GT < J > { public Mnv [ ] r2 ( ) ; void j ( ) ; } class I_ < X > { } class WQ_ extends D_ < L > { static void c ( ) { } private NY ( ) { } }

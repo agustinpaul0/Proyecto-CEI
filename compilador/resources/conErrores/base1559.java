@@ -1,2 +1,2 @@
-///[Error:n|2]
-n
+///[Error:M|2]
+class F_ extends M6k { } M

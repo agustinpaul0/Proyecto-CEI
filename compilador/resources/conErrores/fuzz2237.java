@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface D5O992 < C > extends { } class Tu__ < I > { } interface LC < W > { }
+///[Error:T8t_5L9|2]
+T8t_5L9 < NR_Lh < O > > e ( ) ;

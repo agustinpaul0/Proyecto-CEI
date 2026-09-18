@@ -1,2 +1,2 @@
-///[Error:F|2]
-interface T_ < G > extends T5_ < H > { } F interface Q_ < L > { }
+///[Error:Yk|2]
+class O_Ho extends O_ { } class I5 implements Ue7_Yc { } class Iq2 extends II < AVW > { } class Dmp < F > { static W qpRkO Yk }

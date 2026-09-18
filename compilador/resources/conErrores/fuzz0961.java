@@ -1,2 +1,2 @@
-///[Error:m___|2]
-m___
+///[Error:{|2]
+interface EB < N > extends { } interface Vd extends A_E { }

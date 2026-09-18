@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface T2 { public P ( ) ; void q ( ) ; }
+///[Error:Yq2|2]
+class UF_ < N > { } Yq2

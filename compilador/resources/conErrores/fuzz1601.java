@@ -1,2 +1,2 @@
-///[Error:{|2]
-class YG implements VT < T > { H_ [ ] eS ( Th8 o ) { } private static void r { while ( - X4kN . iW ( ) . s ++ && ! null - - 10F ? false : + null ) ! HZ . i ( ) ++ ; } static public void f8q ( ) { { } } static A__7S [ ] fKk ( ) { } } class Xu < T > implements NqI64T { }
+///[Error:<|2]
+interface S95__h extends F_0 { } interface Nh0 < V > { } < B > interface D26_0 < M > { public K tw ( int [ ] [ ] [ ] u ) ; public void n ( N_ < A_ > [ ] [ ] [ ] [ ] u_ ) ; S y ( I bWi ) ; }

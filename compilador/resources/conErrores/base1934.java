@@ -1,2 +1,2 @@
-///[Error:static|2]
-static void f ( ) { if ( ! 'O' ? false : true <= false ) ; else ; } class H_ implements X6_ < P > { }
+///[Error:[|2]
+class Wz < H > implements AD < Z > { [ ] p ( ) { } } interface J6 { void b3 ( Z9 < Qkr_W < G > > [ ] v ) ; } interface W8V < Z > extends VI { public P xv ( boolean e_ ) ; } interface M_ < T > { }

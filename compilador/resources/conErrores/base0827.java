@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class D_4 implements C_t < S > { } interface extends Cu { }
+///[Error:void|2]
+void class V6 implements Q1 < N > { }

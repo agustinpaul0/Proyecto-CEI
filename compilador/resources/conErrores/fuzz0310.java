@@ -1,2 +1,2 @@
-///[Error:Kz_|2]
-Kz_ class R_ { }
+///[Error:public|2]
+public void d_w6 ( P_0u [ ] v2w ) ;

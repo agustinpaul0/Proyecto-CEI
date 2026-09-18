@@ -1,2 +1,2 @@
-///[Error:>|2]
-class P_ < > extends B3 { }
+///[Error:RaEA|2]
+RaEA

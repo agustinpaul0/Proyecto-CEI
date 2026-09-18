@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends O5d
+///[Error:r__EL|2]
+interface F_ < R > { r__EL }

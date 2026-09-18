@@ -1,2 +1,2 @@
-///[Error:GE_|2]
-class Z7B < Q > { } GE_ interface H4uA { }
+///[Error:void|2]
+class L_ < P > extends MX8 { } class Am_ { private static float n_ ( ) { } } interface Y_ { void ci ( ) ; } void t ( Db [ ] [ ] [ ] [ ] [ ] jDk ) { }

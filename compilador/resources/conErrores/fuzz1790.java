@@ -1,2 +1,2 @@
-///[Error:sa|2]
-interface RC < X > extends Ggc { } class X83 < R > { static private sa ( char [ ] oJNwK ) { } } interface Wg { public boolean [ ] [ ] tq ( T7 < Ybw < E > > x ) ; } interface A_ extends Mh { void jzl ( ) ; float u ( Mp t5 ) ; } interface DZ < W > { }
+///[Error:r4X|2]
+class BA { static public void pVk ( ) { } O tD ( r4X ) { } } class I_ { static V w ( boolean [ ] h ) { T dT = false >= "" , yV = 'e' < + true ? false : ! false , e ; } }

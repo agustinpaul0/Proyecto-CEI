@@ -1,2 +1,2 @@
-///[Error:<|2]
-< M > class C_G < C > implements B___ { }
+///[Error:-|2]
+class YQ < K > { void w ( ) - 7357 }

@@ -3,7 +3,7 @@
 Cómo está construido el analizador de la Etapa 2, cómo se conecta con el léxico de la Etapa 1 y
 cómo queda organizado el código para que las cinco etapas convivan.
 
-> **Estado.** La etapa está **terminada**: los 100 no terminales implementados, los nueve logros
+> **Estado.** La etapa está **terminada**: los 97 no terminales implementados, los nueve logros
 > —Modo Pánico incluido— y los 8 casos de la cátedra pasando con el token exacto. La verificación
 > completa está en [`README.md`](README.md).
 
@@ -16,7 +16,7 @@ evaluada y su razón.
 La idea: **simular la derivación a izquierda mediante una cadena de llamadas recursivas**, donde
 cada llamada es un paso de la derivación.
 
-- **Un método privado por cada no terminal** de la gramática.
+- **Un método por cada no terminal** de la gramática.
 - En el cuerpo de ese método se codifican las partes derechas de sus producciones: para un **no
   terminal** se llama a su método, para un **terminal** se hace `match`.
 - Cuando el no terminal tiene **varias** producciones, se elige la que tenga al token actual en los
@@ -29,9 +29,10 @@ Salen de Clase 5, slides 36, 52-54 y 55. Todo método del analizador es una de l
 **Una sola producción** — traducción directa, sin decisión (slide 55):
 
 ```java
-private void inicial() {           // <Inicial> ::= <ListaClases> eof
+// Inicial -> ListaClases eof
+public void inicial() throws ExcepcionLexica, ExcepcionSintactica {
     listaClases();
-    match(EOF);
+    match(TipoDeToken.EOF);
 }
 ```
 
@@ -39,12 +40,19 @@ private void inicial() {           // <Inicial> ::= <ListaClases> eof
 (slide 36):
 
 ```java
-private void tipoPrimitivo() {     // boolean | char | int | float
-    if      (esta(tokenActual, PR_BOOLEAN)) match(PR_BOOLEAN);
-    else if (esta(tokenActual, PR_CHAR))    match(PR_CHAR);
-    else if (esta(tokenActual, PR_INT))     match(PR_INT);
-    else if (esta(tokenActual, PR_FLOAT))   match(PR_FLOAT);
-    else throw new ExcepcionSintactica(tokenActual, PRIMEROS_TIPO_PRIMITIVO);
+// TipoPrimitivo -> boolean | char | int | float
+public void tipoPrimitivo() throws ExcepcionLexica, ExcepcionSintactica {
+    if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN)) {
+        match(TipoDeToken.PR_BOOLEAN);
+    } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_CHAR)) {
+        match(TipoDeToken.PR_CHAR);
+    } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_INT)) {
+        match(TipoDeToken.PR_INT);
+    } else if (estaEn(PrimerosDeTipos.TIPO_PRIMITIVO_FLOAT)) {
+        match(TipoDeToken.PR_FLOAT);
+    } else {
+        throw errorEsperando(PrimerosDeTipos.TIPO_PRIMITIVO_BOOLEAN, /* … las otras tres … */);
+    }
 }
 ```
 
@@ -52,15 +60,19 @@ private void tipoPrimitivo() {     // boolean | char | int | float
 (slides 52-54):
 
 ```java
-private void restoExpresionCompuesta() {   // <OperadorBinario> <ExpresionBasica> <Resto…> | ε
-    if (PRIMEROS_OPERADOR_BINARIO.contiene(tokenActual)) {
+// RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta | EPSILON
+private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
+    if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
         operadorBinario();
         expresionBasica();
         restoExpresionCompuesta();
+    } else {
+        // RestoExpresionCompuesta -> EPSILON
     }
-    // else: derivó a vacío. No es un error: lo resuelve quien llamó.
 }
 ```
+
+Derivar a vacío no es un error: si el token no sirve, lo detecta quien llamó.
 
 Esa tercera forma es la que le permite al Esquema Simple prescindir de los Siguientes.
 
@@ -108,18 +120,18 @@ Cuatro cosas que conviene tener presentes:
 Main
  └─ ModuloPrincipalSintactico
      └─ AnalizadorSintactico(analizadorLexico)
-          constructor:  tokenActual = lexico.proximoToken()   ← carga el primero
-                        inicial()                             ← arranca por el símbolo inicial
+          analizar():  entrada.cargarPrimerToken()      ← carga el primero
+                       sintaxis.clases().inicial()      ← arranca por el símbolo inicial
 
           un método por NT ─── NT en el cuerpo ──→ llamada al método de ese NT
                            └── terminal ─────────→ match(TIPO)
-                                                    ├ coincide → tokenActual = lexico.proximoToken()
+                                                    ├ coincide → avanza al próximo token
                                                     └ no       → ExcepcionSintactica
 ```
 
-El constructor recibe el léxico como dependencia, carga el primer token y llama al símbolo inicial
-(Clase 5, slide 61). Cuando `inicial()` retorna sin excepción y se consumió el `eof`, el programa
-es sintácticamente válido.
+El analizador recibe el léxico como dependencia; `analizar()` carga el primer token y llama al
+símbolo inicial (Clase 5, slide 61). Devuelve los errores encontrados, en el orden en que
+aparecieron: una lista vacía significa que el programa es sintácticamente válido.
 
 ## 5. Los conjuntos de Primeros en el código
 
@@ -127,15 +139,15 @@ No van escritos a mano dentro de cada `if`. Van como **constantes con nombre** e
 `primeros/`, cada una con un comentario que cite la producción de la que sale:
 
 ```java
-// <ExpresionBasica> ::= <OperadorUnario> <Operando> | <Operando>
-static final ConjuntoDePrimeros PRIMEROS_EXPRESION_BASICA = de(
-        OP_SUMA, OP_RESTA, OP_NEGACION, /* … los de <Operando> … */);
+// ExpresionBasica -> OperadorUnario Operando
+public static final ConjuntoDePrimeros EXPRESION_BASICA_OPERADOR_UNARIO = de(
+        TipoDeToken.OP_NEGACION, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA);
 ```
 
 El motivo es que el código se pueda leer contra la gramática del informe renglón por renglón, y que
 un cambio en la gramática tenga un único lugar donde reflejarse.
 
-Las 207 constantes —una por producción— **se generan**, no se escriben:
+Las 198 constantes —una por producción— **se generan**, no se escriben:
 
 ```bash
 python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
@@ -148,7 +160,7 @@ la gramática cambia, se regenera.
 
 ## 5.1. Cómo se divide el analizador
 
-Un analizador descendente recursivo tiene un método por no terminal, y con 100 no terminales una
+Un analizador descendente recursivo tiene un método por no terminal, y con 97 no terminales una
 sola clase se vuelve inmanejable. El código está dividido **por sección de la gramática**, una clase
 por sección:
 
@@ -158,9 +170,10 @@ sintactico/
   EntradaDeTokens         el lookahead y el único punto que consume entrada
   Sintaxis                cablea las nueve partes
   errores/                ExcepcionSintactica
-  primeros/               ConjuntoDePrimeros + Primeros (generado)
+  primeros/               ConjuntoDePrimeros + las nueve PrimerosDeX (generadas)
   partes/                 AnalizadorDeClases, DeMiembros, DeTipos, DeSentencias,
                           DeFors, DeExpresiones, DeReferencias, DeCreacion, DeArgumentos
+  recuperacion/           RecuperadorDePanico, ContextoDeSincronizacion (Modo Pánico)
 ```
 
 **Por qué hay una fachada `Sintaxis` y no inyección directa.** La gramática tiene recursión mutua
@@ -179,22 +192,24 @@ El repositorio está organizado **por fase**, para que las cinco etapas convivan
 
 ```
 compilador/src/main/java/minijava/
-  comun/         io/  salida/  config/                compartido por todas las etapas
+  comun/         io/  salida/                         compartido por todas las etapas
   lexico/        AnalizadorLexico, automata/, estados/, contexto/, recuperacion/,
                  tokens/, errores/
-  sintactico/    AnalizadorSintactico, primeros/, errores/
+  sintactico/    AnalizadorSintactico, EntradaDeTokens, Sintaxis, partes/, primeros/,
+                 recuperacion/, errores/
   aplicacion/    Main + OpcionesDeInvocacion + ModuloPrincipalLexico + ModuloPrincipalSintactico
 ```
 
-El árbol de tests espeja esa estructura, y `resources/` se separa igual:
-`resources/{lexico,sintactico}/{sinErrores,conErrores}`.
+El árbol de tests espeja esa estructura. En `resources/`, el corpus de la etapa que se entrega vive
+en la raíz —`resources/{sinErrores,conErrores}`, donde lo buscan los testers de la cátedra— y el de
+la Etapa 1 en `resources/lexico/{sinErrores,conErrores}`.
 
 `errores/` cuelga de cada fase y no de `comun/`: el reporte léxico usa `TipoDeErrorLexico`, la
 columna y la línea del fuente, que son de esa fase, y dejarlo en `comun/` obligaría a que `comun`
 dependa de `lexico`.
 
 **Un solo `Main`, con selector de etapa.** Corre la Etapa 2 por defecto y acepta `--etapa=1` para
-volver al volcado de tokens. Un único jar, que sigue cumpliendo el contrato de invocación de las
+el volcado de tokens del léxico. Un único jar, que sigue cumpliendo el contrato de invocación de las
 Pautas (slide 28): `java -jar Compilador.jar programa1.java`. El motivo de que sea uno solo y no
 dos jars es que la Etapa 1 se corrige por separado y tiene que seguir siendo ejecutable sin
 recompilar nada distinto.
@@ -217,7 +232,7 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **10.250 fuentes** del
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **10.251 fuentes** del
 corpus versionado coinciden en todas.
 
 Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser
@@ -254,8 +269,8 @@ Tres logros exigen tokens que **no figuran en «Aspectos Léxicos de MiniJava»*
 | `private` | Visibilidad Mejorada E2 | se reconoce como `idMetVar` |
 | `?` | Operador Ternario E2 | es un error léxico |
 
-Se agregan al vocabulario sin condición, así que la columna de la derecha describe lo que pasaba en
-la Etapa 1 y no una configuración alcanzable hoy. `TablaDeLexemas` conoce el vocabulario completo, y
+Se agregan al vocabulario sin condición; la columna de la derecha describe el léxico de la Etapa 1
+tal como se entregó. `TablaDeLexemas` conoce el vocabulario completo, y
 quien reconoce cada uno es el estado que corresponde: `EstadoIdMV` para `for` y `private`, y
 `EstadoInicial` para el `?`. **No toca** el patrón
 State, ni el driver, ni el manejo de errores, ni el `SourceManager`, y no introduce estado mutable.
@@ -268,6 +283,6 @@ ninguna regla de la gramática que los usara, y el logro de posfijos es el que s
 - [`decisiones-de-diseno.md`](decisiones-de-diseno.md) — por qué la gramática está transformada
   como está.
 - [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) — dónde falla el
-  análisis y qué chequea el analizador que la gramática no puede expresar.
+  análisis, qué se reporta y cómo se recupera.
 - [`../lexico/arquitectura-del-analizador-lexico.md`](../lexico/arquitectura-del-analizador-lexico.md)
   — la etapa anterior.

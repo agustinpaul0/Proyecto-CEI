@@ -1,2 +1,2 @@
-///[Error:++|2]
-class N6 { private static void l ++ } class ZGeI < F > extends Dt < C79h > { } interface S_N extends Kj1 < G > { } interface Mg extends A3G__L { }
+///[Error:new|2]
+class M9 implements B6 < P3 > { } interface Y5 < S > extends Oc2 { void d6 ( ) ; } new boolean [ ] { , } . j -- % '\'' + - true ;

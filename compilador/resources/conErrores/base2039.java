@@ -1,2 +1,2 @@
-///[Error:(|2]
-class O74 < E > extends Pq0hA < M8 < K > > { static private void r ( ) { } private static T o ( ) { } } interface O__ extends PU < A12 < M > > { } class UH < Y > extends D1_ < W2 < N_qL < O > > > { } interface OI { } interface A5 < C > { public void b_N_ ( Y jg , K hC , U z , int j97D03S , K4 p , G l72 ) ; } ( int [ ] j , D [ ] b_wjs ) { { } false ; Fi r ; float [ ] g_ ; } class Gg < F > extends Kv1 < MD < N > > { static void t_au ( G5 uvym5 , N yt ) { } } interface H___ < M > { } interface TD < Y > extends Ln7fVuNaz { } class A0 < U > extends A__ { } interface IS { void o_ ( ) ; } class T_Q extends N_ < R > { } class Lrx1G62 < C > { } class YdrxF { public C [ ] a ; }
+///[Error:int|2]
+int

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class UZd extends { }
+///[Error:implements|2]
+class implements C_d < R > { }

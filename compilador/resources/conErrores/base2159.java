@@ -1,2 +1,2 @@
-///[Error:char|2]
-class RsF0 { } class C0 < T > extends ZPT { } char x
+///[Error:B_|2]
+interface J7 extends LZ { } B_

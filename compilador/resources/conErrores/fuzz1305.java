@@ -1,2 +1,2 @@
-///[Error:--|2]
-interface O59_1 extends VSR { } class N_8_ extends L7 { Z [ ] [ ] v = -- ; I s5 ( ) { for ( false ; ; ) { } return ; } TO9 oF ( ) { for ( ; ; ) D0dSP_h . x ( ) ; boolean [ ] e , gm , wh , jN ; } static void c ( F c7 ) { { float [ ] [ ] j_ ; + null ; M u_ ; return ; } { } ! null ; } } class LBe < H > { } interface K9 { } interface YL_ < N > { public M____ < O > [ ] [ ] a_m ( ) ; } class XZX2d7 < R > implements LO < Y > { static char i ( ) { if ( null ) float k , x , so ; SD . ju ( ) . l ; } public static void tC_IQ ( ) { { } for ( ; ; ) { } } static public void ymiS ( H [ ] e ) { } public TQ g ( ) { ; } } interface Q77 < B > { } class E_ < P > extends M0 < Z9CfwX > { public static int f_ ( ) { ; for ( ; ; ) ; } static public void ao ( ) { return ; return ; ; } public Z_X ( ) { ; } }
+///[Error:<|2]
+< F > class K3 implements FD_ < D > { }

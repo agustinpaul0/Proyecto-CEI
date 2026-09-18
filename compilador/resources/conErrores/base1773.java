@@ -1,2 +1,2 @@
-///[Error:{|2]
-class K__ < S > implements { private SdjY < IN__ > [ ] w ( ) { } }
+///[Error:F|2]
+class LC < L > extends F { }

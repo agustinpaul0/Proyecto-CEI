@@ -1,2 +1,2 @@
 ///[Error:extends|2]
-class extends GO { } interface B__ { public Q_0 l_ ( OYi4 < O > [ ] th , I [ ] [ ] [ ] [ ] [ ] d , P [ ] [ ] d , J b , boolean o , I bh , boolean r , A yUFJ ) ; char [ ] [ ] ae ( ) ; }
+interface extends Am_ < Q > { void s_ ( ) ; boolean [ ] b74L ( J [ ] n ) ; } class Z0_2_usf < W > extends P2_ { static private void x3_ ( ) { } static R_Q [ ] [ ] [ ] k3yh ( ) { ; } }

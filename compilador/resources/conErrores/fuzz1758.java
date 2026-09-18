@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Ym extends Z69 { public < N > k ( ) ; public BC_ < O > c ( X7_x_hZ [ ] w7l ) ; }
+///[Error:,|2]
+class B_ < Q > implements BG { } class Td < G > extends LQ { static public void q ( ) { char ww = + Dc . s ( ) -- - + '\"' <= ! null != + false ? + true || null : ! , dF3y ; } }

@@ -1,2 +1,2 @@
-///[Error:h|2]
-interface Mc { public int q7bgp_ ( ) ; void s5 ( ) ; } h
+///[Error:(|2]
+( ) { boolean d = - null , yu ; }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-class V2 < Z > implements O_4 < W > { } interface D_J extends < P > { }
+///[Error:void|2]
+void qH ( Ei5 d ) ;

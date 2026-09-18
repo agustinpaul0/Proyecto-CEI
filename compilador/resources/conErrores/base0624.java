@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends Tu < WNR > { } interface QERe < V > extends J3___ { }
+///[Error:[|2]
+interface AB extends EB < M3 > { } [ ]

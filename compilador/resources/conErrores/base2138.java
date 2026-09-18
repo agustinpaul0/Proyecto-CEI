@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface F_ < E > extends Cu { } class NRT1 < T > extends ZT { S nw ( ) static private S f ( ) { } }
+///[Error:E7Fcx_aB|2]
+E7Fcx_aB

@@ -1,2 +1,2 @@
-///[Error:Nz_|2]
-Nz_
+///[Error:Cj8_|2]
+interface J7 extends LZ { } Cj8_

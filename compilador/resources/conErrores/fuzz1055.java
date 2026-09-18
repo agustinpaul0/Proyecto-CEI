@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface DER___p_ < T > extends Ec { void f_K ( ) ; } class X_S < S > { } class BB < > extends W_ { }
+///[Error:static|2]
+interface WL < O > { } static Tt5d_S b ( Q p_3_ ) { }

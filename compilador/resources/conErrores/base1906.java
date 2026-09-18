@@ -1,2 +1,2 @@
-///[Error:,|2]
-class KUj implements Ff < M > { B_2lIm uUO ( , Gf [ ] w , T e ) { } } interface R3 < K > { public boolean [ ] e ( ) ; }
+///[Error:>|2]
+interface M0_KjtTu < D > { } interface F_ < Z > { } interface C_K extends L__h < > { }

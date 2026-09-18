@@ -1,2 +1,2 @@
-///[Error:this|2]
-class QY_ < G > extends S9_yP { static void y ( ) this } class C_ implements T0 { N7W1 ( int wIg_ , I1 [ ] s ) { } } class U_ < E > extends D8 { }
+///[Error:|||2]
+interface Z__B < K > { } class InI < B > { static private char g ( int [ ] w_1 ) { return "" . z > || ! 's' = 032. ; } char g = - 'o' ? 872841.e-19D : + "" ++ ? + true != false = true : "" ? false : null ; G [ ] wFZkRY ( ) { } static private void jO ( ) { } static public void t ( int [ ] [ ] v ) { for ( ; ; ) return ; 61e+8 ; ; return ; for ( ; ; ) ; ; } private static char y_3P ( ) { ; { ; } } N_063 ( ) { } V_ v ( ) { } } class D_ implements KpG < N__ > { } class Fm_ < M > implements CD < F > { static public void in ( ) { } }

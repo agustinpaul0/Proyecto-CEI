@@ -1,2 +1,2 @@
-///[Error:F__|2]
-F__ interface N1_ { void cg ( ) ; } class W_ implements So { }
+///[Error:<|2]
+interface Zv17 { } class X0oH implements < NO < Q_h > > { }

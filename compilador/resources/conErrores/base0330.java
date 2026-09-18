@@ -1,2 +1,2 @@
-///[Error:static|2]
-class KIh < C > extends Xc < OYZ > { static void u ( I [ ] [ ] h5 , A [ ] [ ] r ) { } } class Ag { } interface AF < B > { public void w__ ( Z [ ] p0 , G w ) ; void z ( float x ) ; } class R_ < K > { public static void vp8 ( ) { } private static int vuQ ( ) { } public static void m ( ) static public void y ( ) { for ( Q [ ] [ ] n_PSt ; ; ) float h_ , j ; Y q , g , bh ; for ( ; ; ) ; V [ ] [ ] c ; return ; ; } public static void dQ ( ) { { } E [ ] [ ] tz ; } } interface Mu { } class V_ < J > { J [ ] s6I ; } class R8 < L > implements FRz < Nt < PA < MN2 > > > { void w ( int r_ ) { } static public Z_6T u_ ( ) { } }
+///[Error:public|2]
+public void h ( ) ; public void nN ( char [ ] s , Dw < K > o ) ; interface Pbwal extends FgH { public V [ ] [ ] [ ] [ ] [ ] [ ] u73 ( char r ) ; void d8y ( ) ; } interface F_ < J > { public void z_a7x ( ) ; public void q_g7PI ( ) ; } class P_ implements U5 { }

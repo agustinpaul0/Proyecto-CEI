@@ -1,2 +1,2 @@
-///[Error:v|2]
-interface NWP_m < K > extends J0 { v ( A zQ ) ; }
+///[Error:}|2]
+class N04 { public static void } class S3 < U > { } interface PD1 { }

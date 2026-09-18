@@ -1,2 +1,2 @@
-///[Error:}|2]
-class O9 { } class IL implements An3e_ { public static S b }
+///[Error:<|2]
+interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] o4 ( ) { } } < T >

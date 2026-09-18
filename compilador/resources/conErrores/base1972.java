@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface A4D < N > { } interface D1 { public ZT6N_ [ ] [ ] u ( ) ; void znzp ( ) ; } class Ax3b_ extends G92_eb9 { static void p ( U [ ] vmA , E e ) { } } int
+///[Error:boolean|2]
+interface K__N40F extends VN { UXa [ ] a ( ) ; void mQ8 ( ) ; int [ ] n ( ) ; void kA34 ( ) ; public boolean [ ] r ( Z [ ] [ ] hR , M_U [ ] h ) ; } class ZC__ extends It < H > { } interface Q_Z_kv extends S84 < SQ < D > > { } class LoWE extends E94 { public static V [ ] xG ( ) { ; } } class T9 < E > implements Q_o2_f_q { static public void c_ ( ) boolean o9 , eL , dA_ ; } class P_ < P > extends Lz < HBm7 > { } class C_b implements J_cd_ < N6 > { } interface N5 extends O0 { void rWi ( ) ; public void o ( ) ; void l ( J a8_ ) ; } interface Q_ extends VX { D oS0_ ( U l ) ; public DM h_9 ( X [ ] [ ] b ) ; }

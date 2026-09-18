@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Ga8 implements { } class S5 extends PEN4s3 < Hk < Cb > > { }
+///[Error:static|2]
+static void tl ( ) { } interface FwS_ < R > { }

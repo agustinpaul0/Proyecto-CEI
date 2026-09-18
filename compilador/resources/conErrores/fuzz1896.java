@@ -1,2 +1,2 @@
-///[Error:public|2]
-class I_ implements W_ { void cGR ( B [ ] [ ] r25 ) { boolean mIH3 , pP_x_Ez = + "" ? + true : true , q = 'k' != true ; } Oo [ ] [ ] [ ] [ ] [ ] lu ( ) { float [ ] a ; } } interface O_9k extends X91eW < D > { void d ( ) ; public void z ( ) ; VQ < H_ < Hv5 > > [ ] [ ] wi ( ) ; } class X2h implements K9_f_4Oy { } class G_ < O > extends PmX < B > { public S j6 = this ; } interface T_ < L > { } interface IcC_ < E > { D u_ ( ) ; Ql__ [ ] [ ] wMU ( U [ ] [ ] c , DW z9 ) ; float [ ] [ ] xg ( boolean x , S1Zl [ ] c ) ; } public T7_ [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] mw ( char [ ] [ ] [ ] cr_ ) ; class BR_ { }
+///[Error:void|2]
+interface ND_ < W > { public Ew [ ] [ ] b ( ) ; void pOZuj7 ( I [ ] a , F2 < I > q ) ; public A7K_g < Q > v8P ( ) ; } class L__ < C > extends V8 { public static void h ( ) { boolean [ ] zSE , g = false , v , lgNZL ; } } void g3r ( ) { }

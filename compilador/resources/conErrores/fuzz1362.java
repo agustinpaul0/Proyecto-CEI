@@ -1,2 +1,2 @@
-///[Error:C_|2]
-class YSb implements Ec < U8 < Oe > > { } class F_Q_ implements Y_M { } interface S0 { } C_
+///[Error:F_|2]
+F_ class TqWiqwt_U1 < V > extends B_P3 { }

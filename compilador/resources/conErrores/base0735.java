@@ -1,2 +1,2 @@
-///[Error:;|2]
-class M_YrC implements T_D_ < U > { static void kuT8I9 ( ) { var r7R = ; } }
+///[Error:c63h|2]
+class WZ__1 < Z > { } c63h class NJ implements D3G__ { }

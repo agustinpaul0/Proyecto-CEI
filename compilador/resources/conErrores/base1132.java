@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface { } class S43vD_A_ < D > implements Vp_ { }
+///[Error:[|2]
+class Q_ < V > implements Ev { } interface Vxf4 < M > extends C4 { X n ( [ ] pC , C_ < F_R < J > > [ ] [ ] m ) ; } class Sew < M > { }

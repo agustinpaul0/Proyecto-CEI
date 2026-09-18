@@ -1,2 +1,2 @@
-///[Error:535850|2]
-class Mm_9 < B > { static void h ( ) { return ! true > true % - "" = ! '7' 535850 || + true ; } }
+///[Error:public|2]
+class J__HI23 < C > implements Lap < A0E7_ > { } class E_ implements Cf < Q > { } interface X1 < D > extends Q_d { } public W j ( N [ ] p1_ ) ; void m_p4 ( ) ; char [ ] wz ( ) ; interface Dm { public H [ ] [ ] [ ] c ( S nt_ , char u_s ) ; } interface A7 { } class R4 implements Z6 { }

@@ -1,2 +1,2 @@
-///[Error:48f|2]
-48f class Q4 { }
+///[Error:private|2]
+private static Y j__ ( ) { } class XA implements YU < I5 < U > > { }

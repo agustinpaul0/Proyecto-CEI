@@ -1,2 +1,2 @@
 ///[Error:;|2]
-class D_Q__ < V > implements By { PsnQ s ( char sq , boolean [ ] [ ] k , LG < Z > z0I47_ ) ; static private X [ ] [ ] h6bS_Q ( C f ) { ; } }
+class Y_ implements I_ < H > { } class E_l3 < C > implements U_ { static void oq ( M cT ) { } G g ; static void m ( ) { } U [ ] [ ] [ ] [ ] l = - ; } interface W9_ { } class W_ < H > implements EZ { }

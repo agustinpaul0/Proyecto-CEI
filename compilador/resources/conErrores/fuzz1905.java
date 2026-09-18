@@ -1,2 +1,2 @@
-///[Error:int|2]
-class H0 implements U9Lu_G2_N2f < Il > { } interface W4 { public char t6a9 int ; }
+///[Error:}|2]
+interface Y_Q_ < U > { } class D_D extends Me { void e__ } class IPz extends P_ < K > { }

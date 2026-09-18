@@ -1,2 +1,2 @@
 ///[Error:[|2]
-interface B6Yx extends MT < I6 > { char [ ] yFfD ( boolean [ ] i , [ ] [ ] o ) ; }
+[ ] [ ] class Y16_ { } class NXB { } class K1 < W > extends Pj < PNM > { static char p ( ) { } static void r ( ) { 391289 ; { } } } class V_ implements A1__8 { public char [ ] vXDf ( ) { } HT < F_ > mO ; }

@@ -1,2 +1,2 @@
-///[Error:o|2]
-interface X7_f { float b ( o ) ; public S83 < W > o_2_ ( int [ ] z ) ; }
+///[Error:a5|2]
+class DZB_ extends Kx { static a5 ( B c , W05 < U > h ) { } }

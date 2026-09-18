@@ -1,2 +1,2 @@
-///[Error:f78|2]
-interface K39 { } interface Zo extends Fi_ < L > { f78 void tw6 ( ) ; }
+///[Error:;|2]
+class A3 < B > implements D___ < En < P > > { void k ( ) { Q k , u = ; { return ; return ; ; ; } } public static boolean u ( ) { return + "" ++ >= null >= ! null = + false ; } }

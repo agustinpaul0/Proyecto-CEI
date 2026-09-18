@@ -1,2 +1,2 @@
-///[Error:N|2]
-class Y_ extends X8 { } N
+///[Error:AB3|2]
+AB3

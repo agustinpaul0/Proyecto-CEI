@@ -1,2 +1,2 @@
-///[Error:IC|2]
-interface A6 < T > { public boolean [ ] a6 ( ) ; } class NB extends Ym < V > { } interface P_ < A > extends BV_FZ < O > { } class K8_ { static public char [ ] i__W ( ) { if ( + this ++ || - '\t' ) { float [ ] [ ] hR , m ; } } } class G6 { private H [ ] c ; } IC
+///[Error:Rg7|2]
+Rg7 interface R_ extends CC4mK8 < O4 < UFAcy < S > > > { H [ ] [ ] t ( ) ; }

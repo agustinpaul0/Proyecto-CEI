@@ -1,2 +1,2 @@
-///[Error:T|2]
-T class Za < G > { } class L4 < C > { } class PZ implements K_ < W > { }
+///[Error:<|2]
+< N > interface FE_ extends Q_ < S > { public void l ( ) ; N__ [ ] c ( ) ; } class VS < U > implements PR7 < Ip_3 > { }

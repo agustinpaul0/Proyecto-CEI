@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class J_TJ < S > { boolean x ( int k ) { } } interface extends Kl { public void s ( ) ; } interface T_2oG { }
+///[Error:<|2]
+interface G_ { void ic ( CO0 < Q7 > r , boolean [ ] [ ] t ) ; DL [ ] a ( U x9 ) ; C [ ] [ ] [ ] [ ] x ( ) ; Y [ ] r__U_um ( ) ; public void w ( ) ; < Gk > public void l ( ) ; } interface FX < S > extends X4w < DU1N > { }

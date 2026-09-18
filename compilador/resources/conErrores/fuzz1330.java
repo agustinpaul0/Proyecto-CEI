@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface Z49 < G > { void public void fsq ( Z iV_ ) ; }
+///[Error:(|2]
+interface Y5 { } ( ) { return true ; } interface C_ extends UH { } interface C38__ < E > extends Jh { } interface GH extends L8 < V8_3__ > { }

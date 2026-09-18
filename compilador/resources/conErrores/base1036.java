@@ -1,2 +1,2 @@
-///[Error:z|2]
-class QA < P > { static void z ( ) { for ( this [ - true ] . ft ( ) . e ++ > this -- > 122 + - null = ! null ; ; ) while ( - "=" ++ = ! null ) G [ ] n = false ; } static private L p ( ) { } B_ ( ) { } } class Ht < R > implements Hk7 < Fi < K_ < K > > > { } class T4dj___ { static public void ttwB ( ) { } public Ys ( int a ) { } S [ ] p = + n ; } interface AJ < U > { Q [ ] [ ] [ ] w ( z ) ; int [ ] oR9 ( ) ; void e_ ( O q , O [ ] [ ] gu , Cf3 [ ] wi , V0PXU k__ , char e ) ; public void qE7UMX ( S7Y_ < F > x6bmZ , ZqF__g [ ] da__P_ ) ; public K [ ] j4s ( Cbd_ [ ] f ) ; B s0C ( K lG1 ) ; } interface OC < Y > { public T6_ mKX ( ) ; } class K75 < X > { } class U8 < E > implements VC { } interface K9 < N > { void gc_q_ ( T g ) ; O__ < E_y > g ( ) ; } interface F1 < P > { } interface ZO_p6a < E > { public D_ [ ] gX ( ) ; N2 j ( ) ; Q [ ] [ ] [ ] n2H_gy ( ) ; } interface PO7a { void s ( ) ; }
+///[Error:Wp|2]
+Wp

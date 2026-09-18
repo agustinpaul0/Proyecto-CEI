@@ -1,2 +1,2 @@
-///[Error:z|2]
-interface V_A < Z > { public z ( ) ; public void c4j ( ) ; } class X__ < A > extends AL_ < B_ > { }
+///[Error:>|2]
+interface CT_ extends WcLZbv < > { }

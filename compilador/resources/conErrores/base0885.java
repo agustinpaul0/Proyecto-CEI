@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface HQR { public void f char [ ] v ; public void jT ( int w , G [ ] f9X ) ; void s ( ) ; }
+///[Error:u|2]
+interface XT extends P___Lu { } interface L9 < A > extends V0 { public u ( ) ; } class P_ < Z > extends XSE { }

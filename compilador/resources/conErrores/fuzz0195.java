@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Z_ < Y > { } class LAek implements Y6 { } < C > interface P3 < G > { void yZ ( ) ; } interface Es { } class E4S extends J___ { }
+///[Error:q_p|2]
+class YC extends Y_ { static void b ( ) { { } } } class L4 extends Ja { } interface Xx_ < J > extends N_l2 { public q_p ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:A__|2]
-A__
+///[Error:>|2]
+class ZS < > extends F_p < D > { }

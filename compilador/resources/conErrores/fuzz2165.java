@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends Gb
+///[Error:{|2]
+interface Wd < H > extends ER_ { void eHxv_ ( int [ ] x , int [ ] [ ] c , char d , I [ ] [ ] o ) ; void o6 ( char jI2o ) ; public void g78C ( W4__4 < W > [ ] l6a , Xh < A_N_ < TG > > v ) ; } class N9 implements W88_kz < S > { J_u < Pw < Q19 > > [ ] [ ] y ( ) { while ( this ++ ) return ; if ( '4' ) true ; else { ; ; } if ( true ) return ; else for ( ; ; ) ; char [ ] u ; R__ [ ] [ ] m ; } private W6q3_ i = 039 ? this : + this ++ ; } class T_ < E > implements HJZB_ < I > { static void c92 ( L [ ] [ ] q ) { if ( 3.E12F == '\'' = true / ! null ) while ( ! 'L' ) return ; else while ( ! null ) for ( ; ; ) { } } boolean [ ] [ ] m ; static R1 tpqf ( ) { boolean h__ = false , p0_K_ , e_ , d6_YY ; if ( ! null ) ! 63503 ; { } boolean [ ] [ ] v , o ; } static void v5 ( char [ ] [ ] oF , J3 k ) { } private char z ( ) { float apJ , qETJ ; int [ ] [ ] c1 ; } void r3 ( ) { } public static void o_l7 { D a ; return ; } }

@@ -1,2 +1,2 @@
-///[Error:b|2]
-b
+///[Error:{|2]
+interface LGJ extends { }

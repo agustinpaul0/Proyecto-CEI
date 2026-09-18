@@ -1,2 +1,2 @@
-///[Error:<|2]
-class N2 extends < H0 > { } class Um { }
+///[Error:}|2]
+class Jr < E > implements DT9_ { private }

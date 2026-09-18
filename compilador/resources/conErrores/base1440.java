@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface J_ < L > extends Md { [ ] h__ ( H5 z ) ; }
+///[Error:L|2]
+L interface ATw < L > extends S73 { }

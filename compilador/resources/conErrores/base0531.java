@@ -1,2 +1,2 @@
-///[Error:W|2]
-class Y3 < N > extends W { } interface FE_ extends Q_ < S > { public void l ( ) ; N__ [ ] c ( ) ; } class VS < U > implements PR7 < Ip_3 > { }
+///[Error:X|2]
+class KP < U > implements J_ < X > { static void x ( Z01 < SWT < QJG > > z_C ) { } } interface T58 < I > extends T640by_ { public W [ ] q ( U d_ ) ; } interface A2 < G > extends H_ < U > { public int [ ] [ ] [ ] o_1 ( ) ; } X

@@ -1,2 +1,2 @@
-///[Error:}|2]
-class W_d < W > { void hO7 ( ) }
+///[Error:e|2]
+e class FS < B > extends C24 < U > { } class R20 < I > implements Q4 < V > { static public void dr ( Qo_ n ) { } }

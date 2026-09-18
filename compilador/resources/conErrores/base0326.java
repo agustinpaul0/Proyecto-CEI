@@ -1,2 +1,2 @@
-///[Error:Sa|2]
-Sa class W2H extends BN { } class F7z implements K3F < JOm_ > { } interface Z0_ < Y > { public EF < Db5 > [ ] [ ] [ ] [ ] iR ( ) ; VAv_ < I > s4 ( EW [ ] [ ] [ ] [ ] f ) ; public Z__ < I0 < G2_ > > u_p ( O [ ] h ) ; } interface Do { } interface S6V2sh { P v_gO ( char [ ] [ ] c , char l , I__zz o ) ; void s ( X_7 < V7_ > oeQJa , Z q ) ; void t3 ( Q [ ] f ) ; public void x_ ( Z_ i ) ; public float b ( ) ; }
+///[Error:>|2]
+class Sb implements WMg < > { }

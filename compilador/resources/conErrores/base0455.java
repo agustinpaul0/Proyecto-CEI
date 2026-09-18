@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface I__o { TX0 }
+///[Error:Y_4|2]
+Y_4

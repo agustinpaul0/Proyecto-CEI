@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface T2 { public P j_ ; void q ( ) ; }
+///[Error:v|2]
+interface X4 extends Sr__JN < S > { public v ( P_ < Q > [ ] [ ] [ ] qd ) ; }

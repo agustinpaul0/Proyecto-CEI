@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface M55 { public void k ; }
+///[Error:ZQ7PY|2]
+ZQ7PY

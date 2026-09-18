@@ -1,2 +1,2 @@
-///[Error:w1|2]
-w1 ( char [ ] u , BI < I > [ ] [ ] [ ] [ ] [ ] c ) { } class XA implements YU < I5 < U > > { }
+///[Error:extends|2]
+extends WI0_1

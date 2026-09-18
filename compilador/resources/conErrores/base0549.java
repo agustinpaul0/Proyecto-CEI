@@ -1,2 +1,2 @@
-///[Error:Ibn|2]
-Ibn interface YT < U > { } interface DvH1 < N > extends Qpr < E > { }
+///[Error:-|2]
+class L_ { void l ( W a ) { } } - '\\' % - 'p'

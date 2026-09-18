@@ -1,2 +1,2 @@
-///[Error:xj_i|2]
-class XTaD extends O_ < Y > { } class V_ extends O_ < L > { private boolean [ ] p ; } class Pdi { } interface Hy extends M_T < C > { public D w ( ) ; void rW ( char a7 ) ; public void b2672992__ ( K p_ , PG < S > gN , G [ ] i_ , xj_i ) ; void mO ( N l , boolean [ ] z0M ) ; }
+///[Error:;|2]
+interface Zwu < O > { } interface Iz < B > { void n7w ; }

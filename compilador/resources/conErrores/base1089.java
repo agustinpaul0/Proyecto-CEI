@@ -1,2 +1,2 @@
-///[Error:D1|2]
-D1 class N_xt < W > implements E__T__ { } interface I_P < Y > { }
+///[Error:>|2]
+class MR < M > implements ZnM_ < > { static public boolean [ ] [ ] qx7 ( ) { } }

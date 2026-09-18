@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface EG < E > extends { void q ( ) ; } class E7 extends UI_ < N0 > { }
+///[Error:void|2]
+interface SQ < C > extends K2 { float void c ( ) ; public I [ ] u_ ( ) ; }

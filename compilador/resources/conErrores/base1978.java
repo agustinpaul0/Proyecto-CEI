@@ -1,2 +1,2 @@
-///[Error:static|2]
-class Y_i implements A3_5 { private void u1 ( V e , RA < X > [ ] jNU , Dcb_ < Z__ > [ ] [ ] [ ] [ ] [ ] mXp_ ) { } private int z ( XHO_ < L > v ) { } Id_F_ ( L_b [ ] [ ] n , I v ) { while ( this -- = null ) B [ ] [ ] [ ] n ; U [ ] [ ] [ ] [ ] i2 = + true ; } } class Z_3 extends Sp { U f ; public char [ ] m static public Q h ( ) { ; if ( null ) boolean [ ] q ; } }
+///[Error:O|2]
+class ZQ < I > extends W22 < W > { } interface Wb1 < O > { public void ov ( D p_Y ) ; void eBH9 ( Z vCQ , DA [ ] [ ] v_Q , S4_ [ ] k ) ; } interface S7o extends O { } interface Yt { public Zd2 tPP ( ) ; } interface O_6 < N > { }

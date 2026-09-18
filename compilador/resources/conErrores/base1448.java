@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface L2 < U > { } < W > interface Dt_ { C ce_ ( ) ; float t_ ( ) ; public void c ( ) ; }
+///[Error:[|2]
+interface J_ < L > extends Md { [ ] h__ ( H5 z ) ; }

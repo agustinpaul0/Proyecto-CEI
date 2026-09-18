@@ -1,2 +1,2 @@
-///[Error:/|2]
-class CF8UU56 < R > { static void p1 ( ) { } static private void h1P ( ) / public static M [ ] x ( Z [ ] vI , boolean [ ] vm , char [ ] [ ] [ ] [ ] z , int [ ] o ) { } } interface W5 { void c_ ( ) ; void rl ( ) ; public void g ( ) ; } interface EUB_1 < V > extends H__ { } interface JlS extends JF { public void sEQ ( ) ; public void s ( R [ ] n , W [ ] [ ] [ ] n_c , R5 < C > z ) ; public void h ( N [ ] o , int km , M [ ] e_16 , T [ ] [ ] [ ] dD ) ; public Z9 [ ] [ ] aFM ( ) ; }
+///[Error:return|2]
+class B_ extends CB < L > { } return + null interface MPQ < T > { public Q [ ] e ( ) ; public void ag ( B qCJ , V [ ] y ) ; } class Pa__ < E > { } class E0b { }

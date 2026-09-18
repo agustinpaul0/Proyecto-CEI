@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface ZD < C > extends G_ < > { void c ( Y ph , float x , I [ ] [ ] m ) ; } class C8rw < X > implements Q25_k { } class J2P023 extends L_jf2_ { }
+///[Error:[|2]
+class DS6 < T > implements K_bxA { static [ ] [ ] [ ] x ( ) { } public void i ( WmC [ ] h ) { "\'~B\r" -- >= - false ; var l = + '\r' ; } }

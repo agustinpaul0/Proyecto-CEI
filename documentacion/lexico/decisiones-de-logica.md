@@ -28,7 +28,7 @@ puramente un logro.
 
 **Decisión**: se adopta la gramática de Java (parte entera, parte fraccionaria, exponente con signo
 opcional, sufijo `f`/`F`/`d`/`D`) con la única restricción de que siempre empiece con dígito. La ER
-completa está en [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) §4.
+completa está en [`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) §3.4.
 
 **Consecuencia verificada**: `.5` **no** es un float en MiniJava (sí lo es en Java). Produce dos
 tokens, `punto` e `intLiteral(5)`.
@@ -77,7 +77,7 @@ selector de variación `U+FE0F` aunque se dibuje igual que `'⭐'`.
 `error: character literal contains more than one UTF-16 code unit`, o sea la misma limitación con el
 mismo motivo. **Descartado** trabajar con *code points* (`int`) para admitir caracteres astrales:
 exigiría cambiar la firma de `getNextChar()`, que es material de la cátedra y no se toca. Ver
-[`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) §3.2.
+[`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) §3.2.
 
 ### 3.5. Escapes en `litString`: no hay lista de escapes, hay una regla posicional
 
@@ -153,13 +153,13 @@ es `\u+[0-9a-fA-F]{4}` (una o más `u`), no `\u[0-9a-fA-F]{4}`.
 Es un detalle que se descubrió leyendo la especificación y que uno no adivinaría: existe porque en
 Java el pre-procesador de escapes Unicode debe poder representar un `\u` literal sin re-traducirlo.
 
-### 3.10. `unicodeHabilitado` sólo controla el escape, no los caracteres crudos
+### 3.10. El logro *Unicodes* es el escape, no los caracteres crudos
 
 **Fuente**: criterio propio.
 
 El logro *Unicodes* cubre dos cosas: caracteres no-ASCII crudos dentro de literales (`'ñ'`,
 `"letra ü"`) y la secuencia escapada `\uXXXX`. Lo que el logro **agrega** es sólo la segunda: los
-crudos ya se aceptaban.
+crudos se aceptan por la ER misma, que admite cualquier carácter no reservado.
 
 **Por qué**: distinguirlos exigiría meter clasificadores "sólo ASCII" en cada
 estado del autómata, ensuciando todo el léxico para demostrar algo que el escape ya demuestra por sí
@@ -185,7 +185,7 @@ propósito, y todas tienen su razón.
 | Caso | Java | MiniJava | Por qué |
 |---|---|---|---|
 | `\uXXXX` fuera de un literal | se traduce **antes** de tokenizar, en todo el archivo (JLS §3.3), así que un `\u12G4` en un comentario no compila | el escape sólo significa algo dentro de un `charLiteral` o un `litString`; en un comentario es texto | implementar el pre-lexer de Java es una fase entera aparte, y la cátedra no la pide |
-| `"""` | el escape se traduce primero y la comilla **cierra** el string | no cierra nada: son seis caracteres del lexema | consecuencia directa de lo anterior |
+| `"\u0022"` | el escape se traduce primero y la comilla **cierra** el string | no cierra nada: son seis caracteres del lexema | consecuencia directa de lo anterior |
 | `041` | literal **octal**, vale 33 | `intLiteral` decimal de 3 dígitos | la ER de la cátedra es decimal y nada más |
 | `09` | `illegal digit in an octal literal` | `intLiteral` válido de 2 dígitos | ídem |
 | `0x1F`, `0b1010` | literal hexadecimal / binario | `intLiteral(0)` + `idMV` | ídem |
@@ -196,7 +196,7 @@ propósito, y todas tienen su razón.
 | `'\q'` | `illegal escape character` | `charLiteral` válido | permisividad explícita de la cátedra (§3.4) |
 | `"a\q"` | `illegal escape character` | `litString` válido | §2.3.3 no define un conjunto de escapes: define qué comilla cierra (§3.5) |
 | `"a\\"` | la barra invertida — la primera `\` escapa a la segunda | `litString sin cerrar` | §2.3.3 es una regla **posicional**: la comilla de cierre nunca está antecedida por `\`, y una barra no cancela a la anterior (§3.5) |
-| `"a\u12G4"` | `illegal unicode escape`, y el literal se sigue leyendo | un error, y el literal se descarta hasta su comilla de cierre sin emitir token | criterio fijado por el profesor (§4.3) |
+| `"a\u12G4"` | `illegal unicode escape`, y el literal se sigue leyendo | un error, y el literal se descarta hasta su comilla de cierre sin emitir token | criterio fijado por el profesor ([`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §4.3) |
 | Dígitos árabe-índicos (`١٢٣`) | no valen en un literal numérico | son un `intLiteral` | `Character.isDigit` los acepta; restringir a ASCII contradiría el logro Unicodes |
 | Dígitos no ASCII en `\uXXXX` | inválidos | aceptados | `Character.digit(c,16)` los acepta |
 | `中` al empezar un identificador | válido | error — aunque **sí** puede continuar un identificador | la ER de la cátedra dice "letra mayúscula" / "letra minúscula", y `中` no es ninguna de las dos |
@@ -204,5 +204,6 @@ propósito, y todas tienen su razón.
 | BOM al inicio del archivo | se descarta | es un carácter desconocido | ídem |
 
 Y una coincidencia que también vale documentar, porque costó trabajo verificarla: **la columna a la
-que apunta el `^` coincide con `javac` en los nueve diagnósticos comparables** (§4.4).
+que apunta el `^` coincide con `javac` en los nueve diagnósticos comparables**
+([`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §4.4).
 

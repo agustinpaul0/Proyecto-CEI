@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Md < > implements ZtN_8 { V__U iW ; }
+///[Error:{|2]
+interface QM_ < Y > { void ui ( ) ; } interface { public void q ( ) ; }

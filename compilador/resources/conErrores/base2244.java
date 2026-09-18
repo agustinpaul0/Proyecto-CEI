@@ -1,2 +1,2 @@
-///[Error:int|2]
-class RB8N_ extends K_ { } interface UX extends S6_ < U > { public void aTm ( ) ; } interface U26 < D > { public Sd < O > [ ] [ ] [ ] [ ] [ ] b7Y ( ) ; WGa4_ < E > ie int ; public void l ( float [ ] [ ] n , R n4 ) ; }
+///[Error:w|2]
+interface H_ extends Y7 < TbI < U > > { void m ( ) ; w ( ) ; }

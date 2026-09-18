@@ -108,7 +108,8 @@ gramática no tiene producciones que aparezcan y desaparezcan.
 Variables locales Clásicas E2 & La factorización de \tl{idClase} en \nt{Sentencia}. \\
 Visibilidad Mejorada E2 & \nt{Visibilidad} al frente del miembro, y a los dos lados del
 \tl{static}. Requiere el token \tl{private}. \\
-Fors! E2 & El bloque \nt{For} entero, estándar y de iteradores. Requiere el token \tl{for}. \\
+Fors! E2 & El bloque \nt{For} entero, estándar y de iteradores, con la variable de control
+declarada con \tl{var}. Requiere el token \tl{for}. \\
 Operador Ternario E2 & La capa \nt{ExpresionCondicional}. Requiere el token \tl{?}, que en la
 Etapa 1 era un error léxico. \\
 Operadores Posifijos E2 & \nt{PosfijoOpcional}. Único logro que no toca el léxico: \tl{++} y
@@ -125,7 +126,8 @@ Floats (Etapa 1) & \nt{TipoPrimitivo} $\to$ \tl{float} y \nt{Primitivo} $\to$ \t
 \end{center}
 
 Los otros tres ---\emph{Entrega Anticipada}, \emph{Imbatibilidad} y \emph{Well Done!}--- también
-se persiguen, pero no se implementan por código: no dependen del compilador.
+se persiguen, pero no se implementan por código: dependen de la fecha de entrega y del resultado de
+la corrección.
 
 % ===========================================================================
 \section{Notación}
@@ -203,7 +205,7 @@ $\prim{\beta_i} \cap \prim{\beta_j} = \varnothing$ sobre todas las producciones 
 \textbf{dieciséis conflictos} repartidos en \textbf{diez no terminales}.
 
 \begin{center}\small
-\begin{longtable}{@{}c@{\hspace{0.9em}}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}@{}}
+\begin{longtable}{@{}c@{\hspace{0.9em}}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}@{}}
 \toprule
 \textbf{\#} & \textbf{No terminal} & \textbf{Defecto} & \textbf{Intersección} \\
 \midrule\endhead
@@ -603,7 +605,7 @@ hacía falta}.
 \subsection{Estado del núcleo}
 
 Con R1--R3 y F1--F8, el núcleo de la gramática --- sin logros --- es LL(1). El costo
-respecto de la base fue de \textbf{seis no terminales y ocho producciones}, concentrado en los
+respecto de la base fue de \textbf{siete no terminales y nueve producciones}, concentrado en los
 \nt{Resto\dots} y en los puntos de decisión insertados, que el esquema de traducción convierte en
 un \texttt{if/else} cada uno.
 
@@ -658,8 +660,8 @@ gramática: alcanza con que la visibilidad aparezca a \textbf{un solo lado} del 
 $\{$\tl{static}$\}$ y los Primeros de \nt{MiembroSinModificadores}. En \nt{MiembroDesdeIdClase},
 $\{$\tl{(}$\}$ contra $\{$\tl{<}, \tl{[}, \tl{idMetVar}$\}$.
 
-\tl{static} sigue aplicando sólo a métodos, como en MiniJava base. \tl{protected} no se implementa:
-no figura en MiniJava.
+\tl{static} aplica sólo a métodos, como en MiniJava base y como confirmó el profesor: no hay
+atributos estáticos. \tl{protected} no se implementa: no figura en MiniJava.
 
 \begin{center}
 \begin{tabular}{@{}ll@{}}
@@ -738,21 +740,19 @@ terminales nuevos. Se descartó porque despega la implementación del esquema de
 
 \subsection{Fors! E2}
 
-Un \nt{For} nuevo como alternativa de \nt{Sentencia}. El encabezado tiene el mismo problema de
-\tl{idClase} que la sentencia y se resuelve igual, reutilizando \nt{ExpresionSinIdClase} y
-\nt{ColaDeExpresionDesdePrimario}. El desempate entre el \tl{for} estándar y el de iteradores es de
-un solo token y está justo después del declarador: \tl{:} es de iteradores, \tl{=} o \tl{;} es
-estándar.
+Un \nt{For} nuevo como alternativa de \nt{Sentencia}. La variable de control se declara con
+\tl{var} y nada más: los logros son independientes entre sí, así que el \tl{for} no toma el
+declarador tipado de Variables locales Clásicas (lo respondió el profesor). El encabezado empieza
+con \tl{;}, con \tl{var} o con una expresión, y las tres alternativas son disjuntas. El desempate
+entre el \tl{for} estándar y el de iteradores es de un solo token y está justo después de
+\texttt{var x}: \tl{:} es de iteradores, \tl{=} es estándar.
 \begin{producciones}
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
 \regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
-\regla{EncabezadoFor}{\nt{TipoPrimitivo} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
-\regla{EncabezadoFor}{\tl{idGen} \nt{DimensionesOpcionales} \tl{idMetVar} \nt{EncabezadoForTrasDeclarador}}
-\regla{EncabezadoFor}{\tl{idClase} \nt{EncabezadoForDesdeIdClase}}
-\regla{EncabezadoFor}{\nt{ExpresionSinIdClase} \nt{ClausulasFinalesFor}}
-\regla{EncabezadoForTrasDeclarador}{\tl{:} \nt{Expresion}}
-\regla{EncabezadoForTrasDeclarador}{\nt{InicializacionDeDeclaradorFor} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoFor}{\nt{Expresion} \nt{ClausulasFinalesFor}}
+\regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
+\regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}
 \regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \end{producciones}
 \nt{ClausulasFinalesFor} con una sola \nt{ExpresionOpcional} por separador es la lectura literal de
@@ -772,8 +772,8 @@ y \texttt{a ? b : c = d} no.
 
 \begin{decision}{dónde alcanza el ternario}
 \nt{Expresion} conserva la forma de F1: el lado izquierdo del \tl{=} es una \nt{ExpresionCompuesta},
-como en la gramática original, y un ternario no lo es (\texttt{javac} tampoco lo acepta). Los seis
-lados derechos de un \tl{=} ---la asignación y los cinco inicializadores--- pasan de
+como en la gramática original, y un ternario no lo es (\texttt{javac} tampoco lo acepta). Los cinco
+lados derechos de un \tl{=} ---la asignación y los cuatro inicializadores--- pasan de
 \nt{ExpresionCompuesta} a \nt{ExpresionCondicional}: admiten el ternario y no admiten otro \tl{=}. La capa no le saca nada al lenguaje base, sólo le agrega.
 \end{decision}
 
@@ -896,8 +896,8 @@ de \S2.4.2 hasta \tl{++} y \tl{-{}-}.
 \end{tabular}
 \end{center}
 
-Se incorporan al analizador léxico \textbf{sin condición}, así que la columna de la derecha
-describe lo que pasaba en la Etapa 1 y no una configuración alcanzable hoy. El cambio no toca el
+Se incorporan al analizador léxico \textbf{sin condición}; la columna de la derecha describe el
+léxico de la Etapa 1 tal como se entregó. El cambio no toca el
 patrón State ni el driver del autómata: \texttt{EstadoIdMV} reconoce \tl{for} y \tl{private}, y
 \texttt{EstadoInicial} el \tl{?}. Los tokens
 \tl{:}, \tl{++} y \tl{-{}-}, en cambio, ya existían.
@@ -983,7 +983,7 @@ analizador no se toma \textbf{ninguna} libertad respecto del esquema.
 
 \subsection{Las clases}
 
-El analizador tiene 100 no terminales. En una sola clase eran unas 1600 líneas, así que están
+El analizador tiene 97 no terminales. En una sola clase serían unas 1600 líneas, así que están
 repartidos en \textbf{una clase por sección de la gramática}: el archivo de código y la sección del
 \texttt{.g} se leen uno al lado del otro.
 
@@ -1004,7 +1004,7 @@ constructor sin un ciclo. \\
 \texttt{AnalizadorDe\{Clases, Miembros, Tipos, Sentencias, Fors, Expresiones, Referencias,
 Creacion, Argumentos\}} & Una sección de la gramática cada una. \\
 \texttt{primeros/\allowbreak PrimerosDeX} & Una constante por producción, \textbf{generada} desde la gramática:
-207 en total, divididas por la misma sección. \\
+198 en total, divididas por la misma sección. \\
 \texttt{recuperacion/\allowbreak \{RecuperadorDePanico, ContextoDeSincronizacion\}} & La recuperación en Modo Pánico. \\
 \texttt{errores/\allowbreak ExcepcionSintactica} & El único error que produce el analizador. \\
 \bottomrule
@@ -1036,8 +1036,8 @@ El Esquema Simple tiene \textbf{exactamente dos} puntos donde puede fallar, y no
 En el primer caso «lo que se esperaba» es un terminal único; en el segundo, la lista completa de
 los terminales que podrían haber seguido, que es exactamente el conjunto de Primeros consultado.
 
-Y una aclaración que conviene dejar escrita: los errores \textbf{léxicos} los sigue detectando y
-reportando el analizador de la Etapa 1, con su propio formato. El sintáctico no los toca.
+Y una aclaración que conviene dejar escrita: los errores \textbf{léxicos} los detecta y reporta el
+analizador de la Etapa 1, con su propio formato. El sintáctico no los toca.
 
 \subsection{El formato del reporte}
 
@@ -1051,7 +1051,7 @@ Error Sintactico en linea 3: se esperaba idClase se encontro "clasesita"
 \end{consola}
 
 El lexema del token EOF es \tl{\$}, como fija Pautas slide 26. Con el logro \emph{Modo Pánico}
-prendido el reporte entero se repite por cada error encontrado, en orden, que es el mismo formato
+el reporte entero se repite por cada error encontrado, en orden, que es el mismo formato
 con el que la Etapa 1 reporta varios errores léxicos.
 
 % ===========================================================================
@@ -1109,11 +1109,10 @@ especificado para MiniJava tiene comportamiento por defecto igual al de Java»}.
 Once decisiones, cada una desarrollada en la sección que le corresponde. Esta tabla existe para
 poder recorrerlas de un vistazo, no para repetirlas.
 
-\begin{center}
-\begin{tabular}{@{}p{0.30\linewidth}p{0.50\linewidth}l@{}}
+\begin{longtable}{@{}p{0.30\linewidth}p{0.50\linewidth}l@{}}
 \toprule
 \textbf{Dónde} & \textbf{Qué se decidió} & \textbf{Ver} \\
-\midrule
+\midrule\endhead
 Asociatividad del ternario & A derecha: \texttt{a ? b : c ? d : e} es \texttt{a ? b : (c ? d : e)},
 como en Java. & \S\ref{sec:logros} \\
 Los dos operandos del ternario & El del medio es una \nt{Expresion} completa y el de la derecha
@@ -1134,13 +1133,12 @@ Inicializador de arreglos & Como en Java: con inicializador ninguna dimensión l
 la coma final. Sin inicializador rige la base: toda dimensión con tamaño. & \S\ref{sec:logros} \\
 Notación diamante & Sólo al instanciar: \texttt{new C<>()} sí, \texttt{new C<>[3]} y
 \texttt{List<> x;} no. Impuesto por la gramática, no delegado al semántico. & \S\ref{sec:logros} \\
-El declarador tipado del \tl{for} & \texttt{for (int i = 0; ; )} funciona por sí mismo: el
-encabezado tiene su propio inicializador y no reusa el de las variables locales. & \S\ref{sec:logros} \\
+La variable de control del \tl{for} & Se declara con \tl{var} y nada más, como respondió el
+profesor: \texttt{for (int i = 0; ; )} no es válido. \texttt{for(;;)} sí, como en Java. & \S\ref{sec:logros} \\
 \tl{float} en la gramática & Se agrega como \nt{TipoPrimitivo} y como \nt{Primitivo}; sin eso el
-logro de la Etapa 1 quedaba inutilizable en ésta. & \S\ref{sec:logros} \\
+logro de la Etapa 1 quedaría inutilizable en ésta. & \S\ref{sec:logros} \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
 
 Tres no aparecen en ninguna otra sección, así que van acá:
 

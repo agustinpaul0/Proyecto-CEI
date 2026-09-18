@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface D_42_C < U > { } public
+///[Error:[|2]
+interface O_ < C > { } interface DU { public void d ( ) ; } [ ] [ ]

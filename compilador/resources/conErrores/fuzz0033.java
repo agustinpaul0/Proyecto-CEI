@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface AiC_6_b_9 < B > extends M5 < F > { public Mv [ ] xN ( ) ; boolean [ ] [ ] kp }
+///[Error:[|2]
+interface Gb < E > { public L ep4 ( [ ] jU ) ; } interface M_ { }

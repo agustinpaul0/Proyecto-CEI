@@ -5,10 +5,10 @@ qué está escrita así, y dónde está rota**. Está pensada para leerse de cor
 transformaciones, así que no supone nada previo más allá de saber qué es un terminal y un no
 terminal.
 
-- La gramática literal está en [`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md).
-- Las correcciones, paso a paso, en [`transformacion-gramatica.md`](transformacion-a-ll1-paso-a-paso.md).
+- La gramática literal está en [`gramatica-original-de-la-catedra.md`](gramatica-original-de-la-catedra.md).
+- Las correcciones, paso a paso, en [`transformacion-a-ll1-paso-a-paso.md`](transformacion-a-ll1-paso-a-paso.md).
 - La gramática final LL(1) con los logros, en
-  [`gramatica-minijava.md`](gramatica-ll1-final.md).
+  [`gramatica-ll1-final.md`](gramatica-ll1-final.md).
 
 Los defectos van marcados así a medida que aparecen:
 
@@ -179,8 +179,8 @@ Los dos los agrega el logro *Genericidad Avanzada E2*.
 
 > 🟡 **Defecto latente.** `<TipoGenericoOpcional>` se usa desde dos lugares: `<TipoReferencia>`
 > (posición de **tipo**: `Lista<Persona> x;`) y `<LlamadaConstructor>` (posición de
-> **instanciación**: `new Lista<Persona>()`). Hoy son la misma construcción y compartir está
-> bien. **Con el logro deja de estarlo**, porque el diamante `<>` sólo vale al instanciar. Si se
+> **instanciación**: `new Lista<Persona>()`). En la gramática base son la misma construcción y
+> compartir está bien. **Con el logro deja de estarlo**, porque el diamante `<>` sólo vale al instanciar. Si se
 > comparte el no terminal, hay que aceptar `Lista<> x;` y rechazarlo después en el semántico. En
 > la gramática final se separan en dos, y la restricción del logro queda impuesta por la forma de
 > las reglas.
@@ -237,7 +237,7 @@ visible en la regla de la sentencia. Las tres últimas (`<If>`, `<While>`, `<Blo
 llevan `;` porque terminan en `}` o en otra sentencia. La primera alternativa, `;` sola, es la
 sentencia vacía: `while (x) ;`.
 
-> 🔴 **Ambigüedad #1 — `<Asignacion>` y `<Llamada>` son la misma regla.**
+> 🔴 **Conflicto #3, y ambigüedad #1 — `<Asignacion>` y `<Llamada>` son la misma regla.**
 >
 > ```
 > <Asignacion> ::= <Expresion>
@@ -283,7 +283,7 @@ Declaración de variable local, **sólo con `var`** y **siempre con inicializaci
 <If> ::= if ( <Expresion> ) <Sentencia> else <Sentencia>
 ```
 
-> ⚠️ **Conflicto LL(1) #3.** Prefijo común larguísimo: `if ( <Expresion> ) <Sentencia>`. El parser
+> ⚠️ **Conflicto LL(1) #4.** Prefijo común larguísimo: `if ( <Expresion> ) <Sentencia>`. El parser
 > tendría que atravesar una condición y una sentencia entera antes de saber qué producción
 > eligió. Se factoriza sacando el `else` a un `<ElseOpcional>`.
 
@@ -335,9 +335,9 @@ Cada capa llama a la de abajo. Ese encadenamiento es lo que fija qué se agrupa 
 es asociativa.
 
 Es fácil pasarlo por alto y «arreglarlo» al transformar, poniendo `<Expresion>` a la derecha
-porque queda más prolijo. Eso **agrandaría el lenguaje** y ya no sería la misma gramática.
+porque queda más prolijo. Eso **agrandaría el lenguaje** y dejaría de ser la misma gramática.
 
-> ⚠️ **Conflicto LL(1) #4.** Prefijo común `<ExpresionCompuesta>`. Viendo `x`, el parser no sabe
+> ⚠️ **Conflicto LL(1) #5.** Prefijo común `<ExpresionCompuesta>`. Viendo `x`, el parser no sabe
 > si va a aparecer un `=` — y puede estar arbitrariamente lejos. Se factoriza (F1).
 
 ### `<ExpresionCompuesta>` — los operadores binarios
@@ -359,7 +359,7 @@ darle precedencia sería cambiar el lenguaje. El desambiguado queda para etapas 
 Esto también significa que la eliminación de la recursión a izquierda **no pierde nada**: no hay
 precedencia que perder.
 
-> ⚠️ **Conflicto LL(1) #5 — recursión a izquierda.** Es el ejemplo textual de la clase
+> ⚠️ **Conflicto LL(1) #6 — recursión a izquierda.** Es el ejemplo textual de la clase
 > (`E → E + T | T`). Se da vuelta (R2).
 
 ### `<ExpresionBasica>` y `<OperadorUnario> ::= + | - | !`
@@ -369,8 +369,9 @@ precedencia que perder.
 <ExpresionBasica> ::= <Operando>
 ```
 
-Un operando con **a lo sumo un** operador unario adelante. `--x` no es válido en MiniJava base
-(sería dos unarios seguidos), y `!!x` tampoco. Los Primeros son disjuntos (`{+,-,!}` contra los
+Un operando con **a lo sumo un** operador unario adelante. `- -x` no es válido en MiniJava base
+(son dos unarios seguidos), y `!!x` tampoco. `--x` tampoco lo es, por otro motivo: `--` es un solo
+token, y no tiene lugar en esta gramática. Los Primeros son disjuntos (`{+,-,!}` contra los
 del operando), así que la regla está bien.
 
 > Los tokens `++` y `--` **existen en el léxico** («Aspectos Léxicos» §2.4.2 los lista) pero
@@ -409,7 +410,7 @@ le van colgando eslabones: `.campo`, `.metodo(…)`, `[índice]`. La recursión 
 que la cadena crece **hacia la derecha** y se asocia hacia la izquierda — `a.b.c` es `(a.b).c`,
 que es lo correcto.
 
-> ⚠️ **Conflictos LL(1) #6 a #11 — recursión a izquierda, tres alternativas.** Las cuatro
+> ⚠️ **Conflictos LL(1) #7 a #12 — recursión a izquierda, tres alternativas.** Las cuatro
 > producciones tienen los Primeros de `<Primario>`, lo que da 6 pares en conflicto. Se elimina
 > con el esquema de siempre (R3).
 
@@ -422,8 +423,10 @@ que es lo correcto.
 
 `obj.campo` contra `obj.metodo(...)`.
 
-> ⚠️ **Conflicto LL(1) #12.** Comparten **todo** el prefijo: `. idMetVar`. Sólo se distinguen por
-> si después viene un `(`.
+> ⚠️ **Conflicto LL(1) 12b, que aparece después de R3.** Comparten **todo** el prefijo:
+> `. idMetVar`. Sólo se distinguen por si después viene un `(`. En la gramática original viven en
+> alternativas distintas de `<Referencia>` y el choque queda escondido en la recursión; al
+> eliminarla, quedan como alternativas del mismo no terminal.
 >
 > **Este par se confunde a menudo con una ambigüedad. No lo es.** `<VarEncadenada>` deriva
 > exactamente la cadena `. idMetVar` — dos tokens, sin alternativas. `<MetodoEncadenado>` deriva

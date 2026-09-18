@@ -1,2 +1,2 @@
-///[Error:}|2]
-class S4 { static public int }
+///[Error:Y_|2]
+Y_ < L >

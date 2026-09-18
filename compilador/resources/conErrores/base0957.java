@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface KM { D_ < < W > > [ ] f ( D_ < Q > l ) ; } interface Dn6__ < K > extends Uji6u < H > { }
+///[Error:>|2]
+interface N8 extends A3 < Im_ < ZRrRX < > > > { }

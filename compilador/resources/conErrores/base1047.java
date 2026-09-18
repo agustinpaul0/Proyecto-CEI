@@ -1,2 +1,2 @@
-///[Error:O|2]
-class AV < I > extends Uof { } interface F8u { } interface CM4 { void j ( ) ; } interface K2 < Q > { } O class B5eM < F > implements Snk < U_A > { int [ ] d ( V [ ] x_ ) { } }
+///[Error:%|2]
+class N_ < F > implements Yj < I > { public static void i_ ( ) { boolean k_0 , ral_4vp5 = % + false ? + false : ! null ; int [ ] f ; } } interface H_ < R > { }

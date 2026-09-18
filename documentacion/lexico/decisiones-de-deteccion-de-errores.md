@@ -19,9 +19,8 @@ decisiones con su fuente.
 naturaleza del error indicando el lexema armado hasta el momento del error y en qué número de línea
 del fuente MiniJava se produjo"*, y el código `[Error:Lexema|NroLinea]` lleva ese mismo lexema.
 
-**Consecuencia visible**: con dos escapes inválidos en un mismo string, el segundo error reporta un
-lexema que **contiene** al del primero (`"a\q` y después `"a\q b\z`). Parece redundante, pero es
-exactamente lo que la consigna pide.
+**Consecuencia visible**: en `"a\u12G4"` el lexema reportado es `"a\u12`, lo armado hasta el
+error, y no lo que se descarta después (§4.3). Es exactamente lo que la consigna pide.
 
 ### 4.2. Recuperación estructural: se consume exactamente lo que se reporta
 
@@ -44,21 +43,20 @@ reporta en el lexema, ni uno más. No existe ningún método `recuperarDeError()
 O sea: `javac` no sincroniza hasta un delimitador, y nunca descarta un carácter que no formó parte
 del lexema reportado.
 
-**El defecto que esto corrigió**: la implementación anterior descartaba siempre el carácter que estaba
-mirando, incluso cuando nunca había formado parte del error. Consecuencias reales, todas invisibles
-en el corpus de entonces porque cada caso tenía un espacio detrás del lexema malo:
+**Alternativa descartada**: descartar siempre el carácter que se está mirando, incluso cuando
+nunca formó parte del error. Pierde tokens válidos, y ninguno de estos casos lo delata si el lexema
+malo va seguido de un espacio:
 
-| fuente | antes | ahora |
+| fuente | descartando el carácter actual | con el criterio |
 |---|---|---|
-| `v1 &v2` | `[Error:&\|1]` + `(intLiteral,2,1)` — **se comía la `v`** | `[Error:&\|1]` + `(idMV,v2,1)` |
-| `1e;` | `[Error:1e\|1]`, el `;` desaparecía | `[Error:1e\|1]` + `(puntoYComa,;,1)` |
-| `1234567890+1` | el `+` desaparecía sin mensaje | `[Error:1234567890\|1]` + `(op+,+,1)` + `(intLiteral,1,1)` |
-| `'ab'` | `[Error:'a\|1]` + `[Error:'\|1]`, la `b` desaparecía | `[Error:'a\|1]` + `(idMV,b,1)` + `[Error:'\|1]` |
+| `v1 &v2` | `[Error:&\|1]` + `(intLiteral,2,1)` — **se come la `v`** | `[Error:&\|1]` + `(idMV,v2,1)` |
+| `1e;` | `[Error:1e\|1]`, el `;` desaparece | `[Error:1e\|1]` + `(puntoYComa,;,1)` |
+| `1234567890+1` | el `+` desaparece sin mensaje | `[Error:1234567890\|1]` + `(op+,+,1)` + `(intLiteral,1,1)` |
+| `'ab'` | `[Error:'a\|1]` + `[Error:'\|1]`, la `b` desaparece | `[Error:'a\|1]` + `(idMV,b,1)` + `[Error:'\|1]` |
 
 **Beneficio colateral**: la terminación queda garantizada estructuralmente. El lexema de un error
-nunca es vacío, así que cada error consumió al menos un carácter y el análisis siempre avanza — antes
-eso lo garantizaba el método que descartaba un carácter, que era justamente el que rompía la
-correspondencia.
+nunca es vacío, así que cada error consumió al menos un carácter y el análisis siempre avanza, sin
+un método aparte que descarte caracteres para asegurarlo.
 
 ### 4.3. Un escape mal formado descarta el `litString` hasta su comilla de cierre
 
@@ -81,7 +79,7 @@ literal hasta emitirlo entero como token, que es lo que hace `javac`. El profeso
 salida incorrecta: el compilador afirmaría haber reconocido un literal cuyo contenido no supo
 interpretar.
 
-**Por qué el criterio nuevo se sostiene**, más allá de la indicación: es **recuperación en modo
+**Por qué el criterio se sostiene**, más allá de la indicación: es **recuperación en modo
 pánico con token de sincronización**, la técnica clásica ante un error de análisis — se descarta
 entrada hasta un delimitador que devuelve al analizador a un estado conocido. El delimitador natural
 de un `litString` es su comilla de cierre.
@@ -92,7 +90,7 @@ literal nuevo que se come ` + v1` y muere sin cerrar: tokens fantasma, errores i
 tokens legítimos (`+` y `v1`) perdidos. Descartar hasta el cierre los conserva.
 
 **Consecuencia sobre §4.2**: es la única excepción a "se consume exactamente lo que se reporta". El
-lexema reportado sigue siendo el armado hasta el error (`"a\u12`, como exige §4.1); lo descartado es
+lexema reportado es el armado hasta el error (`"a\u12`, como exige §4.1); lo descartado es
 recuperación y no aparece en ningún lexema. La excepción está verificada en la propiedad de
 reconstrucción del fuente.
 
@@ -116,7 +114,6 @@ carácter; si habla de la **construcción entera** que falló, el `^` va a donde
 | fuente | diagnóstico de `javac` | señala |
 |---|---|---|
 | `v1 # v2` | `illegal character` | el `#` |
-| `"a\q b\z c"` | `illegal escape character` (dos veces) | la `q` y la `z` — **no** la barra |
 | `'\u12G4'` | `illegal unicode escape` | la `G` |
 | `''` | `empty character literal` | la comilla de **cierre** |
 | `'a` / `'ab'` | `unclosed character literal` | la comilla de **apertura** |
@@ -124,6 +121,7 @@ carácter; si habla de la **construcción entera** que falló, el `^` va a donde
 | `1234567890123` | `integer number too large` | el **primer** dígito |
 | `1e` | `malformed floating-point literal` | el **primer** carácter |
 | `/* sin cerrar` | `unclosed comment` | la barra de **apertura** |
+| `v2 /*` | `unclosed comment` | la barra de **apertura**, no la columna 1 |
 
 Para `''`, el proyecto se aparta deliberadamente de `javac`: se señala la segunda comilla porque es
 el carácter que confirma que el literal está vacío. En los restantes casos tiene sentido más allá de
@@ -162,9 +160,9 @@ el contrato de la cátedra es que sea el texto exacto del fuente.
 
 **Fuente**: criterio propio.
 
-**Antes**: los once puntos de falla compartían una única frase genérica. El reporte no podía decir
-qué construcción había fallado, y los tests no podían validar por tipo — sólo por el texto completo
-del mensaje, que es exactamente lo que un test no debería mirar.
+**Alternativa descartada**: una única frase genérica para los diez puntos de falla. El reporte no
+podría decir qué construcción falló, y los tests no podrían validar por tipo — sólo por el texto
+completo del mensaje, que es exactamente lo que un test no debería mirar.
 
 **Decisión**: `TipoDeErrorLexico` tiene un valor por punto de falla, cada uno con su razón. El
 mensaje de `CARACTER_DESCONOCIDO` conserva el texto literal del ejemplo de la cátedra
@@ -176,7 +174,7 @@ del mensaje. Cambiar la redacción de un mensaje no rompe ningún test.
 
 ### 4.7. "Sin cerrar" y "mal formado" son errores distintos
 
-**Fuente**: criterio propio, a pedido explícito durante el desarrollo.
+**Fuente**: criterio propio, a pedido explícito del usuario.
 
 Sobre un `charLiteral` que no cierra donde debía, el estado mira qué lo interrumpió: si fue un fin de
 línea o de archivo, el literal **nunca se cerró**; si fue un carácter cualquiera, el literal **tiene
@@ -197,7 +195,7 @@ caracteres hasta una de esas dos condiciones y vuelve a `EstadoInicial`.
 El único error de la familia comentario es `COMENTARIO_SIN_CERRAR`, exclusivo de `/* */`, que sí
 tiene una terminación obligatoria.
 
-Lo que sí hacía falta cubrir son los **bordes**, y ahí el corpus tenía huecos reales: qué pasa con un
+Lo que sí hay que cubrir son los **bordes**: qué pasa con un
 `//` que contiene una construcción que en otro contexto abriría algo (`"`, `'`, `/*`), con un `//`
 vacío entre dos tokens, con uno terminado en barra invertida (Java no tiene continuación de línea) y
 con uno cerrado por `\r` solo o por `\r\n`. Los casos que terminan exactamente en el constructo

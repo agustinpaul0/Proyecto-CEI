@@ -1,2 +1,2 @@
-///[Error:V9yB_i6|2]
-V9yB_i6
+///[Error:>|2]
+class XH < J > implements Co < > { }

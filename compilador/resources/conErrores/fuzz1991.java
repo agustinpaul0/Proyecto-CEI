@@ -1,2 +1,2 @@
-///[Error:P|2]
-interface ZC8_ < X > extends Mb { public void kH_8 ( int [ ] [ ] [ ] [ ] [ ] [ ] qT , J_ < O > [ ] be ) ; public B3 < BX > [ ] cv6L P [ ] t ; }
+///[Error:;|2]
+class LUX < U > { } interface U0 extends T99w { public void ql ; } interface Lf < U > { } class W9 { } class Z94k < D > extends FL_R < D_A0R > { } class A_P < Z > implements Kj8 < X > { U [ ] [ ] u ; }

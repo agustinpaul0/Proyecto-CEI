@@ -1,2 +1,2 @@
-///[Error:D8|2]
-D8
+///[Error:>|2]
+interface F5_y_ extends Ys < > { }

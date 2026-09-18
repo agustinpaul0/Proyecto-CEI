@@ -1,2 +1,2 @@
-///[Error:h6_|2]
-class M8sX implements Q7w_T < X2 < QP > > { static private h6_ ( boolean u ) { } }
+///[Error:w|2]
+class D_ extends RA2 { } class G_ < A > extends YN < E > { static public void ulzL ( w ) { var fP = ! this != + '\"' ; } static float [ ] v ( ) { return ! 08F ; ; } }

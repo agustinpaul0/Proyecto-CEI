@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface M_ < > { }
+///[Error:K|2]
+K

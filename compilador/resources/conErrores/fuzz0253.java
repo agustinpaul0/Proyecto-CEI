@@ -1,2 +1,2 @@
-///[Error:<|2]
-class I_ extends Vu < EM > { } interface < L > { }
+///[Error:{|2]
+interface F_ < X > extends { }

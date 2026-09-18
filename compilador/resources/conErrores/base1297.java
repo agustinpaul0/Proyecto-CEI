@@ -1,2 +1,2 @@
-///[Error:P|2]
-P lW_Bq ; class I_ { } class W2_5 { }
+///[Error:]|2]
+class PdX < N > { private R [ ] [ ] [ ] bT = ! IOA . a ( ) [ ] ++ ; }

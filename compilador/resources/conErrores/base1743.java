@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface TW { } interface { L4V wX ( ) ; int [ ] [ ] p0C ( char u ) ; public void q ( ) ; public void m ( ) ; }
+///[Error:X_8p_|2]
+X_8p_ interface D__V9 extends Tq < Ma < T > > { public char [ ] r ( ) ; } interface D3 { int [ ] [ ] [ ] [ ] [ ] o3yQm ( ) ; public void i ( ) ; }

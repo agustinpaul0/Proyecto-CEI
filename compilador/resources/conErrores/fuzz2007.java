@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface CJ < C > { } class Om implements HK { static boolean [ ] n ( ) { } void sB ( ) { } public int [ ] li ; } interface JD { boolean [ ] e ( B [ ] [ ] [ ] [ ] g__ ) ; void r_ ( char n2 , char c ) ; public F1 [ ] w_sF ( char ) ; }
+///[Error:V_|2]
+V_ [ ] [ ] interface HI { } class Oa < P > implements P_ { } class Hz_k < Z > implements G_8 < U > { } interface Za < K > extends Ax { } interface Eic < F > { }

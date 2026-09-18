@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends G_si < D > { float [ ] l ( ) ; }
+///[Error:>|2]
+class DY < I > implements M0L_S < > { }

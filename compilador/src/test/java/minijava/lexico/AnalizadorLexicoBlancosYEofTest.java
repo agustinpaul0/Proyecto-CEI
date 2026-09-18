@@ -37,8 +37,9 @@ class AnalizadorLexicoBlancosYEofTest extends BaseDeAnalisisLexico {
         assertEquals(3, token.linea());
     }
 
-    // Los 3 casos de EOF de agents/convenciones-catedra.md, verificados a nivel
-    // analizador y no sólo del manejador: un bug de conteo apareció en esta capa.
+    // Los 3 casos de EOF de documentacion/proyecto/convenciones-de-la-catedra.md,
+    // verificados a nivel analizador y no sólo del manejador: el conteo de líneas
+    // también pasa por esta capa.
     @Test
     void eofEnLinea22ConVeintiunSaltosYNewlineFinal(@TempDir Path dir) throws Exception {
         String fuente = "x" + "\n".repeat(21);

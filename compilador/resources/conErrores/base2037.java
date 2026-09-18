@@ -1,2 +1,2 @@
-///[Error:<|2]
-class U_ { } class < Y > implements Jq77hY9 { } interface X3 < L > extends St < G > { }
+///[Error:x|2]
+interface HAKH < W > extends S__ { void b ( ) ; public float [ ] [ ] [ ] [ ] t ( int [ ] [ ] d ) ; x }

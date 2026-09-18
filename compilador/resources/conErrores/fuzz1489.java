@@ -1,2 +1,2 @@
-///[Error:S|2]
-interface Z4_ { W [ ] [ ] [ ] [ ] [ ] k_ S ; } class Ti extends X4 { }
+///[Error:<|2]
+class Yv7 { } < E >

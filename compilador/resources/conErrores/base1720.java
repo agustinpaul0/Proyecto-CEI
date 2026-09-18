@@ -1,2 +1,2 @@
-///[Error:c|2]
-class G3_ { } interface X_ extends K_ { public void v ( ) ; c ( ) ; public void ow ( ) ; }
+///[Error:1416363|2]
+1416363 >= + 6509 interface U51Wl extends D_ { }

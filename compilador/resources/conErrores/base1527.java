@@ -1,2 +1,2 @@
-///[Error:HB__|2]
-interface LO { U rv ( ) ; } class E3 implements B2 < N > { } HB__
+///[Error:JT__|2]
+JT__ < PoWY < Nh < K > > > [ ] class LG6__ < J > extends L1CSHIm < RSd > { }

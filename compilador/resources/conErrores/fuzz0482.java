@@ -1,2 +1,2 @@
-///[Error:QoB2k|2]
-interface X_Y < B > { } class LlM < H > implements Qc { char [ ] [ ] i ; } QoB2k
+///[Error:static|2]
+class Cb extends Ii < Q_F > { static private void w static public void vmbz ( Z7N < L3X < P > > h , char [ ] a2_3 ) { } }

@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-class A8 extends Y5_ { } interface T3 { } class W5 { } boolean class NFA < A > implements UP < L > { }
+///[Error:T_|2]
+class Dd1 implements M5O { } T_

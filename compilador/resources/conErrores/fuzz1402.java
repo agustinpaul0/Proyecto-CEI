@@ -1,2 +1,2 @@
-///[Error:void|2]
-class JO_ implements Q0Nh { } class D52 < S > implements PV < Cr > { static char i ( M [ ] [ ] j3n ) { } } void a ( ) ; F q ( O [ ] [ ] [ ] [ ] [ ] [ ] q3 , E [ ] lU ) ; public void u ( Q [ ] [ ] j6 , boolean [ ] [ ] [ ] d9 ) ;
+///[Error:null|2]
+class KdFJ { static private void nv ( ) null } class LN extends NZ { static private Z hc ( ) { } static private int h ( N [ ] xQ ) { } static private M [ ] d ( float o80 , Rq6 vq , L_ [ ] [ ] w_ ) { if ( this ++ ) - C6 . i ( ) >= false ; } public M ll ( DT [ ] i ) { } private int [ ] s ( ) { } }

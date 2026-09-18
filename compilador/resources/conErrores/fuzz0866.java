@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Zf extends < V > { }
+///[Error:AJ|2]
+AJ < YFr_ > [ ] pza ;

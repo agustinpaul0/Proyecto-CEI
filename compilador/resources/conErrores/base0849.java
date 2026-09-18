@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface QXlt extends < W > { }
+///[Error:Ri|2]
+class F2 < P > { } Ri

@@ -1,2 +1,2 @@
-///[Error:yzl_|2]
-yzl_
+///[Error:implements|2]
+implements V1_55QG < B >

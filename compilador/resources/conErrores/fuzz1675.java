@@ -1,2 +1,2 @@
-///[Error:D|2]
-D interface Qp extends O70 < F > { }
+///[Error:>|2]
+class Nr < L > extends X_ < V > { } interface Z9 < > { }

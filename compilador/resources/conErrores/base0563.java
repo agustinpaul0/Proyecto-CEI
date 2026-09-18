@@ -1,2 +1,2 @@
-///[Error:B05|2]
-B05
+///[Error:LG|2]
+LG

@@ -1,2 +1,2 @@
-///[Error:;|2]
-class T_V < Z > { } interface Kd < R > extends U_A_ { } interface X6 < L > { } class P9 { private O g ( I [ ] h9 ) { while ( ! true ) for ( T ; ; ) return ; } }
+///[Error:(|2]
+class D9 implements HD { } interface K_Q < O > extends PY < Q > { public void j ( ) ; } interface Yi < E > { void bB4_ ( Ykx___0_w cv , W [ ] [ ] m_H6 ) ; int ly_g ( ) ; void ki ( ) ; public C12_ < D > [ ] [ ] [ ] [ ] i_Y ( int [ ] u ) ; public int [ ] ( ) ; void z ( ) ; boolean q ( ) ; }

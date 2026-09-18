@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) { } interface DAY_ < N > extends JC46 { }
+///[Error:{|2]
+class ZQ8 < C > extends ZC { } interface ED { } class YN < L > implements G_ < F > { } interface G_ < Y > extends WV2_ < J_ < Q > > { public void znp ( float [ ] [ ] [ ] c6 , boolean sy ) ; char b1 ( ) ; void a ( Q a_ , boolean [ ] [ ] [ ] t_ ) ; } class U7 extends NgI_L < QB_ < Ntv0 < G_ > > > { static void c_ { } static public void g ( Z [ ] [ ] o__9I , int j5_ ) { } char p ( boolean [ ] [ ] d_b ) { for ( ; ; ) for ( ; ; ) ; ; } static O s_ ( ) { } static V_i [ ] [ ] t ( ) { U [ ] [ ] [ ] j ; float [ ] [ ] g ; { } ; } void a ( ) { } int iz ( ) { } }

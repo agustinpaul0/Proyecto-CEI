@@ -1,2 +1,2 @@
-///[Error:d|2]
-interface WI { void a_ ( char t_ , float ra ) ; void n ( F_ < JGC2 < R_ > > u , U p6V , boolean u ) ; V6 < El < M44 < A > > > [ ] [ ] aSca8zU ( ) ; public void f ( ) ; } class WdY implements O1k { } class B__q { } d
+///[Error:,|2]
+interface Gqfc5 { } class Wy < F > implements XnBZ < J > { static RO < Y > [ ] kT ( H yG ) { while ( i . r . x_ ++ > this ++ = "" ++ >= + true % + false ) { ; rqE , o_Xo , l_ ; } } } class TL implements Gq_ < V > { }

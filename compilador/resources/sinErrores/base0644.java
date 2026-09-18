@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class J2 extends O_ < N > { static Cd r ( ) { if ( false != false = - 'b' / - this ++ >= false ) { } else if ( ! false ) Z [ ] [ ] [ ] r2 , h , t , c , f_k ; else for ( Ov [ ] [ ] y_r ; ; ) true ; E [ ] vi__ ; } void b_h ( ) { while ( this ++ == null = '\'' - true ) for ( ; ; ) { } if ( + null && + null * null ) return ; else T [ ] [ ] [ ] z6 ; } static private C [ ] xJXW ( B1G_ [ ] [ ] y ) { } }
+class J2 extends O_ < N > { static Cd r ( ) { if ( false != false = - 'b' / - this ++ >= false ) { } else if ( ! false ) Z [ ] [ ] [ ] r2 , h , t , c , f_k ; else for ( ; ; ) false ; } } interface Hr { public void of ( E [ ] vi__ ) ; }

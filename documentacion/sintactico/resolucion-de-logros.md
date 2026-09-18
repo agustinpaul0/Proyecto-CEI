@@ -14,7 +14,7 @@ sintaxis de uno se le da al simulador la cadena de tokens que ese logro habilita
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g \
         --aceptar "class idClase { void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
-bash herramientas/casos-gramatica.sh          # los 70 casos de aceptacion y rechazo
+bash herramientas/casos-gramatica.sh          # los 72 casos de aceptacion y rechazo
 ```
 
 ---
@@ -26,7 +26,8 @@ bash herramientas/casos-gramatica.sh          # los 70 casos de aceptacion y rec
 > varias variables e inicializarlas (por ejemplo `int x,y,z = 10;`)»*
 
 Resuelto en la gramática con `<ListaDeclaradores>`, con una `<InicializacionDeDeclarador>` por
-declarador.
+declarador, como en Java (JLS §14.4). Es un logro independiente del de `for`: el encabezado del
+`for` no toma el declarador tipado.
 
 **El conflicto que crea:** una declaración local pasa a poder empezar con `idClase` (`C x;`), y una
 sentencia-expresión también (`C.m();`). Se factoriza el `idClase` en `<Sentencia>`: `.` significa
@@ -48,7 +49,7 @@ factoriza: `(` es constructor, cualquier otro token abre un tipo.
 
 Los métodos de interfaz admiten `public` y no `private` — el razonamiento está en
 [`decisiones-de-logica.md` §5](decisiones-de-logica.md). El orden respecto de `static` se mantiene
-fiel a la gramática original (§6 del mismo documento).
+con los dos órdenes, como en Java (§6 del mismo documento).
 
 **Requiere el token `private`.**
 
@@ -58,13 +59,13 @@ fiel a la gramática original (§6 del mismo documento).
 > a una sola sentencia/expresión por separador del for (`;` en el caso del standard y `:` en el for
 > de iteradores)»*
 
-Las dos formas están. El desempate entre el `for` estándar y el de iteradores es de **un solo
-token** y está justo después del declarador: `:` es de iteradores, `=` o `;` es estándar. La
-restricción de «una sola por separador» queda en la forma de `<ClausulasFinalesFor>`, que admite una
-`<ExpresionOpcional>` por hueco.
-
-El encabezado tiene el mismo conflicto de `idClase` que la sentencia y se resuelve igual,
-reutilizando los mismos no terminales de cola.
+Las dos formas están, con la variable de control declarada **con `var` y nada más**, como
+respondió el profesor: los logros son independientes entre sí. El desempate entre el `for` estándar
+y el de iteradores es de **un solo token** y está justo después de `var x`: `:` es de iteradores,
+`=` es estándar. Un encabezado que no empieza con `var` ni con `;` es una expresión. La restricción
+de «una sola por separador» queda en la forma de `<ClausulasFinalesFor>`, que admite una
+`<ExpresionOpcional>` por hueco. El detalle está en
+[`decisiones-de-logica.md` §10](decisiones-de-logica.md).
 
 **Requiere el token `for`.**
 
@@ -74,7 +75,7 @@ reutilizando los mismos no terminales de cola.
 > en Java (condición ? expr_verdadera : expr_falsa)»*
 
 Una capa nueva, `<ExpresionCondicional>`, entre la asignación y los operadores binarios, con la
-precedencia de Java y asociatividad a derecha. Alcanza a los seis lados derechos de un `=`; el lado
+precedencia de Java y asociatividad a derecha. Alcanza a los cinco lados derechos de un `=`; el lado
 izquierdo es una `<ExpresionCompuesta>`, como en la gramática original, así que `a ? b : c = d` no
 deriva. El detalle está en [`decisiones-de-logica.md` §3](decisiones-de-logica.md).
 
@@ -149,6 +150,12 @@ El léxico emite `pr_float` y `floatLiteral` desde la Etapa 1 pero la gramática
 tiene. Dos alternativas nuevas, cero conflictos. Sin esto, el logro de la etapa anterior quedaría
 inutilizable en ésta.
 
+## Los que no son de código
+
+*Entrega Anticipada Sintáctica*, *Imbatibilidad Sintáctica* y *Well Done!* también se persiguen,
+pero no se implementan: dependen de la fecha de entrega —48 horas antes del cierre— y del resultado
+de la corrección.
+
 ---
 
 ## Resumen del impacto sobre el léxico
@@ -162,8 +169,7 @@ inutilizable en ésta.
 
 Los tres primeros **no figuran en «Aspectos Léxicos de MiniJava»**: la lista de palabras clave
 de §2.1 llega hasta `false` y la de operadores de §2.4.2 hasta `++ --`. Se agregan al léxico sin
-condición: la columna de la derecha describe lo que pasaba en la Etapa 1, no una configuración
-alcanzable hoy.
+condición; la columna de la derecha describe el léxico de la Etapa 1 tal como se entregó.
 
 ## Ver también
 

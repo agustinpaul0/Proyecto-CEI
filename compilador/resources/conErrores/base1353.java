@@ -1,2 +1,2 @@
 ///[Error:<|2]
-class H_b extends DX { E [ ] wP = - this ; } class SBF < X > { static public void s ( ) { var v_ = null ; } } class Fp < H > implements < RJh > { }
+interface Il < Z > extends WU < J > { } class HL_ < R > extends < B95_yx4 > { }

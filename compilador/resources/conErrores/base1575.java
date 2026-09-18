@@ -1,2 +1,2 @@
-///[Error:B2N|2]
-B2N < J8 < L > > class E6W4 < Y > implements N_F < Sz > { static private void t ( W [ ] c ) { U3z < U > rF = 20737E7 ; } } class Em < X > { static public void q ( O dz8 , R [ ] mw ) { Z n = this % 77607.95 ? ! false : true , u , dH = + null ; int z ; if ( ! 3. ) ; else char [ ] [ ] n , t ; U7 yTM , h4 ; } private static void f ( ) { } } class KG extends LBK < F > { } class Lq6 < O > extends B_ZO_G { void k ( J__ m_0 , char [ ] ybtL , M t ) { 87547 ; } } interface W_9_ < D > { public char [ ] [ ] d ( R5 < Xx > r ) ; G1n_Sn6K [ ] pA ( ) ; In_B__42 < W > w ( boolean p ) ; public N [ ] [ ] f_l_ ( char i , A [ ] cdb ) ; public void pY_E_1ZwE5g ( char [ ] [ ] s__7B ) ; }
+///[Error:implements|2]
+class implements VT { static void s ( ) { ; } } interface Wi { float [ ] i ( YdhZ < S > [ ] [ ] [ ] [ ] a2 ) ; public I [ ] hCNS4 ( boolean pyZ3_c9 , E [ ] [ ] k_T , Y2t5U_ b6 , D6Bn < Y > wn_7rf ) ; }

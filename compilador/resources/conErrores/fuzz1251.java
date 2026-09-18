@@ -1,2 +1,2 @@
-///[Error:vu|2]
-class In < X > { static FP [ ] p ( ) { for ( V [ ] [ ] t : + "" -- ) { } } public L k ( R k ) { ; } } interface VLL < A > extends B_ { void e8 ( Ao [ ] dD1r75 , Im7_ < CqC < Y09 < C > > > [ ] v ) ; void y__ ( Ehxk_5 [ ] [ ] [ ] j ) ; vu ( ) ; }
+///[Error:char|2]
+char interface B98 { void k ( int [ ] c ) ; } class H2U < G > extends WC < YV < L > > { } class Ey2y < H > extends G2_3 { N__ < Q > [ ] [ ] [ ] [ ] uV ( U09q [ ] iuT1_sl , char [ ] b , M p_ ) { To . x ( ) . m ++ ; AJ . j4 ( ) . hb ++ ; M8Mb < DM_cWG > [ ] [ ] w , ln ; return ; } }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } < B >
+///[Error:}|2]
+interface L3 extends Q_ { } class Dw < W > implements CC { Q6T }

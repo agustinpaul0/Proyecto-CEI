@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface X4 extends Eti7 { } class R_ implements { } class KD7 < C > { private Y s_3_U_ ( Z [ ] o ) { } }
+///[Error:;|2]
+class IT extends Cbn66 < XV < V > > { } interface R9 { char [ ] [ ] [ ] [ ] d ( ) ; } interface HJ extends FL { public int qU ; public char [ ] [ ] a ( ) ; void p ( ) ; } interface RW_ { public void uV ( BMBb [ ] [ ] b1 ) ; }

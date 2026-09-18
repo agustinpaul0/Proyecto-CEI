@@ -1,2 +1,2 @@
-///[Error:void|2]
-void interface YK < E > extends CjwBx5 { } class IiK { } interface S_ < D > extends Yq { } interface Il < O > { public void k6 ( int [ ] [ ] d ) ; }
+///[Error:;|2]
+interface N43 extends C___ { void t30K ; } interface S_ extends VR__ImD4 < F_ > { }

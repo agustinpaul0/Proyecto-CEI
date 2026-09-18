@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface N43 extends C___ { void t30K ; } interface S_ extends VR__ImD4 < F_ > { }
+///[Error:}|2]
+class Ai__ < W > implements Z_ { } class RQO621F extends GK < Kf > { } interface Fe_ < V > extends E7_ { } interface P_ { Lx < E_Z < C > > [ ] } class Uvf { }

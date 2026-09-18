@@ -1,2 +1,2 @@
-///[Error:S|2]
-class NrdgW { public static void S ud_ , X u , Fv w , char b , I [ ] n static JaA kh ( ) { } } interface JFVE < R > { }
+///[Error:i|2]
+i interface Y6z extends M84 < B > { public void d ( ) ; } interface C0 < B > { }

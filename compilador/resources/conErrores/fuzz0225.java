@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface P_ { boolean h ( ) ; [ ] }
+///[Error:ZP|2]
+ZP < Ak >

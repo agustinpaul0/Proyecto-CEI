@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface TGZ < X > { void i ( ) ; public boolean [ ] [ ] [ ] [ ] kY26_ ( , R x , float [ ] x_C ) ; void uq ( ) ; int kuEEW3b ( ) ; } class B_ extends AB__H { void o4 ( ) { while ( + PS . e ( ) . z ? false : null ) + true <= + null ; if ( ! 'a' = - null ) for ( K [ ] f ; ; ) ; else A c6 , h ; if ( '\r' ) char [ ] [ ] w ; else return ; } } class Ac < Y > { private static void dT ( D [ ] ub51hu8 ) { } }
+///[Error:null|2]
+class Llw extends Y7X { static private void f ( ) { } static void r null public static T wv ( ) { } }

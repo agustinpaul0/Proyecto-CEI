@@ -1,2 +1,2 @@
-///[Error:HfW|2]
-HfW
+///[Error:{|2]
+{ }

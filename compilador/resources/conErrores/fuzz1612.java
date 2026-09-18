@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface XB { X [ ] [ ] [ ] [ ] dN ( int [ ] [ ] w , W [ ] c ) ; } static private Ip < O > [ ] u8 ( X f_ , Ay8 [ ] u , char az , F2 s , M oKaa ) { }
+///[Error:<|2]
+class M_ < M > extends V2 { } < S >

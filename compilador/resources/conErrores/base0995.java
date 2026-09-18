@@ -1,2 +1,2 @@
-///[Error:x4c|2]
-interface EWg extends S_0T < V > { void w ( ) ; public void d ( x4c ) ; public void wa ( ) ; } class Tm { private static void y_ ( ) { QDA_1y . j_ ( ) . h ( ) . aW ( ) || "" -- ; ; } private static NT y ( ) { ; } } class Z2 { } class G0e9 < V > { } class Sq < H > implements XVxG < N > { Z z_ ; } interface Z_V { } interface YtT_ extends Fw < I > { void o05Fj ( Xc8 < G_ > [ ] x , Iw [ ] e_ ) ; } class X5 < X > { } class S_oZ_ { }
+///[Error:static|2]
+interface Jc < S > { } interface S4 extends T56 < On < P_5 < L > > > { void x ( ) ; } static public Ca8f n ( int e ) { } private U w ( float [ ] [ ] e , P [ ] z ) { } class G51_ extends K9 < M > { L_ ( R r3v , NZ_4pIP p , int ko , boolean y7B_h ) { } }

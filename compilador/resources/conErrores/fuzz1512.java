@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends GJ
+///[Error:HEQ|2]
+HEQ

@@ -1,2 +1,2 @@
-///[Error:oa|2]
-interface HP_F < H > extends F_ < K > { } oa ( U_ < J1Q > [ ] [ ] x ) { }
+///[Error:(|2]
+class I__1R { void ( ) } class F_ < O > implements S5g__ < P__ < P_ < N > > > { static void mo ( ULr_W7_D < X > h ) { { } } }

@@ -1,2 +1,2 @@
-///[Error:Q9|2]
-Q9 < H__a < SNG_ > > interface H1l { } class X_ { }
+///[Error:<|2]
+class NG_ < X > extends R6 { } class L_ < I > extends FkQ < O > { static public X_H [ ] [ ] f_Sd ( ) { } } class < B > implements X__ { } interface VpPU { }

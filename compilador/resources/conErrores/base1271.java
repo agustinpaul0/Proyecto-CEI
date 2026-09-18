@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Pr extends EJT < KnI_ < S_UR8Ei < > > > { }
+///[Error:{|2]
+interface B7N extends { void o ( ) ; void an ( Z [ ] [ ] xWbJ , D [ ] k ) ; }

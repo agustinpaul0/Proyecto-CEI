@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Hz_ < O > extends < Zw > { }
+///[Error:M_|2]
+M_

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface N_ < N > extends { public void kCC__M6R ( ) ; int [ ] b ( ) ; }
+///[Error:>|2]
+class Hlra_ < K > implements Z_37_ < > { private static void x ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:q|2]
-interface Z49 < G > { q ( ) ; public void fsq ( Z iV_ ) ; }
+///[Error:A|2]
+A class T7X implements DN { }

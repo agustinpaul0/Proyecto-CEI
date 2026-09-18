@@ -1,2 +1,2 @@
-///[Error:Gn|2]
-Gn interface J5 { public void f ( ) ; void o_ ( ) ; public void g ( L y ) ; public char g8 ( ) ; }
+///[Error:[|2]
+interface O5j9 < U > { } interface Iu { public A_ nV ( boolean l ) ; public H q4 ( int ibbPLQ_2 ) ; public W [ ] n ( [ ] ) ; } interface LeV9oq { }

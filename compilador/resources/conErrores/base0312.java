@@ -1,2 +1,2 @@
-///[Error:W__|2]
-interface A9Z extends FD < W > { } W__
+///[Error:implements|2]
+class implements ZHo { } class WFl implements H09 < E > { } class P_ < P > implements MW5la { } class Kd < D > implements I_ { } interface O_ < D > { } class Ck_ < D > implements W50 < F > { }

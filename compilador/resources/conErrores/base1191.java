@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface B_d < Y > { void e7a ( C_6_ oS7A ) ; public J c_Z ( int [ ] ) ; boolean [ ] [ ] t_ ( ) ; void mvzr6 ( ) ; }
+///[Error:D5|2]
+class Sb8 implements W0 { } interface V1 < C > { } D5

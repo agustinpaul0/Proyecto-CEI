@@ -1,2 +1,2 @@
-///[Error:=|2]
-class XaRz_2i__ < M > { } = ! 35E8 <= ! 33926
+///[Error:false|2]
+class YaHO < S > { } class BM < T > implements IP < F > { static private float iE false }

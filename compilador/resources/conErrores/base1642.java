@@ -1,2 +1,2 @@
-///[Error:char|2]
-char class C0 < R > extends Q4a_al { static private void i_ ( ) { } void x ( ) { { for ( PFL j ; ; ) E k , c ; } { boolean [ ] b ; } + "" -- ; } } class Dps33_ < L > { }
+///[Error:<|2]
+interface GEr extends LJv_ { public void x0_ ( ) ; } interface EV5 < Y > extends NU5 { public U1_F n ( float [ ] sr ) ; void jI22F9 ( < P > ) ; G i_y5 ( char i ) ; } class RP < B > implements E_3 < T > { }

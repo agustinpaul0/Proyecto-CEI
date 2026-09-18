@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Y_ extends HN { float [ ] [ ] e ; } class J_ implements EZ < J > { }
+///[Error:MG|2]
+interface O8_ < B > extends Dt_Um < A > { } interface FL < M > extends F_ < Z_ > { } MG

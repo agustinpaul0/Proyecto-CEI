@@ -1,2 +1,2 @@
-///[Error:P|2]
-interface O_8I6c { void s_ ( ) ; } interface H5___ < H > { } P
+///[Error:(|2]
+interface I2L < G > extends Pb { } interface Ft extends Bp < H > { Y ( ) ; }

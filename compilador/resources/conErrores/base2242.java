@@ -1,2 +1,2 @@
-///[Error:[|2]
-class O8 implements T_ < YY_8JO_ < G > > { static [ ] eniK7 ( ) { } }
+///[Error:implements|2]
+interface QZ { } implements H2 interface U6D extends QN6 { void nanc73 ( ) ; } class W3m < F > { }

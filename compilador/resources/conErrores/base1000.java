@@ -1,2 +1,2 @@
-///[Error:;|2]
-; interface J_ < C > extends D0_9 < AuV_ < W3 < F > > > { void a ( ) ; }
+///[Error:F8A|2]
+interface Zo { } F8A

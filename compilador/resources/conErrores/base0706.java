@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface GP9 { public void x ( boolean n4 ) ; A [ ] [ ] [ ] [ ] [ ] n ( ) ; } class Vq { } interface Pun_G < B > extends S4 < H > { } interface GZ { public void z_zek ( ) ; } interface RJh < R > { void e ( char [ ] f , char [ ] [ ] j4_I , boolean zU , char [ ] u_ , boolean tJ_H , int b_P_ ) ; public Z [ ] [ ] [ ] lH ( ) ; } class F3M63 < N > { } interface X7 extends Dr < J_ > { public void j_ ; }
+///[Error:A7|2]
+A7 class SC { Y [ ] v_ ; }

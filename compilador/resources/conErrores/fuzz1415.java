@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface R3 extends { }
+///[Error:extends|2]
+class NJ4_ < X > extends JMYX4 { } extends IB

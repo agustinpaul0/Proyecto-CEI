@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface S5__f extends Q4BnS < R7_6 > { public < BB < Z > > u ( ) ; public float i ( Jsy < A_J_ > [ ] x , E [ ] [ ] [ ] yI_ ) ; }
+///[Error:T|2]
+interface T_q < H > { } class B____ { } interface KG { public void d6 ( ) ; } class Bat < D > implements T { }

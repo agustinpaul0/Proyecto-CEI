@@ -1,2 +1,2 @@
-///[Error:q|2]
-interface Qc < M > { public void t ( R [ ] [ ] n , q ) ; }
+///[Error:023|2]
+class OgGan < N > { public Z [ ] [ ] qZ ; void dt ( boolean s_ ) 023 }

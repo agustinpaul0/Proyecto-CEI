@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface N_4 { I [ ] ( ) ; }
+///[Error:static|2]
+interface I7 { C [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] e ( V [ ] o1 ) ; public void r ( char [ ] [ ] gM_K ) ; public void qV ( float aI ) ; void fG ( boolean f ) ; } class J_lS < M > implements N0 < Z > { static public void qC ( K [ ] [ ] [ ] v , QM [ ] lN_ ) { 2461 || - K_ . qY93 ( ) . o4 ( ) . x ++ == C_ . v ( ) . b8 = - "" ++ && ! 'P' * - true ? + false : false ; for ( ; ; ) 9686245 ; while ( + "" ++ / null < - false = true ) for ( ; ; ) C c1 ; B qb1E3_ ; } static void n2 ( ) { } static private IC [ ] [ ] [ ] v_f static void yqv ( S_A__N7 qxi_x ) { } static void w ( O [ ] [ ] nd , S h , D [ ] n ) { } } interface Rs9 extends CG < Ud < L > > { void sc ( boolean i6 ) ; } class WU < F > extends Qb_O_fsl { static void n ( ) { } }

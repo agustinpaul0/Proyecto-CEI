@@ -1,2 +1,2 @@
-///[Error:==|2]
-interface Z_ extends G_ { public void b ( ) ; } class W_s { private static I p_ ( ) { } private static void w_ ( char l ) { while ( this ++ == == true = - false ) boolean [ ] zB , g , bR , go , s ; return ; } }
+///[Error:[|2]
+[ ] interface FG extends Ae < RjB > { } interface YM { public float [ ] f ( Q c , boolean [ ] [ ] r ) ; public void a__p_ ( char [ ] n8 ) ; }

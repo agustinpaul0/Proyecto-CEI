@@ -8,7 +8,7 @@ desde ella, y escriben casos de corpus en lote.
 | Herramienta | Para qué |
 |---|---|
 | `primeros.py` | El verificador: vaciables, Primeros, LL(1), registro de ambigüedades, simulador del Esquema Simple. |
-| `equivalencia_de_lenguajes.py` | Con un reconocedor de Earley, que el núcleo LL(1) sin logros (`minijava-ll1.g`) y la de la cátedra **generen el mismo lenguaje**. |
+| `equivalencia_de_lenguajes.py` | Con un reconocedor de Earley, que el núcleo LL(1) sin logros (`minijava-ll1.g`) y la de la cátedra **generen el mismo lenguaje**, y que la gramática final **contenga** a la de la cátedra. |
 | `auditar_analizador.py` | Que las producciones que cada método del analizador cita en su comentario sean **exactamente** las de la gramática. |
 | `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el mismo veredicto y el mismo token de rechazo sobre el corpus. |
 | `aceptar_fuente.py` | Corre la gramática sobre un fuente MiniJava real. |
@@ -19,7 +19,7 @@ desde ella, y escriben casos de corpus en lote.
 | Herramienta | Para qué |
 |---|---|
 | `primeros_a_java.py` | Las clases `PrimerosDeX` que usa el analizador, una por sección de la gramática. |
-| `gramatica_a_markdown.py`, `gramatica_a_latex.py` | Los documentos de la gramática y las tablas del informe. |
+| `gramatica_a_markdown.py`, `gramatica_a_latex.py` | La gramática final en markdown y las tablas del informe. |
 | `explicacion_de_reglas.py` | La gramática explicada no terminal por no terminal: qué genera cada producción y por qué está escrita así. **No es material de entrega**, es un documento de estudio; sale a `~/downloads/explicacion-reglas.pdf`. |
 | `gramatica_a_antlr.py` | La gramática ANTLR con la que Grammarinator deriva y muta fuentes. |
 | `gramatica_a_javacc.py` | El oráculo JavaCC: un tercer reconocedor de la misma gramática. |
@@ -62,8 +62,8 @@ haber ido a mirar por qué.
 python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
 ```
 
-Escribe `src/main/java/minijava/sintactico/primeros/Primeros.java`: una constante por producción
-—220—, con su producción citada al lado. **Se genera y no se edita a mano**: es lo único que
+Escribe las nueve clases `PrimerosDeX` de `src/main/java/minijava/sintactico/primeros/`, una por
+sección de la gramática: una constante por producción —198—, con su producción citada al lado. **Se genera y no se edita a mano**: es lo único que
 garantiza que lo que el analizador usa para elegir producción sea exactamente lo que el verificador
 calcula sobre la gramática. Si se toca el `.g`, hay que regenerarlo.
 

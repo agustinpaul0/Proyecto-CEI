@@ -1,2 +1,2 @@
-///[Error:*|2]
-interface Y1 < O > { } class M8 < T > { } interface KX < D > { } class SIQ07 extends Xdz < Yfg < B > > { public static void j ( C [ ] aH , B___ [ ] d__ ) { { } while ( ! false ) return ; } B [ ] [ ] tl = * + "X\fq\t" . mX -- < + null ? + 5. = false : 93660 || 658683 ; } class MpXxbvC_ extends M8 < H > { void d ( ) { } public void zs_ ( ) { } CR6V < F_ < B > > i = + false == null ; } class IY_ extends EI < P > { static private void j ( ) { return ; return ; } static private void g ( ) { ; ; for ( ; ; ) return ; for ( ; ; ) ; { } ; } private static char z_d_ ( ) { } private static int u ( ) { } void j_K ( ) { } public static X eD ( ) { ; } } class TZY implements SQt1F2zw { }
+///[Error:>|2]
+class Fk extends Q_ < > { } interface EX { } class RD < W > implements O0 < G_1vg > { }

@@ -1,6 +1,6 @@
 # El patrón State del Analizador Léxico
 
-Documento autocontenido: profundiza el §4 de [`arquitectura.md`](arquitectura-del-analizador-lexico.md) con el detalle
+Documento autocontenido: profundiza el §4 de [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) con el detalle
 completo de cómo están conectadas las piezas — qué es cada tipo, quién lo crea, cuándo se reutiliza
 una instancia y cuándo se construye una nueva. Pensado para poder explicar el mecanismo entero sin
 leer código.
@@ -26,7 +26,7 @@ canónica.
 | Pieza | Tipo | Rol |
 |---|---|---|
 | `EstadoLexico` | interfaz | El contrato común a todo estado: un único método `procesar(contexto)`. |
-| `ContextoLexico` | clase (fachada) | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. Delega en dos piezas internas, `BuilderDeLexema` y `FabricaDeExcepcionesLexicas` (ver [`arquitectura.md`](arquitectura-del-analizador-lexico.md) §5.2.1); los estados sólo ven la fachada. |
+| `ContextoLexico` | clase (fachada) | La memoria compartida entre todos los estados durante el reconocimiento de un token: qué carácter se está mirando, qué lexema se lleva armado, en qué línea estamos, y las posiciones que los errores necesitan. Delega en dos piezas internas, `BuilderDeLexema` y `FabricaDeExcepcionesLexicas` (ver [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) §5.2.1); los estados sólo ven la fachada. |
 | `ResultadoDeTransicion` | **interfaz sellada** | Lo que devuelve `procesar()`: sólo puede ser una de dos cosas, nunca una tercera. |
 | `Continuar` | `record` | "Todavía no hay token completo — el próximo estado a consultar es este otro." |
 | `Emitir` | `record` | "El token ya está completo — acá está." |
@@ -93,7 +93,7 @@ de ese estado, y agregar un token nuevo al lenguaje no obliga a tocar los estado
 ### Por qué un `while` y no la recursión que sugiere la cátedra
 
 La cátedra presenta el AF encadenando llamadas: `e1()` termina llamando a `e2()`, que termina llamando
-a `e3()`. Esa técnica sigue siendo Método por Estado — pero cada llamada anidada ocupa un marco de
+a `e3()`. Esa técnica es Método por Estado — pero cada llamada anidada ocupa un marco de
 pila de la JVM, y un lexema muy largo (un comentario de miles de caracteres, un string enorme) puede
 agotar la pila con `StackOverflowError`.
 
@@ -133,7 +133,7 @@ bucle del autómata (`Digito*`): no hay recursión ni acumulación, simplemente 
 
 ## 5. `switch` sobre tipo sellado en vez de `instanceof`
 
-Una versión anterior del driver comprobaba el resultado así:
+La alternativa descartada es comprobar el resultado así:
 
 ```java
 // Funciona, pero no aprovecha que el tipo es sealed
@@ -150,8 +150,8 @@ Funciona, pero tiene dos problemas de fondo que el `switch` resuelve:
    `ClassCastException` recién cuando ese tercer caso realmente ocurriera. Un defecto que el compilador
    podía atrapar se convierte en uno que sólo aparece en ejecución.
 2. **El casteo es manual y silencioso.** `((Continuar) resultado)` le pide al lector confiar en que
-   "si no era `Emitir`, tiene que ser `Continuar`" — una inferencia correcta hoy, pero que nada deja
-   explícita ni protege a futuro.
+   "si no era `Emitir`, tiene que ser `Continuar`" — una inferencia correcta con dos tipos, pero que
+   nada deja explícita ni protege a futuro.
 
 El `switch` sobre un tipo `sealed` convierte esa inferencia implícita en una garantía del compilador:
 si aparece un tercer tipo, `AnalizadorLexico` directamente **no compila** hasta agregar el `case`.
@@ -187,10 +187,10 @@ El constructor es privado justamente para que no exista forma de crear una segun
 error.
 
 Este es también el motivo por el que `EstadoOperadorConSufijoOpcional` no tiene un `INSTANCIA`
-genérico sino seis constantes con nombre propio (`MAYOR`, `MENOR`, `NEGACION`, `ASIGNACION`, `SUMA`,
-`RESTA`): cada una es igual de "sin memoria de recorrido" — sus campos son **configuración fija de
-esa variante**, no datos que cambien durante el reconocimiento. Siguen siendo singletones
-reutilizables; sólo que hay seis sabores en vez de uno.
+genérico sino tres constantes con nombre propio, una por sufijo (`SUFIJO_IGUAL`, `SUFIJO_MAS`,
+`SUFIJO_MENOS`): cada una es igual de "sin memoria de recorrido" — su campo es **configuración fija
+de esa variante**, no un dato que cambie durante el reconocimiento. Son singletones reutilizables;
+sólo que hay tres sabores en vez de uno.
 
 ### Estados con memoria del recorrido actual → `new` en cada transición
 
@@ -229,17 +229,19 @@ escribir ese defecto: si el estado tiene un campo, no puede ser una constante.
 El procedimiento completo, como demostración de que la estructura es extensible:
 
 1. Agregar el valor a `TipoDeToken`, con el nombre exacto que debe imprimirse.
-2. Si el token es de un solo carácter sin lookahead, agregarlo a la tabla de puntuación de
-   `EstadoInicial`. **Listo** — no hace falta ninguna clase nueva.
-3. Si necesita más de un carácter, crear una clase por cada estado nuevo del autómata, y agregar en
+2. Si tiene lexema fijo, agregar el par lexema ↔ tipo a `TablaDeLexemas`. Si es una palabra clave,
+   **listo**: `EstadoIdMV` consulta la tabla antes de emitir, y no hace falta ninguna clase nueva.
+3. Si es de un solo carácter sin lookahead, agregar ese carácter a los que `EstadoInicial` emite
+   directamente. **Listo**.
+4. Si necesita más de un carácter, crear una clase por cada estado nuevo del autómata, y agregar en
    `EstadoInicial` la transición que lo dispara.
-4. Agregar la ER a [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) y los casos a
+5. Agregar la ER a [`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) y los casos a
    `resources/`.
 
 Ningún estado existente cambia salvo `EstadoInicial`, y sólo para conocer el punto de entrada.
 
 ## 8. Ver también
 
-- [`arquitectura.md`](arquitectura-del-analizador-lexico.md) — la visión de conjunto y dónde encaja el driver.
-- [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) — los autómatas que estos estados implementan.
+- [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) — la visión de conjunto y dónde encaja el driver.
+- [`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) — los autómatas que estos estados implementan.
 - [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — qué hace un estado cuando ninguna transición aplica.

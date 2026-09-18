@@ -1,2 +1,2 @@
-///[Error:p7D|2]
-class E7_ < D > extends GG { static public p7D ( M [ ] h9 ) { } } class YZc { }
+///[Error:}|2]
+class RXPC < H > { private } interface G_ < R > { public U [ ] re ( ) ; }

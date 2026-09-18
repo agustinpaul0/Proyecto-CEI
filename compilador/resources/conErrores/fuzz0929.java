@@ -1,2 +1,2 @@
-///[Error:C_|2]
-class Is { } C_ class A_ { } class M_2 { }
+///[Error:r75J|2]
+interface E_0L < P > { } interface Xp_ < Q > extends K_ { } interface Qm_R extends Nv_ { void e4 ( ) ; r75J } interface G3j extends O_T { public Om < Ly < Y7_ > > [ ] [ ] [ ] f ( Um d , R [ ] e__93 , W s2_ , float i ) ; public int gq ( char [ ] a ) ; } interface QB < D > { } interface U8 { } class V5 { } class OUd < B > { static void n ( char l_ ) { for ( ; ; ) ; float [ ] u ; return ; return ; ; } }

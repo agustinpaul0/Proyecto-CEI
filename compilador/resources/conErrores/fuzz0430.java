@@ -1,2 +1,2 @@
-///[Error:char|2]
-class Nvq6Ug < Y > extends Lp { private NI_5 ( char [ ] [ ] [ ] w6 , O_ [ ] [ ] mv_e ) { } } class Y5 < K > { N lVg ( L_ e ) { } boolean u22 ( ) { } private U_ ( boolean t , char [ ] a , float u ) { int [ ] [ ] i , q ; ; I_BM . oNM ( ) ++ ; } C b ; private static L x ( YU75__ dj_ ) { Z_K_ . c ( ) ++ ; K kH_ , j ; Z [ ] [ ] [ ] d , y ; ; } } interface X04 { void kum2_FBo ( VH0u [ ] [ ] [ ] [ ] h ) ; public int [ ] l ( ) ; } class E_N < E > { public static void p ( ) { } } interface HP_ < B > { } class Y_ < P > implements D_x0_GQ < I > { public M0a q ; } interface X8 { } interface U_ extends CnC < UQ2E < E > > { public void s ( ) ; } class LK2 < H > { static public void f ( ) { I m ; } } char
+///[Error:>|2]
+interface M1s < S > extends P0sm3q { } interface Sx8 extends R_ { } class O4_ extends N2 { static private M [ ] [ ] y3 ( B fd ) { } Y0 ( ) { } } class Pq < A > extends ER < > { } class FS < P > implements Z9 { }

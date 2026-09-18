@@ -1,2 +1,2 @@
-///[Error:<|2]
-< R > class KAmfc < Y > implements T3 { }
+///[Error:S_p|2]
+class IF { static void o ( J_o6z < Z > gmO , K g ) { { { } return ; } } char gg ( int v , char [ ] a , N [ ] [ ] [ ] rZ , U_5_ v , A_K [ ] zv ) { } } interface Ar__93 < P > extends Wm < J_ > { } S_p class Wo implements F_ < A_ < C > > { }

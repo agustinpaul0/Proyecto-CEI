@@ -1,2 +1,2 @@
-///[Error:Is|2]
-Is class X5 implements C_ { } class A_ { } class M_2 { }
+///[Error:>|2]
+class A_ < F > { } class VL < L > extends R3p < Lg < > > { } class Y8 { }

@@ -1,2 +1,2 @@
-///[Error:L|2]
-L interface VsAoQLupia_N_T < I > { }
+///[Error:h_|2]
+interface B8 < J > extends V7 { } interface O5B { h_ }

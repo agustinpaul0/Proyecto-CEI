@@ -1,2 +1,2 @@
-///[Error:I|2]
-class Wz < Y > { } I
+///[Error:E|2]
+class E2_ < K > implements E { }

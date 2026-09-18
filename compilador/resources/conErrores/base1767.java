@@ -1,2 +1,2 @@
-///[Error:<|2]
-class B_9M_ < W > implements < T > { }
+///[Error:}|2]
+interface J_ extends K23 { void } interface F_5 < Z > { } class Ku < M > implements Ip8_YQd { }

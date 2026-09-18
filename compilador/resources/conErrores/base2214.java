@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Fk extends Q_ < > { } interface EX { } class RD < W > implements O0 < G_1vg > { }
+///[Error:;|2]
+class AM extends K4 < BK_ > { static W [ ] o ( boolean hw_ ) { + ( null ) [ + false || ! true ] . dL ( ) . cW -- + ! "" . e ( ) . l = this . j_ ++ * '\\' % + 1591531 != ! true ; } void k_7 ( ) { float r = ! this -- ? null : true ; return + ; } }

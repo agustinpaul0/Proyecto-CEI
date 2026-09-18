@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface OF2jKWr < H > extends GX < X > { void j3y ( boolean ) ; }
+///[Error:(|2]
+interface P__p { } class I_JkYA < T > extends Rd { static void ( ) }

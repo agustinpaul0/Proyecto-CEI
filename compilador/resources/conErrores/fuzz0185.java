@@ -1,2 +1,2 @@
-///[Error:}|2]
-class N04 { public static void } class S3 < U > { } interface PD1 { }
+///[Error:W|2]
+interface RmXB extends IO { } W [ ] t_I ; class E3 { Iom ( ) { } private HF3 py ; private static Qc0U w ( ) { Ids < Q > c ; } }

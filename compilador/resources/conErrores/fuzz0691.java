@@ -1,2 +1,2 @@
-///[Error:[|2]
-class QJS < F > implements R1wi < X > { } class WB_ < G > { public static char j [ ] } class SW { static public boolean [ ] n_b ( U l7_TT ) { } }
+///[Error:z|2]
+interface V_A < Z > { public z ( ) ; public void c4j ( ) ; } class X__ < A > extends AL_ < B_ > { }

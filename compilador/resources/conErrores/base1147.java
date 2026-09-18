@@ -1,2 +1,2 @@
-///[Error:N|2]
-N class T6 implements R__ { static public VY < Z > [ ] [ ] r ( ) { } static private J r ( ) { return ; } public Q y ( ) { } static void w1PEm ( ) { } } class FPT < T > { static void r ( FwR_a < Hif < A > > [ ] [ ] [ ] hDl_ ) { } }
+///[Error:>|2]
+interface P5s0 { public void m ( ) ; void zh ( ) ; Js__2 < B > [ ] [ ] m7L ( UY < D > r6T_ ) ; public void z ( G [ ] c ) ; } interface TB5Pm_ < > { }

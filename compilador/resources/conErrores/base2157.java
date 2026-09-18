@@ -1,2 +1,2 @@
-///[Error:v|2]
-interface X4 extends Sr__JN < S > { public v ( P_ < Q > [ ] [ ] [ ] qd ) ; }
+///[Error:void|2]
+void d_ ( N g ) ;

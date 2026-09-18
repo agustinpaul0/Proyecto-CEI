@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface HP_F < H > extends F_ < K > { } class Q8 < O > implements Lf3s { public void ( U_ < J1Q > [ ] [ ] x ) { } static public L v ( ) { } }
+///[Error:wu|2]
+interface F7g < V > extends Ji_c < J > { } class Ua implements XLT { static wu ( ) { } }

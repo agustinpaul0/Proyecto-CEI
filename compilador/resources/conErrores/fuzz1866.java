@@ -1,2 +1,2 @@
-///[Error:)|2]
-class V_ implements MOE < G > { Y8 ( int ) { } } interface C_ < X > { void l ( ) ; public void oUc ( O b0m066 ) ; }
+///[Error:b_t_5|2]
+interface TLQ_Rh extends B7 < C9lo > { public boolean tyg ( char [ ] f , boolean si1 , b_t_5 ) ; }

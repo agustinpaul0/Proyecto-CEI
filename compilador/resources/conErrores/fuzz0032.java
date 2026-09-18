@@ -1,2 +1,2 @@
-///[Error:char|2]
-char
+///[Error:Js|2]
+interface Z__ { } interface IqM < S > extends BEh { } Js class P5 { }

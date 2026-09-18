@@ -1,2 +1,2 @@
-///[Error:v|2]
-v interface QH { } class Ujl < Q > { }
+///[Error:extends|2]
+interface extends C_C_88r < N > { }

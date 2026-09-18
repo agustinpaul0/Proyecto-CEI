@@ -41,13 +41,13 @@ Simple de Clase 5.
 
 | | |
 |---|---|
-| Gramática | 100 no terminales, 207 producciones, 59 terminales; LL(1) verificada |
+| Gramática | 97 no terminales, 198 producciones, 59 terminales; LL(1) verificada |
 | Ambigüedades | 2, las dos declaradas con su regla de resolución |
-| Analizador | una clase por sección; cita 207 de 207 producciones |
-| Corpus propio | 10.250 fuentes (10.043 generadas con Grammarinator), 70 casos de gramática, 8 de la cátedra |
+| Analizador | una clase por sección; cita 198 de 198 producciones |
+| Corpus propio | 10.251 fuentes (10.044 generadas con Grammarinator), 72 casos de gramática, 8 de la cátedra |
 | Corpus externo | 16.512 fuentes de Giuliano Taormina; coinciden todos |
-| Suite | 26.234 tests; 98,6 % de líneas, 94,2 % de ramas; mutación 91 % |
-| Informe | `etapas/etapa-2/entregables/`, 32 páginas |
+| Suite | 26.246 tests; 98,6 % de líneas, 94,1 % de ramas; mutación 91 % |
+| Informe | `etapas/etapa-2/entregables/`, 31 páginas |
 
 ### Decisiones cerradas en esta etapa
 
@@ -58,7 +58,13 @@ Simple de Clase 5.
 - La inicialización de arreglos es **la de Java**, como confirmó el profesor: `new int[][]{{1,2},{3,4}}`
   vale y `new int[2][2]{{1,2},{3,4}}` no. Sin inicializador rige la base: toda dimensión con tamaño.
 - El lado izquierdo de un `=` es una `ExpresionCompuesta`, como en la base: `a ? b : c = d` no deriva.
-- **No hay atributos estáticos**: `static` es `ModificadorOpcional` de `Metodo` y de nada más.
+- **No hay atributos estáticos**: `static` es `ModificadorOpcional` de `Metodo` y de nada más, como
+  confirmó el profesor.
+- La variable de control del `for` se declara **con `var` y nada más**, como confirmó el profesor:
+  los logros son independientes entre sí, así que el `for` no toma el declarador tipado de
+  Variables Locales Clásicas. `for(;;)` vale, como en Java (JLS §14.14.1).
+- Cada declarador de una variable local clásica lleva su propia inicialización opcional, como en
+  Java (JLS §14.4): `int x = 10, y = 11, z = 12;` e `int x, y, z = 10;` valen los dos.
 
 ---
 
@@ -84,4 +90,7 @@ está en el informe (§12.2). Lo más específico de esta etapa:
 
 - que el padre de un `extends` sea una clase y lo de un `implements` una interfaz;
 - que el lado izquierdo de un `=` y el operando de un `++` o `--` sean variables: `(a ? b : c) = d`
-  y `m()++` pasan el sintáctico, igual que `a + b = c` en la gramática de la cátedra.
+  y `m()++` pasan el sintáctico, igual que `a + b = c` en la gramática de la cátedra;
+- qué variables inicializa `int x, y, z = 10;`: en Java, sólo `z`. El ejemplo del logro de
+  Variables Locales Clásicas no lo aclara, así que conviene confirmarlo con el profesor antes del
+  semántico.

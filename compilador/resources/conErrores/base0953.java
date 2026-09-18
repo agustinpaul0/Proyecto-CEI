@@ -1,2 +1,2 @@
-///[Error:>|2]
-class CO < > implements N_R { } class B_ extends Lj < B > { } class SR6Vh < T > extends VdW_ < E > { private Uj ( ) { ; Hv o ; } }
+///[Error:FlWI|2]
+FlWI interface Q___4C_6 { }

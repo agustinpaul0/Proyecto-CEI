@@ -1,2 +1,2 @@
-///[Error:(|2]
-class T__ < V > extends A6 { } ( ) { }
+///[Error:S|2]
+S

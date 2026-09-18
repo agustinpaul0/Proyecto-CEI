@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class Z4 extends Gm5 < C_ > { } class Iy implements QV < J4 > { } extends E_8 class S6 < S > extends X_9vr { }
+///[Error:{|2]
+class Ock < L > implements { static private int [ ] c ( ) { this * - "\f" . t ( ) . z8_ ++ - false < true % true ; } } class Yt < C > extends YNS { private static int y ( ) { } static boolean d ( U [ ] r , T_ lI , int [ ] xo ) { } }

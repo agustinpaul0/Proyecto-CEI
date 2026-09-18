@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface U_k < P > extends Q3 { R c8 ( F [ ] [ ] wYaQ , char [ ] w , float [ ] f1KX ) ; void d ( ) ; public boolean [ ] yH ( Y vN , int x , [ ] , H [ ] f ) ; }
+///[Error:implements|2]
+class VVW_3h7 < V > { H7XC ( ) { '\b' ? 03.f >= false : true || ! true ; this -- = + false ; } } implements W1

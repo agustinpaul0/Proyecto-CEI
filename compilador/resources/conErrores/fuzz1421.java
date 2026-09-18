@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) { boolean d = - null , yu ; }
+///[Error:SoY|2]
+SoY

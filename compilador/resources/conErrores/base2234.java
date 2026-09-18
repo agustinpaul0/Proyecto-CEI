@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface R2B extends S5f < L > { A }
+///[Error:C_d|2]
+C_d

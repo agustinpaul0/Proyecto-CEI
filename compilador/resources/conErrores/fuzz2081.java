@@ -1,2 +1,2 @@
-///[Error:int|2]
-class Y1 implements M_ < Q_ > { void u4 ( char y , char [ ] l ) { } static public void blt ( int f ) { } public char [ ] [ ] [ ] [ ] [ ] [ ] l ( ) { } A w_ ( int [ ] l , P [ ] n7_D , H [ ] [ ] p , int [ ] [ ] tO ) { } float q87Zw int }
+///[Error:sq5|2]
+interface RSjx_ extends J5 < C > { sq5 ( ) ; I q ( boolean a , AD_CL < TLT < H > > [ ] [ ] i , R2 [ ] [ ] vo , S m ) ; public void pnO ( ) ; } interface I3 { void g_4 ( E [ ] ssx , MI8 < H > [ ] cet_ , J63F < Bu > x , char [ ] [ ] uG6 ) ; float [ ] [ ] [ ] [ ] hT ( ) ; }

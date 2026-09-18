@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends R7 { }
+///[Error:[|2]
+interface YWl_ { public void x ( [ ] ) ; }

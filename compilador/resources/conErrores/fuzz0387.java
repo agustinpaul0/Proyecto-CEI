@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface H_9 < N > { float }
+///[Error:>|2]
+class Bt extends L_ < T9 < > > { }

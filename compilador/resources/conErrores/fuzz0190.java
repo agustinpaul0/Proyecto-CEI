@@ -1,2 +1,2 @@
-///[Error:y_|2]
-interface ZD { } interface E_ < R > extends CP { void d ( y_ ) ; }
+///[Error:<|2]
+class J6uB_ < F > extends Ik_ < M > { boolean [ ] [ ] r ( int [ ] [ ] [ ] b ) { boolean < ; A l = ! this ++ ? - false : false ; - 'b' % + this ++ || '\b' = true ; } }

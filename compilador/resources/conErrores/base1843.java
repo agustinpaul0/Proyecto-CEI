@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Af0 < S > { } class D_ < N > implements Vd { } interface L7_ < N > { } class TL < X > implements HH1w < > { }
+///[Error:(|2]
+interface N0 { int [ ] [ ] [ ] ( ) ; public ITTW [ ] v3 ( int jOhU ) ; } class B8g { }

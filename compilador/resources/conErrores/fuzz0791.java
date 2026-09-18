@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface X_ extends Qx < > { } class X_g4 < N > extends F5W2 < K > { }
+///[Error:void|2]
+interface H_8__ < X > extends FZ < B > { N [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] void eY ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:)|2]
-class Mk extends U3_x { public void w ( K [ ] ) { } }
+///[Error:[|2]
+[ ] [ ] [ ] interface FU_V_ < I > extends Qp < P > { } interface NT < M > extends H_6D { public void eP ( ) ; } interface Grb < X > { } interface I_S_U < P > { }

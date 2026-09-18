@@ -1,2 +1,2 @@
-///[Error:ie|2]
-class AV7 < H > implements TQ < BI_ > { static K3 [ ] [ ] aV ( ie ) { } static void i ( ) { ; } }
+///[Error:W4_M|2]
+W4_M

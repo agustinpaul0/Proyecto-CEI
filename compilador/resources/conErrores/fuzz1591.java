@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Q6R < W > implements Eb < > { }
+///[Error:)|2]
+interface ZD { } interface E_ < R > extends CP { void d ( Z5jm4 ) ; }

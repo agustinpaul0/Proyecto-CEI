@@ -1,2 +1,2 @@
-///[Error:bm|2]
-interface B52 extends L6_U { W3 [ ] [ ] [ ] tr58 ( ) ; public void qd63B ( bm , B7v1 leg ) ; M [ ] n ( K s9 , M l ) ; }
+///[Error:S5|2]
+S5 < GU < Q__pE < E > > > [ ] class I0exI implements Cq < Y > { }

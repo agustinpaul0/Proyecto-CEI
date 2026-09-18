@@ -1,2 +1,2 @@
-///[Error:MWd|2]
-MWd
+///[Error:<|2]
+class R_ implements < X > { }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Mg { } class T_ { Q22 [ ] [ ] e ( I [ ] [ ] [ ] [ ] [ ] d_ ) { } } interface Vl7_ extends DYY < O2D_ > { public boolean [ ] y ( ) ; public void t ( G_KU tg_ ) ; } interface Gf < V > { } interface H1w_6 { public void f ( ) ; } interface ZLf < Y > { } interface D_ { K [ ] u ( ) ; } class BN < Y > { } interface Q_x < Q > { } interface L2 < J > { T_ ngY_ ; public float [ ] j ( ) ; V e ( ) ; } class Z2J extends PvK < X > { }
+///[Error:char|2]
+class B_ < G > { float j ; private static int f ( ) { } static private void c ( int [ ] u , N [ ] [ ] ld ) { } } class RS < S > implements C_ { } char [ ]

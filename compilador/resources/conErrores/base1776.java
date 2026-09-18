@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Ip9e extends { }
+///[Error:Hq|2]
+Hq

@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class C2 < Q > extends W_E_ { } class SI implements H_i_ { float f ; static private void b ( TT g ) { } private C___9Tt ( ) { } float [ ] y { } }
+interface ND_ < W > { public Ew [ ] [ ] b ( ) ; void pOZuj7 ( I [ ] a , F2 < I > q ) ; public A7K_g < Q > v8P ( ) ; } class L__ < C > extends V8 { public static void h ( ) { boolean [ ] zSE , g = false , v , lgNZL ; } } class Kv < G > extends Qn < CNu > { void { } public static void x ( T [ ] b7 , int [ ] [ ] y ) { } }

@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface PT < D > { } class X90 extends Bw { } interface H_7K < Q > { } class T124 < K > { } class F_ { private Dp < N_0T > a__ ( ) { } } class Nt < R > implements Ov { } class Wm < B > { static public void bu ( ) { { } } static N a ( float [ ] z ) { for ( boolean [ ] r ; ; ) { } RJ j_50 ; } public I_ [ ] [ ] [ ] [ ] w ; } interface O_V3 < T > { }
+interface PT < D > { } class X90 extends Bw { } interface H_7K < Q > { } class T124 < K > { } class F_ { private Dp < N_0T > a__ ( ) { } } class Nt < R > implements Ov { } class Wm < B > { static public void bu ( ) { { } } static N a ( float [ ] z ) { for ( ; ; ) int s ; ; R [ ] [ ] t ; } static char [ ] w1D ( ) { { ; } { } { } ; } M8 ( ) { return ; } }

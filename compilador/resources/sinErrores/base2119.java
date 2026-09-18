@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class J8Gw < M > extends Np < Km > { char a ; static public int w ( ) { for ( J idc : - "" -- <= + 6F ) { + 41d ; J_ . y0 ( ) ++ ; } char [ ] dX80__ ; true ; } static G iS ( ) { } TZ ( ) { } private static void s ( ) { if ( ! true ) Ur2 < PT > [ ] [ ] o , mYI3 ; boolean [ ] rl , t7 , x ; } static void u98 ( Iz2Pjg [ ] f ) { boolean y_c ; MH_3L < W3 > [ ] [ ] hWA , i ; char c , y_ ; } YR < G5 < S > > [ ] zH ( ) { ; for ( ; ; ) ; } }
+class J8Gw < M > extends Np < Km > { char a ; static public int w ( ) { for ( var j = - null % + 0.D ; ; ) float q = ! '\'' % null , c ; } } interface F_sg_ < R > extends R_uU7 { }

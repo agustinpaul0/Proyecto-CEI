@@ -1,2 +1,2 @@
 ///[Error:{|2]
-interface Ws extends L_ < W_2 < Ic_ < Z > > > { } class L_ extends { } class G7_ < J > extends N4 { }
+class Yw extends { } interface Nc { public N4 < QJ < VZ > > x ( ) ; } interface J0_ < X > { } class X9z_9_8 implements FmsxM__ < ZI > { } interface J4 extends PJ < U > { }

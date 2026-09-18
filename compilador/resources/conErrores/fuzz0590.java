@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface UC < E > { } int
+///[Error:public|2]
+interface A_b { int [ ] public int [ ] [ ] u ( ) ; WLg [ ] [ ] d3 ( J_ [ ] [ ] [ ] b ) ; } interface Tp2 < Q > { L_ [ ] [ ] [ ] [ ] rr ( boolean [ ] [ ] [ ] rwB_9 , T_qfO x3 , Z [ ] [ ] x_bHg9B ) ; public void z ( int [ ] [ ] uCt ) ; public N_J < N > jEo ( ) ; boolean [ ] [ ] [ ] z ( L [ ] bG ) ; public float [ ] [ ] [ ] e ( ) ; } interface BN < C > { } class R_ extends LGL6 < S > { static public Q [ ] m ( ) { } public static void s7 ( Q [ ] r0_Yn98w ) { DV < H > [ ] [ ] j , p , y67r_ ; "" . h6CN_5 ; for ( ; ; ) return ; { } } }

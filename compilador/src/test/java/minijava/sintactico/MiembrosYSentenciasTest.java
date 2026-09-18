@@ -182,7 +182,6 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
 
     // ------------------------------------------------------------------ for ---
 
-    // Sólo las formas que el logro Fors! trae por sí solo.
     @ParameterizedTest
     @ValueSource(strings = {
             "for(;;) ;",
@@ -192,55 +191,51 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
             "for(Clase.crear(); ; ) ;",
             "for(Clase.crear().campo; ; ) ;",
             "for(var e : lista) ;",
-            "for(Persona p : lista) ;",
-            "for(int x : arreglo) ;",
-            "for(T t : lista) ;",
             "for(i = 0; i < 10; ) ;",
+            "for(; ; i++) ;",
             "for(;;) { m1(); }",
             "for(;;) for(;;) ;",
             "for(;;) if (a) ; else ;",
     })
-    void conForsSeAceptaCadaFormaDelFor(String sentencia, @TempDir Path dir) {
+    void seAceptaCadaFormaDelFor(String sentencia, @TempDir Path dir) {
         aceptar(dir, envolverEnMetodo(sentencia));
     }
 
-    // El declarador tipado del encabezado es del logro de FORS, no del de variables
-    // clásicas: el logro dice «for similar a como es en java», y en Java el for
-    // clásico declara su propia variable. Por eso el encabezado tiene su propio
-    // <InicializacionDeDeclaradorFor> en vez de reusar el de las variables locales.
+    // Los logros son independientes entre sí: el for no toma el declarador tipado
+    // de Variables Locales Clásicas, y su variable de control se declara con `var`
+    // (respuesta del profesor).
     @ParameterizedTest
-    @ValueSource(strings = {
-            "for(int i = 0; i < 10; ) ;",
-            "for(int i = 0; ; ) ;",
-            "for(int[] v = null; ; ) ;",
-            "for(Persona p = null; ; ) ;",
-            "for(T t = null; ; ) ;",
-            "for(Persona p : personas) ;",
+    @CsvSource(delimiter = '|', value = {
+            "for(int i = 0; i < 10; ) ;  | int",
+            "for(int[] v = null; ; ) ;   | int",
+            "for(int x : arreglo) ;      | int",
+            "for(T t = null; ; ) ;       | T",
+            "for(T t : lista) ;          | T",
+            "for(Persona p = null; ; ) ; | p",
+            "for(Persona p : personas) ; | p",
+            "for(Lista<T> x : lista) ;   | <",
     })
-    void elDeclaradorTipadoDelForNoNecesitaLasVariablesClasicas(String sentencia,
-                                                                @TempDir Path dir) {
-        aceptar(dir, envolverEnMetodo(sentencia));
+    void laVariableDeControlDelForSeDeclaraConVar(String sentencia, String lexema,
+                                                  @TempDir Path dir) {
+        assertEquals(lexema, rechazar(dir, envolverEnMetodo(sentencia)).getLexemaOfensivo());
     }
 
-    // El declarador del for es un tipo de MiniJava: las dimensiones van pegadas al
-    // tipo (`int[] v`) y no al nombre, que es la forma que la gramática admite.
     @Test
-    void elForNoAdmiteLasDimensionesAlEstiloC(@TempDir Path dir) {
-        assertEquals("[", rechazar(dir, envolverEnMetodo("for(int v[] = null; ; ) ;"))
+    void laVariableDeControlDelForLlevaInicializacion(@TempDir Path dir) {
+        assertEquals(";", rechazar(dir, envolverEnMetodo("for(var i; ; ) ;"))
                 .getLexemaOfensivo());
-    }
-
-    // Y el `i++` del incremento es del logro de posfijos.
-    @Test
-    void elForConIncrementoPosfijoNecesitaTambienLosPosfijos(@TempDir Path dir) {
-        aceptar(dir, envolverEnMetodo("for(; ; i++) ;"));
     }
 
     // El logro restringe a una sola sentencia o expresión por separador.
-    @Test
-    void elForNoAdmiteVariasExpresionesPorSeparador(@TempDir Path dir) {
-        assertEquals(",", rechazar(dir, envolverEnMetodo("for(int i=0, j=0; ; ) ;"))
-                .getLexemaOfensivo());
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "for(var i = 0, j = 0; ; ) ; | ,",
+            "for(i = 0, j = 0; ; ) ;     | ,",
+            "for(; ; i++, j++) ;         | ,",
+    })
+    void elForNoAdmiteVariasExpresionesPorSeparador(String sentencia, String lexema,
+                                                    @TempDir Path dir) {
+        assertEquals(lexema, rechazar(dir, envolverEnMetodo(sentencia)).getLexemaOfensivo());
     }
 
     @Test

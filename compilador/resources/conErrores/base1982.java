@@ -1,2 +1,2 @@
-///[Error:for|2]
-class P8p_ implements E6 { } class MV_ < D > implements GtbJW < X_ < C_ > > { static private void i ( ) { ; { return ; for ( float [ ] [ ] [ ] v ; ; ) for ( ; ; ) return ; } return ; } static private void n0__ ( char p ) { char [ ] [ ] [ ] fin , g , pB = + null , x , j ; } } class ZH extends Wf_ { P [ ] t ; public B jvJ ( ) { } } class Z3B26 { static private char s_ ( float j , char [ ] xnOCwJ ) { while ( + "" -- ) var q_ka = ! null ; } static void o ( ) { + '\n' ; ; ; } public static J v ( K [ ] t , boolean gz3 ) for ( boolean [ ] [ ] [ ] n_y ; ; ) for ( ; ; ) { } static C [ ] [ ] f ( Hy q , int fpw ) { } } interface NG { } class CP extends Jd < E_ < G > > { }
+///[Error:int|2]
+interface A4D < N > { } interface D1 { public ZT6N_ [ ] [ ] u ( ) ; void znzp ( ) ; } class Ax3b_ extends G92_eb9 { static void p ( U [ ] vmA , E e ) { } } int

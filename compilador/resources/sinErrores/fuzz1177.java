@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class Iu < B > { static private int [ ] [ ] t ( ) { } WO ( ) { { ; for ( WVp j ; ; ) for ( ; ; ) ; for ( C r ; ; ) for ( ; ; ) ; } false <= ! '\'' % - 626 == - null = false ; } public static E [ ] [ ] [ ] f ( boolean [ ] [ ] eKD8 ) { } } interface J6 < U > { void d ( I_N_0N2 [ ] [ ] [ ] k , F t6x46D ) ; public void y ( Bc9v < J > n_pv , H d , Q fu__ , int [ ] z , B [ ] g ) ; public boolean [ ] [ ] s ( ) ; }
+class Iu < B > { static private int [ ] [ ] t ( ) { } WO ( ) { { ; for ( ; ; ) float [ ] c ; } ! true = + null ; } }

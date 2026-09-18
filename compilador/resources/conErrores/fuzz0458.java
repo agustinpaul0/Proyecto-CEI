@@ -1,2 +1,2 @@
-///[Error:=|2]
-interface C__qei2 { } = + false || false class Y9 { } interface EV2 < C > { }
+///[Error:;|2]
+class KQ__G1W implements RZ { } class D_7 { static int [ ] a ( P_ < P > [ ] [ ] [ ] g ) { for ( ; this ++ = ; null >= ! 180D - true = null ) "@" -- == 96 < false ; return ; } }

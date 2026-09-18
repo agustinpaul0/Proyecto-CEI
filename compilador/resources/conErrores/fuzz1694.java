@@ -1,2 +1,2 @@
-///[Error:[|2]
-class QM < N > { } interface YX < J > extends I2gn0e_ { } class Hix implements T8 { boolean y ( [ ] [ ] [ ] ) { } } interface N2M extends P4jT_ { public void a_ ( AtAH [ ] [ ] a ) ; public B_ < U9 < D8 > > [ ] [ ] l2 ( ) ; }
+///[Error:T_|2]
+class ELJ < A > { } interface E809 { J683_ < A7 < O__ > > [ ] w4n ( D [ ] m_Y ) ; void eP ( ) ; } interface V7 < K > extends XIwO { public void w_ ( int u , Ngn iG ) ; } T_

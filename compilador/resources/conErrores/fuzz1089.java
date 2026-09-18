@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends Cs0_S interface Qy < W > extends Iz < C7__ > { void q_ ( ) ; }
+///[Error:e|2]
+interface Bu < A > { public e ( ZM_P [ ] [ ] [ ] ls ) ; void l_8d ( ) ; } class P1C_I7 < J > implements NK < N > { } class A4 < P > implements Vv6 < F > { }

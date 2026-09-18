@@ -1,2 +1,2 @@
-///[Error:static|2]
-class R3 { } class E2ojM { static char [ ] x ( ) { if ( + 4797 >= + 9d = 36408 ? ! true : false ) return 8D || false ; } } static void h ( Ee [ ] [ ] y ) { }
+///[Error:(|2]
+class Nvq6Ug < Y > extends Lp { private NI_5 ( char [ ] [ ] [ ] w6 , O_ [ ] [ ] mv_e ) { } } class Y5 < K > { N lVg ( L_ e ) { } boolean u22 ( ) { } private U_ ( boolean t , char [ ] a , float u ) { int [ ] [ ] i , q ; ; I_BM . oNM ( ) ++ ; } C b ; private static L x ( YU75__ dj_ ) { Z_K_ . c ( ) ++ ; K kH_ , j ; Z [ ] [ ] [ ] d , y ; ; } } interface X04 { void kum2_FBo ( VH0u [ ] [ ] [ ] [ ] h ) ; public int [ ] l ( ) ; } class E_N < E > { public static void ( ) { } } interface HP_ < B > { } class Y_ < P > implements D_x0_GQ < I > { public M0a q ; } interface X8 { } interface U_ extends CnC < UQ2E < E > > { public void s ( ) ; } class LK2 < H > { static public void f ( ) { I m ; } } class Xl_3M8_ < P > extends Qe7 { static public float [ ] x ( ) { char [ ] p ; } }

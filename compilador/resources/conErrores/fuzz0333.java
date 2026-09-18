@@ -1,2 +1,2 @@
-///[Error:]|2]
-class K13K < E > { int [ ] [ ] cC = - '\f' < ! "~" [ ] ++ && U_n . k_ ( ) % ! a9 ++ == true ; } interface M5_ { }
+///[Error:Y8|2]
+Y8 ( int n0TyZ5M ) { } interface C_ < X > { void l ( ) ; public void oUc ( O b0m066 ) ; }

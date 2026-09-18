@@ -1,2 +1,2 @@
-///[Error:}|2]
-class O2S6 < B > implements Yg < Ax > { float [ ] wI ( ) { } } class A_ < T > extends Jl { static private M o__S }
+///[Error:false|2]
+interface B_ { public B4 [ ] xf ( Fwo < L__ < Z > > kn_Z5p3_ , float [ ] v__ ) ; } false

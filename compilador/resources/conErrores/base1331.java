@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface M_qp_ extends O0g { } interface Vv < K > { } [ ] [ ]
+///[Error:<|2]
+interface E___ extends LjAh < EI < K > > { void s ( < Xp < Z > > [ ] [ ] y ) ; HL_ < N > m ( ) ; }

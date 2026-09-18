@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface Ro < V > { } class To7_WCRx < X > { static Q [ ] v ( float [ ] b ) { ! "" . s ( ) . u_ ( ) / r -- = + 01548 <= + false != ! true ? - null : false ; } void m ( boolean nD_K ) { ; } } < V > class Si_ < Z > implements Gwn_ { } class Od < D > implements MS { } interface L1 < K > extends Y_ < M > { public boolean [ ] h ( HFe < X2 > i3 , I [ ] i ) ; }
+interface < E > extends Q3 < V > { char l ( ) ; void u6 ( ) ; }

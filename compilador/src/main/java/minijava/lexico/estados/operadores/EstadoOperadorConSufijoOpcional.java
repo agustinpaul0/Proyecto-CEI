@@ -8,8 +8,8 @@ import minijava.lexico.contexto.ContextoLexico;
 // Los seis pares con sufijo opcional: >/>=, </<=, !/!=, =/==, +/++, -/--.
 // Terminal: si el sufijo no viene, emite el token corto sin consumir el lookahead.
 //
-// Tres instancias y no seis: lo único que distinguía a '>' de '<' era el tipo de
-// token, y ahora ése lo da la tabla a partir del lexema armado.
+// Tres instancias y no seis: lo único que distinguiría a '>' de '<' es el tipo de
+// token, y ése lo da la tabla a partir del lexema armado.
 public final class EstadoOperadorConSufijoOpcional implements EstadoLexico {
 
     public static final EstadoOperadorConSufijoOpcional SUFIJO_IGUAL =

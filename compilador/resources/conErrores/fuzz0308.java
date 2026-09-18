@@ -1,2 +1,2 @@
-///[Error:void|2]
-class A__ < P > implements B_ { char gu ( X_ < R > qM ) { while ( false == 2. = ! "" ++ ? false : - true ) KkI03 . b_ ( ) -- * true ; char t90_I3b ; } } class Q4m < A > { static private J [ ] [ ] q ( ) { { } while ( this ++ <= + this = '6' % + true ) if ( ! 38256 ) for ( int [ ] c ; ; ) I h ; { } } } interface KhS extends RXqm_O < V > { void bs_ ( char [ ] y ) ; boolean void r0 ( ) ; public YR o ( ) ; } interface KAu extends Hc < P > { void f ( ) ; void u_ ( ) ; I1a < I > [ ] wX ( ) ; } class Z_ < J > extends ML < Bu6 > { }
+///[Error:>|2]
+class Jr < > implements DT9_ { private static void yyak ( ) { } }

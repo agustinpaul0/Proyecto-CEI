@@ -1,2 +1,2 @@
-///[Error:static|2]
-static private void e ( MGE b ) { } public boolean i_6Cl ( ) { } char yU_ ; class SE_j < R > { static private A s ( ) { V yt ; } public static K_ < Oti_4 < P > > h ( F_F [ ] x , W [ ] gsc2 ) { 97E2 > 39010.f = null ; } } interface X0 < V > { } class A_ extends Rd { private IA < Z_ < LY < E_ < V > > > > uRO3W__4 ( K tT , char [ ] oiP ) { } } class Oi32r < G > extends KdP1 { N [ ] [ ] [ ] x ; } class T5 { float [ ] u8 ( G z ) { } } class K1 < Y > implements TxCh_ < KVK < F > > { public U [ ] iTJ ( ) { ; char bT ; { } } FX ( ) { } } class S_1T8__29 implements H7N < Z > { U9HU ( ) { A_X l ; char w ; { } ; } static private void cc ( ) { ; return ; } } interface H_0 extends OrK7S { }
+///[Error:int|2]
+class XG_ < X > { static private void bbM int }

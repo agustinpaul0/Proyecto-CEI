@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface J_I extends P_ { } class F0u < M > { } extends O3 < YQ90 >
+///[Error:>|2]
+interface Z9D_ < Q > extends ShR0 < O_ < I > > { W_81C3_f < > [ ] [ ] nZ ( ) ; }

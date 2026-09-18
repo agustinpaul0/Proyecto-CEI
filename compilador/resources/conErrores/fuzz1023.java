@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Y_Q_ < U > { } class D_D extends { void e__ ( ) { } } class IPz extends P_ < K > { }
+///[Error:-|2]
+class T_O < Z > extends R_ { static public void e ( Fn_ < Y1 < Rr > > [ ] [ ] bO , char [ ] [ ] [ ] p , T [ ] q , N1 < K > [ ] [ ] c ) { null / - '*' == - 68F && ! 1.E-90 ? "" ++ = false : ! 04 ; } public void xA ( boolean [ ] c4 , float [ ] [ ] [ ] [ ] c ) { while ( '\n' - + null = null ) var xYS = null ; } R fv_ - 980f ; } interface M0_qA extends S_2 < Vb > { int [ ] z ( ) ; } class L8 extends Kj9r { public void ed ( ) { return ! false ; var b = ! false ; } void p ( P i4e_ , E3 [ ] [ ] r , Vbhq [ ] g2_3 ) { "" + ! true ; ; E jP_S , j_ ; return ; } static void lYb ( float [ ] [ ] [ ] [ ] [ ] e , boolean [ ] [ ] kVs6 ) { eP ( ) -- ; R [ ] [ ] [ ] s_iBtQ_ ; 960319 ; ! '\r' ; int w9_C_ , r ; for ( ; ; ) ; return ; } }

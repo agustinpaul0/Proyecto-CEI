@@ -1,7 +1,8 @@
 # Proyecto CEI — Compilador MiniJava
 
 Trabajo práctico de la materia **Compiladores e Intérpretes** (UNS). Compilador para el lenguaje
-**MiniJava**, desarrollado en 5 etapas. Este repositorio contiene la **Etapa 1: Analizador Léxico**.
+**MiniJava**, desarrollado en 5 etapas. Este repositorio contiene la **Etapa 1: Analizador Léxico**
+y la **Etapa 2: Analizador Sintáctico**.
 
 ## Abrir el proyecto
 
@@ -19,10 +20,11 @@ documentacion/        toda la documentación, organizada por fase del compilador
                         lexico/       Etapa 1 — analizador léxico
                         sintactico/   Etapa 2 — analizador sintáctico y la gramática
                         compartido/   lo que cruza etapas: testing, errores, manejador de archivo
-                        proyecto/     cómo se trabaja: plan de la etapa activa, flujo, convenciones
+                        proyecto/     cómo se trabaja: flujo, protocolo, convenciones y comandos
                         minijava/     los PDF de la cátedra que describen el lenguaje
 etapas/               consignas, material y entregables de la cátedra, una carpeta por etapa
-vendor/               copia de referencia intacta de los zips originales de la cátedra
+vendor/               copia de referencia intacta de los zips originales de la cátedra, y el
+                      corpus externo de un compañero (no versionado, ver vendor/tests/CREDITOS.md)
 compilador/           proyecto Maven — el código fuente, los tests y las gramáticas
 .claude/              configuración de Claude Code: permisos, hook de tests, comandos y skills
 ```
@@ -33,9 +35,9 @@ subcarpeta tiene su propio README con la guía de lectura.
 ## Ante la duda, como en Java
 
 Regla explícita de la cátedra (`etapas/etapa-1/README.md`): *"todo lo que NO esté especificado para
-MiniJava tiene comportamiento por defecto igual al de Java"*. Cuando el comportamiento léxico de un
-caso puntual no está resuelto explícitamente por la consigna ni por una decisión ya registrada en
-`AGENTS.md`, el criterio de desempate es replicar la semántica real de Java (ver `AGENTS.md` §0.1) —
+MiniJava tiene comportamiento por defecto igual al de Java"*. Cuando el comportamiento de un caso
+puntual no está resuelto explícitamente por la consigna ni por una decisión ya registrada en
+`documentacion/`, el criterio de desempate es replicar la semántica real de Java (ver `AGENTS.md` §0.1) —
 nunca inventar una regla propia. Si la cátedra publica después una regla explícita que diga otra
 cosa, esa regla explícita gana.
 
@@ -50,7 +52,8 @@ mvn verify       # + chequeo de umbral de cobertura (JaCoCo)
 mvn test -Dvolcado=resumen   # una línea por caso + sus códigos de error
 mvn test -Dvolcado=off       # sin volcado
 mvn package      # genera compilador/target/Compilador.jar
-java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
+java -jar target/Compilador.jar resources/sinErrores/todosLosLogrosJuntos.java
+java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErrores01.java
 ```
 
 ## Más información
@@ -59,8 +62,12 @@ java -jar target/Compilador.jar resources/sinErrores/lexSinErrores01.java
   de la cátedra, protocolo de investigación, arquitectura, testing, workflow).
 - [`documentacion/README.md`](documentacion/README.md) — la documentación técnica completa: cómo
   funciona el compilador componente por componente, la especificación léxica formal, el catálogo de
-  decisiones con su justificación, la estrategia de testing y los 8 logros. Sin necesidad de leer
-  código.
+  decisiones con su justificación, la estrategia de testing y los logros de cada etapa. Sin
+  necesidad de leer código.
 - [`etapas/etapa-1/entregables/Informe-Etapa1-Lexico.pdf`](etapas/etapa-1/entregables/Informe-Etapa1-Lexico.pdf) —
   el informe de entrega: los 56 tokens con su ER, los autómatas, las decisiones tomadas y los logros.
   Se regenera con `latexmk -pdf informe.tex` desde `etapas/etapa-1/entregables/informe/`.
+- [`etapas/etapa-2/entregables/Informe-Etapa2-Sintactico.pdf`](etapas/etapa-2/entregables/Informe-Etapa2-Sintactico.pdf) —
+  el informe de la Etapa 2: la transformación de la gramática a LL(1), la gramática final, los
+  errores que detecta el analizador y los logros. Se regenera igual, desde
+  `etapas/etapa-2/entregables/informe/`.

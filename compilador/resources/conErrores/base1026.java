@@ -1,2 +1,2 @@
-///[Error:L7NRs_|2]
-interface SVX3zon { public float [ ] gZM L7NRs_ d__ ; }
+///[Error:M84|2]
+interface M_B < Z > { public void i ( Z o_v , boolean h ) ; public void a9 ( ) ; } M84 interface C0 < B > { }

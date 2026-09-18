@@ -1,2 +1,2 @@
-///[Error:>|2]
-class NLl < V > implements Y1T < > { } class W_b_a < Y > extends R8k { } class Q_a { } class Qsqd < W > implements G7 < Mr < P7 < S > > > { } interface U3 < Y > extends HB < S > { public void e ( ) ; }
+///[Error:boolean|2]
+interface RSjx_ extends J5 < C > { W [ ] [ ] sq5 ( ) ; I q boolean ; public void pnO ( ) ; } interface I3 { void g_4 ( E [ ] ssx , MI8 < H > [ ] cet_ , J63F < Bu > x , char [ ] [ ] uG6 ) ; float [ ] [ ] [ ] [ ] hT ( ) ; }

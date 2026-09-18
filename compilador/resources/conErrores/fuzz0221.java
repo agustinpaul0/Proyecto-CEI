@@ -1,2 +1,2 @@
-///[Error:Nj1y|2]
-Nj1y interface Q_ { } interface W2 { }
+///[Error:{|2]
+class T9 implements { }

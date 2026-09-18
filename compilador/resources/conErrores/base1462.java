@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface B_L_ { } interface extends J4 < N_ > { public void o ( ) ; }
+///[Error:<|2]
+interface C9 < O > extends AW2 < P > { } class IE implements < S > { }

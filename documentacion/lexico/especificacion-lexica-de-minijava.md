@@ -15,7 +15,7 @@ Hex        = [0-9a-fA-F]
 
 Un apunte sobre "letra" y "dígito": el proyecto los reconoce con `Character.isLetter` y
 `Character.isDigit` de Java, que abarcan más que el ASCII. Las consecuencias de esa elección —y por
-qué se tomó— están en [`decisiones.md`](decisiones-de-logica.md) §7.
+qué se tomó— están en [`decisiones-de-logica.md`](decisiones-de-logica.md) §7.
 
 ## 1. Los 56 tokens, de un vistazo
 
@@ -168,7 +168,7 @@ De que la regla sea posicional y no de apareamiento se desprenden las siguientes
 
 La tercera fila es el único punto donde MiniJava **diverge de Java**, donde `"a\\"` es la barra
 invertida: acá una barra no "cancela" a la anterior, porque la regla no habla de pares sino de qué
-carácter antecede a la comilla. Está en [`decisiones.md`](decisiones-de-logica.md) §7.
+carácter antecede a la comilla. Está en [`decisiones-de-logica.md`](decisiones-de-logica.md) §7.
 
 Un `litString` **no puede contener un salto de línea real**: si aparece uno antes de la comilla de
 cierre, el literal quedó sin cerrar y es error.
@@ -208,7 +208,7 @@ Igual que los floats de Java, con **una** salvedad que fija la consigna: siempre
 dígito. Por eso `.5` no es un float en MiniJava — es el token `punto` seguido de `intLiteral(5)`.
 
 Ninguna de las tres partes tiene límite de dígitos, a diferencia del `intLiteral`. El desarrollo de
-por qué, con la verificación contra `javac`, está en [`decisiones.md`](decisiones-de-logica.md) §3.3.
+por qué, con la verificación contra `javac`, está en [`decisiones-de-logica.md`](decisiones-de-logica.md) §3.3.
 
 Dos casos que valen como error, sin retroceso: `1e` y `1.5e+`, un exponente anunciado y sin dígitos.
 No hay backtracking a un token más corto — una vez consumida la `e` como inicio de exponente, el
@@ -237,8 +237,8 @@ porque el mismo escape sirve dentro de un `charLiteral` y dentro de un `litStrin
 | `corcheteA` | `[` | `corcheteC` | `]` | `puntoYComa` | `;` | `coma` | `,` |
 | `punto` | `.` | `dosPuntos` | `:` | | | | |
 
-Los diez se reconocen con una tabla `Map<Character, TipoDeToken>` consultada desde el estado inicial:
-son tokens de un solo carácter, sin lookahead, y no justifican un estado propio.
+Los diez se reconocen en el estado inicial: son tokens de un solo carácter, sin lookahead, y no
+justifican un estado propio. El tipo lo da `TablaDeLexemas` a partir del lexema (§7).
 
 ## 5. Operadores
 
@@ -332,8 +332,8 @@ tiempo constante.
 
 **`float` está en la lista aunque no figure en ningún PDF de la cátedra**: se agrega por confirmación
 directa del profesor. **`double` no está**: MiniJava tiene un único tipo de punto flotante, pero eso
-no convierte a la palabra `double` en reservada — sigue siendo un `idMV` común. Ver
-[`decisiones.md`](decisiones-de-logica.md) §3.1.
+no convierte a la palabra `double` en reservada — es un `idMV` común. Ver
+[`decisiones-de-logica.md`](decisiones-de-logica.md) §3.1.
 
 ## 8. El token `EOF`
 
@@ -351,7 +351,7 @@ confunde:
   debe generar un error"*).
 
 De ahí una decisión del manejador de archivo: **el fin de archivo son dos condiciones unidas por un
-`AND`, no una sola.** El centinela sigue siendo la señal, pero recibirlo es condición *necesaria y no
+`AND`, no una sola.** El centinela es la señal, pero recibirlo es condición *necesaria y no
 suficiente*, porque `0x1A` es un byte legítimo dentro de un archivo —en un binario aparece a menudo—.
 La segunda condición la aporta `estaEnFinDeArchivo()`, que confirma que la posición de lectura se
 pasó del contenido:
@@ -367,7 +367,7 @@ nunca se terminó de leer.
 
 En el código se testea un solo conjunto porque el segundo implica al primero: el manejador devuelve
 el centinela únicamente en la misma rama en que prende la bandera. El `AND` queda implícito. El
-detalle está en [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) §2.4.
+detalle está en [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) §2.4.
 
 ```mermaid
 stateDiagram-v2
@@ -382,7 +382,7 @@ además el Módulo Principal podría pedir otro token después.
 
 **La línea del EOF** es `cantidad de saltos de línea consumidos + 1`. Vale la pena enunciarla porque
 es la regla que fija el resultado en los tres casos de ejemplo de la cátedra, incluido el archivo que
-no termina en salto de línea — ver [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) §2.
+no termina en salto de línea — ver [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) §2.
 
 ## 9. Sobre la regularidad de los tres casos "especiales"
 
@@ -403,9 +403,9 @@ para por qué esa forma, además, es la única que no rompe la continuación hac
 
 ## 10. Ver también
 
-- [`arquitectura.md`](arquitectura-del-analizador-lexico.md) — dónde encaja el léxico en el conjunto.
-- [`patron-state.md`](patron-state-metodo-por-estado.md) — cómo cada uno de estos autómatas se convierte en código.
-- [`decisiones.md`](decisiones-de-logica.md) — de dónde sale cada regla de este documento.
+- [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) — dónde encaja el léxico en el conjunto.
+- [`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md) — cómo cada uno de estos autómatas se convierte en código.
+- [`decisiones-de-logica.md`](decisiones-de-logica.md) — de dónde sale cada regla de este documento.
 - [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — qué pasa cuando la entrada no matchea ninguna ER.
 
 ---
@@ -414,7 +414,7 @@ para por qué esa forma, además, es la única que no rompe la continuación hac
 
 Todo lo anterior explica **qué hace** el compilador y **por qué**. Lo que sigue son las **reglas
 de trabajo** correspondientes: lo que hay que respetar al escribir o modificar código de esta
-parte. Antes vivía en un archivo aparte; se unificó acá para que el tema tenga un solo lugar.
+parte, en el mismo lugar que el tema que regulan.
 
 ### Tabla
 
@@ -426,7 +426,7 @@ parte. Antes vivía en un archivo aparte; se unificó acá para que el tema teng
 | idMV (método/variable) | letra minúscula + cero o más de (letra, dígito, `_`) | `idMV` |
 | Entero | uno a nueve dígitos (se valida el límite de 9 tras consumir la corrida completa) | `intLiteral` |
 | Char | `'x'` (x ≠ `\`, `'`) o `'\x'` (x cualquiera — permisividad explícita de la cátedra) | `charLiteral` |
-| String | `"..."` con `\` escapando el carácter siguiente, sin saltos de línea; escapes restringidos al conjunto válido de Java (ver abajo) | `litString` |
+| String | `"..."` sin saltos de línea, que cierra en la primera `"` no antecedida por `\` (regla posicional de §2.3.3, ver abajo); dentro sólo se valida el escape Unicode | `litString` |
 | Float (logro) | igual que Java, **siempre** empieza con dígito | `floatLiteral` |
 | Puntuación | `( ) { } [ ] ; , . :` | `parenA`/`parenC`, `llaveA`/`llaveC`, `corcheteA`/`corcheteC`, `puntoYComa`, `coma`, `punto`, `dosPuntos` |
 | Operadores | `> < ! = == >= <= != && \|\| % + - * / ++ --` | `op_mayor`, `op_menor`, `op_negacion`, `op_asignacion`, `op_igual`, `op_mayorIgual`, `op_menorIgual`, `op_distinto`, `op_and`, `op_or`, `op_modulo`, `op+`, `op-`, `op_mult`, `op_div`, `op_incremento`, `op_decremento` |
@@ -435,18 +435,14 @@ parte. Antes vivía en un archivo aparte; se unificó acá para que el tema teng
 ### Palabras reservadas fuera de los PDFs: `float` sí, `double` no
 
 **`float` como palabra reservada**: no figura en ningún PDF de la cátedra (se buscó explícitamente);
-se agrega por confirmación directa del profesor en una consulta puntual del usuario. Antes de este
-cambio no era palabra clave — un identificador `float` habría tokenizado como `idMV`; ahora tokeniza
-como `pr_float` y no puede usarse como nombre de variable/método/clase.
+se agrega por confirmación directa del profesor. Tokeniza como `pr_float` y no puede usarse como
+nombre de variable, método o clase.
 
-**`double` NO es palabra clave.** Primera versión de esta decisión (revertida): se había agregado
-`double` como palabra reservada mapeada al mismo `TipoDeToken.PR_FLOAT` que `float`, interpretando
-"tratemos float y double como lo mismo" como "ambas palabras son reservadas". El usuario corrigió esa
-lectura: lo que el profesor quiso decir es que MiniJava sólo tiene **un** tipo de dato de punto
-flotante (`float`), no que la palabra `double` deba existir como reservada. `double` sigue siendo un
-identificador común (`idMV`) — sólo los **sufijos** `f`/`F`/`d`/`D` del literal float (ver abajo,
-heredados tal cual de Java) son donde el concepto "double" realmente aparece en la sintaxis de
-MiniJava.
+**`double` NO es palabra clave.** La indicación del profesor —«tratemos float y double como lo
+mismo»— significa que MiniJava tiene **un solo** tipo de dato de punto flotante, `float`, no que la
+palabra `double` deba existir como reservada. `double` es un identificador común (`idMV`): el
+concepto «double» aparece en la sintaxis sólo en los **sufijos** `f`/`F`/`d`/`D` del literal float
+(ver abajo, heredados tal cual de Java).
 
 ### `floatLiteral` en detalle
 
@@ -485,16 +481,14 @@ de dígitos no continúa hacia un float**, así que `1234567890.5` es un `floatL
 dígitos en la parte entera, mientras que `1234567890` solo es un error. Y el límite de MiniJava es de
 **dígitos** mientras que el de Java es de **valor**: `0000000001` (diez dígitos, valor 1) es error en
 MiniJava y válido en Java. Toda esta gramática (incluidos los sufijos
-`f`/`F`/`d`/`D`) se deriva de esa frase vía el protocolo de [`investigacion.md`](../proyecto/protocolo-de-investigacion.md),
+`f`/`F`/`d`/`D`) se deriva de esa frase vía el protocolo de [`../proyecto/protocolo-de-investigacion.md`](../proyecto/protocolo-de-investigacion.md),
 ya que `Aspectos Lexicos MiniJava 2026.pdf` no menciona floats en absoluto (no está entre sus "cinco
 tipos de literales" — floats es puramente un logro de Pautas, no parte de la especificación base).
 
-### Tres casos especiales — corrección de una confusión anterior
+### Tres casos que parecen no regulares y lo son
 
-En un intento previo se afirmó, incorrectamente, que el EOF, el comentario multilínea y el límite de
-9 dígitos "no eran expresables" con precisión como ER/AF. Es falso; los tres son perfectamente
-regulares, corregido en
-[`../documentacion/especificacion-lexica.md`](especificacion-lexica-de-minijava.md):
+El EOF, el comentario multilínea y el límite de 9 dígitos se expresan con precisión como ER/AF
+(§9):
 
 - El EOF es una ER trivial de un símbolo sobre el carácter centinela (`SourceManager.END_OF_FILE`);
   lo único especial es que esa transición no avanza la lectura (detalle del driver, no del lenguaje).
@@ -513,7 +507,7 @@ regulares, corregido en
   porque el límite de 9 es lo que se está modelando).
 - El escape Unicode (`\u` + 4 hex dígitos) acepta repetir el marcador `u` una o más veces
   (`\uu0041`, `\uuu0041`, ...), semántica heredada de Java (JLS §3.3, ver
-  [`investigacion.md`](../proyecto/protocolo-de-investigacion.md)). La ER real del escape es `\u+[0-9a-fA-F]{4}` (una o más
+  [`../proyecto/protocolo-de-investigacion.md`](../proyecto/protocolo-de-investigacion.md)). La ER real del escape es `\u+[0-9a-fA-F]{4}` (una o más
   `u`), no `\u[0-9a-fA-F]{4}` (una sola).
 
 ### Decisiones ambiguas resueltas (documentar también en el informe)
@@ -526,22 +520,12 @@ regulares, corregido en
   vacía no está en ninguna de las dos alternativas. `javac` coincide (`empty character literal`), así
   que no hay ambigüedad por ningún lado. Cubierto por `resources/lexico/conErrores/tresComillasSimples.java`,
   que además ejercita la cascada: la tercera comilla abre un `charLiteral` que nunca cierra.
-- **Escapes en `litString`: restringidos al conjunto válido de Java** (JLS §3.10.7, verificado contra
-  la especificación — ver [`investigacion.md`](../proyecto/protocolo-de-investigacion.md)): `b s t n f r " ' \` o un dígito
-  octal `0`-`7`, más el escape unicode. A diferencia de `charLiteral`, la cátedra **no** dice
-  "cualquier carácter" para `litString` (§2.3.3 sólo cita a Java para el caso `\"` específicamente),
-  así que acá aplica "ante la duda, como en Java" en vez de la permisividad explícita del char.
-  `"a\q"` es un error léxico; `"a\s b"`, `"a\7"`, `"a\""` son válidos.
-- **`\` dentro de un string consume el siguiente carácter** (semántica Java estándar) → `"a\\"`
-  cierra correctamente. La lectura literal de la consigna ("la comilla final nunca estará antecedida
-  por `\`") daría un string sin cerrar en ese caso; se prioriza la regla "ante la duda, como en Java".
 - **El lexema reportado es siempre el texto crudo del fuente.** Confirmado por
   `testersLexico/Guia_de_uso_testers.md`: se espera `//#'\n',3` (4 caracteres literales), no el salto
-  de línea decodificado. **El valor decodificado todavía no se calcula ni se guarda**: `Token` es hoy
-  `record Token(TipoDeToken tipo, String lexema, int linea)`, sin campo de valor. Etapa 1 no lo
-  necesita —la salida imprime el lexema crudo, que es lo que exige la cátedra— y se agregará cuando
-  una etapa posterior lo requiera. Cuando se agregue, será un campo aparte: **nunca** reemplaza al
-  lexema.
+  de línea decodificado. **El valor decodificado no se calcula ni se guarda**: `Token` es
+  `record Token(TipoDeToken tipo, String lexema, int linea)`, sin campo de valor, porque la salida
+  imprime el lexema crudo, que es lo que exige la cátedra. Si una etapa posterior lo necesita, va en
+  un campo aparte: **nunca** reemplaza al lexema.
 - **Límite de 9 dígitos**: se consume la corrida completa de dígitos y recién ahí se valida — así no
   se rompe un float largo (`1234567890.5` es válido, la parte entera sola no debe cortar antes).
 - **`1e` / `1.5e` sin dígitos después del exponente → error**, sin backtracking a un token más corto.
@@ -563,9 +547,9 @@ regulares, corregido en
   Criterio fijado por el **profesor**, no por `javac` (que sigue leyendo el literal). En
   `charLiteral` no aplica: no hay contenido de largo arbitrario que descartar, la recuperación es
   estructural. Ver [`manejo-de-errores.md`](../compartido/manejo-de-errores.md).
-- **`unicodeHabilitado` gatea sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
-  literales: gatear eso exigiría clasificadores ASCII-only en todo el autómata, y el logro se puede
-  demostrar igual con el escape.
+- **El logro *Unicodes* es sólo el escape `\uXXXX`**, no los caracteres no-ASCII crudos dentro de
+  literales, que la ER ya admite: distinguirlos exigiría clasificadores ASCII-only en todo el
+  autómata, y el logro se demuestra igual con el escape.
 
 ### Divergencias con Java que quedan fijadas por tests
 
@@ -594,11 +578,11 @@ mencionarlas en el informe.
 
 | Logro | Estrategia |
 |---|---|
-| Manejador de Archivos Eficiente | **Requisito, no un extra**: ver [`arquitectura.md`](arquitectura-del-analizador-lexico.md) "por qué el manejador de la cátedra está roto". Char a char sobre buffer de bloques, sólo `java.io`. |
+| Manejador de Archivos Eficiente | **Requisito, no un extra**: ver [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) "por qué el `SourceManagerImpl` de la cátedra no sirve tal cual". Char a char sobre el contenido que `open()` carga con una sola lectura, sólo con las librerías de IO de Java; la decisión y su alternativa están en [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) §4. |
 | Multi-detección de Errores | recuperación en el Módulo Principal; invariante a testear con property-based: cada recuperación consume ≥1 carácter o llega a EOF (garantiza terminación). |
 | Reporte de Error Elegante | además de línea y razón, mostrar la línea completa del fuente y un `^` apuntando a la posición — **y también columna**, decisión del usuario más allá de lo pedido por la cátedra. Dónde apunta el `^` sigue el criterio de `javac`, salvo `charLiteral vacío`, que señala la comilla de cierre: ver [`manejo-de-errores.md`](../compartido/manejo-de-errores.md). |
 | Floats I | siempre activo; la forma del literal la gobiernan los estados numéricos. |
-| Unicodes | caracteres no-ASCII crudos dentro de literales char/string + escape `\uXXXX` (marcador repetible). |
+| Unicodes | escape `\uXXXX` (marcador repetible) dentro de literales char/string; los caracteres no-ASCII crudos los admite la ER misma. |
 | Imbatibilidad Léxica | consecuencia de la suite masiva + corpus de `resources/`. |
 | Good Job! I | consecuencia de lo anterior. |
 | Entrega Anticipada | hito de calendario. |

@@ -6,7 +6,7 @@
 
 ```bash
 cd compilador
-mvn test                 # suite completa: la nuestra + los 2 testers de la cátedra (vintage engine)
+mvn test                 # suite completa: la nuestra + los 4 testers de la cátedra (vintage engine)
 mvn verify                # + chequeo de umbral de cobertura JaCoCo (falla si baja del umbral)
 mvn -Pmutacion verify     # PIT — mutantes sobrevivientes = tests faltantes (verify, no test:
                           # PIT esta atado a esa fase y con `test` no muta nada)
@@ -28,7 +28,7 @@ mvn test -Pfase-sintactico
 # El contrato de la cátedra: un único argumento, cualquier extensión.
 java -jar target/Compilador.jar programa1.java
 
-# Etapa 1: vuelve al volcado de tokens.
+# Etapa 1: el volcado de tokens del léxico.
 java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErrores01.java
 ```
 
@@ -48,7 +48,7 @@ proyecto Maven en `compilador/` y el informe en `etapas/etapa-2/entregables/`. T
 cátedra lo buscan —lo tienen escrito a fuego, sin subcarpeta—; el de la Etapa 1 queda archivado en
 `resources/lexico/`.
 
-Son **10.250 archivos y unos 2,6 megabytes** de corpus, y los testers de la cátedra los procesan en
+Son **10.251 archivos y unos 2,6 megabytes** de corpus, y los testers de la cátedra los procesan en
 unos 3 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en
@@ -62,10 +62,13 @@ Java: `maven.compiler.release=25` (coincide con el JDK instalado; no hay ninguna
 cátedra que fije una versión distinta). JaCoCo en `0.8.15` — versiones anteriores (`0.8.12` y por
 debajo) no leen bytecode de Java 25 (class file major version 69).
 
-## Formato del informe entregable (para cuando se redacte)
+## Formato del informe entregable
 
-El informe pedido por la cátedra (tokens + ER que los define, decisiones relevantes para probar el
-compilador, logros perseguidos — Pautas, slide 39) se entrega como **PDF final**; si el paso
-intermedio Markdown→PDF resulta más trabajoso que escribir el PDF directamente, se genera el PDF
-directamente, sin pasar por Markdown. Requisitos de diseño fijados por el usuario:
-**paleta de colores monocromática**, **portada minimalista**, **índice/tabla de contenidos**.
+Cada etapa entrega su informe como **PDF**, compilado desde LaTeX en
+`etapas/etapa-N/entregables/informe/`. Qué tiene que contener lo fijan las Pautas de cada etapa: la
+Etapa 1, slide 39 (los tokens con la ER que los define, las decisiones relevantes para probar el
+compilador y los logros perseguidos); la Etapa 2, slide 33 (cómo compilar y correr, el proceso de
+transformación de la gramática con su versión final, los tipos de errores sintácticos, la
+documentación usual de un proyecto de software y los logros que se intentan). Requisitos de diseño
+fijados por el usuario: **paleta de colores monocromática**, **portada minimalista**,
+**índice/tabla de contenidos**.

@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Sfy { } interface Q2z < Q > extends MD < Y > { V [ ] [ ] [ ] y_r ( < H > y , boolean [ ] [ ] [ ] [ ] l8 , G j , char [ ] [ ] uP , Qn < Tkt__Puq > e ) ; }
+///[Error:(|2]
+class K_MH < W > implements S4_ { static public P1 ( Q b1 ) } class U4 extends Bq < OO < D_y1 < A > > > { }

@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface A2 < H > extends P5 < Vv < V > > { } interface M9 < F > extends I_KWm < OO < F > > { } interface Z1 extends RU_c { public void gT ( CJ < NOP < J > > q , T l_ , M6w < H7 > [ ] [ ] [ ] [ ] [ ] r ) ; } static void bv ( ) { } private static JqG_V < J > [ ] h_ ( ) { ; } void s ( ) { } interface Ca extends Dzh { public S_ [ ] [ ] m8 ( ) ; } interface G_U < U > extends M_ { } interface H_H { } class T5 < R > extends Ln6_ < U > { public void bRM7 ( ) { } E_ j ( ) { return ; } static void y8v_ ( ) { } char [ ] [ ] [ ] [ ] [ ] lJ ; }
+///[Error:z_|2]
+class QN implements CJc_ < S > { public void v8_ ( ) { } } class Sy__q6W__ implements J4 { static private void u ( ) { } Tk_ ( Q b , ND [ ] [ ] g8 , M_ [ ] [ ] r , boolean [ ] q ) { boolean [ ] [ ] [ ] [ ] x = - 7537842 , qZ , s_ ; } H [ ] [ ] [ ] v_75i_ ( ) { for ( + true ; ; ) ; var a = true ; { return ; { } } } MlP ( I wY5 ) { } } interface Sm9j_ < K > { char [ ] s ( ) ; z_ }

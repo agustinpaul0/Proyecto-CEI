@@ -1,2 +1,2 @@
-///[Error:;|2]
-class RL < L > implements F9 { static void ab ( R nU ) { } } ;
+///[Error:G8_3n|2]
+G8_3n

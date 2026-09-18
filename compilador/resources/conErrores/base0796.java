@@ -1,2 +1,2 @@
-///[Error:U|2]
-class O1 extends U { }
+///[Error:<|2]
+interface Ntl__w < T > extends < T > { public void w ( ) ; }

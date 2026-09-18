@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface NAp____6 extends JLG { } class S8_7J < N > implements { }
+///[Error:A|2]
+A interface FL < M > extends F_ < Z_ > { } class MG < R > extends KIi { }

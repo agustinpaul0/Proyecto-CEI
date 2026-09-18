@@ -1,2 +1,2 @@
-///[Error:W|2]
-class RoW extends Qx < B_ < N > > { } W
+///[Error:>|2]
+interface Aw4 < R > extends Ad < > { }

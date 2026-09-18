@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface O_ < Z > { public char [ ] c_ ; }
+///[Error:float|2]
+class Na_8F < G > implements Ij1d { static void dk float [ ] public float [ ] [ ] eZ_ ; }

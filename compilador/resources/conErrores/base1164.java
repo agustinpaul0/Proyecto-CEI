@@ -1,2 +1,2 @@
-///[Error:)|2]
-class J_U_ extends Lr < YX > { } interface QeeR { public void x8 ( Z ) ; }
+///[Error:LA|2]
+class Zg < B > implements L8 { } LA

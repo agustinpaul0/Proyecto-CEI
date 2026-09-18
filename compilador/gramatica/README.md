@@ -1,8 +1,8 @@
 # Gramáticas de MiniJava
 
 Las tres versiones de la gramática, en texto plano, en el formato que consume
-`herramientas/primeros.py`. **Éste es el único lugar donde se edita la gramática**: los documentos
-de `documentacion/sintactico/` y las tablas del informe se generan desde acá.
+`herramientas/primeros.py`. **Éste es el único lugar donde se edita la gramática**:
+`documentacion/sintactico/gramatica-ll1-final.md` y las tablas del informe se generan desde acá.
 
 | Archivo | Qué es |
 |---|---|
@@ -32,7 +32,7 @@ python3 herramientas/primeros.py gramatica/minijava-base.g          # NO ES LL(1
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g    # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # registro
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --nt Miembro     # un NT
-bash herramientas/casos-gramatica.sh                                # 70 casos
+bash herramientas/casos-gramatica.sh                                # 72 casos
 python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java
 python3 herramientas/equivalencia_de_lenguajes.py   # mismo lenguaje que la de la cátedra
 python3 herramientas/auditar_analizador.py          # el código cita exactamente estas producciones

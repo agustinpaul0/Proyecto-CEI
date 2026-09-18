@@ -1,2 +1,2 @@
-///[Error:Rc|2]
-class Hq < L > { } Rc interface Yp8 < O > { void y ( ) ; } interface Lz { } class N_ implements K11_ { }
+///[Error:;|2]
+class V7 extends AA57 < C5 > { } interface K0 < Y > extends W_ { public void k ; }

@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface UcdY { void s5gF ( Uw < HE > x , Z , V [ ] [ ] [ ] zQ ) ; }
+///[Error:(|2]
+( M_ [ ] z_u ) { ; }

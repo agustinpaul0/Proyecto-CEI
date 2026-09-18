@@ -1,5 +1,5 @@
 # Gramática BASE de MiniJava, tal cual el PDF de la cátedra.
-# Transcripción de documentacion/gramatica-base-minijava.md
+# Transcripción de documentacion/sintactico/gramatica-original-de-la-catedra.md
 #
 # NO es LL(1) — este archivo existe justamente para que el script lo demuestre:
 #     python3 herramientas/primeros.py gramatica/minijava-base.g

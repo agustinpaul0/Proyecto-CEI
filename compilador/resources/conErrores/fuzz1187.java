@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface O_ < C > { } interface DU { public void d ( ) ; } [ ] [ ]
+///[Error:extends|2]
+class L_ < A > extends Sw57 { } interface extends AR { } interface V2l < G > { }

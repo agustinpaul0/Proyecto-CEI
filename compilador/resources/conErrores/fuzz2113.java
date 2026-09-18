@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class extends NZED { } class Kx9 implements Q_ { }
+///[Error:{|2]
+interface V11_q < I > extends { }

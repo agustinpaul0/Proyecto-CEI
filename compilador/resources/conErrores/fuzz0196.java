@@ -1,2 +1,2 @@
-///[Error:q|2]
-q ( B o_ , R_ [ ] [ ] iC , float [ ] [ ] q , Cz_ [ ] [ ] x_ , F6 [ ] [ ] [ ] zD1 , char [ ] [ ] s5 ) { }
+///[Error:M_|2]
+class Y1O8p_ { } interface H4 { public void w ( int d ) ; } M_ class KLO_X2ck implements Uo { }

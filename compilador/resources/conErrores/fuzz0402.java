@@ -1,2 +1,2 @@
-///[Error:Q|2]
-Q
+///[Error:=|2]
+class C4_ extends CL { } class Lc__ { public static void k ( ) { var gm = JG . ncp_9 ( ) ++ ? 03 : false ; while ( + '\t' <= null > + true = ! null ) for ( ; ; ) for ( ; ; ) ; } } = IF7 . rD ( ) . z ( ) . i ( ) ? this ++ <= '\n' = - false * false : + this . j -- ? 042789 : ! null / false ; class Zz implements J_C545Mrw { } class VB extends Z_ { } interface ZAI { Deq j ( ) ; } interface G1 extends I9 { }

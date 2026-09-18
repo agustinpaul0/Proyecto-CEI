@@ -1,2 +1,2 @@
-///[Error:O|2]
-interface NAB { } class Wk implements PG__8 < J > { } interface L2_ < E > { } interface A5 < S > { } O interface Hn < M > { }
+///[Error:,|2]
+interface Us_5 < Q > { void kZk6 ( ) ; , E_k a }

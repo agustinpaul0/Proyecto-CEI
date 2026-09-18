@@ -1,2 +1,2 @@
 ///[Error:}|2]
-interface FN_7h < M > extends U5r < H > { B }
+interface X8 < D > { void } class ML9 implements Y_ { }

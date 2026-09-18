@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends ZT_ { public CV9W < YA < B_4Q > > cdY ( WT < N > [ ] a ) ; void q ( float l ) ; }
+///[Error:B3|2]
+B3 < ABX > class Z3 < K > implements BE < K_yT > { }

@@ -1,2 +1,2 @@
-///[Error:UY6|2]
-UY6 interface EX { } class RD < W > implements O0 < G_1vg > { }
+///[Error:p|2]
+class G2 extends P_ < I > { public static void xfG_ ( p , PE < W > s , float f4 , OT < Ag > u ) { ; } } class AJ9 implements B_c { }

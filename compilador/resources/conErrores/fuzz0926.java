@@ -1,2 +1,2 @@
-///[Error:float|2]
-float interface Bc { }
+///[Error:extends|2]
+extends A_

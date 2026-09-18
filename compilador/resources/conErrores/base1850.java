@@ -1,2 +1,2 @@
-///[Error:<|2]
-class LkZ implements Q8 < OR < DQ_H > > { static public < X > f__ ( ) { } static void c ( float j__Fb , C [ ] [ ] m ) { if ( + null != "yX" > - 05900 < false = - 91F >= + ';' < true ? false : ! true ) ; HF . g ( ) ++ * this -- >= true = null ; false > this ++ ; } }
+///[Error:W|2]
+interface F65XI extends Y9hX { void w ( ) ; W q_H ( ) ; void i W ; } interface QG { void wO ( I t , Z [ ] apO0 ) ; } interface L0 extends S_T { public N9A [ ] [ ] a ( ) ; }

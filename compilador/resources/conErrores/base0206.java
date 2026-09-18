@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < M > implements Ek { static void r ( ) { } private static void w ( ) { } }
+///[Error:)|2]
+interface V_5A { public P a_ ( boolean du ) ; public void bA45_Q2Io ( ) ; public O_C62jV [ ] [ ] [ ] [ ] iv ( R [ ] [ ] [ ] a ) ; } interface R6 extends PmP2 < S > { } interface K_ { } class Unm_LC extends TGH6 < S59w > { } interface B_1 < L > { public void q ( boolean [ ] y , FU < U > [ ] [ ] oC , G [ ] v , boolean i_r , OC [ ] m , int [ ] t ) ; public char [ ] v ( F [ ] s_M , char [ ] [ ] [ ] h , P_ wO7_ , ) ; public H k5_ ( ) ; } class Id_ < I > extends MI { } interface BQ < V > { } interface AV_ { } interface XgJN < G > { public S [ ] q ( DN_ [ ] [ ] p11 , S d ) ; } class A2 { static private Ch k ( ) { } }

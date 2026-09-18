@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface L__ extends G86JD4___ < > { }
+///[Error:W|2]
+class ZLHy < J > extends L_ < D > { } W

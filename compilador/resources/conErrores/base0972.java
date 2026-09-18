@@ -1,2 +1,2 @@
-///[Error:E|2]
-class T7f64 < X > { void bWDcqQNH9_s E t1 , Z l_ }
+///[Error:while|2]
+while ( Af1 . n ( ) < + true > "" ++ ) { { { } return ; } G f ; } class M3_ < I > { } interface P7 extends N0 { }

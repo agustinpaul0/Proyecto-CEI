@@ -1,2 +1,2 @@
-///[Error:(|2]
-class NK < L > extends Q_ { E cS = + Iq . ( ) ++ <= true && + '\n' ; public static void w ( char h ) { ! null ? null : - null ; } } interface R_t < G > { KBMI cg8 ( ) ; }
+///[Error:static|2]
+interface B_ < U > { float tN ( S [ ] [ ] lZ , char f , UKq < J > nXzX2r_eJ , Jh__ [ ] v ) ; void gU ( Ne < Z_h > dwn , X [ ] [ ] [ ] [ ] a_x ) ; } static int d_2 ( ) { } interface T0_w { }

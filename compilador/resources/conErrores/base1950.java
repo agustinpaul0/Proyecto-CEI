@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Eyo extends { } interface QnJ < W > { }
+///[Error:T|2]
+T

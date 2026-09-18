@@ -1,2 +1,2 @@
-///[Error:S1|2]
-S1
+///[Error:Q9|2]
+Q9 < H__a < SNG_ > > interface H1l { } class X_ { }

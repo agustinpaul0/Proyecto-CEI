@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface A7 < > extends V2 { }
+///[Error:.|2]
+. s_ ( ) interface EC extends R___e_ < K > { public void n ( ) ; }

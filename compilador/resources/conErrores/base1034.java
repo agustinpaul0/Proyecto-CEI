@@ -1,2 +1,2 @@
-///[Error:float|2]
-class Fx implements YP_h { static public void float p = this . df ( ) . p % ! "E\f" < - 6038428 || ! false ? 3366 * + null = + false : - '*' - ! 4947 > false , p = + this ++ - ! "" ++ ; } class G_ implements L_ < W > { static public void x0P ( ) { { } Bt < G > u ; } int [ ] t ; } interface O7tY_ < D > extends BI7__08_ < H93 > { void q ( YQ [ ] v2 , JuE [ ] [ ] hM9 ) ; public void g ( ) ; void gF ( J dd_wM_ ) ; void i ( ) ; }
+///[Error:z|2]
+interface Q2 { float bK ( ) ; U_ [ ] [ ] q ( boolean pZ , boolean [ ] m ) ; C8 [ ] yC ( ) ; z } class Dtm6_ { } class VAc { static void m ( ) { S [ ] m = - true ; return ; } } class I_ { } class Ok12 extends DS { P_ < T > [ ] [ ] xv_ = '#' || ! this -- + - 25715 ; public static void w ( ) { O [ ] [ ] tUN_ , sZ , kMW3 ; } }

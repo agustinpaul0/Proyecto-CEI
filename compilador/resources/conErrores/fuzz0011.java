@@ -1,2 +1,2 @@
-///[Error:var|2]
-class T8 < J > { static public J_ < Q > zQfI ( char m ) { } static private TE < X > [ ] o_ var k = false void s ( ) { } void y ( Z i___9c3__5z ) { while ( - true ) P vF , z8V , m , xJfI_ ; } }
+///[Error:>|2]
+interface Nu_97mj < > extends R5 { } interface N__R3r extends Yw { } class B_ { public static Z5 < S > t ( ) { } } class VA < D > extends SC5_d8H < N > { void i9Rb ( F [ ] pP8 , char [ ] [ ] [ ] o ) { null * false ; var i3Sd = - false ; } }

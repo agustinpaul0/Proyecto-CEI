@@ -1,2 +1,2 @@
-///[Error:void|2]
-void c ( ) ;
+///[Error:}|2]
+class W_d < W > { void hO7 ( ) }

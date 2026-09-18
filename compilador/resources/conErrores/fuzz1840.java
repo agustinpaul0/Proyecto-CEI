@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface W_ extends P9 { S g ( ) ; } int interface YZ { } class WV implements XG { X t4J_t ( L0T_ < WB > [ ] [ ] k ) { J_ . d ( ) ; while ( - true ) { ; } for ( Oo__kPBb_ [ ] [ ] k__ ; ; ) { } } static private void r ( ) { } }
+///[Error:>|2]
+class D7cJ < B > { int b__ ( ) { Z oT = this . fT > true , jFlV = + "" != ! null , r_ , vw_ = + true ; } } class A_m implements IRe_ < L_ < > > { }

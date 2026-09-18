@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-interface ZE < P > { boolean h ( ) ; W u ( boolean [ ] q , float [ ] [ ] e , Cbx qKS8k ) ; public YLJ < LR > e7M_ ( ) ; void tN ( Q_ < R > q , ZB3 < D > [ ] u1 ) ; void kPP ( H_7 rj , N_ [ ] [ ] [ ] qK_ ) ; public void j3W7 ( int [ ] [ ] [ ] [ ] [ ] j ) ; } class G__5 < X > { N f9 ( ) { while ( 525 * + true + - true * - false ) return ; } R [ ] [ ] z_Y = + null && - null < - 'A' ; static void e5sKc ( ) { return ; } } boolean h = true , c_ ;
+///[Error:M8|2]
+class KD3 < R > extends Ti < W > { void eN ( N q ) { } static private W nM0_2_ ( ) { if ( - WPy . aHb_d_ ( ) -- < 08730 = true > - 'p' ) { ; } } } M8 interface Yz_ < C > { }

@@ -1,2 +1,2 @@
-///[Error:int|2]
-class S8p < V > extends Rfi < L6 < GK_ < Y5lT < MV < S_ > > > > > { void m ( ) { } } class MF { } class H41u04 { } class Zg < X > implements Lh2F6 { static private char [ ] [ ] tf_ int } interface O0 < P > extends H_j { }
+///[Error:>=|2]
+class I_ < V > extends WMyH { } interface V9 extends E3 { } class Xf < X > extends Q60r_ < U > { void aO >= } interface J7R_ < B > { }

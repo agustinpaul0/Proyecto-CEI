@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface NBr { } interface M_T extends NQ < Z > { } interface K__ < R > { } class XXw < D > { } interface extends HA24G < J > { B5Q6 r ( K [ ] r , R [ ] [ ] [ ] [ ] [ ] [ ] cET , Vh_ [ ] [ ] lr7 , int [ ] [ ] l4 , int [ ] [ ] [ ] l ) ; public void gk ( int x ) ; J____Z_ q54__h ( B [ ] [ ] [ ] kL , M odoR_ ) ; }
+///[Error:s|2]
+interface XCs { } class B_ implements Jb { private int [ ] l_ ; void xjH ( Wl < Phf6Fm_ > [ ] hp , Sl < Y > [ ] dL_G , s ) { } } class V56 < O > implements M_ { boolean [ ] [ ] r_ ( boolean [ ] [ ] [ ] [ ] [ ] [ ] d5 ) { } private void h ( ) { } public static P gX ( Pl i3s , Vz [ ] [ ] g , char rC ) { } }

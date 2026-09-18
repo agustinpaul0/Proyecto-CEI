@@ -1,2 +1,2 @@
-///[Error:W4z_|2]
-W4z_ < B >
+///[Error:}|2]
+class Z_ < F > { } class C8Y extends Va < A > { static void p19 }

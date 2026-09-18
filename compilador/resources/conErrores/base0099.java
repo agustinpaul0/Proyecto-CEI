@@ -1,2 +1,2 @@
-///[Error:D7|2]
-class IM < X > extends H7h < B > { } D7
+///[Error:>|2]
+interface IeY < K > extends U63_ { void i_3S ( boolean r_ ) ; E60 < > [ ] [ ] k4NY ( L [ ] [ ] [ ] g ) ; }

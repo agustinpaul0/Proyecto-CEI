@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < F > { }
+///[Error:static|2]
+class KIh < C > extends Xc < OYZ > { static void u ( I [ ] [ ] h5 , A [ ] [ ] r ) { } } class Ag { } interface AF < B > { public void w__ ( Z [ ] p0 , G w ) ; void z ( float x ) ; } class R_ < K > { public static void vp8 ( ) { } private static int vuQ ( ) { } public static void m ( ) static public void y ( ) { for ( ; ; ) int [ ] d , b ; } } class Qz9 < W > { } interface KWh_ < S > { void j ( ) ; B [ ] m ( ) ; public S h_ ( ) ; } class RNZK < W > extends GQ < I > { } interface H_P { }

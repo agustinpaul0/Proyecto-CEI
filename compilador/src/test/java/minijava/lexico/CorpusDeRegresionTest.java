@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Reprocesa todo resources/regresion/, donde el fuzzer persiste append-only lo que
+// Reprocesa todo resources/lexico/regresion/, donde el fuzzer persiste append-only lo que
 // hizo fallar una corrida. No hay oráculo por caso —son entradas aleatorias—, así
 // que se verifica el contrato general: termina, no crashea, y respeta el formato.
 @Tag("lexico")

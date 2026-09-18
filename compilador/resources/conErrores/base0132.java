@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface Ew { public Ey [ ] [ ] d0 ( ) ; public void i ( I [ ] [ ] [ ] [ ] b , char [ ] y ) ; } class Hw { E [ ] [ ] j = ( ) ; X [ ] [ ] n ; }
+///[Error:public|2]
+interface CnN { Qr [ ] public float [ ] c ( ) ; public void hHX7 ( M [ ] [ ] [ ] p ) ; public void g ( S [ ] tN ) ; }

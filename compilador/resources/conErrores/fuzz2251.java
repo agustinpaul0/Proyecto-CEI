@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Dh extends SA < L_x > { } < K >
+///[Error:}|2]
+class T_ < Y > { static void h }

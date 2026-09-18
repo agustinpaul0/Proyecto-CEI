@@ -1,2 +1,2 @@
 ///[Error:{|2]
-interface F65XI extends Y9hX { void w ( ) ; W q_H ( ) ; void i ( W [ ] [ ] u_w , float [ ] y , X [ ] [ ] [ ] [ ] [ ] [ ] [ ] l4 ) ; } interface QG { void wO ( I t , Z [ ] apO0 ) ; } interface L0 extends { public N9A [ ] [ ] a ( ) ; }
+interface RHu < N > extends O5R_ { void to ( float p ) ; S j3 ( T4x_0_ < C_9_ > c ) ; } interface { } class OQ6J_o extends U9 < GK7 > { Mc < Gi > bw_ ( char [ ] [ ] [ ] [ ] [ ] k ) { } static private void l_ ( E_K u , char e , float [ ] [ ] f3Ad , char vX ) { if ( this ++ ) GqM . iv ( ) -- ; else O1 . a ( ) ++ ; } float [ ] [ ] [ ] w ( V q_ , C2 [ ] h_ , int [ ] [ ] h_V_ ) { } } interface O_ < E > { } interface Da < R > { }

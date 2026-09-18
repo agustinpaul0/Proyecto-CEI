@@ -1,2 +1,2 @@
-///[Error:R5U__|2]
-R5U__ class Yz < H > { }
+///[Error:(|2]
+interface N_4 { I [ ] ( ) ; }

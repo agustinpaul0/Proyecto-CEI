@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface UNp < Q > extends GM0c < F1 > { } interface OXQRS extends O2 < H > { public P ( ) ; } class Sc implements H4 { } class Q_ extends F4B { } class Y5 { } class F_o implements B_ < C > { }
+///[Error:[|2]
+interface XR extends Ez < K > { char eJ ( ) ; public void z ( char [ ] r ) ; public void q5 ( E [ ] [ ] x6 , boolean aQM_6 , I e , boolean [ ] l ) ; WX < Z > fh ( Y [ ] w_ , [ ] [ ] i_ , G0 < Mw > [ ] [ ] [ ] k7 , int [ ] j , S5 l , Nx [ ] g ) ; }

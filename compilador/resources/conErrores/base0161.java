@@ -1,2 +1,2 @@
-///[Error:Y|2]
-interface XP_oE_ { } class U9 < M > implements Tm { boolean [ ] [ ] [ ] [ ] [ ] rM ; } interface QGlH7_ extends Y { public void vV ( ) ; public float f ( ) ; }
+///[Error:N|2]
+N class NH_c < V > implements SB_ < R0R > { } class Y0L extends M_ < N_J_ > { } class Ulb0 { }

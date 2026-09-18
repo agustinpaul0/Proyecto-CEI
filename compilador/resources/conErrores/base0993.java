@@ -1,2 +1,2 @@
-///[Error:F8A|2]
-interface Zo { } F8A
+///[Error:<|2]
+class Hg < X > implements < K > { }

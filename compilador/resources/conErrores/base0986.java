@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Hg < X > implements < K > { }
+///[Error:implements|2]
+implements Ze interface Fiw < E > { }

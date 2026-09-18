@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface PH8 { void ( float j , N6Vu < L > [ ] [ ] sU ) ; }
+///[Error:)|2]
+class V_ implements MOE < G > { Y8 ( int ) { } } interface C_ < X > { void l ( ) ; public void oUc ( O b0m066 ) ; }

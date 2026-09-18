@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface MX0_ { } interface Fh1 < L > extends QK { void w ( I4 [ ] e ) ; } interface ZR extends MR__ < Q > { } class T_b { KJ_ jD ; } class Ji { } static private Fg4 < A > o ( Y [ ] [ ] u ) { return ; 'x' ; + false ; - false ; } interface R__ < Z > { public void i ( ) ; } interface C_8 { } class VL_pu < K > implements Ryv { }
+///[Error:wz|2]
+class J__HI23 < C > implements Lap < A0E7_ > { } class E_ implements Cf < Q > { } interface X1 < D > extends Q_d { } interface R03 < D > extends We { public W j ( N [ ] p1_ ) ; void m_p4 ( ) ; wz ( ) ; } interface Dm { public H [ ] [ ] [ ] c ( S nt_ , char u_s ) ; } interface A7 { } class R4 implements Z6 { }

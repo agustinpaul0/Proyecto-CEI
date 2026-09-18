@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Fq extends { }
+///[Error:public|2]
+public void k ( ) ;

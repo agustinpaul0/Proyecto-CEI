@@ -1,2 +1,2 @@
 ///[Error:}|2]
-class BN < W > { static N m_ ( C [ ] r ) }
+interface U_J extends O_3 < P > { char }

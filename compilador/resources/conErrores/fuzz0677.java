@@ -1,2 +1,2 @@
-///[Error:>|2]
-class B3tf extends H_ < > { }
+///[Error:}|2]
+interface Nq extends OKN { } interface G_ { float [ ] }

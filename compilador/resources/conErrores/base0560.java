@@ -1,2 +1,2 @@
-///[Error:;|2]
-class G2 extends P_ < I > { public static void xfG_ ( U [ ] p , PE < W > s , float f4 , OT < Ag > u ) ; } class AJ9 implements B_c { }
+///[Error:KB_L7|2]
+interface L1 extends UV < Ki < T > > { } class M9 < Z > implements WS { } KB_L7

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends VP__4 class KL < V > { }
+///[Error:UY6|2]
+UY6 interface EX { } class RD < W > implements O0 < G_1vg > { }

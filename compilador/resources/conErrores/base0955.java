@@ -1,2 +1,2 @@
-///[Error:A|2]
-class Lf < W > implements C_ < VQs > { } A interface R_ < S > extends I_ { }
+///[Error:implements|2]
+implements NtG

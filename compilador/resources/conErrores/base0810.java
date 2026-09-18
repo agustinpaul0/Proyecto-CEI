@@ -1,2 +1,2 @@
-///[Error:B|2]
-class CW < Y > implements B { } interface V_B < J > { } interface L8_ < O > { public C6C_ b ( ) ; }
+///[Error:{|2]
+interface H8w < E > extends H2k < Gk < W > > { } interface U4 extends { }

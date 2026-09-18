@@ -1,2 +1,2 @@
-///[Error:--|2]
-class N_ < F > implements Yj < I > { public static void i_ ( ) { boolean k_0 , ral_4vp5 = -- % + false ? + false : ! null ; int [ ] f ; } } interface H_ < R > { }
+///[Error:extends|2]
+interface UR6 extends Jd_ { } extends M5 < SI_ >

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class S4 extends { static int ow ( ) { B zQo_t , l , k ; } }
+///[Error:>|2]
+interface D9_h < F > extends T__ { } class U89dH_ < K > { } class AD extends X6 < > { static public C p ( UWL < G > kk_ ) { char [ ] [ ] s , xS__2 , k = + null , chf5 , w , w , a ; ; for ( ; ; ) QYe . uh ( ) . uw ++ ; ; } }

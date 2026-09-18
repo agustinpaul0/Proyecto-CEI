@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends K6_ interface S6n extends FbJz_ { }
+///[Error:void|2]
+interface P_7 { Z59 wm_M ( ) ; } class RNRAG implements CT < YF_q_ < QX0__ > > { private static EO y ( Q voNI , float sBi ) { N_9 . iM ( true ) . np . r -- - ! false >= 1870f ; float m = 5436 / true ; Uu . cn_ ( ) . i ( ) / - null ; } private static Q d_Y_x ( ) { } } void j ( ) ; public void h ( ) ; class HP < T > implements U9 { O_ ( ) { } static boolean [ ] a ( ) { } private static void s_ ( boolean [ ] [ ] k5 ) { X y , k , j4 ; OQ < Q > sW , w ; } static private void s5 ( ) { ; } } class RsdD implements Ra3 { static void ti ( A [ ] [ ] u ) { new E [ ] [ ] { } . z . cW . iDQ -- + true ; ; } B p4_ = 4D >= this ++ ? 8. && null : 07974 ; }

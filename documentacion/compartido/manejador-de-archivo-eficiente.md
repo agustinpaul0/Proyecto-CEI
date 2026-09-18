@@ -146,7 +146,7 @@ error ocurrido en ese `\n` mostraría **la línea siguiente**, con el `^` apunta
 tiene nada que ver.
 
 Los tres datos se fotografían juntos al entrar a `getNextChar()`, antes de tocar los contadores
-internos, así que mientras el `\n` es el último devuelto la línea sigue siendo la suya. Con eso los
+internos, así que mientras el `\n` es el último devuelto la línea es la suya. Con eso los
 tres casos de EOF de §2.1 salen correctos sin ningún caso especial, y el analizador no necesita
 llevar su propio contador de líneas en paralelo.
 
@@ -215,7 +215,7 @@ contenía puede haberse descartado.
 
 ## 6. Ver también
 
-- [`arquitectura.md`](../lexico/arquitectura-del-analizador-lexico.md) §2 y §7 — dónde encaja esta pieza en el conjunto.
+- [`../lexico/arquitectura-del-analizador-lexico.md`](../lexico/arquitectura-del-analizador-lexico.md) §2 y §7 — dónde encaja esta pieza en el conjunto.
 - [`manejo-de-errores.md`](manejo-de-errores.md) — quién consume `getColumnNumber()` y
   `getCurrentLineText()`, y para qué.
-- [`decisiones.md`](../lexico/decisiones-de-logica.md) — el catálogo completo de decisiones del proyecto.
+- [`../lexico/decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) — el catálogo completo de decisiones del proyecto.

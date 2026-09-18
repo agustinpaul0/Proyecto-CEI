@@ -1,2 +1,2 @@
-///[Error:var|2]
-class KP implements Uq { } class M_ < A > extends W9__T < R > { static void e2 ( W p , CP < OJ_ > [ ] z ) { } static void fn ( char rz ) { } private D8WD var q = null ; L h ; } interface H8_Pw < J > extends K7 { M_e_ t ( ) ; void z ( H_0 < P > ap ) ; R [ ] [ ] [ ] [ ] [ ] v_3 ( ) ; } class ES < W > extends BX_75_ { E d_ ( boolean zw ) { } }
+///[Error:vBE4|2]
+interface VH < R > { void q ( float s ) ; } class BMt3 { } interface X2 < N > extends Gj { } vBE4 ( ) { } class Z_Z < T > { public Z [ ] q_z = - this . a + ! '\n' || - '\t' || + false ? ! 96285 : - 'V' ; } interface F25 < I > { }

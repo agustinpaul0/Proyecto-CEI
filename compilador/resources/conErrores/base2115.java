@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface H29_ < Y > extends N5 { [ ] [ ] [ ] [ ] oq ( ) ; } interface Z_2 { }
+///[Error:{|2]
+interface A7 < P > extends { }

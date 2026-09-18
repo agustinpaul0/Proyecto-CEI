@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface MdH < A > { char [ ] o_ }
+///[Error:<|2]
+class Gh_9 < V > extends < Lez_T > { }

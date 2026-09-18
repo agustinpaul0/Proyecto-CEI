@@ -1,2 +1,2 @@
-///[Error:<|2]
-class R1yv { static private void g ( ) { } } interface Mb4_ < D > extends X1_ < < L > > { }
+///[Error:[|2]
+interface Cu_c < W > extends K2K_9 < U_b < C > > { void m ( Ry < H > s ) ; public [ ] pP ( ) ; }

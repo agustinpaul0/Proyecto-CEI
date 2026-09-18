@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Z8 < E > extends Q3 < V > { char l ; void u6 ( ) ; }
+///[Error:]|2]
+class K13K < E > { int [ ] [ ] cC = - '\f' < ! "~" [ ] ++ && U_n . k_ ( ) % ! a9 ++ == true ; } interface M5_ { }

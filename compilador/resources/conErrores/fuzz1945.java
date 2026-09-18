@@ -1,2 +1,2 @@
-///[Error:}|2]
-class K_ < G > { static private void f_5 ( ) { } public void j ( ) { new Ld ( ) . o ; for ( char [ ] p ; ; ) for ( ; ; ) for ( ; ; ) return ; } static void z }
+///[Error:(|2]
+interface GW < F > extends IR_I < UA < KP > > { } interface N_Wx < O > extends F669 { int [ ] [ ] a ( ) ; } interface SA < K > { public Cy [ ] n_ ( ) ; } class OE extends Q3F8_ { } interface D8 < H > extends M___ < B > { } class DLx < P > { } ( X [ ] a )

@@ -1,2 +1,2 @@
-///[Error:false|2]
-class YaHO < S > { } class BM < T > implements IP < F > { static private float iE false }
+///[Error:<|2]
+< L0_ > class JQ implements B1 { } interface AF_ extends F__9wK6j { } class X0 < U > extends Az { } interface I__ { }

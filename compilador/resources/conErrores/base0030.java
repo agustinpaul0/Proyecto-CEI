@@ -1,2 +1,2 @@
-///[Error:=|2]
-interface RL < F > { } = + true
+///[Error:{|2]
+class Fq extends { }

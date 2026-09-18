@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface I4 < H > { } interface G1 < W > extends D_ < Qi9 < A > > { public void q ( ) ; } interface V_3 < G > { } char class HU extends V_ { } interface Pha4 { } interface GT < J > { public Mnv [ ] r2 ( ) ; void j ( ) ; } class I_ < X > { } class WQ_ extends D_ < L > { static void c ( ) { } private NY ( ) { } }
+///[Error:boolean|2]
+class K0 extends MZj < X > { } class CKqt extends ON_ < G7b < F > > { public static void b ( ) { } JZ_6 ( ) { } private static Cb < K > [ ] [ ] [ ] h ( Fs6_v_ < R > t , float [ ] [ ] [ ] [ ] gK____ ) { } } interface I_A_ extends M0 < L > { float w_OK boolean [ ] ; } interface MC < U > { public int w_8_0C ( ) ; void m ( ) ; void o ( float [ ] [ ] v , X_7 < JD_ > l56E_f0 , FF m_ ) ; public G_5 < SG_ < GU > > td ( int [ ] [ ] [ ] z , int qj , float s , char f ) ; } interface NWJl { } interface XN7 { public void oHx_Iby ( A_ [ ] [ ] [ ] j ) ; public void l ( ) ; public boolean [ ] k ( ) ; } interface K_ { }

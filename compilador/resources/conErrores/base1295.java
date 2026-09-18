@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Wr_rk < P > extends BEl < B_ > { static void o8 ( ) { } private static V_ [ ] [ ] u ( ) { return true = ; } }
+///[Error:i|2]
+interface Z_ < C > extends Z_ < S_R < Q > > { float a__V ( ) ; } class IX5CH { EZM_04 ( ) { } private Z g1I_C ( ) { } I [ ] [ ] d_w ; private static void n ( ) { if ( - true ) B5x0__ . o ( ) ++ ; else for ( ; ; ) { } } static boolean b ( ) { QY < K > mqy , pVl_x___ ; } public static void s_ ( float [ ] [ ] pRW9 ) { boolean [ ] t , y_I8U_5Lrx ; } static public i ( G [ ] h8yP6o ) { } void t ( ) { } } interface NC6 < C > { public void t ( ) ; } interface Kz { int [ ] [ ] n_ ( ) ; void v ( float [ ] [ ] [ ] k , W w , Hz [ ] [ ] hz , F [ ] hcr ) ; } class X2_q1 < O > implements S4 < L7 > { static public H7Ff < T > [ ] vu5b9 ( float hm , float yZ , A_B [ ] [ ] fa ) { } static void be ( ) { } static void j ( ) { } } class Pq { public static void ut ( ) { } } interface Qe_ { }

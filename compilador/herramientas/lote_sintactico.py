@@ -314,11 +314,9 @@ def casos_de_fors():
     correcto("cadaFormaDeFor", envolver(
         "for(;;) ; for(var i = 0; ; ) ; for(; i < 10; ) ; for(; ; i) ;"
         " for(var i = 0; i < 10; i) ; for(var e : lista) ;"))
-    correcto("forConDeclaradorTipado", envolver(
-        "for(int i = 0; i < 10; i) ; for(int[] v = null; ; ) ; for(Persona p : lista) ;"))
-    correcto("forConPosfijo", envolver("for(int i = 0; i < 10; i++) ;"))
+    correcto("forConPosfijo", envolver("for(var i = 0; i < 10; i++) ;"))
     correcto("forsAnidados", envolver("for(;;) for(;;) for(;;) ;"))
-    correcto("forConBloque", envolver("for(int i = 0; i < 10; i++) { m1(); m2(); }"))
+    correcto("forConBloque", envolver("for(var i = 0; i < 10; i++) { m1(); m2(); }"))
 
     con_error("forConDosExpresionesPorSeparador", envolver("for(var i = 0, j = 0; ; ) ;"),
               ",", 3)
@@ -327,7 +325,10 @@ def casos_de_fors():
     con_error("forConUnSoloSeparador", envolver("for(;) ;"), ")", 3)
     # Despues de `for (var i` tiene que venir `:` o `=`.
     con_error("forConVarSinInicializar", envolver("for(var i;;) ;"), ";", 3)
-    con_error("forConDimensionesAlEstiloC", envolver("for(int v[] = null; ; ) ;"), "[", 3)
+    # La variable de control se declara con `var`: el for no toma el declarador
+    # tipado de Variables Locales Clasicas.
+    con_error("forConDeclaradorTipado", envolver("for(int i = 0; i < 10; i) ;"), "int", 3)
+    con_error("forDeIteradoresConDeclaradorTipado", envolver("for(Persona p : lista) ;"), "p", 3)
 
 
 def casos_combinados():
@@ -338,10 +339,10 @@ def casos_combinados():
 
   public Registro(Lista<T> iniciales){
     int i, j, total = 0;
-    for(int k = 0; k < 10; k++) {
+    for(var k = 0; k < 10; k++) {
       total = k > 5 ? k : total;
     }
-    for(T elemento : iniciales) {
+    for(var elemento : iniciales) {
       this.cuenta++;
     }
     var matriz = new int[][]{{1,2},{3,4}};

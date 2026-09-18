@@ -1,2 +1,2 @@
-///[Error:>|2]
-class JU < > extends V6s_ < L > { } class G41 { } interface G8 { }
+///[Error:<|2]
+interface M4 < G > extends VR < V > { public void v2 ( Q [ ] r , K [ ] n_G__Y4__ ) ; } < S > interface RF { }

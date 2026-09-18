@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements D_
+///[Error:I4|2]
+I4

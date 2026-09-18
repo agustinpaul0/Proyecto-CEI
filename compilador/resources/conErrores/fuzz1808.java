@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface NG extends { public void c_ ( float f , P__34 [ ] [ ] g ) ; } class Ut { float [ ] c ( ) { } char q ; }
+///[Error:private|2]
+class CY extends VO { } interface X01j { } class Xa { public private W u ( E_2 e47 , Ka [ ] [ ] [ ] x0 , float i_dD ) { } }

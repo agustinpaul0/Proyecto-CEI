@@ -1,2 +1,2 @@
-///[Error:(|2]
-( M_ [ ] z_u ) { ; }
+///[Error:{|2]
+class Ee extends { }

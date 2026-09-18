@@ -46,7 +46,8 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
-  `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso).
+  `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso) y `testersSintactico/`
+  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso), todos en `vendor/`.
 
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por
 clase — sin límite numérico de líneas, ver [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)),
@@ -80,8 +81,8 @@ donde está el `pom.xml`).
 | Entender Primeros, LL(1), factorización, o implementar el parser | `etapas/etapa-2/Clase 3 - Sint1…pdf`, `Clase 4 - Sint2…pdf` y `Clase 5 - Sint3…pdf` (slides 33-62) |
 | Consultar el contrato de salida, los logros o la invocación de la Etapa 2 | `etapas/etapa-2/Pautas Etapa 2.pdf` (errores 25-26, invocación 28, logros 34-44) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `documentacion/proyecto/` | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) — **antes** de escribir código |
-| Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) + [`documentacion/especificacion-lexica.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (ER formal) |
-| Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/patron-state.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |
+| Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (tokens, ER formal y decisiones) |
+| Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/lexico/patron-state-metodo-por-estado.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |
 | Tocar `ExcepcionLexica`, el reporte de error, o el posicionamiento línea/columna | [`documentacion/compartido/manejo-de-errores.md`](documentacion/compartido/manejo-de-errores.md) |
 | Escribir o revisar tests, decidir qué tipo de test corresponde | [`documentacion/compartido/estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md) |
 | Verificar qué es negociable y qué no lo es (contrato de salida, invariantes duras) | [`documentacion/proyecto/convenciones-de-la-catedra.md`](documentacion/proyecto/convenciones-de-la-catedra.md) |
@@ -93,46 +94,54 @@ donde está el `pom.xml`).
 | Archivo | Contenido |
 |---|---|
 | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) | Protocolo obligatorio ante cualquier duda de comportamiento no resuelta explícitamente: MiniJava primero, Java verificado contra la especificación después, informar siempre. |
-| [`documentacion/proyecto/convenciones-de-la-catedra.md`](documentacion/proyecto/convenciones-de-la-catedra.md) | Convenciones no negociables de la cátedra + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
-| [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) | Método por Estado (obligatorio), driver iterativo, `sealed interface` + `switch`, estructura de paquetes, por qué `Salida` es interfaz, por qué el `SourceManagerImpl` de la cátedra no sirve tal cual. |
-| [`documentacion/compartido/manejo-de-errores.md`](documentacion/compartido/manejo-de-errores.md) | `ExcepcionLexica`, `PosicionLexica` (cuándo un error reporta el lookahead actual vs. una posición capturada antes), `FormateadorDeError`. |
-| [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) | Tabla de tokens, decisiones ambiguas resueltas (con su fuente), los 8 logros y su estrategia. |
-| [`documentacion/compartido/estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md) | Estrategia de testing completa: tipos de test, cuándo usar cada uno, taxonomía de errores, fuzzing. |
+| [`documentacion/proyecto/convenciones-de-la-catedra.md`](documentacion/proyecto/convenciones-de-la-catedra.md) | Convenciones no negociables de la cátedra, de las dos etapas, + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
 | [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
-| [`documentacion/proyecto/comandos-compilacion-y-entrega.md`](documentacion/proyecto/comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, formato del informe final. |
+| [`documentacion/proyecto/comandos-compilacion-y-entrega.md`](documentacion/proyecto/comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, armado del zip y formato del informe. |
+
+El estado de cada etapa y lo que queda abierto está en [`ESTADO.md`](ESTADO.md).
 
 ## 4. Documentación técnica (para explicar el proyecto sin leer código)
 
 Escrita para que la lea el profesor: cada documento es autocontenido y explica **por qué** el
-compilador hace lo que hace, no sólo qué hace. Empezar por el índice:
+compilador hace lo que hace, no sólo qué hace. Empezar por el índice,
+[`documentacion/README.md`](documentacion/README.md), que tiene la guía de lectura; cada carpeta
+tiene además su propio README.
 
-- [`documentacion/README.md`](documentacion/README.md) — índice, guía de lectura y resumen en una
-  página.
-- [`documentacion/arquitectura.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) — visión completa: componentes,
-  ciclo de vida, decisiones estructurales.
-- [`documentacion/especificacion-lexica.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) — ER formal de
-  los 56 tokens, con autómatas.
-- [`documentacion/patron-state.md`](documentacion/lexico/patron-state-metodo-por-estado.md) — cómo interactúan
-  `EstadoLexico`/`ContextoLexico` (y sus piezas `BuilderDeLexema` y
+Etapa 1, en [`documentacion/lexico/`](documentacion/lexico/README.md):
+
+- [`arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)
+  — componentes, ciclo de vida, decisiones estructurales.
+- [`especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md)
+  — la ER formal de los tokens, con autómatas.
+- [`patron-state-metodo-por-estado.md`](documentacion/lexico/patron-state-metodo-por-estado.md) —
+  cómo interactúan `EstadoLexico`/`ContextoLexico` (y sus piezas `BuilderDeLexema` y
   `FabricaDeExcepcionesLexicas`)/`Continuar`/`Emitir` y el driver, paso a paso.
-- [`documentacion/manejo-de-errores.md`](documentacion/compartido/manejo-de-errores.md) — detección,
-  recuperación, los dos formatos de reporte, a qué posición apunta la columna.
-- [`documentacion/manejador-de-archivo.md`](documentacion/compartido/manejador-de-archivo-eficiente.md) — por qué el
-  `SourceManager` provisto no alcanza y qué hace el reemplazo.
-- [`documentacion/decisiones.md`](documentacion/lexico/decisiones-de-logica.md) — **el catálogo completo de
-  decisiones**, cada una con su fuente, la alternativa descartada y su justificación.
-- [`documentacion/testing.md`](documentacion/compartido/estrategia-de-testing.md) — qué garantiza cada suite y las
-  invariantes que sostiene.
-- [`documentacion/logros.md`](documentacion/lexico/resolucion-de-logros.md) — los 8 logros de la Etapa 1, dónde está
-  cada uno y cómo verificarlo.
-- [`documentacion/guia-de-la-gramatica.md`](documentacion/sintactico/defectos-de-la-gramatica-original.md) — la gramática
-  original de MiniJava explicada regla por regla: para qué sirve cada una, por qué está escrita
-  así y dónde está rota.
-- [`documentacion/gramatica-base-minijava.md`](documentacion/sintactico/gramatica-original-de-la-catedra.md) —
-  transcripción fiel del documento de la cátedra, la fuente de verdad.
-- [`documentacion/transformacion-gramatica.md`](documentacion/sintactico/transformacion-a-ll1-paso-a-paso.md) — el
-  paso a paso atómico de la corrección a LL(1) y de las extensiones por logro.
-- [`documentacion/gramatica-minijava.md`](documentacion/sintactico/gramatica-ll1-final.md) — la gramática
-  final. **Se genera** desde `compilador/gramatica/minijava-ll1-final.g`; no se edita a mano.
+- [`decisiones-de-diseno.md`](documentacion/lexico/decisiones-de-diseno.md),
+  [`decisiones-de-logica.md`](documentacion/lexico/decisiones-de-logica.md) y
+  [`decisiones-de-deteccion-de-errores.md`](documentacion/lexico/decisiones-de-deteccion-de-errores.md)
+  — cada decisión con su fuente, la alternativa descartada y su justificación.
+- [`resolucion-de-logros.md`](documentacion/lexico/resolucion-de-logros.md) — los 8 logros de la
+  Etapa 1, dónde está cada uno y cómo verificarlo.
+
+Etapa 2, en [`documentacion/sintactico/`](documentacion/sintactico/README.md):
+
+- [`gramatica-original-de-la-catedra.md`](documentacion/sintactico/gramatica-original-de-la-catedra.md)
+  — transcripción fiel del documento de la cátedra, la fuente de verdad.
+- [`defectos-de-la-gramatica-original.md`](documentacion/sintactico/defectos-de-la-gramatica-original.md)
+  — la gramática original explicada regla por regla: para qué sirve cada una y dónde está rota.
+- [`transformacion-a-ll1-paso-a-paso.md`](documentacion/sintactico/transformacion-a-ll1-paso-a-paso.md)
+  — el paso a paso atómico de la corrección a LL(1) y de las extensiones por logro.
+- [`gramatica-ll1-final.md`](documentacion/sintactico/gramatica-ll1-final.md) — la gramática final.
+  **Se genera** desde `compilador/gramatica/minijava-ll1-final.g`; no se edita a mano.
+- [`arquitectura-del-analizador-sintactico.md`](documentacion/sintactico/arquitectura-del-analizador-sintactico.md),
+  [`decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md),
+  [`decisiones-de-logica.md`](documentacion/sintactico/decisiones-de-logica.md),
+  [`decisiones-de-deteccion-de-errores.md`](documentacion/sintactico/decisiones-de-deteccion-de-errores.md)
+  y [`resolucion-de-logros.md`](documentacion/sintactico/resolucion-de-logros.md).
+
+Compartida entre etapas, en [`documentacion/compartido/`](documentacion/compartido/README.md):
+[`estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md),
+[`manejo-de-errores.md`](documentacion/compartido/manejo-de-errores.md) y
+[`manejador-de-archivo-eficiente.md`](documentacion/compartido/manejador-de-archivo-eficiente.md).
 
 El historial de decisiones vive en `git log`, no en estos documentos.

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends C_C_88r < N > { }
+///[Error:W_|2]
+W_

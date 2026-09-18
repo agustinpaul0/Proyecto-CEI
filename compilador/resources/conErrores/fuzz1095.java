@@ -1,2 +1,2 @@
-///[Error:x|2]
-interface O__ { } interface L1 extends Jy < C > { H0 [ ] [ ] tneg ( WH i , x ) ; int [ ] [ ] [ ] [ ] o ( ) ; }
+///[Error:K_nU_|2]
+interface Nr3Lr extends Vp { N5 n4 ( ) ; } class L3_T < Z > extends H__UyCQzi { } class V_ implements S_ { static void K_nU_ < R_ < Z > > }

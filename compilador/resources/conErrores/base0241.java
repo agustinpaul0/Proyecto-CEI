@@ -1,2 +1,2 @@
-///[Error:B_9M_|2]
-B_9M_
+///[Error:static|2]
+static void ek ( ) { } class KX { } interface Rbt_7R_ { } class SQ { }

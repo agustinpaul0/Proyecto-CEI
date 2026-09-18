@@ -15,7 +15,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 | [`lexico/`](lexico/README.md) | **Etapa 1 — Analizador Léxico.** Arquitectura, especificación de los tokens, decisiones y logros. |
 | [`sintactico/`](sintactico/README.md) | **Etapa 2 — Analizador Sintáctico.** La gramática (original, transformación y final), arquitectura, decisiones y logros. |
 | [`compartido/`](compartido/README.md) | Lo que **no pertenece a una sola etapa**: la estrategia de testing, el manejo de errores y el manejador de archivo. |
-| [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el **plan de la etapa activa**, el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
+| [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
 | [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos y reglas de sintaxis. |
 
 ## Por dónde empezar
@@ -24,7 +24,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 1. [`lexico/arquitectura-del-analizador-lexico.md`](lexico/arquitectura-del-analizador-lexico.md)
    — qué hace el proyecto y cómo está construido.
-2. [`sintactico/README.md`](sintactico/README.md) — la etapa en curso.
+2. [`sintactico/README.md`](sintactico/README.md) — la Etapa 2, el analizador sintáctico.
 3. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
 
 **Si vas a escribir código**, primero:
@@ -53,5 +53,6 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 
 Las dos reglas dejan un residuo: los casos donde MiniJava **diverge** de Java a propósito, porque
 la cátedra especificó algo distinto. Están enumerados en
-[`lexico/decisiones-de-logica.md`](lexico/decisiones-de-logica.md), porque son exactamente los que
-un evaluador querría revisar.
+[`lexico/decisiones-de-logica.md`](lexico/decisiones-de-logica.md) y
+[`sintactico/decisiones-de-logica.md`](sintactico/decisiones-de-logica.md), porque son exactamente
+los que un evaluador querría revisar.

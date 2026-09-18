@@ -1,2 +1,2 @@
-///[Error:a|2]
-interface Z___2 < P > { U [ ] o ( ) ; void oc ( ) ; E_ b ( ) ; a }
+///[Error:q|2]
+q class V___ { } class VT < U > implements R7 { } interface U5 { }

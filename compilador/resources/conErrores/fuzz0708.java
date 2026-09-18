@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface DGP < R > extends V_SQ < F_l_ > { } interface Q0_S206 extends Fq0 < < Gw < Q > > > { }
+///[Error:BZ0|2]
+class V1 < U > extends E_j2i { } interface Ca < P > extends B_ < O > { } BZ0

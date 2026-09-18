@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Y87hG { } class O_4 implements Yr < R > { } interface BjX_V9 < V > { } ( )
+///[Error:<|2]
+< Z > interface EeZ < A > { void c63h ( ) ; H_ g ( ) ; } class NJ implements D3G__ { }

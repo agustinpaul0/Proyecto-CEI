@@ -1,2 +1,2 @@
 ///[Error:boolean|2]
-class SH implements S91 < GLwCK > { public static void boolean x = null / 681 ; }
+interface ST_ < D > { } class A_2W < Q > implements I1 < S > { static private L s ( ) { { } } } boolean

@@ -1,2 +1,2 @@
-///[Error:if|2]
-interface L_ < R > { public void s ( B [ ] a , int [ ] [ ] w ) ; } class Sb extends PW5 < H > { V [ ] t ( ) { } static private void v ( ) { return ; for ( 63e+9 % true ; ; ) O v ; for ( char tD ; ; ) ; W_9 < A > f , jx ; ; } BS_ < KF63 > [ ] [ ] r if ( null ) M a8e ; else for ( ; ; ) ; } class VHVKK extends ZD < O_ > { } class Kw implements U9 < Onx > { } interface SBx < H > extends C__ { public void g ( ) ; public char a ( ) ; }
+///[Error:}|2]
+class Wz < H > implements AD < Z > { boolean [ ] p ( ) { } } interface J6 { void b3 ( Z9 < Qkr_W < G > > [ ] v ) ; } interface W8V < Z > extends VI { P } interface M_ < T > { }

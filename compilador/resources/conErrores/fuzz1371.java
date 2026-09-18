@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface SW8t5 < T > extends Y_ < UVM < X > > { F [ ] [ ] oh_ ( R3 < P > [ ] me7m ) ; } interface JS < V > { } public char o43_V8N_N ( ) ; interface Nfu { } class CU implements K_ { public static R [ ] [ ] z ( Y2_ ln ) { } }
+///[Error:int|2]
+interface U8C_tI { } class F_J < V > implements A2_s < S > { private Z c ( ) { } public static E [ ] f ( ) { } public static NI_d int static void fQ ( float x2 , int [ ] hn ) { ; U ya__Sc , j ; } }

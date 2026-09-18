@@ -1,2 +1,2 @@
-///[Error:C_Bh|2]
-class WI extends Qb { } C_Bh
+///[Error:void|2]
+interface Vm_6t { } interface I_t__ { public void i8R_ ( Z [ ] [ ] [ ] pfD , D [ ] qr ) ; } class C_h { } interface F_Z extends ZY_ < L > { public void x ( float [ ] t , D_ [ ] d ) ; } interface IJ_V extends Nyz < E > { } void u ( boolean p8 , boolean [ ] o , F [ ] [ ] [ ] [ ] n ) ; interface Ls < J > extends Vq < T > { void f_0 ( M uyo_5 ) ; public void gV6 ( int [ ] vZZw_rcja1 ) ; } interface Wou < D > { } interface H9 < D > { void n ( Cl_5D tD_ ) ; } interface IB extends L7 { O [ ] h ( ) ; public void s ( ) ; }

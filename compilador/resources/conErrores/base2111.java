@@ -1,2 +1,2 @@
-///[Error:L_|2]
-interface Mg40 < A > extends U_5S { } L_
+///[Error:V|2]
+class K_D extends A_ { static private void V }

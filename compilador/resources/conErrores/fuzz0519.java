@@ -1,2 +1,2 @@
-///[Error:int|2]
-class V_C_ < B > implements U026 { } int c ( ) ; interface IT extends JH { }
+///[Error:(|2]
+class T_ implements E_ { } interface Nh < Q > { public void sg ( char m ) ; void fJVn ( ) ; ( ) }

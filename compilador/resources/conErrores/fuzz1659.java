@@ -1,2 +1,2 @@
-///[Error:;|2]
-class AL3 < L > implements AL < V > { private As3 [ ] [ ] [ ] [ ] [ ] eR9 = ; }
+///[Error:)|2]
+interface X1MN { public R__ < D5m8 < ZF > > [ ] m__ ( ) ; public D o ( ) ; public void y ( H i ) ; D a ( int [ ] ) ; }

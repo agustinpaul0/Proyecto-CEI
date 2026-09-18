@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface K_ < W > extends J387 < G > { } class Tn { } interface M3 < O > { } void x ( I k , J [ ] m , W_0 o1_ , Z f1___Y , char [ ] gm ) ;
+///[Error:=|2]
+interface MF { } class L_8 extends VCm { void f4e ( XhM5v e5 , boolean [ ] [ ] [ ] [ ] [ ] [ ] q_ ) { if ( = + 9765 ) if ( ! false ) ! 2129357 ; else var cZ = + null ; } } class V8h < M > extends DQ31__7 < Q > { }

@@ -1,2 +1,2 @@
-///[Error:T|2]
-class E0 < A > extends S_x_ { } class Xa implements G_ < U > { private static G [ ] cU85 T } class Xt < D > { }
+///[Error:,|2]
+interface Vu extends DB_ < BG < I > > { void r ( L pjm_ ) ; void n ( BR_O < D9 < QK > > c , I , E [ ] [ ] [ ] c_ ) ; }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-class DD_9 < A > { Y b ( int a , char [ ] [ ] [ ] [ ] xyr ) { { { } } var y = false ? false <= true : - 0F / true ; var p = + "" -- ? false : null ; return false ; I wf2NP , j , o , uC ; L rx__ ; int [ ] ; } static public void o ( ) { { } } private float ylcIK8 ; } interface G7 < R > { public void h0z ( float vc9 , P_ < S04 > e10aUN ) ; } class Xb extends FxM < Qw1Yr < OMP_ < F > > > { } class Y__ extends HOW { Vg ( ) { float n = + null , tD , eQy , r , x , u2 ; true >= + true ; } } interface JH7 < B > { public void o ( int a_ ) ; } class SrB_A implements B_ { public static void k ( boolean oD , boolean [ ] [ ] z6Q ) { x . pDx -- ; K zo , t_ ; } public int [ ] v ( ) { char ft_ ; } } class DZ77 extends FO_ < H6 < R > > { }
+///[Error:static|2]
+class Sf1d < P > { } static public char [ ] j2 ( int c , V h_ ) { }

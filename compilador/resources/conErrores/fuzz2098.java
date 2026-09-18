@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends Fx
+///[Error:u|2]
+interface M1 < R > extends I_yCc < U > { float m ( A n , P [ ] w ) ; void q ( ) ; public void d56 ( float x ) ; HK1___c < Q6 > [ ] [ ] [ ] er ( ) ; public void e ( Cr < W0 > cL ) ; } class Df_ { } class EuuX < J > { public static boolean bi ( float [ ] o , Q t9_ , u , R_d1 [ ] [ ] fL_1w ) { while ( + 61.E0f = + null ) float c ; ; float h_ ; char a_ , r , s , j ; X [ ] tk__ , pR_ ; } } interface LfH { public void dQ8 ( W [ ] k_ , char [ ] g ) ; void i ( char soRC , char f0 ) ; }

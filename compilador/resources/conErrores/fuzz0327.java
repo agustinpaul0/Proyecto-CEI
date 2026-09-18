@@ -1,2 +1,2 @@
-///[Error:Q_|2]
-Q_
+///[Error:<|2]
+class P_ < U > extends S_ { } < F >

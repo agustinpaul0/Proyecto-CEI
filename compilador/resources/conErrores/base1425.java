@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Uo_ extends { } class HQWu { }
+///[Error:implements|2]
+implements H_ < Zs_pW >

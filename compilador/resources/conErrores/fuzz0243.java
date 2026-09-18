@@ -1,2 +1,2 @@
-///[Error:P0|2]
-interface Po extends Cx0_7z_ { char g ( ) ; F_ [ ] [ ] giG6_ ( ) ; public boolean [ ] s9c_FW P0 < X_ > ; } interface G0 extends Ayp { }
+///[Error:W|2]
+class X_vX < D > { } class N_ < M > extends Hd < P > { static public void g W o6 public static void k ( ) { for ( var p : null ) float k_Ij_ ; } char g__k ; public FA6Q__ ( ) { } }

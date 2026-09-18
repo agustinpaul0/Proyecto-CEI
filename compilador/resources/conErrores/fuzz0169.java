@@ -1,2 +1,2 @@
-///[Error:-|2]
-class Ua6t < A > implements B_ < Q > { public void rPR57 ( ) - 4520 }
+///[Error:public|2]
+public class I_ implements Xf { } interface X7 { void l ( int v_ , I [ ] sq ) ; } interface Xg9w { }

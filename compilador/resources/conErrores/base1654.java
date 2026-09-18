@@ -1,2 +1,2 @@
-///[Error:g5|2]
-interface I_ < V > extends U_ { PZ s_ ( g5 ) ; }
+///[Error:U_|2]
+interface P6J extends FUn6_t { } class M1 { } interface YP < K > { } U_

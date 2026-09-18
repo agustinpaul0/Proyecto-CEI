@@ -1,2 +1,2 @@
-///[Error:S1__|2]
-S1__
+///[Error:implements|2]
+implements Fo < N3E >

@@ -1,2 +1,2 @@
-///[Error:char|2]
-class V_7 < Y > { char [ ] [ ] s = null > 'v' ; public N wN char private I0 < Eyw > [ ] v_2U = + '\n' ; } interface EV6VL extends HG < Q > { char [ ] [ ] [ ] e__H ( ) ; boolean t ( U09q < M > [ ] [ ] [ ] [ ] [ ] x ) ; Sm7 i ( Z m , X4_ < N1m > e ) ; public void srL ( U5_2 e__ ) ; }
+///[Error:void|2]
+class R_H_Y8 { } interface X8_ < U > extends E_l_ { void lt ( K l , Q [ ] [ ] r , S [ ] vK , P e , I7 < B_ > iX_ ) ; void c ( ) ; public Et < K > se ( ) ; void v ( ) ; void l ( P [ ] [ ] r , char [ ] v , D tc , S [ ] [ ] m1_V ) ; void b ( ) ; } class C0 implements D1 { void wph ( X lsW ) { char d ; } char [ ] e ; private void void m ( int mY , int f ) { } private static It7_ fI ( ) { this ; } static void d_ ( ) { ! true ; { ; } } }

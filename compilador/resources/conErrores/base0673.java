@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Ti < O > { static public boolean [ ] [ ] [ ] [ ] v6 ( ) { } } [ ] m6I5J7 ( Pj [ ] p_M , K2_5 < Y > m , char d , V q , V quF ) { }
+///[Error:(|2]
+interface U7 < U > extends Ck { } class R_8p_1 implements EHN < C > { Pf ( Dh < Q > [ ] [ ] j ) { I p5k37__I_ = this ++ / '\n' > null ? ! false : false , v_ = 18f ; } } class KZ < V > { static void z_2 ( ) { return ! "" >= false = ! null ; } } interface D_ { public void g ( ) ; } class U_ { private static char [ ] [ ] ( ) { if ( ! null ) return ; } } interface VT { }

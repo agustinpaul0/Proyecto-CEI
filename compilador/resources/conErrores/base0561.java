@@ -1,2 +1,2 @@
-///[Error:RaEA|2]
-RaEA
+///[Error:void|2]
+interface Jx < H > { public KV_ < GI < L_S > > s ( ) ; } interface B4 < N > extends X_ { public void z ( Qd < U > f ) ; } interface L5 { } interface WB < M > { } class BS76 < B > extends T__Ct < W3 < J > > { void y_ ( ) { } I_ ( ) { } } interface I__zS < G > { } class Gm < O > extends Q_8 { } class F_7 extends J_ < Ll_ > { static K [ ] [ ] k ( ) { for ( ; ; ) return ; char [ ] zB ; ; ; ; } } interface Xe { } class J3_1m9O extends Kbbq { B [ ] [ ] v_ ; } interface Hc extends AI { void b ( ) ; } class D_v < R > extends H__ < Yyur_ < OlEh > > { } class O_Z < B > implements Q6_ < P > { boolean [ ] [ ] g ( ) { } } interface T__ extends GO6 { void void z ( ) ; } interface Bh4FkB < M > { void r ( ) ; public void z_ ( ) ; }

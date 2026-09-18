@@ -1,2 +1,2 @@
-///[Error:<|2]
-class W8_ < Y > { } interface < J > extends Qy_ < GH > { } class CY < T > { } interface X6_ { } class Wr7N95_ extends IB2 { public static M w ( char f ) { } public static void mz ( E [ ] [ ] [ ] vO , E [ ] d ) { } char sn5k ( ) { '\n' ; D965 [ ] c ; } }
+///[Error:extends|2]
+extends NU

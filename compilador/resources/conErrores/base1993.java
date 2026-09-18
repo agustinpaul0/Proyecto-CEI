@@ -1,2 +1,2 @@
-///[Error:;|2]
-class QY_ < G > extends S9_yP { static void y ( ) { while ( ! s ( ) . t ( ) . qpx . uTe ++ ? + "" * ! '\\' : this ? true : null ) float [ ] [ ] [ ] [ ] [ ] ; } } class C_ implements T0 { N7W1 ( int wIg_ , I1 [ ] s ) { } } class U_ < E > extends D8 { }
+///[Error:{|2]
+class U_ implements Ze { public void { S r ; ; } static public void h_ ( O i ) { } } interface Fiw < E > { }

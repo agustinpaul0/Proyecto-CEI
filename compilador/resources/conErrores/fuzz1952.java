@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface XB { X [ ] [ ] [ ] [ ] dN ( int [ ] [ ] w , W [ ] c ) ; } { }
+///[Error:P8A|2]
+P8A

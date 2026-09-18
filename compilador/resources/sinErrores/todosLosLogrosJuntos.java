@@ -5,10 +5,10 @@ class Registro<T> extends Base<T> {
 
   public Registro(Lista<T> iniciales){
     int i, j, total = 0;
-    for(int k = 0; k < 10; k++) {
+    for(var k = 0; k < 10; k++) {
       total = k > 5 ? k : total;
     }
-    for(T elemento : iniciales) {
+    for(var elemento : iniciales) {
       this.cuenta++;
     }
     var matriz = new int[][]{{1,2},{3,4}};

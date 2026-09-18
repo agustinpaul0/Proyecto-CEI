@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < H > { } class L__ < E > extends T_ { }
+///[Error:extends|2]
+extends WF

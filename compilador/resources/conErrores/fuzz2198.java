@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface S_ < > { }
+///[Error:{|2]
+interface Zxk < Z > extends { }

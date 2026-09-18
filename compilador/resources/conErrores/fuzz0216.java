@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface R_Av < C > extends AR61_ < E > { char [ ] [ ] [ ] int [ ] w_ ( ) ; } class JG < F > implements Kt < T > { }
+///[Error:U|2]
+class YE < Y > implements O_ { boolean [ ] [ ] [ ] h ( U [ ] p ) { } BY < MvX24_ > [ ] [ ] [ ] a ( B6 [ ] j , Q [ ] [ ] [ ] a ) { boolean c ; } } U a_18_ ( ) { } class F__c5 < T > implements Z__ { } class Le1 < U > { static private void r_ ( N [ ] [ ] [ ] k_2 , boolean [ ] z ) { } }

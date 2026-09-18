@@ -1,2 +1,2 @@
-///[Error:X1c|2]
-X1c
+///[Error:Cfn|2]
+Cfn interface CL extends K_ < T > { } interface C8 < I > { }

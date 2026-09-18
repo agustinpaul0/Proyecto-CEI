@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface M_ extends DF < L > { } extends NRB < F > interface Ona < U > { } interface Wu extends FU < W > { } interface Nk { void c ( ) ; } class ZQ { }
+///[Error:En|2]
+En class Csq implements WB { static void g ( V [ ] [ ] s_ ) { } static MM < V > [ ] [ ] [ ] u7A ( ) { } static LT q ( ) { if ( ! true >= ! '!' % ! false ) boolean x ; else for ( ; ; ) U nw ; } } class Gr extends AxH__ { } class UHaf { }

@@ -1,2 +1,2 @@
-///[Error:B_|2]
-B_ class Td < G > extends LQ { static public void q ( ) { char ww = + Dc . s ( ) -- - + '\"' <= ! null != + false ? + true || null : 00337 % ! true , dF3y ; } }
+///[Error:{|2]
+interface PA { } class Q3 < J > implements J0PL { } class EV extends { boolean [ ] v ; }

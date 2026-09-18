@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface VG < A > extends Y_5_ { } interface extends Kxf < M > { }
+///[Error:}|2]
+class TwY_ implements Llgl1 { C [ ] [ ] f ( ) { } public static F_ < P > [ ] v } interface Gi { }

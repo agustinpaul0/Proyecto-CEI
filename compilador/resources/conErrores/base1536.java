@@ -1,2 +1,2 @@
-///[Error:em19|2]
-interface DQ < D > extends Zm < Z > { boolean [ ] [ ] [ ] [ ] [ ] p2r ( Zu < P___ < Y_ > > w , V_ [ ] [ ] [ ] v ) ; public em19 ( ) ; }
+///[Error:HB__|2]
+interface LO { U rv ( ) ; } class E3 implements B2 < N > { } HB__

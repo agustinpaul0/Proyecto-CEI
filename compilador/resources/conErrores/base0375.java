@@ -1,2 +1,2 @@
-///[Error:<|2]
-< B > class W__R < J > implements D7 { }
+///[Error:E_|2]
+E_

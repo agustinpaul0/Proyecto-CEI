@@ -1,2 +1,2 @@
-///[Error:return|2]
-return interface Wv < T > { void u ( ) ; public E1 z6 ( char l ) ; boolean [ ] kBN ( Pm < ET < CH > > h2eh ) ; } interface T05 extends Nmp < EJ < Qt < Qy23u < W_ < C > > > > > { }
+///[Error:z4|2]
+class ND6 implements Pt_ < PC > { } class PN implements Yf_ { static public void e_Q ( F [ ] b ) { for ( ! null = '\f' - ! null ; + false + null ; ) { } } static private void js_ ( char [ ] oSk , V zl , z4 ) { QJ2 . x2_ ( + false ) -- ; } } class E_ extends HI_ { } interface X_ < Z > { V m ( int oV__ ) ; void d4z ( ) ; } class G_ < M > implements F_8 < W > { US ( S6 zb3 ) { if ( true ) for ( ; ; ) float [ ] [ ] g ; else ! false ; } }

@@ -1,2 +1,2 @@
-///[Error:l_8d|2]
-interface Bu < A > { public void e ( ZM_P [ ] [ ] [ ] ls ) ; l_8d } class P1C_I7 < J > implements NK < N > { } class A4 < P > implements Vv6 < F > { }
+///[Error:void|2]
+interface Yw_ extends H0 { } interface O_8 < D > { } void interface T_ { }

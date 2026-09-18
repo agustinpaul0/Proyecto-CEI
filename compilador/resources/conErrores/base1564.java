@@ -1,2 +1,2 @@
-///[Error:a_|2]
-interface N0 < U > extends I05 < D > { } a_ ( SIn_ < W > p , D6E < Sv > [ ] q ) { }
+///[Error:h_|2]
+interface TW < P > { public int x_u ( S [ ] q ) ; FH < A > [ ] vG ( h_ , int [ ] [ ] ve3 , E [ ] bl ) ; }

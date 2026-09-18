@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface P_r6L__2 < I > { public Vd [ ] [ ] z_w ( ) ; public void u ( ) ; public IlTQHfU < V > [ ] kZ31 ( ) ; } class R5 extends X5_ < NZA > { public static char dYy ( G fe_ ) { Tb < V_ > [ ] m_ = true + true ; } } interface Nn < E > { } [ ] class C_r < P > extends UO1F7 { }
+///[Error:;|2]
+interface D5 { } class BF implements Y_z < D_ > { static char g ( Z_f < DS > y ) { if ( - true ? 3. : + false - true ) C ; else { boolean xr_ , gJ ; return ; } } static public O j0m ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface U__w < U > extends AR < X > { public void ( ) ; public U e ( float pz ) ; }
+///[Error:.|2]
+interface P4 extends I8 { public char p ( D [ ] rSIC , float u , YSw25 b , char z_52 ) ; } class Y2 < X > implements S8 < H_ < R_4_ > > { public static NTx h ( I6 < S > sl ) { } } class D_ < U > { static void q ( F [ ] j8 ) { } public D___ ( boolean n ) { } } class Ym < V > extends WD { static private void b ( ) { var a = + 'r' ; ! . b . c -- == 452f != - null ; } } class ITv { } class Z0 < I > { }

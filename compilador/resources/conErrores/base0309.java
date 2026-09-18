@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class implements ZHo { } class WFl implements H09 < E > { } class P_ < P > implements MW5la { } class Kd < D > implements I_ { } interface O_ < D > { } class Ck_ < D > implements W50 < F > { }
+///[Error:<|2]
+class Xi7_ { } interface Zv < K > extends < I_3 > { } class V____o { static private B c ( ) { P0 . f82 ( ! null ) * - "" -- ; } }

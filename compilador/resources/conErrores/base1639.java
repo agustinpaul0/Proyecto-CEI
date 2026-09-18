@@ -1,2 +1,2 @@
-///[Error:a6|2]
-interface MP_ < Q > extends W_u < M_ < S_ < M > > > { char [ ] [ ] u ( ) ; public a6 ( ) ; }
+///[Error:DF|2]
+class K1 implements AL < L924 < E_ > > { IbQWt ( ) { } static T [ ] [ ] p ( U8 [ ] [ ] l ) { } } interface C2 < H > extends M_ { } class NA implements D_ < W > { int [ ] e ; } DF class EUH < Q > implements VhL < Y > { } interface MGC extends ZODdl < T > { N uJ ( ) ; public void c__D86 ( int r ) ; public void e ( ) ; } class CN6 extends C_t { } class NA < X > { static E_0m < I > [ ] v6 ( ) { { { } ; } return ; return ; { } } void b0x ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-class J8Gw < M > extends Np < Km > { char a ; static public int w ( ) { for ( J idc : - "" -- <= + 6F ) { + 41d ; J_ . y0 ( ) ++ ; } char [ ] dX80__ ; true ; } static G iS ( ) { } TZ ( ) { } private static void s ( ) { if ( ! true ) < PT > [ ] [ ] o , mYI3 ; boolean [ ] rl , t7 , x ; } static void u98 ( Iz2Pjg [ ] f ) { boolean y_c ; MH_3L < W3 > [ ] [ ] hWA , i ; char c , y_ ; } YR < G5 < S > > [ ] zH ( ) { ; for ( ; ; ) ; } }
+///[Error:E|2]
+class D0y < M > implements ID { } E [ ] [ ] lIb59_b , zt ; int [ ] x ; class Gr6 extends Xp < H6 < G_P > > { } interface FL { char s ( QP5X < Z > n34 ) ; NM yn ( float [ ] [ ] jp , Sx [ ] [ ] [ ] [ ] [ ] [ ] vtL , M [ ] [ ] o ) ; } class Hvc7_ < D > implements QjC { }

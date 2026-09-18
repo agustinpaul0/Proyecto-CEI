@@ -1,2 +1,2 @@
-///[Error:++|2]
-class I_ { private static void g ( I [ ] y , char twx0jqP_2 ) { if ( + false = ! ++ ? false : false ) { for ( Q [ ] p3q ; ; ) { } } { while ( true ) int [ ] j ; } } static public F r ( ) { } }
+///[Error:{|2]
+class F9 { private float wBij ; private char [ ] [ ] [ ] v__C { } } interface C_L < Z > extends M_0 < S > { } class Uq < F > extends TQkp_49f_ { static private void s ( ) { XOd . h2 ( null ) -- != ! 'l' ; } }

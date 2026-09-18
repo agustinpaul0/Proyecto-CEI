@@ -1,2 +1,2 @@
-///[Error:{|2]
-{ ; } class S4o6 { P n = 6.e3 ? + false = - this : + "0\b\'a}" . q ( ) -- ; static public L [ ] [ ] v6 ( ) { } } interface Mq_r6 extends Rp < F > { }
+///[Error:QoB2k|2]
+interface X_Y < B > { } class LlM < H > implements Qc { char [ ] [ ] i ; } QoB2k

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface H8w < E > extends H2k < Gk < W > > { } interface U4 extends { }
+///[Error:>|2]
+interface LL < > extends E7Fcx_aB { }

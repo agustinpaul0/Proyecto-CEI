@@ -1,2 +1,2 @@
-///[Error:cac|2]
-interface N_4 { cac ( ) ; }
+///[Error:n|2]
+n

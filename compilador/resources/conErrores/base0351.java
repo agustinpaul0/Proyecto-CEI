@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface B95 < O > { } interface FdVlHWIB < A > { void ( ) ; }
+///[Error:{|2]
+class Gu implements { }

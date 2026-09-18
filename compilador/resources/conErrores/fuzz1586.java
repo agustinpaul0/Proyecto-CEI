@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Y8h_j < C > { public boolean u_ ( ) ; } class IX4IkR { } ( ) interface Mf { void s ( ) ; }
+///[Error:{|2]
+interface W8O extends Wm < AX4x > { float puk ( ) ; } class Rdv_ < O > implements { private static void e_ ( boolean [ ] [ ] [ ] a , char kt , ViY < Va5 > [ ] s__ , WG_3__ uY ) { } } interface Ye < C > { }

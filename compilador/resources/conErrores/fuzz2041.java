@@ -1,2 +1,2 @@
-///[Error:W_|2]
-W_
+///[Error:}|2]
+interface LBqf extends C9 { void h ( ) ; N }

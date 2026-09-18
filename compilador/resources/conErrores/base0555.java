@@ -1,2 +1,2 @@
-///[Error:null|2]
-class Llw extends Y7X { static private void f ( ) { } static void r null public static T wv ( ) { } }
+///[Error:Ibn|2]
+Ibn interface YT < U > { } interface DvH1 < N > extends Qpr < E > { }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class TF implements V_ < > { }
+///[Error:static|2]
+static Ild_ t_ ( ) { }

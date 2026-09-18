@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface TF_ < Y > extends Bmi_7 < X__L > { } class VB < K > extends I_B { } class P0 < J > extends Fo < O7 < Q > > { static void h ( ) { } static void y ( ) { { } - ";" / true || null ; } TrLi___ ( ) { } } class C72 < L > { Yj [ ] [ ] yi__ ( char [ ] [ ] oVF , M p ) { } static void t ( D89 < V1 > [ ] [ ] t , int [ ] v ) { - C___s_w . b ( ) . u__ . cM != - 2.F && true ; } private Z2D < W > [ ] [ ] [ ] [ ] [ ] [ ] ph_2bN ( ) { } } interface ElX { void m ( ) ; } interface extends Wh { } class S6F < K > { }
+///[Error:V|2]
+class JE__e implements Bl { public GX ( FkF < Nn < ZpZ_UJ > > [ ] [ ] [ ] c ) { } } class NA implements V { static private void b ( ) { } } class Tw < P > extends T_ { }

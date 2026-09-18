@@ -8,7 +8,7 @@ public interface ManejadorDeArchivo extends SourceManager {
 
     String getCurrentLineText();
 
-    // La confirmación del fin de archivo. El centinela END_OF_FILE sigue siendo la
+    // La confirmación del fin de archivo. El centinela END_OF_FILE es la
     // señal, pero solo no alcanza: (char) 26 es un byte legítimo dentro de un
     // fuente, así que recibirlo es condición necesaria y no suficiente. Esto
     // responde la otra mitad —si la posición de lectura se pasó del contenido—, y

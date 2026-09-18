@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface T3 { DG < Z > [ ] [ ] j ( ) ; L } class K__2 < E > { } interface Y_ < Z > extends NG77 < C7 > { }
+///[Error:-|2]
+class B_nB < Z > implements B6 { static void x_ ( boolean [ ] j_ ) { } } interface Xd < C > { } interface H_ < W > { int [ ] at_q ( I [ ] x ) ; } class X_ { static private X [ ] [ ] u6 ( ) { } } class Mr < X > implements Mz < Md0a > { static private int [ ] [ ] n ( I w ) { + 998 ; var yO2 = null ; } public static Z [ ] e - true ; int [ ] h ; { } } class M_ { QE < R13 < I > > u ( S a ) { } static void p ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-void u ( ) ; void r ( ) ;
+///[Error:{|2]
+interface Z9D_ < Q > extends { W_81C3_f < H > [ ] [ ] nZ ( ) ; }

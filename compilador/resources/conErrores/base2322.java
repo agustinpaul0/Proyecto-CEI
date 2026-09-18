@@ -1,2 +1,2 @@
-///[Error:void|2]
-class F0 extends A1 < T_Q < J > > { } class It_n { } class Pd extends ICb { public S_8Nv ( ) { while ( + '.' ) { } } private H [ ] t ( char [ ] [ ] [ ] [ ] w , boolean c_ , U [ ] n ) { } } class R2g < D > extends F90_ { } class F_97__ < T > implements YI { } void n ( ) ; class S_U < Q > extends E_Zn < C > { }
+///[Error:?|2]
+class U48 implements Q_ { static public void lOH5B ( ) { } Q [ ] [ ] m = ! 2e+300818d % - this ++ <= 15276 ? SG_4_ . b ( ) -- = + 8562E+2d ? ! 'P' : - 18 != + true : V_2 . w_ ( ) . v ( ) ++ == G_Z . d9 ( ) ? true > + '\'' || null - + false ? false : + false : ? 'h' <= + null : - true != false ; }

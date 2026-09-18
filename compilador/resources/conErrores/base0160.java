@@ -1,2 +1,2 @@
-///[Error:N|2]
-N class NH_c < V > implements SB_ < R0R > { } class Y0L extends M_ < N_J_ > { } class Ulb0 { }
+///[Error:=|2]
+interface Ew { public Ey [ ] [ ] d0 ( ) ; public void i ( I [ ] [ ] [ ] [ ] b , char [ ] y ) ; } class Hw { E [ ] [ ] = - true == + kP6 ( ) . k ++ ; X [ ] [ ] n ; }

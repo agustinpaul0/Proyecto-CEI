@@ -1,2 +1,2 @@
-///[Error:>|2]
-class O9JnF < > { }
+///[Error:<|2]
+interface KpH extends Ftt < GO__a < < V > > > { }

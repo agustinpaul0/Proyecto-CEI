@@ -1,2 +1,2 @@
-///[Error:G8_3n|2]
-G8_3n
+///[Error:>|2]
+class D3 { } interface B7 extends Jj < > { public S r2_ ( ) ; char wy ( ) ; boolean w_ ( char [ ] [ ] s9_3 ) ; }

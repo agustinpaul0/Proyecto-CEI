@@ -1,2 +1,2 @@
-///[Error:A|2]
-A class T7X implements DN { }
+///[Error:JL0y5|2]
+interface WrT { public G [ ] [ ] i ( ) ; public void y308 ( KKRB_4 [ ] jQ , char g ) ; public Lw4 nHlze ( ) ; public boolean rhrt_1 ( int [ ] vG9 ) ; } class ZUG < Z > { static public void j ( K63 [ ] yA_ , MjKP_ [ ] [ ] [ ] [ ] [ ] j ) { var m = - true >= ! this . vWc43 ++ ? - this ++ <= - '\r' : this ++ >= + 71 ? ! null : ! false ; } } interface LN { } class UR79 < Z > extends F_V < AGY > { } interface MK < N > extends KVgH_ { } JL0y5 interface Pe_b_6 < V > { }

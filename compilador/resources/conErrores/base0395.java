@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface L3 extends Q_ { } class Dw < W > implements CC { Q6T }
+///[Error:{|2]
+class MY implements Po < TV > { static void p { } }

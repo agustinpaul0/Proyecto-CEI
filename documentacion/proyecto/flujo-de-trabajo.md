@@ -5,11 +5,12 @@
 ## Antes de implementar algo
 
 1. Identificar qué fase del compilador toca.
-2. **Si el comportamiento no está ya resuelto en [`convenciones-catedra.md`](convenciones-de-la-catedra.md)
-   o [`especificacion-lexica.md`](../lexico/especificacion-lexica-de-minijava.md), seguir el
+2. **Si el comportamiento no está ya resuelto en [`convenciones-de-la-catedra.md`](convenciones-de-la-catedra.md),
+   [`especificacion-lexica-de-minijava.md`](../lexico/especificacion-lexica-de-minijava.md) o
+   [`decisiones-de-logica.md`](../sintactico/decisiones-de-logica.md) del sintáctico, seguir el
    [protocolo de investigación](protocolo-de-investigacion.md) antes de escribir código** — MiniJava primero, Java
    verificado contra la especificación después, informar al usuario, recién ahí implementar.
-3. Identificar qué tipo(s) de test corresponde(n) según [`testing.md`](../compartido/estrategia-de-testing.md).
+3. Identificar qué tipo(s) de test corresponde(n) según [`estrategia-de-testing.md`](../compartido/estrategia-de-testing.md).
 4. Revisar tests existentes relacionados.
 5. Implementar.
 6. Agregar/actualizar tests.
@@ -44,7 +45,7 @@ Regla explícita de la cátedra, repetida en el README de cada etapa. Vale para 
 sintaxis y para lo que venga: si algo no está resuelto por la consigna, por el material técnico
 del lenguaje ni por un logro, **el desempate es replicar lo que hace Java** — nunca inventar una
 regla propia ni elegir «lo que parezca razonable». El procedimiento obligatorio está en
-[`investigacion.md`](protocolo-de-investigacion.md): chequear MiniJava primero, verificar la especificación
+[`protocolo-de-investigacion.md`](protocolo-de-investigacion.md): chequear MiniJava primero, verificar la especificación
 real de Java después (no de memoria), **informar al usuario antes de implementar**.
 
 ### La robustez del testing es lo primero
@@ -55,14 +56,13 @@ casos raros y de borde es parte del trabajo, no un extra. Para cada construcció
 caso vacío y el de un solo elemento, el anidamiento profundo, los límites del contrato de salida,
 lo que la construcción **debe rechazar** además de lo que debe aceptar, y las entradas
 degeneradas (archivo vacío, un único token, el error en el primer carácter
-y en el último). La estrategia completa está en [`testing.md`](../compartido/estrategia-de-testing.md).
+y en el último). La estrategia completa está en [`estrategia-de-testing.md`](../compartido/estrategia-de-testing.md).
 
 ### Los logros no son configurables
 
 Lo dictaminó el profesor: poder elegir con qué logros correr complejiza la gramática sin necesidad,
-y cada etapa nueva obligaría a rehacer el trabajo con más chance de error. No hay `--logros=`, ni
-`-Dlogros=`, ni marcas `@+`/`@-` en el `.g`. Al agregar una construcción nueva se la incorpora a la
-gramática y punto, sin prever ninguna variante apagada.
+y cada etapa nueva obligaría a rehacer el trabajo con más chance de error. Al agregar una
+construcción nueva se la incorpora a la gramática y punto, sin prever ninguna variante apagada.
 
 ### En los entregables no se deja constancia de los errores del desarrollo
 
@@ -100,10 +100,9 @@ Ninguna tarea se considera terminada hasta que se cumplen **las tres** condicion
    implementaciones a medias, sin código muerto dejado "por las dudas". Si algo queda pendiente a
    propósito (por alcance, no por falta de tiempo), se anota explícitamente en el issue o el commit, no
    se deja implícito en el código.
-2. **Documentación actualizada**: `AGENTS.md`, los archivos de `documentacion/proyecto/` —incluido el plan de la
-   etapa activa, con su estado y su backlog— y `documentacion/*.md` reflejan el estado real del
-   código en ese momento — ninguno puede describir
-   algo que ya cambió o algo que todavía no existe. Esto se verifica en cada sesión antes de dar una
+2. **Documentación actualizada**: `AGENTS.md`, `ESTADO.md`, los archivos de
+   `documentacion/proyecto/` y `documentacion/*.md` reflejan el estado real del código en ese
+   momento — ninguno puede describir algo que cambió o algo que no existe. Esto se verifica en cada sesión antes de dar una
    tarea por cerrada, no sólo al final del proyecto.
 3. **El usuario fue informado** de cualquier decisión tomada por el [protocolo de
    investigación](protocolo-de-investigacion.md) (MiniJava silente → Java verificado) — no alcanza con que quede

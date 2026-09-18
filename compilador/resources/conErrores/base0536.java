@@ -1,2 +1,2 @@
-///[Error:void|2]
-void
+///[Error:f4|2]
+interface A88z < D > extends S4 { public void c ( int [ ] [ ] [ ] [ ] e , FF < U_2 > [ ] f , EN [ ] [ ] [ ] l_2d ) ; } interface A_a { G [ ] h__ ( ) ; void e ( ) ; public X [ ] d ( ) ; Zm4A < Z7K < XJV29 > > [ ] x ( ) ; TV_ z ( Be [ ] kt_ , boolean b , JM [ ] wi ) ; } class Un extends Pi4 { static private void r4_v ( ) { var r_ = - XC . pN4 ( ) -- ; } static private char r ( Ky n_ ) { for ( var a12 = ! false ; ; ) { } } static void q ( float rP , char s ) { { } } static float su ( ) { } static f4 ( ) { EL . c_a_ ( ) ; return ; 86330 ; { } } } interface C7__0 < A > extends Nr { public void vSi ( M5e < Bd > [ ] h ) ; } interface Cn < E > extends Fs_ { } interface U_ < L > { T [ ] sWI ( ) ; N [ ] p9c5N ( N p ) ; }

@@ -1,2 +1,2 @@
-///[Error:FufA7_|2]
-FufA7_
+///[Error:extends|2]
+extends R3 < S >

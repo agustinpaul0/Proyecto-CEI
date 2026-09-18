@@ -1,2 +1,2 @@
-///[Error:X5|2]
-interface A__U { } X5
+///[Error:{|2]
+class R_d { static void tX { } } interface Qj extends X4_ { }

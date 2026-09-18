@@ -1,2 +1,2 @@
-///[Error:z|2]
-interface I_ < L > { void w ( int o ) ; float d9 ( ) ; SQ < D0 > z ( ) ; public void w4 ( z ) ; }
+///[Error:wX|2]
+interface TW { } interface A__ { wX ( ) ; int [ ] [ ] p0C ( char u ) ; public void q ( ) ; public void m ( ) ; }

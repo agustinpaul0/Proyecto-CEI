@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Ysy_A < K > extends { }
+///[Error:Qs|2]
+Qs

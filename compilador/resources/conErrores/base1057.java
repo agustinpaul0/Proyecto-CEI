@@ -1,2 +1,2 @@
-///[Error:{|2]
-class PlD { } class J3s < P > { } class Yy < R > implements HP { } interface R_0u_ extends { void j ( ) ; W [ ] tDP ( ) ; } interface B_ extends M5zI < J5 < G > > { }
+///[Error:,|2]
+interface Vu extends DB_ < BG < I > > { void r ( L pjm_ ) ; BR_O < D9 < QK > > c , I [ ] k , E [ ] [ ] [ ] c_ }

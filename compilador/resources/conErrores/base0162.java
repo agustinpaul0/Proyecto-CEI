@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface EQ < G > extends F8 { E [ ] [ ] y ( ) ; } < D > interface VS { } class B__ { public static void k ( ) { } }
+///[Error:Y|2]
+interface XP_oE_ { } class U9 < M > implements Tm { boolean [ ] [ ] [ ] [ ] [ ] rM ; } interface QGlH7_ extends Y { public void vV ( ) ; public float f ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Z0 extends { }
+///[Error:extends|2]
+extends WS

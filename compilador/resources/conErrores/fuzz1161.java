@@ -1,2 +1,2 @@
-///[Error:Nu|2]
-interface G1 { void c_ ( ) ; public Cy_09 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] sAq_a ( OM < LN > ng8a , float [ ] c__ ) ; ISr3 [ ] [ ] pY ( ) ; void ey ( F pO5 , CZ [ ] f ) ; public void l99 ( float [ ] r ) ; } Nu < MP > interface J0_ < X > extends LJ { } class N__ < U > extends Tt1_ { public void v7AW ( T l , Q lB ) { ; ; } static float k_pD ( float [ ] [ ] [ ] [ ] q ) { } } interface O_6 extends C_E_ { P p_ ( ) ; public void d ( ) ; } class O2_J8v implements Ea_3 < Q_P < TN_ < U0_ > > > { F_SK ( char [ ] z , X [ ] [ ] k ) { A [ ] [ ] eY ; } public static void aXU ( ) { 675716 ; int rC ; } public static N c ( ) { } } interface Dz_ < W > extends OL { public void ve2 ( BG q_ ) ; void v ( SP i ) ; }
+///[Error:>|2]
+interface P_T < > { public char o ( ) ; }

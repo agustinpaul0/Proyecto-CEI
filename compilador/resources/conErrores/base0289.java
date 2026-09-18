@@ -1,2 +1,2 @@
-///[Error:X|2]
-interface O_Wl < O > extends D9 < HFON_ < Y_b > > { } X interface KE < H > extends RNs { }
+///[Error:==|2]
+class CN_j implements Y8_aKq_ < ZH_ < J > > { private static float cR7 ( float g2 ) { return ; } static private void f ( char x ) == + "" ++ public void z ( ) { } } interface Sn___ < E > extends Je < T1_l < L > > { } class Sw < H > { }

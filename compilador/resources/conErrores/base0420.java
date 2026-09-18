@@ -1,2 +1,2 @@
-///[Error:'9'|2]
-class C91 implements Y_ { static O '9' = HI . l5I_I ( ) -- ? + false : 9f Q [ ] [ ] g ; } interface Eb { }
+///[Error:;|2]
+interface Y6OHY < Q > { void ob ( ) ; } interface Q_o < F > extends Z_ < AC1_VWk2 > { float u_ ( boolean [ ] w_58 ) ; public void y3 ( ) ; int [ ] l ; }

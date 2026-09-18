@@ -1,2 +1,2 @@
-///[Error:o|2]
-class Cp { static o ( ) { T sVj ; } }
+///[Error:Gn|2]
+Gn interface J5 { public void f ( ) ; void o_ ( ) ; public void g ( L y ) ; public char g8 ( ) ; }

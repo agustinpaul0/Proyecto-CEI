@@ -1,2 +1,2 @@
-///[Error:a|2]
-class B_ extends GS < O > { static a ( Q [ ] s , float f3G_6j ) { } boolean p6 ( ) { while ( - Wx7 . fY ( ) -- ? true : null ) O_ . mw_ ( ) -- % - null ; ; '\"' && + false ; } static public void k_ ( R3 < Cr < L > > o ) { var m = 773d * false ; } }
+///[Error:extends|2]
+interface D_ { } interface J_M66xG_ < G > extends A_ < AN < Z > > { public K c7S ( Z k ) ; public void j_Om4p_w ( ) ; } extends T_ interface V_ < J > extends H6s2d { }

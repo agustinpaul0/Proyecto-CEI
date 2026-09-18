@@ -1,2 +1,2 @@
-///[Error:77698|2]
-interface G6 extends ArkM < Lv < AcZ < I_ < W6 < F64D < Q3c_ > > > > > > { public float mg ( ) ; } interface Xs { } class XC_Q_ < M > extends PWAZ < Oo < V > > { } interface XE_x { } interface U_ < P > { public void s ( ) ; WLz < C_O0 > w ( H zH ) ; public void z6_ ( UJy3eZ < Y > [ ] [ ] [ ] dk ) ; public void tWd ( SsK [ ] q ) ; public int n ( ) ; public void aJ__7 ( ) ; Y_6a [ ] [ ] [ ] [ ] e_ ( ) ; public void d ( ) ; public void ad ( ) ; } 77698 ; ; interface CC < S > extends FaT < Is > { public void b ( ) ; public int f ( int f_ ) ; }
+///[Error:{|2]
+interface G1FA_kKB extends { } interface Y_ extends HB1 { }

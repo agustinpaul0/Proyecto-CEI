@@ -1,2 +1,2 @@
-///[Error:'\n'|2]
-interface GoF_B_ < D > { } interface Sl_ < H > { } '\n'
+///[Error:OifY|2]
+OifY

@@ -1,2 +1,2 @@
-///[Error:s|2]
-interface A2 extends Rz < L_k > { public s ( ) ; }
+///[Error:>|2]
+interface Xm8_A extends RW8 < > { }

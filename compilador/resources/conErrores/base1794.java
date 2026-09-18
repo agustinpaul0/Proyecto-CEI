@@ -1,2 +1,2 @@
-///[Error:{|2]
-class QRc < X > implements { }
+///[Error:P|2]
+interface F5_y_ extends P { }

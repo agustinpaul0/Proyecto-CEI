@@ -1,2 +1,2 @@
-///[Error:PZ|2]
-PZ s_ ( int g5 ) ;
+///[Error:GF0o|2]
+GF0o

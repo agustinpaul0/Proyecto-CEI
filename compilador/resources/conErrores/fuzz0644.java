@@ -1,2 +1,2 @@
 ///[Error:>|2]
-class H_ < > { } interface Nn_ extends P__38_ { }
+interface F_ < X > extends H_ < LcsR < > > { }

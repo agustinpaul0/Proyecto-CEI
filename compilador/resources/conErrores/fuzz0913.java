@@ -1,2 +1,2 @@
-///[Error:tc|2]
-interface R_ extends FN { public boolean wL8_ ( tc , W [ ] o , P x3T ) ; }
+///[Error:>|2]
+class NLl < V > implements Y1T < > { } class W_b_a < Y > extends R8k { } class Q_a { } class Qsqd < W > implements G7 < Mr < P7 < S > > > { } interface U3 < Y > extends HB < S > { public void e ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface K_ < Y > { } interface MrI5 < M > { } interface Y_ { int aK ( M0A < F1n19632 > [ ] [ ] [ ] [ ] p , float [ ] fQ , W [ ] [ ] m ) ; < UA_R > a ( ) ; } class UW0 < D > extends Kp < U > { R tf_ = + null <= ! false * ! this . o -- < this ++ >= 9F - - false ; } interface ITl < P > { } class Ko < U > extends Q_42 { static public void l ( ) { } } interface U_ extends JEq_ < B9_ > { }
+///[Error:{|2]
+class D__18i < T > { void x { } }

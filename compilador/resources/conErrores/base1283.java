@@ -1,2 +1,2 @@
-///[Error:MUH|2]
-class P_ < M > extends IS5 < N > { } MUH class J_w < O > extends B_bYK < I > { } interface Tw_ < S > { public float [ ] k ( ) ; public Yq_ nS ( ) ; } interface Vi8_z extends I9i_ { }
+///[Error:<|2]
+interface Vb < K > { J_ < U__s_H_uJ > e ( ) ; } interface Y4 < M > extends SQ { public void p ( float [ ] x ) ; Bc < A_d > [ ] [ ] [ ] vI ( ) ; } interface T_ < I > { void xF ( ) ; } interface Nn extends E3 < B > { public void w5 ( HS_ h6 , Uy < F_9Wb < M > > [ ] [ ] q0 ) ; } class IxV_ implements Cp_ < EY < A > > { } interface T3 < I > extends N_ { } class Z4 extends Ba < Z > { } class G1 { L h ( ) { { } } static O5g < O > v_2B ( ) { Z [ ] [ ] [ ] g , kfJ ; ; return ; } } < P >

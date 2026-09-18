@@ -1,2 +1,2 @@
-///[Error:T8t_5L9|2]
-T8t_5L9 < NR_Lh < O > > e ( ) ;
+///[Error:<|2]
+interface Dh extends SA < L_x > { } < K >

@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) { return 37.e-931f || - 175429 ; }
+///[Error:}|2]
+interface MG < O > extends U7fK { void } class Z_ implements ZM5 { }

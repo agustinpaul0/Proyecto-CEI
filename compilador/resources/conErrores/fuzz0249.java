@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface L5 extends Y_ { public [ ] [ ] [ ] [ ] g ( ) ; O [ ] [ ] ro6 ( boolean o , N [ ] a , int [ ] [ ] [ ] [ ] [ ] n ) ; }
+///[Error:P0|2]
+interface Po extends Cx0_7z_ { char g ( ) ; F_ [ ] [ ] giG6_ ( ) ; public boolean [ ] s9c_FW P0 < X_ > ; } interface G0 extends Ayp { }

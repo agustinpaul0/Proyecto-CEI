@@ -1,2 +1,2 @@
-///[Error:N|2]
-interface A__U { } N
+///[Error:}|2]
+interface NQ < N > { boolean }

@@ -95,7 +95,7 @@ class EscapadorDeNoImprimiblesTest {
         assertEquals(texto, EscapadorDeNoImprimibles.escapar(texto));
     }
 
-    // Nada del compilador le pasa null hoy, pero el escapador es de uso general y
+    // Nada del compilador le pasa null, pero el escapador es de uso general y
     // envolver un null en la cadena "null" ensuciaría el mensaje del error.
     @Test
     void unTextoNuloSePropagaSinEnvolverloEnLaCadenaNull() {

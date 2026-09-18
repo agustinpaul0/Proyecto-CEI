@@ -1,2 +1,2 @@
-///[Error:<|2]
-class NM3 extends PG < Dv < E > > { } class B8 < B > implements Nk < < D > > { }
+///[Error:}|2]
+class OgGan < N > { public Z [ ] [ ] qZ ; void }

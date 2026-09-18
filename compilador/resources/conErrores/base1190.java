@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface B_ < U > { float tN ( S [ ] [ ] lZ , char f , UKq < J > nXzX2r_eJ , Jh__ [ ] v ) ; void gU ( Ne < Z_h > dwn , X [ ] [ ] [ ] [ ] a_x ) ; } static int d_2 ( ) { } interface T0_w { }
+///[Error:>=|2]
+>= interface O_ extends F_2F1 { public void l9 ( ) ; public TX_T r5 ( Y [ ] [ ] [ ] [ ] [ ] ueQa , M m ) ; }

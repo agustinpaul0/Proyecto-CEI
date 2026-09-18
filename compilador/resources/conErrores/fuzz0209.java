@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Wm extends D__ < YM < VIN_0O < T > > > { float t8A6w } class T3V < K > implements U6 < X > { }
+///[Error:f_|2]
+class K_MH < W > implements S4_ { static public f_ ( Q b1 ) { return ; } } class U4 extends Bq < OO < D_y1 < A > > > { }

@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface WwW { < T > [ ] m ( ) ; }
+interface L2 < U > { } < W > interface Dt_ { C ce_ ( ) ; float t_ ( ) ; public void c ( ) ; }

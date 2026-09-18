@@ -1,2 +1,2 @@
-///[Error:X1|2]
-class AyG < O > extends SRE < Y > { } X1
+///[Error:v18Jw_|2]
+v18Jw_ interface W_ { public void y ( ) ; } class N_ extends TL < B > { }

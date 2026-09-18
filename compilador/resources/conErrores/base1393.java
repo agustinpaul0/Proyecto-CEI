@@ -1,2 +1,2 @@
-///[Error:9.02E+5|2]
-9.02E+5
+///[Error:{|2]
+class Z0 extends { }

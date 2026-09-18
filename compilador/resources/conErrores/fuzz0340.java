@@ -1,2 +1,2 @@
-///[Error:OY|2]
-class Za { static public void iz3 ( int jD_8 ) { } static public void OY } class Q__3 < V > extends Po_ < Z1 < Jv > > { }
+///[Error:++|2]
+class KL < O > { static void d ( ) { } public P o = null % - this . s9 -- + true ? IT . i ( ) && LFc . sxb ( ) . nvZ0 ++ : '\t' * + RMQ . g_ ( ) -- || ++ % + '\\' ; O [ ] q ; char wH_ ( ) { for ( ; ; ) { } } static void j_ ( ) { ; } }

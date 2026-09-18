@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface O5j9 < U > { } interface Iu { public A_ nV ( boolean l ) ; public H q4 ( int ibbPLQ_2 ) ; public W [ ] n ( [ ] ) ; } interface LeV9oq { }
+///[Error:X|2]
+interface O_Wl < O > extends D9 < HFON_ < Y_b > > { } X interface KE < H > extends RNs { }

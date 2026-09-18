@@ -1,2 +1,2 @@
-///[Error:>|2]
-class DT_ < > { private V4s_I ( ) { for ( HX . l ( ) . z . r ( ) . l ; ; ) return false ; while ( "" ++ = null ) return ; SU < TBh > [ ] k , b56P , h , i ; while ( null ) 55F ; ; float y , kZ , v ; } int [ ] [ ] s ( DY < VJ_a_x > q , float [ ] a ) { } } interface W__ < N > extends Nk { } class O2 < B > extends LcXq_xs { } interface S9WxD < N > { boolean a ( int k , Ul < H > m , int [ ] o60 , HP_ < O3a > w , L0MY7_8 gs ) ; public void z ( float r_ , B or_ ) ; public O e ( J_ < Mtz > [ ] [ ] [ ] [ ] zMi ) ; } interface N_ extends J_ { }
+///[Error:int|2]
+int interface C_T { } interface C_ { public B5c [ ] wn___ ( ) ; char [ ] uT ( ) ; public R_ < Po < J > > [ ] a ( ) ; public N pI ( W3zt j_ , int iQ_ ) ; public int u ( ) ; } interface Mx extends M_0 < A > { void bUe ( Fv_ < O_ < U > > e4 ) ; } interface V__ { Z [ ] x5 ( U [ ] jy , D [ ] [ ] [ ] [ ] z , char [ ] [ ] [ ] h ) ; X [ ] [ ] [ ] x ( U [ ] [ ] [ ] [ ] p_7 , Fgn < A > [ ] jeb5 ) ; }

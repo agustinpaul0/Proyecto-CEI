@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import net.jqwik.api.Tag;
 
 // Invariantes de robustez que deben sostenerse para CUALQUIER entrada, no
-// sólo para los casos concretos de AnalizadorLexicoTest (agents/testing.md).
+// sólo para los casos concretos de las suites AnalizadorLexico*Test
+// (documentacion/compartido/estrategia-de-testing.md).
 @Tag("lexico")
 class AnalizadorLexicoPropiedadesTest {
 

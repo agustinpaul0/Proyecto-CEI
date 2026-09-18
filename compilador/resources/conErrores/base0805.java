@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface F_ { } extends Vx class Z_wd8_ { public A [ ] [ ] [ ] [ ] b ; }
+///[Error:t__|2]
+interface R_ { public void evc ( ) ; public void k ( t__ ) ; }

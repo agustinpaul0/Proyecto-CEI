@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Er < Z > extends GW6r { M [ ] oE ; float [ ] g ( [ ] v ) { if ( null ) F4_ < E > q ; } }
+///[Error:<|2]
+interface < V > extends TxTi_0 { } class AdQ4 extends Tv { }

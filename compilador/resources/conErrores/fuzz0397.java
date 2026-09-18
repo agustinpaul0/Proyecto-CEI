@@ -1,2 +1,2 @@
-///[Error:,|2]
-class Y6u_ { static public void y6 , G [ ] gN } class H1_ { }
+///[Error:a|2]
+a

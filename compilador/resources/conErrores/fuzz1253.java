@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface V11_q < I > extends < Z > { }
+///[Error:>|2]
+interface Ns_n { Pta as_ ( ) ; void r ( Z_ < > b ) ; }

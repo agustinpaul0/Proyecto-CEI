@@ -87,19 +87,20 @@ lexema del fuente.
 **Decisión**: una única tabla, `TablaDeLexemas`, con las dos direcciones — lexema → tipo para emitir,
 tipo → lexema para el `$` del `EOF`, que no se lee del fuente. Ningún estado del autómata lleva un
 `TipoDeToken` encima: delimita el lexema y consulta la tabla. Las palabras clave son un subconjunto
-de esa tabla y siguen funcionando igual que siempre: se reconoce un identificador común y, antes de
-emitir, se consulta.
+de esa tabla y funcionan como en la técnica de la cátedra: se reconoce un identificador común y,
+antes de emitir, se consulta.
 
 **Lo que la tabla no puede hacer, y por eso el autómata sigue haciendo falta**: el *maximal munch*.
 La tabla no sabe si un `>` es `op_mayor` o el principio de un `op_mayorIgual`; eso lo decide el
 autómata mirando el carácter siguiente, y recién cuando terminó de consumir consulta. El reparto es
 **el autómata delimita, la tabla nombra**.
 
-**Qué se gana**: la correspondencia tipo ↔ lexema deja de estar repetida en seis lugares. Como
-efecto concreto, `EstadoOperadorConSufijoOpcional` pasa de seis instancias a tres —lo único que
-distinguía a `>` de `<` era el tipo de token— y `EstadoOperadorDoble` de dos a una. Y habilita dos
-tests que antes no eran expresables: que ningún tipo de token quede sin entrada en la tabla, y que
-cada uno de los 49 lexemas, suelto en un fuente, produzca exactamente el tipo que la tabla promete.
+**Qué se gana**: la correspondencia tipo ↔ lexema vive en un solo lugar. Como efecto concreto,
+`EstadoOperadorConSufijoOpcional` tiene tres instancias y no seis —lo único que distinguiría a `>`
+de `<` es el tipo de token, y ése lo da la tabla— y `EstadoOperadorDoble` una sola. Y habilita dos
+tests: que ningún tipo de token quede sin entrada en la tabla, y que cada lexema fijo —los 49 de la
+Etapa 1, 52 con los tres de la Etapa 2—, suelto en un fuente, produzca exactamente el tipo que la
+tabla promete.
 
 **Descartado**: un autómata dedicado por palabra clave. Requeriría casi un estado por letra de cada
 palabra, fusionados con los estados de identificador — decenas de estados frágiles para algo que una
@@ -108,7 +109,7 @@ tabla resuelve en tiempo constante.
 
 ## 5. Decisiones de arquitectura
 
-Desarrolladas en [`arquitectura.md`](arquitectura-del-analizador-lexico.md) §5; resumen con su justificación:
+Desarrolladas en [`arquitectura-del-analizador-lexico.md`](arquitectura-del-analizador-lexico.md) §5; resumen con su justificación:
 
 | Decisión | Por qué |
 |---|---|
@@ -116,7 +117,7 @@ Desarrolladas en [`arquitectura.md`](arquitectura-del-analizador-lexico.md) §5;
 | Todas las dependencias por constructor | Cada pieza se sustituye en tests sin frameworks de mocking. |
 | Sin `System.exit()` ni estado estático mutable | Los testers de la cátedra invocan `main()` in-process y repetidamente: un `exit` mataría la corrida y un estático mutable contaminaría un caso con el anterior. |
 | Un estado parametrizado para los seis operadores con sufijo | Seis clases idénticas salvo dos caracteres no aportan nada. |
-| Puntuación de un carácter con un `Map`, no una clase por símbolo | Ídem: diez clases triviales contra una tabla. |
+| Puntuación de un carácter nombrada por la tabla, no una clase por símbolo | Ídem: diez clases triviales contra una tabla. |
 | `Token` es un `record` inmutable | Un token no cambia después de reconocido; hacerlo inmutable elimina toda una clase de errores. |
 | `TipoDeToken` es un `enum`, no un `String` | El compilador mantiene los casos sincronizados en vez de confiar en la memoria de quien edita. |
 | Las clases de la cátedra quedan intactas | Sólo se les cambió el `package`. El reemplazo es una clase nueva; las originales quedan como referencia de lo recibido. |
@@ -131,13 +132,12 @@ encontrado se convierte en un test de regresión permanente que **nunca** se bor
 Un error léxico ante un programa inválido es comportamiento esperado; una excepción no controlada
 —cualquier cosa que no sea `ExcepcionLexica`— es siempre un defecto y hace fallar el test.
 
-Detalle completo en [`testing.md`](../compartido/estrategia-de-testing.md).
+Detalle completo en [`../compartido/estrategia-de-testing.md`](../compartido/estrategia-de-testing.md).
 
 ### 6.2. Nunca se ajusta un test para acomodar una implementación equivocada
 
 Si un test falla, se arregla el código. Si la especificación cambió legítimamente, se actualiza el
-test **y se documenta el motivo**. Las expectativas de columna que cambiaron al adoptar el criterio
-de `javac` (§4.4) son un ejemplo: la expectativa vieja era la incorrecta, y quedó dicho por qué.
+test **y se documenta el motivo** en la decisión que corresponde.
 
 ### 6.3. El material de la cátedra se lee como imágenes, no con extracción de texto
 

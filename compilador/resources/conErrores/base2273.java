@@ -1,2 +1,2 @@
-///[Error:L8__0pd|2]
-interface OMxY_9 { M [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] un ( ) ; char [ ] [ ] [ ] [ ] [ ] [ ] y L8__0pd ; }
+///[Error:)|2]
+interface Zd extends Nz8k < T > { } class MYS extends GoI { static private Fh [ ] [ ] [ ] i ( B [ ] [ ] l1 ) { while ( - I1 . k4 ( ) . r68 -- <= ! 5515871 || - ) CEj b0 , c , ag ; } }

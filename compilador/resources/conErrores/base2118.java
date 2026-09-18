@@ -1,2 +1,2 @@
-///[Error:jh|2]
-interface Es_o { public void x ( X d , jh , int gX7 ) ; }
+///[Error:O6Y|2]
+O6Y < O_280 >

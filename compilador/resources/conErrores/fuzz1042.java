@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface FL1_ < Z > extends M_ < M > { public S2 [ ] [ ] ( ) ; void g ( H [ ] [ ] p8 ) ; void u ( D43 lg , int [ ] xtdg0_W_q , A1t zP , char q , B_ < Vm_ > [ ] [ ] r ) ; }
+///[Error:}|2]
+class DM < C > implements C0 { public static X_ [ ] r ( ) { } private } class Cb < V > { }

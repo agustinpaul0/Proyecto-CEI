@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface OK extends Kb < < EH1_V > > { }
+interface < A > extends V_ < V > { }

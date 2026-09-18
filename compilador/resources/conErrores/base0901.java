@@ -1,2 +1,2 @@
-///[Error:false|2]
-false interface Ym extends MH_ { } class ST extends G_ < A > { int [ ] bi7 ; T_ < S_vJ58687 > u ( ) { float xx , h , v ; return ; } void j ( J__ db_ ) { return ; } } class Yw < G > extends RE { static Z7 [ ] [ ] [ ] d4c_ ( ) { { false ; } } }
+///[Error:while|2]
+interface Mb < W > { void v ( C oT , I zI , C [ ] y ) ; } class W_6S9 < W > implements Ys < To1 > { void e while ( + true ) I [ ] j_W_A ; } interface I_ < J > extends CN_Y { } class XS { static public T [ ] c ( ) { ; } static void x ( float [ ] [ ] [ ] sG6 , Jp s_ ) { new R [ ] [ ] { } ++ / true ; } } interface MjhKXA5 < Q > extends Lp < U > { public int [ ] [ ] [ ] g0 ( I e1A ) ; } class Xj extends H7 { public void a0 ( K h ) { } }

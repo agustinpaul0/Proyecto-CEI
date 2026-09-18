@@ -65,15 +65,15 @@ Es una ambigüedad **de la gramática de la cátedra**, no introducida por la tr
 
 ## 3. Alcance del operador ternario
 
-La gramática original usa `<ExpresionCompuesta>` como lado derecho de un `=` en **los seis lugares**
-donde hay uno: la asignación y los cinco inicializadores —variable local con `var`, atributo,
-declarador clásico, y los dos del encabezado del `for`—. Lo hace para impedir la asignación
-encadenada.
+La gramática original usa `<ExpresionCompuesta>` como lado derecho de un `=` para impedir la
+asignación encadenada, y los logros que agregan un inicializador siguen el mismo patrón. Son **cinco
+lugares**: la asignación y los cuatro inicializadores —variable local con `var`, atributo,
+declarador clásico y la variable de control del `for`—.
 
-Al insertar la capa del ternario *por encima* de `<ExpresionCompuesta>`, esos seis quedarían sin
+Al insertar la capa del ternario *por encima* de `<ExpresionCompuesta>`, esos cinco quedarían sin
 acceso al operador.
 
-**Decisión:** los seis lados derechos pasan a `<ExpresionCondicional>`, exactamente un escalón más
+**Decisión:** los cinco lados derechos pasan a `<ExpresionCondicional>`, exactamente un escalón más
 arriba. No admite un `=`, así que `a = b = c` no deriva; pero admite el ternario, así que
 `var x = c ? a : b;` es válido igual que `x = c ? a : b;`.
 
@@ -139,8 +139,8 @@ ningún chequeo fuera de ella:
 ```
 
 La visibilidad aparece a **un solo lado** del `static`, así que `public private void m(){}`,
-`static static void m(){}` y `public static private void m(){}` no derivan. Y `static` sigue
-aplicando sólo a métodos, como en MiniJava base: no hay atributos estáticos.
+`static static void m(){}` y `public static private void m(){}` no derivan. Y `static` aplica
+sólo a métodos, como en MiniJava base: no hay atributos estáticos, y el profesor lo confirmó.
 
 ## 7. Inicialización de arreglos: como en Java, y anidable
 
@@ -183,7 +183,14 @@ new int[2][2]{{1,2}, {3,4}}   INVÁLIDO
 new int[]                     INVÁLIDO    (ni tamaño ni inicializador)
 new int[2][]                  INVÁLIDO    (sin inicializador, toda dimensión con tamaño: la base)
 new int[]{1,,}                INVÁLIDO
+new int[][]{{}{}}             INVÁLIDO    (sin coma entre los elementos, como en Java)
 ```
+
+Las listas vacías valen en cualquier nivel: `new int[][]{}`, `new int[][]{{}}` y
+`new int[][]{{}, {}}` son válidos, como en Java. Que el anidamiento del inicializador coincida con
+la cantidad de dimensiones **no** es sintáctico: `new int[]{{}}` pasa el parser de `javac` y el
+error —*«illegal initializer for int»*— lo da el análisis de tipos, así que acá también queda para
+el semántico.
 
 La restricción de que el inicializador sólo valga bajo `new` queda impuesta **por la gramática**:
 sólo es alcanzable desde `<Creacion>`. `int[] x = {1, 2};`, que Java acepta en una declaración, no es
@@ -214,6 +221,47 @@ Una clase o interfaz sigue limitada a **un único** parámetro de tipo, como dic
 El léxico emite `pr_float` y `floatLiteral` desde la Etapa 1, por un logro de aquella etapa, pero
 la gramática de la cátedra no los tiene en `<TipoPrimitivo>` ni en `<Primitivo>`. Sin extenderla,
 ese logro quedaría inutilizable en la Etapa 2, así que se agregan las dos alternativas.
+
+## 10. El `for`: la variable de control se declara con `var`
+
+El logro pide un `for` *«similar a como es en java»*, restringido a *«una sola sentencia/expresión
+por separador»*. La variable de control se declara **con `var` y nada más**: el profesor lo
+respondió así, porque los logros se piensan lo más independientes posible entre sí, y el
+declarador tipado es del logro de Variables Locales Clásicas.
+
+```
+<EncabezadoFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
+                  | var idMetVar <EncabezadoForTrasVar>
+                  | <Expresion> <ClausulasFinalesFor>
+```
+
+Lo demás es Java (JLS §14.14.1 y §14.14.2): las tres partes del `for` estándar son opcionales, así
+que `for(;;)` vale, y el de iteradores lleva una variable declarada, un `:` y una expresión.
+
+```
+for (var i = 0; i < n; i++) ;     válido
+for (var e : lista) ;             válido
+for (i = 0; i < n; i++) ;         válido      (una expresión como inicialización)
+for (;;) ;                        válido
+
+for (int i = 0; ; ) ;             INVÁLIDO    (declarador tipado)
+for (Persona p : lista) ;         INVÁLIDO
+for (var i; ; ) ;                 INVÁLIDO    (var sin inicialización, como la variable local)
+for (var i = 0, j = 0; ; ) ;      INVÁLIDO    (una sola por separador)
+for (; ; i++, j++) ;              INVÁLIDO
+```
+
+## 11. Declaradores múltiples: cada uno con su inicialización
+
+El logro de Variables Locales Clásicas pide *«declarar varias variables e inicializarlas (por
+ejemplo `int x,y,z = 10;`)»*. La forma es la de Java (JLS §14.4): cada `VariableDeclarator` lleva su
+propio `= VariableInitializer` opcional, así que `int x = 10, y = 11, z = 12;` e `int x, y, z = 10;`
+valen los dos.
+
+Qué inicializa cada una es semántico: en Java, `int x, y, z = 10;` inicializa **sólo** `z`
+—verificado con `javac`: usar `x` después da *«variable x might not have been initialized»*—. El
+ejemplo del logro no aclara si la cátedra lo lee igual, así que queda para confirmar antes del
+semántico.
 
 ## Ver también
 

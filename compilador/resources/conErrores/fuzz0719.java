@@ -1,2 +1,2 @@
-///[Error:(|2]
-class ZPs < X > extends JP_7F { } class SF < K > { private static void ( ) { } static N_4 < N9 > db ( boolean r , boolean [ ] vN9ya , float [ ] h ) { W_4_ < I > [ ] [ ] e , v_D ; } } class Q_NC < U > { } class Kq < G > implements S__L { static public Ch z ( ) { for ( var d0 : - true ) if ( + null ) for ( char [ ] [ ] x2t_ ; ; ) boolean [ ] p ; while ( false ) ; char [ ] eS , s ; } static public void y_T ( ) { } }
+///[Error:<|2]
+< Q >

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends CR
+///[Error:null|2]
+null class TG1N implements In < V > { He ( ) { } }

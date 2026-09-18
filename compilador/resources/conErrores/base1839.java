@@ -1,2 +1,2 @@
-///[Error:N92|2]
-N92
+///[Error:static|2]
+static private char [ ] pZrq___ ( ) { }

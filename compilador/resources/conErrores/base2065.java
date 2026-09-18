@@ -1,2 +1,2 @@
-///[Error:M4|2]
-class R_3J implements Y_7 < T > { static void x ( ) { { Y m = - '5' ; } while ( ! 5465E1 >= ! '\t' - this ? - 12864 % false : null ) if ( true ) int [ ] b_ , v_ , ym6 , h95 ; else ! 4f ; { while ( null ) boolean [ ] [ ] [ ] [ ] mH , z ; P [ ] [ ] [ ] [ ] [ ] y__ , a_6 ; ! 433.D ; } var p = + true ? + true : + true ; return - true ; boolean tQ , d_ , c9 , e__e2P ; } } interface QDU1p < X > extends VM < A4n > { } M4 interface AeFy < T > { void y ( ) ; public void rx_ ( F pHEe_im , G l2 ) ; N [ ] [ ] [ ] [ ] b ( ) ; } interface W_ < Q > { void sWF ( ) ; I [ ] p ( ) ; void a ( E c , char [ ] [ ] w , H e , G [ ] a_e ) ; }
+///[Error:{|2]
+class Le < G > extends G2 { } class CO < B > extends { void r2 ( ) { Y439_ b8 , l_1 ; } }

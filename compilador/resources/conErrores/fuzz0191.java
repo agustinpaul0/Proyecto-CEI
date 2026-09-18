@@ -1,2 +1,2 @@
-///[Error:I|2]
-class S2_ < Y > extends I { }
+///[Error:;|2]
+interface Fo < T > { C2 [ ] a ; public void m_ ( float [ ] y_ ) ; }

@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean ll ( int c ) ; interface QH { } class Ujl < Q > { }
+///[Error:}|2]
+class FT_77_ implements Iy { int [ ] g }

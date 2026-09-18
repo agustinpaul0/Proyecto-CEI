@@ -1,2 +1,2 @@
-///[Error:aR|2]
-class T3 { } interface G1 { public D c ( ) ; void w ( ) ; } interface Y_F extends BYy { aR ( ) ; public char [ ] d ( ) ; }
+///[Error:[|2]
+class KE < Q > implements I_U_ < B > { } class Q_ < T > extends Cz_t < K > { } interface K0 extends L9 { public char [ ] p ( ) ; public char [ ] [ ] [ ] t ( [ ] [ ] [ ] dQ , N [ ] [ ] t ) ; }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class OO < Q > extends X__ < > { } class Sr < P > implements SAt { } interface O0 extends XN8 < W_c < CK < J > > > { }
+///[Error:F|2]
+interface T_ < G > extends T5_ < H > { } F interface Q_ < L > { }

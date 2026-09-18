@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Yz_ extends Kq { Q7 }
+///[Error:)|2]
+interface U1P < O > { public float a ( T cd__ , int g , W [ ] ve_ ) ; public Yb__ [ ] [ ] c ( int [ ] [ ] [ ] ) ; public void pk ( L [ ] [ ] [ ] [ ] [ ] c ) ; void f ( ) ; }

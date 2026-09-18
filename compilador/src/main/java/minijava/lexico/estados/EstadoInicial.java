@@ -29,7 +29,7 @@ public final class EstadoInicial implements EstadoLexico {
     // Puntuación (10) más '%' y '*'; el tipo lo resuelve la tabla por su lexema.
     private static final String SIMBOLOS_DE_UN_CARACTER = "(){}[];,.:%*";
 
-    // Sólo dicen a qué estado ir: el tipo del token ya no vive acá.
+    // Sólo dicen a qué estado ir: el tipo del token lo da la tabla por su lexema.
     private static final Map<Character, EstadoOperadorConSufijoOpcional> OPERADORES_CON_SUFIJO = Map.of(
             '>', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,
             '<', EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL,

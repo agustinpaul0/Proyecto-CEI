@@ -1,2 +1,2 @@
-///[Error:N2_J_FK_p|2]
-N2_J_FK_p
+///[Error:[|2]
+interface Y_a < L > extends ESb1_o_ < I_ < RI_ > > { [ ] tv ( ) ; }

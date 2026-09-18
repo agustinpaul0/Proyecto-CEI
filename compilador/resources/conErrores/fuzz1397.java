@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface O8 extends T12 < U > { } interface F7 { void or ( ) ; void n_G ( K_ < D__ < Gy > > zc , R tg ) ; public void i ( ) ; public W4 < X > d ( ) ; public void s ( Y m , Ip < Lt54OX8 > x8 , F t , Wc_Vt_ p , N [ ] b8U ) ; boolean void m_ ( Q o_ , char [ ] o , boolean e__G ) ; void z ( int or ) ; public void tu25 ( int b ) ; void z ( ) ; } interface Vazv extends Wp < I__rz > { void y5 ( Z [ ] e2 , boolean g_S , Kl7 < G > x2 , char r_i__ ) ; public void u ( boolean m ) ; int f3 ( ) ; public int [ ] [ ] zZs_ ( M [ ] [ ] h ) ; } interface KR_Y_D < O > { }
+///[Error:[|2]
+class F6 < A > extends Zu_jx < QHI_ < BLt_i9 < Vt < AJI4 > > > > { } interface HFj < H > extends PC < O > { public H_0z dY ( ) ; void g ( XXmq__V_ < V > [ ] [ ] e ) ; } [ ] class IMdna < Y > extends FO < IG7Y0 > { }

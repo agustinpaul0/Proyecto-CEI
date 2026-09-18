@@ -1,2 +1,2 @@
-///[Error:>|2]
-class FKZ extends U0 < > { static private float [ ] u_ ( ) { } } class Q3D { }
+///[Error:extends|2]
+interface extends MDe__ { public void e ( ) ; }

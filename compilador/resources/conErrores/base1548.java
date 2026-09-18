@@ -1,2 +1,2 @@
-///[Error:O_2|2]
-O_2
+///[Error:{|2]
+interface Wa extends DXa < B_ > { public Z42__ < Ml > u ( ) ; } class O_ < J > implements XGo < Q > { static C [ ] [ ] [ ] w ( float [ ] u5_w , float [ ] [ ] rS ) { } Ya__ ( ) { } private static void fq ( ) { } } class A1__ { } class Y0 < K > implements { } interface Q_ < J > { }

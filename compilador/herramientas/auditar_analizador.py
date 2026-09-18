@@ -24,10 +24,6 @@ RAIZ = Path(__file__).resolve().parent.parent
 GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-final.g"
 PARTES = RAIZ / "src" / "main" / "java" / "minijava" / "sintactico" / "partes"
 
-# Las citas escriben el flag entre corchetes: `// Sentencia -> For   [+for]`.
-FLAG = re.compile(r"\s*\[[+-][a-z]+\]\s*$")
-
-
 def normalizar(izquierda, cuerpo):
     simbolos = [s for s in cuerpo if s != EPSILON] or ["EPSILON"]
     return f"{izquierda} -> {' '.join(simbolos)}"
@@ -61,7 +57,7 @@ def citas_del_codigo(alfabeto):
             if not texto.startswith("//"):
                 izquierda, ultima = None, None
                 continue
-            texto = FLAG.sub("", texto[2:].strip())
+            texto = texto[2:].strip()
 
             if "->" in texto:
                 cabeza, cuerpo = texto.split("->", 1)

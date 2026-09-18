@@ -71,9 +71,8 @@ con_errores("escapeUnicodeConEspacio.java",
             [E("'\\u", 1), T("041", 1), E("'", 1)],
             ["'\\u 041'"])
 
-# Dentro de un litString el unicode mal formado sigue la misma regla que
-# cualquier otro escape mal formado: descarta hasta la comilla de cierre. En
-# los charLiteral de arriba no, ahi la recuperacion sigue siendo estructural.
+# Dentro de un litString el unicode mal formado descarta hasta la comilla de
+# cierre. En los charLiteral de arriba no: ahi la recuperacion es estructural.
 con_errores("escapeUnicodeEnStringConDigitoInvalido.java",
             [E('"a\\u12', 1)],
             ['"a\\u12G4"'])

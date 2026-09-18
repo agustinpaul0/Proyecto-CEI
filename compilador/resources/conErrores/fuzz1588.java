@@ -1,2 +1,2 @@
-///[Error:ep4|2]
-ep4 interface M_ { }
+///[Error:(|2]
+interface Y8h_j < C > { public boolean u_ ( ) ; } class IX4IkR { } ( ) interface Mf { void s ( ) ; }

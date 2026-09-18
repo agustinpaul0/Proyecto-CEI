@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Q_ < S > { BB } class SDk_ < Z > { Bn < Q5 < L > > [ ] [ ] d ( ) { } void cD ( ) { } static void q6 ( ) { } } interface QF < U > extends T7 { }
+///[Error:static|2]
+static void f ( ) { if ( ! 'O' ? false : true <= false ) ; else ; } class H_ implements X6_ < P > { }

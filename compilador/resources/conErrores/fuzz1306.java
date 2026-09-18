@@ -1,2 +1,2 @@
-///[Error:<|2]
-< F > class K3 implements FD_ < D > { }
+///[Error:float|2]
+class C2 < Q > extends W_E_ { } float [ ] y ( ) { }

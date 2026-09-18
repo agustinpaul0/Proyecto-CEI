@@ -1,2 +1,2 @@
-///[Error:(|2]
-( Y m , A nN , char [ ] [ ] mAw6 , EG_ < OI < Z > > [ ] [ ] m_ ) interface S6n extends FbJz_ { }
+///[Error:boolean|2]
+class O9 { } class IL implements An3e_ { public static S boolean }

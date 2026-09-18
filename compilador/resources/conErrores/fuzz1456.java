@@ -1,2 +1,2 @@
-///[Error:!=|2]
-class Dm_l0 < G > extends O8 < WNVr > { private static void wut_O ( ) { var n = 945118 <= - 6817055 ? "" -- = - true : != 1. ? true : - false ; } }
+///[Error:<|2]
+class Wfi implements P2r { } interface V3 extends G2_8 < Dc_ > { public B lg62 ( char [ ] f_Bn , char y ) ; public A_ < H > kP1__ ( ) ; } class F_I_8 { static public < Y > [ ] [ ] i ( A8 m ) { } }

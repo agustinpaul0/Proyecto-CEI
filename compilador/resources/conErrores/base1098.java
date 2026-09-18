@@ -1,2 +1,2 @@
-///[Error:R___|2]
-R___ < C >
+///[Error:I|2]
+I [ ] interface V4u__ extends Gh { }

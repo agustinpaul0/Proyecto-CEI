@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Og implements { }
+///[Error:char|2]
+char

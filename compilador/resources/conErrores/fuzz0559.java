@@ -1,2 +1,2 @@
-///[Error:<|2]
-< V > interface Fp < X > { }
+///[Error:R|2]
+interface SI2 extends Z10C_ { } R

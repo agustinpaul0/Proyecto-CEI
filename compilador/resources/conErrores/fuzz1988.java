@@ -1,2 +1,2 @@
-///[Error:Y|2]
-class GW extends ZD < G > { } interface K_ { } Y g ( ) ;
+///[Error:implements|2]
+implements Z_87

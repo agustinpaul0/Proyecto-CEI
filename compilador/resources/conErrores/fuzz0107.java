@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface F_65 < R > { public A [ ] [ ] gK ( int , RF26J < T_ < L > > [ ] [ ] [ ] h ) ; void r ( boolean v , int [ ] uV7 , I pq_ObJ , F [ ] dS , char m_ ) ; }
+///[Error:<|2]
+class ES5 < Y > implements < UzGk > { } class Sk < H > extends OK___ { }

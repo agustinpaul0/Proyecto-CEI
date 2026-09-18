@@ -1,2 +1,2 @@
-///[Error:float|2]
-float class P_XhCzpc < C > extends Yf { static int q ( int [ ] [ ] pb511___ , F f_ , C6 < CC > [ ] m92d , X c ) { ; } } interface V9 < F > extends L8 { }
+///[Error:i|2]
+interface O_ < O > extends M29 < Z > { Gq < V_ > v9 ( H [ ] o_7x_r ) ; void p ( T l ) ; V [ ] [ ] [ ] u9 ( float i9 , i , H [ ] [ ] xI , boolean [ ] [ ] [ ] [ ] s ) ; }

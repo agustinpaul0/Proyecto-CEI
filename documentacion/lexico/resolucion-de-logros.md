@@ -20,8 +20,7 @@ activos**.
 | 7. Good Job! I | consecuencia de lo anterior | — |
 | 8. Entrega Anticipada Léxica | hito de calendario | — |
 
-Los logros están siempre activos. El comportamiento base que pide la consigna queda documentado
-acá y en el informe, no ejecutable.
+El comportamiento base que pide la consigna queda documentado acá y en el informe, no ejecutable.
 
 ## 1. Floats I
 
@@ -37,7 +36,7 @@ exponente con signo opcional y sufijo `f`/`F`/`d`/`D`.
 **El desafío real no fue la gramática, fue derivarla.** `Aspectos Lexicos MiniJava 2026.pdf` **no
 menciona floats en absoluto** — no están entre sus "cinco tipos de literales". Toda la ER se derivó
 de esa única frase de Pautas, verificando contra `javac` qué significa "la misma estructura que los
-floats de Java". Ver [`decisiones.md`](decisiones-de-logica.md) §3.2 y §3.3.
+floats de Java". Ver [`decisiones-de-logica.md`](decisiones-de-logica.md) §3.2 y §3.3.
 
 **Detalles que salieron de esa verificación:**
 
@@ -76,7 +75,7 @@ aparecer.
 
 Además, el escape se lee **dentro** de dos construcciones distintas, así que los dos estados del
 escape necesitan saber a cuál volver al terminar — es una de las tres razones por las que existen
-estados construidos con `new` en vez de singletones. Ver [`patron-state.md`](patron-state-metodo-por-estado.md) §6.
+estados construidos con `new` en vez de singletones. Ver [`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md) §6.
 
 **Qué alcanza el logro**: sólo la secuencia escapada, **no** los caracteres crudos, que ya se
 aceptaban.
@@ -107,24 +106,24 @@ Es una propiedad estructural, no un algoritmo. Y trae la garantía de terminaci�
 de un error nunca es vacío, así que cada error consumió al menos un carácter y el análisis siempre
 avanza.
 
-**El defecto que este criterio corrigió** — la versión anterior descartaba siempre el carácter que estaba
-mirando, incluso cuando nunca había formado parte del error:
+**La alternativa descartada** es descartar siempre el carácter que se está mirando, incluso cuando
+nunca formó parte del error. Pierde tokens válidos:
 
-| fuente | antes | ahora |
+| fuente | descartando el carácter actual | con el criterio |
 |---|---|---|
-| `v1 &v2` | se comía la `v` y emitía `(intLiteral,2,1)` | `[Error:&\|1]` + `(idMV,v2,1)` |
-| `1e;` | el `;` desaparecía sin mensaje | `[Error:1e\|1]` + `(puntoYComa,;,1)` |
-| `1234567890+1` | el `+` desaparecía | error + `(op+,+,1)` + `(intLiteral,1,1)` |
+| `v1 &v2` | se come la `v` y emite `(intLiteral,2,1)` | `[Error:&\|1]` + `(idMV,v2,1)` |
+| `1e;` | el `;` desaparece sin mensaje | `[Error:1e\|1]` + `(puntoYComa,;,1)` |
+| `1234567890+1` | el `+` desaparece | error + `(op+,+,1)` + `(intLiteral,1,1)` |
 
-Todos eran invisibles en el corpus de entonces porque cada caso tenía un espacio detrás del lexema
-malo. Los descubrió una **invariante**, no un caso: "la concatenación de los lexemas de todos los
-tokens y errores reconstruye el fuente completo".
+Un caso con un espacio detrás del lexema malo no distingue las dos políticas. Lo que sí las
+distingue es una **invariante**, no un caso: "la concatenación de los lexemas de todos los tokens y
+errores reconstruye el fuente completo".
 
 **El caso especial**: un escape mal formado dentro de un `litString` es el único error que descarta
 más de lo que reporta — se resincroniza en la comilla de cierre del literal. Es lo contrario de una
 excepción a la multi-detección: sin ese descarte, el resto del literal se re-tokenizaría y la comilla
 de cierre abriría un literal nuevo, inventando errores que ocultarían a los reales. El detalle, con
-los números, está en [`decisiones.md`](decisiones-de-logica.md) §4.3.
+los números, está en [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §4.3.
 
 **Cómo verificarlo:**
 
@@ -153,9 +152,9 @@ Detalle: v1 # v2
 dentro del código `[Error:Lexema|NroLinea]`, que es el contrato exacto que compara el tester y no
 lleva columna.
 
-*Un tipo de error por punto de falla.* Antes los once puntos de falla compartían una única frase
-genérica; ahora cada uno dice qué construcción falló (`charLiteral sin cerrar`,
-`intLiteral de más de 9 dígitos`). El mensaje de `CARACTER_DESCONOCIDO` conserva el texto literal del
+*Un tipo de error por punto de falla.* Cada uno de los diez puntos de falla dice qué construcción
+falló (`charLiteral sin cerrar`, `intLiteral de más de 9 dígitos`), en vez de una frase genérica
+compartida. El mensaje de `CARACTER_DESCONOCIDO` conserva el texto literal del
 ejemplo de la cátedra, porque es el único que ella fija — con la tilde de "válido" corregida.
 
 **Dónde apunta el `^`** fue la parte que más trabajo dio, y también se resolvió verificando `javac`
@@ -163,14 +162,14 @@ caso por caso. La regla: si el mensaje habla de un carácter puntual, señala es
 la construcción entera que falló, señala dónde empieza. Los nueve diagnósticos comparables coinciden
 con `javac`. Ver [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) §4.
 
-**Tres bugs reales que este logro obligó a arreglar**, todos de la misma familia:
+**Tres defectos que este logro tiene que evitar**, todos de la misma familia:
 
-1. El `^` apuntaba a un carácter distinto del que nombraba el mensaje.
-2. El `^` colgaba una posición más allá del final de la línea impresa, señalando el aire.
-3. Un lexema con un salto de línea crudo **partía en dos** el código `[Error:...]`, rompiendo el
+1. que el `^` apunte a un carácter distinto del que nombra el mensaje;
+2. que el `^` cuelgue una posición más allá del final de la línea impresa, señalando el aire;
+3. que un lexema con un salto de línea crudo **parta en dos** el código `[Error:...]`, rompiendo el
    contrato de la cátedra de un elemento por línea.
 
-Los tres son hoy invariantes verificadas sobre entradas generadas.
+Los tres son invariantes verificadas sobre entradas generadas.
 
 **Cómo verificarlo:**
 
@@ -199,7 +198,7 @@ autoriza explícitamente— con los dos datos que el Reporte de Error Elegante n
 de una sola vez y recién después sirve carácter por carácter. Cumple con no leer de a líneas y con
 entregar de a caracteres, pero una lectura estricta de la consigna podría pedir que la lectura física
 también sea incremental. Está desarrollado, con sus argumentos a favor y en contra, en
-[`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) §5.
+[`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) §5.
 
 **Cómo verificarlo:**
 
@@ -231,7 +230,7 @@ Los instrumentos que apuntan específicamente a esto:
 **Cómo verificarlo:**
 
 ```bash
-mvn -o verify            # 631 tests + umbral de cobertura
+mvn -o verify            # la suite completa + umbral de cobertura
 mvn -o -Pmutacion verify # los mutantes sobrevivientes son tests faltantes
 ```
 
@@ -253,7 +252,7 @@ Hito de calendario, sin implicancia de código.
 
 ## Ver también
 
-- [`decisiones.md`](decisiones-de-logica.md) — el razonamiento detrás de cada logro que exigió una decisión.
+- [`decisiones-de-logica.md`](decisiones-de-logica.md) — el razonamiento detrás de cada logro que exigió una decisión.
 - [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — los logros 3 y 4 en detalle.
-- [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) — el logro 5 en detalle.
-- [`testing.md`](../compartido/estrategia-de-testing.md) — la maquinaria detrás de los logros 6 y 7.
+- [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) — el logro 5 en detalle.
+- [`../compartido/estrategia-de-testing.md`](../compartido/estrategia-de-testing.md) — la maquinaria detrás de los logros 6 y 7.

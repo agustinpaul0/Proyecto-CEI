@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface L_ { [ ] } class UO < V > { }
+///[Error:<|2]
+interface < I > { }

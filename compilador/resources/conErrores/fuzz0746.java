@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface If_A extends X_w { void t ; }
+///[Error:(|2]
+( Y m , A nN , char [ ] [ ] mAw6 , EG_ < OI < Z > > [ ] [ ] m_ ) interface S6n extends FbJz_ { }

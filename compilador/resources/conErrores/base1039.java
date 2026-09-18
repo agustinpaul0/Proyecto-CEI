@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface A0 < Z > extends D__Dbw { void p ( ) ; public A_M < YS_ > l ( boolean k , < Z0 < Et > > x , Zz4__e [ ] e ) ; }
+///[Error:I|2]
+class Q_ < F > { } class YJ < E > implements Oe < H_ < V0 > > { int h__N ; } interface VkxN812 < J > extends Zy { } class XWE < Y > { } I

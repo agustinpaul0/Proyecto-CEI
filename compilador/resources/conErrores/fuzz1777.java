@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface D_O { } extends A___u < I >
+///[Error:r33Z_k|2]
+class L4XD < S > extends XIM { public static r33Z_k ( ) { float y = '\b' * true <= ! 68952258 ; } }

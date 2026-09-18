@@ -1,2 +1,2 @@
 ///[Error:extends|2]
-extends S_
+interface XAN < Q > extends X_ < G > { } extends MY5 < Z >

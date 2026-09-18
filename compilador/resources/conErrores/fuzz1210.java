@@ -1,2 +1,2 @@
-///[Error:[|2]
-class A9 { } interface A_z extends Ydc < UJeWk < TnlJ3f7g > > { public void uuc ( ) ; public A [ ] [ ] [ ] m ( int [ ] r , float [ ] s_e_ ) ; void s ( [ ] h , UC_R < S > t ) ; }
+///[Error:<|2]
+class Z_ < F > { } class C8Y extends < A > { static void p19 ( S0c < L5l > qsG ) { } }

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class W3 extends X__ < J___ < D > > { void t ( ) { } } class Q_ < M > extends QG22 { } extends CE
+///[Error:;|2]
+interface Zd extends Nz8k < T > { } class MYS extends GoI { static private Fh [ ] [ ] [ ] i ( B [ ] [ ] l1 ) { while ( - I1 . k4 ( ) . r68 -- <= ! 5515871 || - false ) CEj b0 , c , ; } }

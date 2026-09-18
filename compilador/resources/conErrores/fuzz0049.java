@@ -1,2 +1,2 @@
-///[Error:Is|2]
-interface YU { boolean [ ] [ ] [ ] [ ] x1 ( char [ ] [ ] we7u_ , char fGT ) ; public U17 < O_Y < Q > > ee ( ) ; } class UTx extends A0_ { } Is < A__ < H > > [ ] [ ] [ ] n ;
+///[Error:)|2]
+class I_ { private E [ ] [ ] j2 ( R0 s , Pc < N8ybQw_ > [ ] w0o ) { int f , aiW , u ; false % - this -- = false ; ; for ( ; ; ) ; for ( ) + null ; - '\r' ; for ( ; ; ) return ; } } interface Jf4 < V > { public void z_F ( ) ; }

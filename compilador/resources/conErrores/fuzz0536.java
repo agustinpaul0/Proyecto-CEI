@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface OjK { void mO_3 ( int [ ] m ) ; } class E6__fxX implements JY { P a ( ) { } static void p ( ) { for ( boolean [ ] wO ; ; ) L_ . i9rsm ( ) -- ; var s = false ? false : - false ; } private static void ( O7G skC , char [ ] d , char [ ] k70 ) { while ( + 60f ) false ; } }
+///[Error:;|2]
+class O4Z8 implements B_8 < H > { boolean [ ] b ( ) { } } class GB < V > { } interface Tv extends Y4__c6 < DE < D > > { public void n ( S i9 , boolean [ ] [ ] e , int [ ] x , Y e , I_Q < P > [ ] x , P0F md_K__ ) ; public float t ( ) ; public char [ ] i3_ ( C_ [ ] [ ] k , A35 [ ] y___ , Y p ) ; public VQ__ p ( V_ < H > tWr , boolean [ ] c__L ) ; void r3 ( ) ; void m ; public L [ ] x_IG_p ( ) ; public void l ( ) ; public Hi_ wk ( ) ; }

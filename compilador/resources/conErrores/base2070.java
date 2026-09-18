@@ -1,2 +1,2 @@
-///[Error:float|2]
-float interface HK < I > { }
+///[Error:<|2]
+interface D_ { } class K_wV < P > extends < I > { }

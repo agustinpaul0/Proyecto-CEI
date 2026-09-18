@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface F_ < X > extends { }
+///[Error:extends|2]
+interface extends G_si < D > { float [ ] l ( ) ; }

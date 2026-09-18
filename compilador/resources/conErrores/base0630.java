@@ -1,2 +1,2 @@
-///[Error:fl_|2]
-interface A4 < P > { S [ ] [ ] w ( fl_ ) ; public boolean [ ] f ( ) ; } interface Q_w extends N_HL_U_ { }
+///[Error:}|2]
+interface F_ { } interface IVqMl < B > extends Vx { } class Z_wd8_ { public }

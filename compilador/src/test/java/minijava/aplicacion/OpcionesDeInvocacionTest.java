@@ -33,8 +33,8 @@ class OpcionesDeInvocacionTest {
         assertEquals(OpcionesDeInvocacion.ETAPA_POR_DEFECTO, opciones.etapa());
     }
 
-    // --etapa=1 corre el módulo principal de la Etapa 1, que sigue siendo
-    // ejecutable de forma aislada.
+    // --etapa=1 corre el módulo principal de la Etapa 1, que es ejecutable de
+    // forma aislada.
     @Test
     void laEtapaUnoSeSeleccionaConSuOpcion() {
         assertEquals(1, parsear("--etapa=1", "programa1.java").etapa());

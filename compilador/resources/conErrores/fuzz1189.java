@@ -1,2 +1,2 @@
-///[Error:U8d|2]
-U8d
+///[Error:public|2]
+interface D_42_C < U > { } public

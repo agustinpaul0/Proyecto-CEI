@@ -1,2 +1,2 @@
-///[Error:!|2]
-class Rd9rg < M > implements D6t < B > { private static M c ( ) { while ( true <= false ? 3131145 : true ) Z3 . x_ ( ) . c3 ( ) . a -- ! true * - true ; } }
+///[Error:this|2]
+class QY_ < G > extends S9_yP { static void y ( ) this } class C_ implements T0 { N7W1 ( int wIg_ , I1 [ ] s ) { } } class U_ < E > extends D8 { }

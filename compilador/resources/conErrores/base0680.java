@@ -1,2 +1,2 @@
-///[Error:NP__|2]
-NP__ interface JF_a { }
+///[Error:FufA7_|2]
+FufA7_

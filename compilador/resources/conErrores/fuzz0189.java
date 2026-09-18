@@ -1,2 +1,2 @@
-///[Error:M_|2]
-class Y1O8p_ { } interface H4 { public void w ( int d ) ; } M_ class KLO_X2ck implements Uo { }
+///[Error:(|2]
+( ) { OY [ ] eZ , t = null , c_ , qFGr7j_i , vw_ ; } class Q__3 < V > extends Po_ < Z1 < Jv > > { }

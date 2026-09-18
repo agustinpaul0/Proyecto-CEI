@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends N8T2 < B > interface Iq { public void qa__ ( ) ; }
+///[Error:[|2]
+class Er < Z > extends GW6r { M [ ] oE ; float [ ] g ( [ ] v ) { if ( null ) F4_ < E > q ; } }

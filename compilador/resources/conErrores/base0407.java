@@ -1,2 +1,2 @@
-///[Error:{|2]
-class R_ < B > extends F7 < Hn3Mt > { public static void { } }
+///[Error:<|2]
+interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } < B >

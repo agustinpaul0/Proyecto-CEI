@@ -1,2 +1,2 @@
-///[Error:T|2]
-class Q6 extends D_ < H6 > { } class OILx < L > extends J_2 { } T
+///[Error:<|2]
+class < T > implements PKh < Z > { } class D7 < R > { }

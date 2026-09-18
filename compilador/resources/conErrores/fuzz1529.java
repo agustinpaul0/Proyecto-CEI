@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface ZQ extends O_ { [ ] yy6 ( char [ ] zx_t2 , int fG8 , Wy4 < C_ > [ ] h , N [ ] [ ] y , S9 [ ] s ) ; }
+///[Error:char|2]
+class Wf extends M_ < H > { } interface Gb < B > { void v ( VU < Y > m ) ; } class O8 extends M_K < UZNu < D > > { } class X_ < X > { private float [ ] [ ] [ ] h ( boolean lF_ ) { return ; for ( ; ; ) true ; } Va ( H7_U l ) { while ( false ) J9 [ ] [ ] [ ] e ; S [ ] [ ] u ; { return ; } } private static void i_wY9 ( ) { - "" -- ; { } } } class L8 < B > { public R l_O0P = + 480 < 'B' ? 1.644D || + null : ! true ; static void k ( ) { V u ; } } class RN_g < B > extends X2g14 < K > { static public void char [ ] [ ] [ ] w , B v , int a W8 ( int [ ] [ ] rg ) { "" -- ; null ; return ; { } } }

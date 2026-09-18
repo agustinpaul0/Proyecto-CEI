@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Kl < T > extends W4_ < Sh6 < Yk > > { static public boolean v [ ] [ ] [ ] } interface V_ < K > { int d ( char [ ] y0 , Wz_ < Q > [ ] l ) ; }
+///[Error:G_t|2]
+class Qj6 extends VG { } interface F4 < X > { } class Xf implements DDz6 < J3Q > { } interface OV < F > { public float [ ] [ ] [ ] [ ] [ ] j G_t [ ] [ ] ; void z ( ) ; } interface L_ { void p ( ) ; } class W_ { }

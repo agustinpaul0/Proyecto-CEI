@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface UR6 extends Jd_ { } extends M5 < SI_ >
+///[Error:{|2]
+class Ga8 implements { } class S5 extends PEN4s3 < Hk < Cb > > { }

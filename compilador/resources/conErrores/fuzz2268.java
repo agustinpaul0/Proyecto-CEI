@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class Yv7 { } implements JC
+///[Error:F2|2]
+class E_ { } F2 interface D4K extends Ue0 { }

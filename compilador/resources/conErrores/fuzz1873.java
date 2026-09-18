@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface PT extends OMI < M > { void i ( < YD_ < N > > d ) ; R [ ] b ( float [ ] [ ] w ) ; }
+///[Error:implements|2]
+implements Xc < B_8 > class R_ { } interface WT1 extends Zfb < J_g > { }

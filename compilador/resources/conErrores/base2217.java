@@ -1,2 +1,2 @@
-///[Error:ZnM_|2]
-ZnM_ < M >
+///[Error:public|2]
+public interface D28 < K > { }

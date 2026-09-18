@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface L_ extends { }
+///[Error:extends|2]
+class SQb extends JI1G { static float [ ] b_ ( S [ ] jT ) { for ( var r = + 1161999 ; ; ) false > ! this -- - 45025 = null ; } static private TO0 < H > [ ] n ( ) { ; while ( - O_ . p ( ) . kg -- ? null : ! false ) new H [ ] { } -- <= true ; } } class IK < K > implements I_ { } interface N_uY { } interface N3j { O [ ] [ ] ix ( K z , Gw98_ tN_ , int [ ] [ ] n , char l ) ; boolean [ ] kBN ( Pm < ET < CH > > h2eh ) ; } extends Nmp < EJ < Qt < Qy23u < W_ < C > > > > >

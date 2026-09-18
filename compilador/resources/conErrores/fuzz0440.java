@@ -1,2 +1,2 @@
-///[Error:AV_B1|2]
-interface C_ extends W6 { } AV_B1
+///[Error:{|2]
+class P3_ extends { } interface U_D_ < Z > { }

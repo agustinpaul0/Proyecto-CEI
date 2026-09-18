@@ -1,2 +1,2 @@
-///[Error:}|2]
-class H_ { } class T_ implements L_ < Y6__ < I > > { V__ ( ) } class MS7 { } interface K_ { }
+///[Error:extends|2]
+class NJ4_ < X > extends JMYX4 { } interface extends IB { }

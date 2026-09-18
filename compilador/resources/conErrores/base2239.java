@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface CK { } interface XNR { U0 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] t ( [ ] ) ; } interface U8 < W > extends Xe < W > { public void e ( ) ; } class X_H < W > { }
+///[Error:N|2]
+interface R__ < H > extends Z_D { Hf [ ] [ ] d ( float [ ] r_ ) ; } class Zd < W > implements SE_8X { } N

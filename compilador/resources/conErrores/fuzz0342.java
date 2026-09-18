@@ -1,2 +1,2 @@
-///[Error:A3_|2]
-interface U_N extends YB < N_1 < Y > > { } A3_ interface V60 < W > extends DA_0HER { public void f__7Q_YX ( VT < T3 < R > > mS ) ; } interface B7 extends I_L { public void q_ ( ) ; }
+///[Error:extends|2]
+class D_GTz { } interface M7s { } interface RX < L > { } interface QzS < Q > extends C31 { Y [ ] [ ] y ( float b ) ; } extends E_w < U >

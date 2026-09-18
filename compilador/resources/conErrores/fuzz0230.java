@@ -1,2 +1,2 @@
-///[Error:d8|2]
-class ZLi extends Eb_d_b { } interface R0_ extends NxC34y < Q_ > { void y ( boolean s , d8 , W b ) ; }
+///[Error:<|2]
+interface I3 { } class A_ < I > extends G2AIe < G > { } class S2UH_ < Y > { private F_ < I6 < OTX4_ > > [ ] [ ] [ ] [ ] [ ] [ ] [ ] p00 ( Mt_ eKS_3 ) { } } class VM__d < C > { } < A >

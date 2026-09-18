@@ -1,2 +1,2 @@
-///[Error:i_o|2]
-class I_K implements X8 { } interface L1 < Y > extends L8 { public void mFJa ( ) ; public L [ ] [ ] [ ] [ ] c ( ) ; } interface DZB extends Mx8Q < D > { } interface I8w < M > extends Xzx { } class J9 < W > implements T2M_ < Np_ < R_ > > { } i_o
+///[Error:public|2]
+class Nic implements TS3 { void j_ public static void iX ( ) { } D [ ] v ( ) { Z_fL5 . a ( ) . ic ( ) -- * - 'S' + true ; return null ; while ( - false ) return ; G [ ] [ ] f ; V [ ] [ ] d3v , n_ ; return ; ; } static public void w7h ( ) { ; } Np ( A [ ] x ) { } public static T l ( O_ [ ] [ ] [ ] oEz , G [ ] b0pB ) { } static P w ( Uqt eY , K s ) { T [ ] x_ ; } }

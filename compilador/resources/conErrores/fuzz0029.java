@@ -1,2 +1,2 @@
-///[Error:Js|2]
-interface Z__ { } interface IqM < S > extends BEh { } Js class P5 { }
+///[Error:implements|2]
+class implements D_eG { int i8B_11D ( char [ ] h , OVX76 [ ] [ ] jZA_ , I g ) { } }

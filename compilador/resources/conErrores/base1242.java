@@ -1,2 +1,2 @@
-///[Error:<|2]
-< K >
+///[Error:float|2]
+interface R6 < X > extends N4yR3 < OSg8 < S > > { } interface Vry_ < Q > { } class KH implements GV8 < Q > { } interface ZxvWy < T > extends X_ < Kv > { } class DVy < P > { void d ( ) { { } for ( ; ; ) ; for ( ; ; ) Z [ ] tAY ; } } float interface RgXF_ extends HX < A > { } interface B_ extends Q2ks { } interface R_ extends QTh { } interface U_ { void a5_3 ( boolean [ ] [ ] nK ) ; } class A5 < Q > { private void y ( ) { } } class XKvI { static private K y ( ) { } static void hY ( ) { } } interface SHN3 < M > extends NS { K rS ( ) ; public void pj_r ( ) ; public void u ( ) ; }

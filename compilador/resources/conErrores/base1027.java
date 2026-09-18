@@ -1,2 +1,2 @@
-///[Error:z|2]
-interface Q2 { float bK ( ) ; U_ [ ] [ ] q ( boolean pZ , boolean [ ] m ) ; C8 [ ] yC ( ) ; z } class Dtm6_ { } class VAc { static void m ( ) { S [ ] m = - true ; return ; } } class I_ { } class Ok12 extends DS { P_ < T > [ ] [ ] xv_ = '#' || ! this -- + - 25715 ; public static void w ( ) { O [ ] [ ] tUN_ , sZ , kMW3 ; } }
+///[Error:M|2]
+interface E3b_ < N > extends R_ { } interface MF extends U_ { } M [ ] [ ] y class PR < U > implements U0 { }

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends A5
+///[Error:Uu|2]
+Uu

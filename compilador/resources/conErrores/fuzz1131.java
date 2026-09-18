@@ -1,2 +1,2 @@
-///[Error:}|2]
-class RC < R > { } class P8A3_SC implements Om_ { void d ( ) { } } interface H_ { J }
+///[Error:<|2]
+interface < D > { } interface Th extends Y_ < Vx > { public int lT__ ( ) ; }

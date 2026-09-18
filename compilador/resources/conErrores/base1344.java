@@ -1,2 +1,2 @@
-///[Error:OPD|2]
-OPD
+///[Error:{|2]
+class CP6 < W > { static public void { { ; return ; } } }

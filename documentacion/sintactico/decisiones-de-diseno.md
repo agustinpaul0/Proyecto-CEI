@@ -9,7 +9,7 @@ que gobernaron todas las transformaciones.
 Clase 4, slide 37. Eliminar la recursión a izquierda **genera producciones nuevas sin factorizar**,
 así que hacerlo al revés obliga a factorizar dos veces.
 
-No es teórico: pasó. Al eliminar la recursión de `<Referencia>`, las producciones resultantes
+Pasa en esta gramática: al eliminar la recursión de `<Referencia>`, las producciones resultantes
 dejaron a `<VarEncadenada>` y `<MetodoEncadenado>` compartiendo el prefijo `.`, un conflicto que en
 la gramática original no existía como tal porque las dos vivían en alternativas separadas.
 
@@ -59,7 +59,7 @@ del analizador se preguntara quién lo llamó para saber qué construir.
 
 Lo mismo con las inicializaciones: `<InicializacionDeAtributo>` e `<InicializacionDeDeclarador>`
 tienen cuerpos idénticos y son no terminales distintos, porque pertenecen a **logros distintos** y
-tienen que poder prenderse por separado.
+el semántico los trata distinto.
 
 ### 3.2. Compartir sí, cuando es literalmente la misma construcción
 
@@ -71,7 +71,7 @@ método para esas dos formas.
 ## 4. Una transformación sólo vale si preserva el lenguaje exacto
 
 Clase 3, slide 42: *«adaptarla sin cambiar el lenguaje que genera»*. Dos casos donde la
-transformación «natural» lo habría violado y hubo que frenarse.
+transformación «natural» lo habría violado.
 
 **El lado derecho de la asignación.** La regla original es
 `<Expresion> ::= <ExpresionCompuesta> <OperadorAsignacion> <ExpresionCompuesta>`: a la derecha del
@@ -89,8 +89,8 @@ aparte.
 **Los logros no son configurables.** La gramática es una sola: no hay producciones que aparezcan y
 desaparezcan según nada.
 
-Lo que sí importa es **dónde** aterriza cada logro, porque es lo que hace la gramática legible: cada uno agrega una capa o unas alternativas identificables, y no reescribe las
-reglas de al lado. El ternario es `<RestoCondicional>` y la capa `<ExpresionCondicional>`; los
+Lo que sí importa es **dónde** aterriza cada logro, porque es lo que hace la gramática legible:
+cada uno agrega una capa o unas alternativas identificables, y no reescribe las reglas de al lado. El ternario es `<RestoCondicional>` y la capa `<ExpresionCondicional>`; los
 posfijos, `<PosfijoOpcional>`; la inicialización de arreglos, `<RestoCreacionDeArreglo>` y el bloque
 de `<InicializadorDeArreglo>`. Dos logros que necesitan una construcción parecida llevan cada uno la
 suya.
@@ -120,7 +120,7 @@ comprueba.
 
 ```bash
 cd compilador
-python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g --sin-cabecera
+python3 herramientas/gramatica_a_markdown.py gramatica/minijava-ll1-final.g
 python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-final.g producciones
 python3 herramientas/gramatica_a_latex.py    gramatica/minijava-ll1-final.g primeros
 ```
@@ -171,6 +171,11 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
 - **El lado izquierdo del `=` es una `<ExpresionCompuesta>`**, como en la gramática original: un
   ternario no lo es, así que `a ? b : c = d` no deriva, igual que en Java. Los lados derechos son
   `<ExpresionCondicional>`: admiten el ternario y no otro `=`.
+- **La variable de control del `for` se declara con `var` y nada más**: los logros son
+  independientes entre sí, así que el `for` no toma el declarador tipado de Variables Locales
+  Clásicas. Lo respondió el profesor. `for(;;)` es válido, como en Java (JLS §14.14.1).
+- **No hay atributos estáticos**: `static` aplica sólo a métodos, como en MiniJava base. Lo
+  confirmó el profesor.
 - `int x[]` **no existe**: las dimensiones van pegadas al tipo base y nunca al nombre, que es lo que
   define MiniJava base. No se amplía.
 - Una clase hereda de **una** clase o implementa **una** interfaz, nunca las dos ni varias: es

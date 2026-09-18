@@ -1,2 +1,2 @@
-///[Error:++|2]
-++ interface Sn___ < E > extends Je < T1_l < L > > { } class Sw < H > { }
+///[Error:[|2]
+class O8 implements T_ < YY_8JO_ < G > > { static [ ] eniK7 ( ) { } }

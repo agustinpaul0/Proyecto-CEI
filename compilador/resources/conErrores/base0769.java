@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends Kl class VP0 implements L__ { static B [ ] c ( ) { } } class W07_ extends OU { private static void h_ ( U yN_ , Hp < Kc > [ ] cVl , boolean [ ] c , int [ ] [ ] [ ] i_wt , char [ ] [ ] kh8U ) { if ( this -- * 6D = + null ) for ( ; ; ) char [ ] h ; } }
+///[Error:m|2]
+class Jx { private static U [ ] v73__ ( X j ) { } } interface KhQV < B > { void t ( boolean [ ] t_ , float [ ] z , C6 < J > [ ] [ ] [ ] [ ] [ ] fF ) ; } interface M8so < N > { L z ( ) ; public m ( char [ ] [ ] tOtp , M [ ] s , int [ ] [ ] [ ] [ ] [ ] [ ] mOj__ , F [ ] a , int [ ] l ) ; }

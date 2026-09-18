@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface E07Y0 extends W_8 < SwfQ > { } class F5d_y implements I_ < W_ < I > > { } extends XX < O_ < M_5 < I8 > > > class YD < Y > extends Kr < T > { public static void e ( ) { } public Tp ( char [ ] [ ] [ ] l57Y81 , J j ) { Z ta , g ; } boolean [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] k ( Yt1_7p d_ ) { for ( TB [ ] [ ] n ; ; ) 'z' ; } }
+///[Error:public|2]
+public I [ ] [ ] [ ] [ ] [ ] [ ] mu ( Z qq , Fj [ ] z7J ) ; public void a_ ( G j_D2 , Y0H [ ] r , char [ ] [ ] b2 , boolean [ ] h_ , B [ ] wy ) ;

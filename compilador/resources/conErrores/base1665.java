@@ -1,2 +1,2 @@
-///[Error:I|2]
-interface Y_j { } interface Po < S > { } I interface B6r_aa { }
+///[Error:-|2]
+class UA < L > { static private int - W13 < X > [ ] [ ] [ ] kG ( ) { if ( "" ++ + false = + true ) ; } static void kvm272NS ( X c ) { '\"' % X2 . i ( ) ++ ? - null : - true ; } }

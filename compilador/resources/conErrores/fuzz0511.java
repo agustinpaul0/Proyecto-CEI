@@ -1,2 +1,2 @@
-///[Error:,|2]
-class JF_ < G > { static private S_ q_ ( char oQ , B u , I7_k < L > i ) { H [ ] [ ] [ ] [ ] f = - "" . n -- || ! this -- , zL = , b = this ++ && ! null , e ; ! P_p . pQ ( ) ++ ; } } interface RJP < S > { }
+///[Error:char|2]
+class X_ < P > extends H1 { public static boolean [ ] [ ] e ( V6 o , U [ ] [ ] y ) { } } class ZK < F > implements X_ { Re [ ] [ ] [ ] [ ] [ ] ymX_ ( ) { return ; var p = - true + false ; } } interface F5__ < Y > { } char [ ] [ ] [ ] [ ] e_

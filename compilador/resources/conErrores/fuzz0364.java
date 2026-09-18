@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < M > extends C7 < BD_ < ULm_S_d_ > > { }
+///[Error:{|2]
+interface K0UB extends NH < O > { } interface G6 extends { }

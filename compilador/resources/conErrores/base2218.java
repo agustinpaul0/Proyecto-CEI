@@ -1,2 +1,2 @@
-///[Error:private|2]
-interface F_ < B > { } class K_a extends J_K < A > { static I_ < VZv_ < UXs_ > > [ ] [ ] [ ] [ ] private static void w ( boolean sJ ) { { } } private N [ ] o_ ; }
+///[Error:[|2]
+interface KV { Tz [ ] m ( int p0_ , H i1 ) ; void s9 ( ) ; public [ ] [ ] [ ] [ ] j ( char [ ] t0 ) ; } class P_a_ < L > extends Hl { }

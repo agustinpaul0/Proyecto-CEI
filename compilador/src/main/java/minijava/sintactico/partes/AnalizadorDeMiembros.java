@@ -142,7 +142,7 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     // MiembroDesdeIdClase -> CuerpoDeMetodo
     // MiembroDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar AtributoOMetodo
     //
-    // El constructor ya no lleva `public` propio —lo absorbió <Visibilidad>—, así
+    // El constructor no lleva un `public` propio —lo absorbe <Visibilidad>—, así
     // que compite con el atributo o método de tipo referencia por el token idClase.
     private void miembroDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO)) {

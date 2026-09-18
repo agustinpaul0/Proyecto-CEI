@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface PA { } class Q3 < J > implements { } class EV extends N_ < P > { boolean [ ] v ; }
+///[Error:K_nF|2]
+class L8 implements CAgO < M > { private void r K_nF { } static U bv0KkS ( ) { true && + Ph . i ( ) . i -- || + YA9 . h ( ) = true > true ; } private static void wJ ( ) { LbI < Y > x = + false , n_ , o ; } static void ys ( ) { } }

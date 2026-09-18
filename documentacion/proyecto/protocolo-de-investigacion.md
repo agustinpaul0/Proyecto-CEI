@@ -1,16 +1,14 @@
 # Protocolo de investigación — MiniJava primero, Java después, nunca de memoria
 
-Regla de trabajo **obligatoria**, no una sugerencia. Se estableció después de un incidente real: se
-implementó un comportamiento (repetición del marcador `u` en el escape Unicode) basándose en un
-recuerdo general del JLS, sin citar la especificación real ni informar al usuario antes de programar.
-El comportamiento en sí resultó correcto, pero el *proceso* estuvo mal — y separadamente, una
-decisión relacionada (si `double` debía ser palabra reservada) se interpretó mal por no chequear con
-el usuario antes de implementar. Esta sección existe para que no vuelva a pasar.
+Regla de trabajo **obligatoria**, no una sugerencia: un comportamiento de Java recordado de memoria
+puede resultar correcto por casualidad, pero sin la cita de la especificación no hay forma de
+saberlo, y sin informar antes al usuario una lectura equivocada llega al código.
 
 ## El procedimiento, en orden, sin saltearse pasos
 
-Ante **cualquier** pregunta de comportamiento léxico (o, en etapas futuras, sintáctico/semántico) que
-no esté ya resuelta en `convenciones-de-la-catedra.md` o `../lexico/especificacion-lexica-de-minijava.md`:
+Ante **cualquier** pregunta de comportamiento —léxico, sintáctico o de las etapas siguientes— que
+no esté ya resuelta en `convenciones-de-la-catedra.md`, `../lexico/especificacion-lexica-de-minijava.md`
+o `../sintactico/decisiones-de-logica.md`:
 
 1. **Primero, ¿hay una regla escrita para esto en MiniJava?** Buscar explícitamente en los PDFs de la
    cátedra (como imágenes, `AGENTS.md` §0) y en las decisiones ya tomadas en `documentacion/proyecto/*.md`. Si la hay,
@@ -54,20 +52,29 @@ Este protocolo es la forma operativa de aplicar la regla que la cátedra escribi
 defecto igual al de Java"*. Esa frase por sí sola no dice *cómo* averiguar el comportamiento de Java
 con precisión — este documento fija el procedimiento para hacerlo bien, en vez de asumir.
 
-## Casos ya resueltos con este protocolo (ver `../lexico/especificacion-lexica-de-minijava.md` para el detalle completo)
+## Casos ya resueltos con este protocolo
+
+Los del léxico están en detalle en `../lexico/especificacion-lexica-de-minijava.md`:
 
 - Escape Unicode: marcador `u` repetible (JLS §3.3).
 - `float` como palabra reservada: **no** se resuelve por este protocolo — es una respuesta directa
   del profesor, no un default de Java (Java no tiene "float" como comportamiento por defecto de algo
-  no especificado; es una decisión explícita de la cátedra por otra vía). `double` explícitamente
-  **no** es palabra reservada, aclarado por el usuario tras una interpretación inicial equivocada.
-- Escapes dentro de `litString`: restringidos al conjunto válido de Java (JLS §3.10.7) — a diferencia
-  de `charLiteral`, que la cátedra hace explícitamente más permisivo (`Aspectos Lexicos MiniJava
-  2026.pdf` §2.3.2: "`'\x'` con `x` cualquier carácter").
+  no especificado; es una decisión explícita de la cátedra por otra vía). `double` **no** es
+  palabra reservada.
+- Escapes dentro de `litString`: **no** se resuelven por este protocolo, porque la cátedra da una
+  regla (paso 1): §2.3.3 es posicional —el string cierra en la primera `"` no antecedida por `\`—,
+  así que no hay conjunto de escapes válidos y `"a\\"` queda sin cerrar. Donde la cátedra habla, no
+  se aplica Java.
+
+Los del sintáctico, en `../sintactico/decisiones-de-logica.md`: los dos operandos del ternario
+(JLS §15.25), el lado izquierdo del `=` (§15.26), la inicialización de arreglos (§15.10.1 y §10.6)
+y el encabezado del `for` sin ninguna de sus partes (§14.14.1). Las respuestas directas del
+profesor no pasan por este protocolo; las del sintáctico están en el mismo documento.
 
 ## Ver también
 
-- [`convenciones-catedra.md`](convenciones-de-la-catedra.md) — qué SÍ está explícitamente resuelto por la
-  cátedra (paso 1 de este protocolo).
-- [`especificacion-lexica.md`](../lexico/especificacion-lexica-de-minijava.md) — todas las decisiones léxicas ya tomadas,
-  incluidas las resueltas con este protocolo.
+- [`convenciones-de-la-catedra.md`](convenciones-de-la-catedra.md) — qué SÍ está explícitamente
+  resuelto por la cátedra (paso 1 de este protocolo).
+- [`especificacion-lexica-de-minijava.md`](../lexico/especificacion-lexica-de-minijava.md) — todas
+  las decisiones léxicas ya tomadas, incluidas las resueltas con este protocolo.
+- [`decisiones-de-logica.md`](../sintactico/decisiones-de-logica.md) — las del sintáctico.

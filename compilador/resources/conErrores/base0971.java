@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface SK < E > { } class < U > extends V_k < D > { } class Uvuj_F4 { }
+///[Error::|2]
+class V9XO_ < P > { Uk9 < E__I < D > > o = pu0 ( ) [ false ] . e ( ) -- ? + O181 . xC_ ( ) . f ++ = Z2S . m ( ) . w -- * + 8.1E33D ? true : + '\r' < : + '\r' - - "" . t ( ) . j <= + Isg . i ( ) . hr_1 -- * + this ++ ; static char [ ] ss ( ) { } static float [ ] [ ] o ( EWB v , H2 < DIk > [ ] xx ) { } }

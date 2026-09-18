@@ -1,2 +1,2 @@
-///[Error:static|2]
-static private void l_vI4 ( I_ t , O dW ) { { { } } } interface Ig { public void k53z ( ) ; }
+///[Error:{|2]
+class FP_1G extends R3 < S > { static private C { J i ; } }

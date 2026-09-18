@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-class Ki implements TS9_ { static public void boolean }
+///[Error:;|2]
+interface L2 extends L0E < L5_ < B_X > > { } interface Zr_43B8 extends P16 { public void t ( ) ; void tza ( D e ) ; public int v_y ( int y_ ) ; Q i ( ) ; } class Nn implements I_2P < S > { H6Bl m = ; } interface Xt { }

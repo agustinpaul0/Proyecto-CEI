@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < Z > implements O_4 < W > { } interface D_J extends Ix90_u < P > { }
+///[Error:{|2]
+interface { char t_7_ ( ) ; } interface PR2P extends N5lo { } class OY_cfvpBRL implements Ms__ < Oj > { }

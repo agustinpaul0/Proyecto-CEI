@@ -1,2 +1,2 @@
-///[Error:c|2]
-c interface W1 < G > { We < K > s ( ) ; }
+///[Error:extends|2]
+class D_4 implements C_t < S > { } interface extends Cu { }

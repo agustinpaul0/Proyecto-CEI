@@ -1,2 +1,2 @@
-///[Error:QWv|2]
-interface J2_ { } QWv
+///[Error:}|2]
+class Mm_9 < B > { static void }

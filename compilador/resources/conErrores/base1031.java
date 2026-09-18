@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface J2i extends F0 { void a_ ; }
+///[Error:(|2]
+interface Mw9 { public char ( ) ; }

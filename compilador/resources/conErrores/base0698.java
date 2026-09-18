@@ -1,2 +1,2 @@
-///[Error:<|2]
-class G90c implements < U > { }
+///[Error:>|2]
+interface Jp extends O_ < > { }

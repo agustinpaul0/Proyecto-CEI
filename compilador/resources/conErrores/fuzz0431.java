@@ -1,2 +1,2 @@
-///[Error:z2|2]
-interface R_10 < G > extends K_I_ { public void m ( ) ; public z2 ( ) ; void fd_ ( ) ; public void e ( B z ) ; } interface XVh { void h ( ) ; }
+///[Error:{|2]
+interface A7 < B > extends M6 { } interface Bc_PS { } class G3__Z implements { }

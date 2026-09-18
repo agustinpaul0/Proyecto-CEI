@@ -1,2 +1,2 @@
-///[Error:I5s|2]
-I5s
+///[Error:W|2]
+interface NIt < W > { } interface Uz__ < E > extends V5 { } W

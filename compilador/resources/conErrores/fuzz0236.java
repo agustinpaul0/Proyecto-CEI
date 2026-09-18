@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Y4 implements Gd < X > { static private int [ ] [ ] giu ( Y c ) { for ( i [ ! false ] != 5446 = + null ; this && 34.040f = - null ; "" -- - null ) ; return + true = true ; if ( ! false ? ! false : + true ) while ( - true ) Ub [ ] n , o , d ; else var e = false ; } private void dt ( ) { ; return - false ; } ABc t ; } interface Q4r extends Rz2 { public void m ( ) ; [ ] [ ] [ ] [ ] public Sv [ ] h ( ) ; }
+///[Error:d8|2]
+class ZLi extends Eb_d_b { } interface R0_ extends NxC34y < Q_ > { void y ( boolean s , d8 , W b ) ; }

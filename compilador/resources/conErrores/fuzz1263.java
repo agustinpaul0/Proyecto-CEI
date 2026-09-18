@@ -1,2 +1,2 @@
-///[Error:D_x|2]
-D_x
+///[Error:extends|2]
+interface extends R7 { }

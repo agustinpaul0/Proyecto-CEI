@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends K_Ot
+///[Error:private|2]
+private

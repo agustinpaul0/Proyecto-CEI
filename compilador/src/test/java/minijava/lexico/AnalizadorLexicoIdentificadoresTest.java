@@ -73,7 +73,8 @@ class AnalizadorLexicoIdentificadoresTest extends BaseDeAnalisisLexico {
             "true|PR_TRUE", "false|PR_FALSE", "float|PR_FLOAT",
     })
     // float es reservada por confirmación directa del profesor; "double" NO lo es
-    // (los sufijos f/F/d/D del literal ya cubren ambos). agents/especificacion-lexica.md.
+    // (los sufijos f/F/d/D del literal ya cubren ambos).
+    // documentacion/lexico/especificacion-lexica-de-minijava.md.
     void reconoceLasVeintiunaPalabrasClave(String fuente, String tipoEsperado, @TempDir Path dir)
             throws Exception {
         Token token = crearAnalizador(dir, fuente).proximoToken();

@@ -1,2 +1,2 @@
-///[Error:M|2]
-interface Jw { void g9Xr ( char c ) ; } M interface VC8 < B > { } interface L2l extends W_ < Cs < Z > > { }
+///[Error:extends|2]
+interface J_I extends P_ { } class F0u < M > { } extends O3 < YQ90 >

@@ -1,2 +1,2 @@
-///[Error:-|2]
-class FX_ { static private A - } interface B_L extends Jc { public Y5 [ ] [ ] [ ] c_ ( char [ ] q ) ; }
+///[Error:rH8|2]
+interface Eu0B0N_a0 { public rH8 ( ) ; } interface TNp < U > { }

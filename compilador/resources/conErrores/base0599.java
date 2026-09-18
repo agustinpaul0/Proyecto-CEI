@@ -1,2 +1,2 @@
-///[Error:private|2]
-private
+///[Error:extends|2]
+class UF4_ < U > { void d ( ) { } } class extends Akc__ < K > { public V_ < U > [ ] t ( ) { } public static void q ( int [ ] [ ] bzF , Z_ < O > mZ_zY ) { VXX_ . o ( ) -- % + '\f' + ! true ; } public static void k ( ) { } static void f ( boolean m ) { { } } A x_ ( int [ ] [ ] hI__ , float h ) { { for ( ; ; ) ; ; ; } P9_ y ; } } interface Z_ < U > extends F_9aE_ < D > { } class Zk5Y < W > extends FU8 < M9 < Y__j > > { B4 ( ) { } } interface HP5 < A > { public void mo ( MT < F > jPm_ , Ei_9k_ < V > [ ] [ ] [ ] an ) ; public void yj ( char [ ] a ) ; public H [ ] k ( T oE_2 ) ; }

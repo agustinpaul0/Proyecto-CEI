@@ -1,2 +1,2 @@
-///[Error:++|2]
-interface Ew { public Ey [ ] [ ] d0 ( ) ; public void i ( I [ ] [ ] [ ] [ ] b , char [ ] y ) ; } class Hw { E [ ] [ ] j = - true == + kP6 ( ) . ++ ; X [ ] [ ] n ; }
+///[Error:D_|2]
+interface Jj { Dg < V > [ ] h ( ) ; W [ ] x6 ( ) ; void b D_ < SZ < BQ8S < D > > > [ ] ; }

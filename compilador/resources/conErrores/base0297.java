@@ -1,2 +1,2 @@
-///[Error:EH1_V|2]
-EH1_V
+///[Error:o|2]
+class Cp { static o ( ) { T sVj ; } }

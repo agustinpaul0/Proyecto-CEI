@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Un caso por cada TipoDeErrorLexico, validado por tipo y localización y nunca por
-// el texto del mensaje, como pide agents/testing.md.
+// el texto del mensaje, como pide documentacion/compartido/estrategia-de-testing.md.
 @Tag("lexico")
 class TipoDeErrorLexicoTest {
 

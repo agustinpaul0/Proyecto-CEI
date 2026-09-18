@@ -1,2 +1,2 @@
-///[Error:E7Fcx_aB|2]
-E7Fcx_aB
+///[Error:jh|2]
+interface Es_o { public void x ( X d , jh , int gX7 ) ; }

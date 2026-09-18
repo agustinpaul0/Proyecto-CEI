@@ -1,2 +1,2 @@
-///[Error:h|2]
-h
+///[Error:extends|2]
+interface extends VA_ { }

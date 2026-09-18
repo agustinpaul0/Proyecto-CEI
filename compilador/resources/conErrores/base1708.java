@@ -1,2 +1,2 @@
-///[Error:E|2]
-class V2a_g_ < G > implements X_ < C > { void bv ( ) E [ ] z , gU , a , bs2L , h ; }
+///[Error:A|2]
+A class C8rw < X > implements Q25_k { } class J2P023 extends L_jf2_ { }

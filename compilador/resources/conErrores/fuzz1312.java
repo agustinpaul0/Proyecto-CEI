@@ -1,2 +1,2 @@
-///[Error:Cfn|2]
-Cfn interface CL extends K_ < T > { } interface C8 < I > { }
+///[Error:OK_oM_a|2]
+OK_oM_a interface PN3 extends H182 { }

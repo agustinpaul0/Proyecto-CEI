@@ -1,2 +1,2 @@
-///[Error:static|2]
-class YH < N > implements NP3 { private Y [ ] t3K2VYOOTc_I ; public J8_ static private void fe ( GGg4 < E14N2E4 < P__ > > [ ] m6 , H [ ] [ ] pw ) { } static void j ( char [ ] [ ] [ ] [ ] [ ] oD , TO < Z > g , BM f_ ) { } } class TA1 < E > extends K_ { public QbX ( boolean [ ] v ) { ; Uov < P > v6__ ; } private static X8_k < NC < E > > [ ] [ ] [ ] w ( ) { } static P [ ] n3 ( ) { if ( this -- >= 555.d <= null = null ) { boolean yD ; } } } class RO9F implements H1P < M > { } interface X8 < S > { } interface Cwyi_ extends A_4p < F5 < R > > { } interface I_K < D > { } class L3 implements K1 { AV ( boolean [ ] [ ] m_ ) { ; L4_ [ ] sQ ; return ; } } class X1KxD < L > { static Sg__ < WhV_ > mt89f6k ( ) { ; } }
+///[Error:<|2]
+class < Z > extends QS_4 < B > { }

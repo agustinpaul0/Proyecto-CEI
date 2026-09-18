@@ -1,2 +1,2 @@
-///[Error:I__|2]
-I__ class EV extends D1 { }
+///[Error:WF|2]
+WF [ ] [ ] rG class Vx_ { public static F_ r ( ) { V [ ] h = ! false ; } }

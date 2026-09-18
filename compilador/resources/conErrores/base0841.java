@@ -1,2 +1,2 @@
-///[Error:Ri|2]
-class F2 < P > { } Ri
+///[Error:>|2]
+interface JVCQ_ < D > extends Q_ < > { } class QFAya { }

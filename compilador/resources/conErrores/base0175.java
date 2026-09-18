@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface KpH extends Ftt < GO__a < < V > > > { }
+///[Error:q|2]
+interface Qc < M > { public void t ( R [ ] [ ] n , q ) ; }

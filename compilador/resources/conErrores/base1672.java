@@ -1,2 +1,2 @@
-///[Error:QiC|2]
-interface Z__ extends Oq < VB < Bo > > { AG zj ( HF iZ ) ; } interface O1 { } class M0 extends J__c { } class V_ < D > { static public void s QiC [ ] y_ { } } class R5 { } interface YR4_ { public void n ( ) ; void oaV ( ) ; }
+///[Error:""|2]
+interface KP03Fn_ < I > { } class Q_ < C > { static private void l ( ) "" } interface P_Xs extends Ac_42 < P84 > { } class C_ < S > extends Fs_D8 { }

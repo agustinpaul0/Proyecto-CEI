@@ -1,2 +1,2 @@
-///[Error:p47|2]
-interface H_ extends Z__ < O > { public R_ < L0Cu2 < P_UtQ3 < X_ < YA_ < KN > > > > > [ ] [ ] [ ] [ ] [ ] [ ] t_ ( ) ; void nB ( JZU [ ] wj , Hl [ ] r ) ; void n ( NUl [ ] z0 ) ; p47 ( ) ; void cO ( ) ; public Y f ( ) ; } interface F2 { } interface J7GS_ { } interface JoI { public void i ( ) ; }
+///[Error:L_S|2]
+interface Z_ { public F [ ] e ( ) ; } class Hh < P > extends MDV < E > { static public void t ( ) { } static K f ( ) { } } interface V4 extends I_ { } L_S

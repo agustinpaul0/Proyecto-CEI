@@ -1,2 +1,2 @@
-///[Error:Cy6_df9e|2]
-Cy6_df9e interface Q___4C_6 { }
+///[Error:D|2]
+class Dv8 extends D { } class CYbpl extends W4w_ < O > { }

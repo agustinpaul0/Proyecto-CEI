@@ -10,7 +10,7 @@ controles crudos adentro, y las construcciones que un comentario NO abre.
 
 Los casos que terminan exactamente en el constructo (`//`, `/*`, `/` como ultimo
 caracter del archivo) no entran en este formato -- las lineas de oraculo son
-comentarios y quedarian despues -- y viven como unit tests en AnalizadorLexicoTest.
+comentarios y quedarian despues -- y viven como unit tests en las suites AnalizadorLexico*Test.
 
 Expectativas predichas a mano antes de correr, como manda herramientas/README.md.
 """
@@ -54,8 +54,9 @@ con_errores("comentarioSinCerrarConSaltoInmediato.java",
 # Podados tras medirlos: cuatro casos mas (centinela dentro de // y dentro de un
 # /* sin cerrar, "// /*" que tapa una apertura, y /* abierto en la ultima columna)
 # no movian ni una linea ni una rama de cobertura, y lo unico que aportaban ya lo
-# fijan AnalizadorLexicoTest y PosicionDelCaretTest. No se agregan al corpus:
-# agents/testing.md advierte contra ensuciarlo con duplicados.
+# fijan las suites AnalizadorLexico*Test y PosicionDelCaretTest. No se agregan al
+# corpus: documentacion/compartido/estrategia-de-testing.md advierte contra
+# ensuciarlo con duplicados.
 
 # El caso de fin de linea mezclado se escribe a mano en el propio corpus: necesita
 # CRLF y CR sueltos, y generar_casos.py fuerza newline="\n".

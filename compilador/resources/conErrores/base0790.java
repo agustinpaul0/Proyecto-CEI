@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Ntl__w < T > extends < T > { public void w ( ) ; }
+///[Error:char|2]
+class UP3IC841 implements YW2 < Z > { } char m_ = + null ; class L_ < A > implements E_ { }

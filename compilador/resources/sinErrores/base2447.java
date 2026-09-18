@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Lv < U > extends Rr2 { static void x ( ) { } static public J [ ] [ ] w ( ) { for ( var s = null < 8914237 ; - null ; ) if ( ! this = true ) for ( N sl7 ; ; ) return ; var s0P = ! R__I . w_Wa ( ) ++ ? ! true == false : + null != - null ; } } class Mb { } interface D6v extends ZD { }
+class Lv < U > extends Rr2 { static void x ( ) { } static public J [ ] [ ] w ( ) { for ( ; ; ) int [ ] p_ ; for ( false = + null ; - null ; ) if ( ! 'C' ) for ( ; ; ) ; else { } } } interface Pl7 < A > extends VS_j < C > { } interface Cf < R > { char k ( V o ) ; }

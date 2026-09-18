@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Lx_ < Q > implements H_ < CD < X > > { M sITQ ( ) { } G [ ] [ ] bFm ( ) { } static void g ( ) { while ( - D_xy . z3 ( ) && 6.f = ! true && false ) char ; } } class A__ < O > { static public Y [ ] weUFS__uH1 ( ) { } private static void dv ( P uT_ , char xd ) { } static S [ ] [ ] j ( ) { } }
+///[Error:for|2]
+interface IHy extends N_ < Os_ < W > > { } for ( ; ; ) { ; } class E_ap < B > { } class RB < H > { } class HK_ implements Ms < M > { static I r_jW8 ( float [ ] [ ] q6_ , DU7 h ) { { int h ; } char a , u , wY2_ ; } public static DI [ ] r ( ) { for ( ; ; ) E jU ; } }

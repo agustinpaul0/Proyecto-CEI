@@ -1,2 +1,2 @@
-///[Error:;|2]
-; class D_6 < Z > { }
+///[Error:C_C_88r|2]
+C_C_88r

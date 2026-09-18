@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < B > extends V_9e4 { }
+///[Error:)|2]
+interface I9 extends DA0z { } class B4 < E > implements ZzK { public static void u ( float ) { } }

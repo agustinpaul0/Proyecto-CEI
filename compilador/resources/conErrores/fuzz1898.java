@@ -1,2 +1,2 @@
-///[Error:rvI0|2]
-rvI0 interface Ohmo < O > { } class Bb < W > { }
+///[Error:int|2]
+class H0 implements U9Lu_G2_N2f < Il > { } interface W4 { public char t6a9 int ; }

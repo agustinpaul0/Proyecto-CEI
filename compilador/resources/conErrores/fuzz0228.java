@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface WS_ < D > extends { }
+///[Error:float|2]
+float [ ] f0 ( ) ; interface Ff { }

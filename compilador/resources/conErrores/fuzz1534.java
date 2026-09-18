@@ -1,2 +1,2 @@
-///[Error:static|2]
-static int [ ] [ ] [ ] [ ] [ ] [ ] r ( ) { }
+///[Error:public|2]
+public float qY ( ) ;

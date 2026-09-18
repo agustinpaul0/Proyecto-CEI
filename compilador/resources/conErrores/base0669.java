@@ -1,2 +1,2 @@
-///[Error:false|2]
-interface TG_ extends Kc { } false
+///[Error:extends|2]
+interface extends VU < Xma > { }

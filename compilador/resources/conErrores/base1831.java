@@ -1,2 +1,2 @@
-///[Error:static|2]
-static private char [ ] pZrq___ ( ) { }
+///[Error:implements|2]
+implements D_

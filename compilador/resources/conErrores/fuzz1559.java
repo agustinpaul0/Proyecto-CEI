@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class PCl_ < I > implements H9 < U5_o > { } interface CL_ extends S4 < PPy > { } implements Qq3
+///[Error:{|2]
+class Le0 implements { } interface D_Q < Y > { void c_ ( ) ; C q__N ( ) ; }

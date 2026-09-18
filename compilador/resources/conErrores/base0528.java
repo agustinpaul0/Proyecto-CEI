@@ -1,2 +1,2 @@
 ///[Error:;|2]
-class IT extends Cbn66 < XV < V > > { } interface R9 { char [ ] [ ] [ ] [ ] d ( ) ; } interface HJ extends FL { public int qU ; public char [ ] [ ] a ( ) ; void p ( ) ; } interface RW_ { public void uV ( BMBb [ ] [ ] b1 ) ; }
+interface Z_Y extends Nrb { } interface Gx extends QZT_c < M > { public void t_P__ ( ) ; } class JL < L > implements B_EO { static int [ ] [ ] pj_ ( B c , int i , boolean [ ] [ ] tYi ) { } } interface Vy_ { public U j ( ) ; } interface NZ extends R4 < G > { public void aZ ( D_ < G > [ ] [ ] xM ) ; boolean f_v_Z7 ( ) ; } interface M_ { public void k ( T nm ) ; public void w ( P6i < E > cC ) ; float [ ] [ ] a ; }

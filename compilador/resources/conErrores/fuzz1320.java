@@ -1,2 +1,2 @@
-///[Error:null|2]
-class PD < Q > { public void i null = true < ! true }
+///[Error:<|2]
+interface DGP < R > extends V_SQ < F_l_ > { } < A8 < Gw < Q > > >

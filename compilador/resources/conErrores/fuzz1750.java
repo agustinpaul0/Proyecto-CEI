@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface X_0ic < A > { void c ( char ) ; public Of0_ < G7 > [ ] rPr ( ) ; }
+///[Error:M2|2]
+interface Z_ { } M2

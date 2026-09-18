@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface ZF_ { float b ( ) ; } class IVT < W > { } void k ( ) ;
+///[Error:AO1Kj0_b|2]
+AO1Kj0_b

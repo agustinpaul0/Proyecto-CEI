@@ -1,2 +1,2 @@
-///[Error:{|2]
-class XH9y extends PF { } class A_ < O > implements D1 < S > { void p { } }
+///[Error:)|2]
+interface Z_91 < T > extends Q_g { public void y ( P s ) ; public void l ( Y95 ) ; } class Rg < X > extends EW { }

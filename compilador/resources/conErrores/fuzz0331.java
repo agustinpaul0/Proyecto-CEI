@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Sw < K > { } interface < E > { }
+///[Error:[|2]
+[ ] [ ] [ ] [ ]

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends R__ < TRz_ < G4 < T > > > interface Ml extends T_M { }
+///[Error:Qp|2]
+Qp < Rg___ > interface B_ extends RJV2 { void g ( ) ; void h3 ( ) ; public void n ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:D_J|2]
-class V2 < Z > implements O_4 < W > { } D_J
+///[Error:xo0|2]
+interface V0 < C > extends Ue < D > { int e ( L x , int n , boolean [ ] eENm ) ; xo0 ( ) ; public boolean [ ] g ( ) ; }

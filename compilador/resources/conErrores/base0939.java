@@ -1,2 +1,2 @@
-///[Error:--|2]
-class ZNP6 implements L_ < A > { static S s ( ) { for ( L hr7 ; ; ) Y [ ] [ ] n = + "" - - false , c = true , qIL = true , w ; for ( ; - "" < ! false ; ) float kj , d_ ; for ( var s = + 508209 ; ; ) for ( Jk0 . p ( ) . z ++ ; ; ) ; var z = -- || null % ! null ? - null : + true ; Y_qN__ e_7_sjsmJ , v8 ; { } } } class Ve__ extends L_ { D o ; public void y9 ( Mp < R > [ ] [ ] [ ] [ ] [ ] sv1 , boolean [ ] a , int s_WV ) { ; } } interface KSs extends Zb { } class UK implements Lf_ < T > { public N [ ] [ ] uE ; U [ ] [ ] [ ] t ( ) { } static void pPcs7_7 ( ) { } float [ ] kuR ( ) { } }
+///[Error:,|2]
+interface XJ { public void y ( S [ ] p , C_ [ ] m , char , T f ) ; } interface IF extends V885 < E > { I [ ] r ( Y [ ] [ ] [ ] [ ] [ ] b_5G , char e , S b ) ; } interface YD_5 extends Z_D { }

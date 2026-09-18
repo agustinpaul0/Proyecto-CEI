@@ -1,2 +1,2 @@
-///[Error:RoW|2]
-RoW interface Ww0S < W > extends U_S_ { }
+///[Error:<|2]
+interface R4d < Q > { } interface < D > extends G2LC < X > { }

@@ -1,2 +1,2 @@
-///[Error:Ef|2]
-interface Zi_ < B > extends F_ < YE < H_q > > { } Ef interface A_z extends Ia_o { public void s ( ) ; } class Qi implements H__ < U2 < L > > { }
+///[Error:NV|2]
+interface JB46j4 < O > { public void f___1 ( boolean [ ] r_ ) ; } NV class N_0l { } class J_ < J > { }

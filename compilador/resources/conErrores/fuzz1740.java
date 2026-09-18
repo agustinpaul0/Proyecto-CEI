@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean h ( ) ; public G_ [ ] [ ] [ ] [ ] [ ] wW ( ) ;
+///[Error:for|2]
+for ( ; ; ) ; interface Jf4 < V > { public void z_F ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:w4n|2]
-class ELJ < A > { } interface E809 { w4n ( D [ ] m_Y ) ; void eP ( ) ; } interface V7 < K > extends XIwO { public void w_ ( int u , Ngn iG ) ; } class MB extends T_ { }
+///[Error:}|2]
+class Y1 implements M_ < Q_ > { void u4 ( char y , char [ ] l ) { } static public void blt ( int f ) { } public char [ ] [ ] [ ] [ ] [ ] [ ] l ( ) { } A w_ ( int [ ] l , P [ ] n7_D , H [ ] [ ] p , int [ ] [ ] tO ) { } float q87Zw ( Z [ ] u_ ) { for ( ; ; ) for ( ; ; ) ; F3 } }

@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface GoF_B_ < D > { } interface Sl_ < H > { } class S7_ < N > { static private G e_u ( JZB [ ] [ ] f_ ) { for ( boolean o : + '\n' ) Z [ ] iY = true ; } B z ( G69 [ ] w , D0r_0 u , G [ ] [ ] v ) { } private int og = + S_ . y ( ) . t % + "" -- ; }
+interface GoF_B_ < D > { } interface Sl_ < H > { } class S7_ < N > { static private G e_u ( JZB [ ] [ ] f_ ) { for ( var f : 495651 ) while ( true % false ) Z w1J ; } O [ ] [ ] [ ] br_0 ( ) { } } class W_u implements Tr_ < X4 < G_A__ > > { } interface H7 extends J7R9O { } class LF { }

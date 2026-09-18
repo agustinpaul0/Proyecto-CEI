@@ -1,2 +1,2 @@
-///[Error:[|2]
-class T49 { boolean w ( [ ] ) { } } class K0 implements Ert { }
+///[Error:void|2]
+interface ZF_ { float b ( ) ; } class IVT < W > { } void k ( ) ;

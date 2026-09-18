@@ -1,2 +1,2 @@
-///[Error:static|2]
-static void x1y ( ) { } class W_1 { }
+///[Error:while|2]
+class NW < O > { void l while ( this ++ ) int c , dg3l ; }

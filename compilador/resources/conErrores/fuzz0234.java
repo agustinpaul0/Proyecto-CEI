@@ -1,2 +1,2 @@
-///[Error:(|2]
-class VV_ extends N_ { static private void ( ) { } WcC8 ( ) { } }
+///[Error:{|2]
+interface WS_ < D > extends { }

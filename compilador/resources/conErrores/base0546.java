@@ -1,2 +1,2 @@
-///[Error:G|2]
-class Y_frz < D > extends G { static public void q ( V s , boolean [ ] w , Pz_7 oo ) { } private H_ [ ] xG = "QS" ++ ; }
+///[Error:;|2]
+class WRO < S > { static public O x ( ) { ; } } interface XI < J > { } interface H6 { } class HJ < G > extends Lv { M [ ] a2 ( ) { int [ ] [ ] [ ] a = - null ; } void s ( U m , U [ ] t____ , int w ) { while ( + null ) ; } } interface S4hlV { } interface IG extends H5U_ { public char [ ] [ ] [ ] [ ] xD ; public void s ( boolean u_G ) ; } class Q9 implements HO7 { }

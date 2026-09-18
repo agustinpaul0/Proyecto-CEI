@@ -8,7 +8,7 @@ import minijava.sintactico.primeros.PrimerosDeArgumentos;
 
 // La lista de argumentos actuales de una llamada. Sección propia y no parte de
 // la creación: la usan por igual el `new`, el encadenado, la llamada estática,
-// la llamada sin punto y el encabezado del for.
+// la llamada sin punto y la sentencia que empieza con idClase.
 public final class AnalizadorDeArgumentos extends ParteDelAnalizador {
 
     public AnalizadorDeArgumentos(Sintaxis sintaxis) {

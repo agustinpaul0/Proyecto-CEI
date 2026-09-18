@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Gjd implements O_nE_ { } class N_K extends G6M_W < Wa > { private static void f7S_EMN ( int [ ] [ ] [ ] as ) ; ; public char z__ ( ) { } void e ( ) { } } class Zz_ { }
+///[Error:<|2]
+interface D_ extends E5 { public float [ ] [ ] j ( ) ; } class T9B < G > { boolean q = - q [ + true ] . e ( ) . x4sA1 -- ; } < Xy < A > >

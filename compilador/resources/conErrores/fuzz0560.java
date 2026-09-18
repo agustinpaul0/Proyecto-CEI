@@ -1,2 +1,2 @@
 ///[Error:[|2]
-interface SI2 extends Z10C_ { } [ ] class L_r_ implements C7_ < MK < G > > { } class Q__ extends Iw { char [ ] [ ] m8 ( int [ ] [ ] c38A_7 ) { } } interface D0PUzo extends R2 < WPZ > { J [ ] kGf ( EJ < Oo_ > j , I f_ ) ; LZ < T > [ ] t ( E [ ] [ ] [ ] [ ] [ ] x ) ; public void x ( float [ ] [ ] fxsd8 , J [ ] n , float j0_5 ) ; } class NAEC < N > extends LI { }
+interface Z6 < N > { } interface Bk extends Z50 { public int r6h ( NAFRb_ w ) ; P n ( ) ; public void y_tw ( Zp < GJXT > sh ) ; [ ] x7o__9 ( float vq ) ; public void eS ( J_ < M > [ ] g ) ; }

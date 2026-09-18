@@ -1,2 +1,2 @@
-///[Error:int|2]
-int class MxW_1x implements T__93 < M6 < AG > > { } interface Di < T > { }
+///[Error:<|2]
+< V > interface V4_D { void v_ ( ) ; } interface Bhc < L > { }

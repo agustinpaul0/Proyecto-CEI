@@ -1,2 +1,2 @@
-///[Error:B|2]
-class U__ extends Lh < A_xX > { boolean lKi ; } class WZn_ER { public static void uR_ ( D [ ] xL ) { } public Z7 < S > [ ] [ ] v_ ; static void a_ ( ) { ; } } interface W_HG_ { public X b B ; }
+///[Error:[|2]
+interface KbA extends V2H { public void o ( [ ] jd ) ; Kh < H > [ ] m ( J i ) ; public ITY u ( ) ; void d ( ) ; public void g ( ) ; K [ ] [ ] xy ( ) ; } interface O8_5 < T > { } class X_0 implements LX_ { } interface N_ < Y > { }

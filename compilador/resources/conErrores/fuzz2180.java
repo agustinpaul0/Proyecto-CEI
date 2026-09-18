@@ -1,2 +1,2 @@
-///[Error:x4|2]
-class XSP < J > extends P1T < R_ > { } x4
+///[Error:}|2]
+class TQ_ < C > { static public void h ( ) }

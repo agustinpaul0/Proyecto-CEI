@@ -1,2 +1,2 @@
-///[Error:{|2]
-class MY implements Po < TV > { static void p { } }
+///[Error:D|2]
+class M_ < C > implements D { }

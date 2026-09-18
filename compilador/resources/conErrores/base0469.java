@@ -1,2 +1,2 @@
-///[Error:O4x_|2]
-O4x_
+///[Error:}|2]
+class MC { static private boolean m }

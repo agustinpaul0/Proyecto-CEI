@@ -1,2 +1,2 @@
-///[Error:{|2]
-class U_ implements Ze { public void { S r ; ; } static public void h_ ( O i ) { } } interface Fiw < E > { }
+///[Error:,|2]
+class TX { void gE ( int [ ] t ) { } } class H_K < P > extends S_c < I > { Qd < M > [ ] [ ] [ ] [ ] j ( N [ ] [ ] nD , , OtL x ) { var h = - this -- != ! null ; if ( '\t' == true ) L u ; else V d ; boolean q , t32_ ; ; ; { } return ; } } class VY < E > { static public void o_ ( char u5 ) { } private T [ ] x48a ( ) { } } class WT < B > { static void fk ( DW < Om > [ ] s ) { } private static void i ( Vh_ q ) { } void c ( ) { { ; return ; } null ; for ( ; ; ) return ; for ( ; ; ) ; return ; ; } } interface K7 < M > { } class Qjb_ implements H1 { static private char j_Z ( float ooG , char uDwJt ) { } } class G_b { private static void k ( ) { for ( ; ; ) ; } private static void a ( ) { for ( ; ; ) ; boolean h ; ; } }

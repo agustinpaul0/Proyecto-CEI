@@ -1,2 +1,2 @@
-///[Error:}|2]
-class S4 < M > { } class Xg_ < K > { C [ ] [ ] f } class W3 implements O5 < H > { static public void x ( int [ ] n , Ywe < W > [ ] [ ] o ) { L j = null ; { } while ( - null * + false ) UT . i ( ) . k -- ; if ( + true ) QD < Z > vq ; else return ; } }
+///[Error:U|2]
+interface UfV < A > extends X1 < X > { } class X_ { static int t ( R [ ] l ) { } boolean y88 ( B [ ] mGC ) { this . f9 ( ) ++ ; } static void q ( ) { for ( var g_S : + false ) return ; } static int [ ] e ( float f ) { } } class Lk_ < L > { private V0 qbz8 ( int [ ] t_ ) { for ( ; ; ) Ve d , y5_ ; } } U interface Q_ { }

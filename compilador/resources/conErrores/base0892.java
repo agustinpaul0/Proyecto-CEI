@@ -1,2 +1,2 @@
-///[Error:I|2]
-interface Mb < W > { void v ( C oT , I zI , C [ ] y ) ; } class W_6S9 < W > implements Ys < To1 > { void e ( C [ ] m ) I [ ] j_W_A ; } interface I_ < J > extends CN_Y { } class XS { static public T [ ] c ( ) { ; } static void x ( float [ ] [ ] [ ] sG6 , Jp s_ ) { new R [ ] [ ] { } ++ / true ; } } interface MjhKXA5 < Q > extends Lp < U > { public int [ ] [ ] [ ] g0 ( I e1A ) ; } class Xj extends H7 { public void a0 ( K h ) { } }
+///[Error:false|2]
+class I_ { private static void g ( I [ ] y , char twx0jqP_2 ) false static public void tb ( Tp < A > k , NO < R_ > z9 ) { { X p , q ; Y [ ] [ ] [ ] [ ] pp , q ; int [ ] f ; } } } class S_q < V > extends U_ { private static void a ( ) { { if ( null ) return ; else 2127.4f ; } } } class YcqH implements IW < O > { } class JP extends G43 { }

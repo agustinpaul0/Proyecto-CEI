@@ -1,2 +1,2 @@
-///[Error:>|2]
-class I_ < J > { } class Z_5_ extends FW < > { public int [ ] j ; }
+///[Error:}|2]
+class IVp < H > { static public Z [ ] rfa ( BW l ) { } public static Drb [ ] c } interface L0 { }

@@ -1,2 +1,2 @@
-///[Error:--|2]
-class AV < V > { public static void gT77_L ( BN < D > [ ] [ ] [ ] [ ] [ ] [ ] q , boolean g , int tk ) { while ( -- ) if ( - 10E-3364 = ! null ) { } else for ( 4F ; ; ) Q_ q ; char v , hS = '\t' ; } } class Xa < Y > extends Y7 { static F9w_31 [ ] [ ] [ ] [ ] [ ] df ( ) { } Q [ ] r ( ) { ; for ( Vt . sTf ( ) -- ; ; ) IwE_O [ ] [ ] [ ] [ ] b ; } }
+///[Error:a|2]
+class Qf65 < H > implements R2 { } interface H5 { } class VzK { static public void l ( ) { for ( var gl : + null + ! true ) boolean f = null ; ; return + false ; } } interface Q4_ extends R4 < C > { public void n ( ) ; public void m ( ) ; } class A0174 < O > { void fL ( ) { OD_4_0_ . e ( ) ; ; } private static Q_Ldw c2 ( a , E [ ] su_ ) { { } } public O h ( ) { } K k = 6D ; }

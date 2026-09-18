@@ -1,2 +1,2 @@
-///[Error:e_|2]
-e_
+///[Error:kR8m|2]
+interface S5 extends Iz1__ < Q > { kR8m ( int [ ] [ ] [ ] g7_ , B c ) ; } class NH_c < V > implements SB_ < R0R > { } class Y0L extends M_ < N_J_ > { } class Ulb0 { }

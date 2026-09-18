@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Tz_ extends Sh { Vr uy }
+///[Error:k_|2]
+class V941zW < C > implements Zq < B > { private static void t ( X j , W n_ ) { } private static void p ( k_ ) { if ( + "\n\"v\f\rA" . h -- ? - false : true ) X [ ] z_ ; else while ( - null ) Wbj . a ( ) -- ; } int gam ( ) { - this -- = true ; } private void c_6 ( G [ ] d__ ) { return ; ULwPR . u ( ) ++ ; Y6 . k ( ) ++ ; - false ; } } interface T2A extends SFD1S5 < Y_60Y < YUkZge > > { }

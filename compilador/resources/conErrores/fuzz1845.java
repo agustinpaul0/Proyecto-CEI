@@ -1,2 +1,2 @@
-///[Error:int|2]
-int [ ] [ ] [ ]
+///[Error:,|2]
+class M7 < T > implements D__ { } class R9X extends P9 { } interface B0 { B_P [ ] g ( ) ; void qa ( KR < EJw < AcCo > > [ ] [ ] vs , CR [ ] [ ] f , int fv ) ; } interface Ip < C > extends U3 { } interface Y_J9NCmi < G > { float d8 ( ) ; C t ( X [ ] [ ] [ ] [ ] x_ , , PU8 h0V_J ) ; } interface BD < W > extends I_ < J7Rh > { } class Y0 < M > implements J_ { public static void s ( ) { } private void f_ ( ) { } public V e_Ixrjeon ; } interface XFv_H_ { } class E3__d_3 { } class Tz__7j < M > { float d ; } class XMN_l_ < L > implements ND < O > { void q ( ) { ; } private static boolean [ ] r ( ) { } }

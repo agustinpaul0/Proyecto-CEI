@@ -1,2 +1,2 @@
-///[Error:>|2]
-class OE_ < > extends J_ < W > { }
+///[Error:Nb|2]
+interface KZ < G > { void j Nb uU ; }

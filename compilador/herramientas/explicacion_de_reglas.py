@@ -161,18 +161,14 @@ EXPLICACION = {
                     "que la liga al `if` más cercano, como en Java.",
     "While": "El `while` clásico.",
     "For": "El `for`, con todo el trabajo en el encabezado.",
-    "EncabezadoFor": "Las seis formas del encabezado, factorizadas. Cubre el `for` estándar "
-                     "(`for(int i=0; i<n; i++)`) y el de iteradores (`for(var e : lista)`), que "
-                     "comparten prefijo hasta el `:` o el `=`.",
-    "EncabezadoForDesdeIdClase": "INSERTADO. El mismo desempate que en `<Sentencia>`: un "
-                                 "encabezado que empieza con `idClase` puede ser una declaración "
-                                 "o una expresión.",
+    "EncabezadoFor": "Las tres formas del encabezado: vacío hasta el primer `;`, con la "
+                     "variable de control declarada con `var`, o con una expresión. La variable "
+                     "se declara con `var` y nada más: el `for` no toma el declarador tipado de "
+                     "las variables locales clásicas, porque los logros son independientes "
+                     "entre sí.",
     "EncabezadoForTrasVar": "INSERTADO. Después de `var x`, un `:` lo vuelve un for de "
-                            "iteradores y un `=` un for estándar.",
-    "EncabezadoForTrasDeclarador": "INSERTADO. Lo mismo para un declarador con tipo explícito.",
-    "InicializacionDeDeclaradorFor": "INSERTADO, y deliberadamente NO compartido con el de la "
-                                     "variable local: el `for` declara su propia variable, así "
-                                     "que `for (int i = 0; ; )` funciona por sí mismo.",
+                            "iteradores (`for(var e : lista)`) y un `=` un for estándar "
+                            "(`for(var i = 0; i < n; i++)`).",
     "ClausulasFinalesFor": "INSERTADO. Las dos cláusulas después del inicializador: condición e "
                            "incremento, las dos opcionales. `for(;;)` es válido.",
 

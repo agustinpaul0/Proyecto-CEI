@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends X_
+///[Error:B3tf|2]
+B3tf

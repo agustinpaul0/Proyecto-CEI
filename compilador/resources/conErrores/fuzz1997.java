@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements Z_87
+///[Error:{|2]
+class M_ extends { }

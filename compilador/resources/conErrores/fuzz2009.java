@@ -1,2 +1,2 @@
-///[Error:else|2]
-interface M0 < S > extends K_ < G > { } interface Bp8 extends Gi3_8 < M > { } class Iq5 < R > extends M_ { static public LR < M > rh ( ) { null + - "" ++ = 751 ; } static J l ( ) { if ( null ) else ; } Vl0La < S > z ( boolean [ ] [ ] l , K l ) { { { } } for ( M k ; ; ) B n ; } } class A_ extends H_38L4QNnT_ < U > { K yQ ( ) { for ( H [ ] [ ] [ ] f ; ; ) true ; } private static void g ( ) { } void g ( ) { } } interface M__ extends I4 < IQ > { void x8 ( int z ) ; }
+///[Error:<|2]
+interface XP_uC8 < J > { } class Et < T > { } class Eb0zr < P > { static public void o ( ) { if ( - Yc7 . yL ( ) = 'Q' ) + '\'' ; else if ( true ) float [ ] x ; else return ; } } interface < E > { }

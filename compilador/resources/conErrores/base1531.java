@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface XT extends P___Lu { } interface L9 < A > extends V0 { LY0l } class P_ < Z > extends XSE { }
+///[Error:K|2]
+interface D7 extends Fg < T__2 < Ny > > { } class Y_Q6 < M > { static ZsA_U cJ ( ) { } } K

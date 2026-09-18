@@ -1,2 +1,2 @@
-///[Error:{|2]
-class D6 implements { }
+///[Error:T|2]
+interface Mb < W > { void v ( C oT , I zI , C [ ] y ) ; } class W_6S9 < W > implements Ys < To1 > { void e ( C [ ] m ) { new BX < > ( ) ; while ( false = null ) while ( + true ) I [ ] j_W_A ; while ( + false ) boolean [ ] [ ] puL_z ; { return ; { } return ; ; } for ( ; ; ) { ; } float [ ] k7Rm_ , a ; } } interface I_ < J > extends CN_Y { } T [ ] interface MjhKXA5 < Q > extends Lp < U > { public int [ ] [ ] [ ] g0 ( I e1A ) ; } class Xj extends H7 { public void a0 ( K h ) { } }

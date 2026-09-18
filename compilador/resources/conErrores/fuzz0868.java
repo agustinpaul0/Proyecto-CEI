@@ -1,2 +1,2 @@
-///[Error:Di5|2]
-Di5 < Z >
+///[Error:<|2]
+class Zf extends < V > { }

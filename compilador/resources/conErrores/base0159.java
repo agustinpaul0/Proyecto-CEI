@@ -1,2 +1,2 @@
-///[Error:;|2]
-class BE extends SU9 { static void tml ( ) { { for ( 2e30 - false ; ; ) boolean [ ] w ; var z = '\"' == + true ; } { while ( ! 8.d > true ) int [ ] [ ] [ ] [ ] ; { ; } } } }
+///[Error:sH|2]
+interface H_Y < N > { public void zZ03f_ ( ) ; } class Ow_ extends C5e < Dm < X > > { } interface D_ < E > { sH } interface C1o < R > { }

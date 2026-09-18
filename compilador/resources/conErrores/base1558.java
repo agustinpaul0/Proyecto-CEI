@@ -1,2 +1,2 @@
-///[Error:>|2]
-class MHA < N > implements U4 < Ju < Ee > > { } interface AR < B > extends Iu < > { }
+///[Error:O_2|2]
+O_2

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Qm implements H8__v < R > { } interface P_9 { } interface EfRZ1 < R > { } interface Qp < K > extends V1I_ < > { }
+///[Error:}|2]
+interface A0 < Z > extends D__Dbw { void p ( ) ; A_M < YS_ > }

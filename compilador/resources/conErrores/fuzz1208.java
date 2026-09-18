@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface QE < I > { L5 } class Xx_ < Z > { }
+///[Error:;|2]
+interface Gwf_m < R > { public void t ( ) ; public Tq [ ] [ ] e ; }

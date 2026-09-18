@@ -1,2 +1,2 @@
-///[Error:FPv|2]
-interface Ws { SJ_F5Oz amp24 FPv ; }
+///[Error:<|2]
+class < M > extends C7 < BD_ < ULm_S_d_ > > { }

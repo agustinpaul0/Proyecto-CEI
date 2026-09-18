@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Jv extends W__ { public R l ( , float [ ] w ) ; void e ( ) ; }
+///[Error:Le|2]
+Le class CO < B > extends QFZ8 { void r2 ( ) { Y439_ b8 , l_1 ; } }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < B > extends H1 < JD_v < BtT < FM < R > > > > { } class HF < F > extends HXiu { static U lk3 ( ) { } } interface Ns < N > { } class NW < C > extends H5_f { } class Ur { } class RR < R > extends J_E < D_mA < O9 > > { public int [ ] [ ] w_ ; }
+///[Error:[|2]
+class O_ < G > implements Y__0 { } [ ] [ ] interface D_ extends Ot < R > { } interface Fx extends D_ { }

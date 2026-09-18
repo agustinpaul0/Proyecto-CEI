@@ -1,2 +1,2 @@
-///[Error:<|2]
-class QXP { } < R >
+///[Error:boolean|2]
+boolean ll ( int c ) ; interface QH { } class Ujl < Q > { }

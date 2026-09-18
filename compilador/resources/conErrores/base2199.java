@@ -1,2 +1,2 @@
-///[Error:int|2]
-int [ ] i , int [ ] [ ] [ ] [ ] [ ] hD class Z3 < M > { }
+///[Error:static|2]
+interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } interface Zq < M > extends A2 { public void k ( ) ; } class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ n static boolean [ ] z ( ) { { ; } } private static R__ [ ] [ ] [ ] l1 ( float [ ] [ ] t_6 ) { } } interface XHi < T > extends D2M < Ej5 < L > > { public int [ ] [ ] p ( ) ; } interface M_b { } interface B_ < U > extends W8 { void c_ ( float [ ] ypg , R y , boolean l , int o ) ; } interface Sg < T > extends ZY { }

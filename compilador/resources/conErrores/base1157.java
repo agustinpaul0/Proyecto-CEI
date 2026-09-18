@@ -1,2 +1,2 @@
-///[Error:public|2]
-class LV extends KO_ { static void i ( KIy < XL < Z > > [ ] t2tSo ) public void l ( ) { } } interface E_ < N > { }
+///[Error:boolean|2]
+class SH implements S91 < GLwCK > { public static void boolean x = null / 681 ; }

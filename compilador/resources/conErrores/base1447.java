@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface D__ < U > extends DO < H > { void i char ; } interface TV2 extends Z_ < W > { }
+///[Error:[|2]
+interface Gp < J > extends B_ { [ ] b ( E [ ] g , Y_ [ ] o ) ; } class KqkNX < Q > implements Wk { static void f ( ) { } }

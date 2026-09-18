@@ -1,2 +1,2 @@
-///[Error:to_XN2_|2]
-class BV < C > implements K_ < GME < S > > { } interface WK extends Jkl < IO < MG < M > > > { L y ( ) ; } interface Gx extends BB { to_XN2_ ( boolean i ) ; void s ( ) ; public void u ( ) ; void s ( J4 m5 ) ; }
+///[Error::|2]
+class BA { static public void pVk ( ) { } O tD ( char a_Z , float r4X ) { } } class I_ { static V w ( boolean [ ] h ) { T dT = false >= "" , yV = 'e' < + true ? : ! false , e ; } }

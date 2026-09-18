@@ -1,2 +1,2 @@
-///[Error:public|2]
-public void k9_7mo4_ ( ) ;
+///[Error:P_c|2]
+interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } P_c

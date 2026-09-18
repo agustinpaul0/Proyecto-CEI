@@ -2,7 +2,7 @@
 #
 # Derivada de minijava-base.g siguiendo Clase 4: primero eliminar recursión a
 # izquierda, después factorizar (slide 37). El paso a paso atómico de cada
-# transformación está en documentacion/transformacion-gramatica.md.
+# transformación está en documentacion/sintactico/transformacion-a-ll1-paso-a-paso.md.
 #
 #     python3 herramientas/primeros.py gramatica/minijava-ll1.g
 #

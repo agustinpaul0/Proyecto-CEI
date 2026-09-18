@@ -1,7 +1,7 @@
 # Transformación de la gramática de MiniJava a LL(1)
 
 Paso a paso **atómico** de cada corrección aplicada a la gramática de la cátedra
-([`gramatica-base-minijava.md`](gramatica-original-de-la-catedra.md)) para volverla LL(1) y poder
+([`gramatica-original-de-la-catedra.md`](gramatica-original-de-la-catedra.md)) para volverla LL(1) y poder
 implementar el Analizador Sintáctico Descendente Recursivo con el Esquema Simple de Clase 5.
 
 Cada transformación se registra con cuatro pasos:
@@ -231,15 +231,16 @@ podemos generar nuevas producciones no factorizadas»*. Por eso el orden es recu
 
 **5 — Factorización del defecto nuevo.** `<VarEncadenada> ::= . idMetVar` y
 `<MetodoEncadenado> ::= . idMetVar <ArgsActuales>` comparten *todo* el prefijo: sólo se
-distinguen por si después viene un `(`. Se fusionan en un único `<Encadenado>`.
+distinguen por si después viene un `(`. Se fusionan en un único `<Encadenado>`, y la disyuntiva
+que queda va a un no terminal dedicado (el porqué de que sea dedicado está en 3.bis.2).
 
 ```
 <Referencia> ::= <Primario> <RestoReferencia>
 <RestoReferencia> ::= <Encadenado> <RestoReferencia>
                     | <AccesoArreglo> <RestoReferencia>
                     | ε
-<Encadenado> ::= . idMetVar <ArgsActualesOpcional>
-<ArgsActualesOpcional> ::= <ArgsActuales> | ε
+<Encadenado> ::= . idMetVar <EncadenadoAtributoOMetodo>
+<EncadenadoAtributoOMetodo> ::= <ArgsActuales> | ε
 ```
 
 `Primeros(<Encadenado>) = {.}`, `Primeros(<AccesoArreglo>) = {[}`, `{ε}`. Disjuntos. ✔
@@ -247,7 +248,7 @@ distinguen por si después viene un `(`. Se fusionan en un único `<Encadenado>`
 > **Costo semántico, declarado.** Se pierde la distinción entre `<VarEncadenada>` (acceso a
 > atributo) y `<MetodoEncadenado>` (llamada a método encadenada). Es una pérdida **inevitable y
 > honesta**: sintácticamente son indistinguibles hasta ver el token siguiente, y el propio
-> parser recupera la distinción al decidir si `<ArgsActualesOpcional>` derivó a vacío o no.
+> parser recupera la distinción al decidir si `<EncadenadoAtributoOMetodo>` derivó a vacío o no.
 
 ## 3. Factorización a izquierda
 
@@ -479,7 +480,7 @@ Ahora el prefijo común `α = <Tipo> idMetVar` sí es directo, entre la 1ª y la
 
 Primeros de `<Miembro>`: `{boolean, char, int, idClase, idGen}`, `{static}`, `{void}`,
 `{public}`. Disjuntos. ✔
-Primeros de `<RestoAtributoOMetodo>`: `{;}` vs `{(}`. Disjuntos. ✔
+Primeros de `<AtributoOMetodo>`: `{;}` vs `{(}`. Disjuntos. ✔
 
 > `<Constructor>` **sobrevive como no terminal propio** porque `public` lo distingue solo: no
 > hizo falta fusionarlo. `<Atributo>`, en cambio, se fusiona con `<Metodo>` hasta el token que los
@@ -504,17 +505,17 @@ Primeros de `<RestoAtributoOMetodo>`: `{;}` vs `{(}`. Disjuntos. ✔
 **2 — Defecto.** Prefijo común no directo, intersección `{idMetVar}`.
 
 **3 — Transformación.** Misma situación que `<VarEncadenada>` / `<MetodoEncadenado>` en R3, y se
-resuelve igual: fusionar y decidir por si sigue un `(`, reutilizando el
-`<ArgsActualesOpcional>` que ya se creó ahí.
+resuelve igual: fusionar y decidir por si sigue un `(`. La disyuntiva tiene la misma forma que la
+de R3 pero **no** se comparte con ella, porque su `ε` significa otra cosa (3.bis.2).
 
 **4 — Resultado**
 
 ```
-<AccesoVarOLlamadaMetodo> ::= idMetVar <ArgsActualesOpcional>
+<AccesoVarOLlamadaMetodo> ::= idMetVar <AccesoOLlamada>
+<AccesoOLlamada> ::= <ArgsActuales> | ε
 ```
 
-✔ — y `<ArgsActualesOpcional>` queda usado en los dos lugares donde aparece la misma disyuntiva,
-que es una señal de que la abstracción es la correcta y no un parche.
+Primeros de `<AccesoOLlamada>`: `{(}` vs `{ε}`. Disjuntos. ✔
 
 ### F8. `<Primario>` — el prefijo `new`
 
@@ -538,18 +539,18 @@ factorizar una segunda vez el caso `idClase`.
 **4 — Resultado**
 
 ```
-<Creacion> ::= new <RestoCreacion>
+<Creacion> ::= new <ArregloOInstancia>
 
-<RestoCreacion> ::= <TipoPrimitivo> <DimensionesConTamanio>
-                  | idGen <DimensionesConTamanio>
-                  | idClase <TipoGenericoOpcional> <RestoCreacionConIdClase>
+<ArregloOInstancia> ::= <TipoPrimitivo> <DimensionesConTamanio>
+                      | idGen <DimensionesConTamanio>
+                      | idClase <TipoGenericoOpcional> <ArregloOInstanciaDeClase>
 
-<RestoCreacionConIdClase> ::= <DimensionesConTamanio>   (era <CrearArreglo>)
-                            | <ArgsActuales>            (era <LlamadaConstructor>)
+<ArregloOInstanciaDeClase> ::= <DimensionesConTamanio>   (era <CrearArreglo>)
+                             | <ArgsActuales>            (era <LlamadaConstructor>)
 ```
 
-Primeros de `<RestoCreacion>`: `{boolean, char, int}`, `{idGen}`, `{idClase}`. Disjuntos. ✔
-Primeros de `<RestoCreacionConIdClase>`: `{[}` vs `{(}`. Disjuntos. ✔
+Primeros de `<ArregloOInstancia>`: `{boolean, char, int}`, `{idGen}`, `{idClase}`. Disjuntos. ✔
+Primeros de `<ArregloOInstanciaDeClase>`: `{[}` vs `{(}`. Disjuntos. ✔
 
 > `new int[3]` y `new T[3]` se resuelven en el primer token después de `new`; sólo
 > `new C…` necesita el segundo nivel. La factorización se hizo **sólo donde hacía falta**, que
@@ -675,13 +676,14 @@ el script:
 
 ```
 $ python3 herramientas/primeros.py gramatica/minijava-ll1.g
---- 64 no terminales, 131 producciones, 51 terminales ---
+--- 67 no terminales, 135 producciones, 51 terminales ---
 ES LL(1): toda produccion de todo no terminal tiene Primeros disjuntos.
 ```
 
 Contra la base: `60 no terminales, 126 producciones` y `16 conflictos`. El costo total de volver
-la gramática LL(1) fue **+4 no terminales y +5 producciones** — barato, y concentrado en los
-`<Resto…>` que el Esquema Simple traduce a un `if/else` cada uno.
+la gramática LL(1) fue **+7 no terminales y +9 producciones** — barato, y concentrado en los
+`<Resto…>` y en los puntos de decisión insertados, que el Esquema Simple traduce a un `if/else`
+cada uno.
 
 ## 5. Extensiones por logro
 
@@ -691,18 +693,17 @@ y hay que resolverlos sin romper lo que ya andaba.
 
 ### 5.0 Cada logro aterriza en su propio lugar
 
-La gramática es **una sola**: no hay configuraciones, ni
-marcas, ni producciones que aparezcan y desaparezcan. Lo que sí se mantiene, porque es lo que la
+La gramática es **una sola**: no hay configuraciones ni producciones que aparezcan y
+desaparezcan. Lo que sí se mantiene, porque es lo que la
 deja legible y lo que va a facilitar la Etapa 3, es que cada logro aterrice en un lugar
 identificable:
 
 > **Un logro agrega una capa o unas alternativas propias; no reescribe las reglas de al lado.**
 
 Consecuencia de diseño concreta: **ningún logro se apoya en un no terminal que introdujo otro**.
-Cuando dos necesitan una construcción parecida, cada uno lleva la suya (ver 5.2). Eso vale la pena
-aunque hoy no haya nada que apagar, porque un no terminal compartido entre dos construcciones
-distintas obliga al semántico a desambiguar en tiempo de ejecución lo que la gramática podía
-separar.
+Cuando dos necesitan una construcción parecida, cada uno lleva la suya (ver 5.2), porque un no
+terminal compartido entre dos construcciones distintas obliga al semántico a desambiguar en tiempo
+de ejecución lo que la gramática podía separar.
 
 ### 5.1 Visibilidad Mejorada E2
 
@@ -712,23 +713,30 @@ vuelve `idClase <ArgsFormales> <Bloque>` — que ahora **compite con `<Tipo> idM
 token `idClase`: `C(){}` contra `C x;`.
 
 **Transformación.** Factorizar la visibilidad al frente y, adentro, factorizar el `idClase`. El
-desempate es el token que sigue: `(` es constructor, cualquier otro abre un tipo.
+desempate es el token que sigue: `(` es constructor, cualquier otro abre un tipo. La visibilidad
+puede ir antes o después de `static`, como en Java, pero a **un solo lado**: eso acepta los dos
+órdenes sin dejar repetir el modificador.
 
 ```
-<Miembro> ::= <VisibilidadOpcional> <MiembroSinVisibilidad>
-<VisibilidadOpcional> ::= public | private | ε
+<Miembro> ::= <Visibilidad> <MiembroTrasVisibilidad>
+            | static <VisibilidadOpcional> <TipoMetodo> <Metodo>
+            | <MiembroSinModificadores>
+<MiembroTrasVisibilidad> ::= static <TipoMetodo> <Metodo> | <MiembroSinModificadores>
+<Visibilidad> ::= public | private
+<VisibilidadOpcional> ::= <Visibilidad> | ε
 
-<MiembroSinVisibilidad> ::= static <TipoMetodo> idMetVar <CuerpoDeMetodo>
-                          | void idMetVar <CuerpoDeMetodo>
-                          | <TipoPrimitivo> <DimensionesOpcionales> idMetVar <AtributoOMetodo>
-                          | idGen <DimensionesOpcionales> idMetVar <AtributoOMetodo>
-                          | idClase <MiembroDesdeIdClase>
+<MiembroSinModificadores> ::= void <Metodo>
+                            | <TipoPrimitivo> <DimensionesOpcionales> idMetVar <AtributoOMetodo>
+                            | idGen <DimensionesOpcionales> idMetVar <AtributoOMetodo>
+                            | idClase <MiembroDesdeIdClase>
 
 <MiembroDesdeIdClase> ::= <CuerpoDeMetodo>
                         | <TipoGenericoOpcional> <DimensionesOpcionales> idMetVar <AtributoOMetodo>
 ```
 
-`{static}`, `{void}`, `{boolean,char,int,float}`, `{idGen}`, `{idClase}` — disjuntos ✔
+`<Miembro>`: `{public, private}`, `{static}` y los de `<MiembroSinModificadores>` — disjuntos ✔
+`<MiembroTrasVisibilidad>`: `{static}` contra `{void, boolean, char, int, float, idGen, idClase}` — disjuntos ✔
+`<MiembroSinModificadores>`: `{void}`, `{boolean,char,int,float}`, `{idGen}`, `{idClase}` — disjuntos ✔
 `<MiembroDesdeIdClase>`: `{(}` contra `{<, [, idMetVar}` — disjuntos ✔
 
 > **Decisión: en `<MetodoInterfaz>` se admite `public` y no `private`.** El logro habla de
@@ -752,13 +760,13 @@ atributo de clase y una variable local— y el semántico las trata distinto. Va
 dedicados:
 
 ```
-<InicializacionDeAtributo>   ::= = <ExpresionCompuesta> | ε     (atrinit)
-<InicializacionDeDeclarador> ::= = <ExpresionCompuesta> | ε     (varclasica)
+<InicializacionDeAtributo>   ::= = <ExpresionCompuesta> | ε
+<InicializacionDeDeclarador> ::= = <ExpresionCompuesta> | ε
 ```
 
-Es el mismo principio de 3.bis aplicado a los flags.
+Es el mismo principio de 3.bis.
 
-**Defecto que crea *varclasica*.** Una declaración local pasa a poder empezar con `idClase`
+**Defecto que crea Variables locales Clásicas.** Una declaración local pasa a poder empezar con `idClase`
 (`C x;`), y una sentencia-expresión también (`C.m();`, vía `<LlamadaMetodoEstatico>`). Chocan.
 
 **Transformación.** Factorizar el `idClase` en `<Sentencia>`. El desempate es de un token: `.`
@@ -803,25 +811,24 @@ cambio futuro en las expresiones no hay que espejarlo.
 
 ### 5.3 Fors! E2
 
-**Transformación.** Un `<For>` nuevo como alternativa de `<Sentencia>`. El encabezado tiene el
-mismo problema de `idClase` que la sentencia, y se resuelve igual, reusando
-`<ColaDeExpresionDesdePrimario>` y `<ExpresionSinIdClase>`.
+**Transformación.** Un `<For>` nuevo como alternativa de `<Sentencia>`. La variable de control se
+declara con `var` y nada más: los logros son independientes entre sí, así que el encabezado no
+toma el declarador tipado de Variables locales Clásicas —lo respondió el profesor—. El encabezado
+empieza entonces con `;`, con `var` o con una expresión, y las tres son disjuntas: ninguna
+expresión empieza con `var` ni con `;`.
 
 El desempate entre el `for` estándar y el de iteradores es **de un solo token** y está justo
-después del declarador: `:` es de iteradores, `=` o `;` es estándar.
+después de `var x`: `:` es de iteradores, `=` es estándar.
 
 ```
 <For> ::= for ( <EncabezadoFor> ) <Sentencia>
 
 <EncabezadoFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
                   | var idMetVar <EncabezadoForTrasVar>
-                  | <TipoPrimitivo> <DimensionesOpcionales> idMetVar <EncabezadoForTrasDeclarador>
-                  | idGen <DimensionesOpcionales> idMetVar <EncabezadoForTrasDeclarador>
-                  | idClase <EncabezadoForDesdeIdClase>
-                  | <ExpresionSinIdClase> <ClausulasFinalesFor>
+                  | <Expresion> <ClausulasFinalesFor>
 
-<EncabezadoForTrasDeclarador> ::= : <Expresion>
-                                | <InicializacionDeDeclaradorFor> <ClausulasFinalesFor>
+<EncabezadoForTrasVar> ::= : <Expresion>
+                         | = <ExpresionCompuesta> <ClausulasFinalesFor>
 
 <ClausulasFinalesFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
 ```
@@ -848,17 +855,16 @@ en la gramática original, así que `a ? b : c = d` no deriva —y `javac` tampo
 del primer operando viene un `=` o el ternario. El lado derecho del `=` es una
 `<ExpresionCondicional>`: admite el ternario, que es lo que pide el ejemplo del logro
 (`esMayor = (edad >= 18) ? true : false;`), y no admite otro `=`, así que `a = b = c` no deriva.
-Los cinco inicializadores (`<VarLocal>`, `<InicializacionDeAtributo>`, `<InicializacionDeDeclarador>`
-y los dos del `for`) pasan de `<ExpresionCompuesta>` a `<ExpresionCondicional>` por el mismo motivo.
+Los cuatro inicializadores (`<VarLocal>`, `<InicializacionDeAtributo>`, `<InicializacionDeDeclarador>`
+y el del `for`) pasan de `<ExpresionCompuesta>` a `<ExpresionCondicional>` por el mismo motivo.
 
 Los operandos del ternario son los del JLS §15.25: el del medio es una `<Expresion>` completa y el de
 la derecha una `<ExpresionCondicional>`, así que `a ? b = 1 : c` es válido y `a ? b : c = d` no. Es
 asociativo a **derecha** (`a ? b : c ? d : e` es `a ? b : (c ? d : e)`), porque la rama del `:` es
 otra `<ExpresionCondicional>`, con su propio `<RestoCondicional>`.
 
-**Por qué la capa no molesta.** Si se le quitara el `?`, `<RestoCondicional>` quedaría **sólo con `ε`**
-y la gramática sería exactamente la de F1. Ésa es la forma barata de hacer un logro atómico —que su
-desactivación sea *quitar alternativas*, no *cambiar de estructura*.
+**Por qué la capa no molesta.** Sin el `?`, `<RestoCondicional>` quedaría **sólo con `ε`** y la
+gramática sería exactamente la de F1: el logro agrega alternativas, no cambia la estructura (5.0).
 
 ### 5.5 Operadores Posifijos E2
 
@@ -957,17 +963,17 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # todas declaradas
-bash herramientas/casos-gramatica.sh                                              # 70/70
+bash herramientas/casos-gramatica.sh                                              # 72/72
 ```
 
-- **100 no terminales, 207 producciones, 59 terminales.**
+- **97 no terminales, 198 producciones, 59 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
-- **70 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
+- **72 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
   debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` y
   `a ? b : c = d` se rechazan, `List<> x;` se rechaza y `new List<>()` se acepta, `static public` y
   `public static` se aceptan los dos y `public private` no, `new int[]{1,2}` se acepta y
-  `new int[2]{1,2}` no.
+  `new int[2]{1,2}` no, `for (;;)` se acepta y `for (int i = 0; ; )` no.
 
 El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
-**de 60 a 100 no terminales y de 126 a 207 producciones**, sin ninguna ambigüedad sin declarar y sin
+**de 60 a 97 no terminales y de 126 a 198 producciones**, sin ninguna ambigüedad sin declarar y sin
 ningún conflicto de predicción.

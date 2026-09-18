@@ -1,2 +1,2 @@
-///[Error:q|2]
-class B_ implements H3_ { } interface P9 < M > extends X8 { public q ( float [ ] [ ] h ) ; } interface FU < T > { }
+///[Error:>|2]
+class Ad implements Rh_ { } interface Og < > extends UH < F > { } interface WV { } class K_A_O implements V4 < V_G > { int s ; } class Gh_9 extends MoU__ { } interface GP { } interface Ky { }

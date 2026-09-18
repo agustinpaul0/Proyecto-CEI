@@ -1,2 +1,2 @@
-///[Error:m|2]
-interface Z_ < Y > extends B_ < EQ < Q > > { public void jB ( boolean gxa ) ; void tp ( m ) ; }
+///[Error:F|2]
+class H7 < Z > implements Iq < Du < U_FBa > > { Yh F [ ] [ ] is }

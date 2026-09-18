@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Gh_9 < V > extends < Lez_T > { }
+///[Error:extends|2]
+extends R__ < TRz_ < G4 < T > > > interface Ml extends T_M { }

@@ -1,2 +1,2 @@
-///[Error:W4_M|2]
-W4_M
+///[Error:static|2]
+class F4 < I > extends L40 { float [ ] d ( int p , float c ) { } } interface YKE < E > { float [ ] l5 ( ) ; SI < K0_359 < R > > n6 ( ) ; void t1_AI ( PPR [ ] p , float [ ] v__A29 , I [ ] [ ] [ ] ad ) ; public void g ( ) ; } interface NyQz6AK extends MM { } interface TP34V_2 < O > extends D_ { public void e_d4I ( int j ) ; } class O_ extends U_ < CN_2_M__ < OR > > { public static void p static void n ( S cj ) { for ( ; ; ) boolean [ ] [ ] [ ] [ ] igJ_ , c , x ; CWB8 . d ( ) . oW ; } } class RP { } class DYij__f < G > extends Y_ < EI__ < O > > { }

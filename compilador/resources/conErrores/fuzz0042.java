@@ -1,2 +1,2 @@
-///[Error:null|2]
-interface IHy extends N_ < Os_ < W > > { } class L_ { static private void qU_r19V ( U_t < V > [ ] v7XN1 ) { int [ ] [ ] [ ] [ ] [ ] [ ] wV = true * ! "" , p7609 ; } private static void a ( F q , Z [ ] [ ] fm0 , DAQ e8l ) null }
+///[Error:cq|2]
+class T_ < L > { private W [ ] [ ] [ ] [ ] s ( ) { } } class Q__1 implements R5 < O_Lk > { private static void l ( cq ) { } }

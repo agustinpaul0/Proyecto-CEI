@@ -28,14 +28,14 @@ error reportado en el lugar equivocado, silenciosamente, tres etapas más adelan
 6. Deterministas, independientes entre sí, sin depender del orden de ejecución, sin `Thread.sleep`.
    El fuzzing usa **semilla fija** justamente por esto.
 
-## 2. Los siete tipos de test y qué aporta cada uno
+## 2. Los ocho tipos de test y qué aporta cada uno
 
 | Tipo | Qué verifica | Dónde |
 |---|---|---|
 | **Unitario** | Unidades aisladas y deterministas: el manejador de archivo, los tipos de token, el formateador de errores. | `ManejadorDeArchivoEficienteTest`, `TipoDeTokenTest`, `FormateadorDeErrorTest` |
 | **Data-driven** | Muchas entradas evaluadas con la misma lógica: fuente → stream de tokens esperado. | `AnalizadorLexico*Test`, `LimitesNumericosTest`, `PosicionDelCaretTest` |
-| **De integración** | Interacción entre piezas: manejador → analizador, analizador → módulo principal. | `ModuloPrincipalTest`, `ReporteDeErrorEleganteTest` |
-| **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 2 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `MainTest` |
+| **De integración** | Interacción entre piezas: manejador → analizador, analizador → módulo principal. | `ModuloPrincipalLexicoTest`, `ModuloPrincipalSintacticoTest`, `ReporteDeErrorEleganteTest` |
+| **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 4 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `TesterDeCasosSintacticosEstricto`, `MainTest` |
 | **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/lexico/conErrores/` |
 | **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest`, `AnalizadorSintacticoPropiedadesTest` |
 | **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios en el léxico, programas derivados de la gramática y después mutados en el sintáctico. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest`, `resources/{sinErrores,conErrores}/` |
@@ -83,11 +83,12 @@ emitidos y de todos los errores reconstruye el fuente completo**, carácter por 
 
 Esta es la invariante más fuerte de la suite, porque cierra de un plumazo toda una familia de bugs:
 si la recuperación se comiera un carácter, o si un estado consumiera algo que no reporta, la
-concatenación no daría igual al original. Fue exactamente el defecto que se encontró de esta forma —ver
-[`decisiones.md`](../lexico/decisiones-de-logica.md) §4.2.
+concatenación no daría igual al original. Es la que distingue el criterio de recuperación de su
+alternativa descartada —ver
+[`../lexico/decisiones-de-deteccion-de-errores.md`](../lexico/decisiones-de-deteccion-de-errores.md) §4.2.
 
 Tiene una única excepción, y está escrita explícitamente en la propiedad: el resto de un `litString`
-descartado tras un escape Unicode mal formado ([`decisiones.md`](../lexico/decisiones-de-logica.md) §4.3) no aparece en
+descartado tras un escape Unicode mal formado ([`../lexico/decisiones-de-deteccion-de-errores.md`](../lexico/decisiones-de-deteccion-de-errores.md) §4.3) no aparece en
 ningún lexema. La propiedad reproduce esa regla de descarte **por su cuenta**, en vez de reusar la del
 léxico, justamente para que un cambio accidental en el descarte la haga fallar en vez de pasar
 inadvertido.
@@ -101,7 +102,7 @@ puede "volver" a una línea anterior.
 
 En un reporte de error elegante, la columna del `^` siempre corresponde a un carácter o a su
 representación visible en la línea mostrada debajo de `Detalle:`. Un caret una posición más allá del
-último carácter señala el aire — fue un defecto real, y ahora es una invariante verificada tanto caso por caso
+último carácter señala el aire; es una invariante verificada tanto caso por caso
 (`PosicionDelCaretTest`) como sobre entradas generadas (`PropiedadesDelReporteTest`).
 
 ### 3.5. Ningún fallo es un crash
@@ -113,7 +114,7 @@ otra excepción es un defecto del compilador y hace fallar el test.
 
 Cada línea de la salida es un token `(nombre,lexema,línea)`, un código `[Error:lexema|línea]`, una
 línea del reporte elegante, o `[SinErrores]`. **Nunca** una línea partida en dos — que es lo que
-pasaba cuando un lexema de error contenía un salto de línea crudo.
+pasaría si un lexema de error contuviera un salto de línea crudo.
 
 ## 4. Los archivos de caso: `resources/`
 
@@ -126,20 +127,21 @@ resources/
 │   ├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
 │   ├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
 │   └── regresion/                    entradas que rompieron una corrida de fuzzing
-└── sintactico/                       el corpus de la Etapa 2
+├── sinErrores/                       el corpus de la Etapa 2, en la raíz porque ahí lo buscan
+└── conErrores/                       los testers de la cátedra
 ```
 
-### El tester estricto, y por qué hubo que escribirlo
+### El tester estricto, y por qué existe
 
 El tester de errores que provee la cátedra sólo verifica que el **primer** código de error declarado
 aparezca en algún lugar de la salida. Eso deja dos agujeros grandes:
 
 - un caso con cinco errores queda casi sin verificar;
-- **nada comprueba qué tokens salen entre medio** — y ahí es exactamente donde se escondía el defecto de
-  la recuperación tragándose caracteres.
+- **nada comprueba qué tokens salen entre medio** — y ahí es exactamente donde se vería una
+  recuperación que se trague caracteres.
 
 Por eso el proyecto agrega `TesterDeCasosConErroresEstricto`, que corre sobre **los mismos archivos**
-y verifica la salida **completa**, en orden: todos los códigos de error y todos los tokens. Los dos
+y verifica la salida **completa**, en orden: todos los códigos de error y todos los tokens. Los
 testers de la cátedra quedan intactos al lado, corriendo en la misma pasada.
 
 La cabecera de un caso estricto se ve así:
@@ -156,9 +158,9 @@ La cabecera de un caso estricto se ve así:
 
 ### El corpus de regresión de fuzzing
 
-`AnalizadorLexicoFuzzTest` persiste en `resources/regresion/` cualquier entrada aleatoria que haya
-hecho fallar una corrida. Durante un tiempo esos archivos **no los leía nadie**: quedaban de adorno,
-sin proteger de nada. `CorpusDeRegresionTest` los reprocesa todos en cada corrida.
+`AnalizadorLexicoFuzzTest` persiste en `resources/lexico/regresion/` cualquier entrada aleatoria que
+haya hecho fallar una corrida, y `CorpusDeRegresionTest` los reprocesa todos en cada corrida: sin
+él, esos archivos quedarían guardados sin proteger de nada.
 
 No hay oráculo por caso —son entradas aleatorias, nadie sabe qué tokens "deberían" salir—; lo que se
 verifica es el contrato que vale para cualquier entrada: que el compilador termine, que no lance nada
@@ -207,7 +209,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 ```bash
 cd compilador
 
-mvn test                 # suite propia + los 2 testers de la cátedra, en la misma pasada
+mvn test                 # suite propia + los 4 testers de la cátedra, en la misma pasada
 mvn verify               # además exige el umbral de cobertura de JaCoCo
 mvn -Pmutacion verify    # análisis de mutación con PIT (verify: es la fase a la que está atado)
 
@@ -264,8 +266,9 @@ Los testers de la cátedra están escritos con JUnit 4; corren junto a los propi
 *vintage engine*, sin necesidad de tocarlos.
 
 **El *working directory* debe ser `compilador/`**, porque los testers de la cátedra usan rutas
-relativas duras (`resources/lexico/sinErrores/`, `resources/lexico/conErrores/`). Es el valor por defecto cuando
-IntelliJ importa el proyecto Maven correctamente.
+relativas duras: `resources/sinErrores/` y `resources/conErrores/` los del sintáctico, y
+`resources/lexico/…` las copias del léxico. Es el valor por defecto cuando IntelliJ importa el
+proyecto Maven correctamente.
 
 > **Las clases de propiedades etiquetan con el `@Tag` de jqwik, no con el de JUnit.** Los perfiles
 > de fase filtran por etiqueta, y jqwik **ignora** `org.junit.jupiter.api.Tag`: una clase de
@@ -276,9 +279,9 @@ IntelliJ importa el proyecto Maven correctamente.
 
 ## 7. Ver también
 
-- [`decisiones.md`](../lexico/decisiones-de-logica.md) — cada decisión, con el test que la fija.
+- [`../lexico/decisiones-de-logica.md`](../lexico/decisiones-de-logica.md) — cada decisión, con el test que la fija.
 - [`manejo-de-errores.md`](manejo-de-errores.md) — el detalle de las invariantes de error.
-- [`arquitectura.md`](../lexico/arquitectura-del-analizador-lexico.md) — por qué `Salida` es una interfaz, que es la decisión de
+- [`../lexico/arquitectura-del-analizador-lexico.md`](../lexico/arquitectura-del-analizador-lexico.md) — por qué `Salida` es una interfaz, que es la decisión de
   diseño que hace posible casi toda esta suite.
 
 ---
@@ -287,7 +290,7 @@ IntelliJ importa el proyecto Maven correctamente.
 
 Todo lo anterior explica **qué hace** el compilador y **por qué**. Lo que sigue son las **reglas
 de trabajo** correspondientes: lo que hay que respetar al escribir o modificar código de esta
-parte. Antes vivía en un archivo aparte; se unificó acá para que el tema tenga un solo lugar.
+parte, en el mismo lugar que el tema que regulan.
 
 ### Fases del compilador (marco para las 5 etapas)
 
@@ -296,8 +299,7 @@ Fuente → [Léxico] → [Sintáctico] → [AST] → [Tabla de Símbolos / Resol
        → [Semántico] → [Chequeo de Tipos] → [Generación de Código] → [Ejecución]
 ```
 
-Etapa 1 cubre sólo **Léxico**; el resto queda `N/A todavía — Etapa N` hasta que se publique esa
-etapa. Cuando falla un test end-to-end, tiene que ser posible aislar en qué fase está el problema
+Las etapas 1 y 2 cubren **Léxico** y **Sintáctico**; el resto se agrega con cada etapa. Cuando falla un test end-to-end, tiene que ser posible aislar en qué fase está el problema
 usando los tests de esa fase específica — de ahí que los tests se ubiquen y nombren por fase.
 
 ### Tipos de test — cuándo corresponde cada uno (no se aplican todos a todo)
@@ -307,7 +309,7 @@ usando los tests de esa fase específica — de ahí que los tests se ubiquen y 
 | **Unit** | unidades aisladas y deterministas | cada estado del AF, `Token`, tabla de palabras clave, clasificador de caracteres, formateadores de error, manejador de archivo |
 | **Data-driven** | muchas entradas evaluadas con la misma lógica | fuente → stream de tokens esperado, un archivo de tabla por familia léxica (identificadores, enteros, chars, strings, operadores, comentarios, floats, unicode) |
 | **Integration** | interacción entre componentes/fases | `SourceManager → AnalizadorLexico`, `AnalizadorLexico → ModuloPrincipalLexico` |
-| **E2E** | pipeline completo | `Main.main()` sobre los archivos de `resources/`, más los 2 testers de la cátedra sin modificar |
+| **E2E** | pipeline completo | `Main.main()` sobre los archivos de `resources/`, más los testers de la cátedra sin modificar |
 | **Negative** | programas inválidos deben rechazarse correctamente | un caso por cada `TipoDeErrorLexico` |
 | **Regression** | todo bug relevante encontrado | append-only, nunca se borra ni se renumera un caso |
 | **Golden/snapshot** | resultados estructurados grandes | salida completa del compilador por archivo de `resources/`, comparada entera |
@@ -316,7 +318,7 @@ usando los tests de esa fase específica — de ahí que los tests se ubiquen y 
 | **Mutation** | medir qué tan buena es la suite, no correr en cada cambio | PIT en un profile Maven aparte (`-Pmutacion`) |
 
 **Prioridad**: Nivel 1 obligatorio siempre (unit, data-driven, integration, negative, regression);
-Nivel 2 obligatorio cuando existe pipeline completo (E2E — ya existe en Etapa 1); Nivel 3
+Nivel 2 obligatorio cuando existe pipeline completo (E2E — existe desde la Etapa 1); Nivel 3
 complementario (golden, property-based, fuzz); Nivel 4 evaluación periódica, no continua (mutation).
 No convertir esto en regla rígida si la arquitectura real de una etapa futura pide otra distribución.
 
@@ -341,7 +343,7 @@ No convertir esto en regla rígida si la arquitectura real de una etapa futura p
 **`interno del compilador`**. Los primeros cuatro son comportamiento **esperado** ante un programa
 inválido — nunca deben tratarse como crash. Un **error interno del compilador es siempre un defecto**
 (una excepción no controlada, un `NullPointerException`, cualquier cosa que no sea
-`ExcepcionLexica`) y **debe hacer fallar el test**, sin excepción.
+`ExcepcionLexica` o `ExcepcionSintactica`) y **debe hacer fallar el test**, sin excepción.
 
 Los errores esperados se validan por **tipo y localización** (línea, columna), nunca por el texto
 completo del mensaje — salvo el código de contrato de la cátedra `[Error:Lexema|NroLinea]`, que sí
@@ -351,16 +353,14 @@ se compara literal porque es lo que verifica el tester.
 
 Tres corridas con semilla fija, cada una tapando un hueco distinto: alfabeto sesgado a caracteres
 "interesantes", **bytes crudos** (la primera nunca puede generar UTF-8 inválido porque codifica un
-`String`, y ahí se escondía un `UncheckedIOException` que reventaba el compilador con un archivo
-binario), y construcciones sin cerrar (donde vive la mayor parte de la lógica de error).
+`String`, así que sin la segunda un archivo binario quedaría sin probar), y construcciones sin
+cerrar (donde vive la mayor parte de la lógica de error).
 
 Todo input que produzca un fallo se persiste como caso permanente en
-`compilador/resources/regresion/`, y `CorpusDeRegresionTest` **reprocesa ese directorio entero** en
-cada corrida — antes no lo leía ningún tester, así que los casos guardados no protegían de nada. Ya encontró y
-confirmó un bug real en esta sesión (el de los carets colgando — ver `manejo-de-errores.md`); el caso
-que lo disparó quedó persistido como regresión permanente.
+`compilador/resources/lexico/regresion/`, y `CorpusDeRegresionTest` **reprocesa ese directorio
+entero** en cada corrida.
 
-### Verificación cruzada contra la suite de un compañero (26/08/2026)
+### Verificación cruzada contra la suite de un compañero
 
 Un compañero compartió su suite (3 testers JUnit 4 + 24 casos). Sirvió como **oráculo
 independiente**, que es el uso que vale la pena darle a material ajeno: los 24 casos se corrieron
@@ -368,7 +368,7 @@ contra este compilador con un script descartable —no se copió nada al proyect
 **pasaron los 24**, incluida la secuencia exacta de tokens y errores intercalados. Ninguna
 divergencia, ningún bug encontrado.
 
-Qué era cada cosa, para no volver a evaluarlo desde cero:
+Qué es cada cosa:
 
 - Sus `TesterDeCasosSinErrores` y `TesterDeCasosConErrores` son los mismos archivos de la cátedra
   que ya están en `src/test/java/catedra/` (idénticos salvo espacios).
@@ -385,7 +385,7 @@ Qué era cada cosa, para no volver a evaluarlo desde cero:
   del `EOF` — más `'\r'`, `'\f'`, `'\b'`) y `conErrores/pipeTriple.java` (`|||`, la simetría que
   faltaba con `ampersandTriple.java`).
 
-**Lección para la próxima**: el aporte de una suite ajena está en la verificación, no en el volumen
+**Criterio ante una suite ajena**: su aporte está en la verificación, no en el volumen
 de casos. Correrla antes de copiar nada evita ensuciar el corpus con duplicados, y un caso ajeno
 cuya expectativa contradice una decisión ya documentada se informa —verificándolo contra `javac`
 como manda `AGENTS.md` §0.1— pero no se adopta.
@@ -394,21 +394,23 @@ como manda `AGENTS.md` §0.1— pero no se adopta.
 
 Cuando la cátedra no especifica un comportamiento, `AGENTS.md` §0.1 manda hacer lo que hace Java,
 **verificado, no de memoria**. En la práctica eso significa escribir el caso en un `.java` y correr
-`javac`. Ya cambió dos decisiones de diseño:
+`javac`. Es el fundamento de dos decisiones de diseño:
 
 - el criterio de recuperación (`javac` no sincroniza hasta el delimitador y nunca descarta un
-  carácter ajeno al lexema reportado — ver `documentacion/manejo-de-errores.md` §2);
+  carácter ajeno al lexema reportado — ver [`manejo-de-errores.md`](manejo-de-errores.md) §2);
 - dónde apunta el `^` en cada diagnóstico.
 
-Y confirmó una tercera: los floats **no** tienen límite de dígitos, ni en la cátedra ni en Java; lo
-que Java rechaza es un valor fuera de rango, y eso es semántico, no léxico.
+Y de una tercera: los floats **no** tienen límite de dígitos, ni en la cátedra ni en Java; lo que
+Java rechaza es un valor fuera de rango, y eso es semántico, no léxico.
 
 **Regla**: todo test cuyo oráculo sea "así hace Java" lleva en su comentario la salida **real** de
 `javac`, copiada de la corrida, para que sea rastreable y no una afirmación de memoria.
 
 **Y el límite del oráculo**: `javac` vale mientras la cátedra calle. Donde el profesor fijó un
-criterio, ése manda aunque Java haga otra cosa — hoy pasa en un solo lugar, el escape mal formado
-dentro de un `litString` (`documentacion/decisiones.md` §4.3), donde `javac` sigue leyendo el
+criterio, ése manda aunque Java haga otra cosa — pasa en un solo lugar, el escape mal formado
+dentro de un `litString`
+([`../lexico/decisiones-de-deteccion-de-errores.md`](../lexico/decisiones-de-deteccion-de-errores.md)
+§4.3), donde `javac` sigue leyendo el
 literal y MiniJava lo descarta hasta la comilla de cierre. Los tests de ese caso citan la indicación
 del profesor, no a `javac`.
 
@@ -423,7 +425,8 @@ Corren sobre los **mismos archivos** y conviven:
   verifica además que no aparezca `[SinErrores]` y que ninguna línea lleve un carácter de control.
 
 Declarar los tokens y no sólo los errores es lo que hace verificable que la recuperación no se coma
-nada: con el criterio viejo, `v1 &v2` imprimía `(intLiteral,2,1)` y ningún tester lo notaba.
+nada: con la alternativa de recuperación descartada, `v1 &v2` imprimiría `(intLiteral,2,1)` y un
+tester que sólo mira errores no lo notaría.
 
 Los casos nuevos se generan con `compilador/herramientas/lote*.py`, que calculan la línea del `EOF` y
 el desplazamiento de la cabecera. **Las expectativas se predicen antes de correr**: si un caso falla,
@@ -458,12 +461,12 @@ código (`System.getProperty("volcado", "completo")`), no sólo en el `pom.xml`,
 cuando el IDE lanza JUnit directo sin pasar por Maven.
 
 **Regla para código nuevo**: un runner de corpus nuevo llama a `VolcadoDeCasos.volcar()` con la
-salida que ya tiene en la mano. Los que capturan `System.out` —los dos de la cátedra— tienen que
+salida que ya tiene en la mano. Los que capturan `System.out` —los de la cátedra— tienen que
 pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
 
 ### Mutation testing (PIT) — referencia y por qué ciertos sobrevivientes no se cazan
 
-La última corrida alcanzó **90% de mutantes matados** (998/1111), *test strength* 92%, con 98% de
+La última corrida alcanzó **91 % de mutantes matados** (872/962), *test strength* 92 %, con 97 % de
 cobertura de línea sobre las clases mutadas. El umbral versionado —`umbral.mutacion` en el
 `pom.xml`— es 88, y `mvn -Pmutacion verify` falla por debajo.
 
@@ -481,18 +484,13 @@ distintas. Confirmado así en: `EstadoInicial` (dígito), `EstadoIdGenOClase`, `
 "matarlos" agregando tests** — no hay ningún test posible que distinga el comportamiento mutado del
 original, porque no lo hay.
 
-**Sobrevivientes reales que sí se corrigieron** (agregando aserciones de lexema exacto donde sólo se
-verificaba que lanzara excepción o el tipo de token): `EstadoCharAbierto`/`EstadoStringTrasBarra`
-(agregarCaracterOfensivo en casos de error), y falta de cobertura completa de `EstadoInicial`
-(puntuación) y `EstadoFloatExponenteDigitos` (exponentes de 2+ dígitos, nunca ejercitados).
-
 **Sobrevivientes aceptados, no perseguidos**: `SalidaEstandar` toca `System.out` real —
 deliberadamente no se testea de forma directa (para eso existe la interfaz `Salida`, que sí está 100%
-testeada vía `SalidaEnMemoria`). `Main.main()` **sí** se testea ahora (`MainTest`), pero sólo en sus
+testeada vía `SalidaEnMemoria`). `Main.main()` **sí** se testea (`MainTest`), pero sólo en sus
 modos de falla —sin argumentos, archivo inexistente, extensión rara— capturando `System.out`: son los
 casos en los que una excepción sin atrapar mataría la corrida in-process de los testers de la
 cátedra, así que valen el costo. `ModuloPrincipalLexico`'s `manejador.close()` no se
-puede espiar sin inyectar `ManejadorDeArchivo` por constructor (hoy se instancia adentro del método)
+puede espiar sin inyectar `ManejadorDeArchivo` por constructor (se instancia adentro del método)
 — cambio de diseño no justificado sólo para este hueco, dado que `close()` únicamente libera memoria
 en un proceso de corta vida (no hay handle de archivo del SO abierto de por medio). `SourceManagerImpl`
 es código original de la cátedra sin tocar, no se le agregan tests propios.

@@ -1,2 +1,2 @@
-///[Error:x2|2]
-interface W_ { } interface W3 { x2 ( L i474 ) ; }
+///[Error:,|2]
+class AY_Y extends G9 { static public F s ( ) { int e = , zf_ = + this -- > + "" -- == + null , e ; } static void aR ( ) { } void q ( Z a ) { } }

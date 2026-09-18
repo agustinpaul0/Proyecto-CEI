@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface PF extends I4 < V > { } class T_v { } class Fr extends K9_np < E > { static public Bv_ < M > sv ( [ ] ) { var pLs = - KA9 . xER_ ( ) % + "" ++ ; } static void t ( char keV , boolean d5P ) { } }
+///[Error:{|2]
+class Yl__0C_C implements { L_ < C > g = + 882730 || + false ; public void v ( ) { } }

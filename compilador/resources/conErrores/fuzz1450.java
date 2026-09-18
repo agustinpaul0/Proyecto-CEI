@@ -1,2 +1,2 @@
-///[Error:+|2]
-interface D5 { } class BF implements Y_z < D_ > { static char g + null static public O j0m ( ) { } }
+///[Error:return|2]
+interface DI_d_2 < D > extends Y_ { } class HY_e < N > implements Ou8q { } class V_ < V > implements Hu < R_ < E > > { } interface B_Hy < J > extends K8T5__ { } return ; class SkTr_ implements AR < V_ < Q3E < Y > > > { L n = "?" . e7 ++ ; boolean [ ] [ ] m ( ) { int v ; } }

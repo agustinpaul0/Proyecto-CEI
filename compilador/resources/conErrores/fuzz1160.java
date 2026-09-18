@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface P_T < > { public char o ( ) ; }
+///[Error:extends|2]
+class VY < B > { } class BfYG < D > { } extends CO0HV < B_5 >

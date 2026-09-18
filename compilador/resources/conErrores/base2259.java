@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class B_g < L > extends R6 { } interface A6x5e < M > { void f ( T8b_ < R > [ ] [ ] [ ] [ ] c4_ ) ; void l ( ) ; } implements LlC < V >
+///[Error:{|2]
+interface Y1 < Q > extends { } interface E5 extends SZ1_3 { } interface Y2 extends Gq < J > { } interface DpD extends F92_ { } interface J8__ < Q > { } class T_S_ implements Qh < Q > { }

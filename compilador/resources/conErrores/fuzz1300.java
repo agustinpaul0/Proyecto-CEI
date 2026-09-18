@@ -1,2 +1,2 @@
-///[Error:S_p|2]
-class IF { static void o ( J_o6z < Z > gmO , K g ) { { { } return ; } } char gg ( int v , char [ ] a , N [ ] [ ] [ ] rZ , U_5_ v , A_K [ ] zv ) { } } interface Ar__93 < P > extends Wm < J_ > { } S_p class Wo implements F_ < A_ < C > > { }
+///[Error:{|2]
+class N_ < W > extends { void q ( boolean [ ] [ ] [ ] [ ] d ) { ! "t" [ - true ] . g ( ) ? '.' : 425 ; } } interface MmS { }

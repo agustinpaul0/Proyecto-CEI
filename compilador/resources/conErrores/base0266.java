@@ -1,2 +1,2 @@
-///[Error:;|2]
-class MP < J > extends Wj { private static void tbKJ ( ) { X2q3_a < K > x , g_ = null || true , swY7 ; ; } private static boolean [ ] be_ ( P [ ] [ ] [ ] [ ] l ) { G_ . ft7 ( + true ) . u28y ( ) . e ( ) % + 532964 ; for ( int [ ] s4 : null ) { X v8_____ , p ; } CQ . c ( ) . t_u_w ( ) -- ; } static void b ( ) { this -- - ; } }
+///[Error:static|2]
+interface AG < E > { P_ [ ] bZD ( ) ; } class Ds { } interface ZvV extends H10J_0 < P > { } class H2 extends U_ { Y j_1X ( ) { } public static boolean [ ] [ ] [ ] [ ] d ( float [ ] z_ , int a4z7 ) { } static void t ( O [ ] [ ] d ) { } void rW ( ) { } private O [ ] [ ] d ; void mB ( ) static S u2j ( ) { } boolean [ ] yb9 ( ) { ; } public Y6_X7 ( ) { } public static void o ( ) { } P__3M1 tY ; }

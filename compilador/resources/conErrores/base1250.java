@@ -1,2 +1,2 @@
-///[Error:>|2]
-class UF < > implements X9 { } class P_Ui extends EH_ < V > { } class Xt < R > implements GxG < T > { static private H t ( ) { } }
+///[Error:extends|2]
+interface MP < G > { } extends BL < D > interface R83 < L > { public boolean a ( ) ; public void rs_ ( Xb [ ] h ) ; public void mJ ( ) ; void x ( char p , G x , float [ ] jT_VTW ) ; public N [ ] eK ( H hV3 , Y m8 ) ; }

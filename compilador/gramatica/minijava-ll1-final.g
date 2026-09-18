@@ -18,7 +18,7 @@ Clase -> class idClase GenericidadOpcional HerenciaOpcional { ListaMiembros }
 
 Interfaz -> interface idClase GenericidadOpcional ExtensionOpcional { ListaMetodosInterfaz }
 
-# Una Clase o Interfaz sigue limitada a UN único parámetro de tipo, también con
+# Una Clase o Interfaz está limitada a UN único parámetro de tipo, también con
 # la genericidad avanzada.
 GenericidadOpcional -> < idGen > | EPSILON
 
@@ -42,10 +42,10 @@ Miembro -> Visibilidad MiembroTrasVisibilidad
 Miembro -> static VisibilidadOpcional TipoMetodo Metodo
 Miembro -> MiembroSinModificadores
 
-# Los dos ordenes valen, como en Java: `public static` y `static public`. Que la
+# Los dos órdenes valen, como en Java: `public static` y `static public`. Que la
 # visibilidad aparezca a un solo lado de `static` es lo que impide repetir el
 # modificador —`public private void m(){}` no deriva—, sin necesitar un chequeo
-# fuera de la gramatica.
+# fuera de la gramática.
 MiembroTrasVisibilidad -> static TipoMetodo Metodo
 MiembroTrasVisibilidad -> MiembroSinModificadores
 
@@ -59,7 +59,7 @@ MiembroSinModificadores -> idGen DimensionesOpcionales idMetVar AtributoOMetodo
 MiembroSinModificadores -> idClase MiembroDesdeIdClase
 
 # El NT insertado que decide entre constructor y miembro con tipo de referencia.
-# Con visibilidad el constructor ya no lleva `public` propio, así que compite
+# Con visibilidad, el constructor no lleva un `public` propio, así que compite
 # con el atributo/método de tipo referencia por el token idClase.
 MiembroDesdeIdClase -> CuerpoDeMetodo
 MiembroDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar AtributoOMetodo
@@ -107,8 +107,8 @@ DimensionesOpcionales -> [ ] DimensionesOpcionales | EPSILON
 
 TipoReferencia -> idClase TipoGenericoOpcional
 
-# `float` es token del léxico desde la Etapa 1 pero no estaba en la
-# gramática; sin esta alternativa el `float` del léxico queda inutilizable.
+# `float` es token del léxico desde la Etapa 1 pero la gramática de la cátedra
+# no lo tiene; sin esta alternativa el `float` del léxico queda inutilizable.
 TipoPrimitivo -> boolean | char | int
 TipoPrimitivo -> float
 
@@ -150,9 +150,6 @@ Sentencia -> While
 Sentencia -> Bloque
 Sentencia -> For
 
-# Sin variables locales clásicas, una sentencia-expresión puede empezar con
-# idClase sin competir con nada: es la regla original.
-
 Sentencia -> ExpresionSinIdClase ;
 Sentencia -> TipoPrimitivo DimensionesOpcionales ListaDeclaradores ;
 Sentencia -> idGen DimensionesOpcionales ListaDeclaradores ;
@@ -163,8 +160,8 @@ SentenciaDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ;
 
 VarLocal -> var idMetVar = ExpresionCondicional
 
-# Varias variables por sentencia, cada una con inicialización opcional:
-# `int x,y,z = 10;`
+# Varias variables por sentencia, cada una con inicialización opcional, como en
+# Java (JLS 14.4): `int x,y,z = 10;` e `int x = 1, y = 2;`.
 ListaDeclaradores -> idMetVar InicializacionDeDeclarador RestoListaDeclaradores
 RestoListaDeclaradores -> , idMetVar InicializacionDeDeclarador RestoListaDeclaradores
 RestoListaDeclaradores -> EPSILON
@@ -183,30 +180,19 @@ While -> while ( Expresion ) Sentencia
 # ===========================================================================
 # Fors! E2
 # ===========================================================================
-# Una sola sentencia/expresión por separador. El `:` distingue el for de
-# iteradores del estándar, y aparece justo después del declarador, así que el
-# desempate es de un solo token.
+# Una sola sentencia/expresión por separador. La variable de control se declara
+# con `var` y nada más: los logros son independientes entre sí, así que el for no
+# toma el declarador tipado de Variables Locales Clásicas (respuesta del profesor).
 
 For -> for ( EncabezadoFor ) Sentencia
 
 EncabezadoFor -> ; ExpresionOpcional ; ExpresionOpcional
 EncabezadoFor -> var idMetVar EncabezadoForTrasVar
-EncabezadoFor -> TipoPrimitivo DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-EncabezadoFor -> idGen DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-EncabezadoFor -> idClase EncabezadoForDesdeIdClase
-EncabezadoFor -> ExpresionSinIdClase ClausulasFinalesFor
-
-EncabezadoForDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-EncabezadoForDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ClausulasFinalesFor
+EncabezadoFor -> Expresion ClausulasFinalesFor
 
 # El `:` distingue el for de iteradores del estándar, y está a un solo token.
 EncabezadoForTrasVar -> : Expresion
 EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor
-
-EncabezadoForTrasDeclarador -> : Expresion
-EncabezadoForTrasDeclarador -> InicializacionDeDeclaradorFor ClausulasFinalesFor
-
-InicializacionDeDeclaradorFor -> = ExpresionCondicional | EPSILON
 
 # Una sola expresión por separador.
 ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
@@ -235,7 +221,7 @@ RestoExpresion -> RestoCondicional
 
 OperadorAsignacion -> =
 
-# Todo lado derecho de un `=` —el de la asignación y el de los cinco
+# Todo lado derecho de un `=` —el de la asignación y el de los cuatro
 # inicializadores— es una <ExpresionCondicional>: admite el ternario y no admite
 # otro `=`.
 ExpresionCondicional -> ExpresionCompuesta RestoCondicional
@@ -272,9 +258,9 @@ Primitivo -> true | false | intLiteral | charLiteral | null
 Primitivo -> floatLiteral
 
 # --- Expresión que no puede empezar con idClase ----------------------------
-# Se usa donde una expresión compite con una declaración de variable local
-# (sentencia y encabezado del for). Sólo duplica las *cabezas*: todas las colas
-# se comparten con la jerarquía normal, así que no hay lógica repetida.
+# Se usa en la sentencia, donde una expresión compite con una declaración de
+# variable local. Sólo duplica las *cabezas*: todas las colas se comparten con
+# la jerarquía normal, así que no hay lógica repetida.
 
 ExpresionSinIdClase -> OperadorUnario Operando ColaTrasOperando
 ExpresionSinIdClase -> Primitivo ColaTrasOperando
@@ -357,10 +343,10 @@ RestoCreacionDeArreglo -> ] DimensionesOpcionales InicializadorDeArreglo
 DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
 DimensionesConTamanioOpcional -> DimensionesConTamanio | EPSILON
 
-# El inicializador es anidable: un elemento puede ser una expresion o, a su vez,
-# otro inicializador. Solo es alcanzable desde <Creacion>, que es lo unico que el
-# logro restringe sobre donde puede aparecer. Admite la coma final, como en Java
-# (JLS 10.6): `{1, 2,}` y `{,}` son validos.
+# El inicializador es anidable: un elemento puede ser una expresión o, a su vez,
+# otro inicializador. Sólo es alcanzable desde <Creacion>, que es lo único que el
+# logro restringe sobre dónde puede aparecer. Admite la coma final, como en Java
+# (JLS 10.6): `{1, 2,}` y `{,}` son válidos.
 InicializadorDeArreglo -> { ListaElementosOpcional }
 ListaElementosOpcional -> ListaElementos | , | EPSILON
 ListaElementos -> ElementoInicializador RestoListaElementos
@@ -372,8 +358,8 @@ ElementoInicializador -> Expresion | InicializadorDeArreglo
 # ARGUMENTOS ACTUALES
 # ===========================================================================
 # Sección propia y no parte de la creación: la lista de argumentos de una
-# llamada la usan por igual el `new`, el encadenado, la llamada estática y el
-# encabezado del for.
+# llamada la usan por igual el `new`, el encadenado, la llamada a método y la
+# llamada estática.
 
 ArgsActuales -> ( ListaExpsOpcional )
 

@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class implements C_d < R > { }
+///[Error:++|2]
+++ class N5S { } class WS < M > { }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface AG < E > { P_ [ ] bZD ( ) ; } class Ds { } interface ZvV extends H10J_0 < P > { } void mB ( ) { boolean [ ] [ ] v ; } static S u2j ( ) { } boolean [ ] yb9 ( ) { ; } public Y6_X7 ( ) { } public static void o ( ) { } P__3M1 tY ;
+///[Error:)|2]
+class Xp < T > implements Vd < POh < V > > { static private Z a_G_ ( MZ_7 aD7q ) { boolean [ ] f = 'T' ? "" ++ : "" -- % ! '\\' ? + null : - false ; 21D ; } static private C [ ] u ( U f , float fN_ , boolean w , float ) { } public static Y [ ] [ ] [ ] m_ ( ) { } R [ ] [ ] d ( ) { while ( 'F' ) ; while ( + true ) for ( ; ; ) return ; } A [ ] hi_1C_ = "f" . t . rh -- % Sw . f ( ) ; }

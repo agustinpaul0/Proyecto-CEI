@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface P__p { } class I_JkYA < T > extends Rd { static void ( ) }
+///[Error:public|2]
+public J c_Z ( int [ ] f ) ; boolean [ ] [ ] t_ ( ) ; void mvzr6 ( ) ;

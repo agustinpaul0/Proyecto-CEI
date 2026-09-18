@@ -1,2 +1,2 @@
-///[Error:private|2]
-private static Y j__ ( ) { } class XA implements YU < I5 < U > > { }
+///[Error:false|2]
+class A7 implements DS_ < I > { static private void false }

@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements WCP2
+///[Error:'\f'|2]
+'\f'

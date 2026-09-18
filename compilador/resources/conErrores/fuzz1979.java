@@ -1,2 +1,2 @@
-///[Error:T|2]
-interface C2 < O > { public void o7T7j_2 ( O [ ] x , F j6 ) ; } class Z0_ implements ZUo_f { } class X6 extends H8 < BD < W > > { } T [ ] [ ] [ ] [ ] qM
+///[Error:Y|2]
+class GW extends ZD < G > { } interface K_ { } Y g ( ) ;

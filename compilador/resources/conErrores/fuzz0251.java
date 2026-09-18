@@ -1,2 +1,2 @@
-///[Error:;|2]
-class I_ < J > { } class Z_5_ extends FW < A > { public int [ ] ; }
+///[Error:Ab3|2]
+Ab3 r class Ti extends X4 { }

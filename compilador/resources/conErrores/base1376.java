@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface Q2 { float bK ( ) ; U_ [ ] [ ] q ( boolean pZ , boolean [ ] m ) ; C8 [ ] yC ( ) ; public int js ( P z ) ; } class Dtm6_ { } static void m ( ) { S [ ] m = - true ; return ; } class I_ { } class Ok12 extends DS { P_ < T > [ ] [ ] xv_ = '#' || ! this -- + - 25715 ; public static void w ( ) { O [ ] [ ] tUN_ , sZ , kMW3 ; } }
+///[Error:}|2]
+interface LD_ { void x ( ) ; Z [ ] [ ] [ ] j1E9j } interface S_ extends T_l { } class Q__ < U > { }

@@ -1,2 +1,2 @@
-///[Error:Yy6|2]
-class R_d { static void Yy6 } interface Qj extends X4_ { }
+///[Error:Uh|2]
+interface Il < Z > extends WU < J > { } Uh < B95_yx4 >

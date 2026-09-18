@@ -1,2 +1,2 @@
-///[Error:Pv_o|2]
-class Ic < E > implements O_1 { void g_hOd ( ) Pv_o ( ) { } }
+///[Error:{|2]
+class { } interface U_3 < M > { } interface O9y < C > extends ZC < XV > { }

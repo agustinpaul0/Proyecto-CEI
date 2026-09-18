@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Yw_ extends H0 { } interface O_8 < D > { } void interface T_ { }
+///[Error:>|2]
+class Ao_ extends Gtps { static Pa pg ( H3 < > [ ] [ ] [ ] [ ] [ ] a9E ) { N5U_ [ ] [ ] [ ] [ ] gG_ , d3 = true , c_ = ! null , w = + false ; ; } static X [ ] [ ] p ( ) { } } interface PBa extends K5 { public FA v ( ) ; }

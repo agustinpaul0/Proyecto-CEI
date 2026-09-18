@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface RJ extends Vb { public float [ ] d ( [ ] [ ] [ ] p ) ; } class Oz extends Z7 < V3b8 < B > > { }
+///[Error:V_|2]
+class GE extends JQz < E4 > { } V_ interface WE { void xpW ( Y tHM_ ) ; } class M_H { static public D i ( ) { } } interface Up extends Hl < UkNxTv > { } interface Hy_ < D > { public Z hU ( ) ; }

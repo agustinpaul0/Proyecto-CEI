@@ -1,2 +1,2 @@
-///[Error:X|2]
-class Op { } class L8 < R > implements Ws { } X er ( E8_75__ [ ] yS , M b , float [ ] [ ] [ ] [ ] f ) ;
+///[Error:<|2]
+< E1Vg > b = + null ? - Ww . w8 ( ) . hw ( ) . w ++ || false : - "" -- < - null ; class N5S { } class WS < M > { }

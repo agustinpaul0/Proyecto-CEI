@@ -1,2 +1,2 @@
-///[Error:W9|2]
-class Eu < Q > extends Brj < Vw > { } interface Yv < F > { } interface Y__O < R > extends J_2 { public boolean [ ] [ ] [ ] [ ] c W9 z ; } class YN extends QP_ { static L t ( float [ ] [ ] b , int e , KM [ ] [ ] [ ] j ) { return ; } } interface X7 < R > extends C4Tt < C > { }
+///[Error:char|2]
+class Xa { } class E09 < V > { } class U__b implements OuS < Z > { float h3_ char }

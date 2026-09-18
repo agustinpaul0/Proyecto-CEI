@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface N0 { int [ ] [ ] [ ] ( ) ; public ITTW [ ] v3 ( int jOhU ) ; } class B8g { }
+///[Error:<|2]
+interface Z_ { } class U_ extends OV < K > { } interface Z2 extends E_ { public void f_ ( char iP ) ; char j ( ) ; } interface I79 { } < M > interface P8v < R > extends K_ < Y > { } class J_ < H > { } interface KX { } interface F_o2 < N > extends UNr__ < X > { Nz1 nq ( ) ; } class U7w { char [ ] [ ] o ( ) { } } class Rd_ < S > extends VkL < OQ < G8 > > { private Cg9 < O > o_N_i ( ) { } }

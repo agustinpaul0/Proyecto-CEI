@@ -1,2 +1,2 @@
-///[Error:[|2]
-class I_ < J > { } class Z_5_ extends FW < A > { public [ ] j ; }
+///[Error:Tj_|2]
+interface PVU < N > { } Tj_

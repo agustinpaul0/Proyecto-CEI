@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Y_Q_ < U > { } class D_D extends Me { void e__ } class IPz extends P_ < K > { }
+///[Error:(|2]
+interface R21v { public J o_ ( U z_U1 , boolean [ ] q , char [ ] [ ] d , I8 < Y > [ ] r , P q_ , T r9 ) ; } interface EJA extends V_f < X9 > { public void z3 ( ) ; V ( ) ; }

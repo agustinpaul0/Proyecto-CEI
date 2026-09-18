@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface KF_8 { } class L7 implements WV < M > { static H [ ] n int } class K_IA implements VA__ < W > { }
+///[Error:E|2]
+class T7f64 < X > { void bWDcqQNH9_s E t1 , Z l_ }

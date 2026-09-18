@@ -1,2 +1,2 @@
-///[Error:;|2]
-class K32 < E > implements Ge { } class Tx_98 < R > extends D5p { } class N_D_ { boolean p ; C [ ] [ ] [ ] [ ] ; }
+///[Error:[|2]
+interface H54k { void s ( V_C < O > exw ) ; public void y ( [ ] [ ] [ ] [ ] lH , M_ q5Us ) ; }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Kn_1_ { public void a2q8 ( ) ; } class U8CTO implements HODC { } void class U0B implements PFn_ { }
+///[Error:R|2]
+class Gf < V > { } class Cw6 < B > implements S3w4_1 { } class GD implements S_z < V > { } R u_25 ;

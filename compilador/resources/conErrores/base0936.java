@@ -1,2 +1,2 @@
-///[Error:'\n'|2]
-interface ZF5 { } '\n' interface Q_ < F > extends Qx_ { } interface QO < V > extends V_ { } interface CW < B > extends YrZX { void p ( X d , P f7 ) ; }
+///[Error:[|2]
+interface O_ < Z > { public [ ] c_ ( G g ) ; }

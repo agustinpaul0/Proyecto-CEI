@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface P8_Y < N > extends RA6 { F }
+///[Error:AyG|2]
+AyG interface X1 { }

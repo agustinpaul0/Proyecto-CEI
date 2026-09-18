@@ -12,9 +12,11 @@ El Esquema Simple de la cátedra sólo produce error en dos lugares, y no hay ni
 **En `match`,** cuando el token actual no es el terminal que la producción exige:
 
 ```java
-void match(TipoDeToken esperado) {
-    if (tokenActual.tipo() == esperado) tokenActual = lexico.proximoToken();
-    else throw new ExcepcionSintactica(tokenActual, esperado);
+public void match(TipoDeToken esperado) throws ExcepcionLexica, ExcepcionSintactica {
+    if (actual.tipo() != esperado) {
+        throw new ExcepcionSintactica(actual, nombreDe(esperado));
+    }
+    avanzar();
 }
 ```
 
@@ -22,14 +24,19 @@ void match(TipoDeToken esperado) {
 **y** el no terminal no es anulable:
 
 ```java
-void unNoTerminal() {
-    if (PRIMEROS_A.contiene(tokenActual))      { /* traducción de α */ }
-    else if (PRIMEROS_B.contiene(tokenActual)) { /* traducción de β */ }
-    else throw new ExcepcionSintactica(tokenActual, PRIMEROS_A.unido(PRIMEROS_B));
+private void unNoTerminal() throws ExcepcionLexica, ExcepcionSintactica {
+    if (estaEn(PRIMEROS_A)) {
+        /* traducción de α */
+    } else if (estaEn(PRIMEROS_B)) {
+        /* traducción de β */
+    } else {
+        throw errorEsperando(PRIMEROS_A, PRIMEROS_B);
+    }
 }
 ```
 
-Si el no terminal **sí** es anulable, el `else` **no hace nada**: eso significa que derivó a vacío,
+Si el no terminal **sí** es anulable, el `else` **no hace nada** —queda escrito, vacío, con la
+producción `ε` citada al lado—: eso significa que derivó a vacío,
 y el error —si lo hay— lo va a encontrar el método que llamó, cuando intente su propio `match`.
 
 ## 2. Qué se reporta

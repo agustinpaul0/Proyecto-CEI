@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class N_ extends { }
+interface Y9 < K > extends { }

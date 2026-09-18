@@ -1,2 +1,2 @@
-///[Error:x|2]
-interface HAKH < W > extends S__ { void b ( ) ; public float [ ] [ ] [ ] [ ] t ( int [ ] [ ] d ) ; x }
+///[Error:;|2]
+class R__K < H > implements J_ < J > { public static void s__FU ( ) { for ( ; this = ; - "" -- = null ) ( true ) ; } static C dc ( char [ ] u_ ) { } public void c ( ) { } }

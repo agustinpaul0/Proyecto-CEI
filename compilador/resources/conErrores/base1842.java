@@ -1,2 +1,2 @@
-///[Error:void|2]
-class SO16 < L > { } interface UA { } interface MG7 { } interface VujzVK { void a ( float f ) ; } void
+///[Error:boolean|2]
+class A_A1 extends Gb { } interface Ph < D > { } boolean [ ] [ ] [ ] [ ] [ ] [ ] interface S_ < H > extends P_ < K > { public int a91_ ( ) ; }

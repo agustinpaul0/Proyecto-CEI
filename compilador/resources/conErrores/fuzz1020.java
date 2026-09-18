@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface X1 < J > extends AG { public void sn ( EK u9 , L_ < J7 < So9 > > e ) ; void o ( H [ ] k9_ ) ; } class W____U__ extends O0 < NC < X_ < Q > > > { float q_ ( ) { } static void j ( T r ) { } static UTrl [ ] [ ] e7 ( ) { } } class Vi { private static void y ( [ ] [ ] [ ] [ ] ) { ; } static void u7 ( K_ < F > ke ) { } void t ( ) { } public O_ ( ) { } private static void e ( ) { } }
+///[Error:a|2]
+class Cs_ implements Jto { static void c ( boolean [ ] [ ] q , a , U g ) { } }

@@ -1,2 +1,2 @@
-///[Error:Z69|2]
-Z69
+///[Error:FPv|2]
+interface Ws { SJ_F5Oz amp24 FPv ; }

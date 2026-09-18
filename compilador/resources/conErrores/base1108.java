@@ -1,2 +1,2 @@
-///[Error:R|2]
-class Gf < V > { } class Cw6 < B > implements S3w4_1 { } class GD implements S_z < V > { } R u_25 ;
+///[Error:<|2]
+class AU < Q > extends T1 { } class Eh4v extends C47g < D > { static void b ( G_80hG v , M [ ] u , Yk_ < XaEC > t6 ) { } } < L > class D44 extends C__ { }

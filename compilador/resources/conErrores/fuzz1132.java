@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] ( ) { } } interface OP < T > extends C10 < R86Ly03dP_ > { }
+///[Error:}|2]
+class RC < R > { } class P8A3_SC implements Om_ { void d ( ) { } } interface H_ { J }

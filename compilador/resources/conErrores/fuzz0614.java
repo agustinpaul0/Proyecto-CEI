@@ -1,2 +1,2 @@
-///[Error::|2]
-class Og < L > extends U_TM { static Y5r h ( TEc [ ] [ ] [ ] [ ] [ ] [ ] jk ) { { } } D e8 ; static void g ( ) { J [ ] a_ = + 'S' , p4d8 = + true ; } private static M i ( ) { } private O_ < T > [ ] o_ = - false ? ! : - true ; void n ( D [ ] uW , boolean [ ] w ) { } } class CR_h < X > implements Q_L < RRPXj > { } class MWc5 < M > implements ThoK3NL < F1 > { } interface EMvsG < V > extends Yw { public void w ( ) ; public void h ( ) ; }
+///[Error:static|2]
+interface PT < D > { } class X90 extends Bw { } interface H_7K < Q > { } class T124 < K > { } class F_ { private Dp < N_0T > a__ ( ) { } } class Nt < R > implements Ov { } class Wm < B > { static public void bu ( ) { { } } static N static char [ ] w1D ( ) { { ; } { } { } ; } M8 ( ) { return ; } }

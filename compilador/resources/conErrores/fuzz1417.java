@@ -1,2 +1,2 @@
-///[Error:U_|2]
-U_ < B > class BFO < C > extends Zx0 { public CW_ ( float [ ] jO_ , P eV ) { } private void y5yj ( ) { F rfT = true , j_ ; } static private Y v ( int z , Iz < X > x ) { while ( - false ) X [ ] [ ] [ ] y ; char m_ = + false , eg ; if ( null ) return ; } }
+///[Error:c|2]
+interface JC extends DA { } interface At < F > extends T_ { } class S_ < N > implements RR < Wk < Kd > > { int u ( ) { int y , eA_ = + false ; } private static void t ( ) { { for ( ; ; ) { } } } } interface Ch8ai < S > extends N6 { UB < Z > i ( int [ ] zo ) ; } interface B_I extends LziP < W > { } interface Eq < O > { } interface Fj < E > extends M2_71 < I > { public c ( ) ; public int [ ] t5l ( ) ; } class F__ extends G_ { }

@@ -1,2 +1,2 @@
-///[Error:O7|2]
-O7
+///[Error:s|2]
+s interface Cm_ < S > extends JvP { }

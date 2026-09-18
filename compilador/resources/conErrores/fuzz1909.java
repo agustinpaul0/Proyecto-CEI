@@ -1,2 +1,2 @@
-///[Error:T|2]
-interface S_ extends A0W < I > { } T
+///[Error:Uz|2]
+class O_ < L > implements M1 { static public Z dK7 ( ) { } } Uz [ ] rJ ; interface V_A < T > { }

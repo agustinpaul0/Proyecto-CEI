@@ -1,2 +1,2 @@
-///[Error:e41|2]
-interface Yg_ extends YW7H4k < Y > { public void iaM ( Y_5 p , e41 ) ; }
+///[Error:[|2]
+interface RJ extends Vb { public float [ ] d ( [ ] [ ] [ ] p ) ; } class Oz extends Z7 < V3b8 < B > > { }

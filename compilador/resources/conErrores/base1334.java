@@ -1,2 +1,2 @@
-///[Error:{|2]
-class CP6 < W > { static public void { { ; return ; } } }
+///[Error:extends|2]
+class IdH < U > { } extends V_

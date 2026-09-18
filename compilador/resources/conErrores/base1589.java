@@ -1,2 +1,2 @@
-///[Error:W|2]
-W interface Dn6__ < K > extends Uji6u < H > { }
+///[Error:K_y_o|2]
+class MBKr extends TAA { } K_y_o

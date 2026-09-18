@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface CFS { public int ( ) ; }
+///[Error:RnS|2]
+RnS

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Jr < > implements DT9_ { private static void yyak ( ) { } }
+///[Error:ie|2]
+class AV7 < H > implements TQ < BI_ > { static K3 [ ] [ ] aV ( ie ) { } static void i ( ) { ; } }

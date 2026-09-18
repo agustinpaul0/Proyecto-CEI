@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class IdH < U > { } extends V_
+///[Error:Mb|2]
+Mb

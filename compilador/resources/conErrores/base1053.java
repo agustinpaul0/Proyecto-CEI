@@ -1,2 +1,2 @@
-///[Error:++|2]
-class CC__ < L > { IyInp [ ] [ ] [ ] e2 = E1 . j ( ) ++ ? this -- > '8' / ++ = Ph . ee_ ( ) ++ : VL . pM4 ( ) -- ; void w ( ) { } static public void b ( int h , S [ ] [ ] k4 , Uu v6P1Y ) { while ( + 45613 = null ) if ( + null % true ) { } } }
+///[Error:O|2]
+class AV < I > extends Uof { } interface F8u { } interface CM4 { void j ( ) ; } interface K2 < Q > { } O class B5eM < F > implements Snk < U_A > { int [ ] d ( V [ ] x_ ) { } }

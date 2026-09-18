@@ -1,2 +1,2 @@
-///[Error:++|2]
-class Xz_ implements Jj9i < IF > { static void kC ( ) { } float v ( ) { } void v18Jw_ ( float yc55 ) ++ }
+///[Error:R_|2]
+interface G_ extends X_W_ { I__4_ < R_ > [ ] u ( ) ; } R_

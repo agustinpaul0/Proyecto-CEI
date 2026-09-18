@@ -1,2 +1,2 @@
-///[Error:uhi|2]
-class EE < Q > extends Ll { public static S5 < GU < Q__pE < E > > > [ ] h_ ( ) { return ; } private void pa__GP ( Mjkzp < B > imBMe8 ) { } public static uhi ( Ra < N > r , float o ) { var q6 = ! 6209 <= + 4.99 && + null ? null : ! true ; if ( + true ) return ; else Z_ bTB ; } private static F k ( ) { var v = + 5F / ! null ; return ; } void l ( ) { } } class I0exI implements Cq < Y > { }
+///[Error:static|2]
+interface Y4 { } class Ma < J > { private static boolean m ( O_xI < La_ > [ ] [ ] [ ] r__ ) { } static U8C < Bo > [ ] static void oV ( TE pT ) { } }

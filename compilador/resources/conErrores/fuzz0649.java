@@ -1,2 +1,2 @@
-///[Error:G|2]
-G class IazrZ_ < E > extends L4 { }
+///[Error:)|2]
+interface Mv < C > { public void zk ( int v ) ; } interface EF < Z > { public Z2 q4_ ( char [ ] [ ] ) ; public void m ( ) ; }

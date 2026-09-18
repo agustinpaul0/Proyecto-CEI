@@ -1,2 +1,2 @@
-///[Error:char|2]
-class VC__ < O > implements CTn { } class Woi6 < Z > { static void yK char [ ] w , TjX_ < I > k_ , char z , E2 [ ] [ ] [ ] [ ] d9u { while ( ! '\\' ? - false : - false ) var x_k = "" -- ? null : true ; } }
+///[Error:<|2]
+interface S5__f extends Q4BnS < R7_6 > { public < BB < Z > > u ( ) ; public float i ( Jsy < A_J_ > [ ] x , E [ ] [ ] [ ] yI_ ) ; }

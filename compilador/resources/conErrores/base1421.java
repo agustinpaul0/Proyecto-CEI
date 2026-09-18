@@ -1,2 +1,2 @@
-///[Error:>|2]
-class S3 < L > implements Fl6 < C9Y0s_ < > > { }
+///[Error:static|2]
+class J9Z_3Q < G > implements T_2 < D > { } interface Tn { } class Om_ < G > { } interface F4 < G > { } interface Gw9_Xq extends Z_ { } class W_3Km { static void nE ( ) { } static boolean [ ] [ ] it__3u static private void o ( Q [ ] w ) { } H [ ] d = null ; void t ( ) { return ; ; } } interface O__f { R_ s ( P vz , Xm6i_ [ ] [ ] [ ] [ ] bAh , Q [ ] o_ , float d ) ; } interface NW9 < F > { int [ ] [ ] f8_w ( ) ; public N [ ] [ ] [ ] [ ] vQ2 ( H v ) ; public I h ( ) ; O [ ] [ ] vm2bpD ( ) ; } class JB3 { } class Cv < P > extends D_ < BM72_9 > { static void n ( ) { ; } }

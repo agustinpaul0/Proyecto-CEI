@@ -1,2 +1,2 @@
-///[Error:b|2]
-class Q0 < O > implements P_57 { static public U p7 ( b ) { } }
+///[Error:<|2]
+interface Xqo < H > { } interface M2bu < M > { void u29jzj ( BM [ ] [ ] [ ] [ ] [ ] [ ] k_vtx0Xf_ ) ; } < O >

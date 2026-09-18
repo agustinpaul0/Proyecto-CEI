@@ -1,2 +1,2 @@
-///[Error:<|2]
-< K > class Q_k { }
+///[Error:Dt|2]
+interface KlR_ { } Dt

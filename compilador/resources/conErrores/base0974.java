@@ -1,2 +1,2 @@
-///[Error:CE|2]
-class W3 extends X__ < J___ < D > > { void t ( ) { } } class Q_ < M > extends QG22 { } CE
+///[Error:<|2]
+interface < M > extends Eeo < E0F < R > > { public void y ( V_8_R__ [ ] s , boolean [ ] [ ] [ ] n ) ; }

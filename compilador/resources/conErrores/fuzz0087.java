@@ -1,2 +1,2 @@
-///[Error:private|2]
-class F__ extends J6_b0 { } private int [ ] [ ] o_5 ( G e ) { }
+///[Error:(|2]
+interface QP4_ < C > extends B48G < LxQ > { } class A_ < O > { private static void kB ( ) { return ; ! "F" . y . r_5 . w4 -- == - 'N' = null ; char [ ] [ ] [ ] s , hd__JF , v ; } V [ ] ( ) { } U_s_ ( B c_ ) { } static boolean r1 ( ) { } }

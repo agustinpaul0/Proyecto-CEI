@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface GO__ < I > { void s ( int ) ; public void uz__ ( ) ; } class AU < D > extends VR_ { }
+///[Error:void|2]
+void j ( ) { ; } class Ca extends IH < T8 > { Im_ ( F n9_3 , boolean o ) { ; } static public void zmX ( T [ ] [ ] [ ] t3 , Ay_ne4 h_ ) { ; G_ . p_Rr_ ( ) ++ >= + 065147 >= ! false ; } public static void gm_9CZ ( ) { "" . x . k__ ; } }

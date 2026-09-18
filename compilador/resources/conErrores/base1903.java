@@ -1,2 +1,2 @@
-///[Error:public|2]
-class Q_P { } public P_k3 h ( ) ;
+///[Error:(|2]
+interface F5e { } interface Qs extends K_ < S > { ( ) }

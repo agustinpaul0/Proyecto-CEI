@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface NS extends { }
+///[Error:N__|2]
+N__

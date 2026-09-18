@@ -1,2 +1,2 @@
-///[Error:S8|2]
-S8
+///[Error:{|2]
+interface DJ841Y_ extends { }

@@ -1,2 +1,2 @@
-///[Error:e|2]
-interface Zm7B3 { void r ( e , char o6VQ_ ) ; }
+///[Error:implements|2]
+class implements Ot < I > { }

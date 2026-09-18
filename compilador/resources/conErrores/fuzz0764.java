@@ -1,2 +1,2 @@
-///[Error:W|2]
-W interface BN < U > { }
+///[Error:h|2]
+interface P_ { h ( ) ; public G_ [ ] [ ] [ ] [ ] [ ] wW ( ) ; }

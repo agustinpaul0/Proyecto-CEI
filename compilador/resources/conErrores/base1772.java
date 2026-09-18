@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Tx8B2 < H > implements E_ { } interface FsI < > { D3F l29ZJ ( ) ; } class Ci__ { public void m ( ) { } public char i ( ) { } }
+///[Error:<|2]
+class B_9M_ < W > implements < T > { }

@@ -1,2 +1,2 @@
-///[Error:[|2]
-[ 0f ] . qn ( ) . t ( ) . w__0 . xJV < 607164 = + null > - false class Lf < N > { }
+///[Error:extends|2]
+interface XG < C > { } extends Uf < S_ < J > >

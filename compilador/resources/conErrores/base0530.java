@@ -1,2 +1,2 @@
-///[Error:M8|2]
-class KD3 < R > extends Ti < W > { void eN ( N q ) { } static private W nM0_2_ ( ) { if ( - WPy . aHb_d_ ( ) -- < 08730 = true > - 'p' ) { ; } } } M8 interface Yz_ < C > { }
+///[Error:static|2]
+interface GoF_B_ < D > { } interface Sl_ < H > { } static private G e_u ( JZB [ ] [ ] f_ ) { for ( var f : 495651 ) while ( true % false ) Z w1J ; } O [ ] [ ] [ ] br_0 ( ) { } class W_u implements Tr_ < X4 < G_A__ > > { } interface H7 extends J7R9O { } class LF { }

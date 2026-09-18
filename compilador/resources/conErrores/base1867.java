@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class Rt < L > { B_ ( E [ ] [ ] r , L [ ] p , M [ ] [ ] u ) { G [ ] [ ] lK = - "7%" , e_ ; 0.F == - W__ . s ( ) -- % + '\t' / ! false >= - false = 51927 * null ; H0i . b ( ) . qR ( ) . h33_I . vC . c ++ >= + 039787 || true ; for ( ; ; ) 'Z' ; { } } } interface G9 extends Di { } interface Y_La < B > { public L m ( L s , I____f_l_KU < Q > s ) ; } interface Ag < M > extends G_ < G > { } extends ZB2 < F > interface CEX extends U3 < C > { } class Hdy implements S_c { static boolean [ ] [ ] [ ] [ ] q ( ) { } YFU i ( ) { for ( ; ; ) ; ; ; } } interface N_u < I > { } interface EB extends M_8q { void cA_YBk ( V r , L i ) ; void t ( I [ ] [ ] i ) ; public IrW__ v_ ( ) ; }
+///[Error:X1|2]
+X1 interface VK < U > { public SD < G > [ ] [ ] rU ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class MZx49 implements { } class E5 { }
+///[Error:R2|2]
+R2

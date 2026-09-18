@@ -1,2 +1,2 @@
-///[Error:l4|2]
-class F2 < U > implements BP { static public void lEV ( l4 ) { } }
+///[Error:>|2]
+interface TnQ_ extends SV < > { }

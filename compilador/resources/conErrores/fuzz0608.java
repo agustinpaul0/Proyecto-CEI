@@ -1,2 +1,2 @@
-///[Error:D|2]
-D n , Uk [ ] w , Z [ ] y
+///[Error:private|2]
+interface FN < X > { } private

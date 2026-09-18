@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface R_Av < C > extends AR61_ < E > { char [ ] [ ] [ ] el_ ( float [ ] g , C z ) ; int [ ] w_ ; } class JG < F > implements Kt < T > { }
+///[Error:}|2]
+interface XCs { } class B_ implements Jb { private int [ ] l_ ; void xjH } class V56 < O > implements M_ { boolean [ ] [ ] r_ ( boolean [ ] [ ] [ ] [ ] [ ] [ ] d5 ) { } private void h ( ) { } public static P gX ( Pl i3s , Vz [ ] [ ] g , char rC ) { } }

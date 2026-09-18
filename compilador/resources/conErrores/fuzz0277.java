@@ -1,2 +1,2 @@
-///[Error:TBc|2]
-interface LR < B > extends N_Gx < V > { } class B_ < P > extends VO < Y > { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] q TBc ( ) { { } } }
+///[Error:(|2]
+class Shm { static void zG ( M xh , Q q ) { } static void x ( ) { } } interface C__02x extends B0_0 < K > { public void g3sN_ ( ) ; } interface Yd extends P1_b7 < U2_H < UOh > > { public G oY ( ) ; void fDEPN ( ) ; } interface H5 { public void u ( boolean wK , Y [ ] q , char [ ] [ ] to6vl_d , boolean j ) ; } class M_ < T > implements K_ { static void a ( ) { } void p_zkD ( F z ) { } public static float ( int ot ) { } public void y7 ( ) { ; } Z [ ] q = ! null ; static boolean v ( ) { } }

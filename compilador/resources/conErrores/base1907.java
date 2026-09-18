@@ -1,2 +1,2 @@
-///[Error:[|2]
-class JMl < C > { } class C_S < Y > { private K z3 ( ) { if ( 9d ) if ( + true ) R_89 . a ( ) ++ ; else VD a2_n ; else g . rf ++ ; while ( '5' + null ) { for ( ; ; ) ; } u ( ) . y ( ) . om -- ; - null ; [ ] [ ] h29_ ; { ; } ; } void pRn ( U mn , B [ ] qF ) { } }
+///[Error:(|2]
+interface Y7 { } interface Uc < F > { void f ( ) ; public void ( ) ; } interface A8 < V > extends W_ < YV < R > > { } class Tm < B > implements L__2 { boolean n ( ) { + false < + true + null ; } static void i ( ) { } } interface ICL < L > extends HD_ < Be > { } interface Ew < F > extends Eg3 < L84 > { char j ( ) ; }

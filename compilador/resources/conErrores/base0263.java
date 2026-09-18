@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface AG < E > { P_ [ ] bZD ( ) ; } class Ds { } interface ZvV extends H10J_0 < P > { } class H2 extends U_ { Y j_1X ( ) { } public static boolean [ ] [ ] [ ] [ ] d ( float [ ] z_ , int a4z7 ) { } static void t ( O [ ] [ ] d ) { } void rW ( ) { } private O [ ] [ ] d ; void mB ( ) static S u2j ( ) { } boolean [ ] yb9 ( ) { ; } public Y6_X7 ( ) { } public static void o ( ) { } P__3M1 tY ; }
+///[Error:)|2]
+interface Z__B < K > { } class InI < B > { static private char g ( int [ ] w_1 ) { return "" . z > ! this ++ || ! 's' = 032. ; } char g = - 'o' ? 872841.e-19D : + "" ++ ? + true != false = true : "" ? false : null ; G [ ] wFZkRY ( ) { } static private void jO ( ) { } static public void t ( int ) { for ( ; ; ) return ; 61e+8 ; ; return ; for ( ; ; ) ; ; } private static char y_3P ( ) { ; { ; } } N_063 ( ) { } V_ v ( ) { } } class D_ implements KpG < N__ > { } class Fm_ < M > implements CD < F > { static public void in ( ) { } }

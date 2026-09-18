@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Gt < C > extends SjPn7_f < A > { } [ ] [ ] [ ] [ ] [ ] [ ] [ ] class P_e6alr implements IF0 { }
+///[Error:void|2]
+class Dd1 implements M5O { } interface TW_2p < P > { void je_b ( char [ ] [ ] [ ] pDbZ1i5 ) ; T_ lh ( ) ; Q void q ( V [ ] [ ] [ ] fa ) ; C [ ] [ ] [ ] k ( ) ; }

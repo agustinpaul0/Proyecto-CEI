@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Yl_ extends O_ { } void class S8 { } interface Es < N > extends V_I { public void w_M4 ( Z_ < Z > [ ] [ ] [ ] [ ] q__ ) ; public float [ ] m ( ) ; boolean [ ] [ ] u ( ) ; }
+///[Error:static|2]
+class Vos < H > implements Pb < S > { void gA ( C [ ] [ ] a , C [ ] [ ] [ ] [ ] f , float [ ] [ ] [ ] t , B z__g ) { } private static HTc < R > [ ] [ ] [ ] p0 ( X p ) static public float r ( ) { } static void o ( Z_ e ) { P4 [ ] rj = null ; } } class K__D { } interface C_Km < P > extends NN < R > { void on ( K_x1 [ ] x4_84 , Y9ir ks_ , C s , float [ ] [ ] [ ] [ ] u9xc , W_ < YGO > g , float typ__ZvR_W_ , X [ ] [ ] k , int [ ] rxI ) ; }

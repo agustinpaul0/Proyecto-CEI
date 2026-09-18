@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface P__K_6 < D > { EM79 < Z > char [ ] [ ] [ ] [ ] [ ] x ( ) ; }
+///[Error:P9AF60N__9|2]
+P9AF60N__9

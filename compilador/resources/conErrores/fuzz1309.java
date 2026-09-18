@@ -1,2 +1,2 @@
-///[Error:<|2]
-class HG { static private int [ ] [ ] i ( ) { } private static void yb ( < H08 > ) { { } } }
+///[Error:)|2]
+interface R_ < D > extends UGpu { void e ( char q ) ; } class FQ < F > extends Dto < Fw > { static Z__ [ ] b ( TX_ b , G_ < Z5Y_ > nKt , boolean a ) { U_ . w ( ) / - P_Z0 . i3T ( ) <= - true * + false = - 6.236 / null ; } static public void ia ( ZG [ ] j , char [ ] ) { I7 . g2F ( + true ) ++ = + false ; } } interface M_u < V > extends B_ < Y > { } interface DE < H > extends DzT < RP_ > { public void iPw ( int [ ] d ) ; } class Mx3 < G > implements Ok4F { public static void k ( boolean qR ) { } } interface FU < P > extends IM < P > { } interface OB { public Z_ lQ_l ( ) ; int e ( char c6f ) ; FH < O1 > [ ] [ ] [ ] x_Y ( X ax , S z ) ; void eo ( ) ; }

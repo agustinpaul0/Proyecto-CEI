@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface K_Mcl extends Z1 < S > { public int k ( ) ; public void ka ( ) ; } interface R8__ < D > extends Iu { public public F [ ] r ( ) ; public void g ( ) ; } interface VWF extends G8_S < G7 < Zx > > { } class R8_Wog6 < B > { } interface F_5 { }
+///[Error:null|2]
+class YJ < R > implements F0I_U < Ox > { static W o_v ( ) { for ( true ; "" -- null ; this -- != ! 245856 = false ) ; } } interface D_3gS { }

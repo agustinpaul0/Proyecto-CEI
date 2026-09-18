@@ -1,2 +1,2 @@
-///[Error:f|2]
-class SO16 < L > { } interface UA { } interface MG7 { } interface VujzVK { void a ( f ) ; } interface M7 extends Pj { void d ( ) ; }
+///[Error:false|2]
+class Z5 implements JH8 < Vs < Y69 > > { } false interface KSr { }

@@ -1,2 +1,2 @@
-///[Error:wX|2]
-interface TW { } interface A__ { wX ( ) ; int [ ] [ ] p0C ( char u ) ; public void q ( ) ; public void m ( ) ; }
+///[Error:S|2]
+class SB < J > implements Yp3 { } interface A7 { public void kOM9R ( char pl , boolean [ ] [ ] [ ] [ ] h ) ; W [ ] bO_ S ; }

@@ -1,2 +1,2 @@
-///[Error:)|2]
-class Xp < T > implements Vd < POh < V > > { static private Z a_G_ ( MZ_7 aD7q ) { boolean [ ] f = 'T' ? "" ++ : "" -- % ! '\\' ? + null : - false ; 21D ; } static private C [ ] u ( U f , float fN_ , boolean w , float ) { } public static Y [ ] [ ] [ ] m_ ( ) { } R [ ] [ ] d ( ) { while ( 'F' ) ; while ( + true ) for ( ; ; ) return ; } A [ ] hi_1C_ = "f" . t . rh -- % Sw . f ( ) ; }
+///[Error:-|2]
+class J2 extends O_ < N > { static Cd - 'b' } interface Hr { public void of ( E [ ] vi__ ) ; }

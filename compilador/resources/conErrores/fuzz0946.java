@@ -1,2 +1,2 @@
-///[Error:>|2]
-class P3 < O > implements WF_ < U_33B___ < > > { }
+///[Error:<|2]
+interface M_ { public void e ( Q7 i , < L > [ ] b_ ) ; } interface Qrp_y < T > { }

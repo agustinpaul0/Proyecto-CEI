@@ -1,2 +1,2 @@
-///[Error:>|2]
-class W6 < H > extends Zu_ < Wb < > > { }
+///[Error:}|2]
+interface U_ < L > extends A_7s { boolean }

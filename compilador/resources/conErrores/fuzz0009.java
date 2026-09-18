@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Nu_97mj < > extends R5 { } interface N__R3r extends Yw { } class B_ { public static Z5 < S > t ( ) { } } class VA < D > extends SC5_d8H < N > { void i9Rb ( F [ ] pP8 , char [ ] [ ] [ ] o ) { null * false ; var i3Sd = - false ; } }
+///[Error:[|2]
+interface Zd_ < Y > { public [ ] s ( K [ ] p7_7OJ , F q7 ) ; }

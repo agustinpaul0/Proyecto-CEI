@@ -1,2 +1,2 @@
-///[Error:R5|2]
-R5 interface M_sF { } interface M05_ extends K2 { }
+///[Error:implements|2]
+class I9 < U > { } implements SR

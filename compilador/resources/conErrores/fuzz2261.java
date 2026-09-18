@@ -1,2 +1,2 @@
-///[Error:}|2]
-class FT_77_ implements Iy { int [ ] g }
+///[Error:,|2]
+class LH < B > { public static N [ ] [ ] [ ] [ ] s_p ( O_ < S > q , O hDg ) { } private static void q , char [ ] [ ] s5 { } }

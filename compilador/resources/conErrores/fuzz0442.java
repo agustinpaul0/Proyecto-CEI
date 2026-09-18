@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface F_ { } class K1_5zF extends { static public L r4GQ ( ) { } }
+///[Error:AV_B1|2]
+interface C_ extends W6 { } AV_B1

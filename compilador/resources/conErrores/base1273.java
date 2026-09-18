@@ -1,2 +1,2 @@
-///[Error:B|2]
-B interface F3_3 < R > extends Hs2 { }
+///[Error:for|2]
+class VI < J > extends YA8 { public ER_ ( float [ ] [ ] lW ) for ( ; ; ) return ; { } { } }

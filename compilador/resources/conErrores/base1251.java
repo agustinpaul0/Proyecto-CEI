@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean
+///[Error:{|2]
+class U82O < D > extends { }

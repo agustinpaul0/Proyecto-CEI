@@ -1,2 +1,2 @@
-///[Error:zp|2]
-interface CRH_ { public A jJ ( U2 y ) ; N n_ ( ) ; } zp
+///[Error:>|2]
+interface A8U < I > { void nFRq ( char [ ] [ ] [ ] [ ] [ ] sW ) ; public char j ( ) ; } class Oh3iS implements L_ < > { static void j ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface B4 < Y > extends Dc { void }
+///[Error:extends|2]
+extends EDPgf

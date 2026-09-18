@@ -1,2 +1,2 @@
-///[Error:{|2]
-class O_U implements { int y ( O xZ , X [ ] [ ] l_Dd_O ) { for ( ; true = true ; ! false ) if ( this -- ) { } } } class MN < P > { } class Igb extends GW_2_ { }
+///[Error:>|2]
+class G5__A < Q > { } class X1 < V > implements V_8 < CVd < > > { }

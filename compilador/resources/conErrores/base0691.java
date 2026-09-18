@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends B7 < A >
+///[Error:[|2]
+class O74 < E > extends Pq0hA < M8 < K > > { static private void r ( ) { } private static T o ( ) { } } interface O__ extends PU < A12 < M > > { } class UH < Y > extends D1_ < W2 < N_qL < O > > > { } interface OI { } interface A5 < C > { public void b_N_ ( Y jg , K hC , U z , int j97D03S , K4 p , G l72 ) ; } class OY extends Vx59 { private static void g ( [ ] j , D [ ] b_wjs ) { { } false ; Fi r ; float [ ] g_ ; } static public X ky ( P [ ] tj ) { for ( ; ; ) for ( ; ; ) ; } static void x ( ) { } public YR5__ < J > [ ] [ ] f ( ) { ; } }

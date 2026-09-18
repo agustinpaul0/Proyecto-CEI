@@ -1,2 +1,2 @@
-///[Error:kY|2]
-class JsY extends N_5 { public float [ ] f ( ) { int y , c0 , j = false , z ; B n = + false ; } public static kY ( ) { } public static O q ( int laS ) { return ; } static public char cr ( G d , Z h , I_ [ ] [ ] t5U , W [ ] a , O [ ] [ ] b ) { } }
+///[Error:e|2]
+class Qv < Y > { static N2XN xk ( char [ ] [ ] o ) { for ( ! '{' ; - false % ! '\t' < ! true = true ; ) return ! false = false ; } } interface O_ { } interface T_pk { W_ < Z8 > kK ( ) ; } interface DUI < Y > extends R_ < Ys4_J > { e } class W8Jyx4 extends UM { }

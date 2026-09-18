@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface J9mK < I > extends HP < P_80 > { G [ ] cl4 public float b_8MO_ ( H yo ) ; }
+///[Error:.|2]
+class Bx6 implements KX < P > { public D [ ] b7 ; X_ . p_f ( ) . f1 ++ + 6f ; return ; }

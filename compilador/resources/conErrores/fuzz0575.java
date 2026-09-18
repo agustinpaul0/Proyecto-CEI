@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface XQ2 < H > extends { }
+///[Error:cf|2]
+interface W5 extends F1_ { } interface G_ < B > { } cf

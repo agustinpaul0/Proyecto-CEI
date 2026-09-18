@@ -1,2 +1,2 @@
-///[Error:}|2]
-class BT extends X_ < D6 > { I [ ] [ ] [ ] y } interface Nl { public void h ( ) ; public void yD ( char g ) ; void e ( ) ; }
+///[Error:for|2]
+class D3 < A > extends LS < P > { static void k__G for ( '\\' ; ; ) ; static private char qS1 ( ) { } }

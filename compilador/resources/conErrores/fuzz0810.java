@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface P78_ { public S [ ] o ( ) ; void d ( E , Ge [ ] al ) ; }
+///[Error:(|2]
+class Hy06W < G > implements Yd < Y > { void n ( ) { } static void ( ) { ( - this -- ) . c5 ( ) ++ ; } }

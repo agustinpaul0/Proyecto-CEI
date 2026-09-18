@@ -1,2 +1,2 @@
-///[Error:{|2]
-class B_9M_ < W > implements { }
+///[Error:P_5|2]
+P_5

@@ -71,7 +71,7 @@ class PropiedadesDelReporteTest {
     }
 
     // El '^' tiene que caer SOBRE un carácter de la línea recién impresa, nunca en
-    // el aire después del final. Fue un bug real (manejo-de-errores.md §5).
+    // el aire después del final (documentacion/compartido/manejo-de-errores.md §5).
     @Property
     void elCaretNuncaCaeMasAllaDelFinalDeLaLineaDeDetalle(@ForAll("fuentes") String fuente)
             throws IOException {

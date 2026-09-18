@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface LZ < D > extends SV1R < EJ___j < Q > > { public [ ] d ( ) ; }
+///[Error:)|2]
+interface Y14 { public O1 fu ( int ) ; }

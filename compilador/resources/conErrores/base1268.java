@@ -1,2 +1,2 @@
-///[Error:return|2]
-class B_ extends CB < L > { } return + null interface MPQ < T > { public Q [ ] e ( ) ; public void ag ( B qCJ , V [ ] y ) ; } class Pa__ < E > { } class E0b { }
+///[Error:;|2]
+class L_ { void l ( W a ) { } } class CDL { public boolean p = ! null ? ! null == ! true = 0.6D ? + false : ! null : ; }

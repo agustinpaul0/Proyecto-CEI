@@ -1,2 +1,2 @@
-///[Error:Gu|2]
-Gu
+///[Error:<|2]
+class < F > { }

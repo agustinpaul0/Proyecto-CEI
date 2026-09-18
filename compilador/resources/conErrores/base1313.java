@@ -1,2 +1,2 @@
-///[Error:void|2]
-class NG < F > { } void class Ox { char [ ] m ; void m ( ) { false <= 9. ; + 96132 % - null ; for ( T oy ; ; ) ; } private void t_C ( V [ ] pw_S , char [ ] kA_ ) { Fk7 < Y3 > s , a ; } private static void o5_g ( ) { } private H y ( ) { } V q = ! true ; }
+///[Error:[|2]
+class BIj < V > { } [ ] class W8__a < Z > implements K_P_f { } interface Er_ < S > extends SF < D > { } class Q_ < Z > { private static void j ( ) { } private IO_ ( ) { } void n ( ) { for ( ; ; ) { } X [ ] d_ , l ; for ( ; ; ) ; } }

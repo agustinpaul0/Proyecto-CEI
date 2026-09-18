@@ -1,2 +1,2 @@
-///[Error:MV8|2]
-class I_ implements IM { T [ ] [ ] [ ] y67_5 MV8 < Ao7 > { } static Av5 z ( L4_ < X3Hu1r > iUh ) { ; } static private Ii < U6 > x3 ( ) { } }
+///[Error:[|2]
+class LOxn_ extends Vx__l { static void g_ ( J [ ] [ ] [ ] d , [ ] [ ] xw7 , YU < L > h , char [ ] [ ] y ) { } } class Yf7 { }

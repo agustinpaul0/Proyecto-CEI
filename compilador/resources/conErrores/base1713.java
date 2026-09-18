@@ -1,2 +1,2 @@
-///[Error:<|2]
-class QH_Q < I > extends P_O3 { static private void e ( ) { } } interface N98h { QZ < RFD8_ > y ( ) ; } < C_ > class C_YF { } class TL8_ < X > { static int i1xc ( Z [ ] w ) { } void p ( G g__vyO , I [ ] [ ] iLQ ) { } Q [ ] [ ] x5 ( boolean [ ] [ ] n ) { } Y7T3_9f [ ] [ ] c4 = true ; }
+///[Error:for|2]
+class V2a_g_ < G > implements X_ < C > { void for ( ; ; + 593 ) boolean wy = 49949862 / false , u , a , bs2L , h ; }

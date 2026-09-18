@@ -1,2 +1,2 @@
-///[Error:[|2]
-class D_ extends AK < O > { void d [ ] }
+///[Error:VY_53C|2]
+VY_53C

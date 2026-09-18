@@ -1,2 +1,2 @@
-///[Error:-|2]
-- 0.3e81 interface Gi { }
+///[Error:Z9|2]
+interface A_5 < N > { } Z9

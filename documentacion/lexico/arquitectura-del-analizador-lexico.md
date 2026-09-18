@@ -20,7 +20,7 @@ entero — y no siete caracteres sueltos.
 flowchart LR
     A["Fuente MiniJava<br/>(texto plano)"] --> B["Analizador Léxico<br/>(Etapa 1 — este proyecto)"]
     B --> C["Secuencia de Tokens"]
-    C -.->|"Etapas 2-5<br/>(no implementadas todavía)"| D["Sintáctico → AST →<br/>Semántico → Código"]
+    C -.->|"Etapa 2: Sintáctico<br/>Etapas 3-5: por especificar"| D["Sintáctico → AST →<br/>Semántico → Código"]
 ```
 
 Por qué esta fase existe como fase separada: las etapas siguientes razonan sobre estructuras
@@ -32,11 +32,11 @@ toda esa complejidad de bajo nivel y entrega un flujo limpio y uniforme.
 
 La cátedra fija un esquema de tres piezas. Dos las construye este proyecto; la tercera
 (`SourceManager`, el acceso de bajo nivel al archivo) la provee la cátedra como interfaz, y este
-proyecto la implementa de nuevo — ver [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) y §7.
+proyecto la implementa de nuevo — ver [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) y §7.
 
 ```mermaid
 flowchart LR
-    Usuario(["Usuario<br/>(consola)"]) -->|"java -jar Compilador.jar fuente.java"| MP[Módulo Principal]
+    Usuario(["Usuario<br/>(consola)"]) -->|"java -jar Compilador.jar --etapa=1 fuente.java"| MP[Módulo Principal]
     MP -->|"proximoToken()"| AL[Analizador Léxico]
     AL -->|"getNextChar()<br/>getLineNumber()<br/>getColumnNumber()"| MA[Manejador de Archivo]
     MA -->|lee| Fuente[("Archivo fuente<br/>MiniJava")]
@@ -55,7 +55,7 @@ cambia esa política a "reportar y seguir" — la política vive acá, no dentro
 **Analizador Léxico** — `minijava.lexico.AnalizadorLexico`. Reconoce **un** token cada vez que se lo
 invoca (`proximoToken()`), leyendo del manejador exactamente los caracteres que necesita y ni uno
 más. No conoce a `System.out`, no decide políticas de error, no sabe qué hará el cliente con el
-token. Su implementación interna es el patrón State — §4 y [`patron-state.md`](patron-state-metodo-por-estado.md).
+token. Su implementación interna es el patrón State — §4 y [`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md).
 
 **Manejador de Archivo** — `minijava.comun.io.ManejadorDeArchivoEficiente`. Abstrae el acceso al archivo:
 entrega un carácter por vez, lleva la cuenta de línea y columna, y sabe devolver el texto completo de
@@ -83,8 +83,9 @@ v1 + chau
 if class}
 ```
 
-1. El usuario ejecuta `java -jar Compilador.jar programa.java`.
-2. `Main` valida que haya un argumento y delega en `ModuloPrincipalLexico.ejecutar(ruta)`.
+1. El usuario ejecuta `java -jar Compilador.jar --etapa=1 programa.java`. Sin `--etapa=1` corre el
+   sintáctico de la Etapa 2, que consume estos mismos tokens sin imprimirlos.
+2. `Main` valida que haya un archivo y, con `--etapa=1`, delega en `ModuloPrincipalLexico.ejecutar(ruta)`.
 3. `ModuloPrincipalLexico` abre el archivo con el Manejador y crea un `AnalizadorLexico`.
 4. Bucle: pide un token y lo imprime.
    Repite hasta `EOF`.
@@ -140,8 +141,8 @@ Detalle: v1 # v2
 Principal no llama a ningún `recuperarDeError()`, simplemente vuelve a pedir un token. Funciona
 porque el analizador garantiza que **todo estado que lanza un error consumió del fuente exactamente
 los caracteres que reportó en el lexema, ni uno más** — así el siguiente `proximoToken()` arranca
-naturalmente en el primer carácter que no formó parte del error. El detalle, y el defecto que esto
-arregló, están en [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) §2.
+naturalmente en el primer carácter que no formó parte del error. El detalle, con la alternativa
+descartada, está en [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) §2.
 
 La única excepción es un escape mal formado dentro de un `litString`: ahí sí se descarta lo que queda
 del literal hasta su comilla de cierre, para que el análisis se reanude fuera del literal y no en
@@ -208,8 +209,8 @@ por adelantado (*lookahead*) antes de decidir entre `>` y `>=`:
 
 | Paso | Estado | Mira | Acción | Devuelve |
 |---|---|---|---|---|
-| 1 | `EstadoInicial` | `>` | `>` puede empezar un operador con sufijo opcional; lo consume | `Continuar(EstadoOperadorConSufijoOpcional.MAYOR)` |
-| 2 | `EstadoOperadorConSufijoOpcional.MAYOR` | `=` | el sufijo está: lo consume | `Emitir(Token(op_mayorIgual, ">=", 1))` |
+| 1 | `EstadoInicial` | `>` | `>` puede empezar un operador con sufijo opcional; lo consume | `Continuar(EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL)` |
+| 2 | `EstadoOperadorConSufijoOpcional.SUFIJO_IGUAL` | `=` | el sufijo está: lo consume, y la tabla nombra el lexema `>=` | `Emitir(Token(op_mayorIgual, ">=", 1))` |
 
 Si en el paso 2 viniera `5` en vez de `=`, el mismo estado emitiría `Token(op_mayor, ">", 1)` **sin
 consumir** el `5`, que queda disponible para el próximo `proximoToken()`. Este es el principio de
@@ -218,7 +219,7 @@ emite el token. Es también la razón por la que `1abc` produce dos tokens (`int
 `idMV(abc)`) en vez de un error.
 
 El trazado completo de un caso largo (`1.5e-3f`, siete estados) está en
-[`patron-state.md`](patron-state-metodo-por-estado.md) §4.
+[`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md) §4.
 
 ## 5. Decisiones estructurales y por qué se tomaron
 
@@ -235,9 +236,8 @@ stream global de la JVM en cada test — una alternativa más frágil para la ej
 
 ### 5.2. Todas las dependencias se inyectan por constructor
 
-`ModuloPrincipalLexico` recibe su `Salida` y su configuración; `AnalizadorLexico` recibe su
-`ContextoLexico` ya construido, y el `ModuloPrincipalLexico` es quien lo arma con la configuración que a su
-vez recibió. Ninguna clase busca sus colaboradores en una variable global. Consecuencia práctica:
+`ModuloPrincipalLexico` recibe su `Salida`; `AnalizadorLexico` recibe su `ContextoLexico` ya
+construido, y el `ModuloPrincipalLexico` es quien lo arma. Ninguna clase busca sus colaboradores en una variable global. Consecuencia práctica:
 cada pieza se testea sustituyendo colaboradores reales, sin necesidad de un framework de mocking.
 
 ### 5.2.1. `ContextoLexico` es una fachada, no un objeto que hace de todo
@@ -251,10 +251,10 @@ separadas:
 | `FabricaDeExcepcionesLexicas` | El punto único de construcción de una `ExcepcionLexica`: recibe el tipo y un `AnclaDeError` que dice dónde cae el `^`, y arma los campos consistentes entre sí. |
 | `EscapadorDeNoImprimibles` | Escapar los caracteres invisibles del lexema que se va a imprimir. Vive en `errores/`, aparte: es otra responsabilidad y se testea sola. |
 
-La división no es teórica: son los motivos por los que la clase cambiaba. Un ajuste en cómo se cuenta
-una línea y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí, y antes convivían en el
-mismo archivo junto con la lógica de escapado — que hoy tampoco está ahí. Los estados no se enteraron del cambio: la
-fachada conserva exactamente la misma API que usaban.
+La división no es teórica: son motivos distintos de cambio. Un ajuste en cómo se cuenta una línea
+y un ajuste en dónde apunta el `^` no tienen nada que ver entre sí, y el escapado de lo que se
+imprime tampoco. Los estados no ven la división: la fachada `ContextoLexico` les ofrece una sola
+API.
 
 ### 5.3. Los logros no son configurables
 
@@ -265,7 +265,7 @@ configuración: `EstadoEntero` pasa al float sin preguntar, y los dos estados de
 
 ### 5.4. Sin `System.exit()` y sin estado estático mutable
 
-**Invariante dura, y no es estilística.** Los dos testers de la cátedra invocan `Main.main()`
+**Invariante dura, y no es estilística.** Los testers de la cátedra invocan `Main.main()`
 **in-process y repetidamente** —una vez por caso parametrizado, en la misma JVM—. Un `System.exit()`
 mataría la corrida completa de tests en la primera invocación, y cualquier estado estático mutable
 haría que un caso contamine al siguiente. Por eso `Main`, ante un argumento faltante, imprime el uso
@@ -276,9 +276,10 @@ y retorna, en vez de terminar el proceso con un código de salida.
 Dos casos donde una clase por símbolo habría sido innecesaria:
 
 - Los seis pares `>`/`>=`, `<`/`<=`, `!`/`!=`, `=`/`==`, `+`/`++`, `-`/`--` los cubre **un** estado
-  parametrizado, `EstadoOperadorConSufijoOpcional`, con seis constantes configuradas.
-- Los diez símbolos de puntuación de un carácter se resuelven con una tabla
-  `Map<Character, TipoDeToken>` en el estado inicial, sin ninguna clase propia.
+  parametrizado, `EstadoOperadorConSufijoOpcional`, con tres constantes, una por sufijo: el tipo del
+  token lo da `TablaDeLexemas` por el lexema armado.
+- Los diez símbolos de puntuación de un carácter se reconocen en el estado inicial, sin ninguna
+  clase propia, y los nombra la misma tabla.
 
 La regla general del proyecto es **modularidad por responsabilidad, no por cantidad de líneas**: no
 hay un límite numérico de líneas por archivo; hay una regla de que cada clase tenga una
@@ -288,7 +289,7 @@ responsabilidad clara y acotada — un estado del autómata, un formateador, una
 
 Las 21 palabras reservadas se reconocen como un identificador común y, antes de emitir el token, se
 consulta una tabla de lookup (`TablaDeLexemas`, que además nombra a los otros 28 tokens de lexema
-fijo — ver [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) §7). Modelarlas con estados
+fijo — ver [`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) §7). Modelarlas con estados
 dedicados exigiría casi
 un estado por letra de cada palabra, fusionados con los estados de identificador — decenas de estados
 frágiles para una decisión que una tabla resuelve en tiempo constante. Es la técnica estándar, y la
@@ -304,7 +305,8 @@ compilador/
 │   │   ├── sinErrores/           ← 76 casos válidos, con oráculo //#lexema,línea
 │   │   ├── conErrores/           ← 82 casos con error, con oráculo // [Error:lexema|línea]
 │   │   └── regresion/            ← casos que reprodujeron un defecto real (nunca se borran)
-│   └── sintactico/               ← el corpus de la Etapa 2
+│   ├── sinErrores/               ← el corpus de la Etapa 2, donde lo buscan los testers
+│   └── conErrores/
 └── src/
     ├── main/java/minijava/
     │   ├── aplicacion/           ← Main, OpcionesDeInvocacion, ModuloPrincipalLexico,
@@ -313,10 +315,11 @@ compilador/
     │   │   ├── io/               ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
     │   │   │                        contenido intacto), ManejadorDeArchivo + el reemplazo propio
     │   │   └── salida/           ← interfaz Salida + SalidaEstandar
-    │   ├── sintactico/           ← AnalizadorSintactico, primeros/, errores/ (Etapa 2)
+    │   ├── sintactico/           ← AnalizadorSintactico, partes/, primeros/, recuperacion/,
+    │   │                            errores/ (Etapa 2)
     │   └── lexico/               ← AnalizadorLexico (el driver)
-    │       ├── tokens/           ← Token (record inmutable), TipoDeToken (60 valores),
-    │       │                        TablaDeLexemas (los 53 tokens de lexema fijo)
+    │       ├── tokens/           ← Token (record inmutable), TipoDeToken (59 valores),
+    │       │                        TablaDeLexemas (los 52 tokens de lexema fijo)
     │       ├── errores/          ← ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError,
     │       │                        PosicionLexica, EscapadorDeNoImprimibles
     │       ├── automata/         ← EstadoLexico, ResultadoDeTransicion, Continuar, Emitir
@@ -327,8 +330,9 @@ compilador/
     │                                en comentarios/ identificadores/ literales/ numeros/
     │                                operadores/
     └── test/java/
-        ├── catedra/              ← los 2 testers de la cátedra (sólo se cambió el paquete y el
-        │                            import de Main, cambio que la guía de uso autoriza)
+        ├── catedra/              ← los 4 testers de la cátedra, 2 del léxico y 2 del sintáctico
+        │                            (sólo se cambió el paquete y el import de Main, cambio que la
+        │                            guía de uso autoriza)
         └── minijava/             ← suite propia, espejando la estructura de producción
 ```
 
@@ -339,7 +343,7 @@ una clase nueva y aparte, y las originales quedan como referencia de lo que se r
 
 ## 7. El Manejador de Archivos Eficiente
 
-Resumen; el desarrollo completo está en [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md).
+Resumen; el desarrollo completo está en [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md).
 
 `ManejadorDeArchivoEficiente` implementa el logro homónimo: sirve el fuente **carácter por carácter**
 en vez de línea por línea, con una única lectura del archivo en `open()`. Además de eso resuelve tres
@@ -355,13 +359,13 @@ requisitos que el resto del compilador da por sentados:
 
 ## 8. Ver también
 
-- [`especificacion-lexica.md`](especificacion-lexica-de-minijava.md) — la ER exacta de los 56 tokens.
-- [`patron-state.md`](patron-state-metodo-por-estado.md) — el patrón State en detalle, con trazados.
+- [`especificacion-lexica-de-minijava.md`](especificacion-lexica-de-minijava.md) — la ER exacta de los 56 tokens.
+- [`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md) — el patrón State en detalle, con trazados.
 - [`manejo-de-errores.md`](../compartido/manejo-de-errores.md) — detección, recuperación y reporte.
-- [`manejador-de-archivo.md`](../compartido/manejador-de-archivo-eficiente.md) — el reemplazo del `SourceManager`.
-- [`decisiones.md`](decisiones-de-logica.md) — el catálogo completo de decisiones y su fuente.
-- [`testing.md`](../compartido/estrategia-de-testing.md) — qué garantiza cada suite.
-- [`logros.md`](resolucion-de-logros.md) — los 8 logros y su evidencia.
+- [`../compartido/manejador-de-archivo-eficiente.md`](../compartido/manejador-de-archivo-eficiente.md) — el reemplazo del `SourceManager`.
+- [`decisiones-de-logica.md`](decisiones-de-logica.md) — el catálogo completo de decisiones y su fuente.
+- [`../compartido/estrategia-de-testing.md`](../compartido/estrategia-de-testing.md) — qué garantiza cada suite.
+- [`resolucion-de-logros.md`](resolucion-de-logros.md) — los 8 logros y su evidencia.
 
 ---
 
@@ -369,7 +373,7 @@ requisitos que el resto del compilador da por sentados:
 
 Todo lo anterior explica **qué hace** el compilador y **por qué**. Lo que sigue son las **reglas
 de trabajo** correspondientes: lo que hay que respetar al escribir o modificar código de esta
-parte. Antes vivía en un archivo aparte; se unificó acá para que el tema tenga un solo lugar.
+parte, en el mismo lugar que el tema que regulan.
 
 ### Técnica de implementación — obligatoria, no es una elección abierta
 
@@ -382,12 +386,12 @@ comportamiento del autómata estando en ese estado — el esquema exacto de las 
 (`Si caracterActual = c1 → agregar a lexema, avanzar, retornar resultado de e1() ...`).
 
 **Único margen de decisión propio**: la cátedra encadena llamadas recursivamente (`return e1()`,
-slides 38-58 de Clase 02); eso sigue siendo Método por Estado, pero tiene profundidad de pila
+slides 38-58 de Clase 02); eso es Método por Estado, pero tiene profundidad de pila
 proporcional al largo del lexema (`StackOverflowError` real con un string o comentario largo). Se
 sustituye el encadenamiento recursivo por un **driver iterativo** (`while`) que invoca la lógica de
-transición de cada estado sin llamada recursiva — sigue siendo un componente por estado simulando el
-AF, sólo cambia el mecanismo de encadenamiento. Esta decisión y su justificación van explícitas en el
-informe para que quede claro que sigue siendo Método por Estado.
+transición de cada estado sin llamada recursiva — es un componente por estado simulando el AF, y
+sólo cambia el mecanismo de encadenamiento. Esta decisión y su justificación van explícitas en el
+informe para que quede claro que es Método por Estado.
 
 ```java
 public Token proximoToken() throws ExcepcionLexica {
@@ -405,9 +409,9 @@ public Token proximoToken() throws ExcepcionLexica {
 
 `ResultadoDeTransicion` es una `sealed interface` con únicamente estos dos `permits`, por eso el
 `switch` de arriba es exhaustivo sin `default` — el compilador exige cubrir ambos casos (requiere
-`maven.compiler.release=25`, ver [`comandos-y-entrega.md`](../proyecto/comandos-compilacion-y-entrega.md)). Detalle completo
+`maven.compiler.release=25`, ver [`../proyecto/comandos-compilacion-y-entrega.md`](../proyecto/comandos-compilacion-y-entrega.md)). Detalle completo
 de esta interacción (`EstadoLexico`, `ContextoLexico` y sus dos piezas, criterio singleton-vs-`new`
-por estado, trazado paso a paso) en [`../documentacion/patron-state.md`](patron-state-metodo-por-estado.md).
+por estado, trazado paso a paso) en [`patron-state-metodo-por-estado.md`](patron-state-metodo-por-estado.md).
 
 ### Paquetes (`compilador/src/main/java/`)
 
@@ -421,7 +425,7 @@ minijava/
 │   │                 acá junto a la interfaz/impl propia que las extiende), ManejadorDeArchivo
 │   │                 (interfaz propia) y ManejadorDeArchivoEficiente (logro, implementación real)
 │   └── salida/      interfaz Salida + implementaciones (real / en memoria para tests)
-├── sintactico/     AnalizadorSintactico, primeros/, errores/ — la Etapa 2
+├── sintactico/     AnalizadorSintactico, partes/, primeros/, recuperacion/, errores/ — la Etapa 2
 └── lexico/          AnalizadorLexico (el driver)
     ├── tokens/         Token (record inmutable), TipoDeToken, TablaDeLexemas
     ├── errores/        ExcepcionLexica, TipoDeErrorLexico, FormateadorDeError, PosicionLexica
@@ -438,16 +442,17 @@ minijava/
 **Criterio de ubicación, para no volver a discutirlo caso por caso**: `PosicionLexica` vive en
 `errores/` porque línea + columna + línea fuente son las coordenadas del reporte, no del autómata;
 `TablaDeLexemas` en `tokens/` porque su única razón de existir es decidir qué `TipoDeToken`
-corresponde a un lexema —cubre los 49 tokens de lexema fijo, no sólo las 21 palabras clave—; `RecuperacionDeLitString` fuera de `estados/` porque no es un estado del AF.
+corresponde a un lexema —cubre los 52 tokens de lexema fijo, no sólo las palabras clave—;
+`RecuperacionDeLitString` fuera de `estados/` porque no es un estado del AF.
 `FabricaDeExcepcionesLexicas` se queda del lado de `lexico/` a propósito: moverla a `errores/`
 invertiría la dirección de la dependencia entre los dos paquetes.
 
 El corte de `estados/` en familias deja package-private a `EstadosFloat.esSufijoFloat()` y a
-`EstadoIdMV.esAlfanumericoOGuion()` (sus llamadores caen dentro de su propia familia). El único que
-pierde encapsulamiento es `RecuperacionDeLitString`, que pasa a `public` — a cambio queda
-directamente testeable en vez de sólo a través de un litString completo.
+`EstadoIdMV.esAlfanumericoOGuion()` (sus llamadores caen dentro de su propia familia). El único
+que queda `public` es `RecuperacionDeLitString`, y a cambio es directamente testeable en vez de
+sólo a través de un litString completo.
 
-Tests bajo `compilador/src/test/java/`: `catedra/` (los 2 testers de la cátedra, paquete propio —
+Tests bajo `compilador/src/test/java/`: `catedra/` (los 4 testers de la cátedra, paquete propio —
 no son entregables, se pueden editar libremente) y `minijava/...` (espejo de la estructura de
 producción).
 
@@ -461,19 +466,19 @@ tests sin mocks frameworks pesados. **Modularidad sobre tamaño de archivo**: no
 numérico de líneas por archivo — la regla es que cada clase tenga una responsabilidad clara y
 acotada (un estado del AF, un formateador, una excepción); si una clase crece porque mezcla
 responsabilidades, se separa por diseño, no para cumplir una cifra. Reglas de estilo de código
-(comentarios, etc.) están en [`workflow.md`](../proyecto/flujo-de-trabajo.md), no acá — esto es sólo estructura.
+(comentarios, etc.) están en [`../proyecto/flujo-de-trabajo.md`](../proyecto/flujo-de-trabajo.md), no acá — esto es sólo estructura.
 
 **Reuso concreto para no explotar en clases**: un solo componente `EstadoOperadorConSufijoOpcional`
 parametrizado cubre los seis pares `>`/`>=`, `<`/`<=`, `!`/`!=`, `=`/`==`, `+`/`++`, `-`/`--`; los
-símbolos de puntuación de un carácter se resuelven con una tabla `Map<Character,TipoDeToken>` en el
-estado inicial, sin una clase por símbolo.
+símbolos de puntuación de un carácter se reconocen en el estado inicial y los nombra
+`TablaDeLexemas`, sin una clase por símbolo.
 
 El manejo de errores (`ExcepcionLexica`, `PosicionLexica`, `FormateadorDeError`) tiene su propio
 archivo: [`manejo-de-errores.md`](../compartido/manejo-de-errores.md).
 
 ### Por qué el `SourceManagerImpl` de la cátedra no sirve tal cual
 
-`SourceManagerImpl.java` (contenido original de la cátedra, hoy en `minijava.comun.io`) lee **por líneas**
+`SourceManagerImpl.java` (contenido original de la cátedra, en `minijava.comun.io`) lee **por líneas**
 (`reader.readLine()`) y usa `reader.ready()` para decidir si hay más contenido. Ese diseño **falla
 contra los propios casos de ejemplo de la cátedra**: `testersLexico/resources/sinErrores/
 lexSinErrores01.java` tiene 21 saltos de línea y termina en newline; el oráculo (`//#$,22`) espera el
@@ -481,8 +486,8 @@ EOF en la línea 22, pero `reader.ready()` hace que el manejador devuelva EOF en
 lanza `NullPointerException` con un archivo vacío (`currentLine` queda `null` tras el primer
 `readLine()`).
 
-**Conclusión**: el logro "Manejador de Archivos Eficiente" (leer char a char con un buffer propio,
-sólo `java.io`) es un requisito para pasar los tests de la cátedra, no un extra opcional. La interfaz
+**Conclusión**: el logro "Manejador de Archivos Eficiente" (servir char a char, sólo con las
+librerías de IO de Java) es un requisito para pasar los tests de la cátedra, no un extra opcional. La interfaz
 `SourceManager` se extiende (autorizado explícitamente en Pautas, slide 45: *"puede que por algún
 otro logro sea necesario expandir la interface provista"*) con `getColumnNumber()` y
 `getCurrentLineText()`, necesarios para el Reporte de Error Elegante.
@@ -491,9 +496,8 @@ otro logro sea necesario expandir la interface provista"*) con `getColumnNumber(
 `getCurrentLineText()` describen **el mismo carácter, el último devuelto** — los tres se fotografían
 al entrar a `getNextChar()`, antes de mutar los contadores. El contador interno se sigue
 incrementando al devolver el `\n`, pero lo observable es la foto: mientras el `\n` es el último
-devuelto la línea es todavía la suya, y con eso los tres casos de EOF de arriba salen correctos sin
-casos especiales. Esa simetría es la que hace innecesario el contador propio que `BuilderDeLexema`
-mantenía en paralelo. Los
-tres convenios de salto de línea (`\n`, `\r`, `\r\n`) se normalizan a `\n` antes de entregar el
+devuelto la línea es la suya, y con eso los tres casos de EOF de arriba salen correctos sin casos
+especiales. Esa simetría hace innecesario que `BuilderDeLexema` lleve un contador propio en
+paralelo. Los tres convenios de salto de línea (`\n`, `\r`, `\r\n`) se normalizan a `\n` antes de entregar el
 carácter al léxico, así el autómata sólo ve un tipo de salto y cuenta líneas igual sin importar el
 convenio del archivo fuente.

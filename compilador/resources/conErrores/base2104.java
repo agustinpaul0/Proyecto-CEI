@@ -1,2 +1,2 @@
-///[Error:(|2]
-class J_ < S > implements Upj { boolean k = - '*' ; } interface Z_ < M > { I [ ] [ ] [ ] u_05 ( int b , float [ ] osp ) ; } ( ) { B [ ] p_Y_ ; for ( int [ ] [ ] j ; ; ) int [ ] b_ ; } interface C5 < S > { } interface Dnr_ { } class L4__ implements He < N > { }
+///[Error:[|2]
+interface IX6 extends Y_6 { } class N8 { static char pr_ ( ) { S hKa , j = - null < + 6F , i_d_ , e ; } static V [ ] [ ] [ ] a5_Td2 ( ) { } } interface Zg { X2 [ ] r ( [ ] ) ; void m ( F6 < E8R28XDs > bg ) ; } interface P1N_1H extends J_ { }

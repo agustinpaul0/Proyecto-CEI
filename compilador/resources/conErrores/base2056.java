@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Le < G > extends G2 { } class CO < B > extends { void r2 ( ) { Y439_ b8 , l_1 ; } }
+///[Error:J_F3|2]
+J_F3 < Uz2 < BP62 < O > > >

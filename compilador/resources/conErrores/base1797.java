@@ -1,2 +1,2 @@
 ///[Error:extends|2]
-extends Jc < E > class A2 < O > extends K4p9gxsS_ < L_ < T > > { M n5 = true - null ; }
+extends Y__60 interface X_6x { public G jW ( ) ; public void gUIo ( CdN mj8_ , boolean [ ] [ ] i ) ; }

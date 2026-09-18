@@ -1,2 +1,2 @@
-///[Error:Mm_9|2]
-Mm_9
+///[Error:{|2]
+interface Uo_ extends { } class HQWu { }

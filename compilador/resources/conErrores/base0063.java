@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Eyj < > extends JK < M > { }
+///[Error:{|2]
+interface Y3 extends { float [ ] e_ ( ) ; }

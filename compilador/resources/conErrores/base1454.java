@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean [ ] wBU
+///[Error:Uc_|2]
+Uc_ . b ( )

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class JRx_ { } class IZ < Z > extends Ar < X > { } interface M6 < J > extends { } class Wv < F > implements Rf { }
+///[Error:[|2]
+class H7 < Z > implements Iq < Du < U_FBa > > { Yh ( Q [ ] [ ] [ ] tn1 , [ ] [ ] [ ] [ ] a_ , float [ ] [ ] [ ] [ ] ys , D n , F [ ] [ ] is ) { } }

@@ -1,2 +1,2 @@
-///[Error:[|2]
-class DK4 extends T9Mk < P > { public static void c ( boolean sMW_Jm ) { J h , i = "" > ! true < null , j , kD ; float kU__ ; } } interface F1 extends P7 { void fC ( char [ ] dP , L m , Z g ) ; public Q l ( char q ) ; void b ( Ya u5A5e_ , [ ] t__5_6 ) ; }
+///[Error:static|2]
+class B_nB < Z > implements B6 { static void x_ ( boolean [ ] j_ ) { } } interface Xd < C > { } interface H_ < W > { int [ ] at_q ( I [ ] x ) ; } class X_ { static private X [ ] [ ] u6 ( ) { } } class Mr < X > implements Mz < Md0a > { static private int [ ] [ ] n ( I w ) { + 998 ; var yO2 = null ; } public static Z [ ] e ( ) { L [ ] s ; return ; - true ; int [ ] h ; { } } } class M_ { QE static void p ( ) { } }

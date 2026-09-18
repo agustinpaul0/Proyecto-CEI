@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface T6 { } class R1 < R > extends J5 < > { } interface QH { D_ p8H ( M1 < E > [ ] [ ] p ) ; } class Vb_ < T > { } class Z_ implements EHAE < Y_ < Z2 < E > > > { M [ ] v = + r ++ ; }
+///[Error:{|2]
+class JsY extends { public float [ ] f ( ) { int y , c0 , j = false , z ; B n = + false ; } public static boolean [ ] [ ] kY ( ) { } public static O q ( int laS ) { return ; } static public char cr ( G d , Z h , I_ [ ] [ ] t5U , W [ ] a , O [ ] [ ] b ) { } }

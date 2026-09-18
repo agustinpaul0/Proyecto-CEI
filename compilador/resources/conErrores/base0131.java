@@ -1,2 +1,2 @@
-///[Error:Xz0|2]
-interface T_6 < C > extends YF { } class Rq < L > { } Xz0
+///[Error:O|2]
+class Ja implements W7 { X l_ = + G_ . u ( ) ++ ; } O class L_ < V > extends Kre < Y > { }

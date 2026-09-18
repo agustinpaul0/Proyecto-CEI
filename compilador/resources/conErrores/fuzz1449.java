@@ -1,2 +1,2 @@
-///[Error:void|2]
-void j ( ) { ; } class Ca extends IH < T8 > { Im_ ( F n9_3 , boolean o ) { ; } static public void zmX ( T [ ] [ ] [ ] t3 , Ay_ne4 h_ ) { ; G_ . p_Rr_ ( ) ++ >= + 065147 >= ! false ; } public static void gm_9CZ ( ) { "" . x . k__ ; } }
+///[Error:}|2]
+class H_ { } class T_ implements L_ < Y6__ < I > > { V__ ( ) } class MS7 { } interface K_ { }

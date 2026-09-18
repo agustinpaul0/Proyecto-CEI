@@ -1,2 +1,2 @@
 ///[Error:<|2]
-< Rm >
+class I_ extends Vu < EM > { } interface < L > { }

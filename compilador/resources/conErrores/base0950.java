@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface N8 extends A3 < Im_ < ZRrRX < > > > { }
+///[Error:T5|2]
+interface T_q < H > { } class B____ { } interface KG { public void d6 ( ) ; } T5 < E_ < T > >

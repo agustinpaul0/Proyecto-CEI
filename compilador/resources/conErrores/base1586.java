@@ -1,2 +1,2 @@
 ///[Error:<|2]
-< V > interface V4_D { void v_ ( ) ; } interface Bhc < L > { }
+interface E___ extends LjAh < EI < K > > { void s ( HC0 < < Z > > [ ] [ ] y ) ; HL_ < N > m ( ) ; }

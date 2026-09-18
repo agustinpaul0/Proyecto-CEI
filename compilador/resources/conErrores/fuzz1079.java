@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface TE_g < I > { public [ ] [ ] r ( ) ; }
+///[Error:Q|2]
+interface DGP < R > extends V_SQ < F_l_ > { } Q

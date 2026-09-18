@@ -1,2 +1,2 @@
-///[Error:E|2]
-class E2_ < K > implements E { }
+///[Error:<|2]
+interface FI2 < O > extends P0 < KS2z < < L > > > { }

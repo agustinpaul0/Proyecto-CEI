@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface Y_ < K > extends I_T_ { O397_ < W > [ ] i ( ) ; } interface C7Dv extends N5 < L > { float public void hQ ( ) ; }
+///[Error:{|2]
+class EP_ extends HA { } class P2y_ < J > implements { public N8 ( Fd8pG < J_ > f71_Tz ) { { for ( ; ; ) { } J_ . j ( ) -- ; } } }

@@ -1,2 +1,2 @@
-///[Error:.|2]
-. w . rw interface N6 { } interface D5 extends C_ < PrA < O > > { } class GZ__ extends NI { } interface X7gz { } interface WJ { }
+///[Error:iB|2]
+interface FS { public F [ ] x2C ( iB ) ; } class M6 implements DI < Lk6_ > { } interface W_ { } class DT { }

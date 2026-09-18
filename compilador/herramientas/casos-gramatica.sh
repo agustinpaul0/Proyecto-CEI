@@ -49,7 +49,11 @@ probar SI "int x = 5 ;"             "$C int idMetVar = intLiteral ; } eof"
 probar SI "for estandar"            "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ) ; } } eof"
 probar SI "for con i++"             "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ++ ) ; } } eof"
 probar SI "for de iteradores"       "$C void idMetVar ( ) { for ( var idMetVar : idMetVar ) ; } } eof"
-probar SI "for ( int i = 0 ; ; )" "$C void idMetVar ( ) { for ( int idMetVar = intLiteral ; ; ) ; } } eof"
+probar SI "for ( ; ; )"              "$C void idMetVar ( ) { for ( ; ; ) ; } } eof"
+probar NO "for ( int i = 0 ; ; )  (la variable de control se declara con var)" \
+  "$C void idMetVar ( ) { for ( int idMetVar = intLiteral ; ; ) ; } } eof"
+probar NO "for ( C x : l )  (la variable de control se declara con var)" \
+  "$C void idMetVar ( ) { for ( idClase idMetVar : idMetVar ) ; } } eof"
 probar SI "c ? a : b"               "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
 probar SI "ternario anidado a derecha" "$C void idMetVar ( ) { idMetVar = true ? intLiteral : false ? intLiteral : intLiteral ; } } eof"
 # JLS 15.25: el operando del MEDIO es una Expression completa y el de la derecha
@@ -97,7 +101,7 @@ echo "--- combinaciones ---"
 probar SI "todo junto en un atributo" \
   "$C private idClase < idClase > idMetVar = new idClase < > ( ) ; } eof"
 probar SI "for + ternario + posfijo" \
-  "$M for ( int idMetVar = intLiteral ; true ; idMetVar ++ ) idMetVar = true ? intLiteral : intLiteral ; } } eof"
+  "$M for ( var idMetVar = intLiteral ; true ; idMetVar ++ ) idMetVar = true ? intLiteral : intLiteral ; } } eof"
 
 echo "--- ambiguedades conocidas: la gramatica las acepta, la resolucion es voraz ---"
 # No se puede comprobar CUAL arbol elige la gramatica —eso lo fija el orden de

@@ -1,2 +1,2 @@
-///[Error:V|2]
-interface K2U_9i { void yR ( ) ; } class LQ { static private void w ( Eg0 [ ] n994_ , int [ ] [ ] [ ] [ ] hT , boolean [ ] [ ] f , W [ ] [ ] c , boolean [ ] k , char [ ] v ) { { for ( float y ; ; ) XL_8yV__ . c ( ) -- ; OO . f2 ( ) . s2 ( ) ; S u_ , o , uq ; X [ ] u_ ; } } } class Z_ < L > { static Iz_ oa V void m ( char oK5X ) { A qD_ = null ; while ( true ) Y_ . mW ( ) -- ; } boolean m ; private static float [ ] [ ] [ ] [ ] ibM ( int [ ] [ ] f , H [ ] [ ] d ) { char b ; G [ ] j ; } }
+///[Error:;|2]
+class RMU < U > extends D0kI_ { boolean ; }

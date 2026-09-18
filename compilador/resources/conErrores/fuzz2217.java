@@ -1,2 +1,2 @@
-///[Error:}|2]
-class K5_4 < V > implements K98 < D2N > { public static void } interface DYyL < L > extends C_ < H > { int [ ] [ ] [ ] [ ] [ ] m ( ) ; } class NI < G > { } interface ISE0 < T > extends LEP__75 < J > { }
+///[Error:*|2]
+class Ha implements Nxp { public void f ( L0Lk < L > [ ] [ ] [ ] ep1 ) { var n = * '\'' ? ! '*' % - false : null ; } } class QR extends F_Qq8_ < Y9 > { } interface B2 < R > { } interface D7 { F [ ] a2 ( ) ; } class P1f__1R { X yc_ ; static private void n_g ( ) { if ( false ) return ; ! true ; { return ; } } void l ( int s16 ) { } V2vb_ [ ] [ ] g = + false ; T om ( ) { } static public J rbep ( ) { P [ ] [ ] aLXm ; } } interface H9 { } interface H2F { } interface Xq < A > { } interface Y6 { } interface HQ < C > { }

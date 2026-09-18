@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface EN extends Z_ < M > { S s ( UA5F_ ) ; }
+///[Error:extends|2]
+extends Cs0_S interface Qy < W > extends Iz < C7__ > { void q_ ( ) ; }

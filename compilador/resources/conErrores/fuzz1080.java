@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface O9_ { } interface V_ < D > { void q_ ( ) ; void ( ) ; }
+///[Error:[|2]
+interface TE_g < I > { public [ ] [ ] r ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Yuk { void } interface E_f_A44 extends B4 { } interface I_ < R > extends OQ { }
+///[Error:U|2]
+class V_ extends U { PA [ ] [ ] jW ; static void n ( ) { if ( false = - "" -- ? - null : + false ) G [ ] cr8k = false != false ; else while ( 896. ) return ; } private O a ( ) { { ; for ( ; ; ) { } } } } interface VOqieC < T > { }

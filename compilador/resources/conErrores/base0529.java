@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Gp < J > extends B_ { C [ ] [ ] [ ] b ( E [ ] g , Y_ [ ] o ) ; } class KqkNX < Q > implements Wk { static void }
+///[Error:e|2]
+class KUj implements Ff < M > { B_2lIm uUO ( E s_ , Q q , Gf [ ] w , e ) { } } interface R3 < K > { public boolean [ ] e ( ) ; }

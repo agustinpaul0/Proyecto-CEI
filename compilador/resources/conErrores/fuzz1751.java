@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface DD3 < J > extends Pr__ < H > { } class Ao implements O_ < OI < O_j < PP_ < E > > > > { public void c ( ) { } } interface O8 { } interface S8 { public void ( ) ; void k4g ( ) ; C [ ] xCz ( float [ ] [ ] x ) ; public void u2H ( ) ; public void l8 ( ) ; } class A2g < M > { }
+///[Error:{|2]
+interface F7g < V > extends Ji_c < J > { } class Ua implements XLT { static boolean wu { } }

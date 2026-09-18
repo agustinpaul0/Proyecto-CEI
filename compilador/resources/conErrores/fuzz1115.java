@@ -1,2 +1,2 @@
-///[Error:u304|2]
-interface J_l { } interface L42 extends T5N < K0 < Ocoz_1 > > { u304 public U l ( ) ; } interface I3JZm extends FW_ { }
+///[Error:}|2]
+class R3 { } class E2ojM { static char [ ] } class ORa < L > { static void h ( Ee [ ] [ ] y ) { } static public F [ ] [ ] [ ] [ ] u ( Qb_ g ) { for ( ; ; ) var y7_ = false ; } } interface Q6 extends J_ < C > { } class Fu { public float z = null ? '4' + ! null : + 589296 ; boolean [ ] [ ] [ ] e_ ; static B j ( M z , N o ) { } }

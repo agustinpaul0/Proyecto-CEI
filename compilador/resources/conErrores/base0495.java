@@ -1,2 +1,2 @@
-///[Error:}|2]
-class VtM < S > { static void d ( float [ ] [ ] l ) { } static float [ ] nF ( HI [ ] f6 , int [ ] [ ] d_I , Jq < N3F > [ ] p_ ) { } } class Pc8 < K > extends O_P { private Qoo < CH > o_ = Gy . s_6 ( ) . qFY2_ . yC ++ ; private static Y__ [ ] x ( ) { } } interface LQQU < K > { } class UU extends P_ < P_ > { static private Gu < M > q0 ( H7 [ ] [ ] [ ] ay ) { } static private D b ( boolean [ ] u , char r , Us c_ ) { } } class CM_ < V > implements F_6a_WN < Dj > { } class DX extends FU5P < M_ > { } interface Jt { } class Nxt7 extends Q9 { public static Tf < A > q ( ) { for ( ; ; ) return ; F j8_Q1T ; return ; } public int u ( ) { ; ; } } interface C__ extends Dh < H > { void q ( ) ; } interface Q_J < W > extends Nd_ < E3_k > { Z9_ [ ] d ( int f_ ) ; int }
+///[Error:.|2]
+class Bc < C > { void n ( ) { } float m = . g . x ( ) . aS ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:L|2]
-interface PBJ < I > { void h0 ( ) ; } L
+///[Error:[|2]
+class D_ extends AK < O > { void d [ ] }

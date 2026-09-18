@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class W_ < N > { static void a_2_ ( F q ) { V zn = true != "7" . d , jR_2 = '\b' <= '\f' ; while ( true = null ) while ( - ')' ) { } true ; } } extends Xs < CW > interface SgN < V > { public S__9 < C_ < U > > k ( ) ; void qD2t_1_28E ( J42Io3 < H3v < N > > z , float [ ] [ ] [ ] w , Fv < H > [ ] [ ] [ ] g_ ) ; }
+///[Error:a8z85|2]
+interface Oh < I > { public void q_P ( ) ; F2 [ ] r09 ( D y ) ; public void t ( ) ; public M3P7___ < L > [ ] [ ] [ ] [ ] [ ] [ ] mr ( char [ ] aX0 , a8z85 , Z [ ] n , Q [ ] bSP , boolean [ ] i_AY ) ; int [ ] xH ( ) ; } interface C_T { } interface C_ { public B5c [ ] wn___ ( ) ; char [ ] uT ( ) ; public R_ < Po < J > > [ ] a ( ) ; public N pI ( W3zt j_ , int iQ_ ) ; public int u ( ) ; } interface Mx extends M_0 < A > { void bUe ( Fv_ < O_ < U > > e4 ) ; } interface V__ { Z [ ] x5 ( U [ ] jy , D [ ] [ ] [ ] [ ] z , char [ ] [ ] [ ] h ) ; X [ ] [ ] [ ] x ( U [ ] [ ] [ ] [ ] p_7 , Fgn < A > [ ] jeb5 ) ; }

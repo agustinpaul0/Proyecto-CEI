@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface G_ < P > { } interface { }
+///[Error:A8|2]
+interface KM < Y > extends D7Q < Z_ > { public void pi ( ) ; } interface T_ { public void mnGT ( ) ; } A8

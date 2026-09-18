@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface ZD { } extends CP
+///[Error:U_|2]
+U_

@@ -22,50 +22,18 @@ public final class PrimerosDeFors {
     // EncabezadoFor -> var idMetVar EncabezadoForTrasVar
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_VAR = de(TipoDeToken.PR_VAR);
 
-    // EncabezadoFor -> TipoPrimitivo DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_TIPO_PRIMITIVO = de(
-            TipoDeToken.PR_BOOLEAN, TipoDeToken.PR_CHAR, TipoDeToken.PR_FLOAT, TipoDeToken.PR_INT);
-
-    // EncabezadoFor -> idGen DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_ID_GEN = de(TipoDeToken.ID_GEN);
-
-    // EncabezadoFor -> idClase EncabezadoForDesdeIdClase
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_ID_CLASE = de(TipoDeToken.ID_CLASE);
-
-    // EncabezadoFor -> ExpresionSinIdClase ClausulasFinalesFor
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_EXPRESION_SIN_ID_CLASE = de(
+    // EncabezadoFor -> Expresion ClausulasFinalesFor
+    public static final ConjuntoDePrimeros ENCABEZADO_FOR_EXPRESION = de(
             TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
-            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_MV,
-            TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL, TipoDeToken.LIT_STRING,
-            TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
-
-    // EncabezadoForDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar EncabezadoForTrasDeclarador
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL = de(
-            TipoDeToken.OP_MENOR, TipoDeToken.CORCHETE_A, TipoDeToken.ID_MV);
-
-    // EncabezadoForDesdeIdClase -> . idMetVar ArgsActuales ColaDeExpresionDesdePrimario ClausulasFinalesFor
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_DESDE_ID_CLASE_PUNTO = de(TipoDeToken.PUNTO);
+            TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
+            TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
+            TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
     // EncabezadoForTrasVar -> : Expresion
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_VAR_DOS_PUNTOS = de(TipoDeToken.DOS_PUNTOS);
 
     // EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_VAR_ASIGNACION = de(TipoDeToken.OP_ASIGNACION);
-
-    // EncabezadoForTrasDeclarador -> : Expresion
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_DECLARADOR_DOS_PUNTOS = de(
-            TipoDeToken.DOS_PUNTOS);
-
-    // EncabezadoForTrasDeclarador -> InicializacionDeDeclaradorFor ClausulasFinalesFor
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_DECLARADOR_INICIALIZACION_DE_DECLARADOR_FOR = de(
-            TipoDeToken.PUNTO_Y_COMA, TipoDeToken.OP_ASIGNACION);
-
-    // InicializacionDeDeclaradorFor -> = ExpresionCondicional
-    public static final ConjuntoDePrimeros INICIALIZACION_DE_DECLARADOR_FOR_ASIGNACION = de(
-            TipoDeToken.OP_ASIGNACION);
-
-    // InicializacionDeDeclaradorFor -> EPSILON
-    public static final ConjuntoDePrimeros INICIALIZACION_DE_DECLARADOR_FOR = de();
 
     // ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
     public static final ConjuntoDePrimeros CLAUSULAS_FINALES_FOR_PUNTO_Y_COMA = de(TipoDeToken.PUNTO_Y_COMA);

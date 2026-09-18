@@ -1,2 +1,2 @@
-///[Error:(|2]
-class D_ extends AK < O > { void ( boolean [ ] u ) { } }
+///[Error:i|2]
+class X_ < R > implements BpY < A > { private static S wYD ( R67 < S > l , K c , N x ) { } public AH ( ) { } private void f3_ ( ) { } B t ; } interface G3 < D > { } interface B2 extends M_ { i ( ) ; } class HoI < V > { static public int k_ ( F kM_y8 , C_ < I3 > [ ] p , boolean [ ] [ ] [ ] [ ] eM , F_ [ ] a3 ) { V x2 = null != true , yY = - null ; ! null ; } public static float [ ] i ( K_G [ ] [ ] [ ] [ ] sM ) { var a = false ; for ( ; ; ) for ( ; ; ) { } } P5 ( L [ ] b ) { } }

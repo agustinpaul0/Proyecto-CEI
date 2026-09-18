@@ -1,2 +1,2 @@
-///[Error:Y_|2]
-Y_ < L >
+///[Error:<|2]
+interface S_2 extends < Q > { }

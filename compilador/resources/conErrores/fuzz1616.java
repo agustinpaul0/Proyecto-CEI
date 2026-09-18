@@ -1,2 +1,2 @@
-///[Error:float|2]
-float [ ]
+///[Error:Nf|2]
+Nf

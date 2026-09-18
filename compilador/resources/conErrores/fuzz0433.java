@@ -1,2 +1,2 @@
-///[Error:A_|2]
-A_ interface JF < H > extends Ao < W8uaw > { }
+///[Error:z2|2]
+interface R_10 < G > extends K_I_ { public void m ( ) ; public z2 ( ) ; void fd_ ( ) ; public void e ( B z ) ; } interface XVh { void h ( ) ; }

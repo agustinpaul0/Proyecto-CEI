@@ -1,2 +1,2 @@
-///[Error:<|2]
-< C > interface Y0 extends VM_9B__9 { } interface G2 { AN8 bFN ( ) ; } interface KT < H > { }
+///[Error:F0u|2]
+interface J_I extends P_ { } F0u interface P5r < W > extends O3 < YQ90 > { }

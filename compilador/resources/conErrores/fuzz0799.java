@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Hi6 < I > { X [ ] [ ] j ; public int [ ] d ( ) }
+///[Error:)|2]
+interface MM extends S2E_1 < Qk < E_ > > { public void l1V ( ) ; void rb_ ( IW ) ; void n_ ( ) ; } interface CH extends IuE < IJ5v__tF < QU < T > > > { }

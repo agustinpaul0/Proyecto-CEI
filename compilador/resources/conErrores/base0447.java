@@ -1,2 +1,2 @@
-///[Error:C_ap4|2]
-interface Ha8_ < F > { } interface Z9T < K > { } C_ap4
+///[Error:i|2]
+class U_ implements Ze { public void l ( ) { S r ; ; } static public void h_ i } interface Fiw < E > { }

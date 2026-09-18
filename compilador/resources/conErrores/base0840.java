@@ -1,2 +1,2 @@
-///[Error:i|2]
-interface B7 extends RM { public i ( ) ; } interface DgI_ < L > { }
+///[Error:extends|2]
+interface DrK < L > { public void s ( IZ < H7J < H_Y14 > > [ ] [ ] wsM ) ; } class Ud3 < L > { char [ ] jLz ; } class Kp < J > extends Os { } extends Fx < JphI < N > >

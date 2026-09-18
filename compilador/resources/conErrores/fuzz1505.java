@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface { Zs < C > f ( ) ; public N523 < Ay < P7 > > jIB8_A ( ) ; void tn__ ( A [ ] [ ] [ ] x , float nM ) ; }
+///[Error:static|2]
+class VtR_Y < T > implements OwS { } static void o ( ) { var b = + Jeh . t ( ) -- >= YZj7_ . qIO ( ) ++ ; }

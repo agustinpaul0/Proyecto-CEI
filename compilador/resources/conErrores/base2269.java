@@ -1,2 +1,2 @@
-///[Error:X6|2]
-X6
+///[Error:{|2]
+class JL_ extends { }

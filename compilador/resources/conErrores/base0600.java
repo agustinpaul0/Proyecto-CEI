@@ -1,2 +1,2 @@
-///[Error:Q|2]
-class Yn < H > extends Z09G < T > { } interface X0_f extends Du { } Q
+///[Error:false|2]
+false interface O_ extends F_2F1 { public void l9 ( ) ; public TX_T r5 ( Y [ ] [ ] [ ] [ ] [ ] ueQa , M m ) ; }

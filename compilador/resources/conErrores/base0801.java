@@ -1,2 +1,2 @@
-///[Error:float|2]
-class Na_8F < G > implements Ij1d { static void dk float [ ] public float [ ] [ ] eZ_ ; }
+///[Error:RoW|2]
+RoW interface Ww0S < W > extends U_S_ { }
