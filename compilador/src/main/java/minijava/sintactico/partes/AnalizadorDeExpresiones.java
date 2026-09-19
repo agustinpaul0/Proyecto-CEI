@@ -26,22 +26,29 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // RestoExpresion -> OperadorAsignacion ExpresionCondicional
     // RestoExpresion -> RestoCondicional
-    // OperadorAsignacion -> =
     //
     // El lado derecho es ExpresionCondicional y NO Expresion: la gramática
     // original pone ExpresionCompuesta ahí, o sea que `a = b = c` no es válido.
     private void restoExpresion() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_OPERADOR_ASIGNACION)) {
-            match(TipoDeToken.OP_ASIGNACION);
+            operadorAsignacion();
             expresionCondicional();
-        } else {
+        } else if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_RESTO_CONDICIONAL)) {
             restoCondicional();
+        } else {
+            // RestoExpresion -> RestoCondicional
+            // RestoCondicional -> EPSILON
         }
+    }
+
+    // OperadorAsignacion -> =
+    private void operadorAsignacion() throws ExcepcionLexica, ExcepcionSintactica {
+        match(TipoDeToken.OP_ASIGNACION);
     }
 
     // ExpresionCondicional -> ExpresionCompuesta RestoCondicional
     //
-    // Es el lado derecho de los seis `=` y el tercer operando del ternario.
+    // Es el lado derecho de los cinco `=` y el tercer operando del ternario.
     public void expresionCondicional() throws ExcepcionLexica, ExcepcionSintactica {
         expresionCompuesta();
         restoCondicional();
@@ -72,8 +79,6 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
 
     // RestoExpresionCompuesta -> OperadorBinario ExpresionBasica RestoExpresionCompuesta
     //                          | EPSILON
-    // OperadorBinario -> || | && | == | != | < | > | <= | >= | + | - | * | / | %
-    //
     private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.RESTO_EXPRESION_COMPUESTA_OPERADOR_BINARIO)) {
             operadorBinario();
@@ -135,12 +140,16 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     }
 
     // ExpresionBasica -> OperadorUnario Operando | Operando
-    // OperadorUnario -> + | - | !
     private void expresionBasica() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.EXPRESION_BASICA_OPERADOR_UNARIO)) {
             operadorUnario();
+            operando();
+        } else if (estaEn(PrimerosDeExpresiones.EXPRESION_BASICA_OPERANDO)) {
+            operando();
+        } else {
+            throw errorEsperando(PrimerosDeExpresiones.EXPRESION_BASICA_OPERADOR_UNARIO,
+                    PrimerosDeExpresiones.EXPRESION_BASICA_OPERANDO);
         }
-        operando();
     }
 
     // Operando -> Primitivo | Referencia PosfijoOpcional
@@ -159,7 +168,8 @@ public final class AnalizadorDeExpresiones extends ParteDelAnalizador {
     // PosfijoOpcional -> ++ | --
     // PosfijoOpcional -> EPSILON
     //
-    // Va sobre Referencia y no sobre Operando: `5++` no tiene sentido.
+    // Va sobre Referencia: un Primitivo es un literal y nunca una variable. Que
+    // la Referencia sea una variable lo verifica el semántico, como javac.
     public void posfijoOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeExpresiones.POSFIJO_OPCIONAL_INCREMENTO)) {
             match(TipoDeToken.OP_INCREMENTO);

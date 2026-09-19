@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Genera `explicacion-reglas.tex`: la gramática final explicada no terminal por
-no terminal — qué genera cada regla y por qué está escrita así.
+no terminal, con el paso de la transformación del que sale cada uno.
 
-NO es material de entrega: es un documento de estudio, para tener a mano qué hace
-cada producción sin releer el informe. Las producciones salen de la gramática, así
-que no pueden quedar viejas; lo único escrito a mano son las explicaciones.
+NO es material de entrega: es un documento de estudio. Las producciones salen de
+la gramática, así que no pueden quedar viejas; lo escrito a mano son el origen y
+la explicación.
 
 Uso, desde `compilador/`:
 
@@ -14,280 +14,212 @@ import re
 import sys
 
 sys.path.insert(0, "herramientas")
-from primeros import EPSILON, parsear  # noqa: E402
-from gramatica_a_latex import escapar, render  # noqa: E402
+from primeros import parsear  # noqa: E402
+from gramatica_a_latex import render  # noqa: E402
 
-# Las secciones del `.g`, con el no terminal que abre cada una; los `for` van con
-# las sentencias. El orden es el del archivo, que es el orden en que conviene leerlas.
+# El no terminal con que abre cada sección del `.g`; los `for` van con las sentencias.
 SECCIONES = [
-    ("Clases e interfaces", "Inicial",
-     "El nivel de arriba: un programa es una lista de clases e interfaces, y nada más. "
-     "Acá se fija qué puede heredar cada una y qué puede contener."),
-    ("Miembros", "Miembro",
-     "Lo que va adentro de una clase o de una interfaz. Es donde vive la factorización más "
-     "profunda de la gramática, porque atributo, método y constructor comparten prefijo."),
-    ("Tipos", "Tipo",
-     "Los tipos y las listas de argumentos formales. Casi todo se hereda tal cual de la "
-     "gramática de la cátedra."),
-    ("Sentencias", "Bloque",
-     "El cuerpo de un método. La factorización del `idClase` es la única parte complicada: "
-     "una declaración local y una sentencia-expresión pueden empezar igual."),
-    ("Expresiones", "Expresion",
-     "La jerarquía de precedencias, de arriba hacia abajo: asignación, ternario, operadores "
-     "binarios, unarios, operando. Cada capa admite menos que la de arriba."),
-    ("Referencias y primarios", "Referencia",
-     "El encadenamiento (`a.b.c()[0]`) y los operandos atómicos."),
-    ("Creación", "Creacion",
-     "Todo lo que sigue a un `new`: instancia, arreglo, genérico y el inicializador."),
-    ("Argumentos actuales", "ArgsActuales",
-     "La lista de argumentos de una llamada. Sección propia porque la usan por igual el "
-     "`new`, el encadenado, la llamada estática y el encabezado del `for`."),
+    ("Clases e interfaces", "Inicial"),
+    ("Miembros", "Miembro"),
+    ("Tipos", "Tipo"),
+    ("Sentencias", "Bloque"),
+    ("Expresiones", "Expresion"),
+    ("Referencias y primarios", "Referencia"),
+    ("Creación", "Creacion"),
+    ("Argumentos actuales", "ArgsActuales"),
 ]
 
-# Qué genera cada no terminal, y por qué está escrito así. Una entrada por no
-# terminal; las que empiezan con «INSERTADO» son las que no existen en la
-# gramática de la cátedra y aparecieron al corregirla.
+# De dónde sale cada no terminal: `base` es la gramática de la cátedra; R1-R3 y
+# F1-F8, los pasos de la transformación a LL(1); L1-L9, los logros. Un no
+# terminal de la base que algún paso modificó lleva también ese paso.
+ORIGEN = {
+    "Inicial": "base", "ListaClases": "base", "Clase": "base", "Interfaz": "base",
+    "GenericidadOpcional": "base", "HerenciaOpcional": "base", "ExtensionOpcional": "base",
+    "ListaMiembros": "base", "ListaMetodosInterfaz": "base",
+    "Miembro": "base, F6, L6", "MiembroTrasVisibilidad": "L6", "Visibilidad": "L6",
+    "VisibilidadOpcional": "L6", "MiembroSinModificadores": "L6", "MiembroDesdeIdClase": "L6",
+    "AtributoOMetodo": "F6, L5", "InicializacionDeAtributo": "L5", "Metodo": "base, F6",
+    "CuerpoDeMetodo": "F6", "MetodoInterfaz": "base, L6", "PublicOpcional": "L6",
+    "TipoMetodo": "base",
+    "Tipo": "base", "TipoBase": "base", "DimensionesOpcionales": "base", "TipoReferencia": "base",
+    "TipoPrimitivo": "base, L1", "TipoGenericoOpcional": "base",
+    "InstanciadoOParametrico": "base, L9", "ArgsFormales": "base",
+    "ListaArgsFormalesOpcional": "base", "ListaArgsFormales": "base, R1",
+    "RestoListaArgsFormales": "R1", "ArgFormal": "base",
+    "Bloque": "base", "ListaSentencias": "base", "Sentencia": "base, F2, L4, L7",
+    "SentenciaDesdeIdClase": "L4", "VarLocal": "base, L3", "ListaDeclaradores": "L4",
+    "RestoListaDeclaradores": "L4", "InicializacionDeDeclarador": "L4", "Return": "base",
+    "ExpresionOpcional": "base", "If": "base, F3", "ElseOpcional": "F3", "While": "base",
+    "For": "L7", "EncabezadoFor": "L7", "EncabezadoForTrasVar": "L7", "ClausulasFinalesFor": "L7",
+    "Expresion": "base, F1, L3", "RestoExpresion": "F1, L3", "OperadorAsignacion": "base",
+    "ExpresionCondicional": "L3", "RestoCondicional": "L3", "ExpresionCompuesta": "base, R2",
+    "RestoExpresionCompuesta": "R2", "OperadorBinario": "base", "ExpresionBasica": "base",
+    "OperadorUnario": "base", "Operando": "base, L2", "PosfijoOpcional": "L2",
+    "Primitivo": "base, L1", "ExpresionSinIdClase": "L4", "ColaTrasOperando": "L4",
+    "ColaDeExpresionDesdePrimario": "L4",
+    "Referencia": "base, R3", "RestoReferencia": "R3", "Encadenado": "R3",
+    "EncadenadoAtributoOMetodo": "R3", "AccesoArreglo": "base", "Primario": "base, F7, F8, L4",
+    "LlamadaMetodoEstatico": "base", "PrimarioSinIdClase": "L4", "ExpresionParentizada": "base",
+    "AccesoVarOLlamadaMetodo": "F7", "AccesoOLlamada": "F7",
+    "Creacion": "F8", "ArregloOInstancia": "F8, L8, L9", "CreacionDesdeIdClase": "L9",
+    "GenericoDeCreacion": "L9", "ArregloOInstanciaDeClase": "F8, L8", "CreacionDeArreglo": "L8",
+    "RestoCreacionDeArreglo": "L8", "DimensionesConTamanio": "base, F4",
+    "DimensionesConTamanioOpcional": "F4", "InicializadorDeArreglo": "L8",
+    "ListaElementosOpcional": "L8", "ListaElementos": "L8", "RestoListaElementos": "L8",
+    "ElementosTrasComa": "L8", "ElementoInicializador": "L8",
+    "ArgsActuales": "base", "ListaExpsOpcional": "base", "ListaExps": "base, F5",
+    "RestoListaExps": "F5",
+}
+
+# Qué genera cada no terminal, y lo que no es evidente de sus producciones.
 EXPLICACION = {
-    # --- Clases e interfaces ---
-    "Inicial": "El símbolo inicial. Un programa es una lista de clases e interfaces seguida "
-               "del fin de archivo. Exigir el `eof` es lo que hace que sobre basura después "
-               "de la última llave sea un error y no se ignore en silencio.",
-    "ListaClases": "Cero o más clases o interfaces, en cualquier orden y mezcladas. Que derive "
-                   "a ε es lo que hace válido el archivo vacío. Uno de los cuatro puntos donde el "
-                   "analizador recupera en Modo Pánico.",
-    "Clase": "Una clase: nombre, parámetro de tipo opcional, herencia opcional y el cuerpo "
-             "entre llaves.",
-    "Interfaz": "Una interfaz. Se diferencia de la clase en dos cosas: sólo puede `extends` "
-                "(nunca `implements`) y su cuerpo admite firmas, no métodos con cuerpo.",
-    "GenericidadOpcional": "El parámetro de tipo de la declaración: `class Pila<T>`. Uno solo, "
-                           "nunca dos, incluso con el logro de genericidad avanzada — el "
-                           "enunciado lo dice explícitamente.",
-    "HerenciaOpcional": "Una clase hereda de UNA clase o implementa UNA interfaz, nunca las dos "
-                        "ni varias. Java admite `extends A implements B, C`; MiniJava no, y no "
-                        "se amplía. Que el padre sea realmente una clase lo verifica el semántico.",
-    "ExtensionOpcional": "Lo mismo para la interfaz, que sólo puede `extends`.",
-    "ListaMiembros": "Cero o más miembros de una clase. Otro de los puntos de recuperación "
-                     "en Modo Pánico.",
-    "ListaMetodosInterfaz": "Cero o más firmas de método en una interfaz. Otro de los "
-                            "puntos de recuperación en Modo Pánico.",
+    "Inicial": "Un programa: clases e interfaces y el fin de archivo. Sin el `eof`, lo que sobre "
+               "después de la última llave se ignoraría.",
+    "ListaClases": "Cero o más clases o interfaces, en cualquier orden: el archivo vacío es "
+                   "válido. Punto de recuperación del Modo Pánico.",
+    "Clase": "Nombre, parámetro de tipo opcional, herencia opcional y cuerpo.",
+    "Interfaz": "Como la clase, pero sólo `extends` y su cuerpo tiene firmas.",
+    "GenericidadOpcional": "Un único parámetro de tipo, también con Genericidad Avanzada.",
+    "HerenciaOpcional": "Hereda de una clase o implementa una interfaz; nunca las dos ni varias.",
+    "ExtensionOpcional": "Una interfaz extiende a lo sumo otra.",
+    "ListaMiembros": "Cero o más miembros. Punto de recuperación del Modo Pánico.",
+    "ListaMetodosInterfaz": "Cero o más firmas. Punto de recuperación del Modo Pánico.",
 
-    # --- Miembros ---
-    "Miembro": "La cabeza de la factorización de los miembros. Tres alternativas con Primeros "
-               "disjuntos: empieza con visibilidad, empieza con `static`, o no lleva modificador. "
-               "Que la visibilidad aparezca a UN SOLO lado del `static` es lo que acepta "
-               "`public static` y `static public` y a la vez rechaza `public private`, sin "
-               "ningún chequeo fuera de la gramática.",
-    "MiembroTrasVisibilidad": "INSERTADO. Lo que puede seguir a un `public` o un `private`: el "
-                              "`static` (y entonces es un método) o un miembro sin modificadores.",
-    "Visibilidad": "`public` o `private`. `protected` no existe en MiniJava y no se agrega.",
-    "VisibilidadOpcional": "La visibilidad después del `static`, que puede no estar.",
-    "MiembroSinModificadores": "Un miembro sin `public`, `private` ni `static`. Las cuatro "
-                               "alternativas se distinguen por su primer token: `void`, un tipo "
-                               "primitivo, un `idGen` o un `idClase`.",
-    "MiembroDesdeIdClase": "INSERTADO, y el punto de decisión más delicado de esta sección. Un "
-                           "miembro que empieza con `idClase` puede ser un constructor "
-                           "(`C(){}`) o un atributo o método de tipo referencia (`C x;`). El "
-                           "desempate es el token siguiente: `(` es constructor, cualquier otro "
-                           "abre un tipo.",
-    "AtributoOMetodo": "INSERTADO. Después de `Tipo idMetVar`, un `;` o un `=` cierran un "
-                       "atributo y un `(` abre un método. Es la factorización que fusiona "
-                       "`<Atributo>` y `<Metodo>` de la gramática original.",
-    "InicializacionDeAtributo": "El `= expresión` opcional de un atributo. No se comparte con el "
-                                "de la variable local a propósito: son construcciones distintas y "
-                                "el semántico las trata distinto.",
-    "Metodo": "El nombre del método y su cuerpo. Sobrevive como no terminal propio para que la "
-              "rama `static` y la rama `void` compartan un único lugar donde el semántico va a "
-              "construir el nodo de método.",
-    "CuerpoDeMetodo": "Argumentos formales y bloque. Se comparte a propósito entre método, "
-                      "método `static` y constructor: es la misma construcción en los tres.",
-    "MetodoInterfaz": "Una firma de método en una interfaz, siempre terminada en `;`. Los "
-                      "métodos de interfaz de MiniJava son SIEMPRE abstractos.",
-    "PublicOpcional": "Un método de interfaz admite `public` y NO `private`, y la asimetría no "
-                      "es una preferencia. En Java un método de interfaz `private` exige cuerpo "
-                      "(«missing method body, or declare abstract»), y en MiniJava no hay forma "
-                      "de escribirlo porque la firma termina en `;`. Un `private` acá sería "
-                      "siempre la forma que Java rechaza.",
-    "TipoMetodo": "Un tipo o `void`. `void` sólo vale como tipo de retorno, nunca como tipo de "
-                  "una variable, y por eso es un no terminal aparte de `<Tipo>`.",
+    "Miembro": "Empieza con visibilidad, con `static` o sin modificadores. La visibilidad a un "
+               "solo lado del `static` acepta `public static` y `static public` y rechaza repetirla.",
+    "MiembroTrasVisibilidad": "Tras `public` o `private`: un `static`, que es un método, o un "
+                              "miembro sin modificadores.",
+    "Visibilidad": "`public` o `private`; no hay `protected`.",
+    "VisibilidadOpcional": "La visibilidad opcional después de `static`.",
+    "MiembroSinModificadores": "Se decide por el primer token: `void`, un primitivo, `idGen` o "
+                               "`idClase`.",
+    "MiembroDesdeIdClase": "Tras `idClase`: `(` es un constructor; `<`, `[` o `idMetVar`, un "
+                           "atributo o método de tipo referencia.",
+    "AtributoOMetodo": "Tras `Tipo idMetVar`: `=` o `;` cierran un atributo y `(` abre un método.",
+    "InicializacionDeAtributo": "El `= expresión` opcional del atributo. No se comparte con el de "
+                                "las variables locales.",
+    "Metodo": "Nombre y cuerpo de un método `static` o `void`. Conserva el nombre de la base pero "
+              "deriva sólo esa cola: el método con tipo y sin `static` llega por "
+              "`<AtributoOMetodo>`.",
+    "CuerpoDeMetodo": "Argumentos formales y bloque: lo mismo en método y constructor.",
+    "MetodoInterfaz": "Una firma terminada en `;`: los métodos de interfaz son abstractos.",
+    "PublicOpcional": "`public` sí y `private` no: en Java un método de interfaz privado exige "
+                      "cuerpo.",
+    "TipoMetodo": "Un tipo o `void`.",
 
-    # --- Tipos ---
-    "Tipo": "Un tipo base con sus dimensiones. Las dimensiones van pegadas al TIPO y nunca al "
-            "nombre: `int[] x` es válido y `int x[]` no. Java admite las dos formas; MiniJava "
-            "define ésta, y no se amplía.",
+    "Tipo": "Tipo base y dimensiones, pegadas al tipo: `int x[]` no es válido.",
     "TipoBase": "Primitivo, referencia o parámetro de tipo.",
-    "DimensionesOpcionales": "Cero o más pares de corchetes vacíos. Es la recursión a derecha "
-                             "que permite `int[][][] x`.",
-    "TipoReferencia": "Un `idClase` con su argumento de tipo opcional.",
-    "TipoPrimitivo": "`boolean`, `char`, `int` y `float`. El `float` no está en las Reglas de "
-                     "Sintaxis de la cátedra: se agrega para que el logro de floats de la "
-                     "Etapa 1 siga sirviendo en ésta.",
-    "TipoGenericoOpcional": "El `<T>` de un tipo. En posición de TIPO no se admite el diamante: "
-                            "`List<> x;` es inválido, y eso lo impone la gramática porque esta "
-                            "producción exige un `<InstanciadoOParametrico>` entre los ángulos.",
-    "InstanciadoOParametrico": "Lo que va adentro de los ángulos. La recursión por "
-                               "`<TipoGenericoOpcional>` es lo que habilita el anidamiento "
-                               "`List<List<Persona>>` del logro de genericidad avanzada.",
-    "ArgsFormales": "La lista de parámetros de un método o constructor, entre paréntesis.",
-    "ListaArgsFormalesOpcional": "INSERTADO. La lista puede estar vacía: `m()`.",
-    "ListaArgsFormales": "Al menos un parámetro. La recursión a izquierda de la regla original "
-                         "se eliminó pasándola a derecha.",
-    "RestoListaArgsFormales": "INSERTADO por la eliminación de recursión a izquierda. Cero o más "
-                              "`, parámetro`.",
-    "ArgFormal": "Un parámetro: tipo y nombre.",
+    "DimensionesOpcionales": "Cero o más `[]`.",
+    "TipoReferencia": "Una clase con su argumento de tipo opcional.",
+    "TipoPrimitivo": "Incluye `float`.",
+    "TipoGenericoOpcional": "El `<...>` en posición de tipo, sin diamante: `List<> x;` no deriva.",
+    "InstanciadoOParametrico": "El argumento de tipo. La recursión por `<TipoGenericoOpcional>` "
+                               "permite anidar: `List<List<Persona>>`.",
+    "ArgsFormales": "Los parámetros, entre paréntesis.",
+    "ListaArgsFormalesOpcional": "La lista de parámetros puede estar vacía.",
+    "ListaArgsFormales": "Uno o más parámetros.",
+    "RestoListaArgsFormales": "Cero o más `, parámetro`.",
+    "ArgFormal": "Tipo y nombre.",
 
-    # --- Sentencias ---
     "Bloque": "Sentencias entre llaves.",
-    "ListaSentencias": "Cero o más sentencias. Otro de los puntos de recuperación en Modo Pánico.",
-    "Sentencia": "Las once formas de sentencia, todas con Primeros disjuntos. Las cuatro "
-                 "últimas son la factorización del `idClase`: una declaración local (`C x;`) y "
-                 "una sentencia-expresión (`C.m();`) empiezan igual.",
-    "SentenciaDesdeIdClase": "INSERTADO, y el desempate de esa factorización: un `.` significa "
-                             "que era una expresión, cualquier otro token que era una "
-                             "declaración.",
-    "VarLocal": "La declaración con `var`, que SIEMPRE exige inicialización — sin el valor no "
-                "hay tipo que inferir.",
-    "ListaDeclaradores": "Varias variables en una sentencia, cada una con su inicialización "
-                         "opcional: `int x, y, z = 10;`.",
-    "RestoListaDeclaradores": "INSERTADO. Cero o más `, variable`.",
+    "ListaSentencias": "Cero o más sentencias. Punto de recuperación del Modo Pánico.",
+    "Sentencia": "Las tres últimas alternativas separan la declaración local de la "
+                 "sentencia-expresión por el primer token; con `idClase` decide "
+                 "`<SentenciaDesdeIdClase>`.",
+    "SentenciaDesdeIdClase": "Tras `idClase`: `.` es una llamada estática que empieza una "
+                             "expresión; `<`, `[` o `idMetVar`, una declaración.",
+    "VarLocal": "Declaración con `var`, siempre inicializada.",
+    "ListaDeclaradores": "Una o más variables, cada una con inicialización opcional: "
+                         "`int x, y, z = 10;`.",
+    "RestoListaDeclaradores": "Cero o más `, variable`.",
     "InicializacionDeDeclarador": "El `= expresión` opcional de una variable local clásica.",
-    "Return": "`return` con o sin valor. Que el valor corresponda al tipo del método es "
-              "semántico.",
-    "ExpresionOpcional": "INSERTADO. Una expresión que puede no estar: el valor del `return`.",
-    "If": "El `if` con su rama `else` opcional.",
-    "ElseOpcional": "INSERTADO por la factorización del `if`. Es el *dangling else*: la "
-                    "ambigüedad clásica, que no se resuelve reescribiendo la gramática sino con "
-                    "una regla de implementación — se toma la rama `else` apenas se ve el token, "
-                    "que la liga al `if` más cercano, como en Java.",
-    "While": "El `while` clásico.",
-    "For": "El `for`, con todo el trabajo en el encabezado.",
-    "EncabezadoFor": "Las dos formas del encabezado: con la variable de control declarada con "
-                     "`var`, o con una expresión. Ningún hueco queda vacío. La variable "
-                     "se declara con `var` y nada más: el `for` no toma el declarador tipado de "
-                     "las variables locales clásicas, porque los logros son independientes "
-                     "entre sí.",
-    "EncabezadoForTrasVar": "INSERTADO. Después de `var x`, un `:` lo vuelve un for de "
-                            "iteradores (`for(var e : lista)`) y un `=` un for estándar "
-                            "(`for(var i = 0; i < n; i++)`).",
-    "ClausulasFinalesFor": "INSERTADO. Las dos cláusulas después del inicializador: condición e "
-                           "incremento, una expresión cada una y obligatoria. `for(;;)` no es "
-                           "válido.",
+    "Return": "`return` con o sin valor.",
+    "ExpresionOpcional": "El valor opcional del `return`.",
+    "If": "El `if`, con `else` opcional.",
+    "ElseOpcional": "Dangling else: el `else` liga al `if` más cercano, como en Java.",
+    "While": "El `while`.",
+    "For": "El `for` estándar o de iteradores.",
+    "EncabezadoFor": "Empieza con `var` o con una expresión: la variable de control sólo se "
+                     "declara con `var`.",
+    "EncabezadoForTrasVar": "Tras `var x`: `:` es de iteradores y `=`, estándar.",
+    "ClausulasFinalesFor": "Condición e incremento, obligatorios: `for(;;)` no es válido.",
 
-    # --- Expresiones ---
-    "Expresion": "El nivel MÁS ALTO de la jerarquía: una `<ExpresionCompuesta>` seguida de un "
-                 "`=` o de un ternario. Que el lado izquierdo del `=` sea una "
-                 "`<ExpresionCompuesta>` es la regla original: `a ? b : c = d` no deriva.",
-    "RestoExpresion": "INSERTADO por la factorización. Lo que sigue al primer operando: un "
-                      "`= expresión` o un ternario, los dos opcionales. Que el lado derecho del "
-                      "`=` sea una `<ExpresionCondicional>` y no una `<Expresion>` es lo que "
-                      "impide `a = b = c`, tal cual la gramática original.",
-    "OperadorAsignacion": "Sólo `=`. MiniJava no tiene `+=` ni los demás compuestos.",
-    "ExpresionCondicional": "INSERTADO. La capa del ternario: es el lado derecho de los seis "
-                            "`=` y el tercer operando del ternario. Admite el ternario y NO "
-                            "admite `=`.",
-    "RestoCondicional": "INSERTADO. El `? a : b` opcional. Asociativo a DERECHA, como en Java, "
-                        "porque la rama del `:` es otra `<ExpresionCondicional>`. El operando del "
-                        "medio es una `<Expresion>` completa y el de la derecha no, que es "
-                        "exactamente lo que acepta y rechaza javac.",
+    "Expresion": "Una `<ExpresionCompuesta>` seguida de un `=` o de un ternario. El lado "
+                 "izquierdo del `=` es una `<ExpresionCompuesta>`: `a ? b : c = d` no deriva.",
+    "RestoExpresion": "Un `=` con su lado derecho, un ternario o nada. El lado derecho no admite "
+                      "otro `=`: `a = b = c` no deriva.",
+    "OperadorAsignacion": "Sólo `=`.",
+    "ExpresionCondicional": "La capa del ternario: lado derecho de los cinco `=` y tercer operando "
+                            "del ternario.",
+    "RestoCondicional": "El `? :` opcional, asociativo a derecha y con los operandos del "
+                        "JLS §15.25: `a ? b = 1 : c` es válido.",
     "ExpresionCompuesta": "La capa de los operadores binarios.",
-    "RestoExpresionCompuesta": "INSERTADO por la eliminación de recursión a izquierda. Cero o "
-                               "más `operador operando`.",
-    "OperadorBinario": "Los trece binarios en UN SOLO nivel: MiniJava no define precedencia "
-                       "entre ellos, así que `a + b * c` se asocia a izquierda y da `(a+b)*c`. "
-                       "No es un descuido de este trabajo: está así en la gramática de la "
-                       "cátedra y se preserva.",
-    "ExpresionBasica": "Un operando, con o sin operador unario delante.",
-    "OperadorUnario": "`+`, `-` y `!`. Los dos primeros son también binarios, y por eso "
-                      "`a + + b` es válido — es `a + (+b)`, igual que en Java.",
-    "Operando": "Un literal o una referencia con posfijo opcional.",
-    "PosfijoOpcional": "El `++` o `--` posfijo. Va sobre `<Referencia>` y no sobre `<Operando>` "
-                       "a propósito: `5++` no tiene sentido y la gramática lo rechaza sola.",
-    "Primitivo": "Los literales. `floatLiteral` es el agregado del logro de floats.",
-    "ExpresionSinIdClase": "INSERTADO. Una expresión que NO puede empezar con `idClase`, porque "
-                           "ese token lo consume `<Sentencia>` al factorizar.",
-    "ColaTrasOperando": "INSERTADO. La cola completa después de un operando: los operadores "
-                        "binarios que siguen y el `=` o el ternario.",
-    "ColaDeExpresionDesdePrimario": "INSERTADO. Lo que puede seguir a un primario: "
-                                    "encadenamiento, posfijo y el resto de la expresión.",
+    "RestoExpresionCompuesta": "Cero o más `operador operando`.",
+    "OperadorBinario": "Los trece binarios, en un solo nivel como en la base: la gramática no fija "
+                       "precedencia.",
+    "ExpresionBasica": "Un operando con o sin un operador unario.",
+    "OperadorUnario": "`+`, `-` o `!`, uno solo.",
+    "Operando": "Un literal, o una referencia con posfijo opcional.",
+    "PosfijoOpcional": "`++` o `--`, uno solo y sobre una referencia: `5++` no deriva.",
+    "Primitivo": "Los literales, incluido `floatLiteral`.",
+    "ExpresionSinIdClase": "Una expresión que no empieza con `idClase`: la usa `<Sentencia>`.",
+    "ColaTrasOperando": "Lo que sigue a un operando: los binarios y el `=` o el ternario.",
+    "ColaDeExpresionDesdePrimario": "Lo que sigue a un primario: encadenamientos, posfijo y el "
+                                    "resto de la expresión.",
 
-    # --- Referencias y primarios ---
-    "Referencia": "Un primario con su cadena de encadenamientos y accesos a arreglo.",
-    "RestoReferencia": "INSERTADO por la eliminación de recursión a izquierda. Cero o más `.x` o "
-                       "`[i]`, en cualquier orden y cantidad: `a.b[0].c()[1]`.",
-    "Encadenado": "Un `.nombre`, que puede ser un atributo o una llamada.",
-    "EncadenadoAtributoOMetodo": "INSERTADO. El `(` decide: con argumentos es una llamada, sin "
-                                 "ellos un acceso a atributo.",
-    "AccesoArreglo": "Un `[expresión]`. Que el receptor sea realmente un arreglo es semántico.",
-    "Primario": "Un operando atómico.",
+    "Referencia": "Un primario con sus encadenamientos y accesos.",
+    "RestoReferencia": "Cero o más `.x`, `.m(...)` o `[i]`, en cualquier orden.",
+    "Encadenado": "Un `.nombre`: atributo o llamada.",
+    "EncadenadoAtributoOMetodo": "Con argumentos es una llamada; sin ellos, un atributo de otro "
+                                 "objeto.",
+    "AccesoArreglo": "Un `[expresión]`.",
+    "Primario": "La llamada estática o cualquier otro primario.",
     "LlamadaMetodoEstatico": "`Clase.metodo(args)`.",
-    "PrimarioSinIdClase": "INSERTADO. Los primarios que no empiezan con `idClase`.",
-    "ExpresionParentizada": "Un paréntesis, con una `<Expresion>` completa adentro, tal cual la "
-                            "regla original.",
-    "AccesoVarOLlamadaMetodo": "INSERTADO por la factorización de `<AccesoVar>` y "
-                               "`<LlamadaMetodo>`: un `idMetVar` que puede ser una variable o "
-                               "una llamada.",
-    "AccesoOLlamada": "INSERTADO. El `(args)` opcional que distingue los dos usos.",
+    "PrimarioSinIdClase": "Los primarios que no empiezan con `idClase`.",
+    "ExpresionParentizada": "Una `<Expresion>` completa entre paréntesis: `(y = 2)` es válido.",
+    "AccesoVarOLlamadaMetodo": "Un `idMetVar`: variable o llamada.",
+    "AccesoOLlamada": "Con argumentos es una llamada; sin ellos, una variable local, un "
+                      "parámetro o un atributo propio.",
 
-    # --- Creación ---
     "Creacion": "Todo lo que empieza con `new`.",
-    "ArregloOInstancia": "INSERTADO por la factorización del `new`. El tipo decide qué puede "
-                         "venir después: un primitivo o un `idGen` sólo pueden crear un arreglo; "
-                         "un `idClase` puede crear las dos cosas.",
-    "CreacionDesdeIdClase": "INSERTADO. Después de `new C`, un `<` abre un genérico, un `[` un "
-                            "arreglo y un `(` una instancia.",
-    "GenericoDeCreacion": "INSERTADO. El diamante `<>` sólo se admite en la rama que va a "
-                          "`<ArgsActuales>`: `new C<>()` es válido y `new C<>[3]` no. La "
-                          "restricción del logro queda impuesta por la gramática, no delegada al "
-                          "semántico.",
-    "ArregloOInstanciaDeClase": "INSERTADO. Cerrado el genérico, arreglo o instancia.",
-    "CreacionDeArreglo": "La creación de un arreglo. El `[` es común a sus dos formas y se "
-                         "factoriza.",
-    "RestoCreacionDeArreglo": "INSERTADO. Lo que sigue al primer `[`: una expresión es la forma "
-                              "de MiniJava base, con toda dimensión con su tamaño; un `]` es la "
-                              "forma de Java con inicializador, donde ninguna dimensión lleva "
-                              "tamaño. `new int[][]{{1,2},{3,4}}` es válido y "
-                              "`new int[2][2]{{1,2},{3,4}}` no, como en Java.",
-    "DimensionesConTamanio": "Al menos una dimensión, y TODAS con su tamaño — es la forma de "
-                             "MiniJava base, que no tiene corchete vacío en una creación sin "
-                             "inicializador: `new int[2][]` no es válido.",
-    "DimensionesConTamanioOpcional": "INSERTADO por la factorización. Las dimensiones que "
-                                     "siguen. Es la ambigüedad heredada de `new int[3][4]`: el "
-                                     "`[` se consume como otra dimensión de la creación y no "
-                                     "como un acceso al arreglo recién creado, que es lo que "
-                                     "hace Java.",
-    "InicializadorDeArreglo": "Las llaves con los elementos. Sólo es alcanzable desde "
-                              "`<Creacion>`, y eso es lo que impone la restricción del logro de "
-                              "que valga únicamente bajo `new`.",
-    "ListaElementosOpcional": "INSERTADO. El inicializador puede estar vacío (`new int[]{}`) o "
-                              "tener sólo la coma final (`new int[]{,}`), como en Java.",
-    "ListaElementos": "Al menos un elemento.",
-    "RestoListaElementos": "INSERTADO. Cero o más `, elemento`.",
-    "ElementosTrasComa": "INSERTADO. Después de una coma puede venir otro elemento o nada: la "
-                         "coma final es opcional, como en Java (JLS 10.6).",
-    "ElementoInicializador": "Un elemento es una expresión o, a su vez, otro inicializador: por "
-                             "eso el inicializador es anidable. Las dos alternativas son "
-                             "disjuntas porque una expresión nunca empieza con `{`.",
+    "ArregloOInstancia": "Un primitivo o un `idGen` sólo crean arreglos; un `idClase`, arreglos o "
+                         "instancias.",
+    "CreacionDesdeIdClase": "Tras `new C`: `<` abre el genérico; `[` o `(`, arreglo o instancia.",
+    "GenericoDeCreacion": "`>` es el diamante y sólo lleva a `<ArgsActuales>`: `new C<>()` sí, "
+                          "`new C<>[3]` no.",
+    "ArregloOInstanciaDeClase": "Arreglo o instancia.",
+    "CreacionDeArreglo": "Un arreglo, con tamaños o con inicializador.",
+    "RestoCreacionDeArreglo": "Con una expresión, la forma de la base, con toda dimensión con "
+                              "tamaño; con `]`, la de Java con inicializador, sin ninguno.",
+    "DimensionesConTamanio": "Una o más `[expresión]`: `new int[2][]` no es válido.",
+    "DimensionesConTamanioOpcional": "Más dimensiones: en `new int[3][4]` el `[` es otra "
+                                     "dimensión, como en Java.",
+    "InicializadorDeArreglo": "Los elementos entre llaves; sólo después de `new`.",
+    "ListaElementosOpcional": "Vacío, sólo la coma (`{,}`) o elementos.",
+    "ListaElementos": "Uno o más elementos.",
+    "RestoListaElementos": "Una coma y lo que sigue, o nada.",
+    "ElementosTrasComa": "Tras una coma, más elementos o nada: la coma final es opcional "
+                         "(JLS §10.6).",
+    "ElementoInicializador": "Una expresión u otro inicializador: se anidan.",
 
-    # --- Argumentos actuales ---
-    "ArgsActuales": "Los argumentos de una llamada, entre paréntesis.",
-    "ListaExpsOpcional": "INSERTADO. La lista puede estar vacía: `m()`.",
-    "ListaExps": "Al menos un argumento. Cada uno es una `<Expresion>` completa.",
-    "RestoListaExps": "INSERTADO por la eliminación de recursión a izquierda. Cero o más "
-                      "`, expresión`.",
+    "ArgsActuales": "Los argumentos, entre paréntesis.",
+    "ListaExpsOpcional": "La lista puede estar vacía.",
+    "ListaExps": "Uno o más argumentos.",
+    "RestoListaExps": "Una coma y otra lista, o nada.",
 }
 
 
 def secciones_del_archivo(texto):
-    """El no terminal con que arranca cada sección, en el orden del `.g`."""
-    orden, actual = [], []
+    """Los no terminales en el orden del `.g`."""
+    orden = []
     for linea in texto.split("\n"):
         limpia = linea.strip()
-        if limpia.startswith("#"):
+        if limpia.startswith("#") or "->" not in limpia:
             continue
-        if "->" in limpia:
-            izquierda = limpia.split("->")[0].strip()
-            if izquierda not in actual:
-                actual.append(izquierda)
-    return actual
+        izquierda = limpia.split("->")[0].strip()
+        if izquierda not in orden:
+            orden.append(izquierda)
+    return orden
 
 
 def latex_de(texto):
@@ -296,84 +228,47 @@ def latex_de(texto):
     for viejo, nuevo in (("&", r"\&"), ("%", r"\%"), ("_", r"\_"), ("#", r"\#"),
                          ("$", r"\$"), ("{", r"\{"), ("}", r"\}")):
         texto = texto.replace(viejo, nuevo)
-    texto = re.sub(r"`([^`]+)`", lambda m: r"\texttt{%s}" % m.group(1), texto)
-    texto = texto.replace("INSERTADO", r"\textbf{Insertado}")
-    return texto
+    texto = texto.replace(">>", ">{}>").replace("<<", "<{}<").replace("--", "-{}-")
+    return re.sub(r"`([^`]+)`", lambda m: r"\texttt{%s}" % m.group(1), texto)
 
 
 def main():
-    g = parsear(open(sys.argv[1], encoding="utf-8").read())
+    texto = open(sys.argv[1], encoding="utf-8").read()
+    g = parsear(texto)
     nts = g.no_terminales
-    orden = secciones_del_archivo(open(sys.argv[1], encoding="utf-8").read())
-    inicio = {nt: i for i, (_, nt, _) in enumerate(SECCIONES)}
+    orden = secciones_del_archivo(texto)
+    inicio = {nt: titulo for titulo, nt in SECCIONES}
 
-    faltan = [nt for nt in orden if nt not in EXPLICACION]
+    faltan = [nt for nt in orden if nt not in EXPLICACION or nt not in ORIGEN]
     if faltan:
-        sys.exit("sin explicación: " + ", ".join(faltan))
+        sys.exit("sin explicación u origen: " + ", ".join(faltan))
 
-    print(r"\documentclass[11pt,a4paper]{article}")
+    print(r"\documentclass[10pt,a4paper]{article}")
     print(r"\input{preambulo}")
     print(r"\begin{document}")
+    print(r"\newgeometry{margin=1.8cm}")
+    print(r"\pagestyle{plain}")
     print(CARATULA)
-
-    seccion_actual = -1
     for nt in orden:
         if nt in inicio:
-            seccion_actual = inicio[nt]
-            titulo, _, intro = SECCIONES[seccion_actual]
-            print(r"\section{%s}" % titulo)
-            print(latex_de(intro))
-            print()
-        # Compacto a propósito: el nombre del no terminal va una sola vez como
-        # encabezado corrido, las producciones debajo sin repetir el lado
-        # izquierdo, y la explicación en cuerpo chico. Es un documento de
-        # consulta; con \subsection por cada uno de los 112 ocupaba el doble.
-        print(r"\par\medskip\noindent\textbf{\nt{%s}}\nobreak\par\nobreak" % nt)
-        print(r"\begingroup\small\setlength{\leftskip}{1.1em}\raggedright")
+            print(r"\section*{%s}" % inicio[nt])
+        print(r"\par\smallskip\noindent\textbf{\nt{%s}}\hfill{\footnotesize\textsf{%s}}"
+              r"\nobreak\par\nobreak" % (nt, ORIGEN[nt]))
+        print(r"\begingroup\small\setlength{\leftskip}{1em}\raggedright")
         print(r"\hyphenpenalty=10000 \exhyphenpenalty=10000 \hbadness=10000")
         for cuerpo in g.por_izquierda[nt]:
             derecha = " ".join(render(s, nts) for s in cuerpo)
             print(r"\par\hangindent=1.6em\hangafter=1\noindent\deriva{} %s" % derecha)
-        print(r"\par\endgroup")
-        print(r"{\setlength{\leftskip}{1.1em}\noindent %s\par}" % latex_de(EXPLICACION[nt]))
-
+        print(r"\par\nobreak\noindent %s\par\endgroup" % latex_de(EXPLICACION[nt]))
     print(r"\end{document}")
 
 
 CARATULA = r"""
-\thispagestyle{empty}
-\begin{center}
-\vspace*{1.5cm}
-{\Huge\bfseries La gramática, regla por regla\par}
-\vspace{0.6cm}
-{\large\color{tinta} Qué genera cada producción de \textsc{MiniJava} y por qué está escrita así\par}
-\vspace{1.2cm}
-\end{center}
-
-\noindent
-Documento de estudio, no de entrega. Recorre la gramática LL(1) final no terminal por no
-terminal, en el mismo orden en que está escrita.
-
+\noindent{\Large\bfseries La gramática, regla por regla\par}
 \medskip\noindent
-Las producciones \textbf{se generan} desde \texttt{compilador/gramatica/minijava-ll1-final.g}, así
-que no pueden quedar viejas; lo único escrito a mano son las explicaciones. Para regenerarlo:
-
-\begin{consola}
-cd compilador
-python3 herramientas/explicacion_de_reglas.py gramatica/minijava-ll1-final.g
-\end{consola}
-
-\medskip\noindent
-Los no terminales marcados como \textbf{Insertado} no existen en la gramática de la cátedra:
-aparecieron al eliminar la recursión a izquierda o al factorizar, y cada uno es un \emph{punto de
-decisión} —el lugar donde el analizador elige con un token de anticipación—. Son los que el
-analizador semántico va a querer tener identificados.
-
-\vspace{0.8cm}
-\hrule
-\vspace{0.4cm}
-\tableofcontents
-\newpage
+{\small A la derecha de cada no terminal, de dónde sale: \textsf{base} es la gramática de la
+cátedra; \textsf{R1}--\textsf{R3} y \textsf{F1}--\textsf{F8}, los pasos de la transformación a
+LL(1); \textsf{L1}--\textsf{L9}, los logros (informe, §3).\par}
 """
 
 if __name__ == "__main__":

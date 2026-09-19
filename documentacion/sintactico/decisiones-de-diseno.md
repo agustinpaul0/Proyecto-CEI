@@ -40,7 +40,8 @@ Al factorizar un prefijo hay dos caminos:
   terminal **nuevo y dedicado**, cuyo nombre dice qué se está decidiendo. Un no terminal más, pero
   se traduce a un método del analizador que **es** el punto de decisión semántica.
 
-**Se adopta siempre la segunda**, con dos corolarios.
+**Se adopta siempre la segunda**, con dos corolarios. En el paso a paso, cada no terminal
+insertado así aparece como un paso propio de agrupamiento (AG), separado de la factorización.
 
 ### 3.1. Un no terminal de decisión por contexto, aunque la forma coincida
 

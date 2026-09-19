@@ -61,11 +61,14 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
         if (estaEn(PrimerosDeCreacion.GENERICO_DE_CREACION_MAYOR)) {
             match(TipoDeToken.OP_MAYOR);
             sintaxis.argumentos().argsActuales();
-            return;
+        } else if (estaEn(PrimerosDeCreacion.GENERICO_DE_CREACION_INSTANCIADO_OPARAMETRICO)) {
+            sintaxis.tipos().instanciadoOParametrico();
+            match(TipoDeToken.OP_MAYOR);
+            arregloOInstanciaDeClase();
+        } else {
+            throw errorEsperando(PrimerosDeCreacion.GENERICO_DE_CREACION_MAYOR,
+                    PrimerosDeCreacion.GENERICO_DE_CREACION_INSTANCIADO_OPARAMETRICO);
         }
-        sintaxis.tipos().instanciadoOParametrico();
-        match(TipoDeToken.OP_MAYOR);
-        arregloOInstanciaDeClase();
     }
 
     // ArregloOInstanciaDeClase -> CreacionDeArreglo | ArgsActuales
@@ -135,16 +138,20 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     }
 
     // ListaElementosOpcional -> ListaElementos | , | EPSILON
-    // ListaElementos -> ElementoInicializador RestoListaElementos
     private void listaElementosOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.LISTA_ELEMENTOS_OPCIONAL_LISTA_ELEMENTOS)) {
-            elementoInicializador();
-            restoListaElementos();
+            listaElementos();
         } else if (estaEn(PrimerosDeCreacion.LISTA_ELEMENTOS_OPCIONAL_COMA)) {
             match(TipoDeToken.COMA);
         } else {
             // ListaElementosOpcional -> EPSILON
         }
+    }
+
+    // ListaElementos -> ElementoInicializador RestoListaElementos
+    private void listaElementos() throws ExcepcionLexica, ExcepcionSintactica {
+        elementoInicializador();
+        restoListaElementos();
     }
 
     // RestoListaElementos -> , ElementosTrasComa | EPSILON
@@ -157,13 +164,12 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
         }
     }
 
-    // ElementosTrasComa -> ElementoInicializador RestoListaElementos | EPSILON
+    // ElementosTrasComa -> ListaElementos | EPSILON
     //
     // La coma final es opcional, como en Java (JLS 10.6): `{1, 2,}` es válido.
     private void elementosTrasComa() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeCreacion.ELEMENTOS_TRAS_COMA_ELEMENTO_INICIALIZADOR)) {
-            elementoInicializador();
-            restoListaElementos();
+        if (estaEn(PrimerosDeCreacion.ELEMENTOS_TRAS_COMA_LISTA_ELEMENTOS)) {
+            listaElementos();
         } else {
             // ElementosTrasComa -> EPSILON
         }
@@ -173,10 +179,13 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     //
     // El inicializador es anidable: `new int[][]{{1,2},{3,4}}`.
     private void elementoInicializador() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_INICIALIZADOR_DE_ARREGLO)) {
+        if (estaEn(PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_EXPRESION)) {
+            sintaxis.expresiones().expresion();
+        } else if (estaEn(PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_INICIALIZADOR_DE_ARREGLO)) {
             inicializadorDeArreglo();
         } else {
-            sintaxis.expresiones().expresion();
+            throw errorEsperando(PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_EXPRESION,
+                    PrimerosDeCreacion.ELEMENTO_INICIALIZADOR_INICIALIZADOR_DE_ARREGLO);
         }
     }
 }

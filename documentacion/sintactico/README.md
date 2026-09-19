@@ -9,8 +9,8 @@ completo; entrega 23/09/2026.
 | Ambigüedades | 2, las dos declaradas con su regla de resolución |
 | Analizador | una clase por sección de la gramática; cita 197 de 197 producciones |
 | Corpus | 10.405 fuentes propias (10.061 generadas con Grammarinator y 184 importadas de un corpus ajeno), más 75 casos de gramática, los 8 de la cátedra y 29.101 externos |
-| Suite | 26.642 tests; cobertura 98,6 % de líneas y 94,1 % de ramas; mutación 91 % |
-| Informe | `etapas/etapa-2/entregables/`, 32 páginas |
+| Suite | 26.648 tests; cobertura 98,4 % de líneas y 93,8 % de ramas; mutación 90 % |
+| Informe | `etapas/etapa-2/entregables/`, 22 páginas |
 
 El objeto central de esta etapa es la **gramática**: se parte de la que publica la cátedra, se la
 diagnostica, se la corrige a LL(1) y se la extiende con los logros. Los cuatro primeros documentos

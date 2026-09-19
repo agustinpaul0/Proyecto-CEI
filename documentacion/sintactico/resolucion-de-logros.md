@@ -87,7 +87,9 @@ deriva. El detalle está en [`decisiones-de-logica.md` §3](decisiones-de-logica
 > *«El Analizador Sintáctico permite usar los operadores unarios postfios de incremento (++) y
 > decremento (--).»*
 
-`<PosfijoOpcional>` después de `<Referencia>` y **no** de `<Operando>`: `5++` no tiene sentido.
+`<PosfijoOpcional>` va después de `<Referencia>` y **no** de `<Operando>`: un `<Primitivo>` es un
+literal y nunca una variable, así que `5++` no deriva. Que la `<Referencia>` sea una variable lo
+verifica el semántico, como javac. Hay un solo posfijo: `x++ ++` tampoco deriva.
 
 Es el **único logro que no requiere tocar el léxico**: `++` y `--` ya son tokens desde la Etapa 1
 —están en «Aspectos Léxicos» §2.4.2— y no tenían ninguna regla de la gramática que los usara. Este

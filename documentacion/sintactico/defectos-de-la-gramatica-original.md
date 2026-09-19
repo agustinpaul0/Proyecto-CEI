@@ -524,14 +524,17 @@ encadenamiento (indexar un arreglo existente). Nunca compiten.
 | 5 | `<Expresion>` | ⚠️ prefijo común | F1 |
 | 6 | `<ExpresionCompuesta>` | ⚠️ recursión a izquierda | R2 |
 | 7-12 | `<Referencia>` (3 alternativas) | ⚠️ recursión a izquierda | R3 |
-| 12b | VarEncadenada vs MetodoEncadenado | ⚠️ prefijo común (**aparece tras R3**) | fusionar en `<Encadenado>` |
+| 12b | VarEncadenada vs MetodoEncadenado | ⚠️ prefijo común (**aparece tras R3**) | agrupar en `<Encadenado>` y factorizar (R3) |
 | 13 | `<Primario>`: AccesoVar vs LlamadaMetodo | ⚠️ prefijo común | F7 |
 | 14 | `<Primario>`: CrearArreglo vs LlamadaConstructor | ⚠️ prefijo común a dos niveles | F8 |
 | 15 | `<DimensionesConTamanio>` | ⚠️ prefijo común | F4 |
+| 15b | `new int[3][4]`: dimensión o acceso | 🔴 **ambigüedad** | regla de implementación (voraz, como Java) |
 | 16 | `<ListaExps>` | ⚠️ prefijo común | F5 |
 
-**Dos ambigüedades reales, catorce conflictos de predicción.** Las ambigüedades hay que
-*decidirlas*; los conflictos se arreglan mecánicamente sin tocar el lenguaje.
+**Tres ambigüedades y catorce conflictos de predicción.** Dos ambigüedades están entre los
+dieciséis conflictos; la de `new int[3][4]` no es un conflicto de Primeros y aparece al factorizar
+(F4). Las ambigüedades hay que *decidirlas*; los conflictos se arreglan mecánicamente sin tocar el
+lenguaje.
 
 ### Y tres cosas que faltan, no que están mal
 

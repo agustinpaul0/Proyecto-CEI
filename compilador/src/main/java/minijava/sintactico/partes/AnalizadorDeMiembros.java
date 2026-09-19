@@ -56,9 +56,8 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
 
     // MetodoInterfaz -> PublicOpcional TipoMetodo idMetVar ArgsFormales ;
     //
-    // Los métodos de interfaz son siempre abstractos y admiten `public` pero no
-    // `private`: en Java un método de interfaz privado exige cuerpo, y MiniJava
-    // no tiene forma de escribirlo.
+    // Admite `public` y no `private`: en Java un método de interfaz privado exige
+    // cuerpo, y éste termina en `;`.
     public void metodoInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
         publicOpcional();
         tipoMetodo();
@@ -79,9 +78,6 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     }
 
     // CuerpoDeMetodo -> ArgsFormales Bloque
-    //
-    // Se comparte a propósito: es la misma construcción en método, método static
-    // y constructor.
     public void cuerpoDeMetodo() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.tipos().argsFormales();
         sintaxis.sentencias().bloque();
@@ -118,10 +114,14 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
             metodo();
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO)) {
             sintaxis.tipos().tipoPrimitivo();
-            declaradorDeMiembro();
+            sintaxis.tipos().dimensionesOpcionales();
+            match(TipoDeToken.ID_MV);
+            atributoOMetodo();
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_GEN)) {
             match(TipoDeToken.ID_GEN);
-            declaradorDeMiembro();
+            sintaxis.tipos().dimensionesOpcionales();
+            match(TipoDeToken.ID_MV);
+            atributoOMetodo();
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_CLASE)) {
             match(TipoDeToken.ID_CLASE);
             miembroDesdeIdClase();
@@ -133,12 +133,6 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         }
     }
 
-    private void declaradorDeMiembro() throws ExcepcionLexica, ExcepcionSintactica {
-        sintaxis.tipos().dimensionesOpcionales();
-        match(TipoDeToken.ID_MV);
-        atributoOMetodo();
-    }
-
     // MiembroDesdeIdClase -> CuerpoDeMetodo
     // MiembroDesdeIdClase -> TipoGenericoOpcional DimensionesOpcionales idMetVar AtributoOMetodo
     //
@@ -147,19 +141,27 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     private void miembroDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO)) {
             cuerpoDeMetodo();
-            return;
+        } else if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL)) {
+            sintaxis.tipos().tipoGenericoOpcional();
+            sintaxis.tipos().dimensionesOpcionales();
+            match(TipoDeToken.ID_MV);
+            atributoOMetodo();
+        } else {
+            throw errorEsperando(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO,
+                    PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL);
         }
-        sintaxis.tipos().tipoGenericoOpcional();
-        declaradorDeMiembro();
     }
 
     // AtributoOMetodo -> InicializacionDeAtributo ; | CuerpoDeMetodo
     private void atributoOMetodo() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeMiembros.ATRIBUTO_OMETODO_CUERPO_DE_METODO)) {
-            cuerpoDeMetodo();
-        } else {
+        if (estaEn(PrimerosDeMiembros.ATRIBUTO_OMETODO_INICIALIZACION_DE_ATRIBUTO)) {
             inicializacionDeAtributo();
             match(TipoDeToken.PUNTO_Y_COMA);
+        } else if (estaEn(PrimerosDeMiembros.ATRIBUTO_OMETODO_CUERPO_DE_METODO)) {
+            cuerpoDeMetodo();
+        } else {
+            throw errorEsperando(PrimerosDeMiembros.ATRIBUTO_OMETODO_INICIALIZACION_DE_ATRIBUTO,
+                    PrimerosDeMiembros.ATRIBUTO_OMETODO_CUERPO_DE_METODO);
         }
     }
 

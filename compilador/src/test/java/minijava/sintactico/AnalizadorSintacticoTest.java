@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -126,6 +127,32 @@ class AnalizadorSintacticoTest extends BaseDeAnalisis {
 
         assertEquals("Error Sintactico en linea 1: se esperaba idClase se encontro \"{\"",
                 excepcion.getMessage());
+    }
+
+    // Esquema Simple: si el token no está en los Primeros de ninguna alternativa de un no
+    // terminal no anulable, el else final reporta la unión de los Primeros de todas.
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "class C1 { void m() { if (c) ) } }         | ) | var return for idGen idClase",
+            "class C1 { int x ) }                       | ) | = ; (",
+            "class C1 { C2 ; }                          | ; | ( < [ idMV",
+            "class C1 { void m() { C2 ; } }             | ; | . < [ idMV",
+            "class C1 { void m() { var a = new C2<; } } | ; | > idGen idClase",
+            "class C1 { void m() { x = ; } }            | ; | + - ! this new",
+    })
+    void elElseFinalEsperaLosPrimerosDeTodasLasAlternativas(String fuente, String lexema,
+                                                            String esperados, @TempDir Path dir) {
+        ExcepcionSintactica excepcion = rechazar(dir, fuente);
+        String mensaje = excepcion.getMessage();
+        List<String> listados = List.of(mensaje
+                .substring(mensaje.indexOf("se esperaba ") + "se esperaba ".length(),
+                        mensaje.indexOf(" se encontro"))
+                .split(", | o "));
+
+        assertEquals(lexema, excepcion.getLexemaOfensivo());
+        for (String esperado : esperados.split(" ")) {
+            assertTrue(listados.contains(esperado), esperado + " no está en: " + mensaje);
+        }
     }
 
     // ------------------------------------------------- el logro de genericidad ---

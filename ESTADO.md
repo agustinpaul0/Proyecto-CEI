@@ -20,8 +20,8 @@ Entrega 23/09/2026. Descendente recursivo predictivo LL(1), Esquema Simple de Cl
 | Gramática | 97 no terminales, 197 producciones, 59 terminales; LL(1), 2 ambigüedades declaradas |
 | Corpus propio | 10.405 fuentes, 75 casos de gramática y los 8 de la cátedra |
 | Corpus externo | 29.101 fuentes de Giuliano Taormina; en todos coincide el primer código |
-| Suite | 26.642 tests; 98,6 % de líneas, 94,1 % de ramas; mutación 91 % |
-| Informe | `etapas/etapa-2/entregables/`, 32 páginas |
+| Suite | 26.648 tests; 98,4 % de líneas, 93,8 % de ramas; mutación 90 % |
+| Informe | `etapas/etapa-2/entregables/`, 22 páginas |
 
 Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el informe: un atributo
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
@@ -29,6 +29,7 @@ el profesor acepta las dos variantes.
 
 ## Etapas 3 a 5: SIN EMPEZAR
 
-Sin especificación publicada. Lo que la Etapa 2 les deja pendiente está en el informe (§12.2):
+Sin especificación publicada. Lo que la Etapa 2 les deja pendiente está en
+[`defectos-de-la-gramatica-original.md` §9](documentacion/sintactico/defectos-de-la-gramatica-original.md):
 sobre todo, resolver nombres contra su declaración, que el lado izquierdo de un `=` y el operando de
 `++`/`--` sean variables, y qué inicializa `int x, y, z = 10;` (en Java, sólo `z`).

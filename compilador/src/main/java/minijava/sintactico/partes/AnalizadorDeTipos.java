@@ -4,7 +4,6 @@ import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
-import minijava.sintactico.primeros.ConjuntoDePrimeros;
 import minijava.sintactico.primeros.PrimerosDeTipos;
 
 // Tipos, dimensiones, genéricos y argumentos formales.
@@ -103,28 +102,36 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     }
 
     // ArgsFormales -> ( ListaArgsFormalesOpcional )
-    // ListaArgsFormalesOpcional -> ListaArgsFormales | EPSILON
-    // ListaArgsFormales -> ArgFormal RestoListaArgsFormales
-    // RestoListaArgsFormales -> , ArgFormal RestoListaArgsFormales | EPSILON
     public void argsFormales() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
+        listaArgsFormalesOpcional();
+        match(TipoDeToken.PAREN_C);
+    }
+
+    // ListaArgsFormalesOpcional -> ListaArgsFormales | EPSILON
+    private void listaArgsFormalesOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeTipos.LISTA_ARGS_FORMALES_OPCIONAL_LISTA_ARGS_FORMALES)) {
-            argFormal();
-            restoListaArgsFormales();
+            listaArgsFormales();
         } else {
             // ListaArgsFormalesOpcional -> EPSILON
         }
-        match(TipoDeToken.PAREN_C);
+    }
+
+    // ListaArgsFormales -> ArgFormal RestoListaArgsFormales
+    private void listaArgsFormales() throws ExcepcionLexica, ExcepcionSintactica {
+        argFormal();
+        restoListaArgsFormales();
     }
 
     // RestoListaArgsFormales -> , ArgFormal RestoListaArgsFormales | EPSILON
     private void restoListaArgsFormales() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!estaEn(PrimerosDeTipos.RESTO_LISTA_ARGS_FORMALES_COMA)) {
-            return;
+        if (estaEn(PrimerosDeTipos.RESTO_LISTA_ARGS_FORMALES_COMA)) {
+            match(TipoDeToken.COMA);
+            argFormal();
+            restoListaArgsFormales();
+        } else {
+            // RestoListaArgsFormales -> EPSILON
         }
-        match(TipoDeToken.COMA);
-        argFormal();
-        restoListaArgsFormales();
     }
 
     // ArgFormal -> Tipo idMetVar

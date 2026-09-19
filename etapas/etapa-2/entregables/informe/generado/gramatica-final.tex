@@ -225,7 +225,7 @@
 \regla{ListaElementosOpcional}{\nt{ListaElementos} \alt{} \tl{,} \alt{} \eps}
 \regla{ListaElementos}{\nt{ElementoInicializador} \nt{RestoListaElementos}}
 \regla{RestoListaElementos}{\tl{,} \nt{ElementosTrasComa} \alt{} \eps}
-\regla{ElementosTrasComa}{\nt{ElementoInicializador} \nt{RestoListaElementos} \alt{} \eps}
+\regla{ElementosTrasComa}{\nt{ListaElementos} \alt{} \eps}
 \regla{ElementoInicializador}{\nt{Expresion} \alt{} \nt{InicializadorDeArreglo}}
 \end{producciones}
 
@@ -233,6 +233,6 @@
 \regla{ArgsActuales}{\tl{(} \nt{ListaExpsOpcional} \tl{)}}
 \regla{ListaExpsOpcional}{\nt{ListaExps} \alt{} \eps}
 \regla{ListaExps}{\nt{Expresion} \nt{RestoListaExps}}
-\regla{RestoListaExps}{\tl{,} \nt{Expresion} \nt{RestoListaExps} \alt{} \eps}
+\regla{RestoListaExps}{\tl{,} \nt{ListaExps} \alt{} \eps}
 \end{producciones}
 

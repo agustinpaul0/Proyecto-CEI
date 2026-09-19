@@ -33,7 +33,7 @@ public final class PrimerosDeArgumentos {
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,
             TipoDeToken.LIT_STRING, TipoDeToken.PR_THIS, TipoDeToken.PR_TRUE);
 
-    // RestoListaExps -> , Expresion RestoListaExps
+    // RestoListaExps -> , ListaExps
     public static final ConjuntoDePrimeros RESTO_LISTA_EXPS_COMA = de(TipoDeToken.COMA);
 
     // RestoListaExps -> EPSILON

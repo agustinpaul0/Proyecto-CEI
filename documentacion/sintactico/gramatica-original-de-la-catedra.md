@@ -193,7 +193,7 @@ No terminal inicial: `<Inicial>`.
 
 ## Inventario
 
-- **48 no terminales**, **~70 producciones** (contando cada alternativa de un `|` por separado).
+- **60 no terminales** y **126 producciones** (contando cada alternativa de un `|` por separado).
 - **Terminales usados**: `eof`, `class`, `interface`, `extends`, `implements`, `static`, `void`,
   `public`, `boolean`, `char`, `int`, `var`, `return`, `if`, `else`, `while`, `this`, `new`,
   `null`, `true`, `false`, `idClase`, `idGen`, `idMetVar`, `intLiteral`, `charLiteral`,
@@ -207,12 +207,13 @@ Se registran acá, no se corrigen acá.
    `<Sentencia>` las usa en dos alternativas idénticas (`<Asignacion> ;` y `<Llamada> ;`). La
    gramática es ambigua en ese punto: toda sentencia-expresión tiene dos árboles de derivación.
 2. **El *dangling else* está presente**, en la forma clásica de las dos producciones de `<If>`.
-   Junto con el punto 1, son las **únicas dos ambigüedades reales** de la gramática. Otros pares
-   comparten prefijo izquierdo — `<VarEncadenada>`/`<MetodoEncadenado>`,
+   Junto con el punto 1 y con `new int[3][4]` —donde el segundo `[` puede ser otra dimensión de
+   `<DimensionesConTamanio>` o un `<AccesoArreglo>`—, son las **tres ambigüedades** de la gramática.
+   Otros pares comparten prefijo izquierdo — `<VarEncadenada>`/`<MetodoEncadenado>`,
    `<AccesoVar>`/`<LlamadaMetodo>`, `<CrearArreglo>`/`<LlamadaConstructor>`,
    `<Atributo>`/`<Metodo>` — pero derivan lenguajes **disjuntos**, así que rompen LL(1) sin ser
-   ambiguos. La demostración está en
-   [`transformacion-a-ll1-paso-a-paso.md` §0.4](transformacion-a-ll1-paso-a-paso.md).
+   ambiguos. El detalle está en
+   [`transformacion-a-ll1-paso-a-paso.md` §1](transformacion-a-ll1-paso-a-paso.md).
 3. **No hay niveles de precedencia entre operadores binarios.** `<OperadorBinario>` es una única
    alternancia plana de los 13 operadores, así que `a + b * c` y `a * b + c` se derivan con la
    misma forma. La precedencia y la asociatividad no están en la gramática: son responsabilidad

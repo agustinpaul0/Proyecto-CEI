@@ -76,24 +76,20 @@
 <InicializacionDeAtributo> ::= `=` <ExpresionCondicional>  
 <InicializacionDeAtributo> ::= ε  
 
-> <Metodo> sobrevive como no terminal propio y lo comparten la rama static y la
-> rama void, así que el semántico tiene UN solo lugar donde construir el nodo de
-> método para esas dos formas. La tercera forma (tipo de referencia) ya consumió
-> el idMetVar al factorizar contra el atributo, y llega por AtributoOMetodo.
+> Agrupamiento: <Metodo> conserva el nombre pero deriva la cola que comparten la
+> rama static y la void. El método con tipo y sin static llega por
+> AtributoOMetodo, porque su idMetVar ya se consumió al factorizar contra el
+> atributo.
 
 <Metodo> ::= **idMetVar** <CuerpoDeMetodo>  
 
-> Se comparte a propósito: es la misma construcción en método, método static y
-> constructor.
+> Agrupamiento: la misma construcción en método, método static y constructor.
 
 <CuerpoDeMetodo> ::= <ArgsFormales> <Bloque>  
 
-> Los métodos de interfaz admiten `public` pero no `private`, que es lo que
-> hace Java: verificado con javac, un método de interfaz `private` exige cuerpo
-> («missing method body, or declare abstract»), y MiniJava no tiene forma de
-> escribir ese cuerpo —<MetodoInterfaz> termina en `;` en la especificación
-> original—. O sea que un `private` acá sería siempre
-> la forma que Java rechaza.
+> Visibilidad Mejorada nombra a los métodos, y un método de interfaz lo es. Se
+> admite `public` y no `private`: en Java un método de interfaz privado exige
+> cuerpo, y <MetodoInterfaz> termina en `;`.
 
 <MetodoInterfaz> ::= <PublicOpcional> <TipoMetodo> **idMetVar** <ArgsFormales> `;`  
 <PublicOpcional> ::= **public**  
@@ -258,7 +254,8 @@
 <Operando> ::= <Primitivo>  
 <Operando> ::= <Referencia> <PosfijoOpcional>  
 
-> Va sobre <Referencia> y no sobre <Operando>: `5++` no tiene sentido.
+> Va sobre <Referencia>: un <Primitivo> es un literal y nunca una variable. Que
+> la <Referencia> sea una variable lo verifica el semántico, como javac.
 
 <PosfijoOpcional> ::= `++`  
 <PosfijoOpcional> ::= `--`  
@@ -363,7 +360,7 @@
 <ListaElementosOpcional> ::= <ListaElementos> | `,` | ε  
 <ListaElementos> ::= <ElementoInicializador> <RestoListaElementos>  
 <RestoListaElementos> ::= `,` <ElementosTrasComa> | ε  
-<ElementosTrasComa> ::= <ElementoInicializador> <RestoListaElementos> | ε  
+<ElementosTrasComa> ::= <ListaElementos> | ε  
 <ElementoInicializador> ::= <Expresion> | <InicializadorDeArreglo>  
 
 > ARGUMENTOS ACTUALES
@@ -376,4 +373,4 @@
 <ListaExpsOpcional> ::= <ListaExps> | ε  
 
 <ListaExps> ::= <Expresion> <RestoListaExps>  
-<RestoListaExps> ::= `,` <Expresion> <RestoListaExps> | ε  
+<RestoListaExps> ::= `,` <ListaExps> | ε  

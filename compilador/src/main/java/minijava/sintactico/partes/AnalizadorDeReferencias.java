@@ -36,16 +36,23 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     }
 
     // Primario -> LlamadaMetodoEstatico | PrimarioSinIdClase
-    // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
     private void primario() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.PRIMARIO_LLAMADA_METODO_ESTATICO)) {
-            match(TipoDeToken.ID_CLASE);
-            match(TipoDeToken.PUNTO);
-            match(TipoDeToken.ID_MV);
-            sintaxis.argumentos().argsActuales();
-        } else {
+            llamadaMetodoEstatico();
+        } else if (estaEn(PrimerosDeReferencias.PRIMARIO_PRIMARIO_SIN_ID_CLASE)) {
             primarioSinIdClase();
+        } else {
+            throw errorEsperando(PrimerosDeReferencias.PRIMARIO_LLAMADA_METODO_ESTATICO,
+                    PrimerosDeReferencias.PRIMARIO_PRIMARIO_SIN_ID_CLASE);
         }
+    }
+
+    // LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
+    private void llamadaMetodoEstatico() throws ExcepcionLexica, ExcepcionSintactica {
+        match(TipoDeToken.ID_CLASE);
+        match(TipoDeToken.PUNTO);
+        match(TipoDeToken.ID_MV);
+        sintaxis.argumentos().argsActuales();
     }
 
     // PrimarioSinIdClase -> this | stringLiteral | ExpresionParentizada
@@ -98,10 +105,17 @@ public final class AnalizadorDeReferencias extends ParteDelAnalizador {
     }
 
     // Encadenado -> . idMetVar EncadenadoAtributoOMetodo
-    // EncadenadoAtributoOMetodo -> ArgsActuales | EPSILON
     private void encadenado() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PUNTO);
         match(TipoDeToken.ID_MV);
+        encadenadoAtributoOMetodo();
+    }
+
+    // EncadenadoAtributoOMetodo -> ArgsActuales | EPSILON
+    //
+    // Con argumentos es una llamada encadenada; sin ellos, el acceso a un
+    // atributo de otro objeto.
+    private void encadenadoAtributoOMetodo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeReferencias.ENCADENADO_ATRIBUTO_OMETODO_ARGS_ACTUALES)) {
             sintaxis.argumentos().argsActuales();
         } else {

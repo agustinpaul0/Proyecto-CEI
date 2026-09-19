@@ -96,14 +96,14 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     // ListaMiembros -> Miembro ListaMiembros | EPSILON
     private void listaMiembros() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!estaEn(PrimerosDeClases.LISTA_MIEMBROS_MIEMBRO)) {
-            return;
+        if (estaEn(PrimerosDeClases.LISTA_MIEMBROS_MIEMBRO)) {
+            if (reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
+                    sintaxis.miembros()::miembro)) {
+                listaMiembros();
+            }
+        } else {
+            // ListaMiembros -> EPSILON
         }
-        if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
-                sintaxis.miembros()::miembro)) {
-            return;
-        }
-        listaMiembros();
     }
 
     // ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
@@ -111,13 +111,13 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // Sincroniza con el contexto de los miembros: los dos son listas adentro de
     // una llave y reanudan en los mismos tokens.
     private void listaMetodosInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!estaEn(PrimerosDeClases.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
-            return;
+        if (estaEn(PrimerosDeClases.LISTA_METODOS_INTERFAZ_METODO_INTERFAZ)) {
+            if (reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
+                    sintaxis.miembros()::metodoInterfaz)) {
+                listaMetodosInterfaz();
+            }
+        } else {
+            // ListaMetodosInterfaz -> EPSILON
         }
-        if (!reanudaTrasError(ContextoDeSincronizacion.LISTA_DE_MIEMBROS,
-                sintaxis.miembros()::metodoInterfaz)) {
-            return;
-        }
-        listaMetodosInterfaz();
     }
 }

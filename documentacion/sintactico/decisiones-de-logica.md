@@ -8,11 +8,12 @@ La regla que gobierna todo lo que sigue es la de la cátedra: **todo lo que no e
 para MiniJava se comporta igual que en Java**, y «como en Java» nunca se resuelve de memoria — se
 verifica contra la especificación o ejecutando `javac`.
 
-## 1. Las dos ambigüedades de la gramática original
+## 1. Las ambigüedades de la gramática original
 
-De los dieciséis conflictos que tiene la gramática de la cátedra, **catorce son de predicción** —se
-arreglan factorizando y el lenguaje no cambia— y **dos son ambigüedades reales**, donde hubo que
-elegir un significado.
+La gramática de la cátedra tiene **tres ambigüedades**, donde hubo que elegir un significado. Dos
+aparecen entre sus dieciséis conflictos —los otros catorce son de predicción: se arreglan
+factorizando y el lenguaje no cambia—; la tercera, `new int[3][4]`, no es un conflicto de Primeros
+y sigue en la gramática final (§2.1).
 
 ### 1.1. `<Asignacion>` y `<Llamada>` son la misma producción
 
@@ -114,9 +115,8 @@ izquierda de `<ExpresionCompuesta>` no perdió nada, porque no había precedenci
 
 ## 5. Visibilidad en métodos de interfaz: `public` sí, `private` no
 
-El logro habla de «Métodos, Atributos y Constructores», que son los `<Miembro>` de una clase;
-`<MetodoInterfaz>` es un no terminal aparte, así que el caso cae bajo «como en Java». Verificado
-con `javac`:
+El logro habla de «Métodos, Atributos y Constructores», y un método de interfaz es un método: se le
+aplica la visibilidad del logro, con la forma que tiene en Java. Verificado con `javac`:
 
 | En Java | Resultado |
 |---|---|

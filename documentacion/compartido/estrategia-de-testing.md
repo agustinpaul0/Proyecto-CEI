@@ -477,7 +477,7 @@ pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
 
 ### Mutation testing (PIT) — referencia y por qué ciertos sobrevivientes no se cazan
 
-La última corrida alcanzó **91 % de mutantes matados** (872/962), *test strength* 92 %, con 97 % de
+La última corrida alcanzó **90 % de mutantes matados** (889/983), *test strength* 92 %, con 97 % de
 cobertura de línea sobre las clases mutadas. El umbral versionado —`umbral.mutacion` en el
 `pom.xml`— es 88, y `mvn -Pmutacion verify` falla por debajo.
 

@@ -100,8 +100,8 @@ public final class PrimerosDeCreacion {
     // RestoListaElementos -> EPSILON
     public static final ConjuntoDePrimeros RESTO_LISTA_ELEMENTOS = de();
 
-    // ElementosTrasComa -> ElementoInicializador RestoListaElementos
-    public static final ConjuntoDePrimeros ELEMENTOS_TRAS_COMA_ELEMENTO_INICIALIZADOR = de(
+    // ElementosTrasComa -> ListaElementos
+    public static final ConjuntoDePrimeros ELEMENTOS_TRAS_COMA_LISTA_ELEMENTOS = de(
             TipoDeToken.OP_NEGACION, TipoDeToken.PAREN_A, TipoDeToken.OP_SUMA, TipoDeToken.OP_RESTA,
             TipoDeToken.CHAR_LITERAL, TipoDeToken.PR_FALSE, TipoDeToken.FLOAT_LITERAL, TipoDeToken.ID_CLASE,
             TipoDeToken.ID_MV, TipoDeToken.INT_LITERAL, TipoDeToken.PR_NEW, TipoDeToken.PR_NULL,

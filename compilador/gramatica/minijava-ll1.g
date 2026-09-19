@@ -28,23 +28,21 @@ ListaMetodosInterfaz -> MetodoInterfaz ListaMetodosInterfaz | EPSILON
 
 # --- F6: factorización profunda de Miembro ---------------------------------
 # Atributo y Metodo comparten el prefijo <Tipo> idMetVar; se suben ambos hasta
-# Miembro y se factoriza. Constructor sobrevive como NT propio porque `public`
-# lo distingue solo.
+# Miembro y se factoriza. Constructor no entra en conflicto y queda como está,
+# salvo el agrupamiento de <CuerpoDeMetodo>.
 Miembro -> Tipo idMetVar AtributoOMetodo
 Miembro -> static TipoMetodo Metodo
 Miembro -> void Metodo
 Miembro -> Constructor
 
-# El NT insertado ES el punto de decisión: acá el semántico sabe si construye
-# un nodo de atributo o uno de método.
 AtributoOMetodo -> ;                 # cola de <Atributo>
 AtributoOMetodo -> CuerpoDeMetodo    # cola de <Metodo>
 
-# <Metodo> sobrevive como NT propio, compartido por la rama static y la void.
+# Agrupamiento: <Metodo> conserva el nombre pero deriva la cola compartida por
+# la rama static y la void, no el método entero de la base.
 Metodo -> idMetVar CuerpoDeMetodo
 
-# <CuerpoDeMetodo> se comparte a propósito: es literalmente la misma
-# construcción en método, constructor y método con static.
+# Agrupamiento: la misma construcción en método, método static y constructor.
 CuerpoDeMetodo -> ArgsFormales Bloque
 
 Constructor -> public idClase CuerpoDeMetodo
@@ -135,8 +133,7 @@ Primitivo -> true | false | intLiteral | charLiteral | null
 # --- R3: eliminación de recursión a izquierda en Referencia ----------------
 # Eliminar la recursión deja VarEncadenada y MetodoEncadenado compartiendo el
 # prefijo `.` (Clase 4, slide 38: eliminar recursión genera producciones sin
-# factorizar). Se fusionan en Encadenado: sintácticamente son indistinguibles
-# hasta ver si sigue un `(`.
+# factorizar). Se agrupan en Encadenado y adentro se factoriza `. idMetVar`.
 Referencia -> Primario RestoReferencia
 RestoReferencia -> Encadenado RestoReferencia
 RestoReferencia -> AccesoArreglo RestoReferencia
@@ -159,7 +156,7 @@ Primario -> Creacion
 ExpresionParentizada -> ( Expresion )
 
 # F7: AccesoVar (idMetVar) y LlamadaMetodo (idMetVar ArgsActuales) comparten
-# todo el prefijo. Mismo criterio que Encadenado.
+# todo el prefijo. Se agrupan y adentro se factoriza, como Encadenado.
 AccesoVarOLlamadaMetodo -> idMetVar AccesoOLlamada
 
 # Dedicado a este contexto: vacío = era <AccesoVar>, con argumentos = era
@@ -171,21 +168,18 @@ LlamadaMetodoEstatico -> idClase . idMetVar ArgsActuales
 
 # F8: CrearArreglo (new TipoBase ...) y LlamadaConstructor (new TipoReferencia
 # ...) comparten `new`, y TipoBase puede derivar a TipoReferencia: la colisión
-# es a dos niveles. Se decide por lo que sigue al tipo — `[` es arreglo, `(` es
-# constructor.
+# es a dos niveles. Se sube TipoBase y se factoriza TipoReferencia; lo que sigue
+# al tipo decide — `[` es arreglo, `(` es constructor.
 Creacion -> new ArregloOInstancia
 
 ArregloOInstancia -> TipoPrimitivo DimensionesConTamanio
 ArregloOInstancia -> idGen DimensionesConTamanio
-ArregloOInstancia -> idClase TipoGenericoOpcional ArregloOInstanciaDeClase
+ArregloOInstancia -> TipoReferencia ArregloOInstanciaDeClase
 
-# El NT insertado es el punto de decisión entre las dos construcciones.
 ArregloOInstanciaDeClase -> DimensionesConTamanio   # era <CrearArreglo>
 ArregloOInstanciaDeClase -> ArgsActuales            # era <LlamadaConstructor>
 
 # --- F4: factorización de DimensionesConTamanio ----------------------------
-# La original exige al menos una dimensión, así que la parte repetible va en un
-# NT opcional aparte en vez de volverse `... | EPSILON`.
 DimensionesConTamanio -> [ Expresion ] DimensionesConTamanioOpcional
 DimensionesConTamanioOpcional -> DimensionesConTamanio | EPSILON
 
@@ -195,6 +189,6 @@ ListaExpsOpcional -> ListaExps | EPSILON
 
 # --- F5: factorización de ListaExps ----------------------------------------
 ListaExps -> Expresion RestoListaExps
-RestoListaExps -> , Expresion RestoListaExps | EPSILON
+RestoListaExps -> , ListaExps | EPSILON
 
 AccesoArreglo -> [ Expresion ]

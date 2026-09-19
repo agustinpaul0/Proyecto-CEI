@@ -167,7 +167,7 @@ class ExpresionesTest extends BaseDeAnalisis {
         aceptar(dir, envolverEnMetodo("a[0]++;"));
     }
 
-    // El posfijo va sobre Referencia y no sobre Operando: `5++` no tiene sentido.
+    // El posfijo va sobre Referencia: un literal nunca es una variable.
     @Test
     void unLiteralNoAdmitePosfijo(@TempDir Path dir) {
         assertEquals("++", rechazarExpresion(dir, "5++"));

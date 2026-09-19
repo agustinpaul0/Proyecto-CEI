@@ -16,27 +16,34 @@ public final class AnalizadorDeArgumentos extends ParteDelAnalizador {
     }
 
     // ArgsActuales -> ( ListaExpsOpcional )
-    // ListaExpsOpcional -> ListaExps | EPSILON
-    // ListaExps -> Expresion RestoListaExps
-    // RestoListaExps -> , Expresion RestoListaExps | EPSILON
     public void argsActuales() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PAREN_A);
-        if (estaEn(PrimerosDeArgumentos.LISTA_EXPS_EXPRESION)) {
-            sintaxis.expresiones().expresion();
-            restoListaExps();
-        } else {
-            // ListaExpsOpcional -> EPSILON
-        }
+        listaExpsOpcional();
         match(TipoDeToken.PAREN_C);
     }
 
-    // RestoListaExps -> , Expresion RestoListaExps | EPSILON
-    private void restoListaExps() throws ExcepcionLexica, ExcepcionSintactica {
-        if (!estaEn(PrimerosDeArgumentos.RESTO_LISTA_EXPS_COMA)) {
-            return;
+    // ListaExpsOpcional -> ListaExps | EPSILON
+    private void listaExpsOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeArgumentos.LISTA_EXPS_OPCIONAL_LISTA_EXPS)) {
+            listaExps();
+        } else {
+            // ListaExpsOpcional -> EPSILON
         }
-        match(TipoDeToken.COMA);
+    }
+
+    // ListaExps -> Expresion RestoListaExps
+    private void listaExps() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.expresiones().expresion();
         restoListaExps();
+    }
+
+    // RestoListaExps -> , ListaExps | EPSILON
+    private void restoListaExps() throws ExcepcionLexica, ExcepcionSintactica {
+        if (estaEn(PrimerosDeArgumentos.RESTO_LISTA_EXPS_COMA)) {
+            match(TipoDeToken.COMA);
+            listaExps();
+        } else {
+            // RestoListaExps -> EPSILON
+        }
     }
 }
