@@ -232,7 +232,7 @@ MiniJava (`compilador/src/test/resources/corpus-externo/`). No comparte con este
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos.
-> La atribución y la poda están en su `CREDITOS.md`.
+> La atribución está en su `CREDITOS.md`.
 
 **Coinciden los 29.101**, con el criterio del tester estricto: el **primer** código que emite el
 compilador es el que el caso declara. Buscarlo en cualquier parte de la salida no alcanza: con Modo
@@ -255,8 +255,8 @@ más adelante, y eso pasaba en 358 casos.
   repetida (`public static public`), dimensiones por declarador (`T[] y, [] x;`), varios atributos
   por declaración, una asignación en el operando derecho de un ternario, el diamante al crear un
   arreglo, `new int[2][]`— y casos cuyo corpus se generó sin un logro que este compilador tiene.
-  **Ninguno escondía un defecto propio**: la tabla de `CREDITOS.md` da la fuente de cada categoría y
-  quién tendría que corregirla.
+  **Ninguno escondía un defecto propio**: cada categoría se verificó contra la gramática base, el JLS
+  o `javac`.
 
 Los **casos escritos a mano** de ese corpus que coinciden se importaron —son curados y legibles, y
 están en `resources/` con el prefijo `ext`, 184 en total—; los generados se corren desde

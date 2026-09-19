@@ -36,10 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // rechazan en tokens distintos y la recuperación termina coincidiendo.
 //
 // El corpus se podó, y cada categoría de la poda está justificada en
-// `corpus-externo/CREDITOS.md`: el logro MiniLambdas, los casos repetidos por la
-// semilla, la lectura de la barra invertida en un literal, y las construcciones en
-// que su gramática se aparta de la de este proyecto. Ninguno escondía un defecto
-// propio.
+// documentacion/compartido/estrategia-de-testing.md: el logro MiniLambdas, los
+// casos repetidos por la semilla, la lectura de la barra invertida en un literal,
+// y las construcciones en que su gramática se aparta de la de este proyecto.
+// Ninguno escondía un defecto propio.
 @Tag("sintactico")
 class CorpusExternoTest {
 

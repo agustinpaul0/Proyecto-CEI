@@ -52,8 +52,8 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   `compilador/` (los testers en `src/test/java/catedra/`, los 8 casos del sintáctico en
   `src/test/resources/catedra/`).
 - Material ajeno de un compañero: `compilador/src/test/resources/corpus-externo/`, el corpus de
-  fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La poda y sus motivos
-  están en su `CREDITOS.md`.
+  fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La atribución está en su
+  `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`.
 - Lo que el profesor indicó explícitamente está reunido en
   [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
