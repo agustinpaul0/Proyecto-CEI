@@ -39,9 +39,15 @@ invocan `main()` in-process y una excepción mataría la corrida entera.
 
 ### Al armar el zip de la Etapa 2
 
-El zip es la descarga del repositorio desde GitHub, así que lleva exactamente lo versionado: el
-proyecto Maven en `compilador/` y el informe en `etapas/etapa-2/entregables/`. Tiene que bajarse
-**después del último push**.
+El zip es la descarga del repositorio desde GitHub, así que lleva lo versionado: el proyecto Maven
+en `compilador/` y el informe en `etapas/etapa-2/entregables/`. Tiene que bajarse **después del
+último push**.
+
+El zip tiene que pesar menos de 20 MB. Por eso el `.gitattributes` de la raíz marca como
+`export-ignore` las slides de clase y las Pautas de la cátedra (`etapas/**/Clase*.pdf` y
+`etapas/**/Pautas*.pdf`): siguen versionadas, pero GitHub no las mete en la descarga. Con eso el
+zip queda en unos 18 MB, y más de la mitad es el corpus. `git archive HEAD --format=zip -o
+prueba.zip` arma el mismo zip localmente y sirve para medirlo antes de pushear.
 
 El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
 `compilador/resources/corpus-externo/`: son 29.101 fuentes y unos 10 megabytes. Está fuera
