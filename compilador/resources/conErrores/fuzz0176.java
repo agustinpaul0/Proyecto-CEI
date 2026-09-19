@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface X_Y < B > { } class LlM < H > implements { char [ ] [ ] i ; } interface QoB2k { }
+///[Error:[|2]
+interface Dm_ < P > extends Sh < H_Td > { void gL ( Q [ ] [ ] w_ ) ; public WW [ ] e5 ( ) ; Cr [ ] kqi ( char [ ] p , P2H < FEi37 > [ ] sL_z ) ; public [ ] m ( ) ; public void f ( A_bA < FARM > we , B [ ] [ ] [ ] [ ] [ ] p , NN_ < E > [ ] x ) ; E k_ ( ) ; char p ( ) ; } class C_ extends M1 < U > { } class Yi8q extends Go { static private LL2_3 d16 ( ) { } static void o ( ) { return ; ; } float [ ] b ; float v ( boolean [ ] [ ] a ) { W v , o_ , sEE ; F s ; } static void n ( ) { - "" ; } private static void v ( ) { } private boolean [ ] z ; }

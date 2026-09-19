@@ -1,2 +1,2 @@
-///[Error:;|2]
-class R__X { boolean u2 = ZZDx ; } interface M_h < H > extends BR < P > { }
+///[Error:O|2]
+class ZQ8 < C > extends ZC { } interface ED { } class YN < L > implements G_ < F > { } interface G_ < Y > extends WV2_ < J_ < Q > > { public void znp ( float [ ] [ ] [ ] c6 , boolean sy ) ; char b1 ( ) ; void a ( Q a_ , boolean [ ] [ ] [ ] t_ ) ; } class U7 extends NgI_L < QB_ < Ntv0 < G_ > > > { static void c_ ( ) { } static public void g ( Z [ ] [ ] o__9I , int j5_ ) { } char p ( boolean [ ] [ ] d_b ) { true ; return ; ; } static O s_ ( ) { } static V_i [ ] [ ] t ( ) { UB a ; } } O [ ] k4 ( ) ; interface J_ < G > extends J7O { } class P0_ extends Gy2S < F > { public float c = ! true ; public static At [ ] s ( ) { { } } }

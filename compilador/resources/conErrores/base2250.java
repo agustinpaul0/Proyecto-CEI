@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Y87hG { } class O_4 implements Yr < R > { } interface BjX_V9 < V > { } ( )
+///[Error:[|2]
+class O8 implements T_ < YY_8JO_ < G > > { static [ ] eniK7 ( ) { } }

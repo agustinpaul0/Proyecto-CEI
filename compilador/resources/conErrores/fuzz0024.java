@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class BzX extends { Nfr < Q > u_ = - true ? w ( ) . l . t ( ) ++ = ! true ? 4422f : null * null : ! BU . u ( ) . wf ( ) ++ ; }
+interface Sh < Q > { } class D_ { } class H7 < A > implements { public P [ ] [ ] [ ] [ ] s ( ) { } }

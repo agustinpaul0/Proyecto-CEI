@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface P_36 { } class UZ implements Kv6 < N > { A o ( ) { while ( - H_ . g2 ( ) . lM ++ <= + "" * true = - true ) for ( true ; ; ) char [ ] [ ] [ ] [ ] f9 , b3 ; for ( ; null ; ) if ( false ) return ; else true ; } void i3 ( ) { ; if ( '\t' ) W [ ] [ ] [ ] [ ] i ; else ; } public boolean g5D ( boolean [ ] x ) { while ( + null ) return ; ! "" ; ; ; ; return ; ; } } interface UR < V > { public I [ ] [ ] ( ) ; }
+///[Error:implements|2]
+implements Xc < B_8 > class R_ { } interface WT1 extends Zfb < J_g > { }

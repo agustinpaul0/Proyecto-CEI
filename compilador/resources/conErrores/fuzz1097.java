@@ -1,2 +1,2 @@
-///[Error:(|2]
-class Lf { void ( boolean o ) { } }
+///[Error:public|2]
+public Of0_ < G7 > [ ] rPr ( ) ;

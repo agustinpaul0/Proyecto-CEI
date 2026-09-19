@@ -1,2 +1,2 @@
-///[Error:int|2]
-class B_ { void int tX0 Q8U ( ) { var w5 = "" ? ! true % ! true : 683973 < ! null ; } } interface T1 extends M_7 < S > { }
+///[Error:>|2]
+interface X_ extends Qx < > { } class X_g4 < N > extends F5W2 < K > { }

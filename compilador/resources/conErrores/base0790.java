@@ -1,2 +1,2 @@
-///[Error:char|2]
-class UP3IC841 implements YW2 < Z > { } char m_ = + null ; class L_ < A > implements E_ { }
+///[Error:}|2]
+interface Ja { public V [ ] [ ] at ( ) ; void } interface NK extends J7 < I_ > { } class T6_4aD < Z > { } interface D_ { public K [ ] x7 ( ) ; } interface OI < J > { }

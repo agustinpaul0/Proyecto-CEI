@@ -1,2 +1,2 @@
-///[Error:JvP|2]
-interface Nwuq < X > extends Ui88gn < SI > { public void rW ( ) ; public D s ( ) ; } JvP
+///[Error:{|2]
+class KnN implements Xc < B_8 > { } class { } interface WT1 extends Zfb < J_g > { }

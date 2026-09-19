@@ -1,2 +1,2 @@
-///[Error:H|2]
-interface Z2 extends BcD__O4 < TvOpXz < Bn < US > > > { } interface Rb < W > extends H_ { } interface Ejl_9_g54 < Y > extends LYM < Zs_ < GP < O__P > > > { } interface K_ { } interface W5 extends K_C5 < Z > { void a ( ) ; } class Mg { } interface ZP < A > { void a ( H [ ] p , J [ ] [ ] [ ] x_ ) ; void v1 ( ) ; } interface Ow { } class W5j < F > extends Q_ { } interface Nm1 extends LD { void pC ( Y vf ) ; } H
+///[Error:var|2]
+interface ICe extends IE { public void f494 ( ) ; } interface A_ { A [ ] [ ] f_y ( D__qU < K_8_w > i , int [ ] [ ] w ) ; } class VOj < Q > implements E_P < T > { static public boolean xL ( ) { } public static Ug < MB < Tf < FxD > > > g ( int sfQu_ , W [ ] u ) { } static private void q ( ) var t = 5d ; }

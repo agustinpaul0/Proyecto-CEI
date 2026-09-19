@@ -1,0 +1,2 @@
+interface CU < Y > {
+}

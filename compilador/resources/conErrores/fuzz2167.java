@@ -1,2 +1,2 @@
-///[Error:l4|2]
-class F2 < U > implements BP { static public void lEV ( l4 ) { } }
+///[Error:implements|2]
+implements N1w_

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends R3 < S >
+///[Error:)|2]
+interface DtS_ < N > { void b ( ) ; public void y ( int [ ] lfo6 , ) ; }

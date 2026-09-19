@@ -1,2 +1,2 @@
-///[Error:n|2]
-class URa_D__ < P > implements K6 < U > { static void v ( int [ ] [ ] w , G9wC [ ] [ ] [ ] [ ] qEkhu_ , D [ ] gqO ) { } } interface Ty { public P [ ] z ( ) ; public B_ < I > [ ] dcp6 ( ) ; } interface Smg_r { } class Y_ < U > implements JC5w { void u ( ) { } static public Q7M_ fz_ ( O [ ] [ ] [ ] [ ] [ ] g , n ) { return true ; - W3 . o ( ) . c -- ; L [ ] a , y ; } }
+///[Error:n7_3Y|2]
+interface E1 { public I__0 h ( S9 < TC_ < Pkz_y > > c , char s1 ) ; boolean b ( ) ; } interface OS8Qu { void u ( AG0NH hD ) ; public M [ ] i ( ) ; } interface R_xb_V { public void a ( boolean [ ] yd ) ; char [ ] [ ] [ ] a ( ) ; public Xf [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] z ( ) ; void eh ( n7_3Y ) ; }

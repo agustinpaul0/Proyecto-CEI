@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Mv extends A6 < P > { public }
+///[Error:extends|2]
+extends Fx

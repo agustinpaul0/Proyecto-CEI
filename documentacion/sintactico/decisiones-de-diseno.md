@@ -173,7 +173,13 @@ documento que le corresponde; esta lista existe para que no se relitiguen.
   `<ExpresionCondicional>`: admiten el ternario y no otro `=`.
 - **La variable de control del `for` se declara con `var` y nada más**: los logros son
   independientes entre sí, así que el `for` no toma el declarador tipado de Variables Locales
-  Clásicas. Lo respondió el profesor. `for(;;)` es válido, como en Java (JLS §14.14.1).
+  Clásicas. Lo respondió el profesor.
+- **Cada hueco del `for` estándar lleva exactamente una expresión**: la Pauta del logro dice *«una
+  sola sentencia/expresión por separador»*, y el profesor indicó que ninguna queda vacía. `for(;;)`
+  no es válido.
+- **El declarador clásico no admite asignaciones anidadas salvo entre paréntesis**, con el mismo
+  criterio que el `var` de la base: `int x = y = 2;` no es válido e `int x = (y = 2);` sí. Lo
+  confirmó el profesor.
 - **No hay atributos estáticos**: `static` aplica sólo a métodos, como en MiniJava base. Lo
   confirmó el profesor.
 - `int x[]` **no existe**: las dimensiones van pegadas al tipo base y nunca al nombre, que es lo que

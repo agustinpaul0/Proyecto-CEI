@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface NR { Z tb ( ) ; public void r ( O r ) ; } class Vm_0__ < D > { private V y ( boolean [ ] [ ] [ ] ra ) { I6 . o_ ( ) . xa5 . uQl5 ( ) -- ; if ( '\t' ) Nh f ; else { { } ; } I [ ] [ ] r ; ; } private static boolean [ ] [ ] [ ] [ ] t_ ( C si__3_ , char [ ] p , X__ j , N [ ] [ ] [ ] j5__7_L_ ) { } } class Op < S > extends Am_U { Ug ( N [ ] [ ] l ) { for ( ; ; false ) var k = + true ; } B7__ ( ) { } static void n0je0 ( A h ) { this ++ ; } } interface I7 < F > extends L_7D2 < I > { }
+interface NR { Z tb ( ) ; public void r ( O r ) ; } class Vm_0__ < D > { private V y ( boolean [ ] [ ] [ ] ra ) { I6 . o_ ( ) . xa5 . uQl5 ( ) -- ; return ; } }

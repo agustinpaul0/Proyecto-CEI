@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface SW extends < Q > { EZ < Q_k > z ( boolean oiIp_ ) ; }
+///[Error:(|2]
+interface NB4W extends F2 { ( ) }

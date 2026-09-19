@@ -1,2 +1,2 @@
-///[Error:qv__|2]
-qv__ . q ( ) . b ( )
+///[Error:B|2]
+B d1___t___ ( T f ) ; interface N_U < A > { }

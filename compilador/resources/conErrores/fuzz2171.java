@@ -1,2 +1,2 @@
-///[Error:x4|2]
-class XSP < J > extends P1T < R_ > { } x4
+///[Error:D|2]
+class C_ < I > extends K9 < F > { } D

@@ -1,2 +1,2 @@
-///[Error:public|2]
-class TV implements ZG { static private void y ( ) { boolean j , v = I_7_ . k_zD ( ) . r , e = this ++ ; } static public void c ( int y , V [ ] h ) { for ( ; this <= 1D > true = true ; ! this = false ) { } } static private G [ ] e ( ) { } void r ( ) { } private static J y___s2 public static void d ( ) { } static private void c ( H [ ] u ) { "" . q -- ; } public static void ys ( ) { ; ; return ; } float gU_y ; static private void p ( ) { F [ ] l_x ; return ; ; } } interface CO < C > { }
+///[Error:extends|2]
+class VY < B > { } class BfYG < D > { } extends CO0HV < B_5 >

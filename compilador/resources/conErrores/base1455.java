@@ -1,2 +1,2 @@
-///[Error:public|2]
-class DP_ { } public interface Te < Q > { } interface GM < C > { } class VSR < L > extends P_X { static public void zmp ( boolean jz4d7 ) { } } interface O_ < G > extends CFD { }
+///[Error:GE_|2]
+class Z7B < Q > { } GE_ interface H4uA { }

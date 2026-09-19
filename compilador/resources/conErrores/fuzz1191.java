@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface X8 < D > { void } class ML9 implements Y_ { }
+///[Error:extends|2]
+class L_ < A > extends Sw57 { } interface extends AR { } interface V2l < G > { }

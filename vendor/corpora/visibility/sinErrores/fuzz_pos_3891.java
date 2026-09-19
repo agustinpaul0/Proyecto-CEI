@@ -1,0 +1,2 @@
+interface GR_Kw {
+}

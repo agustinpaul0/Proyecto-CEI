@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < O > { } interface Nn_ extends P__38_ { }
+///[Error:[|2]
+class D_ extends AK < O > { void d [ ] }

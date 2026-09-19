@@ -1,2 +1,2 @@
-///[Error:private|2]
-private class Ey extends BHY { A [ ] lM = '"' + X_ . o ( ) <= 83D - 489E41D ; }
+///[Error:}|2]
+class Yz_ extends Kq { Q7 }

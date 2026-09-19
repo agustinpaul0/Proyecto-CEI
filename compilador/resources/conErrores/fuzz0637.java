@@ -1,2 +1,2 @@
-///[Error:W61|2]
-interface E5 < G > { } W61 interface Xh { }
+///[Error:extends|2]
+interface extends AF0 { public void a ( ) ; }

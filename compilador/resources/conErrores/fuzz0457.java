@@ -1,2 +1,2 @@
-///[Error:U3|2]
-interface UCp { public void pHX5KT3 ( ) ; B_ < W > d3 ( ) ; void pn ( ) ; } U3
+///[Error:m|2]
+interface GQ < A > extends T5 { void m9 ( ) ; m ( ) ; }

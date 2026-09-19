@@ -1,2 +1,2 @@
-///[Error:L_zY|2]
-L_zY
+///[Error:>|2]
+interface Jp extends O_ < > { }

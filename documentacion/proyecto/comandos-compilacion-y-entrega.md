@@ -48,7 +48,7 @@ proyecto Maven en `compilador/` y el informe en `etapas/etapa-2/entregables/`. T
 cátedra lo buscan —lo tienen escrito a fuego, sin subcarpeta—; el de la Etapa 1 queda archivado en
 `resources/lexico/`.
 
-Son **10.251 archivos y unos 2,6 megabytes** de corpus, y los testers de la cátedra los procesan en
+Son **10.405 archivos y unos 2,7 megabytes** de corpus, y los testers de la cátedra los procesan en
 unos 3 segundos. Todos están verificados con el compilador tal cual, que es la única forma en que corre.
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 también busca en

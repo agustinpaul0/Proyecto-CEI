@@ -1,2 +1,2 @@
-///[Error:!|2]
-class Svp { void m6U ( J [ ] [ ] [ ] n57h , U_dnEKn < Gb_ > [ ] [ ] gY , K__ wgf , P_0 < Y > [ ] [ ] [ ] [ ] c7_QV_ , U l , Rq_ [ ] wB6 ) { return ; } static private void p ( int [ ] [ ] [ ] a9__6 , Z nvq ) { H8s . y ( ) -- ! K6 . x ( ) -- = ! 9136010 ; Q_ . c ( false ) . p ( ) . zi ( ) ++ != ! 3590 == + true = false ; if ( "" -- % + '"' = - true ) var x7 = null ; } } class L__4 < M > extends G_ < W > { } interface VR < Y > extends F5C6 < Xc < Q > > { } class Tp_ extends Jv < I1 < N > > { private static void c_5 ( ) { } }
+///[Error:(|2]
+( Y m , A nN , char [ ] [ ] mAw6 , EG_ < OI < Z > > [ ] [ ] m_ ) interface S6n extends FbJz_ { }

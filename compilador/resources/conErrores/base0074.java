@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Et extends OPnF < B > { void aI ( S___ < J > [ ] n5 ) ; public void e_c ( A__my < K > [ ] eu__ ) ; S__ < U_ < IK___R < Et < Gh6 > > > > ( M [ ] t ) ; public void r_ZfY_a ( ) ; } class Fg < U > extends Vb7l { static public void w ( R_3T6 < F > ns_ ) { } static public D [ ] [ ] eG ( ) { while ( "\"Ei\'*\"" ++ >= this ) var c = ! true * - false ; } H [ ] x ; } class Pa6 implements Ly_ { }
+///[Error:int|2]
+interface A1 { public V [ ] [ ] s ( Eo_R3 [ ] [ ] [ ] e , O [ ] [ ] [ ] [ ] m , Pi < Q > [ ] [ ] hb_R0 , S [ ] [ ] [ ] c4 ) ; public K [ ] t9 int ; }

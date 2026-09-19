@@ -1,2 +1,2 @@
-///[Error:.|2]
-class F__A { private void . v }
+///[Error:(|2]
+( ) { return 37.e-931f || - 175429 ; }

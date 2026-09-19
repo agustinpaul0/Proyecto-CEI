@@ -1,2 +1,2 @@
-///[Error:}|2]
-class N5 < V > implements PS_ { static void d74K_s ( int l ) { No . z1j ( ) . o ( ) . ee ( ) . z . i6 = + true / ! true ? - null : true ; } static void r ( In_ [ ] zsS , int [ ] [ ] [ ] [ ] x ) { { Ui < L > d5 , a , p ; } } private static void h ( ) { ; while ( - '.' ) ; } static void pS5Ep_ ( ) { } private void h299g ( ) { F [ ] aA_8zp , y ; } static TM w ( L__ [ ] z ) { } static D__ < Y > q ( ) } class MS < N > extends D_ < Y > { } class B_ < B > implements D_uV < L_7 > { }
+///[Error:{|2]
+interface E1 < K > { } class L7_0 < E > implements S2 < LK > { U8_ < ZIR > [ ] [ ] t { } }

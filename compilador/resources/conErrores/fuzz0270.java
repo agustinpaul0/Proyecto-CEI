@@ -1,2 +1,2 @@
-///[Error:H_MH|2]
-H_MH
+///[Error:public|2]
+public void cLPI ( ) ;

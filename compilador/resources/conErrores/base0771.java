@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Zp < J > { public void jA ( ) ; void g3 ( ) ; < W > [ ] eX ( JZ0_ < Z6 < Xq < F_ > > > [ ] b_ ) ; }
+///[Error:}|2]
+class D_ extends Bv___6 { } class D3_ { static private int [ ] jlD ( ) }

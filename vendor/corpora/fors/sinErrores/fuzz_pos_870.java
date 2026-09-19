@@ -1,0 +1,2 @@
+interface IYU < B > {
+}

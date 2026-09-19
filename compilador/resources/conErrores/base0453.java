@@ -1,2 +1,2 @@
-///[Error:C_ap4|2]
-interface Ha8_ < F > { } interface Z9T < K > { } C_ap4
+///[Error:Y_4|2]
+Y_4

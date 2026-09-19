@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface I1 < P > { public void g_2 ( char [ ] [ ] [ ] i ) ; void s ( Y g , G b ) ; public void ko ( ) ; B__9369 < Z > [ ] [ ] [ ] [ ] [ ] e ( ) ; I [ ] public A t ( ) ; }
+///[Error:R_|2]
+interface U0u < G > extends Y_ { TV < D > R_ < D > z ( W [ ] d , PQT < N96_ < A_ > > [ ] h_f7 ) ; A cS ( ) ; } class Kz implements Y4 { } class H_O implements B__0 < Z > { } class D_ < U > extends U3 < N > { }

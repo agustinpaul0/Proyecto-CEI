@@ -1,0 +1,3 @@
+interface QM {
+K oH ( ) ;
+}

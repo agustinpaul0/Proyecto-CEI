@@ -1,2 +1,2 @@
-///[Error:A|2]
-class FS implements VQ6 { void g ( G p , char m_ , D [ ] [ ] [ ] lv62FI , boolean [ ] f , N d2 ) { } E [ ] [ ] [ ] [ ] [ ] x ( ) { false ; { P [ ] [ ] [ ] rz ; } var n = ! 'F' >= false ; char [ ] u ; } static public D3AW5z < CU6e < V > > [ ] [ ] [ ] [ ] [ ] b_ ( ) { } static char vp ( ) { Lw . jl8 ( ) -- ; } X_c8 i ( A_ [ ] z , boolean [ ] e6 ) { N fbd ; E5 r ; int [ ] [ ] g_ ; } } A
+///[Error:,|2]
+interface K32 < G > extends GF { public void s_6 ( U [ ] kH ) ; void wv___qb7 ( YTY8_ [ ] [ ] ya58K_ , int , float [ ] [ ] [ ] [ ] k_ , S [ ] [ ] [ ] [ ] [ ] [ ] [ ] e ) ; public float reSEL_ ( ) ; public Wz_ < A > [ ] [ ] v_ ( ) ; } interface Qu { }

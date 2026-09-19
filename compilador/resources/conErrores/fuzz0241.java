@@ -1,2 +1,2 @@
-///[Error:>|2]
-class DY < I > implements M0L_S < > { }
+///[Error:(|2]
+class VV_ extends N_ { static private void ( ) { } WcC8 ( ) { } }

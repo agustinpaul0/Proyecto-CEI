@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < T > implements U2 { }
+///[Error:{|2]
+interface VCf5m9_ < L > extends { }

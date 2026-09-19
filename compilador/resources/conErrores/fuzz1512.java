@@ -1,2 +1,2 @@
-///[Error:HEQ|2]
-HEQ
+///[Error:void|2]
+class ME { float [ ] tx ( I_33 < P > m , boolean a ) { } ZSA ( M_ < V > [ ] t0 , Q [ ] [ ] [ ] [ ] [ ] mS ) { C w = - "" * null ? true : + true , h = ! true ; return ; } static G4v [ ] x ( B vo57_ , H [ ] [ ] y7 ) { } public static void t ( P v ) { if ( ! 3.F ) float y , e9 , o5c ; else { } } int u ( ) { } static S_ < FHvk < B > > [ ] [ ] y5 ( ) void gI9 ( ) { { } } }

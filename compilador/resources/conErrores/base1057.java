@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Vu extends DB_ < BG < I > > { void r ( L pjm_ ) ; BR_O < D9 < QK > > c , I [ ] k , E [ ] [ ] [ ] c_ }
+///[Error:O|2]
+class AV < I > extends Uof { } interface F8u { } interface CM4 { void j ( ) ; } interface K2 < Q > { } O class B5eM < F > implements Snk < U_A > { int [ ] d ( V [ ] x_ ) { } }

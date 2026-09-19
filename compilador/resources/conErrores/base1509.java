@@ -1,2 +1,2 @@
-///[Error:o|2]
-interface X7_f { float b ( o ) ; public S83 < W > o_2_ ( int [ ] z ) ; }
+///[Error:(|2]
+interface V_ extends U_ { } ( ) { } class S_0oM extends VZ6d < FhYU < Z_ > > { }

@@ -14,7 +14,7 @@ sintaxis de uno se le da al simulador la cadena de tokens que ese logro habilita
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g \
         --aceptar "class idClase { void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
-bash herramientas/casos-gramatica.sh          # los 72 casos de aceptacion y rechazo
+bash herramientas/casos-gramatica.sh          # los 75 casos de aceptacion y rechazo
 ```
 
 ---
@@ -62,9 +62,10 @@ con los dos órdenes, como en Java (§6 del mismo documento).
 Las dos formas están, con la variable de control declarada **con `var` y nada más**, como
 respondió el profesor: los logros son independientes entre sí. El desempate entre el `for` estándar
 y el de iteradores es de **un solo token** y está justo después de `var x`: `:` es de iteradores,
-`=` es estándar. Un encabezado que no empieza con `var` ni con `;` es una expresión. La restricción
-de «una sola por separador» queda en la forma de `<ClausulasFinalesFor>`, que admite una
-`<ExpresionOpcional>` por hueco. El detalle está en
+`=` es estándar. Un encabezado que no empieza con `var` es una expresión. La restricción de «una
+sola por separador» queda en la forma de `<ClausulasFinalesFor>`, que exige exactamente una
+`<Expresion>` por hueco: ninguno queda vacío, así que `for(;;)` no es válido, como indicó el
+profesor. El detalle está en
 [`decisiones-de-logica.md` §10](decisiones-de-logica.md).
 
 **Requiere el token `for`.**

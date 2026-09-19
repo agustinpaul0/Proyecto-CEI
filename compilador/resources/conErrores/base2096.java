@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface C_ extends W_ < X > { } public void gj ( ) ; public W [ ] [ ] [ ] [ ] [ ] j ( ) ; public O [ ] z9_ ( ) ; class Hs < E > { } interface Th extends L0F { }
+///[Error:H6_Vv_|2]
+class Ox extends P8 < T > { } interface G9 { } interface N__x_ < T > { public void b ( ) ; } H6_Vv_

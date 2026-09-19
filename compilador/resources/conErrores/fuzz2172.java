@@ -1,2 +1,2 @@
-///[Error:K51|2]
-interface Oq extends P9Tp_H_ < L > { } class O6_W_ < A > implements I2Qu < N > { } interface W5 < C > { public char u ( ) ; public Z [ ] v1CX5 ( ) ; } interface PPj { } K51 < H4T > class X_ < E > { }
+///[Error:Om|2]
+interface W_ { } class ATm6 extends B_ < M > { } Om < F > interface I_ extends F_R { public A r ( ) ; }

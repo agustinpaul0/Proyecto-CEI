@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Aw_ < K > extends QK4_ < D > { void nV ( ) ; public void p4EJ ( ) ; Bq6i < KZG > [ ] ( ) ; Di5 < Z > w ( ) ; public boolean [ ] p_ ( ) ; }
+///[Error:S|2]
+interface Z4_ { W [ ] [ ] [ ] [ ] [ ] k_ S ; } class Ti extends X4 { }

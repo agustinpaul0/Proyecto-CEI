@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface SI2 extends Z10C_ { } class B7 < P > implements JQ < > { private Y0 [ ] glJR_ ( ) { U l , f ; { } for ( ; ; ) TT a ; I t ; N [ ] w ; R [ ] p ; ; } }
+///[Error:T|2]
+class KE < Q > implements I_U_ < B > { } T interface K0 extends L9 { public char [ ] p ( ) ; public char [ ] [ ] [ ] t ( Q [ ] [ ] [ ] dQ , N [ ] [ ] t ) ; }

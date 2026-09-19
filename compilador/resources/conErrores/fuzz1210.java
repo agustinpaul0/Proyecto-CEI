@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Z_ < F > { } class C8Y extends < A > { static void p19 ( S0c < L5l > qsG ) { } }
+///[Error:;|2]
+class Q_u { } class DE extends F9W2 < E___ > { } interface Cf extends OH { } ;

@@ -1,0 +1,2 @@
+interface F1_ {
+}

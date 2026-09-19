@@ -1,2 +1,2 @@
-///[Error:void|2]
-void y3I ( MZqp2_ [ ] gn ) { } interface Yr extends Z2 < T_ < T > > { public void w_g41 ( ) ; } interface BO < I > extends Y4 { public void r_1_4qGpV8 ( ) ; int c ( float [ ] [ ] y , BgIX74 ufj5 , JX sc ) ; } interface BG { public void jJx__ ( ) ; public char b_ ( int gb ) ; }
+///[Error:sd2|2]
+interface Sf extends YZ7b9i < C > { } interface Z9O6 < R > extends ZG < K > { } class G_U < B > extends H_ < T > { static private void egX5gY ( ) { F0948k o = true % - true , b = false , y4VG ; P w , y , a01 ; } } class JC08 extends DUJ < Ef < G > > { } sd2 class C_ < F > { static public void f2 ( char [ ] s ) { } } interface K__St_ { char [ ] vh_ ( ) ; void f ( XPV g4 ) ; public int [ ] [ ] g ( I_2 g_ , char [ ] f_h ) ; }

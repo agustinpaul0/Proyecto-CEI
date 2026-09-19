@@ -1,0 +1,2 @@
+interface Fs < M > {
+}

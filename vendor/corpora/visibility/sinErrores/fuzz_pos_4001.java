@@ -1,0 +1,2 @@
+interface FJ9 {
+}

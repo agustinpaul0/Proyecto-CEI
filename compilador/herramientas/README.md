@@ -63,7 +63,7 @@ python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
 ```
 
 Escribe las nueve clases `PrimerosDeX` de `src/main/java/minijava/sintactico/primeros/`, una por
-sección de la gramática: una constante por producción —198—, con su producción citada al lado. **Se genera y no se edita a mano**: es lo único que
+sección de la gramática: una constante por producción —197—, con su producción citada al lado. **Se genera y no se edita a mano**: es lo único que
 garantiza que lo que el analizador usa para elegir producción sea exactamente lo que el verificador
 calcula sobre la gramática. Si se toca el `.g`, hay que regenerarlo.
 

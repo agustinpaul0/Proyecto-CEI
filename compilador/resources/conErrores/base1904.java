@@ -1,2 +1,2 @@
-///[Error:static|2]
-class W_ < T > extends NF { char v2f_h4 ; public static void c static public int ko ( ) { } public V_ ( ODQu oY , D w , C n ) { } }
+///[Error:(|2]
+interface Y7 { } interface Uc < F > { void f ( ) ; public void ( ) ; } interface A8 < V > extends W_ < YV < R > > { } class Tm < B > implements L__2 { boolean n ( ) { + false < + true + null ; } static void i ( ) { } } interface ICL < L > extends HD_ < Be > { } interface Ew < F > extends Eg3 < L84 > { char j ( ) ; }

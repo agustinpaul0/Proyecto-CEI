@@ -1,2 +1,2 @@
-///[Error:false|2]
-class TTj < B > implements V79 < F > { } false
+///[Error:W|2]
+W interface Dn6__ < K > extends Uji6u < H > { }

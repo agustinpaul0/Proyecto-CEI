@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface F_ extends { }
+///[Error:return|2]
+return ; interface K_s4d < K > { public void b ( ) ; } interface MS3 < L > extends A8_hkO { A9_g [ ] gw_ ( Vq8u < M > [ ] [ ] u , Ym mw ) ; } class LY implements Kp < C > { static public PQh_2 < IH > b ( F7 < Wc > [ ] [ ] [ ] m_m , int o , X [ ] ln ) { if ( - this % - 92354 != ! true ) var y = ! false ; else float oABf , o ; } } class Rk_ < V > extends Fh < FW > { void w ( L [ ] e9l1 ) { } private int a1_ = 2910e-43 == 62.f ; private P [ ] c ; }

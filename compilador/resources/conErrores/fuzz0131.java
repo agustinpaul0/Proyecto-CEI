@@ -1,2 +1,2 @@
-///[Error:zp|2]
-interface CRH_ { public A jJ ( U2 y ) ; N n_ ( ) ; } zp
+///[Error:}|2]
+class O9 { } class IL implements An3e_ { public static S b }

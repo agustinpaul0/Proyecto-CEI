@@ -1,0 +1,2 @@
+interface Y_ < E > {
+}

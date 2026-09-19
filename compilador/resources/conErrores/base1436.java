@@ -1,2 +1,2 @@
-///[Error:GF0o|2]
-GF0o
+///[Error:{|2]
+interface Uo_ extends { } class HQWu { }

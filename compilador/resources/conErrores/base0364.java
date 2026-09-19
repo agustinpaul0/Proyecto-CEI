@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Di2 extends HB { } class ZEb74_ < B > extends Tc__ { public static int [ ] [ ] jc ( N f ) { for ( ; ; ) while ( ! 84941 ) for ( ; ; ) { } this . aY -- ; } } interface R4 < L > extends PvO { Uv < > [ ] ds ( int t , QX < T > [ ] n , Y e , char p ) ; } class H___6 extends IS { } interface XIb8lZ { } interface AG extends F12 { } class QqA5Ny < U > extends I6P < K > { } interface VT_ { void x ( ) ; } class Iu < F > implements EV5He23 < J_ < C > > { void c7 ( ) { } } class INi6 < H > extends Oy { static void y ( ) { } void cl__ ( ) { ; } float [ ] eW ; void n ( ) { } }
+///[Error:A|2]
+A

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Hh < C > extends N_v < > { }
+///[Error:}|2]
+interface Nq extends OKN { } interface G_ { float [ ] }

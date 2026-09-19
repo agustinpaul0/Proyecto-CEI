@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Rd_ < A > extends OAh_0 { public void x ( Z g08t , O hv ) { char o = ; ; if ( false == + true ) int vz ; else char w ; } static private int q ( ) { + '2' = 834 || 981d <= null ; } } class UI < K > implements NVV { private static void iKj ( ) { for ( + this > 828f ; ; ) return ; } public P2F ( Q [ ] l , H z ) { while ( - '9' ) for ( ; ; ) K [ ] [ ] l ; } Z [ ] [ ] [ ] k ( ) { } boolean c ( ) { R [ ] [ ] p ; { for ( ; ; ) ; { } ; } for ( ; ; ) return ; } void l ( ) { return ; } void m ( char [ ] [ ] koI ) { } } class D_ < K > extends G_ { } interface WH < Y > { public Z sL ( float [ ] vt4U_n ) ; public R [ ] u_ ( P_ pS ) ; } interface HK < S > { } class Ov_ implements E__R2 < M > { }
+///[Error:<|2]
+interface < A > extends V_ < V > { }

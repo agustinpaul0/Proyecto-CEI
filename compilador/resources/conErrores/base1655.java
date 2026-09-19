@@ -1,2 +1,2 @@
-///[Error:p|2]
-class G2 extends P_ < I > { public static void xfG_ ( p , PE < W > s , float f4 , OT < Ag > u ) { ; } } class AJ9 implements B_c { }
+///[Error:<|2]
+interface < G > { void j ( Nb uU ) ; }

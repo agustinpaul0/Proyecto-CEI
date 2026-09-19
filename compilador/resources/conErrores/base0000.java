@@ -1,2 +1,2 @@
-///[Error:p3l_|2]
-class RWg extends Be { void vc ( ) { var f = - "" ++ ? + null = false : + this -- ? ! null : null ; } public static void gFQ ( H [ ] [ ] vPW ) { } J q ; P f__ ( ) { } static private W a8 ( ) { for ( true ; ; ) { return ; } } } interface D_ extends G__i < C1T < D > > { } interface X_g < R > extends FO < Y7 > { public Z q p3l_ ; void y ( float [ ] m ) ; public void pF3 ( char [ ] [ ] v ) ; } interface DCr < P > { } interface Xg extends TB { }
+///[Error:P|2]
+P f__ ( ) { }

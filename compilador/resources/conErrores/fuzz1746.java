@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface X_0ic < A > { void c ( char ) ; public Of0_ < G7 > [ ] rPr ( ) ; }
+///[Error:}|2]
+class XH9y extends PF { } class A_ < O > implements D1 < S > { void p }

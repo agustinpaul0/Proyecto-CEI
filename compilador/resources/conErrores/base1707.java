@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface EK extends Y_ < J > { } class O_ extends OF { static private B84 s ( boolean r ) { } } class < T > implements VZ { }
+///[Error:G50|2]
+class T2s extends CE_tp2_pj < T > { static public void y ( Kh [ ] [ ] [ ] [ ] [ ] hzj ) { } } class Y_ extends P_ { private H [ ] h_D ; static void k_5 ( ) { } } G50

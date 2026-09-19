@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface O8 extends T12 < U > { } interface F7 { void or ( ) ; void n_G ( K_ < D__ < Gy > > zc , R tg ) ; public void i ( ) ; public W4 < X > d ( ) ; public void s ( Y m , Ip < Lt54OX8 > x8 , F t , Wc_Vt_ p , N [ ] b8U ) ; boolean void m_ ( Q o_ , char [ ] o , boolean e__G ) ; void z ( int or ) ; public void tu25 ( int b ) ; void z ( ) ; } interface Vazv extends Wp < I__rz > { void y5 ( Z [ ] e2 , boolean g_S , Kl7 < G > x2 , char r_i__ ) ; public void u ( boolean m ) ; int f3 ( ) ; public int [ ] [ ] zZs_ ( M [ ] [ ] h ) ; } interface KR_Y_D < O > { }
+///[Error:Ka|2]
+interface U6 extends Cw8 { } Ka interface OP < T > extends C10 < R86Ly03dP_ > { }

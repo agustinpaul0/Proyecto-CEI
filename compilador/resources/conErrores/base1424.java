@@ -1,2 +1,2 @@
-///[Error:A_|2]
-A_
+///[Error:public|2]
+class Ky < G > implements Ur < Y > { } public void ji2b ( ) ; class Pf < C > { }

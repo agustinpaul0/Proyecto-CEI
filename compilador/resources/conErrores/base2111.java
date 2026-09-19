@@ -1,2 +1,2 @@
-///[Error:V|2]
-class K_D extends A_ { static private void V }
+///[Error:<|2]
+interface FI2 < O > extends P0 < KS2z < < L > > > { }

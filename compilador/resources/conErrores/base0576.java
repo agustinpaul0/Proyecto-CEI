@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface G2 < C > { } void
+///[Error:}|2]
+class Mm_9 < B > { static void }

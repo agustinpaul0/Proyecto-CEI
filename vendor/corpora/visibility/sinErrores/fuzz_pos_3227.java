@@ -1,0 +1,3 @@
+interface Ac {
+boolean j ( ) ;
+}

@@ -1,2 +1,2 @@
-///[Error:j|2]
-interface Mf < H > { } interface H_ < I > extends GiD { public void fJ ( j ) ; public S [ ] [ ] e ( ) ; }
+///[Error:[|2]
+interface H_0 < S > { [ ] [ ] d ( ) ; }

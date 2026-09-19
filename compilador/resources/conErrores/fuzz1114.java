@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface J3T < Y > extends Z_ < F_ > { } interface X14 extends { public int n ( ) ; void p_J ( float [ ] v ) ; }
+///[Error:I|2]
+interface ON extends M_4U < A > { } I interface Z_N { public char [ ] [ ] f ( LqS < H > j ) ; }

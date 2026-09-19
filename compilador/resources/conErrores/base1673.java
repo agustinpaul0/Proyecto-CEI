@@ -1,2 +1,2 @@
-///[Error:static|2]
-static public void h ( ) { int q , g1__ = + null ; }
+///[Error:}|2]
+class Mb < V > { Ta }

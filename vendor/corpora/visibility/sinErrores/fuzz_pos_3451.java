@@ -1,0 +1,2 @@
+interface JX_u {
+}

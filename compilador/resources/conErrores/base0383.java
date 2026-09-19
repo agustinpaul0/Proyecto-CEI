@@ -1,2 +1,2 @@
-///[Error:B|2]
-B
+///[Error:>|2]
+interface KZ < > { void j ( Nb uU ) ; }

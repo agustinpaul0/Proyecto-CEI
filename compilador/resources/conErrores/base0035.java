@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface BU1_r < L > extends G18 < S > { } class E2 { } interface U_ < J > extends { } interface QG { } interface Ns < S > extends YIc < M3 > { public void x ( ) ; } class B1__s < Q > { }
+///[Error:w|2]
+class KGnp_ < G > extends EG < T > { } interface Mf extends L_H { public w ( ) ; char [ ] [ ] x ( ) ; void a4 ( ) ; } class Qs_ < E > { static private OlQ [ ] [ ] [ ] [ ] [ ] l_ ( ) { } public static Ar m ( ) { } } interface Lb0 { void l ( ) ; public Ufwq < K0 < EX < P1 > > > u4t ( ) ; void l ( X4R < F_ > [ ] t , L [ ] [ ] n , char mF , U__28_u9 f ) ; } interface Bu { void i ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Fk extends Q_ < > { } interface EX { } class RD < W > implements O0 < G_1vg > { }
+///[Error:[|2]
+interface Gp < J > extends B_ { C [ ] [ ] [ ] b ( E [ ] g , [ ] o ) ; } class KqkNX < Q > implements Wk { static void f ( ) { } }

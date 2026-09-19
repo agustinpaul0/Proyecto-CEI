@@ -1,2 +1,2 @@
 ///[Error:(|2]
-interface Y4 { } ( Z [ ] t )
+class JE < J > implements Z0_nR { private static Z [ ] [ ] ( ) { } void t ( ) { } }

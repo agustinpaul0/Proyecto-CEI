@@ -1,2 +1,2 @@
-///[Error:(|2]
-class Hy06W < G > implements Yd < Y > { void n ( ) { } static void ( ) { ( - this -- ) . c5 ( ) ++ ; } }
+///[Error:<|2]
+< B_ > class QS { private void pu ( E q , N_4 < QdX > [ ] [ ] f , I [ ] [ ] j , boolean c ) { } }

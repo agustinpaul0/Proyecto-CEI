@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface V11_q < I > extends < Z > { }
+///[Error:)|2]
+class Cs_ implements Jto { static void c ( boolean [ ] [ ] q , Z24yc56b3_ a , ) { } }

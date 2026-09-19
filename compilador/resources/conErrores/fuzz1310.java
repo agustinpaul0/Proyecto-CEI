@@ -1,2 +1,2 @@
-///[Error:X1c|2]
-X1c
+///[Error:<|2]
+class < T > implements PKh < Z > { } class D7 < R > { }

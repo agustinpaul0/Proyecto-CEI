@@ -1,0 +1,2 @@
+interface Uh < O > {
+}

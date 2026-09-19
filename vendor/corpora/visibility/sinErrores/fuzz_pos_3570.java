@@ -1,0 +1,2 @@
+interface AK_ {
+}

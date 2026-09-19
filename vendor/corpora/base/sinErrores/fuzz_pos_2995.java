@@ -1,0 +1,2 @@
+interface IV < X > {
+}

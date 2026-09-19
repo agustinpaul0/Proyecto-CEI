@@ -1,2 +1,2 @@
-///[Error:(|2]
-class KL_N_S implements Bl < L_ < I > > { S0 [ ] [ ] jiRldb85 = - I7M . zHR ( ) . w5g % false + - C8 . q ( ) . op ; R d9EA ; } interface Hy < Y > { public S ( ) ; } class E_9x { }
+///[Error:a7833|2]
+class Yx < I > { static float i a7833 { int f , b ; } } class W72YL < U > extends Wgiw4 { } class DD implements T__rmN < X5I > { }

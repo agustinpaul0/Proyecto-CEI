@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface B_502_4 < L > extends Y4 < Pv_ > { M [ ] [ ] f9j ( char [ ] [ ] m ) ; } class O8 < J > implements Emt < E > { static int [ ] h ( ) { } public static F8 < R > [ ] x ( J u ) { if ( "" -- ) for ( ; ; ) + null ; } }
+interface B_502_4 < L > extends Y4 < Pv_ > { M [ ] [ ] f9j ( char [ ] [ ] m ) ; } class O8 < J > implements Emt < E > { static int [ ] h ( ) { } public static F8 < R > [ ] x ( J u ) { if ( "" -- ) 33260 ; else ! 92784 ; E f ; { } } }

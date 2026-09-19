@@ -1,2 +1,2 @@
-///[Error:e9|2]
-interface GF0o < D > { public e9 ( Z_ < OEt < A > > m ) ; }
+///[Error:u__|2]
+interface M_ extends Dr_s9 { u__ ( char [ ] [ ] c ) ; }

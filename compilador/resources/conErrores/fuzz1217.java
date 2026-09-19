@@ -1,2 +1,2 @@
 ///[Error:extends|2]
-extends Od9u_
+interface extends PV < Z > { }

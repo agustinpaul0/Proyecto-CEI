@@ -1,0 +1,2 @@
+class SQZ5A {
+}

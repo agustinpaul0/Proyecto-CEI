@@ -1,2 +1,2 @@
-///[Error:z|2]
-class XVN implements CoqA < O > { private static z ( L_7 < UL < C_ > > fE_ , C6 s_ ) { return + false - null ; Q x , a , h , a ; var id = this ? - true : false ; } } interface AD7dj extends V3rMm { }
+///[Error:.|2]
+class K_ < G > { static private void f_5 ( ) { } public void j ( ) . o } class Oq < Q > { }

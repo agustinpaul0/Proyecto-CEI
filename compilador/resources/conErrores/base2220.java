@@ -1,2 +1,2 @@
-///[Error:true|2]
-interface L_ { } true
+///[Error:(|2]
+class S4_7_mi6 < W > extends UQ { QOL ( PH r ) { } private USmP ( Z z ) { } private DX_J0 ( F [ ] d8__1 ) { G [ ] p ; float [ ] a6_P , d , hL_0 , s_81f ; { } { } DT x ; } } interface T__ extends K___ < X > { public void q ( ) ; void ( ) ; public C [ ] [ ] [ ] r ( ) ; public B k ( ) ; } interface T9h extends S_H { void j__7 ( F a ) ; } interface A4 { void s ( O [ ] [ ] [ ] [ ] [ ] x ) ; public void yq8E ( ) ; } interface M_ extends ST_4B { public void w ( char [ ] [ ] gN ) ; } class X9 < W > implements I_h < MoNR < M9 < M > > > { } interface Ud { } class ME_ < M > extends PN { } class Nz7x < B > { }

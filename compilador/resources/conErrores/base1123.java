@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface JG53_ < M > { } class I_ < J > extends { }
+///[Error:[|2]
+interface LZ < D > extends SV1R < EJ___j < Q > > { public [ ] d ( ) ; }

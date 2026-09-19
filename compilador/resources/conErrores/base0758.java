@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Cu_c < W > extends K2K_9 < U_b < C > > { void m ( Ry < H > s ) ; public [ ] pP ( ) ; }
+///[Error:public|2]
+class Gv < A > implements E_8C_3v < B > { public CQ ( XJ [ ] jryTj6 ) { for ( '^' = true ; 263904 ; - true ) R_ h ; ; if ( + 9D ) { } } } class E8_ extends We { } class HS implements J_e3 { static void w ( boolean [ ] [ ] o_kx9 , char n ) { var y = true != - 9F ? null : ' ' ; } } interface C4 extends Ns < N > { } interface R_ < J > { int [ ] toW_ ( ) ; } public void e ( ) { }

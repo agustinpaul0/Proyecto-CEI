@@ -1,0 +1,2 @@
+class QiQ implements Sj {
+}

@@ -1,2 +1,2 @@
-///[Error:false|2]
-class A7 implements DS_ < I > { static private void false }
+///[Error:aR|2]
+class T3 { } interface G1 { public D c ( ) ; void w ( ) ; } interface Y_F extends BYy { aR ( ) ; public char [ ] d ( ) ; }

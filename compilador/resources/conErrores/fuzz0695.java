@@ -1,2 +1,2 @@
-///[Error:M|2]
-M u ; interface W9 { public void r4G ( ) ; int m ( ) ; void r_8 ( float [ ] [ ] t ) ; public char p_ ( Wk83nX30b [ ] [ ] nbB ) ; } interface CP < C > extends Hg64 { }
+///[Error:{|2]
+interface EVTM < E > extends { void wN ( ) ; } class C_ implements Kp_ < Z > { }

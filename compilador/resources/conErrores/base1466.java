@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface WwW { < T > [ ] m ( ) ; }
+interface C9 < O > extends AW2 < P > { } class IE implements < S > { }

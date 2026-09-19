@@ -1,0 +1,2 @@
+class Ksf < P > {
+}

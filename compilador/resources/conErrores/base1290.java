@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends CR
+///[Error:PxZ|2]
+interface LQ < W > { } class NfR implements Hd { } PxZ

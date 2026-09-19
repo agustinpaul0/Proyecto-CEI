@@ -1,2 +1,2 @@
-///[Error:T4_b|2]
-T4_b
+///[Error:H_|2]
+H_ interface E_ < M > { }

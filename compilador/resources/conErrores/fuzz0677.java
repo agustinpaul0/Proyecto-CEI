@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Nq extends OKN { } interface G_ { float [ ] }
+///[Error:ES|2]
+ES

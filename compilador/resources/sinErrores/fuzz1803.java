@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class F6 < A > extends Zu_jx < QHI_ < BLt_i9 < Vt < AJI4 > > > > { } interface HFj < H > extends PC < O > { public H_0z dY ( ) ; void g ( XXmq__V_ < V > [ ] [ ] e ) ; } class Y56 < Q > { LD < U > [ ] [ ] k_ ( Go g3 , boolean [ ] [ ] n ) { var v_h97 = '\r' ; for ( ; ; ) true ; { { } ; ; } ; } } class IMdna < Y > extends FO < IG7Y0 > { }
+class F6 < A > extends Zu_jx < QHI_ < BLt_i9 < Vt < AJI4 > > > > { } interface HFj < H > extends PC < O > { public H_0z dY ( ) ; void g ( XXmq__V_ < V > [ ] [ ] e ) ; } class Y56 < Q > { LD < U > [ ] [ ] k_ ( Go g3 , boolean [ ] [ ] n ) { var v_h97 = '\r' ; { Go [ ] [ ] bz1cW0_dna ; } R [ ] lg , cX ; } } interface TD < M > { }

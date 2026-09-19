@@ -1,2 +1,2 @@
-///[Error:,|2]
-class J8uP implements Cg < K > { } class Kv implements Q_9 { static private void u ( B j90w ) { } S g ( boolean [ ] [ ] p , V l , int [ ] [ ] qx9 ) { for ( + '\'' <= - true ; ; ) char [ ] , bC , t ; return ; } private static boolean uV9 ( ) { } static GK g ( E__2 [ ] hj ) { } static private float o ( S_ s_9_T ) { N [ ] [ ] fl_9 ; Q ue_P , c , s_h , e ; } }
+///[Error:char|2]
+interface Sf extends YZ7b9i < C > { } interface Z9O6 < R > extends ZG < K > { } class G_U < B > extends H_ < T > { static private void egX5gY ( ) { F0948k o = true % - true , b = false , y4VG ; P w , y , a01 ; } } class JC08 extends DUJ < Ef < G > > { } interface H_h { public V_ < O > [ ] sd2 ( H d , float pv ) ; } class C_ < F > { static public void f2 char [ ] s { } } interface K__St_ { char [ ] vh_ ( ) ; void f ( XPV g4 ) ; public int [ ] [ ] g ( I_2 g_ , char [ ] f_h ) ; }

@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface MW < P > extends K0 { public void e ( char [ ] , R [ ] [ ] [ ] [ ] [ ] [ ] pqF , D b_ ) ; public void e ( ) ; } interface G_ { public Kq [ ] [ ] [ ] jFn ( ) ; }
+///[Error:<|2]
+class HX57 extends Li < Y8 < J4 > > { private int u = + i -- ; static void s ( R [ ] h8 ) { } } class I0 < C > implements < C > { }

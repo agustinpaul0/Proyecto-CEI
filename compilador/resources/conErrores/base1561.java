@@ -1,2 +1,2 @@
-///[Error:{|2]
-class CLH_2 extends { }
+///[Error:[|2]
+class Ad_8 extends GO { } [ ]

@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface L5 extends Y_ { public [ ] [ ] [ ] [ ] g ( ) ; O [ ] [ ] ro6 ( boolean o , N [ ] a , int [ ] [ ] [ ] [ ] [ ] n ) ; }
+///[Error:}|2]
+class L9 extends Vc < Aj < U_h < P_ > > > { void jk ( ) } class H_G < A > { void ypz ( G1 mQ07X ) { } } class G_ < V > extends M9_0 < D > { }

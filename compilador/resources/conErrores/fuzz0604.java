@@ -1,2 +1,2 @@
-///[Error:W|2]
-class P__u5_R4_ < N > extends Cs0_S { } W
+///[Error:<|2]
+class < H > implements AM < O > { }

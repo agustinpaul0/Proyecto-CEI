@@ -1,0 +1,3 @@
+interface Pw {
+void v ( ) ;
+}

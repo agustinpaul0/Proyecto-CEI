@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface QjeE4 < O > extends U_N { public void tI_ ( ) ; } class QLF < K > extends QM { } interface I0_ < H > extends J_UJn { Hf___ < T > [ ] x ( I [ ] [ ] qi ) ; } interface KO_ extends V_ { } class X2_ < N > { } interface L_j6 < K > extends O5 < H > { void w ( [ ] v_9 ) ; }
+///[Error:L_|2]
+interface W_ extends P9 { S g ( ) ; } interface D_ < V > { int [ ] [ ] [ ] z_ ( ) ; } interface YZ { } class WV implements XG { X t4J_t ( L0T_ < WB > [ ] [ ] k ) { J_ . d ( ) ; while ( - true ) { ; } 98466120 ; { { } } } private static void zD__ L_ h }

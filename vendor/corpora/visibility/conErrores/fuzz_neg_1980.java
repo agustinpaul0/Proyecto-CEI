@@ -1,0 +1,9 @@
+// [Error:C|9]
+class X0 < A > implements Y9 < P_gZ > {
+}
+class Z_6Q0 extends JI {
+}
+interface R7 < W > extends W_4 < G > {
+void u ( ) ;
+}
+C

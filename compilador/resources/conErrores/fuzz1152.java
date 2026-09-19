@@ -1,2 +1,2 @@
-///[Error:--|2]
-class U_q implements Iw { private static void x__7_ ( ) { var u = "{a8aF" . uM2QZ ( ) -- ? - "" = false : + -- != 5794 + - false ; var x = '\r' ; } private boolean [ ] [ ] w_ ; } interface C_ { }
+///[Error:)|2]
+interface K5 < I > extends A_ { public void u ( E ) ; public void y ( M8 < T > i , C [ ] bDwc , P c_ , char [ ] [ ] s_9 ) ; }

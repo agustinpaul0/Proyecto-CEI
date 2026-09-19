@@ -1,2 +1,2 @@
-///[Error:}|2]
-class TQ_ < C > { static public void h ( ) }
+///[Error:>|2]
+class Dt < A > implements Qn < > { }

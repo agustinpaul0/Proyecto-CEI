@@ -1,2 +1,2 @@
-///[Error:!|2]
-class Nc_C3 { float k ( ) ! } class Oo { }
+///[Error:<|2]
+< N > interface FE_ extends Q_ < S > { public void l ( ) ; N__ [ ] c ( ) ; } class VS < U > implements PR7 < Ip_3 > { }

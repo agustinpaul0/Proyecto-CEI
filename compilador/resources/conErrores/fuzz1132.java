@@ -1,2 +1,2 @@
 ///[Error:}|2]
-class RC < R > { } class P8A3_SC implements Om_ { void d ( ) { } } interface H_ { J }
+class Z_ < F > { } class C8Y extends Va < A > { static void p19 }

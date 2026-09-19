@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Z8 < E > extends Q3 < V > { char l ; void u6 ( ) ; }
+///[Error:Y8|2]
+Y8 ( int n0TyZ5M ) { } interface C_ < X > { void l ( ) ; public void oUc ( O b0m066 ) ; }

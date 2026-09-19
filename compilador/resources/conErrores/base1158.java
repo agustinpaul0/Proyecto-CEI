@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements QS interface Nl < R > { }
+///[Error:Cg_6|2]
+interface I2 extends S_ { } Cg_6

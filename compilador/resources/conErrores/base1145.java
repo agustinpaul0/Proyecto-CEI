@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface K2U_9i { void yR ( ) ; } class LQ { static private void w ( Eg0 [ ] n994_ , int [ ] [ ] [ ] [ ] hT , boolean [ ] [ ] f , W [ ] [ ] c , boolean [ ] k , char [ ] v ) { { for ( ; ; ) M a_ ; C l , yV__ , c__ , psL ; } for ( var c_ = null ; ; ) 'q' > - 3157 ; } public static void tusHZ_ ( ) { } } class MA extends J_ { } interface C_ extends AJm < J > { O82 < I > [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] y_ ( ) ; } interface Vx extends HM < J > { char s ; public void i ( M_X [ ] o ) ; } class TkI8ZyI3 implements YX < N > { } class JJ < L > { } interface A3_ < Y > extends AV { }
+///[Error:{|2]
+interface { } class S43vD_A_ < D > implements Vp_ { }

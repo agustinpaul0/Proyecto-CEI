@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface E42 < O > extends Sg5b__3S { public void vBo ( C m57 ) ; public char m_ ( V [ ] pP ) ; } class VN extends V7w { } class L_ extends Az3 { } interface Y0 < D > { public Wd q ( ) ; public int n ( int a , Z l ) ; public char s ( ) ; } interface extends L_l3 < J_ < R > > { }
+///[Error:C|2]
+class Rm extends C { H [ ] f ; } class B_3FIb_ < T > extends Fa9 { public static L q ( boolean bm8 , I le ) { } static private boolean [ ] [ ] [ ] s9f ( U l_ , Jp < U_ > y ) { while ( 73F = null / ! null ) boolean h6 = false , l2 , d2 ; } private void n ( ) { true >= true ; return ; } }

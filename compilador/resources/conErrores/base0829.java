@@ -1,2 +1,2 @@
-///[Error::|2]
-class I8 < F > implements NbE33 { static void g ( ) { char [ ] e7 = ! null % ! Z_ . v3__ ( ) ++ ? this -- + - 7234346 % + true = ! false : "" ? true : - null ; var i = - this . i ( ) ? : + "" ++ ; } public boolean [ ] k94 ( ) { for ( ! 7273 ; ; ) var l = - null ; R [ ] j_ = + true ; } static void oP ( P [ ] x ) { F7__k . dM ( ) . ft_ . jBaa8_D7 . x ( ) ++ = + true ; J dvWi , y_1 ; } char tr ( U3 < S3R > [ ] w ) { ; for ( ; ; ) return ; } } interface Z_ extends F_V < E > { }
+///[Error:X1|2]
+class AyG < O > extends SRE < Y > { } X1

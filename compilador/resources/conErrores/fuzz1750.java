@@ -1,2 +1,2 @@
-///[Error:M2|2]
-interface Z_ { } M2
+///[Error:boolean|2]
+boolean h ( ) ; public G_ [ ] [ ] [ ] [ ] [ ] wW ( ) ;

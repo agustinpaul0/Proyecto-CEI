@@ -1,2 +1,2 @@
-///[Error:this|2]
-class QY_ < G > extends S9_yP { static void y ( ) this } class C_ implements T0 { N7W1 ( int wIg_ , I1 [ ] s ) { } } class U_ < E > extends D8 { }
+///[Error:Z_w|2]
+interface N_g { public void m ( D [ ] [ ] p , Sv_W9MP52 < B > tI_ , float [ ] [ ] [ ] d_J1 , J [ ] [ ] [ ] u4 , P [ ] f ) ; } class Hj_ < I > extends D1 { } Z_w < SI < J > > interface Ft_ extends W8C < Z > { } class XJ implements VY_ < F > { } interface N84 < E > { void z ( ) ; boolean soW ( ) ; char z ( ) ; } interface Gn < O > { }

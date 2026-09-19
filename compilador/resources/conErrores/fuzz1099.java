@@ -1,2 +1,2 @@
-///[Error:t|2]
-class Tr3 { public static t ( int p , char [ ] [ ] [ ] a1_H , W [ ] [ ] lb ) { + QyD5H . ut3 ( ) -- && "" . x6 . k ++ != + 3888 = + null ; ; I i_ = true <= - null ; for ( ; ; ) { for ( ; ; ) ; ; } } }
+///[Error:e|2]
+interface Bu < A > { public e ( ZM_P [ ] [ ] [ ] ls ) ; void l_8d ( ) ; } class P1C_I7 < J > implements NK < N > { } class A4 < P > implements Vv6 < F > { }

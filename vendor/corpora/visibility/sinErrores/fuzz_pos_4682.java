@@ -1,0 +1,3 @@
+interface YK {
+void h ( ) ;
+}

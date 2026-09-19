@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface U_ extends A___e < P > { void f ( boolean g , R [ ] [ ] [ ] g ) ; void l_ ( ) ; } class JCg { ZCiG_ < F_dOB > [ ] l ( float [ ] b ) { var f = + this * 3757 ? false : ! false ; } boolean [ ] [ ] [ ] nw ( UYY < U > y ) { T [ ] [ ] [ ] pi = - 3.56 , g8 = - null , f ; for ( ; ; ) { } var q_h = - null ; "" . o -- ; E [ ] fC_ , sy_____0 , i ; } public boolean [ ] [ ] [ ] v ( E [ ] [ ] d_ ) { } } class HB implements M_ < > { static private void k ( boolean [ ] q , C5 uNp8j , T [ ] [ ] [ ] [ ] a1 ) { boolean se_ , q ; Ox3AW6 < X > e = ! false ; { z_ -- ; } return ; } private static void m ( I602 < L > [ ] j , boolean [ ] [ ] ao ) { } VH < Q_ < I > > aGQI = + J0 . n ( ) . fJ ++ % ! 81d ? + null > + null : - '\b' ; private G__ < O > [ ] [ ] [ ] [ ] rIzT ( ) { P x6i , y ; } } class Du < J > { public void nvz_f ( ) { float [ ] mt ; ; } }
+///[Error:{|2]
+class RP extends { }

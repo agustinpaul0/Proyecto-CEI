@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Lp < T > { } class XR < K > { } class M_g < D > { static public char q_B ( L_F [ ] y ) { for ( ; 327.085 < true ; - null ) if ( true || + null ) return ; else for ( ; ; ) for ( ; ; ) ; Q1_NT < T > [ ] s_4 , p , i_O , c_ ; return ; } } interface OF { void s5_ ( P n3 ) ; int [ ] [ ] s ( N o1 ) ; } class H_ implements EI < N > { } interface G3 < Q > { public void ujT ( Z [ ] n , int [ ] rn ) ; I hx ; } interface XA extends Xh < O_ > { } interface S1f < E > { } interface Fo < R > { }
+///[Error:C_Bh|2]
+class WI extends Qb { } C_Bh

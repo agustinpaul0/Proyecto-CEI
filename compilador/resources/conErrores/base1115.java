@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface V_r { I_T [ ] t ( ) ; K_ < H > g2S ( boolean y7_G , float [ ] [ ] xGa , int s4 , V g ) ; } class X_ < K > { } interface Yg_ extends B8V { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] ( char [ ] l5 , float [ ] [ ] [ ] [ ] m , W [ ] a_ ) ; } class B6 implements SJk_kl__ < Ibw_ > { } interface GG6 < E > { }
+///[Error:[|2]
+interface NaU < R > extends JT_q { void a5tl9G ( ) ; public void j ( ) ; } interface Zp3a < D > { public char [ ] q ( ) ; } class L_ extends A0W < G > { public U b ( ) { } } class J_ { static V1Au < JO > a ( ) [ ] [ ] }

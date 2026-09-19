@@ -1,0 +1,2 @@
+interface KG_ {
+}

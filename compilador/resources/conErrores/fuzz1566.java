@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Ntr implements R5O < Q > { static void ah ( ) { } } interface A6 < W > extends OZN_P_ < Lu < T > > { } class P3 extends DkOCJ { private H8 < G > [ ] [ ] [ ] [ ] k3 = - RM . u ( ) . a ( ) < false ; } interface WlH4 < H > { public void i ( M [ ] hK4 , int w_C_ ) ; } class Q7 < J > implements V4E < M4 > { private static [ ] [ ] i__ ( float h7wK ) { } static W_ a ( Q [ ] [ ] t_ , int r_2 ) { { Y5 [ ] [ ] a_ ; } ; return ; } static void n ( L4 [ ] w_ , char z ) { } } class Ge_er_ extends XGi8V_b_3 < C > { static public void r ( O [ ] eu ) { } static int [ ] [ ] ox ( Js [ ] bN_r_ ) { } } class A_ { }
+///[Error:Z_|2]
+Z_ interface LJ < F > extends Bo1 < S > { K8__ z ( boolean [ ] lP_ ) ; public Jia t ( ) ; } interface EiE { public int [ ] [ ] q3__z_ ( ) ; } interface Gy < N > { public void zwP ( H zK , GQ29pP < Y_ > v , S jp1b9 ) ; }

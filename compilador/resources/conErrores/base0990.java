@@ -1,2 +1,2 @@
-///[Error:tm|2]
-class Z_ < B > { } interface X_K { } class CHb < C > implements Cr { static private void d ( tm , int k ) { } } class Sb extends C_ < Z > { private Q h ; void h_cI ( XI w1_ , boolean h , char [ ] w ) { F [ ] [ ] [ ] [ ] lTs ; for ( ; ; ) ; } static public void n ( K h , C g_ ) { ; } public static void k0 ( int xK ) { } } class Bz_f implements Z_IFr1 { private char uhF = true ; } class LZ { }
+///[Error:implements|2]
+implements Ze interface Fiw < E > { }

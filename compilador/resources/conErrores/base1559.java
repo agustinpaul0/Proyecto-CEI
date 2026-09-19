@@ -1,2 +1,2 @@
-///[Error:M|2]
-class F_ extends M6k { } M
+///[Error:{|2]
+class CLH_2 extends { }

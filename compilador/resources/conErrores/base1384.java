@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends WS
+///[Error:I4luq|2]
+I4luq

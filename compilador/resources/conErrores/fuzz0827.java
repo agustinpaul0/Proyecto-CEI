@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Bfd { char eE ; } interface V_ < F > { public char h ( int [ ] l_5 , float fP ) ; void } interface K_YK_5 { }
+///[Error:extends|2]
+interface NBr { } interface M_T extends NQ < Z > { } interface K__ < R > { } class XXw < D > { } interface extends HA24G < J > { B5Q6 r ( K [ ] r , R [ ] [ ] [ ] [ ] [ ] [ ] cET , Vh_ [ ] [ ] lr7 , int [ ] [ ] l4 , int [ ] [ ] [ ] l ) ; public void gk ( int x ) ; J____Z_ q54__h ( B [ ] [ ] [ ] kL , M odoR_ ) ; }

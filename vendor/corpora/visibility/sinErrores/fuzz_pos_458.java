@@ -1,0 +1,2 @@
+interface HA < B > {
+}

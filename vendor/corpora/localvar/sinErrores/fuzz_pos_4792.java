@@ -1,0 +1,3 @@
+class Zf {
+boolean vGE ;
+}

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface OK extends Kb < < EH1_V > > { }
+///[Error:>|2]
+class OE_ < > extends J_ < W > { }

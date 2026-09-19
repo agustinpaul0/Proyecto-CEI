@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class implements Z4 { } class Op { }
+///[Error:e|2]
+interface Zm7B3 { void r ( e , char o6VQ_ ) ; }

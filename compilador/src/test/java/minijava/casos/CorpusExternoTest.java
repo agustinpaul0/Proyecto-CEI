@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 // Verificación diferencial contra un corpus AJENO: fuentes generados por fuzzing
-// a partir de otra gramática de MiniJava, en `vendor/tests/`. Es el mismo
+// a partir de otra gramática de MiniJava, en `vendor/corpora/`. Es el mismo
 // argumento que `comparar_con_gramatica.py` —dos implementaciones independientes
 // tienen que coincidir— pero con una gramática que no salió de este proyecto, así
 // que no comparte ni siquiera las decisiones.
@@ -26,26 +26,28 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 // compartió para que cada uno pudiera contrastar su analizador. No son material de
 // este proyecto: acá sólo se corre el compilador contra ellos.
 //
-// Los casos escritos a mano de ese corpus (55, los `ext*` de resources/) ya están
-// importados y se verifican con el resto. Acá van los generados, que NO se copian
-// ni se versionan.
+// Los casos escritos a mano de ese corpus ya están importados —los `ext*` de
+// resources/— y se verifican con el resto. Acá van los generados, que se corren
+// desde vendor/ sin copiarlos al corpus propio.
 //
-// El corpus original traía 30.000 casos y se podó. Se sacaron los que divergían
-// por la lectura de la barra invertida en un literal —Aspectos Léxicos §2.3.3 da
-// una regla POSICIONAL y no de apareamiento, así que acá el literal no cierra—,
-// los que usan construcciones que la gramática de este proyecto no tiene, y
-// después, ya revisados uno por uno, los que divergían por construcciones que su
-// gramática no tiene: los genéricos al instanciar, el logro de Visibilidad
-// Mejorada, y un puñado que las dos rechazan en distinto token. Ninguno escondía
-// un defecto propio.
+// El criterio es el del tester estricto: el PRIMER código que emite el
+// compilador tiene que ser el que el caso declara. Con Modo Pánico, buscarlo en
+// cualquier parte de la salida deja pasar casos en que los dos analizadores
+// rechazan en tokens distintos y la recuperación termina coincidiendo.
+//
+// El corpus se podó, y cada categoría de la poda está justificada en
+// `vendor/corpora/CREDITOS.md`: el logro MiniLambdas, los casos repetidos por la
+// semilla, la lectura de la barra invertida en un literal, y las construcciones en
+// que su gramática se aparta de la de este proyecto. Ninguno escondía un defecto
+// propio.
 //
 // El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
 class CorpusExternoTest {
 
     private static final Path CORPORA =
-            Path.of("..", "vendor", "tests", "resources", "parser", "corpora");
-    private static final List<String> GENERADOS = List.of("base", "localvar");
+            Path.of("..", "vendor", "corpora");
+    private static final List<String> GENERADOS = List.of("base", "localvar", "fors", "visibility");
 
     @Test
     void elCorpusExternoNoRevelaNingunaDivergencia() throws IOException {
@@ -90,14 +92,16 @@ class CorpusExternoTest {
     // línea. El corpus generado usa `// [Error:…]` y el escrito a mano `///`, así
     // que se saca el prefijo y los espacios.
     private static boolean coincide(String fuente, String salida, boolean valido) {
-        if (valido) {
-            return salida.contains("[SinErrores]");
-        }
-        return salida.contains(veredictoDeclarado(fuente));
+        String declarado = valido ? "[SinErrores]" : veredictoDeclarado(fuente);
+        return declarado.equals(primerCodigo(salida));
     }
 
     private static String veredictoDeclarado(String fuente) {
         return fuente.split("\n", 2)[0].replaceFirst("^/+", "").trim();
+    }
+
+    private static String primerCodigo(String salida) {
+        return salida.lines().filter(linea -> linea.startsWith("[")).findFirst().orElse("");
     }
 
     private static String leer(Path caso) throws IOException {

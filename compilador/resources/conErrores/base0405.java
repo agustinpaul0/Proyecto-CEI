@@ -1,2 +1,2 @@
-///[Error:y|2]
-interface F65XI extends Y9hX { void w ( ) ; W q_H ( ) ; void i ( W [ ] [ ] u_w , y , X [ ] [ ] [ ] [ ] [ ] [ ] [ ] l4 ) ; } interface QG { void wO ( I t , Z [ ] apO0 ) ; } interface L0 extends S_T { public N9A [ ] [ ] a ( ) ; }
+///[Error:<|2]
+interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } < B >

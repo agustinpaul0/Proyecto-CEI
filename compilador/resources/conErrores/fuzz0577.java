@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class Bx_ < U > implements My2enzVJ < D > { float w_2_co_ = S6_ . s ( ) . s [ false ] -- >= - T8 . n7 ( ) ++ > + s -- || ! "7" == 'p' ; } class Pr_ < T > extends M7 { } class P6 extends GQq < P > { public static G [ ] [ ] [ ] r3B ( ) { boolean [ ] [ ] [ ] [ ] d = '\f' , t = false , jM , a6 , h ; { this ++ ; } } } extends YE6tT interface R9XB < Q > { public Jl < I > kEt_8k ( ) ; } interface M6 { } interface J8 < L > { }
+///[Error:%|2]
+interface Z7 < A > { void a0 ( char m ) ; public EK5 [ ] t ( ) ; public boolean i ( ) ; void z ( ) ; void nz ( ) ; public void r66 ( FA < C7 > [ ] p , float h ) ; } interface H_l extends O5__ { public void w ( ) ; public Cs < T > [ ] ak ( D x ) ; void x ( ) ; } class B_X extends H_ < B9 < H > > { char [ ] oK = % + Gu_7 . g2_ ( ) -- + ! this ++ - AF . b ( ) . ur ++ ; private static boolean [ ] d58cZ3k ( ) { } }

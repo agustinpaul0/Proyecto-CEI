@@ -1,2 +1,2 @@
-///[Error:)|2]
-class LnFWb < X > extends WJ { private static void h ( H_X < E > [ ] [ ] [ ] [ ] h ) { ; return ; } K p8 ( int [ ] [ ] lI , H [ ] [ ] [ ] [ ] e9 ) { } static public char [ ] y ( P f_ ) { } private boolean [ ] a = - 0e7 ; } class Dz extends Z_ { void m_ ( Z c ) { while ( DD . j ( ) . m6 -- ) while ( 545223.464F - null ) int j_5 , p__S , w ; } public G p ; static void e ( ) { } static private void t ( AB [ ] pN_OT2 , Y_Z5__4 g ) { return + true ; } D [ ] h_ ; } interface L0g < C > extends A7 < D_ < Q > > { float [ ] [ ] [ ] [ ] iu ( char gD7 , E k , T [ ] a_Fl , T [ ] ) ; public void o ( ) ; }
+///[Error:false|2]
+false

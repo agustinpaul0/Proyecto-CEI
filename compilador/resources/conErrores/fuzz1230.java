@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Fd < F > { int f ; }
+///[Error:A_|2]
+A_ class R_ { }

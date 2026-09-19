@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface E5T4M2 < V > { } interface U1W < H > extends TZ < > { }
+///[Error:++|2]
+++ class N5S { } class WS < M > { }

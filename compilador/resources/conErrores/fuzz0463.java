@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements O6 < G8sw < RGuw < R_ > > >
+///[Error:)|2]
+interface Jw { void g9Xr ( char c ) ; } interface Sr < G > { public void m ( char a , M ) ; } interface VC8 < B > { } interface L2l extends W_ < Cs < Z > > { }

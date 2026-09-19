@@ -1,2 +1,2 @@
-///[Error:YZ9|2]
-class Oi implements Np_ { boolean rp9 ; } YZ9
+///[Error:o|2]
+o class Oq < Q > { }

@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class extends X_ { }
+///[Error:J_F3|2]
+J_F3 < Uz2 < BP62 < O > > >

@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Ad_8 extends GO { } [ ]
+///[Error:dG|2]
+class FM4R extends HL < Id < V > > { static public J u ( ) { } public R_ gg ( dG , float v3 ) { new H [ ] [ ] { } . q__l_ ( ) -- ; if ( ! false ) int [ ] uC7R ; else float cd_yH7ys0g ; { ; } } private YQ ( char [ ] [ ] [ ] hc ) { } } interface NK < F > extends A4 { public char [ ] [ ] [ ] [ ] h ( TjM [ ] j , N0 < Q > x ) ; public H uF ( char c , F4 < G > ruN3 , O p ) ; } interface Uq5b7O extends L0 < O > { char g1__ ( ) ; void i ( D qN , int [ ] uK5V , char oG_ ) ; } class RK < E > implements L78k < O1 > { public Jdf ( K w , int y , I [ ] [ ] y ) { } void l1F ( N_ y__DPR ) { { XfN [ ] x ; } } } interface Ul extends U_ { KU i ( ) ; } interface Q6y_ < C > extends SN < D_W < Y > > { public void a_ ( S__t < F > [ ] [ ] u , Q6S_ [ ] [ ] [ ] nJ , R [ ] [ ] bk28l ) ; void k_ ( ) ; } interface M_ { }

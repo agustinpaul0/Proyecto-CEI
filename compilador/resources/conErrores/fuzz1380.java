@@ -1,2 +1,2 @@
-///[Error:AZ|2]
-AZ
+///[Error:)|2]
+class Lp < T > { } class XR < K > { } class M_g < D > { static public char q_B ( L_F [ ] y ) { for ( var l = + null == true ; null ; false ) var tL4 = 802 ; while ( - this -- ) return ; } private static NT < D > [ ] [ ] s_4 ( ) { while ( false / + true ) ; int kp ; ; } } interface N3 extends Oz { boolean g ( ) ; int [ ] [ ] s ( N ) ; } class H_ implements EI < N > { } interface G3 < Q > { public void ujT ( Z [ ] n , int [ ] rn ) ; I hx ( ) ; } interface XA extends Xh < O_ > { } interface S1f < E > { } interface Fo < R > { }

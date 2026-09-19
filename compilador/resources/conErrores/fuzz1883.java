@@ -1,2 +1,2 @@
-///[Error:)|2]
-class N_ < W > extends X_ { void q ( boolean [ ] [ ] [ ] [ ] ) { ! "t" [ - true ] . g ( ) ? '.' : 425 ; } } interface MmS { }
+///[Error:<|2]
+interface PT extends OMI < M > { void i ( < YD_ < N > > d ) ; R [ ] b ( float [ ] [ ] w ) ; }

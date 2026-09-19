@@ -1,2 +1,2 @@
-///[Error:false|2]
-class QJS < F > implements R1wi < X > { } class WB_ < G > { public static char j ( ) { for ( ; 40700 != null ; ) + null + - 0460.5F ; ( false ) ; if ( + true ) { } } RB1 ( ) { } private static void q false }
+///[Error:Q|2]
+class KE < Q > implements I_U_ < B > { } class Q_ < T > extends Cz_t < K > { } interface K0 extends L9 { public char [ ] p ( ) ; public char [ ] [ ] [ ] t Q [ ] [ ] [ ] dQ ; }

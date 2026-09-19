@@ -1,2 +1,2 @@
-///[Error:return|2]
-class H_CN { static boolean [ ] x ( ) { } static private void return }
+///[Error:{|2]
+class AHh extends { void q_ ( int [ ] [ ] y ) { return ; ; return ! true ; } } class Q_ implements CS { }

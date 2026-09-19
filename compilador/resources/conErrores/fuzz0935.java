@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface S_ < I > extends Z_o < Ug < Pb < S > > > { void m19 ( float [ ] vf0h7_ ) ; public [ ] i ( ) ; } interface DG < P > { }
+///[Error:;|2]
+class R9 implements Bw < S > { } class U_ implements Ic < VB > { void l_ ( ) { return 'I' + null = ; } } class I__ < Q > { Q [ ] [ ] s_ ( ) { } } interface B_ { }

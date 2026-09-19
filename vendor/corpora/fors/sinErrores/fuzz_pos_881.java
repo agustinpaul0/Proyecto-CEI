@@ -1,0 +1,2 @@
+interface UN < K > {
+}

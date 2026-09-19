@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface J_ < L > extends Md { [ ] h__ ( H5 z ) ; }
+///[Error:PZ|2]
+PZ s_ ( int g5 ) ;

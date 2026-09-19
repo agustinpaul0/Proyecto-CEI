@@ -1,2 +1,2 @@
-///[Error:int|2]
-int [ ] i , int [ ] [ ] [ ] [ ] [ ] hD class Z3 < M > { }
+///[Error:public|2]
+public interface D28 < K > { }

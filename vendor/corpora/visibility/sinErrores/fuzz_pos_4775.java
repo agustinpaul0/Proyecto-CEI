@@ -1,0 +1,2 @@
+interface UX < T > {
+}

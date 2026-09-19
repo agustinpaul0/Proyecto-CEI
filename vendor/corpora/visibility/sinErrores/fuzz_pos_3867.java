@@ -1,0 +1,3 @@
+interface Ff {
+void kN ( ) ;
+}

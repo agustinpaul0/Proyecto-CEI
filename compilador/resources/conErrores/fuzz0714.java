@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Hm extends Z__g { } interface N71G8j { void ye ; }
+///[Error:+|2]
++ null interface VC < F > extends Ij { public void mbwB_R_ ( ) ; void t ( L z , int [ ] u ) ; } interface L4v < H > { }

@@ -1,2 +1,2 @@
-///[Error:O|2]
-class Ja implements W7 { X l_ = + G_ . u ( ) ++ ; } O class L_ < V > extends Kre < Y > { }
+///[Error:U7|2]
+interface NZ { public FJxkK_4 u ( ) ; int [ ] [ ] d ( P [ ] eX , U [ ] [ ] [ ] [ ] [ ] s ) ; } class Q42 < X > { } interface Ea_ < Z > extends C_w1j_ < P > { } U7

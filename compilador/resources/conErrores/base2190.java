@@ -1,2 +1,2 @@
-///[Error:+|2]
-+ new M [ ] { } . y [ ! null ] ++ interface Y_a { int [ ] [ ] c ( boolean [ ] [ ] [ ] q ) ; V [ ] [ ] h3 ( boolean [ ] [ ] v ) ; void maj ( ) ; }
+///[Error:H_Qd|2]
+interface VI < G > { } interface Gqq extends F5WK1Q { } H_Qd interface Pd extends N_g { void h39V ( DL8 < W_ > [ ] uZ , int [ ] ip , A [ ] i ) ; }

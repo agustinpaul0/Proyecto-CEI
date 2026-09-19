@@ -1,2 +1,2 @@
-///[Error:I|2]
-interface RL < F > { } class O_L < G > implements I9bC3npp2 < Y > { static private void I a ( ) { { KV < ZO > s ; { { } } } float [ ] [ ] [ ] [ ] cF = + true , xKc6 ; } }
+///[Error:void|2]
+interface He < D > { public void t ( V r_fk8_ ) ; public B_ < Yi > z ( ) ; } void

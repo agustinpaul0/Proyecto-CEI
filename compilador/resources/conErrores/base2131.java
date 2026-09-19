@@ -1,2 +1,2 @@
-///[Error:I|2]
-class Wz < Y > { } I
+///[Error:Q|2]
+interface JG53_ < M > { } Q

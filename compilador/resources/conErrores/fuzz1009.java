@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface P8T extends G4_ < Ea < L > > { public void ii_ ( ) ; void r ( ) ; } void cK ( GhBUx89 < W > [ ] [ ] g6 , U q ) ; interface U9 extends F0 { }
+///[Error:U_5|2]
+interface G7 < Y > extends T1 { public C [ ] [ ] [ ] [ ] [ ] ih ( ) ; } U_5

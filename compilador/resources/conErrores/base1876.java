@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface N43 extends C___ { void t30K ; } interface S_ extends VR__ImD4 < F_ > { }
+///[Error:.|2]
+class Bx6 implements KX < P > { public D [ ] b7 ; X_ . p_f ( ) . f1 ++ + 6f ; return ; }

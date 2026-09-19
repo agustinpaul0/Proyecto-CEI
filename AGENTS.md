@@ -48,6 +48,11 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
   `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso) y `testersSintactico/`
   (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso), todos en `vendor/`.
+- Material ajeno de un compañero: `vendor/corpora/`, el corpus de fuzzing de Giuliano Taormina ya
+  podado (el original es `vendor/corpora.zip`), que corre `CorpusExternoTest`. La poda y sus
+  motivos están en `vendor/corpora/CREDITOS.md`.
+- Lo que el profesor indicó explícitamente está reunido en
+  [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
 **Reglas del usuario para todo el proyecto**: SOLID, código modular (una responsabilidad clara por
 clase — sin límite numérico de líneas, ver [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md)),

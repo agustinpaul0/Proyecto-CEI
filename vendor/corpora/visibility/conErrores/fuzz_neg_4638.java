@@ -1,0 +1,16 @@
+// [Error:(|15]
+interface H_8QK < E > {
+}
+interface U_ extends E3 < Vt > {
+}
+interface ME_ extends I_gc < L > {
+}
+interface RY {
+}
+class V9 extends B8 {
+}
+interface T_ {
+char [ ] [ ] d ( ) ;
+void cpJ ( ) ;
+T ( JVSzi < I > t5 , X c ) ;
+}

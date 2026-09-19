@@ -1,2 +1,2 @@
-///[Error:S8|2]
-S8
+///[Error:}|2]
+interface O_ < C > { } interface DU { public void d ( ) ; } class Y_ { static private int h }

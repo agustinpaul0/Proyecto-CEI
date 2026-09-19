@@ -1,2 +1,2 @@
-///[Error:(|2]
-class Iq4 < B > extends WC < O > { static void ( ) { { { float z , h , b ; { } } P [ ] x ; var vI = + null ; } } } interface Xl < B > extends OU { public H_j < K > bA ( ) ; }
+///[Error:Q9|2]
+Q9 < H__a < SNG_ > > interface H1l { } class X_ { }

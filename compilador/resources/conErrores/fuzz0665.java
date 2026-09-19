@@ -1,2 +1,2 @@
-///[Error:uCR__|2]
-class Cs < E > implements YjF4r { static private boolean [ ] [ ] co ( float h , I_ i2 , char mSk_ ) { } } interface B0u < T > { } class Y0 { public DKS_ < R > dr ; } interface Lg < K > extends JgwG < P5_ > { uCR__ ( ) ; } class IA1 < N > { } interface Ks < B > extends GP < A_ > { } class BPid implements VI { float y = true ? true : - true ; } class Dtq5b extends Ey { } class Syz implements Ke < PpN < I_tI3 > > { }
+///[Error:V|2]
+class JE__e implements Bl { public GX ( FkF < Nn < ZpZ_UJ > > [ ] [ ] [ ] c ) { } } class NA implements V { static private void b ( ) { } } class Tw < P > extends T_ { }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-class D5 < Q > extends F3g { static private E45 [ ] [ ] [ ] [ ] h ( ) { if ( h ( ) -- = + RAB . i76xu ( ) . tK ++ ? 1d > false : false ) while ( - F_ . u ( ) . j -- ) { } } Q [ ] [ ] j92s_p = ; private static O [ ] [ ] q_ ( C_f_ < Y > [ ] [ ] [ ] l_ , NB cC5 ) { while ( null = true ) ; if ( + null <= + true ) MUT . z5 ( ) . xn ++ ; else { return ; } if ( + null ) Y n98z , r ; else return ; ; } public U e ( int [ ] [ ] k , Q7 [ ] [ ] [ ] o89 , float o ) { X [ ] [ ] [ ] [ ] [ ] [ ] ss__ ; } Jq < O > n ; } class I_k < O > extends G_ < N > { } class M_ { }
+///[Error:{|2]
+interface H8w < E > extends H2k < Gk < W > > { } interface U4 extends { }

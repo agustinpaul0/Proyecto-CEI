@@ -1,2 +1,2 @@
-///[Error:{|2]
-class B3tf extends { }
+///[Error:L_J|2]
+L_J

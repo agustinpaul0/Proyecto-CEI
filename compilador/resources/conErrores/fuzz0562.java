@@ -1,2 +1,2 @@
-///[Error:<|2]
-class XY_ < C > extends P_M < D > { private M5 < YK < < YW0v_ > > > [ ] c = - W9_t . n ( ) . z . jn -- ; static QoH < FL_ < VpZ > > w ( M7 < S > i , boolean yV ) { float c = "\"" ++ - 1D % false ; } }
+///[Error:extends|2]
+interface M_ extends DF < L > { } extends NRB < F > interface Ona < U > { } interface Wu extends FU < W > { } interface Nk { void c ( ) ; } class ZQ { }

@@ -1,2 +1,2 @@
-///[Error:float|2]
-class V4 < U > implements Y_ { } interface X2_U < C > extends Hp { void sM ( ) ; } class Gvh implements Rc2c { } interface R2 < U > { public float [ ] iL ( ) ; public void gX ( ) ; void s ( ) ; U z float ; void r_ ( ) ; }
+///[Error:)|2]
+interface MM extends S2E_1 < Qk < E_ > > { public void l1V ( ) ; void rb_ ( IW ) ; void n_ ( ) ; } interface CH extends IuE < IJ5v__tF < QU < T > > > { }

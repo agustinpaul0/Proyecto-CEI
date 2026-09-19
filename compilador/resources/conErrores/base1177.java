@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Bb { void p_ ; }
+///[Error:[|2]
+class PdX < N > { private R [ ] [ ] [ ] bT = [ + null ] ; }

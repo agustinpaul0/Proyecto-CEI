@@ -1,0 +1,2 @@
+interface FC_ < A > {
+}

@@ -1,0 +1,2 @@
+class WqZg < K > {
+}

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface F_ extends NZE < U_nL > { public void s ( ) ; } interface CC extends U_G_k < U > { boolean [ ] [ ] zM05 ; void c ( int [ ] [ ] dC ) ; }
+///[Error:<|2]
+interface < T > { } interface TA < K > { public void eN ( ) ; char n ( float [ ] u ) ; Xj_q < Y > [ ] [ ] [ ] [ ] [ ] [ ] d5 ( W r , char pG8 ) ; } class FW7r < D > implements Yo { } class G93d implements NHB_g5_ { static private void lo ( int v ) { } }

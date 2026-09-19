@@ -68,7 +68,7 @@ public final class AnalizadorDeSentencias extends ParteDelAnalizador {
     }
 
     // ExpresionOpcional -> Expresion | EPSILON
-    public void expresionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+    private void expresionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeSentencias.EXPRESION_OPCIONAL_EXPRESION)) {
             sintaxis.expresiones().expresion();
         } else {

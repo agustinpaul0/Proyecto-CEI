@@ -1,2 +1,2 @@
-///[Error:>|2]
-class X1 < M > { } class Vk < B > implements UxA7 { I uQ14 = - "\n\tr" <= + false < - 27 ; static public A [ ] [ ] [ ] [ ] [ ] pu_ ( ) { for ( var r : true ) for ( true ; ; ) return ; } private static EN [ ] [ ] [ ] ceq ( U42 < K > [ ] p ) { } } class P7 extends Za < Q > { } class UN8 { private static void w_ ( G_ [ ] f , X g ) { } T_mJZ1 u_d = this ++ ? 'C' < null : 15.f - true ; } class D2 < > implements M8 < KnX > { static public void iM76 ( ) { Vk [ ] ivz_ ; } } interface Dn < O > { } class FWtby9w_b < C > implements UZ { public void f ( ) { return ; return ; ; ; } } class Sb9 implements Ol_ < K > { public static int [ ] l ( ) { } }
+///[Error:H|2]
+interface Q7_7 < G > { } class R__ { void H }

@@ -1,2 +1,2 @@
-///[Error:Yq2|2]
-class UF_ < N > { } Yq2
+///[Error:F|2]
+class T_ implements TI9C < E > { } class Xp { static Z F c586 }

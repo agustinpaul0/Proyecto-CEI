@@ -1,0 +1,2 @@
+interface GuS_b {
+}

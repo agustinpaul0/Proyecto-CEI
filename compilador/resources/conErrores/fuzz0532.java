@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < K > { }
+///[Error:extends|2]
+extends EDPgf

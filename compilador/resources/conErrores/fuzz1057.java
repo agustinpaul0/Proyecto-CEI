@@ -1,2 +1,2 @@
-///[Error:M814|2]
-M814
+///[Error:<|2]
+interface Zb { } class < D > { }

@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface D_ { } public void j_Om4p_w ( ) ; interface YG extends T_ { } interface V_ < J > extends H6s2d { }
+///[Error:U2|2]
+class C4 implements M4 < D > { } class Yz < L > implements G1I3 { } interface W89 < F > { public L jk__ ( float r ) ; public void ulDp_ ( ) ; } U2

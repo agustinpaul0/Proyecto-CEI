@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface PA { } class Q3 < J > implements J0PL { } class EV extends { boolean [ ] v ; }
+///[Error:Yk|2]
+class O_Ho extends O_ { } class I5 implements Ue7_Yc { } class Iq2 extends II < AVW > { } class Dmp < F > { static W qpRkO Yk }

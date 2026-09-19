@@ -1,0 +1,2 @@
+interface RF_ < Y > {
+}

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class MZx49 implements { } class E5 { }
+///[Error:extends|2]
+class D_4 implements C_t < S > { } interface extends Cu { }

@@ -1,2 +1,2 @@
-///[Error:dE|2]
-class DT_ < J > { private V4s_I ( ) { for ( + this ++ ; null ; ) if ( false == true ) ; Yt_ . o2 ( ) ++ ; float u = ! true , r ; ; } } class UK6P extends H8 { } interface Xc7 { W [ ] [ ] [ ] [ ] k ( C [ ] [ ] l ) ; boolean lv ( ) ; M pk ( ) ; } interface UB__ extends BNZ < RI > { EN l ( ) ; void b ( ) ; dE } interface S9WxD < N > { boolean a ( int k , Ul < H > m , int [ ] o60 , HP_ o ) ; public void c ( ) ; } interface NRQbsT8 < W > { public void r ( int yd ) ; } interface R_ < E > extends M_r_ { public O e ( J_ < Mtz > [ ] [ ] [ ] [ ] zMi ) ; } interface N_ extends J_ { }
+///[Error:implements|2]
+interface Md < A > { } implements J4Q

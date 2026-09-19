@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class Nic implements TS3 { void j_ ( ) { } public static void iX ( ) { } D [ ] v ( ) { Z_fL5 . a ( ) . ic ( ) -- * - 'S' + true ; return null ; while ( - false ) return ; G [ ] [ ] f ; V [ ] [ ] d3v , n_ ; return ; ; } static public void w7h ( ) { ; } Np ( A [ ] x ) { } public static T l ( O_ [ ] [ ] [ ] oEz , G [ ] b0pB ) { } static P w ( Uqt eY , K s ) { T [ ] x_ ; } }
+class Nic implements TS3 { void j_ ( ) { } public static void iX ( ) { } D [ ] v ( ) { Z_fL5 . a ( ) . ic ( ) -- * - 'S' + true ; return null ; if ( - false ) return ; else G [ ] [ ] f ; VO < WD1N_ > m8X ; } public float q = 67d - 9f ; } interface N5 < M > { }

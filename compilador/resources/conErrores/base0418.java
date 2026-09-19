@@ -1,2 +1,2 @@
-///[Error:YW2|2]
-YW2 < Z > class X7 < N > extends Td < G > { char m_ = + null ; } class L_ < A > implements E_ { }
+///[Error:;|2]
+interface Y6OHY < Q > { void ob ( ) ; } interface Q_o < F > extends Z_ < AC1_VWk2 > { float u_ ( boolean [ ] w_58 ) ; public void y3 ( ) ; int [ ] l ; }

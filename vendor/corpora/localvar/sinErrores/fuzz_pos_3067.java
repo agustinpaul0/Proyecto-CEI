@@ -1,0 +1,3 @@
+interface Fl {
+void l ( ) ;
+}

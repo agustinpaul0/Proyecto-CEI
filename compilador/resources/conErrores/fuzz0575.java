@@ -1,2 +1,2 @@
-///[Error:cf|2]
-interface W5 extends F1_ { } interface G_ < B > { } cf
+///[Error:{|2]
+class JU extends { float x4 ( ) { } }

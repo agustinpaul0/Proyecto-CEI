@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < H > { }
+///[Error:{|2]
+class A__ implements { }

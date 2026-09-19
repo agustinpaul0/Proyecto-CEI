@@ -1,2 +1,2 @@
-///[Error:Bp_|2]
-interface J9 < Q > extends A_F { } Bp_ class Y1 < I > extends B_ < V_8 < SB6Mg < F > > > { int [ ] [ ] kA_74 ( O [ ] g ) { if ( + "" = false ) 689D && + true ; Q [ ] [ ] ggm09a , l , p ; 9523 ; } } class C5G implements M_6HY { private static void or ( ) { } } class D_ { static public Ol < M1 > [ ] [ ] u ( G x ) { ; var z8 = - true ; } } interface Ly7 < F > { } interface Cz9_ extends FF { B g ( boolean o ) ; } class TC1 < L > implements G2 < Yn_ < R > > { }
+///[Error:{|2]
+interface A_q___ { } class SU_iF { private void p ( Z_ z , char [ ] [ ] k ) { for ( var b : null ) null ; while ( null ) ! null ; } } class T0 < K > implements { } class P8X extends C7_ { static private void o_ ( ) { } }

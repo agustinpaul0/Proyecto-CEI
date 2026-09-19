@@ -1,2 +1,2 @@
 ///[Error:<|2]
-class HKb48 < E > extends V8 { } interface S3 < T > extends DF { void jFiF4r ( ) ; } interface Yv < A > extends Jz_ < Qfx < J > > { } class Nf extends < G > { public static void oxm ( ) { } }
+interface L9 { } interface V_ < O > extends < T_ > { public void a ( ) ; } interface Z_ < N > extends Z9O < Z_ > { } interface RRsnH extends H_Ob < A > { }

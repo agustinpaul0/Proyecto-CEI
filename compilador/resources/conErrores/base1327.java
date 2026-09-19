@@ -1,2 +1,2 @@
-///[Error:.|2]
-class E_3__v < C > { char z_ ; void tu_ ( T69_ y ) . e ( ) . j ( ) ++ == + true && 130531 % - null = true ; public static void tI ( S [ ] [ ] [ ] k7_y ) { return null ; } } interface D0_ { } interface A7y { }
+///[Error:I1|2]
+class ONe extends Oa { } class GM5 extends U5 { } class Iy__8n < X > implements HO < AZ < N > > { private static void e ( ) { } static public int [ ] l7 ( ) { { boolean [ ] l , v ; return ; 5F ; ; { } } } private static BXmkfs_2 < V > [ ] c ( Qbx c , O_5b [ ] [ ] [ ] wk ) I1 ( char [ ] [ ] sG ) { } static Z y ( boolean [ ] [ ] [ ] j ) { } static void cBwR ( ) { } } interface ZIS < P > { }

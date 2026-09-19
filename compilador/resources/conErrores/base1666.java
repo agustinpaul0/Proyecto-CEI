@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends VP__4 class KL < V > { }
+///[Error:<|2]
+class < E > { }

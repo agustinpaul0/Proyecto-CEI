@@ -1,2 +1,2 @@
-///[Error:void|2]
-class JO_ implements Q0Nh { } class D52 < S > implements PV < Cr > { static char i ( M [ ] [ ] j3n ) { } } void a ( ) ; F q ( O [ ] [ ] [ ] [ ] [ ] [ ] q3 , E [ ] lU ) ; public void u ( Q [ ] [ ] j6 , boolean [ ] [ ] [ ] d9 ) ;
+///[Error::|2]
+interface Zx_GuO2_ extends O0 { A w ( ) ; void b ( EI4VP_4B < G > [ ] [ ] t , H9 < C > [ ] [ ] [ ] [ ] q ) ; } class JI < S > implements D__ { boolean [ ] [ ] g = ! GT . i ( ) ++ ? true + ! L1_ . b ( ) ++ = '\n' / ! true : + O4V . aO ( ) . n ( ) . t -- / ! true ? : this . k_2 ; public static void e ( boolean y ) { ; } E [ ] m1 ( ) { } }

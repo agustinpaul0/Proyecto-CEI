@@ -1,2 +1,2 @@
-///[Error:GE_|2]
-class Z7B < Q > { } GE_ interface H4uA { }
+///[Error:[|2]
+interface Gp < J > extends B_ { [ ] b ( E [ ] g , Y_ [ ] o ) ; } class KqkNX < Q > implements Wk { static void f ( ) { } }

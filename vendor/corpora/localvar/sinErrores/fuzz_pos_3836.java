@@ -1,0 +1,2 @@
+interface Ae < T > {
+}

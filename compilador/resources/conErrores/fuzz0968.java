@@ -1,2 +1,2 @@
 ///[Error:{|2]
-interface Ufs { } interface { }
+interface EB < N > extends { } interface Vd extends A_E { }

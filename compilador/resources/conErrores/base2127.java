@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Ur9B < H > implements < H5_ > { }
+///[Error:jh|2]
+interface Es_o { public void x ( X d , jh , int gX7 ) ; }

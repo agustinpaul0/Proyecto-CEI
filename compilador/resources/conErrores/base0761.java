@@ -1,2 +1,2 @@
-///[Error:>|2]
-class B0 implements KoTiF6_2 < H_ < > > { }
+///[Error:;|2]
+interface M55 { public void k ; }

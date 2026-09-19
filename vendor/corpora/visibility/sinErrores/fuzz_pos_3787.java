@@ -1,0 +1,7 @@
+interface As {
+void y ( Xt8T wlJcs ) ;
+boolean z ( W7_5Ak n , NaO y__H , I [ ] [ ] e , boolean [ ] [ ] n ) ;
+boolean q_3 ( Mo < O3 > [ ] d , K_ < S > g ) ;
+boolean k_ ( ) ;
+G_p_y < F > a_ ( H9_ k4Y ) ;
+}

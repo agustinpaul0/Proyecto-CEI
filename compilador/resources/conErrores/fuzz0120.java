@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Aw extends Ilkx < V1 < > > { } class P_e < A > extends P2lU { }
+///[Error:,|2]
+interface Z_G extends YY < M > { } interface En45 { } interface Th2 { void i ( GQ_ , E j_ ) ; } interface SR5 < C > extends Gu { public void g ( float [ ] b ) ; } interface Y43P { U0_p f ( ) ; } interface X1 extends XTk < DuO < L > > { public I k ( ) ; } class Zt7b < Y > { } class M5Hw < K > { public static L [ ] [ ] [ ] [ ] [ ] [ ] k ( ) { Ke h ; S r ; } }

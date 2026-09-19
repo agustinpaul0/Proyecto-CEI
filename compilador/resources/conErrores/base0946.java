@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface Y_u8 < R > extends LB { public J_ [ ] [ ] [ ] w ( ) ; float [ ] [ ] [ ] [ ] [ ] [ ] [ ] z ( char l ) ; } interface W7 { } interface I3 < Q > extends Xb { } interface M3___ extends V9v < L_ < W > > { } extends EI interface M_E extends H_re_ < D > { }
+///[Error:FW_|2]
+interface U04_6 < W > extends I5__6 < ErZ < S_ < E > > > { } FW_ class So extends P_ { } interface JT3 extends Z5 { }

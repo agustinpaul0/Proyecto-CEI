@@ -1,2 +1,2 @@
-///[Error:F|2]
-F
+///[Error:(|2]
+class Bl { public static void ( ) { } }

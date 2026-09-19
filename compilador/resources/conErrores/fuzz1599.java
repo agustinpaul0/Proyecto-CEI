@@ -1,2 +1,2 @@
-///[Error:W4|2]
-W4
+///[Error:>|2]
+class Q6R < W > implements Eb < > { }

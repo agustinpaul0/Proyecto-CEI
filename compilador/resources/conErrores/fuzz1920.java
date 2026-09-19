@@ -1,2 +1,2 @@
-///[Error:public|2]
-public void k3_ ( D t78 ) ; public float [ ] [ ] g_l ( ) ; interface E_ { }
+///[Error:T|2]
+interface S_ extends A0W < I > { } T

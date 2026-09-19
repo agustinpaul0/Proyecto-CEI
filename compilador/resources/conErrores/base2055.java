@@ -1,2 +1,2 @@
-///[Error:(|2]
-class MC { static private boolean ( ) { boolean q7 , d , w_ ; } }
+///[Error:{|2]
+class D_6 < M > implements { H_ ( ) { } } interface M0 extends FE < H > { public void q ( float n , PO i26 ) ; }

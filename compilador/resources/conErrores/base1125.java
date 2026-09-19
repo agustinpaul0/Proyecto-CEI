@@ -1,2 +1,2 @@
-///[Error:b|2]
-class Q0 < O > implements P_57 { static public U p7 ( b ) { } }
+///[Error:void|2]
+interface Kn_1_ { public void a2q8 ( ) ; } class U8CTO implements HODC { } void class U0B implements PFn_ { }

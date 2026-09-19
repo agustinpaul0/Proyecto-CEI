@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface PA { } class Q3 < J > implements { } class EV extends N_ < P > { boolean [ ] v ; }
+///[Error:=|2]
+class H2 extends ZD { private void tD ( W7Z5r < PG < XP99YX_ > > n_ ) { return this ++ || - 917604 >= = false ; UVBY . x ( ) . e_ ( ) ; } public void rF8 ( ) { } }

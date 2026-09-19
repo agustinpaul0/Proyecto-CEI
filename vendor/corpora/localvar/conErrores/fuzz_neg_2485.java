@@ -1,0 +1,11 @@
+// [Error:}|7]
+class VO5_ implements AJ_5P < Z0E_v > {
+}
+interface S_ < X > extends UB < OGE > {
+void l ( ) ;
+char r1_ ( ) ;
+N_ [ ] [ ] k }
+interface K_6r extends ZRw5 < YV > {
+}
+class K_1 < E > extends AW__F8U {
+}

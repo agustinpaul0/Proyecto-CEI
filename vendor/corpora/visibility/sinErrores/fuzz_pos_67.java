@@ -1,0 +1,2 @@
+interface I499i {
+}

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface EG < E > extends { void q ( ) ; } class E7 extends UI_ < N0 > { }
+///[Error:LS|2]
+class Y59 < M > extends V6d { } LS [ ] l ( char [ ] [ ] b ) ;

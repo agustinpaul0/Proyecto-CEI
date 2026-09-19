@@ -67,8 +67,8 @@ Los del léxico están en detalle en `../lexico/especificacion-lexica-de-minijav
   se aplica Java.
 
 Los del sintáctico, en `../sintactico/decisiones-de-logica.md`: los dos operandos del ternario
-(JLS §15.25), el lado izquierdo del `=` (§15.26), la inicialización de arreglos (§15.10.1 y §10.6)
-y el encabezado del `for` sin ninguna de sus partes (§14.14.1). Las respuestas directas del
+(JLS §15.25), el lado izquierdo del `=` (§15.26) y la inicialización de arreglos (§15.10.1 y
+§10.6). Las respuestas directas del
 profesor no pasan por este protocolo; las del sintáctico están en el mismo documento.
 
 ## Ver también

@@ -1,2 +1,2 @@
-///[Error:[|2]
-class D_ extends AK < O > { void d [ ] }
+///[Error:C4o_|2]
+C4o_ < O_rsS >

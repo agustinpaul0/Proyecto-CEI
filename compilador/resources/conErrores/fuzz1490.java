@@ -1,2 +1,2 @@
-///[Error:float|2]
-interface T9 < U > extends U_770 { } class Kq4 { BM ( G em3 ) { } } interface A7 extends XM < O > { } class W_DK_ { } interface Y_ < A > { } interface GR_M < T > { } float interface BN extends S_ < W > { } class Ug_ implements KBU { }
+///[Error:okn|2]
+interface J1 < J > { public void z ( char o , Xww [ ] [ ] [ ] [ ] [ ] [ ] f , S_ < F7_ > [ ] n5_ , float [ ] y , char f6_ , L ca , Ncj < VL > dx ) ; } class Ol extends Stl { static boolean [ ] [ ] en ( okn ) { var i2_l = ! null ; for ( var nt = '\\' ; true ; null ) K [ ] [ ] [ ] i_s_Q ; if ( false * ! 8D * ! false = + true ) C_1 < RP > [ ] [ ] mJg ; else F [ ] [ ] j , l , i , eY___ ; } } interface P7 < Q > { void nq ( char e , YM < B > [ ] [ ] q4z ) ; }

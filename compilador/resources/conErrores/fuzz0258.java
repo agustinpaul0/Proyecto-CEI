@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface P7 { public void s__U0 ( Xs < Tj < WA1 < J > > > y ) ; } extends Pl class Vk_K_ { }
+///[Error:;|2]
+class I_ < J > { } class Z_5_ extends FW < A > { public int [ ] ; }

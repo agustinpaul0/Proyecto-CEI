@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface DGP < R > extends V_SQ < F_l_ > { } < A8 < Gw < Q > > >
+///[Error:Cfn|2]
+Cfn interface CL extends K_ < T > { } interface C8 < I > { }

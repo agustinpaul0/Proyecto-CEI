@@ -1,2 +1,2 @@
-///[Error:bT|2]
-bT
+///[Error:;|2]
+class Mb < V > { Ta ( ) { X mV = ; } }

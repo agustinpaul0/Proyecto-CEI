@@ -1,2 +1,2 @@
-///[Error:}|2]
-class JeOCl_a < J > implements O8 { static public void s ( ) } interface QX___9_ { }
+///[Error:{|2]
+interface Y_Q_ < U > { } class D_D extends { void e__ ( ) { } } class IPz extends P_ < K > { }

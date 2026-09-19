@@ -1,2 +1,2 @@
-///[Error:z2_|2]
-interface YeU__e { void vY ( V4_i < Qm < H_ < Do > > > f , Z n_a ) ; z2_ void i ( boolean [ ] [ ] [ ] w8 , RYh9_ [ ] [ ] h1 , char [ ] n1 , Ym [ ] [ ] [ ] [ ] [ ] [ ] tJ , W6w_ < C6 > fK29e ) ; public boolean y ( ) ; }
+///[Error:z0_|2]
+class BT__ implements PktC { static void u_gf ( J r ) { } public static boolean [ ] [ ] [ ] [ ] wa8 ( z0_ , B xD ) { } public U9c ( C [ ] v ) { } R w ( float i , Q [ ] z ) { } }

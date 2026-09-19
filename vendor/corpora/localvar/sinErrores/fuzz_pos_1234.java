@@ -1,0 +1,2 @@
+interface QU_ < Y > {
+}

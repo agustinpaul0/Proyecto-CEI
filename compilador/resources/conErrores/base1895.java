@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface V0 extends P3 < W8e < L6 > > { } interface P_ < V > extends O_J { S_5O lGIuP ( W [ ] [ ] [ ] [ ] [ ] [ ] c4dS_ ) ; } class S6 extends K_ { static public boolean n_ } class DBse_ < M > { static void q ( ) { E v ; } } interface Mufo8 extends URrEH < Qr < Y > > { public void f ( TJ_ [ ] w_ ) ; public boolean [ ] f ( L [ ] [ ] r4 , D [ ] [ ] [ ] z_ ) ; } interface E7_ extends ZZ_r4_M { } class EdJB { }
+///[Error:{|2]
+interface Er_n extends { }

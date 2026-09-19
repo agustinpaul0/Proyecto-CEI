@@ -1,2 +1,2 @@
-///[Error:<|2]
-class V_ extends < U > { PA [ ] [ ] jW ; static void n ( ) { if ( false = - "" -- ? - null : + false ) G [ ] cr8k = false != false ; else while ( 896. ) return ; } private O a ( ) { { ; for ( ; ; ) { } } } } interface VOqieC < T > { }
+///[Error:static|2]
+class DmH { static E__ [ ] [ ] [ ] [ ] m ( ) { { } } private void static void y_ ( X [ ] [ ] wn , boolean [ ] c , Ek [ ] eN ) { while ( + E_ . m ( ) -- ? true : false ) var z = + 035389 ; } public O_S < T > j ; static public NC [ ] x ( ) { } } class E_ < P > { }

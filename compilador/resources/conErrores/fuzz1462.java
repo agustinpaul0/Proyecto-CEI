@@ -1,2 +1,2 @@
-///[Error:(|2]
-class JE < J > implements Z0_nR { private static Z [ ] [ ] ( ) { } void t ( ) { } }
+///[Error:H|2]
+interface Fr extends TB6 { } H

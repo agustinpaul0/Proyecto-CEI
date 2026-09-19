@@ -1,2 +1,2 @@
-///[Error:s|2]
-class ZL5 extends VQI < L > { private static void n7aJ ( B0hj z , char b ) { while ( BvG_ . m__ ( ) . j ( ) + + NC_ . a5R ( ) . n2 ++ ) for ( var nA = + false ; ; ) ; boolean q = - 224815.7f ; } float [ ] [ ] [ ] d ; static public void sA0 ( ) { while ( null ? + false : false ) MN . e ( ) -- ; } } class A5 extends D_ < K > { } class H7_ implements V__nI < K > { static G [ ] u ( Zl_6_ [ ] [ ] [ ] [ ] [ ] [ ] [ ] z_ , O [ ] q , C g6 ) { } } class E_ { Q r ; static float [ ] h50__C ( ) { } void q ( float [ ] j_ , s ) { return ; for ( ; ; ) return ; } public X [ ] g_ ( ) { return ; } void h ( ) { IPl8 [ ] [ ] h ; return ; } }
+///[Error:Z69|2]
+Z69

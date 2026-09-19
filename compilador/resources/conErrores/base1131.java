@@ -1,2 +1,2 @@
-///[Error:n_|2]
-class L_ < P > extends MX8 { } class Am_ { private static n_ ( ) { } } interface Y_ { void ci ( ) ; } class N7 implements YX < A_o_V_ < V > > { void t ( Db [ ] [ ] [ ] [ ] [ ] jDk ) { } void q ( X_ z8 ) { } }
+///[Error:o|2]
+interface K7_v < F > extends KO < M > { o public boolean c ( ) ; public W8 < M > [ ] da ( ) ; }

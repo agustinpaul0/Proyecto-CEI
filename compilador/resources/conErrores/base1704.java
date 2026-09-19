@@ -1,2 +1,2 @@
-///[Error:}|2]
-class P0Y { public static K [ ] ye_m ( ) }
+///[Error:>|2]
+class JU < > extends V6s_ < L > { } class G41 { } interface G8 { }

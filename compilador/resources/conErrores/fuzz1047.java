@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface J_I extends P_ { } class F0u < M > { } extends O3 < YQ90 >
+///[Error:[|2]
+interface P_ < O > extends Wd { void e ( A [ ] [ ] [ ] pl ) ; public N qc ( Nwo_ < C__4 > [ ] [ ] s , E c , int [ ] [ ] zi , B b , W [ ] [ ] [ ] t5_ , [ ] [ ] vNVB ) ; void bv4 ( ) ; public void k ( I [ ] qrL8 ) ; }

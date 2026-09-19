@@ -1,2 +1,2 @@
-///[Error:X|2]
-interface Q3_u < M > extends TPr { } class D_Q5W1 extends Xv66X { } X
+///[Error:public|2]
+interface X_3 extends IgcFcI { WuwZ < D > [ ] [ ] n3 ( ) ; } public int [ ] d94_ ( ) ; interface YU extends C5 { public A iw ( ) ; }

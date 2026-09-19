@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface CQ__V { } interface Ox < C > { void d2 ( F r , A8_8 < M_ > r_ ) ; } ( ) { ; while ( false ) L [ ] m ; }
+///[Error:public|2]
+interface PXw < M > extends Xs < GtV > { public void f ( ) ; J public void m___ ( float n2H ) ; }

@@ -1,0 +1,19 @@
+// [Error:<|13]
+class V2 extends I_ < PD > {
+private void u ( ) {
+}
+static private Rfc [ ] o ( X x , char [ ] v ) {
+;
+}
+}
+class P9Y < W > extends Clo {
+void d ( ) {
+}
+}
+interface < S > {
+void xoC ( ) ;
+boolean o ( ) ;
+}
+interface J7 < X > extends O5B4 {
+boolean [ ] [ ] k ( ) ;
+}

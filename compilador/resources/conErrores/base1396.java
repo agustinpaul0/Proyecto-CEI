@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Tb9 < > extends Qp { }
+///[Error:{|2]
+class Z0 extends { }

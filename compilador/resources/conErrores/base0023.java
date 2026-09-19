@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface I1_ extends P_r { } interface G3 extends MJ { } class D__07Zk < W > { } class Gg < K > extends AO9H_ { } class U_p_K extends Z7 < A > { static void }
+///[Error:(|2]
+interface A70B < W > { Q [ ] f ( K [ ] [ ] e8 ) ; T [ ] ( ) ; } interface Y_W_3t < O > { }

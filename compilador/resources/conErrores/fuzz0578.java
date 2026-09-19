@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Rjkp implements TR { static void x1y ( ) { } } class { }
+///[Error:Ewt|2]
+Ewt

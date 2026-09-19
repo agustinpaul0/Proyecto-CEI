@@ -1,2 +1,2 @@
-///[Error:{|2]
-class R_ < B > extends F7 < Hn3Mt > { public static void { } }
+///[Error:l|2]
+interface KM { D_ < TU_ < W > > [ ] f ( l ) ; } interface Dn6__ < K > extends Uji6u < H > { }

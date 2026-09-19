@@ -1,2 +1,2 @@
-///[Error:N_|2]
-interface Q_ < E > { void n ( ) ; I l ( Rlk < W9q0_ > [ ] r ) ; } interface Vt_ < T > extends PZ { } N_ class I_ < H > extends S9 < K > { }
+///[Error:private|2]
+class FbwtN1 extends M9 < C > { } private interface M1N < H > extends HYx < N2u8Y25 > { void mo4 ( ) ; public K [ ] [ ] h ( ) ; }

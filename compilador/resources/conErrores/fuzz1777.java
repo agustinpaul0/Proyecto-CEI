@@ -1,2 +1,2 @@
-///[Error:r33Z_k|2]
-class L4XD < S > extends XIM { public static r33Z_k ( ) { float y = '\b' * true <= ! 68952258 ; } }
+///[Error:extends|2]
+extends K6_ interface S6n extends FbJz_ { }

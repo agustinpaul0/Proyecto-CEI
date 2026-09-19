@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface O_ < Y > extends Uz < ZS_ > { public void i ( ) ; public void aaG ( ) ; public H [ ] [ ] yK_ ( ) ; } class L_w1d { } ( P uBQ , int nLqY )
+///[Error:public|2]
+public N__ < B > [ ] xc ( int [ ] zk_ ) ; public int [ ] [ ] r6 ( QMn < E_ > y , float [ ] [ ] s ) ;

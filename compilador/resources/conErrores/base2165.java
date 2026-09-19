@@ -1,2 +1,2 @@
-///[Error:q|2]
-q class V___ { } class VT < U > implements R7 { } interface U5 { }
+///[Error:[|2]
+class LOxn_ extends Vx__l { static void g_ ( J [ ] [ ] [ ] d , [ ] [ ] xw7 , YU < L > h , char [ ] [ ] y ) { } } class Yf7 { }

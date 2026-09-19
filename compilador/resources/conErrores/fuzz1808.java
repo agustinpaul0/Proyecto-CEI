@@ -1,2 +1,2 @@
-///[Error:private|2]
-class CY extends VO { } interface X01j { } class Xa { public private W u ( E_2 e47 , Ka [ ] [ ] [ ] x0 , float i_dD ) { } }
+///[Error:;|2]
+interface Ta < J > extends IU__5 < A_ > { } class HH1JW extends K_ { O [ ] ; }

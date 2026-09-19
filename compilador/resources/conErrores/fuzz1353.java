@@ -1,2 +1,2 @@
-///[Error:{|2]
-class W___F implements UV { } interface G2_ < B > extends { public A2 dO2 ( ) ; }
+///[Error:(|2]
+interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] ( ) } interface OP < T > extends C10 < R86Ly03dP_ > { }

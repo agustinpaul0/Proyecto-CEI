@@ -1,2 +1,2 @@
-///[Error:;|2]
-class EH < K > extends C_ < Wr > { float [ ] [ ] gq = ; }
+///[Error:public|2]
+public void s_8m ( N20 < W > k ) ;

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface A3 < D > { } interface Th extends Y_ < Vx > { public int lT__ ; }
+///[Error:public|2]
+public void i ( ) { while ( null = true < ! true ) if ( - 'I' ) ; }

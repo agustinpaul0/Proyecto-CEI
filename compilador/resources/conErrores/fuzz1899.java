@@ -1,2 +1,2 @@
-///[Error:F|2]
-F interface XD extends C_ { }
+///[Error:<|2]
+class L_9kv_ < A > implements P_ { } < M >

@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface F_65 < R > { public A [ ] [ ] gK ( int o6g6 , L ) ; void r ( boolean v , int [ ] uV7 , I pq_ObJ , F [ ] dS , char m_ ) ; }
+///[Error:void|2]
+void class IA < Q > implements ZJic { M [ ] c ( F j , float [ ] [ ] s , X [ ] to ) { } int q = - Y__l . aL ( ) . z7 ++ ; }

@@ -1,2 +1,2 @@
-///[Error:g77|2]
-class Pb < D > extends T_ < X > { static g77 ( ) { } }
+///[Error:>|2]
+interface E__ < > { }

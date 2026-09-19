@@ -1,2 +1,2 @@
-///[Error:=|2]
-interface C__qei2 { } = + false || false class Y9 { } interface EV2 < C > { }
+///[Error:;|2]
+interface KZ2_ extends Dy < Z > { public void z ( D___ b_ , int j6 , U h , L3y < Z8_VE2hK < V_ > > o ) ; void h ; }

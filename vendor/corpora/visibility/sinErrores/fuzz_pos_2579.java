@@ -1,0 +1,2 @@
+interface T0_ {
+}

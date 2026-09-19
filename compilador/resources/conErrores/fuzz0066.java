@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Us_5 < Q > { void kZk6 ( ) ; , E_k a }
+///[Error:{|2]
+class XH9y extends PF { } class A_ < O > implements D1 < S > { void p { } }

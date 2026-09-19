@@ -1,0 +1,3 @@
+interface QE {
+void h ( ) ;
+}

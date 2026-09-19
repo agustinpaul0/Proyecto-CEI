@@ -1,2 +1,2 @@
-///[Error:cac|2]
-interface N_4 { cac ( ) ; }
+///[Error:(|2]
+interface E_Y_ < X > { ( ) }

@@ -1,0 +1,25 @@
+// [Error:n|14]
+interface V_ {
+char [ ] r_ ( Y x ) ;
+int j_ ( ) ;
+}
+interface Ud4 < F > extends PcG < Np > {
+boolean [ ] g ( ) ;
+void d ( QlpE < V > w_3d ) ;
+}
+class N8W {
+public void y ( ) {
+return ;
+}
+public void aH0J ( ) n }
+class DOE {
+private Z [ ] [ ] i ;
+char g ;
+private void poz ( U [ ] c ) {
+}
+private J [ ] ye7_ ;
+}
+class E_CS implements UZ {
+}
+interface Ld {
+}

@@ -1,2 +1,2 @@
-///[Error:Le|2]
-Le class CO < B > extends QFZ8 { void r2 ( ) { Y439_ b8 , l_1 ; } }
+///[Error:W4|2]
+class R61 < U > implements So { } class Doq_ < T > { } W4 < V >

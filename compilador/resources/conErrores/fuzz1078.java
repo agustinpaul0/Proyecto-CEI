@@ -1,2 +1,2 @@
-///[Error:NXB_m2|2]
-class I7 extends Q15 { } NXB_m2 class NX { }
+///[Error:++|2]
+class K13K < E > { int [ ] [ ] cC = - '\f' < ! true ++ && U_n . k_ ( ) % ! a9 ++ == true ; } interface M5_ { }

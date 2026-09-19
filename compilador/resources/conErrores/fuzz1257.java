@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface P__K_6 < D > { EM79 < Z > char [ ] [ ] [ ] [ ] [ ] x ( ) ; }
+///[Error:>|2]
+interface Ns_n { Pta as_ ( ) ; void r ( Z_ < > b ) ; }

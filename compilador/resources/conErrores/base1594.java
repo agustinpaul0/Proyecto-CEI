@@ -1,2 +1,2 @@
-///[Error:<|2]
-< V > interface V4_D { void v_ ( ) ; } interface Bhc < L > { }
+///[Error:;|2]
+class U9 implements JN { static private void q ( boolean k___cX1 ) { while ( ! i ( ) . m_ ( ) . fg ( ) + ! "\"" / 'a' || - "" -- = false ) if ( 6040591 == ! '\\' ) - 34.d + '*' ; else if ( + null ) + true ; else ! null ; R78 l = ; } }

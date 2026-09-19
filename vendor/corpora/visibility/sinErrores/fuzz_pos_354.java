@@ -1,0 +1,2 @@
+interface Wz < C > {
+}

@@ -1,2 +1,2 @@
-///[Error:K|2]
-interface D7 extends Fg < T__2 < Ny > > { } class Y_Q6 < M > { static ZsA_U cJ ( ) { } } K
+///[Error:}|2]
+interface G4 < F > { public void f8 ( Q [ ] e ) ; E [ ] } interface U__W extends T585 < C > { }

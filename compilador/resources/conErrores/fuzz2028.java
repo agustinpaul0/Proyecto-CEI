@@ -1,2 +1,2 @@
-///[Error:<|2]
-class < Q > { static void u ( ) { } }
+///[Error:W__Z|2]
+W__Z

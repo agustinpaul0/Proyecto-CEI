@@ -1,2 +1,2 @@
-///[Error:}|2]
-class NW < O > { void }
+///[Error:void|2]
+void u ( ) ; void r ( ) ;

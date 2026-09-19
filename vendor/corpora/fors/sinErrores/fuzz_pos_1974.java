@@ -1,0 +1,3 @@
+interface Me {
+void c ( ) ;
+}

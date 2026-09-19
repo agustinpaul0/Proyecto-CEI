@@ -1,2 +1,2 @@
-///[Error:float|2]
-float [ ] [ ] [ ] [ ] [ ] [ ] [ ] u_8 ( ) { return ; { } } interface N_ { public T l ( Uc2kJ [ ] [ ] [ ] h , D_ < U > [ ] e ) ; void n ( ) ; } interface A_ < N > extends B_ < Z > { } interface E4 < T > extends F_a_ < Y5_I < N > > { } interface EV < L > { public char x ( float [ ] [ ] [ ] [ ] [ ] [ ] jh , V_LS [ ] [ ] [ ] c ) ; float [ ] [ ] x ( ) ; } class If < E > { R f ( ) { LRX [ ] [ ] [ ] r ; } } class R9v < X > { }
+///[Error:;|2]
+interface Fd < F > { int f ; }

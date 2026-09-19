@@ -1,2 +1,2 @@
-///[Error:.|2]
-class P2 implements F4_ < O > { } class O_j < J > extends Ad < X > { void c_5gh8 ( float e3 , N [ ] aR , M [ ] b ) { } HX ( ) . p ( ) ++ >= '\'' } interface S5 { public void bd ( ) ; Y [ ] vI ( ) ; void jr ( ) ; } class Ot { public void w9 ( float f_ ) { So < E > [ ] [ ] q6 , n20 , eqD ; } } interface C_ei < Y > { } class WY < B > extends R2 < Jv_ > { static void p ( ) { } } class X6 extends MV < SFy < I > > { } interface J68T extends U1 < F > { }
+///[Error:extends|2]
+extends BkY < H0 > class Um { }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < G > { void j ( Nb uU ) ; }
+///[Error:!|2]
+! IOA . a ( ) [ + null ] ++

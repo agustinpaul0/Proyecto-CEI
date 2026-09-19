@@ -1,2 +1,2 @@
-///[Error:Cg_6|2]
-interface I2 extends S_ { } Cg_6
+///[Error:[|2]
+interface Y_a < L > extends ESb1_o_ < I_ < RI_ > > { [ ] tv ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Zz extends LL_ { static void i ( KZ [ ] a_o___Y , boolean [ ] [ ] [ ] [ ] [ ] s_ ) { var xM6V = true ? H_ . f ( ) = null >= false : Ho_ . c ( ) -- < false * ! '>' / false ? 's' >= ! false : - 5577 >= true ; } static float w ( boolean [ ] [ ] [ ] [ ] m , char c ) { var s = ; } S yn ( boolean qKW ) { while ( - 't' = + false ) var k = true ; if ( ! '\\' ) int o ; while ( true ) boolean [ ] j , h ; { float [ ] [ ] hNT_ ; } } public static W1uCP_k0 < W > x ( ) { } static private void l__ ( ) { } public static LN < S8 < G7 > > e_V ( Z__7qp [ ] k94 , T [ ] [ ] z ) { ! 18586 ; ; } } interface Y3 extends BA_ { public void sg ( ) ; }
+///[Error:(|2]
+interface MP < G > { } interface Jx < M > extends BL < D > { public void uN ( char j , O [ ] j ) ; } ( )

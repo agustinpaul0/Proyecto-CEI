@@ -1,2 +1,2 @@
-///[Error:!|2]
-! IOA . a ( ) [ + null ] ++
+///[Error:void|2]
+class Q7_ extends L_ { } interface Uy9M extends WWy { public void y ( ) ; P void l ( char o , R [ ] [ ] j ) ; public void g ( ) ; void n ( ) ; public B__ n_7 ( ) ; public char [ ] eb ( P c__ , C [ ] [ ] kI , O j ) ; } class MZd8 implements WX4b < L_H__ > { } class QV < G > { static private B fh ( boolean [ ] [ ] l ) { { } } X8 ( W [ ] [ ] xR ) { } } interface Bd < X > { public void h5WH_ ( ) ; }

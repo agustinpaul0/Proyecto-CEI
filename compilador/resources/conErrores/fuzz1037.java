@@ -1,2 +1,2 @@
-///[Error:;|2]
-class RL < L > implements F9 { static void ab ( R nU ) { } } ;
+///[Error:void|2]
+interface Lb34 { } interface XP < N > { } interface P6S { void e ( char b , N6 [ ] [ ] j2 , F [ ] [ ] c4B , G be , boolean c_ ) ; } void rI ( float z , float [ ] [ ] p ) ; class X_ < E > { public int [ ] tE ( boolean q , Z [ ] o_ ) { ; } boolean [ ] [ ] [ ] [ ] q_ ( ) { boolean [ ] [ ] sx , lm , jmT , g ; N [ ] [ ] n00 , z6ig ; } static public boolean rAV ( int [ ] [ ] [ ] k7_ , V x ) { ; ! '4' ; } J_ [ ] [ ] [ ] wV ( ) { H [ ] xG ; } public K [ ] yN__acvE ( ) { ; } } interface Ee { }

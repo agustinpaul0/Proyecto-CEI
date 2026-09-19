@@ -1,2 +1,2 @@
-///[Error:?|2]
-interface CRH_ { public A jJ ( U2 y ) ; N n_ ( ) ; } class YU < H > { private O_ [ ] [ ] zp = CE_ . lb5 ( ) . x ( ) ? - null * this ? + true : + false : ? ! true : 4.f ; }
+///[Error:{|2]
+class X1 < M > { } class Vk < B > implements { I uQ14 = - "\n\tr" <= + false < - 27 ; static public A [ ] [ ] [ ] [ ] [ ] pu_ ( ) { for ( var r : true ) { } } private static G [ ] mARF_ ( V1eq < U > vf ) { ; P m , p , z__q ; { } } }

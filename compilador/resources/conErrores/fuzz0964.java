@@ -1,2 +1,2 @@
-///[Error:Jq|2]
-Jq
+///[Error:else|2]
+interface L_ < T > { public void c_n_ ( I [ ] [ ] j_S ) ; } class Llu_ < R > { private Y [ ] y6UM = true ; public static void w ( ) { if ( "" % 06026 ) else { } } A qT ( ZyV < V > byi , K [ ] l , int [ ] [ ] i , I b ) { } char [ ] [ ] n7x_g ( ) { } } class AX_a4 { static private void t9 ( DFK < V_ > j ) { S_ [ ] [ ] [ ] r_ ; } float e ; }

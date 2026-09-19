@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Md < > { } class FU_ < V > implements J4Q { }
+///[Error:l__e|2]
+interface U_ < O > extends O0 { } l__e ( ) { } interface J4f extends MQ { }

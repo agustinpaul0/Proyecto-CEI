@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Fp6u < B > { boolean [ ] [ ] f ( C__r sg , B r ) ; } class YG implements OH { } class Nc < G > { private static Fi [ ] b_ ( float s ) { } V [ ] b ; static [ ] [ ] [ ] [ ] [ ] [ ] [ ] t ( Ja < C > b , boolean [ ] w , char [ ] [ ] tT ) { return null ; } static private void z ( boolean m ) { } static D_9 w ( ) { '\b' ; } } interface N_ < I > { M [ ] m2B ( E89 < B > [ ] [ ] [ ] [ ] y ) ; int k ( I c , boolean [ ] h ) ; void gS ( A o ) ; int [ ] y ( M b , F v ) ; } interface QZ9 < W > extends QTW { }
+///[Error:f|2]
+interface Ke < K > extends LL { B fu_ ( ) ; B d1___t___ ( f ) ; } interface N_U < A > { }

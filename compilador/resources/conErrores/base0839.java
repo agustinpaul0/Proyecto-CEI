@@ -1,2 +1,2 @@
-///[Error:Ac|2]
-Ac [ ] class U9 implements K_ < G > { } class Js < T > implements Fw4y6 < W > { private int j = this . c_ ( ) ++ ; boolean [ ] [ ] [ ] [ ] l ; static void v__f ( ) { T [ ] [ ] c ; el . z31 ( ) -- ; K_ [ ] u , m , r ; O m ; N__v [ ] [ ] i ; return ; return ; ; } } class XGK extends V1__R { public static void qn ( ) { } FH ( int zzK4a0o5_ ) { MJ . e ( ) ; } private static U d_ ( ) { } } interface Tc7 { public int eoyAY ( IK < R > aB ) ; } interface P_o { } class F5s extends XKv { static public I wVN6 ( ) { } static Ur_ < D > [ ] ki1h38 ( W [ ] q ) { ; for ( ; ; ) return ; int xV1 ; } I [ ] vekD_ = - true ; static void yd3 ( ) { { } } public void h ( ) { } } class He implements O_ < Bv_C > { } interface PT < L > extends VqF < HMTv2 < F0 < Q > > > { } class WE < O > implements Le { }
+///[Error:>|2]
+interface JVCQ_ < D > extends Q_ < > { } class QFAya { }

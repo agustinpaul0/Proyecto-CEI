@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Vu extends DB_ < BG < I > > { void r ( L pjm_ ) ; void n ( BR_O < D9 < QK > > c , I [ ] k , [ ] [ ] [ ] c_ ) ; }
+///[Error:zl_|2]
+interface A_2dg < K > { } class B_ < B > extends Mn { public Bl ( ) { ; } void r9 ( ) { boolean v_ , h_ = ! null ; { } } } class L_q < B > implements Y0 < Vx < F > > { public static zl_ ( ) { } }

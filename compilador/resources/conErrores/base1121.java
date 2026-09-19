@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Xqo < H > { } interface M2bu < M > { void u29jzj ( BM [ ] [ ] [ ] [ ] [ ] [ ] k_vtx0Xf_ ) ; } < O >
+///[Error:R|2]
+class Gf < V > { } class Cw6 < B > implements S3w4_1 { } class GD implements S_z < V > { } R u_25 ;

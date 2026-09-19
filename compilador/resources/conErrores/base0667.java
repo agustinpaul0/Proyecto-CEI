@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface EG { public void g__ ( int [ ] k ) ; void uQ ( ) ; } class SH < T > { static int u static void p ( N_P < PY8 < R > > v_ ) { float r ; } }
+///[Error:}|2]
+interface JO extends RO { } interface Dtn3 < N > { G [ ] [ ] [ ] j0 ( A [ ] u_Q ) ; } class SI_ extends E5_ { public static void y__q }

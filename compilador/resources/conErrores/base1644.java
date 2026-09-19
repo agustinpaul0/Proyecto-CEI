@@ -1,2 +1,2 @@
-///[Error:R5|2]
-R5 interface M_sF { } interface M05_ extends K2 { }
+///[Error:a6|2]
+interface MP_ < Q > extends W_u < M_ < S_ < M > > > { char [ ] [ ] u ( ) ; public a6 ( ) ; }

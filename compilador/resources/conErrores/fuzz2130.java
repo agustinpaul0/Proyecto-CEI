@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class JL < R > extends X3 < U > { } interface extends OV < P > { public void v ( ) ; N3 < H > su__9 ( char x , int w ) ; public void aGM ( ) ; }
+///[Error:[|2]
+interface F8X < E > extends L_0 { public J [ ] [ ] b3W1 ( C z , float [ ] x ) ; } interface X26 < E > extends C0 < QD_4 < H_7E < Y > > > { } interface HIK < E > extends Vky < Ad < R_zW > > { public void n9 ( ) ; Hd [ ] [ ] [ ] [ ] [ ] [ ] q ( ) ; } class Y_dzX < H > implements Hc_ { C [ ] p ( G m , P_ c , P8 [ ] n , float [ ] [ ] c ) { "\b\f" . ju_ ( ) . z - null ; } boolean l [ ] char [ ] [ ] f_ = + 739096 > this || ! 75623 ; } interface L___G0 < T > extends Bel < F9 < G > > { public ZS < Mr > uJ ( V [ ] [ ] a , BCn < J > wt , E9eo [ ] s ) ; public void w ( char [ ] m , N c , int [ ] wJ_ ) ; } interface Dj_D extends Y_ < J > { } class Fy < L > { void d_K ( ) { } }

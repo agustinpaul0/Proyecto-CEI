@@ -1,2 +1,2 @@
-///[Error:F6|2]
-F6 < Dz >
+///[Error:public|2]
+public void byo_ ( ) ;

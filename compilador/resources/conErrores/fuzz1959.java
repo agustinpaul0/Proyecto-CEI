@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements Fo < N3E >
+///[Error:{|2]
+class AeDU8 extends { }

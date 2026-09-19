@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface P_8 < T > extends K8_ { DTrf < MV_9P_j0 > [ ] q ( A7 < K > [ ] ch ) ; public void d0 ( ) ; } class T_ { } class G_ { static public void r ( ) { for ( false - 551421 >= ! true ; null ; ) O [ ] [ ] cG = ! null , hs ; float ; ; } static void g_4 ( Z tR , char g ) { } } class DT5 implements ZK < B > { } class Tk5 { } interface M_1K_l5 < R > { public void uq_8 ( ) ; } interface G5ea_V6 extends ODW_ < T > { public I__ as ( D_Q < I > [ ] [ ] o_twEb ) ; void n ( L0 c0 , H [ ] wd , boolean [ ] nz ) ; } interface S8Af1 { }
+///[Error:<|2]
+interface < S > extends YP < Z > { Q fy ( float [ ] [ ] [ ] b , HY1gM [ ] [ ] gu ) ; }

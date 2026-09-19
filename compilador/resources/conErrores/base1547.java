@@ -1,2 +1,2 @@
-///[Error:q|2]
-class ZG < X > { } class Z_ implements Tx < W > { private void s ( Ck6OV6 j ) { int [ ] so_9L8 = 'f' , v , o , d ; } public static q ( ) { return false > null ; for ( ; ; ) this ++ ; } public static void b ( char b ) { } } class X8__ implements Hm6 { static public void w ( E [ ] [ ] [ ] p_V , C bBZyZ2OLN , boolean [ ] c ) { Ke . zIH1 ( true ) [ - null ] -- == "" -- ; C0 [ ] bp3 , s_n , f ; R [ ] wp = ! false , s , q , d_ ; } } interface U_6t extends WOQ { } interface D_ < J > { float [ ] [ ] l ( boolean w ) ; public H1 < W5_ < Ky > > [ ] w ( ) ; public void rK ( ) ; }
+///[Error:{|2]
+interface Wa extends DXa < B_ > { public Z42__ < Ml > u ( ) ; } class O_ < J > implements XGo < Q > { static C [ ] [ ] [ ] w ( float [ ] u5_w , float [ ] [ ] rS ) { } Ya__ ( ) { } private static void fq ( ) { } } class A1__ { } class Y0 < K > implements { } interface Q_ < J > { }

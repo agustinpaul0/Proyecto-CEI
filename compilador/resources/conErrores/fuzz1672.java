@@ -1,2 +1,2 @@
-///[Error:D|2]
-D interface Qp extends O70 < F > { }
+///[Error:j|2]
+interface OE { public j ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:}|2]
-class U9Y_ extends L_pw { } class Z_ { static public void xo_ ( M [ ] [ ] sz , U [ ] q_ ) }
+///[Error:[|2]
+interface Cu_c < W > extends K2K_9 < U_b < C > > { void m ( Ry < H > s ) ; public [ ] pP ( ) ; }

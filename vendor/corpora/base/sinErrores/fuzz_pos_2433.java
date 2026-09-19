@@ -1,0 +1,2 @@
+interface O_b {
+}

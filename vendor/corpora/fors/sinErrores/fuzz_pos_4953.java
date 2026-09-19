@@ -1,0 +1,3 @@
+interface Eu {
+V [ ] [ ] w ( ) ;
+}

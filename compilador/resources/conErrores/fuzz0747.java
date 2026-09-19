@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-class O9 { } class IL implements An3e_ { public static S boolean }
+///[Error:<|2]
+class F2 < W > { } interface < U > { }

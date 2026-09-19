@@ -1,2 +1,2 @@
-///[Error:z4|2]
-class ND6 implements Pt_ < PC > { } class PN implements Yf_ { static public void e_Q ( F [ ] b ) { for ( ! null = '\f' - ! null ; + false + null ; ) { } } static private void js_ ( char [ ] oSk , V zl , z4 ) { QJ2 . x2_ ( + false ) -- ; } } class E_ extends HI_ { } interface X_ < Z > { V m ( int oV__ ) ; void d4z ( ) ; } class G_ < M > implements F_8 < W > { US ( S6 zb3 ) { if ( true ) for ( ; ; ) float [ ] [ ] g ; else ! false ; } }
+///[Error:'\f'|2]
+class ND6 implements Pt_ < PC > { } class PN implements Yf_ { static public void e_Q ( F [ ] b ) '\f' }

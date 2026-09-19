@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Jm < U > implements { public boolean [ ] [ ] [ ] [ ] t ( ) { } }
+///[Error:f|2]
+class SO16 < L > { } interface UA { } interface MG7 { } interface VujzVK { void a ( f ) ; } interface M7 extends Pj { void d ( ) ; }

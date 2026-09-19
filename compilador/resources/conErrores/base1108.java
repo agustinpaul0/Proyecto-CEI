@@ -1,2 +1,2 @@
-///[Error:<|2]
-class AU < Q > extends T1 { } class Eh4v extends C47g < D > { static void b ( G_80hG v , M [ ] u , Yk_ < XaEC > t6 ) { } } < L > class D44 extends C__ { }
+///[Error:{|2]
+interface HO { } class Ud < M > extends { H [ ] [ ] [ ] [ ] [ ] n ; static boolean dF_ ( ) { } }

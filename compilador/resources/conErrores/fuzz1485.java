@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Vk9O extends T_r { public N [ ] s_ ( [ ] b , Z_ < D1_a2 < Z > > [ ] [ ] [ ] [ ] [ ] [ ] [ ] m ) ; }
+///[Error:A|2]
+interface Yw_ extends H0 { } interface O_8 < D > { } interface Vx86 { void vf A ; } interface T_ { }

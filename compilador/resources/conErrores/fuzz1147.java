@@ -1,2 +1,2 @@
-///[Error:+|2]
-class RSfXi implements Y_ < BD > { static private void h8 ( ) + bA ( ) . k ( ) . d . f_5 ++ public static void k_Y ( ) { } }
+///[Error::|2]
+class V0w_Ow0Uo < Q > extends Xo < P_C < I4 < Li_ > > > { private float [ ] [ ] [ ] [ ] [ ] nN = false ? : H__ . qn_5p ( ) . n ( ) . a46 . b8 ++ + - "" % K8 . rrj_ ( ) ; }

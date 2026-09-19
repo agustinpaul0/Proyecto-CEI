@@ -1,2 +1,2 @@
-///[Error::|2]
-class BA { static public void pVk ( ) { } O tD ( char a_Z , float r4X ) { } } class I_ { static V w ( boolean [ ] h ) { T dT = false >= "" , yV = 'e' < + true ? : ! false , e ; } }
+///[Error:++|2]
+interface P2L_2 < B > extends E9_ < Hl > { } class A_ extends AG < T > { I6 < MBX > vV ( X_ < YB_ > [ ] p , Zm < G > [ ] q , W [ ] sR , char n , I i ) { var t = ++ ? null : true ; D [ ] j , l , yv6A , e , pB , v ; } static void h ( B [ ] [ ] [ ] na ) { ; } }

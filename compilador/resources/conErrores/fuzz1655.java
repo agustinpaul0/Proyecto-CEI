@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface P_7hV9q extends VG { public FpI3uHbf [ ] u ( ) ; } class < V > extends Nur2m < K7ye > { public static char g ( ) { } }
+///[Error:(|2]
+( ) class X_S < S > { } class BB < D > extends W_ { }

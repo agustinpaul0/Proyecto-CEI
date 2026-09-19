@@ -1,2 +1,2 @@
-///[Error:535850|2]
-class Mm_9 < B > { static void h ( ) { return ! true > true % - "" = ! '7' 535850 || + true ; } }
+///[Error:oo|2]
+class Y_frz < D > extends Lc < S8ew5 < Gg < G > > > { static public void q ( V s , boolean [ ] w , oo ) { } private H_ [ ] xG = "QS" ++ ; }

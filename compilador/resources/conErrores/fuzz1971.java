@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface V_A < Z > { public char [ ] z ( ) ; public void c4j ( ) ; } < A >
+///[Error:YZ9|2]
+class Oi implements Np_ { boolean rp9 ; } YZ9

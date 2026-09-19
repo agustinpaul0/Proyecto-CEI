@@ -1,2 +1,2 @@
-///[Error:jE|2]
-interface Ae < D > { } class Vz_0 implements Huq { static jE ( char [ ] [ ] q , int [ ] [ ] a , R zb ) { } }
+///[Error:<|2]
+class AY_v7v extends K5_j < U > { private static char [ ] [ ] [ ] ud < H_ > { } } interface A__ < K > { }

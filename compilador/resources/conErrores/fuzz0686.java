@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface EVTM < E > extends { void wN ( ) ; } class C_ implements Kp_ < Z > { }
+///[Error:>|2]
+class B3tf extends H_ < > { }

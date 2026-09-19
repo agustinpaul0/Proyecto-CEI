@@ -1,0 +1,2 @@
+interface Ds < W > {
+}

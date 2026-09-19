@@ -1,2 +1,2 @@
-///[Error:IW9|2]
-class Qqu_ implements Yj < I > { } class FI_ < Q > { static boolean [ ] [ ] j IW9 < P0 > { { } return ; } } class J0 < E > implements DM { } interface Y2ukP8c { } interface O7_ < K > { } interface D3 { }
+///[Error:static|2]
+class Kk { private static void au ( ) static void w ( UN m ) { return 372e-2 = 6818 - - null ; return "" -- ; } static L_ < B > f ( ) { ; { J_ . w ( ) ; float [ ] [ ] a3P , i_ ; } } private C [ ] s__ ; }

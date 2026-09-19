@@ -1,0 +1,2 @@
+class EJ extends Eb {
+}

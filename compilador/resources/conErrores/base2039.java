@@ -1,2 +1,2 @@
-///[Error:int|2]
-int
+///[Error:y_Y|2]
+class J_5 { E_ [ ] h = - M7_e . mk ( ) [ false ] . z1BS_ ( ) != U__ . q ( ) ++ ? U3L . q_6MWfK ( ) ++ ? this ++ == - 99f / null : false : - this ? + Z_q . jg3 ( ) * ! this == - 1257 > + null = + false < - null : 't' > - null ; } class R41 < B > { public static Ulvr [ ] [ ] [ ] [ ] [ ] w ( int [ ] a , XR < W8 > [ ] [ ] [ ] y8 , L_37 < G_45u > k ) { var z1_q = 'm' - ! null + false + null ? - 089710 : 2f < false ; } public static void g_3_ ( Q j , y_Y ) { } } class X2 < Z > { }

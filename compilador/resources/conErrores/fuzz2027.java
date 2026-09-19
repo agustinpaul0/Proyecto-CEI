@@ -1,2 +1,2 @@
-///[Error:V_|2]
-interface Fk extends J__ < U > { } V_
+///[Error:{|2]
+class D3 implements { }

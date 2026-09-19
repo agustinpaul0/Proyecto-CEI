@@ -1,2 +1,2 @@
-///[Error:[|2]
-class MX implements Kr < H > { static void a_ ( ) { } } interface DN_ { public M_ < F4q < C5 > > x__ ( [ ] [ ] cm , I [ ] t5 ) ; } interface F_ { public void kN ( ) ; }
+///[Error:g|2]
+class ZPs < X > extends JP_7F { } class SF < K > { private static g ( ) { } static N_4 < N9 > db ( boolean r , boolean [ ] vN9ya , float [ ] h ) { W_4_ < I > [ ] [ ] e , v_D ; } } class Q_NC < U > { } class Kq < G > implements S__L { static public Ch z ( ) { for ( var d0 : - true ) if ( + null ) { } else ! true ; ; } } class Dl extends N_R { static int b1UA5 ( ) { } }

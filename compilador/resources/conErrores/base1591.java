@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface G4_Q3 { } class IG_ < U > implements P0sf < A > { private static void wg ( [ ] o , int n_N , S e ) { ; } static void p ( char [ ] [ ] [ ] [ ] q ) { } } class C1lA60 < H > { private static W i ( ) { for ( var u = + null ; ; ) ; ; if ( - true ) for ( ; ; ) Q [ ] [ ] y ; else R_x x ; boolean [ ] [ ] [ ] omC ; ; ; return ; } } interface V_v extends KN { public void w ( ) ; }
+///[Error:;|2]
+interface PV extends TO5 { char [ ] [ ] [ ] [ ] j_ ( ) ; public void n_ ; } class N3 < U > implements A_ { private void s ( ) { } } interface L6 < B > extends X_25g < V_Ova > { }

@@ -1,0 +1,2 @@
+interface D9_ {
+}

@@ -1,2 +1,2 @@
-///[Error:N|2]
-class Rs extends Rb < QoUT6 < ZZ > > { } N
+///[Error:public|2]
+public class IG_ < R > implements MX < T > { void r_ ( ) { } }

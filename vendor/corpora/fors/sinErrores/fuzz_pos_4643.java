@@ -1,0 +1,2 @@
+interface VG < O > {
+}

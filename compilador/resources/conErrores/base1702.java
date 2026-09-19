@@ -1,2 +1,2 @@
-///[Error:e|2]
-interface U__w < U > extends AR < X > { public void v ( ) ; public e ( float pz ) ; }
+///[Error:}|2]
+class P0Y { public static K [ ] ye_m ( ) }

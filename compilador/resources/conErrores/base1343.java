@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-interface M_B < Z > { public void i boolean ; public void a9 ( ) ; } interface Y6z extends M84 < B > { public void d ( ) ; } interface C0 < B > { }
+///[Error:;|2]
+class FL < S > extends B_ { void o ( F_e < K > p_ , V q , G01 ww_ , float a6 ) { } static private P d ( ) { return 66923377 ? null : ; } }

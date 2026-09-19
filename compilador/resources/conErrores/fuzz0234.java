@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface WS_ < D > extends { }
+///[Error:)|2]
+interface JA4H { } class Sn < I > extends X_ < D > { public static Z [ ] pJ_ ( N b , S j ) { } static void g_6 ( ) { } C [ ] i_ ( boolean ) { return ! false ; } } interface Aj10_K { void lh ( H [ ] [ ] im ) ; public OO < J > r80K7_ ( ) ; public void w ( ) ; } interface D_f extends PV < E > { } interface XI extends XVT_2 < H > { G_ [ ] [ ] tH ( ) ; void oQ ( AD g ) ; void e ( ) ; public char [ ] h ( boolean v , NT6t4 [ ] [ ] [ ] r , float c_ ) ; M a ( ) ; public void b_ ( ) ; float [ ] i ( ) ; public float mP_ ( ) ; }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Y_B implements H5a { } class UK extends O_ < U > { int [ ] b = "k" . jSs ( ) . fW ( ) . lI ( ) . xA . q ; } interface X2 < > { public void qDx ( ) ; public void m ( ) ; I [ ] p ( ) ; }
+///[Error:<|2]
+class F5 implements Zi4 < S > { boolean [ ] [ ] [ ] n ( ) { } } class J_n < A > { } interface Zg4W < X > extends G6__N < L > { } class R0mQj < Z > implements FGC_pAVI1 < < U > > { }

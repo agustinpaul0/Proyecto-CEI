@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface E_3 { public void m ( ) ; public void hn__ ; }
+///[Error:P|2]
+P lW_Bq ; class I_ { } class W2_5 { }

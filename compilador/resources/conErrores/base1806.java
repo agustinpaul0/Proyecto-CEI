@@ -1,2 +1,2 @@
-///[Error:void|2]
-void bx ( float [ ] bU ) { } interface EC extends W_X { W___ [ ] b0 ( BX w_S , Y [ ] [ ] [ ] [ ] eb1 , float gC ) ; }
+///[Error:public|2]
+interface S_bQ { K_ [ ] vQ69 public void yS ( ) ; } class U6 implements Yh7 < R > { } interface DB < Q > extends FQ < Y_ > { public T l4_ ( T [ ] p , G xr ) ; } class ZFS extends Dt < R > { static void vq ( float [ ] lgm ) { while ( - 'd' < - 75515. >= true ) char [ ] [ ] [ ] [ ] f ; return true ; { } H q , q ; } private DQ0 ( ) { int e ; Qv_16lh a ; QA [ ] sL_CSS_ ; boolean [ ] q ; } static public float t ( ) { } boolean b4_ ( ) { C85 . xWH ( ) ; } public static int dak ( ) { } }

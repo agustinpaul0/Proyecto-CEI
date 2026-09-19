@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface I8S extends XPU < U_ > { public T3H_U_z3_3 < V4 < R82 < XQ19 > > > p ( ) ; public A_ [ ] hY ( ) ; public DS < C_ < CN00 < J > > > kr_ ( ) ; } class Bf < K > implements C_eO { } class Z_ extends Qas < X4 > { } class Fr_ { } interface D3 { public void q ( ) ; public Q [ ] [ ] rn ( ) ; } class T_ < D > implements RV { void l11_ ( ) { } NWM_ ( ) { B [ ] [ ] o , g , i ; } static void q ( ) { G [ ] [ ] [ ] [ ] w , lFj ; } static private void tl7 ( ) { Y [ ] o , xE2_ ; } } interface E__ extends DD < D > { } class UOh < T > implements Co { Jlw_ ( ) { { } for ( ; ; ) ; } static void ( ) { 55910D ; } } class T8Ao < M > implements LAi < C1 > { } class C_ < S > extends VEY < X > { } interface H5 < B > { }
+///[Error:;|2]
+interface Bb { void p_ ; }

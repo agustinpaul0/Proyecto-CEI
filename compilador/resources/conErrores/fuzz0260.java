@@ -1,2 +1,2 @@
-///[Error:>|2]
-class EM < T > implements D_ < > { }
+///[Error:<|2]
+class I_ extends Vu < EM > { } interface < L > { }

@@ -1,2 +1,2 @@
-///[Error:R18_P_|2]
-R18_P_
+///[Error:kt|2]
+interface W8O extends Wm < AX4x > { float puk ( ) ; } kt interface Ye < C > { }

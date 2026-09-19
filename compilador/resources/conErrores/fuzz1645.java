@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) class X_S < S > { } class BB < D > extends W_ { }
+///[Error:>|2]
+interface H__02W < > extends Hp9 { }

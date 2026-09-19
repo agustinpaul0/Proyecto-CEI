@@ -1,2 +1,2 @@
-///[Error:a7833|2]
-class Yx < I > { static float i a7833 { int f , b ; } } class W72YL < U > extends Wgiw4 { } class DD implements T__rmN < X5I > { }
+///[Error:-|2]
+class O_ < I > { static private F r ( ) { var o = + HB8 . eH_ ( ) . o14 . z ( ) ? ! "" . i_ ++ = ! '"' != true : + this . x_ ++ / this ++ ; ; L a = + this ; for ( var z : null ) ; P [ ] [ ] os5 , b ; var i = true ; } static Y [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] i ( ) { while ( true / QZ2nQ9 . f_2 ( ) . f -- ) var p = ! this ? null : - null ; A [ ] [ ] [ ] qB4 , tH , g_ = false ; } } class RIxs0 extends WK < V_Uvf < GmS2 > > { public int q ( ) - null private I hb4 ; private static K [ ] v ( W q___r_1y , VV h__z ) { } } class DEu_ < O > extends H28n < N > { }

@@ -1,2 +1,2 @@
-///[Error:X|2]
-X class X_ { static int t ( R [ ] l ) { } boolean y88 ( B [ ] mGC ) { this . f9 ( ) ++ ; } static void q ( ) { for ( var g_S : + false ) return ; } static int [ ] e ( float f ) { } } class Lk_ < L > { private V0 qbz8 ( int [ ] t_ ) { for ( ; ; ) Ve d , y5_ ; } } interface H__6k < U > { public int q0_S ( ) ; } interface Q_ { }
+///[Error:float|2]
+interface E4 { } class Wx implements W5 { } float [ ] x , i ; interface A4_ < C > { } interface DZ_ < F > { void y ( ) ; P sB ( ) ; }

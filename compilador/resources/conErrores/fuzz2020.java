@@ -1,2 +1,2 @@
-///[Error:{|2]
-class V_ extends Z4h_ { } class UJ extends Et6 < S > { } { ; A r_n , u ; }
+///[Error:V_|2]
+V_ [ ] [ ] interface HI { } class Oa < P > implements P_ { } class Hz_k < Z > implements G_8 < U > { } interface Za < K > extends Ax { } interface Eic < F > { }

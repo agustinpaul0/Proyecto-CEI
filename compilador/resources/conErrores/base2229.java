@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface BMk < I > { public int [ ] f ( ) ; } ( )
+///[Error:D|2]
+class U_ < B > implements J7 < V9_9 < Q > > { static void j D [ ] cmV , U [ ] [ ] [ ] mb static void r ( char q97_O , Z [ ] o , float b , XM3rh w0B9 , Ud_Fw t , S [ ] prhk ) { } I [ ] [ ] mR_6TA_T6 = J2 . aP ( ) . n . kV0 -- ; S7j ( ) { } private float n ; static private void f ( ) { if ( null ) A09 . e ( ) -- ; } } interface P9 { }

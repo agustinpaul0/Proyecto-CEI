@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Q5 < U > implements QoJ4 < P > { int [ ] wm ( ) { } } interface H_ { } class A6wQC_ < L > { static private LO < X > r ( int c1_ , Y6O < ANBj > [ ] g6P ) { for ( ; ; ) new R6JA < > ( ) . s ( ) . vp . lI7 ++ && - null ; } DU < L > [ ] k_ ( ) } interface F4 extends RO { public void m ( MLl2 < B > sl ) ; public ZG < H_ < JM8 < U > > > b ( ) ; void q_ ( ) ; } interface XhOB { public void i9 ( H [ ] vL508 ) ; }
+///[Error:{|2]
+interface An < T > extends { }

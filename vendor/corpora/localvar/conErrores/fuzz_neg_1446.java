@@ -1,0 +1,12 @@
+// [Error:boolean|5]
+interface FC extends Uf5o_ {
+char [ ] n_3s ( boolean [ ] v0 ) ;
+boolean [ ] [ ] f ( ) ;
+void w boolean [ ] xv ;
+H [ ] p ( ) ;
+N_ < Cy > e ( ) ;
+}
+interface PheR < M > extends T_L4 {
+ZHh < S > [ ] [ ] [ ] ku ( ) ;
+K_a_ne < Ie > w1O3 ( Vz < S > [ ] [ ] bS7i ) ;
+}

@@ -1,2 +1,2 @@
-///[Error:j|2]
-interface OE { public j ( ) ; }
+///[Error:{|2]
+class Jf < D > extends JH { int u0 = 06784 ? ! "\b.87x}\"" ++ : null ; static private C gg ( ) { S [ ] q , w = - null ? + false : true ; char [ ] [ ] [ ] [ ] d = ':' ? true : false , q , t = null ; } public static void w8 ( ) { } } class C_PC extends Ns3tV < Y > { } class R_N < G > implements BtYx < N > { } class StBx extends LIs_ < T0U < J > > { static public T [ ] [ ] [ ] [ ] [ ] [ ] z { if ( this ++ ) while ( null ) { { } ; } } }

@@ -1,2 +1,2 @@
-///[Error:{|2]
-class XH9y extends PF { } class A_ < O > implements D1 < S > { void p { } }
+///[Error:O5d|2]
+O5d

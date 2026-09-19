@@ -1,0 +1,2 @@
+interface KO < L > {
+}

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface NT extends N_ { } interface X_ < P > extends U3w_ { } interface { }
+///[Error:<|2]
+interface E___ extends LjAh < EI < K > > { void s ( < Xp < Z > > [ ] [ ] y ) ; HL_ < N > m ( ) ; }

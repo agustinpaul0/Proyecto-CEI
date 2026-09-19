@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface P2 { } [ ] interface KP < R > { }
+///[Error:F|2]
+class W8W9 implements J3JZ < Ts > { public static void m ( ) F j ( float [ ] k , T [ ] k ) { } static private void c ( float [ ] [ ] t ) { ; for ( true + ! true ; null ; true ) int [ ] [ ] [ ] [ ] [ ] t , b__Hw ; } static void vq ( ) { var n = true ? true : true ; var k = '\r' ; } R6 [ ] [ ] [ ] [ ] z = TS5 . s ( ) . w ++ ? 'Q' : ! null ; } class ZlK1 implements T_4 { static private Rc_ [ ] [ ] [ ] [ ] [ ] u_U ( ) { M [ ] r40k = + "\b\r\tx\t" == + 's' ; for ( "" ; null || ! null ; - 258. * null ) while ( + 32F * true ) { return ; ; ; } } } class Kz { } class M23 { } class SL < M > implements D_ < D__ < IT > > { }

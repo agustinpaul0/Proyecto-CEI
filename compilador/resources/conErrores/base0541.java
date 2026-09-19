@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-interface ZE < P > { boolean h ( ) ; W u ( boolean [ ] q , float [ ] [ ] e , Cbx qKS8k ) ; public YLJ < LR > e7M_ ( ) ; void tN ( Q_ < R > q , ZB3 < D > [ ] u1 ) ; void kPP ( H_7 rj , N_ [ ] [ ] [ ] qK_ ) ; public void j3W7 ( int [ ] [ ] [ ] [ ] [ ] j ) ; } class G__5 < X > { N f9 ( ) { while ( 525 * + true + - true * - false ) return ; } R [ ] [ ] z_Y = + null && - null < - 'A' ; static void e5sKc ( ) { return ; } } boolean h = true , c_ ;
+///[Error:void|2]
+void

@@ -1,0 +1,2 @@
+interface Dq < N > {
+}

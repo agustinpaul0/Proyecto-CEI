@@ -1,2 +1,2 @@
-///[Error:OnPv_r|2]
-OnPv_r
+///[Error:;|2]
+interface J3T < Y > extends Z_ < F_ > { } interface X14 extends Q3 < W > { public int n ; void p_J ( float [ ] v ) ; }

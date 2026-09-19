@@ -1,2 +1,2 @@
-///[Error:<|2]
-< C >
+///[Error:G2BP|2]
+G2BP

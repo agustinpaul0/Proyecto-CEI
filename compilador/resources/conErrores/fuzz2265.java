@@ -1,2 +1,2 @@
 ///[Error:}|2]
-class IVp < H > { static public Z [ ] rfa ( BW l ) { } public static Drb [ ] c } interface L0 { }
+class T_ < Y > { static void h }

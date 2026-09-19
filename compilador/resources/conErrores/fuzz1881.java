@@ -1,2 +1,2 @@
-///[Error:<|2]
-class L_9kv_ < A > implements P_ { } < M >
+///[Error:ef|2]
+interface KF < B > { public void h ( ef ) ; EG < I_5_J < P > > e_ ( ) ; public void jw2 ( ) ; }

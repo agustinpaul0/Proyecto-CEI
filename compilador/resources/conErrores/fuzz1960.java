@@ -1,2 +1,2 @@
-///[Error:Gl_7u|2]
-Gl_7u
+///[Error:(|2]
+interface XB { X [ ] [ ] [ ] [ ] dN ( int [ ] [ ] w , W [ ] c ) ; } ( ) { ; }

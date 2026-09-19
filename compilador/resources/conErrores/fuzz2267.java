@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < H > extends X3 < VA0_ > { }
+///[Error:{|2]
+class TO < X > implements Ka < F > { } { }

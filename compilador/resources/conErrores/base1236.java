@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface U04_6 < W > extends I5__6 < ErZ < S_ < E > > > { } interface FW_ < O > { void c ( ) ; } extends P_ interface JT3 extends Z5 { }
+///[Error:F_Lv___1s_|2]
+F_Lv___1s_ interface R2 extends J9nZb < BA > { void bFO ( ) ; public I [ ] y ( ) ; }

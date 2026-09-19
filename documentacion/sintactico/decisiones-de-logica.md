@@ -77,6 +77,20 @@ acceso al operador.
 arriba. No admite un `=`, así que `a = b = c` no deriva; pero admite el ternario, así que
 `var x = c ? a : b;` es válido igual que `x = c ? a : b;`.
 
+El profesor confirmó el criterio para el declarador de Variables Locales Clásicas: es el mismo del
+`var` de la gramática base, que no admite asignaciones anidadas salvo entre paréntesis. Un paréntesis
+es un primario y adentro lleva una `<Expresion>` completa, así que:
+
+```
+int x = y = 2;          INVÁLIDO    (el error es el segundo `=`)
+int x, y = z = 2;       INVÁLIDO
+var x = y = 2;          INVÁLIDO
+int x = (y = 2);        válido
+int x, y = (z = 2);     válido
+var x = (y = 2);        válido
+int x = (y = z = 2);    INVÁLIDO    (adentro del paréntesis rige la misma regla)
+```
+
 El **lado izquierdo** del `=` es una `<ExpresionCompuesta>`, como en la gramática original: un
 ternario no lo es, así que `a ? b : c = d` no deriva —`javac` tampoco lo acepta: *«unexpected type,
 required: variable»*—. Entre paréntesis el ternario es un primario, y por lo tanto una
@@ -186,6 +200,12 @@ new int[]{1,,}                INVÁLIDO
 new int[][]{{}{}}             INVÁLIDO    (sin coma entre los elementos, como en Java)
 ```
 
+**`new int[2][]` es válido en Java, y acá no, a sabiendas.** El JLS lo admite
+(`new PrimitiveType DimExprs [Dims]`, §15.10.1) y `javac` lo compila. La consulta al profesor fue
+sobre la creación **con** inicializador, y su respuesta —como en Java— se aplica a eso. La creación
+**sin** inicializador la define la gramática base, con toda dimensión con su tamaño, y se mantiene:
+este proyecto se apega a la respuesta del profesor y no la extiende a lo que no se preguntó.
+
 Las listas vacías valen en cualquier nivel: `new int[][]{}`, `new int[][]{{}}` y
 `new int[][]{{}, {}}` son válidos, como en Java. Que el anidamiento del inicializador coincida con
 la cantidad de dimensiones **no** es sintáctico: `new int[]{{}}` pasa el parser de `javac` y el
@@ -222,33 +242,42 @@ El léxico emite `pr_float` y `floatLiteral` desde la Etapa 1, por un logro de a
 la gramática de la cátedra no los tiene en `<TipoPrimitivo>` ni en `<Primitivo>`. Sin extenderla,
 ese logro quedaría inutilizable en la Etapa 2, así que se agregan las dos alternativas.
 
-## 10. El `for`: la variable de control se declara con `var`
+## 10. El `for`: la variable de control con `var`, y ningún hueco vacío
 
 El logro pide un `for` *«similar a como es en java»*, restringido a *«una sola sentencia/expresión
-por separador»*. La variable de control se declara **con `var` y nada más**: el profesor lo
-respondió así, porque los logros se piensan lo más independientes posible entre sí, y el
-declarador tipado es del logro de Variables Locales Clásicas.
+por separador»* (Pautas, slide 41). El profesor fijó las dos lecturas que ese texto deja abiertas:
+
+- **Una sola, y obligatoria.** Cada hueco del `for` estándar lleva exactamente una expresión: la
+  inicialización, la condición y la actualización. Ninguno queda vacío, así que `for(;;)` no es
+  válido, y tampoco un encabezado con alguna parte vacía. Java las hace opcionales (JLS §14.14.1),
+  pero la Pauta restringe: habla de *una* expresión por separador, no de *a lo sumo una*.
+- **La variable de control se declara con `var` y nada más**, porque los logros se piensan lo más
+  independientes posible entre sí, y el declarador tipado es del logro de Variables Locales
+  Clásicas.
 
 ```
-<EncabezadoFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
-                  | var idMetVar <EncabezadoForTrasVar>
+<EncabezadoFor> ::= var idMetVar <EncabezadoForTrasVar>
                   | <Expresion> <ClausulasFinalesFor>
+<ClausulasFinalesFor> ::= ; <Expresion> ; <Expresion>
 ```
 
-Lo demás es Java (JLS §14.14.1 y §14.14.2): las tres partes del `for` estándar son opcionales, así
-que `for(;;)` vale, y el de iteradores lleva una variable declarada, un `:` y una expresión.
+El resto es Java (JLS §14.14.2): el `for` de iteradores lleva una variable declarada, un `:` y una
+expresión.
 
 ```
 for (var i = 0; i < n; i++) ;     válido
 for (var e : lista) ;             válido
 for (i = 0; i < n; i++) ;         válido      (una expresión como inicialización)
-for (;;) ;                        válido
 
-for (int i = 0; ; ) ;             INVÁLIDO    (declarador tipado)
+for (;;) ;                        INVÁLIDO    (el error es el primer `;`)
+for (; i < n; i++) ;              INVÁLIDO    (sin inicialización)
+for (var i = 0; ; i++) ;          INVÁLIDO    (sin condición)
+for (var i = 0; i < n; ) ;        INVÁLIDO    (sin actualización)
+for (int i = 0; i < n; i++) ;     INVÁLIDO    (declarador tipado)
 for (Persona p : lista) ;         INVÁLIDO
-for (var i; ; ) ;                 INVÁLIDO    (var sin inicialización, como la variable local)
-for (var i = 0, j = 0; ; ) ;      INVÁLIDO    (una sola por separador)
-for (; ; i++, j++) ;              INVÁLIDO
+for (var i; i < n; i++) ;         INVÁLIDO    (var sin inicialización, como la variable local)
+for (var i = 0, j = 0; a; b) ;    INVÁLIDO    (una sola por separador)
+for (i = 0; a; i++, j++) ;        INVÁLIDO
 ```
 
 ## 11. Declaradores múltiples: cada uno con su inicialización
@@ -262,6 +291,28 @@ Qué inicializa cada una es semántico: en Java, `int x, y, z = 10;` inicializa 
 —verificado con `javac`: usar `x` después da *«variable x might not have been initialized»*—. El
 ejemplo del logro no aclara si la cátedra lo lee igual, así que queda para confirmar antes del
 semántico.
+
+## 12. Un atributo por declaración
+
+La gramática base declara un atributo por `<Atributo>`: `<Atributo> ::= <Tipo> idMetVar ;`. Java
+admite varios en una misma declaración —`int a, b = 0;` compila con `javac`—, pero acá no:
+
+- El logro de Variables Locales Clásicas habla de *«variables locales»* y de declarar varias *«en
+  una misma sentencia»*. Un atributo no es una variable local ni se declara en una sentencia: el
+  JLS los separa en dos construcciones distintas, `FieldDeclaration` (§8.3) y
+  `LocalVariableDeclarationStatement` (§14.4).
+- El logro de Atributos Inicializados agrega la **inicialización** del atributo *«al igual que en
+  Java»*, no la lista de declaradores.
+
+Como ningún logro lo agrega, rige la base. **Se sabe que Java lo admite**; es una decisión de apego
+a la gramática de la cátedra, no un olvido.
+
+```
+int a;                  válido
+int a = 0;              válido      (Atributos Inicializados)
+int a, b;               INVÁLIDO    (el error es la `,`)
+int a = 0, b;           INVÁLIDO
+```
 
 ## Ver también
 

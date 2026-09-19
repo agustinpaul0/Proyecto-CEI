@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean
+///[Error:extends|2]
+extends N__

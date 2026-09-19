@@ -1,2 +1,2 @@
-///[Error:z|2]
-interface I_ < L > { void w ( int o ) ; float d9 ( ) ; SQ < D0 > z ( ) ; public void w4 ( z ) ; }
+///[Error:extends|2]
+extends N8T2 < B > interface Iq { public void qa__ ( ) ; }

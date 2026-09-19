@@ -1,2 +1,2 @@
-///[Error:while|2]
-interface P410pk extends P8_ < S1__Zp0573 < K > > { } class TMc < Q > extends CK { void while ( null = true ) for ( ; ; ) true ; static private void yEU ( ) { } }
+///[Error:n_|2]
+class L_ < P > extends MX8 { } class Am_ { private static n_ ( ) { } } interface Y_ { void ci ( ) ; } class N7 implements YX < A_o_V_ < V > > { void t ( Db [ ] [ ] [ ] [ ] [ ] jDk ) { } void q ( X_ z8 ) { } }

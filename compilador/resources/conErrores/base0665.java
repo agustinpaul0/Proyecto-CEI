@@ -1,2 +1,2 @@
-///[Error:K|2]
-K
+///[Error:{|2]
+class Jm < U > implements { public boolean [ ] [ ] [ ] [ ] t ( ) { } }

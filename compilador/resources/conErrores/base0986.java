@@ -1,2 +1,2 @@
-///[Error:implements|2]
-implements Ze interface Fiw < E > { }
+///[Error:<|2]
+class DFt implements < I > { } interface L_E extends Y9_F { }

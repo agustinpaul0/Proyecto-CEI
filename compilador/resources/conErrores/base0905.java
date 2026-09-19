@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface S2 < M > { } class G3z_ < C > { static N [ ] [ ] [ ] g ( W fy9hg , N3E__ [ ] w , int [ ] [ ] j5 ) { } private SB ( char [ ] [ ] [ ] [ ] p ) { float m ; for ( ; ; ) { } } } class U9s_S__ extends H_ < Z > { public static T [ ] c ( JU < B > u_ ) { } } interface EX < H > extends Iq6h { } class D_y implements E3H < V_ > { char l ( U9 oX , U3 [ ] [ ] [ ] h ) { } } static S8U y ( ) { return ; }
+///[Error:[|2]
+interface U_k < P > extends Q3 { R c8 ( F [ ] [ ] wYaQ , char [ ] w , float [ ] f1KX ) ; void d ( ) ; public boolean [ ] yH ( Y vN , int x , [ ] , H [ ] f ) ; }

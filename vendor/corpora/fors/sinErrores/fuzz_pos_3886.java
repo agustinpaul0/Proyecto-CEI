@@ -1,0 +1,2 @@
+interface P8_ {
+}

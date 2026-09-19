@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) { OY [ ] eZ , t = null , c_ , qFGr7j_i , vw_ ; } class Q__3 < V > extends Po_ < Z1 < Jv > > { }
+///[Error:;|2]
+interface Fo < T > { C2 [ ] a ; public void m_ ( float [ ] y_ ) ; }

@@ -1,2 +1,2 @@
-///[Error:R4_|2]
-class Kx < I > implements KD_ { static void p ( boolean [ ] i ) { { var uC = this -- ; ! true <= null ; z ( ) . tY ; } } static private Cd [ ] [ ] z ( float [ ] [ ] t , Ir_ < L > [ ] [ ] [ ] [ ] [ ] z ) { } private static int j ( ) { ; } public void u R4_ [ ] oj1nD { return ; for ( ; ; ) R z ; { } } private float cd ( EN ui ) { N [ ] p2 , w , z , e ; "" ++ ; } SE ( ) { } static void e3 ( ) { O ch , k ; } static void y ( int [ ] g ) { } } class R_ < Y > { void l ( DF02 z_B , Ma d , F wVR8T , ID_ f , M k ) { } char y = + 47394 == - true + false || "/" ? null : - xX ++ ? + 923 : false ; } interface J4h { }
+///[Error:[|2]
+interface A4 < P > { [ ] public boolean [ ] f ( ) ; } interface Q_w extends N_HL_U_ { }

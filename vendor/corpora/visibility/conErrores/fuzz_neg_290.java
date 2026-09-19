@@ -1,0 +1,21 @@
+// [Error:B_|12]
+class EHQ < U > {
+}
+class ZI6___d1 < Z > implements BA < FP3 > {
+}
+class K_ extends Ry {
+}
+class L4 {
+}
+interface CD extends W2T < Xo > {
+void w070 ( ) ;
+O [ ] y B_ < K > ;
+Y i ( ) ;
+}
+interface Z__ < J > {
+D z ( L r , Y d ) ;
+}
+class BU < H > {
+}
+interface U7j < V > extends G07x {
+}

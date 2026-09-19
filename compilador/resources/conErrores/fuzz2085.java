@@ -1,2 +1,2 @@
-///[Error:int|2]
-class Oj { M m0 ; } class YW extends AE < S__ > { private static Y [ ] gZ ( StaZ < X > [ ] [ ] [ ] x_mf2 , float [ ] [ ] s_0 , boolean uh_h , int z , YQO_mJQ3__ [ ] z ) { } float [ ] m ; } class I_ < D > { } interface E4y8 { float int [ ] sua9 ( ) ; V us ( ) ; }
+///[Error:QS_Eo|2]
+class DAc < Q > { static public boolean [ ] z1I ( int q ) { } } class YI < Y > implements X1____ { private void k ( J [ ] u ) { F v , y22 = false , g ; - true ; } } QS_Eo interface D3d_6ri < O > extends RL5 { } class GB_O implements Yk { } interface Cp { void xM ( ) ; public void a ( ) ; public Lja < S > bV ( ) ; public void j ( K [ ] [ ] [ ] v_Oq , float [ ] [ ] j ) ; } interface Je { }

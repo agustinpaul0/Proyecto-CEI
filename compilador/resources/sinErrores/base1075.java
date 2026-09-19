@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class Xz_ implements Jj9i < IF > { static void kC ( ) { } float v ( ) { } void v18Jw_ ( float yc55 ) { for ( var lk = - false ; ; ) fgR ( ) ++ ; } private static S [ ] [ ] i9i ( L b1 , int [ ] wxi , U u2_99Ad , J i0 ) { } static void a ( ) { if ( ! 9754454 ) char [ ] [ ] r3 ; var f9 = null ; } } interface W_ { public void y ( ) ; } class N_ extends TL < B > { }
+class Xz_ implements Jj9i < IF > { static void kC ( ) { } float v ( ) { } void v18Jw_ ( float yc55 ) { for ( var lk : - false ) var x = ! false ; } } interface PnN53a extends Aq { }

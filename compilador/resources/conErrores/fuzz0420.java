@@ -1,2 +1,2 @@
-///[Error:b|2]
-class C18 < R > extends Fm { static void e_ ( ER [ ] m ) { } } interface IR_ < T > { } interface XT22 extends A3 { void r ( R y , X u ) ; public U re ( ) ; } interface SP { } class GuT_ extends OM < A_ > { } interface V_ < N > extends G_d < R2 > { } b class D7 { boolean [ ] [ ] [ ] m ; }
+///[Error:(|2]
+class D1 { static Q [ ] [ ] [ ] n ( R n , float o ) { } } interface N3BA_ < K > extends O0 < P > { } interface L_ < I > extends Z2l < GA__Y < Fl_7 > > { } interface J_sb < B > { G3 r_ ( float [ ] z , K [ ] [ ] sW18BI_ , K [ ] [ ] [ ] b ) ; void g ( ) ; } class W2W < M > extends D_ { } class O_i < I > { private static O [ ] [ ] [ ] qG ( ) { } static public void u ( ) { } C xT ( ) { } static public H x8 ( ) { float b , d_ ; } static public void ( ) { } } class Da { }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-void d_ ( N g ) ;
+///[Error:B_|2]
+interface J7 extends LZ { } B_

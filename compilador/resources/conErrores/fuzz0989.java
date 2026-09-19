@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface Z_ < I > { public void r ( float [ ] [ ] [ ] [ ] gyH_W8b ) ; void ( ) ; }
+///[Error:<|2]
+class < J > extends P1T < R_ > { } interface HR < L > { char [ ] x4 ( ) ; }

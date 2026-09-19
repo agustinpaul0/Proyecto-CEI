@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < Z > { }
+///[Error:C|2]
+C class Rq < L > { } interface Xz0 < V > { }

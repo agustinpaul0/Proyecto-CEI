@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface U5 extends QJ_ < > { }
+///[Error:}|2]
+class NW < O > { void }

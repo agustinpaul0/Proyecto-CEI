@@ -1,2 +1,2 @@
-///[Error:{|2]
-class ZQq3F < M > extends { }
+///[Error:<|2]
+< B > interface SG { } interface Ce4 extends Wj { Va z__ ( boolean b_ , T [ ] x5F ) ; }

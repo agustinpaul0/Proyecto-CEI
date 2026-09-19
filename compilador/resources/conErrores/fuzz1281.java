@@ -1,2 +1,2 @@
-///[Error:Q|2]
-Q interface WT < Z > { } interface L0 < L > { public void aMT ( ) ; }
+///[Error:A8n|2]
+A8n class Vq < O > { }

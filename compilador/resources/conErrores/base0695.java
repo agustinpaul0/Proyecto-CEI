@@ -1,2 +1,2 @@
-///[Error:<|2]
-class YP_ extends VJ < K > { } class KJ < U > implements Y_7 { UH9Y < O > [ ] b ( ) { while ( + 796101 ) return ; return ; var r = true ; } public H w ( M_ [ ] [ ] [ ] l , N z ) { } } class P_ < M > implements S8 < Cy > { static void h ( ) { float lH = - true , b ; } } class DI implements < FG < T > > { }
+///[Error:[|2]
+interface X_8p_ < K > { char zO6 ( G [ ] x ) ; } interface D__V9 extends Tq < Ma < T > > { public [ ] r ( ) ; } interface D3 { int [ ] [ ] [ ] [ ] [ ] o3yQm ( ) ; public void i ( ) ; }

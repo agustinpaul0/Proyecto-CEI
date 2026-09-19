@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends WF
+///[Error:float|2]
+float [ ]

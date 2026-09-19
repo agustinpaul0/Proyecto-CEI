@@ -1,2 +1,2 @@
-///[Error:{|2]
-class U82O < D > extends { }
+///[Error:implements|2]
+implements V1_55QG < B >

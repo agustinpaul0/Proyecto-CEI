@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class X6 < O > { } interface N_t < L > { public void l ( XRY [ ] dj , O k , char [ ] wyRqM ) ; } class IL { } interface XP { void wp ( A_X x , int j6 , XMh < MYx > [ ] n , J8 qBp0 ) ; public void c_ ( ) ; } interface P8 < B > extends L__ { public H t ( ) ; } extends H_ < C > class F_FF < H > { } class Mo < K > { private static K_Zn [ ] [ ] iN_ ( ) { } } interface KJ1gU__ < S > { } class ZA { } interface U0 < O > extends H6RG < U > { }
+///[Error:(|2]
+interface O_ < Y > extends Uz < ZS_ > { public void i ( ) ; public void aaG ( ) ; public H [ ] [ ] yK_ ( ) ; } class L_w1d { } ( P uBQ , int nLqY )

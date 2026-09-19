@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Vx7 < T > extends C8 { public P x9 ( boolean [ ] vc_ ) ; void j ; void z_ ( ) ; } class U_4 { }
+///[Error:{|2]
+interface NAp____6 extends JLG { } class S8_7J < N > implements { }

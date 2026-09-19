@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface F0o < I > extends M9 { void k4 ; }
+///[Error:static|2]
+interface MX0_ { } interface Fh1 < L > extends QK { void w ( I4 [ ] e ) ; } interface ZR extends MR__ < Q > { } class T_b { KJ_ jD ; } class Ji { } class W_ < U > extends Mf1kHO { static private Fg4 < A > o ( Y [ ] [ ] u ) { var k = ! null ; } } static void p9__ ( E [ ] [ ] i ) { } class Vg implements U_6 < Q1x < I2 > > { } class L3Q { static M_tW [ ] [ ] [ ] a ( ) { I [ ] [ ] khfP ; L [ ] kd_4 ; return ; } static private Y9_ < B__ > [ ] f ( ) { } }

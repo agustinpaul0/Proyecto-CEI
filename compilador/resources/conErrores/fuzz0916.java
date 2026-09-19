@@ -1,2 +1,2 @@
-///[Error:q_|2]
-class P__u5_R4_ < N > extends Cs0_S { } interface Qy < W > extends Iz < C7__ > { q_ ( ) ; }
+///[Error:V|2]
+V q , C2Rzc < M0 > o , G_RE_N j

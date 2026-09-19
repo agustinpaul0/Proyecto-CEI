@@ -1,2 +1,2 @@
-///[Error:{|2]
-class I6 < P > implements QEZX < I6_ > { } class G3c8 < J > extends B_Dj { } interface H_ < X > extends { } interface A_y_ extends S3 { public S l_ ( ) ; }
+///[Error:void|2]
+class Koh { } class Bp extends C1 < MB_ > { } interface E_ < A > { public S___Lm__w [ ] bV ( ) ; } class A6n_c extends PRA < J1 < GBcg > > { } class D_ { public static void v ( Uy x_c , boolean ii4 ) { { float [ ] [ ] z ; } } static W j ( Z [ ] [ ] d ) { while ( ! false ) V [ ] [ ] v_ , xg ; return ; } T_ < E > [ ] [ ] [ ] z_7 ( ) { LO_ tCr1 ; } static private Kz78Tq uxu void s ( ) { { } ; } } interface P84g7_ { } class N82 < A > implements N3_Y { } interface B1_ { } interface R63 < W > { public void uu ( OQ [ ] [ ] s , int l ) ; } interface Ir6UT < H > { public void l ( ) ; }

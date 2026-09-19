@@ -1,2 +1,2 @@
-///[Error:void|2]
-void c ( char a ) ; void a ( O l ) ; S zL ( ) ; class Do implements H0el_ { } interface Z0CV { public void k ( ) ; public void l ( Y774 [ ] [ ] [ ] [ ] [ ] x1 ) ; }
+///[Error:)|2]
+class Eg847XMf0 implements Nv3 { } interface J_x < F > { public S [ ] [ ] c ( float m , boolean j ) ; void zix ( L z , Xhh_2 [ ] f ) ; public void l7 ( ) ; void b ( int ) ; }

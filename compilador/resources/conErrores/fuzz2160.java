@@ -1,2 +1,2 @@
-///[Error:Om|2]
-interface W_ { } class ATm6 extends B_ < M > { } Om < F > interface I_ extends F_R { public A r ( ) ; }
+///[Error:return|2]
+class H_CN { static boolean [ ] x ( ) { } static private void return }

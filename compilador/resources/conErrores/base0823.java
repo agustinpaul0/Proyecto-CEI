@@ -1,2 +1,2 @@
-///[Error:>|2]
-class LC < L > extends CVN_ < Y_l < > > { }
+///[Error:void|2]
+void v18Jw_ ( float yc55 ) { for ( var lk : - false ) var x = ! false ; } interface PnN53a extends Aq { }

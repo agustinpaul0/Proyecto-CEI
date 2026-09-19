@@ -1,2 +1,2 @@
-///[Error:3134e+84f|2]
-3134e+84f
+///[Error:<|2]
+interface < B > extends W_ { }

@@ -1,2 +1,2 @@
-///[Error:(|2]
-class Za < A > implements G_ < A0_fS7 < U_ > > { private C [ ] c ; } class AH { void ( FO < U > [ ] [ ] aH , X_ < VW0_ > [ ] [ ] [ ] t9 ) { } M j9J_QC ( ) { } private V s = 416468 > ! this ++ ; static void f ( CG3R_ < M > ag__v_R_ , Q [ ] [ ] [ ] ve , E a_d ) { } boolean [ ] [ ] u ( L psD_ ) { } public static char [ ] vf3 ( ) { int [ ] d0 ; } boolean rX = ! true ; }
+///[Error:I|2]
+interface Y_j { } interface Po < S > { } I interface B6r_aa { }

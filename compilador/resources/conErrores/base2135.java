@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface V_ extends U_ { } int [ ] ru ( S4 < P > [ ] [ ] rMy_ ) { } class S_0oM extends VZ6d < FhYU < Z_ > > { }
+///[Error:i|2]
+i interface Y6z extends M84 < B > { public void d ( ) ; } interface C0 < B > { }

@@ -1,0 +1,2 @@
+interface Jb < R > {
+}

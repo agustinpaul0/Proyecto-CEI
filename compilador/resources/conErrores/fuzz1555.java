@@ -1,2 +1,2 @@
-///[Error:implements|2]
-class Y_ extends X8 { } implements DdZ
+///[Error:(|2]
+( ) { } interface DAY_ < N > extends JC46 { }

@@ -1,2 +1,2 @@
-///[Error:FQ2BJ|2]
-FQ2BJ < A >
+///[Error:>|2]
+interface OxA extends Ng5 < ZZ < > > { } interface A_m < Q > { }

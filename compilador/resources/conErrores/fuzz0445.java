@@ -1,2 +1,2 @@
-///[Error:false|2]
-class YaHO < S > { } class BM < T > implements IP < F > { static private float iE false }
+///[Error:*|2]
+interface A0 < B > extends UD { public QOA < S > ch_ ( WpG < Al < R > > [ ] [ ] a_gn_9 , Z [ ] e , C c_ ) ; public int f ( ) ; public void k_ ( ) ; public void cC7_7 ( ) ; public void l5 ( X wmg ) ; } class T5 < T > { static private void kh ( ) { boolean [ ] s_ = J1_ . z ( ) . v > * null >= true ; return this -- = false ; { char [ ] [ ] w ; P5 . w ( ) ; } } static public void t ( O [ ] fG , boolean [ ] [ ] p ) { N_ . p__ ( ) . h . w8l ( ) . n_ ( ) . e ( ) ++ = false ; for ( ! false ; + null ; false ) var at1 = true ; ; { } int [ ] [ ] f_rm ; } } interface KssX < Y > { void i__V_ ( ) ; void y3 ( ) ; void r ( U3_ [ ] [ ] [ ] [ ] c ) ; } class Zd__ { void i_ ( int o , boolean [ ] y__ ) { } } interface F7 { public void b ( MC < KL4 > [ ] c ) ; } class WZ < G > implements X4v { } interface S_ < E > { }

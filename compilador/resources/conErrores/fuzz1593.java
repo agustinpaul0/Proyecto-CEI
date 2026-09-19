@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Q6R < W > implements Eb < > { }
+///[Error:(|2]
+interface Y8h_j < C > { public boolean u_ ( ) ; } class IX4IkR { } ( ) interface Mf { void s ( ) ; }

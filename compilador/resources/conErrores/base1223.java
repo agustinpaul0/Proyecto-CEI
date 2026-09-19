@@ -1,2 +1,2 @@
-///[Error:{|2]
-class KI5 implements { }
+///[Error:public|2]
+public boolean ba_m ( ) ;

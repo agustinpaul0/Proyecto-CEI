@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Ro extends W54z__1a < X1 < > > { } class P_ < T > { public static C [ ] u_ ( M [ ] [ ] o__ ) { } public void m_ ( ) { } }
+///[Error:[|2]
+interface VbR_WB9X extends S_ { } interface P6 extends UU_c < V5_ < E > > { } interface KHN < N > extends X_ { } class IZ__ extends L_ < L_T2 > { } class H_ < E > implements Rh0K { D__J < W54_ > [ ] xh ( ) { } } interface L4 < Y > extends U_ { public void i13j76 ( char [ ] x , [ ] p_ ) ; }

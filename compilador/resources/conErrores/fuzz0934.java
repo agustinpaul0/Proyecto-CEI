@@ -1,2 +1,2 @@
-///[Error:D|2]
-D
+///[Error:extends|2]
+extends X_

@@ -6,10 +6,10 @@ import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeFors;
 
-// El logro Fors! E2: una sola sentencia o expresión por separador, y la variable
-// de control declarada con `var`. El `:` distingue el for de iteradores del
-// estándar y aparece justo después de la variable, así que el desempate es de un
-// solo token.
+// El logro Fors! E2: una sola sentencia o expresión por separador, obligatoria, y
+// la variable de control declarada con `var`. El `:` distingue el for de
+// iteradores del estándar y aparece justo después de la variable, así que el
+// desempate es de un solo token.
 public final class AnalizadorDeFors extends ParteDelAnalizador {
 
     public AnalizadorDeFors(Sintaxis sintaxis) {
@@ -25,13 +25,10 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
         sintaxis.sentencias().sentencia();
     }
 
-    // EncabezadoFor -> ; ExpresionOpcional ; ExpresionOpcional
-    //                | var idMetVar EncabezadoForTrasVar
+    // EncabezadoFor -> var idMetVar EncabezadoForTrasVar
     //                | Expresion ClausulasFinalesFor
     private void encabezadoFor() throws ExcepcionLexica, ExcepcionSintactica {
-        if (estaEn(PrimerosDeFors.ENCABEZADO_FOR_PUNTO_Y_COMA)) {
-            clausulasFinalesFor();
-        } else if (estaEn(PrimerosDeFors.ENCABEZADO_FOR_VAR)) {
+        if (estaEn(PrimerosDeFors.ENCABEZADO_FOR_VAR)) {
             match(TipoDeToken.PR_VAR);
             match(TipoDeToken.ID_MV);
             encabezadoForTrasVar();
@@ -39,8 +36,8 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
             sintaxis.expresiones().expresion();
             clausulasFinalesFor();
         } else {
-            throw errorEsperando(PrimerosDeFors.ENCABEZADO_FOR_PUNTO_Y_COMA,
-                    PrimerosDeFors.ENCABEZADO_FOR_VAR, PrimerosDeFors.ENCABEZADO_FOR_EXPRESION);
+            throw errorEsperando(PrimerosDeFors.ENCABEZADO_FOR_VAR,
+                    PrimerosDeFors.ENCABEZADO_FOR_EXPRESION);
         }
     }
 
@@ -60,11 +57,11 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
         }
     }
 
-    // ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
+    // ClausulasFinalesFor -> ; Expresion ; Expresion
     private void clausulasFinalesFor() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PUNTO_Y_COMA);
-        sintaxis.sentencias().expresionOpcional();
+        sintaxis.expresiones().expresion();
         match(TipoDeToken.PUNTO_Y_COMA);
-        sintaxis.sentencias().expresionOpcional();
+        sintaxis.expresiones().expresion();
     }
 }

@@ -1,2 +1,2 @@
-///[Error:O3|2]
-O3
+///[Error:>|2]
+class E_ extends ZX1 < > { }

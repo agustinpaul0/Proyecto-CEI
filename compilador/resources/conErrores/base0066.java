@@ -1,2 +1,2 @@
-///[Error:X9_9|2]
-X9_9
+///[Error:Yq2|2]
+class UF_ < N > { } Yq2

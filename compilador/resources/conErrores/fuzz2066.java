@@ -1,2 +1,2 @@
-///[Error:true|2]
-interface FW extends D9J_0 < YoG5_ > { } interface Vf { } class Z4 < B > { } interface WK8K { OL sK ( H m , B [ ] m3 , Vb uA95 , Wo x , H [ ] [ ] x__ ) ; public void k ( L s ) ; } class HU implements KJ_w { } class HvRN < Q > { static boolean true } interface VI < Y > extends Tb < NV > { F [ ] [ ] [ ] [ ] v7 ( ) ; } interface L_Ab_J extends C3 { void x ( D p___ ) ; char [ ] [ ] [ ] [ ] [ ] x ( ) ; void ag ( ) ; } interface Ye < Y > extends G__4E5c6 { }
+///[Error:;|2]
+interface Gg6 < K > { } class L_x < K > { private Y_a_ < EtMy < S > > [ ] uJ ; private C q ( I7_ c_ ) { var z = ; if ( + false ) G m , d ; boolean [ ] bm_ , k , o , o ; } } class To implements F_4 < F > { }

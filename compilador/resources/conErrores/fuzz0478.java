@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface UcdY { void s5gF ( Uw < HE > , E1 < Z > [ ] [ ] f , V [ ] [ ] [ ] zQ ) ; }
+///[Error:{|2]
+class HuL9 < O > { void b { } } class OC extends SA { } class V0 < D > { }

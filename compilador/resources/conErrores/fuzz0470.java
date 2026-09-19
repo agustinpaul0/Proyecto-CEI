@@ -1,2 +1,2 @@
-///[Error:{|2]
-class HuL9 < O > { void b { } } class OC extends SA { } class V0 < D > { }
+///[Error:}|2]
+interface XcXj9BA extends D_ { } class I_ extends GA { } class QrF < G > implements Q9 < E > { GZ ( int tL ) { var g5 = - false ; } public static void mv ( float [ ] [ ] [ ] [ ] g , int h ) { while ( - false ) ; Q [ ] [ ] r , b ; } } interface ZL < F > { Vj [ ] [ ] f ( ) ; public char g_2_ ( ) ; } class Y7 extends D3 < Ox < P > > { YpV < RiZ2 > u ( M [ ] [ ] zKT ) { } static void xq ( G [ ] [ ] [ ] h , int [ ] [ ] k_u7X , O t ) { } void g__M ( ) { return ; return ; return ; return ; } static private int p3_ ( ) { } } class Nr < K > { public int [ ] rrL ( A [ ] [ ] sjHT ) } class M__ < X > { } class ST extends WR { } interface CtC_ { }

@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface I11_4_3Y extends M8 { public D [ ] cCh ( I [ ] fO ) ; } interface A42 < H > extends K3 { public void a ( ) ; void kx ( ) ; GA ( char a_ ) ; }
+///[Error:A_E|2]
+interface EB < N > extends GY < TcP < V2 > > { } A_E

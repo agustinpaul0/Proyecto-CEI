@@ -1,0 +1,2 @@
+class Wn extends CQ {
+}

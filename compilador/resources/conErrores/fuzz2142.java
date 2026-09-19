@@ -1,2 +1,2 @@
-///[Error:V6|2]
-interface WI { void a_ ( char t_ , float ra ) ; U p6V V6 < El < M44 < A > > > [ ] [ ] aSca8zU ( ) ; public void f ( ) ; } class WdY implements O1k { } class B__q { } interface AG { char [ ] [ ] [ ] [ ] d ( ) ; }
+///[Error:extends|2]
+class JL < R > extends X3 < U > { } interface extends OV < P > { public void v ( ) ; N3 < H > su__9 ( char x , int w ) ; public void aGM ( ) ; }

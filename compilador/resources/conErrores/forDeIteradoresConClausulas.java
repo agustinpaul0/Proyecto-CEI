@@ -1,6 +1,6 @@
 ///[Error:;|4]
 class C1 {
   void m(){
-    for(var e : lista; ; ) ;
+    for(var e : lista; a; b) ;
   }
 }

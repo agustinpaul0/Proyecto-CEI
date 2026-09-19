@@ -1,2 +1,2 @@
 ///[Error:{|2]
-class Cs_ implements { static void c ( boolean [ ] [ ] q , Z24yc56b3_ a , U g ) { } }
+interface Q_6i < B > { } class H_ < X > implements V_6V { } interface FuK_ extends AnN { } interface { } interface L8 < V > { void g_ ( JaIE k_r , MI89 < G8 > i , int [ ] b ) ; }

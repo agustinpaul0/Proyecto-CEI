@@ -1,2 +1,2 @@
-///[Error:--|2]
-class Pna { H [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] f4 = true <= - 32.D ? + null = + this . w ( ) . z ++ || null : - -- ; }
+///[Error:implements|2]
+class implements Ot < I > { }

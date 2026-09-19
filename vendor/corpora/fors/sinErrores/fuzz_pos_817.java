@@ -1,0 +1,2 @@
+interface KKJp3g {
+}

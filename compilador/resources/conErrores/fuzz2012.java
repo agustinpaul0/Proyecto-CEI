@@ -1,2 +1,2 @@
-///[Error:}|2]
-class ELJ < A > { } interface E809 { J683_ < A7 < O__ > > [ ] w4n ( D [ ] m_Y ) ; void eP ( ) ; } interface V7 < K > extends XIwO { int } class MB extends T_ { }
+///[Error:public|2]
+interface Ys < O > extends P_ < Du < P > > { public void pu ( Q [ ] y , Z [ ] [ ] wyl , S2oS j , boolean [ ] nP ) ; void vv ( boolean [ ] k , GSj_ [ ] [ ] mg ) ; } interface EB_d { } interface Sr < E > extends P_ { public S_ < R_89y < Ws_7 > > [ ] [ ] p ( char j , float c , JAl < C > [ ] z76 ) ; JK < Pj > [ ] [ ] [ ] public void r4 ( char y ) ; }

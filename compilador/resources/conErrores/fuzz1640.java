@@ -1,2 +1,2 @@
-///[Error:[|2]
-[ ] [ ] [ ] class Pwj6oo implements A_A { }
+///[Error:R|2]
+R [ ] b ( float [ ] [ ] w ) ;

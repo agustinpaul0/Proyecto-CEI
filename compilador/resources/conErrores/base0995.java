@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface Jc < S > { } interface S4 extends T56 < On < P_5 < L > > > { void x ( ) ; } static public Ca8f n ( int e ) { } private U w ( float [ ] [ ] e , P [ ] z ) { } class G51_ extends K9 < M > { L_ ( R r3v , NZ_4pIP p , int ko , boolean y7B_h ) { } }
+///[Error:.|2]
+class YJ < R > implements F0I_U < Ox > { static W o_v ( ) { for ( true ; ! WF . rc5_ . oT__ ? true : ! true ; + O9 . j3gS ( ) -- = - 52.960d ) var o = Tb . o7 ( ) . k ; } private BAT0n_P dm ; boolean a ( ) { } private static void u ( ) { } }

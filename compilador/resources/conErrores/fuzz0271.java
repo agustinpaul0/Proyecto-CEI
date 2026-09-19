@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface L16 extends Y0 { } interface CW extends < Ax < M > > { boolean tQ ( ) ; } interface VZ9 extends UKecQ { } class Yn implements W_ { }
+///[Error:extends|2]
+extends R__ < TRz_ < G4 < T > > > interface Ml extends T_M { }

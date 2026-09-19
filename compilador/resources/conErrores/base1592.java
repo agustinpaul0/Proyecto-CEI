@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface S_e_ < P > { EnS < LOp > vA ( ) ; int [ ] e ( ) ; Q_182P53p3 < Gji_ < Cy_ < D > > > cy , float [ ] [ ] [ ] n }
+///[Error:<|2]
+< V > interface V4_D { void v_ ( ) ; } interface Bhc < L > { }

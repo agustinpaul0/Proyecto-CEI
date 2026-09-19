@@ -1,0 +1,2 @@
+interface P__ < W > {
+}

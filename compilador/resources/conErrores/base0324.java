@@ -1,2 +1,2 @@
-///[Error:N|2]
-class R849UU4 { } interface OS extends LS < H > { public X s ( Du_ < F > [ ] [ ] n , J i , Q d ) ; } interface Zt extends K43_ < L > { } interface C1 < H > extends N_ { public R d4L ( ) ; } interface V9 < F > { } class GZ extends NBh < R1 < NWF_7 > > { public void c ( ) { } } N class V9L < M > extends X6 { } interface V4 < L > extends L_ < P > { int [ ] d ( ) ; } interface Ao < T > extends LY6_ < Z > { } class D4 { static private void c ( ) { } } class N0_ < Q > { static void anB4 ( ) { ; } } class F0 implements Nu < N > { } interface FU extends W_ < A_fMP > { void r ( ) ; } interface D7B_ < R > { }
+///[Error:X|2]
+interface TxR { } X [ ] dy

@@ -1,2 +1,2 @@
-///[Error:K|2]
-K interface W4 { public void s49 ( ) ; void p ( ) ; }
+///[Error:V_8|2]
+class G5__A < Q > { } V_8

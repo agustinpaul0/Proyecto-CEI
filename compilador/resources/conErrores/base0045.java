@@ -1,2 +1,2 @@
-///[Error:X_|2]
-X_
+///[Error:H6|2]
+class Ag < H > { } H6

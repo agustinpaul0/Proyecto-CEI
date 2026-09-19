@@ -1,2 +1,2 @@
-///[Error:W8|2]
-interface Y_ { } class PR { static void f0UN ( S e ) { return false ? true : - null ; var d_ = this ; } } W8 < X > [ ] [ ] class X_i < J > { static D [ ] [ ] s ( int [ ] u , V [ ] b ) { } }
+///[Error:B|2]
+interface FW extends D9J_0 < YoG5_ > { } interface Vf { } B interface WK8K { OL sK ( H m , B [ ] m3 , Vb uA95 , Wo x , H [ ] [ ] x__ ) ; public void k ( L s ) ; } class HU implements KJ_w { } class HvRN < Q > { static boolean e ( ) { var bbAR = true ; ; } } interface VI < Y > extends Tb < NV > { F [ ] [ ] [ ] [ ] v7 ( ) ; } interface L_Ab_J extends C3 { void x ( D p___ ) ; char [ ] [ ] [ ] [ ] [ ] x ( ) ; void ag ( ) ; } interface Ye < Y > extends G__4E5c6 { }

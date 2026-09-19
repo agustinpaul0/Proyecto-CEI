@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface E_Y_ < X > { ( ) }
+///[Error:M|2]
+M

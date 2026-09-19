@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface I8 extends { }
+///[Error:<|2]
+interface OE extends < F > { } class WVJ < O > implements TeIl { }

@@ -1,2 +1,2 @@
-///[Error:[|2]
-class FX_ { static private A nf ( [ ] tz , DA_3Pn < W > ju ) { IV < A > [ ] [ ] e ; for ( ; "" ++ >= + 'x' = - null ; - this ++ == 356 != true = + false ) for ( ! true ; ; ) ; } }
+///[Error:static|2]
+interface S2 < M > { } class G3z_ < C > { static N [ ] [ ] [ ] g ( W fy9hg , N3E__ [ ] w , int [ ] [ ] j5 ) { } private SB ( char [ ] [ ] [ ] [ ] p ) { float m ; { } } } interface XY < U > { } static private void b ( ) { }

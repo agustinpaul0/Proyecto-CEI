@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) class X__ < A > extends AL_ < B_ > { }
+///[Error:D_x|2]
+D_x

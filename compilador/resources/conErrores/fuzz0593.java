@@ -1,2 +1,2 @@
-///[Error:x|2]
-class D_ < G > implements Da_8 { } interface T2 { } interface HM extends OG < VY > { public void x ( ) ; x } interface K_ { void i ( ) ; } class JK { } class O36 { static S d ( ) { if ( - true ) ; else Qm [ ] [ ] f ; } public Nl < M__24_6 > g ; private void pC ( ) { for ( ; ; ) ; } public U j ; void c6_1e ( ) { { } } } class M66 extends F2 < D31N < Jl_ > > { }
+///[Error:h|2]
+interface Kh < K > extends Co < T___ < O__ > > { public H w ( ) ; void a6 ( H y , Bt8 < H > y ) ; h ( A__J [ ] [ ] lJ ) ; public U [ ] f2_ ( ) ; } class I1c < T > extends Pz { } interface H_ < K > { }

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface KM { D_ < < W > > [ ] f ( D_ < Q > l ) ; } interface Dn6__ < K > extends Uji6u < H > { }
+///[Error:[|2]
+class ONe extends Oa { } class GM5 extends U5 { } class Iy__8n < X > implements HO < AZ < N > > { private static void e ( ) { } static public [ ] l7 ( ) { { boolean [ ] l , v ; return ; 5F ; ; { } } } private static BXmkfs_2 < V > [ ] c ( Qbx c , O_5b [ ] [ ] [ ] wk ) { } I1 ( char [ ] [ ] sG ) { } static Z y ( boolean [ ] [ ] [ ] j ) { } static void cBwR ( ) { } } interface ZIS < P > { }

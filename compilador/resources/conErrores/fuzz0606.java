@@ -1,2 +1,2 @@
-///[Error:++|2]
-class NR6 extends U_9J < I > { Y98 < C > o ( int v , char [ ] [ ] [ ] e , W s , char o , O [ ] g7 ) { ; } static void p ( int k , WD_M < ZQN_ < N > > n__B ) { char [ ] [ ] q = 747 ; if ( ! this . n -- ) U a ; for ( ; ; ) + true && false ; new char [ ] [ ] { } . ++ ; for ( ; ; ) for ( ; ; ) for ( ; ; ) ; U ga_E_ ; for ( ; ; ) return ; + true ; } static LB < K9 < Z > > b ( char i___Q ) { } static void y_ ( ) { } } class X_1 extends It < C > { private static boolean ta ( ) { return ; } } class T_ extends C0 { }
+///[Error:Mu|2]
+Mu

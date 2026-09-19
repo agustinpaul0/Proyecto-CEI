@@ -1,2 +1,2 @@
-///[Error:[|2]
-class QG < N > extends Cr < H6d < M > > { private static void [ ] public static D b ( ) { } }
+///[Error:{|2]
+class UZd extends { }

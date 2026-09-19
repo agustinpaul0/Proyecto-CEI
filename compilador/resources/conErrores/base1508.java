@@ -1,2 +1,2 @@
-///[Error:}|2]
-class OgGan < N > { public Z [ ] [ ] qZ ; void }
+///[Error:<|2]
+interface OK extends Kb < < EH1_V > > { }

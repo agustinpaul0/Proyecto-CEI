@@ -1,0 +1,2 @@
+interface O___rl {
+}

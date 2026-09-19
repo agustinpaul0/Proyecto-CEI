@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends M_
+///[Error:(|2]
+interface KF < C > { void b ( ) ; public void ( ) ; }

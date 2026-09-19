@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends B7 < A >
+///[Error:L_zY|2]
+L_zY

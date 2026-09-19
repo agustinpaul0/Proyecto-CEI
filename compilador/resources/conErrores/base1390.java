@@ -1,2 +1,2 @@
-///[Error:t_U3|2]
-class J_c < D > { public int [ ] [ ] [ ] [ ] [ ] [ ] t ( ) { } static void h6 ( F r ) { Tk < L > e , z = - true ; { } { } var bj = false / true ; { } } private char [ ] [ ] mb ( char k ) { ; if ( - null ) ; else 23 ; Z8 t86 , qEU9 ; { } } char [ ] pz__I ( ) { } } t_U3 ( ) { AU . p ( ) . w_k ( ) [ false ] . p ++ - '{' = false - + true ; } class K2_V implements IP < A_ > { L c = r ( ) . q1 . a_ ( ) . y . k7 ++ ; } interface BC extends V1 { } class Gt < C > implements D_ { }
+///[Error:(|2]
+interface A0_ extends TQYG { } class HK0 implements F_ { } interface B0 < O > { D p ( float [ ] spx_0 ) ; } interface K_ < F > { } ( ) interface U9 { }

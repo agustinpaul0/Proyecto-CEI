@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface H_6 extends Yp_R < O_q > { public void c ( ) ; public void bo ( F [ ] aS ) ; void t ( ) ; void h6Tx ( ) ; } ( )
+///[Error:Le|2]
+Le class CO < B > extends QFZ8 { void r2 ( ) { Y439_ b8 , l_1 ; } }

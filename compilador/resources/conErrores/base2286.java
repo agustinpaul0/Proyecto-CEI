@@ -1,2 +1,2 @@
-///[Error:L8__0pd|2]
-interface OMxY_9 { M [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] un ( ) ; char [ ] [ ] [ ] [ ] [ ] [ ] y L8__0pd ; }
+///[Error:}|2]
+class F1 < G > extends SM3_ { B [ ] [ ] [ ] [ ] on } class P9 < W > { }

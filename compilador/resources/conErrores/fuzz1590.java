@@ -1,2 +1,2 @@
-///[Error:ep4|2]
-ep4 interface M_ { }
+///[Error:void|2]
+void qH ( Ei5 d ) ;

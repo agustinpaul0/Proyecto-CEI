@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface A0 < Z > extends D__Dbw { void p ( ) ; A_M < YS_ > }
+///[Error:X|2]
+interface N9XZz { } X

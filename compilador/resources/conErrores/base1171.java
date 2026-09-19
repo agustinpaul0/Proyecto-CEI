@@ -1,2 +1,2 @@
-///[Error:Y|2]
-interface Aw4 < R > extends Y { }
+///[Error:LA|2]
+class Zg < B > implements L8 { } LA

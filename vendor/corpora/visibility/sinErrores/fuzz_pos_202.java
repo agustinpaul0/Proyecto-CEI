@@ -1,0 +1,2 @@
+interface Fk4 {
+}

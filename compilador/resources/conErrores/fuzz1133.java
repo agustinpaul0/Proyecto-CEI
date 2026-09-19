@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] ( ) { } } interface OP < T > extends C10 < R86Ly03dP_ > { }
+///[Error:W4z_|2]
+W4z_ < B >

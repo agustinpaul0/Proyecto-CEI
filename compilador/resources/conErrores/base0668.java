@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface DtS_ < N > { void b ( ) ; public void y ( int [ ] lfo6 , ) ; }
+///[Error:K|2]
+K

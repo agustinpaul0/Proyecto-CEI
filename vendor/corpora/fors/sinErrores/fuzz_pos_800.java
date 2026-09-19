@@ -1,0 +1,2 @@
+class HK extends Zh {
+}

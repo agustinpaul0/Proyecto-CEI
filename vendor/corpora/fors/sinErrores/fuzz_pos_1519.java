@@ -1,0 +1,3 @@
+interface Cq {
+W g ( ) ;
+}

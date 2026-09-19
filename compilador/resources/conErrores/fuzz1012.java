@@ -1,2 +1,2 @@
 ///[Error:{|2]
-interface S9_ extends { }
+interface I8 extends { }

@@ -1,0 +1,13 @@
+// [Error:[|3]
+interface X9 < B > extends FY_O0o2t {
+R x [ ] [ ] ;
+}
+interface IY8_ {
+V f_ ( T37p h ) ;
+}
+interface V_ < Y > {
+Sut < Kj00 < RqzS0 < S > > > n ( ) ;
+void eiwt ( K [ ] g , S_ d_ , HWFG_____5 < WC7_ > o ) ;
+}
+class Qk {
+}

@@ -1,2 +1,2 @@
-///[Error:a_|2]
-interface N0 < U > extends I05 < D > { } a_ ( SIn_ < W > p , D6E < Sv > [ ] q ) { }
+///[Error:}|2]
+class A_2LNY < H > implements Y_9W < Yl > { private static void c_ }

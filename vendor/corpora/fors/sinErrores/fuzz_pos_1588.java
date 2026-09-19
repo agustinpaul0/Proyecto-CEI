@@ -1,0 +1,2 @@
+interface Ui_ {
+}

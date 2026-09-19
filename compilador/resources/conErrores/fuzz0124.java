@@ -1,2 +1,2 @@
-///[Error:{|2]
-class JRx_ { } class IZ < Z > extends Ar < X > { } interface M6 < J > extends Z_ { } class Wv < F > implements { }
+///[Error:<|2]
+class C_Q__UC extends R__ < < G4 < T > > > { } interface Ml extends T_M { }

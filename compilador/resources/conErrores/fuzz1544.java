@@ -1,2 +1,2 @@
-///[Error:;|2]
-class P__u5_R4_ < N > extends Cs0_S { } interface Qy < W > extends Iz < C7__ > { void q_ ; }
+///[Error:static|2]
+static BfB qPd ( C_9 p ) { { C [ ] gj ; } } class FN < E > extends Y5M4oL { }

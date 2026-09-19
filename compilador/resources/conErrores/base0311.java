@@ -1,2 +1,2 @@
-///[Error:f82|2]
-class Xi7_ { } interface Zv < K > extends YQ < I_3 > { } class V____o { static private B c ( ) f82 }
+///[Error:<|2]
+< G > interface WN < O > { public void ji2b ( ) ; } class Pf < C > { }

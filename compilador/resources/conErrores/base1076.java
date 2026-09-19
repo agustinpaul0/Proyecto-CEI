@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface P410pk extends < S1__Zp0573 < K > > { } class TMc < Q > extends CK { void aD ( ) { float [ ] [ ] [ ] [ ] [ ] x = false ; while ( null = true ) for ( ; ; ) true ; for ( ; ; ) ; } static private void yEU ( ) { } }
+///[Error:extends|2]
+class extends JPP < V > { } interface K8 < Z > extends K9L_ < T > { }

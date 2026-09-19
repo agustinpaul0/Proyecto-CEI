@@ -1,2 +1,2 @@
-///[Error:q|2]
-interface Po extends Cx0_7z_ { char g ( ) ; F_ [ ] [ ] giG6_ ( ) ; public boolean [ ] s9c_FW ( q ) ; } interface G0 extends Ayp { }
+///[Error:[|2]
+class IVp < H > { static public Z [ ] rfa ( BW l ) { } public static Drb [ ] c ( [ ] n__f ) { } } interface L0 { }

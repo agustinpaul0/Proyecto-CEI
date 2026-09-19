@@ -1,2 +1,2 @@
-///[Error:boolean|2]
-boolean b8 ( ) { for ( ! false ; ; - false ) K_ [ ] ms_9 , yWT6 , m , a , k ; }
+///[Error:.|2]
+class UC5 { public static S [ ] [ ] [ ] g ( ) { { } var z = Tyl_8m . g . s % ! "" ? ! 'w' % false : 6d != + false ; var lz = + "" ++ != + 'U' ; } } class WV < U > implements Jz < Mk6 < Ky > > { }

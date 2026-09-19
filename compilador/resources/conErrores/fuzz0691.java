@@ -1,2 +1,2 @@
-///[Error:z|2]
-interface V_A < Z > { public z ( ) ; public void c4j ( ) ; } class X__ < A > extends AL_ < B_ > { }
+///[Error:>=|2]
+class F_ < F > { } class NJ24 extends C_ < C1 < D > > { static void f ( ) { if ( + C_ . k0_ ( ) -- > - 'Y' - "" ++ ? 194717.D : 5845 == false ) if ( + null = - true ) { } else return ; else boolean f9TX ; '\b' - - ME . k_H5 ( ) -- + 976 != - false + false = 'A' ; } private static int [ ] m ( Qw < D > g_6 ) { } static private void c9_ ( ) { var o = "" ++ > 191 ? true : false ; } static private T o ( E8l < J_ > [ ] f , PX [ ] wR ) { var nit = >= null ; var t = null ; } public void wN ( M s ) { } }

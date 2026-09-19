@@ -1,2 +1,2 @@
-///[Error:public|2]
-class V8D < X > extends V3 { } class V__ < X > { } class Q_ extends IX_qb8 < P2 > { } class FgE < J > extends Uv < Y > { QB6 ( ) { } M [ ] [ ] kk ; static void kL ( ) { } void z_S ( ) { } } public interface Lt < D > { void w_ ( ) ; } class Nw extends W3 { } class F8n1 < G > implements YL_ { static public char [ ] f45L ( int sq ) { for ( ; ; ) ; } public void igEx_x ( ) { return ; ; } } interface G_ < P > { int k ( R9xA a ) ; public void m ( K x ) ; } class St < V > extends C_ < K > { } class J93__ < G > { static private FVA5 ss23 ( ) { } } interface QynZ < D > extends BV < J_ > { public void r4 ( ) ; } class VM { public char e ; private boolean gT ; } interface U_ { void p ( ) ; }
+///[Error:extends|2]
+interface ZD { } extends CP

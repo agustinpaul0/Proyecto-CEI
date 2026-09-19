@@ -1,2 +1,2 @@
-///[Error:(|2]
-( ) { } interface DAY_ < N > extends JC46 { }
+///[Error:T_|2]
+T_ interface Nh < Q > { public void sg ( char m ) ; void fJVn ( ) ; public void f ( ) ; }

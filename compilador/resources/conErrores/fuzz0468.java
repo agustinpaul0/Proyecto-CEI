@@ -1,2 +1,2 @@
-///[Error:or|2]
-class C6 < W > { float p3 ( boolean f_ , R339Q [ ] [ ] h0x1 ) { } private Nr ( E d ) { ; var k = + 3636550 / true ; } private U_ ( ) { } private static void t6Ra8 ( ) { } } class McX { public static or ( O7 n , char [ ] q , P i ) { } public S6_f ( boolean t8 , R g ) { boolean [ ] q3 = true , a ; for ( ; ; ) return ; Y [ ] [ ] [ ] [ ] [ ] h , x ; char [ ] nSg , dC , j ; } public static A [ ] [ ] n ( K___ [ ] yW ) { char z_ ; } private static float [ ] [ ] [ ] v ( Mm [ ] [ ] e ) { while ( - false ) return ; } private static void i ( ) { } public static void e0_ ( ) { } } class LFS < Q > { }
+///[Error:=|2]
+interface C__qei2 { } = + false || false class Y9 { } interface EV2 < C > { }

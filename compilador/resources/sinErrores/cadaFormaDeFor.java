@@ -1,5 +1,5 @@
 class C1 {
   void m(){
-    for(;;) ; for(var i = 0; ; ) ; for(; i < 10; ) ; for(; ; i) ; for(var i = 0; i < 10; i) ; for(var e : lista) ;
+    for(var i = 0; i < 10; i) ; for(i = 0; i < 10; i) ; for(Clase.m1(); a; b) ; for(var e : lista) ;
   }
 }

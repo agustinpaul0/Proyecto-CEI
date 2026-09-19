@@ -1,2 +1,2 @@
-///[Error:Q_|2]
-Q_
+///[Error:<|2]
+class < Z > implements O_4 < W > { } interface D_J extends Ix90_u < P > { }

@@ -1,2 +1,2 @@
-///[Error:.|2]
-class Ki implements XOV < H > { static void a ( ) { for ( var u = + 12.1E+0f && - 57893 <= ! '\'' ? - 7831 && ! null : - 333.6d ; - 4868D ; ) boolean q5 ; return . amS ( ) . eqn0 ++ ; while ( I_ . ltU ( ) ++ >= "" -- % 4f || - false ? null : - true ) true ; } }
+///[Error:<|2]
+interface Z_ < S > extends WTM < V > { void g ( O f5v , boolean [ ] jJ , boolean x_a ) ; void dR ( < N > [ ] [ ] ai , char [ ] [ ] [ ] p ) ; } interface Q_ extends V_ < QQR < X21_ > > { public void b0 ( int k ) ; public LN44 < N > [ ] [ ] [ ] c ( ) ; }

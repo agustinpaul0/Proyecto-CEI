@@ -1,2 +1,2 @@
-///[Error:EQ|2]
-EQ interface NN extends KhW1 { }
+///[Error:>|2]
+class Ky < > implements Ur < Y > { } interface WN < O > { public void ji2b ( ) ; } class Pf < C > { }

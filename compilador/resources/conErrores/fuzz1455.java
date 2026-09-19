@@ -1,2 +1,2 @@
-///[Error:<|2]
-class D_4__6_ extends LB { } interface Mo < O > extends < T > { } interface M_9B6 { public T v ( Q_ < H > v7 ) ; } interface LA < A > extends Dg1 { } class ZCZ6 extends G__jd { }
+///[Error:float|2]
+float class P_XhCzpc < C > extends Yf { static int q ( int [ ] [ ] pb511___ , F f_ , C6 < CC > [ ] m92d , X c ) { ; } } interface V9 < F > extends L8 { }

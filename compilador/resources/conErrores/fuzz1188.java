@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface O_ < C > { } interface DU { public void d ( ) ; } [ ] [ ]
+///[Error:J6E_|2]
+class EM7 < J > { } class Go extends OMY < Eg < U9 > > { } J6E_ class O0g < L > { }

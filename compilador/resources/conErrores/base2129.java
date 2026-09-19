@@ -1,2 +1,2 @@
-///[Error:B|2]
-interface NEz1_ < J > extends B { void g ( ) ; }
+///[Error:>|2]
+class N3 < > extends Ku { }

@@ -1,0 +1,2 @@
+interface Eh < Q > {
+}

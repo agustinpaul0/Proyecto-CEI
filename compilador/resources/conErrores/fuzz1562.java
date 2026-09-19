@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < S > { } interface Hfg_7 < V > extends H_ < G > { FI < E > qV ( ) ; }
+///[Error:{|2]
+class Le0 implements { } interface D_Q < Y > { void c_ ( ) ; C q__N ( ) ; }

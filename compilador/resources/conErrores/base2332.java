@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Fq_ extends L9 { int e [ ] ; void b ( S [ ] w , float [ ] [ ] vH , O [ ] [ ] [ ] ljQ ) ; void y1_DU_ ( ) ; } interface Zd_ < W > extends W_ < J_ < Z > > { }
+///[Error:{|2]
+class Tyg5_ < E > extends D5 { } class Yna8iu { } interface VE0o_ < Y > { } class O4 < F > extends M_ { J5 { } private static void sR ( ) { CZbg_38 . z ( ) -- ; } } interface OM3R { }

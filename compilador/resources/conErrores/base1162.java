@@ -1,2 +1,2 @@
-///[Error:public|2]
-class LV extends KO_ { static void i ( KIy < XL < Z > > [ ] t2tSo ) public void l ( ) { } } interface E_ < N > { }
+///[Error:boolean|2]
+interface ST_ < D > { } class A_2W < Q > implements I1 < S > { static private L s ( ) { { } } } boolean

@@ -1,2 +1,2 @@
-///[Error:<|2]
-< B > interface SG { } interface Ce4 extends Wj { Va z__ ( boolean b_ , T [ ] x5F ) ; }
+///[Error:Z|2]
+class IDpB71S_ { public static void r Z { } }

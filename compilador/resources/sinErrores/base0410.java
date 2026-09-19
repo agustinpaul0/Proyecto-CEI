@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class B_ extends CB < L > { } class Is84 < E > { public Z fS ( Jm < GQx > i9 , boolean n ) { while ( "" ++ && false ) ; return + null ; } static U_lO2 [ ] [ ] [ ] h ( E_h < S > [ ] bWiWo ) { boolean [ ] wX , wV , t = null ; } } interface MPQ < T > { public Q [ ] e ( ) ; public void ag ( B qCJ , V [ ] y ) ; } class Pa__ < E > { } class E0b { }
+class B_ extends CB < L > { } class Is84 < E > { public Z fS ( Jm < GQx > i9 , boolean n ) { while ( "" ++ && false ) ; var h1 = 13264 && - true ; } }

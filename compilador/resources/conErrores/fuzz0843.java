@@ -1,2 +1,2 @@
-///[Error:}|2]
-class JU extends FZ_ { float x4 ( ) }
+///[Error:;|2]
+class F_ < R > extends U_Y { public K ; } interface UHy < J > extends PS { }

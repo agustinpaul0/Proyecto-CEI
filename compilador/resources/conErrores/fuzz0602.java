@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface O29 < Q > extends WdPS { } interface S_p < C > { } interface < F > { } interface YM < Z > { public I [ ] [ ] vw ( ) ; }
+///[Error:N20|2]
+interface RM { public void s_8m N20 < W > k ; public M [ ] [ ] [ ] h ( ) ; }

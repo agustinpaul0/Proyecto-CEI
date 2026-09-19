@@ -38,10 +38,3 @@ __pycache__/
 
 # Claude Code — overrides personales (la config compartida sí se versiona)
 .claude/settings.local.json
-
-# Corpus externo de fuzzing (Giuliano Taormina): 174 MB de casos generados, que
-# `CorpusExternoTest` corre si la carpeta está presente y saltea si no. No se
-# versiona —no es material de este proyecto ni de la entrega— pero se deja en el
-# disco para poder correr la verificación diferencial.
-vendor/tests/
-vendor/tests.zip

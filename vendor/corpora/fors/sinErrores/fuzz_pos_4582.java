@@ -1,0 +1,2 @@
+interface TFq < C > {
+}

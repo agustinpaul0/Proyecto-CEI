@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface H54k { void s ( V_C < O > exw ) ; public void y ( [ ] [ ] [ ] [ ] lH , M_ q5Us ) ; }
+///[Error:,|2]
+interface L3ZE8 < E > { } , Q [ ] b

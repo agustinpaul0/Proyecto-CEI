@@ -1,2 +1,2 @@
-///[Error:P_c|2]
-interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } P_c
+///[Error:<|2]
+class R1yv { static private void g ( ) { } } interface Mb4_ < D > extends X1_ < < L > > { }

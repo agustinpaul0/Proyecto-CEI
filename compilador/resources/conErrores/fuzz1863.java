@@ -1,2 +1,2 @@
-///[Error:ef|2]
-interface KF < B > { public void h ( ef ) ; EG < I_5_J < P > > e_ ( ) ; public void jw2 ( ) ; }
+///[Error:<|2]
+class < O > { } interface Nn_ extends P__38_ { }

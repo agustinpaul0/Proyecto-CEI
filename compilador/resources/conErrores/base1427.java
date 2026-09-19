@@ -1,2 +1,2 @@
 ///[Error:implements|2]
-class implements WCP2 { }
+implements H_ < Zs_pW >

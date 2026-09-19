@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Nz_ < G > implements { static A [ ] [ ] [ ] f ( ) { } }
+///[Error:<|2]
+interface < H > { }

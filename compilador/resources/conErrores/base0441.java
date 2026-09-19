@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface ST_ < D > { } class A_2W < Q > implements < S > { static private L s ( ) { { } } } interface B4 < Z > { I h ( ) ; public boolean d ( ) ; }
+///[Error:{|2]
+interface E_84 { } interface U__ < Z > { } interface H4 < H > extends { public void x1e ( ) ; }

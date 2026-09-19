@@ -1,0 +1,2 @@
+interface WOL5__ {
+}

@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface Y4 { } class Ma < J > { private static boolean m ( O_xI < La_ > [ ] [ ] [ ] r__ ) { } static U8C < Bo > [ ] static void oV ( TE pT ) { } }
+///[Error:j|2]
+interface Y5D extends N78 < PAm > { By__A_3 < WNMmA0x < BH > > w ( ) ; public j ( B x1vx ) ; void i_ ( ) ; void m_ ( ) ; public void b ( Brq [ ] xuXF ) ; } class X9E_g { } interface U_ < L > { } interface HJ < F > { public void v_ ( ) ; } class M__ < N > extends Y_2 < Kg < V > > { A n = L_XR_ . i ( ) . kO46 . fD0 > U2e . e ( ) -- ? + 67427 || - 050. : "" ++ + - null <= null ; }

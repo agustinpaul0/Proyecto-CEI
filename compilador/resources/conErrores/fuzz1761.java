@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends K6_ interface S6n extends FbJz_ { }
+///[Error:)|2]
+interface X_0ic < A > { void c ( char ) ; public Of0_ < G7 > [ ] rPr ( ) ; }

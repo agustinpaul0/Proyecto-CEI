@@ -1,2 +1,2 @@
-///[Error:q|2]
-interface Qc < M > { public void t ( R [ ] [ ] n , q ) ; }
+///[Error:G86JD4___|2]
+G86JD4___ < O6K_ >

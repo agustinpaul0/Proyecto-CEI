@@ -1,2 +1,2 @@
-///[Error:D_J|2]
-class V2 < Z > implements O_4 < W > { } D_J
+///[Error:V_O|2]
+V_O < C > class WR8 extends OK < Mj > { } interface EEj_ < P > { } interface L3 { }

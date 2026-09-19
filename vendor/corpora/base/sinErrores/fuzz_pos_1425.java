@@ -1,0 +1,2 @@
+interface Dl < P > {
+}

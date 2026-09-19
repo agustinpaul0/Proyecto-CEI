@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Fu < B > { static boolean [ ] x ( W_B__5 r ) { } } class XF_ { } interface L__ { public void j ( B [ ] [ ] c2F , V_ < B > [ ] a0 , G n_ , V ah , char [ ] [ ] hM_T ) ; [ ] [ ] lD ( JAj [ ] xV0_ , W i , LS < F > [ ] y ) ; U5 [ ] j ( J d , int [ ] [ ] u ) ; } interface O0 { public boolean [ ] [ ] [ ] [ ] [ ] [ ] zzd_31 ( EE_ < F_3_N_prIK_ > [ ] [ ] cf ) ; } class OL9_V extends IK4_ < FM > { }
+///[Error:public|2]
+class Kx < I > implements KD_ { static void p ( boolean [ ] i ) { { var uC = this -- ; ! true <= null ; z ( ) . tY ; } } static private Cd [ ] [ ] z ( float [ ] [ ] t , Ir_ < L > [ ] [ ] [ ] [ ] [ ] z ) { } private static int j ( ) { ; } public void u ( R4_ [ ] oj1nD ) { var h0f8 = true ; } void q ( ) public float c ( ) { ! '[' ; } }

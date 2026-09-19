@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface C9 < O > extends AW2 < P > { } class IE implements < S > { }
+interface L2 < U > { } < W > interface Dt_ { C ce_ ( ) ; float t_ ( ) ; public void c ( ) ; }

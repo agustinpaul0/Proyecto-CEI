@@ -1,2 +1,2 @@
-///[Error:V5_30|2]
-V5_30
+///[Error:extends|2]
+extends Y_ < V >

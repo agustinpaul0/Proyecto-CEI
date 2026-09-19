@@ -1,0 +1,2 @@
+interface Pu__ {
+}

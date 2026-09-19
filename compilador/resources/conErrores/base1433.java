@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Uo_ extends { } class HQWu { }
+///[Error:Po|2]
+Po

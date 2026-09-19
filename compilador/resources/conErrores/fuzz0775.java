@@ -1,2 +1,2 @@
-///[Error:87926|2]
-class Vx { static int s ( ) 87926 static private void f ( W [ ] b , char q ) { } S [ ] p = ! 2E+29 ; } class O4Gm implements Q6 { }
+///[Error:K3Bsa_Vh|2]
+interface T0 < H > extends G8 < Sa < X > > { } interface K_ extends Ok7 { public void o ( N b ) ; } class M_ implements K_ { private static float vmj2 ( boolean [ ] fmKq2 ) { '@' = ! false ; } } K3Bsa_Vh . mW_ ( )

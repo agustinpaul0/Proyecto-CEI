@@ -1,0 +1,2 @@
+interface HsZ < L > {
+}

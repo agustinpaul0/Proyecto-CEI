@@ -1,2 +1,2 @@
-///[Error:X8s|2]
-X8s < C > b
+///[Error:}|2]
+class GD extends X9 { private U x }

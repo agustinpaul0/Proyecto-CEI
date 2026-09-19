@@ -1,2 +1,2 @@
-///[Error:FW_|2]
-interface U04_6 < W > extends I5__6 < ErZ < S_ < E > > > { } FW_ class So extends P_ { } interface JT3 extends Z5 { }
+///[Error:'\n'|2]
+interface ZF5 { } '\n' interface Q_ < F > extends Qx_ { } interface QO < V > extends V_ { } interface CW < B > extends YrZX { void p ( X d , P f7 ) ; }

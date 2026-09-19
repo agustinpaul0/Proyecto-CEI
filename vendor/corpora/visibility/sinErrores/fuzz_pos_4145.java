@@ -1,0 +1,2 @@
+class AIv implements Zjh {
+}

@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface H_0 < S > { [ ] [ ] d ( ) ; }
+///[Error:>|2]
+class EM < T > implements D_ < > { }

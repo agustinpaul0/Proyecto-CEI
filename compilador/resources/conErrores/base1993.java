@@ -1,2 +1,2 @@
-///[Error:{|2]
-class U_ implements Ze { public void { S r ; ; } static public void h_ ( O i ) { } } interface Fiw < E > { }
+///[Error:}|2]
+interface Y3P extends M_M { } interface FVa extends H4__ { V0_ [ ] }

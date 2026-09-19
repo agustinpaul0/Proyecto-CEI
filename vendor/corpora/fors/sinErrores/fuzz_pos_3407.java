@@ -1,0 +1,3 @@
+interface LR {
+void x ( ) ;
+}

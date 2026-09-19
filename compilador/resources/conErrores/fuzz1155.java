@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface OvkO < I > { } extends ZSN_j < Lk_w < F > >
+///[Error:+|2]
+class RSfXi implements Y_ < BD > { static private void h8 ( ) + bA ( ) . k ( ) . d . f_5 ++ public static void k_Y ( ) { } }

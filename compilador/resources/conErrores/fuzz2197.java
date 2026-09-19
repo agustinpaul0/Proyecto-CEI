@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface CFS { public int ( ) ; }
+///[Error:X_|2]
+X_ < V > interface Z9 < J > { }

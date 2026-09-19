@@ -1,2 +1,2 @@
-///[Error:[|2]
-class O74 < E > extends Pq0hA < M8 < K > > { static private void r ( ) { } private static T o ( ) { } } interface O__ extends PU < A12 < M > > { } class UH < Y > extends D1_ < W2 < N_qL < O > > > { } interface OI { } interface A5 < C > { public void b_N_ ( Y jg , K hC , U z , int j97D03S , K4 p , G l72 ) ; } class OY extends Vx59 { private static void g [ ] static public X ky ( P [ ] tj ) { for ( ; ; ) for ( ; ; ) ; } static void x ( ) { } public YR5__ < J > [ ] [ ] f ( ) { ; } }
+///[Error:S|2]
+S interface Vry_ < Q > { } class KH implements GV8 < Q > { } interface ZxvWy < T > extends X_ < Kv > { } class DVy < P > { void d ( ) { while ( false ) ; a . b ++ ; { ; } } } class FfM2_R < D > { static private char g ( ) { } } class Dg { }

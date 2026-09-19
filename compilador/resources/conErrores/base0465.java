@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Fu { static public SX k2D ( S_ < Gd43_3__e < > > ojr ) { } }
+///[Error:{|2]
+class Yl__0C_C implements { L_ < C > g = + 882730 || + false ; public void v ( ) { } }

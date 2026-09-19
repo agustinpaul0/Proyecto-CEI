@@ -1,2 +1,2 @@
-///[Error:{|2]
-{ }
+///[Error:extends|2]
+extends G7 < D >

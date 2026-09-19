@@ -1,2 +1,2 @@
-///[Error:public|2]
-class J_U_ extends Lr < YX > { } public
+///[Error:extends|2]
+class extends X_ { }

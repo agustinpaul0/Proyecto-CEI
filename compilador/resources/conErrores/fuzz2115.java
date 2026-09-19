@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < O > extends U_N { public void tI_ ( ) ; } class QLF < K > extends QM { } interface I0_ < H > extends J_UJn { Hf___ < T > [ ] x ( I [ ] [ ] qi ) ; } interface KO_ extends V_ { } class X2_ < N > { } interface L_j6 < K > extends O5 < H > { void w ( M [ ] v_9 ) ; }
+///[Error:void|2]
+interface VXnc extends N7wM { void y ( int [ ] [ ] [ ] m , X aM_k ) ; } interface S_X_ { public void a ( E5 l ) ; A k5 ( Ss [ ] p ) ; void h_F ( ) ; } void

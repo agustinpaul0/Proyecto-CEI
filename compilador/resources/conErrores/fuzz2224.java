@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface E40_e0B { public EF < T_ > cm ( V [ ] zN ) ; public void dsWd7 ( [ ] [ ] c , boolean [ ] [ ] [ ] z , char p , boolean t29jJ , R1 < N__B > r ) ; }
+///[Error:w4n|2]
+class ELJ < A > { } interface E809 { w4n ( D [ ] m_Y ) ; void eP ( ) ; } interface V7 < K > extends XIwO { public void w_ ( int u , Ngn iG ) ; } class MB extends T_ { }

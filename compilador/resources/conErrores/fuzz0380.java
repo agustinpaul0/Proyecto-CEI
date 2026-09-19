@@ -1,2 +1,2 @@
-///[Error:{|2]
-class DF implements GTEZ { public static void m_ ( ) { } static private EM [ ] f_ ( float d9 ) { for ( M2 . v ( ) . dJ ++ = 434524 >= null ; ; ) int [ ] a_0e ; for ( ! 'J' ; ; ) ; } KC0 ( B [ ] k3QwP ) { ; } } class B_ < Y > implements M30 < K > { float [ ] [ ] [ ] e ( char [ ] r9G_ , H v ) { char [ ] [ ] [ ] [ ] my ; } static private void w_ ( ) { } private static void e ( ) { ; } } interface Da_07_ extends O_ { } class B1 implements { }
+///[Error:void|2]
+interface Y2q_O_ < W > extends NM_ < H > { public void g ( ) ; P7 mG ( ) ; public boolean d2 ( A [ ] [ ] nHI ) ; } void dFY ( ) { var hDM = OU . g ( ) ++ && ! this - - 6. >= false ; } class B3P < Q > extends BNQ { static void hcp_ ( G [ ] [ ] c , RR < R_ > e8 ) { } }

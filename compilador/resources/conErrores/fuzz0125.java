@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] o4 ( ) { } } < T >
+///[Error:WF|2]
+WF [ ] [ ] rG class Vx_ { public static F_ r ( ) { V [ ] h = ! false ; } }

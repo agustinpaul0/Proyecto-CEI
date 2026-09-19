@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface KU < C > extends Jf < T > { int [ ] qi0 ( ) ; public void h9 ; public FR [ ] [ ] j_2z2_A ( float [ ] l0_ ) ; } interface M_ { }
+///[Error:public|2]
+interface F3N < Z > { } public R q ( ) ; class R_G_ implements V4 { }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface WS_ < > extends Tj8 { }
+///[Error:extends|2]
+interface XAN < Q > extends X_ < G > { } extends MY5 < Z >

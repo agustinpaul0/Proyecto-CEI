@@ -49,9 +49,12 @@ probar SI "int x = 5 ;"             "$C int idMetVar = intLiteral ; } eof"
 probar SI "for estandar"            "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ) ; } } eof"
 probar SI "for con i++"             "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; true ; idMetVar ++ ) ; } } eof"
 probar SI "for de iteradores"       "$C void idMetVar ( ) { for ( var idMetVar : idMetVar ) ; } } eof"
-probar SI "for ( ; ; )"              "$C void idMetVar ( ) { for ( ; ; ) ; } } eof"
-probar NO "for ( int i = 0 ; ; )  (la variable de control se declara con var)" \
-  "$C void idMetVar ( ) { for ( int idMetVar = intLiteral ; ; ) ; } } eof"
+# Una sola sentencia/expresion por separador, obligatoria (Pautas, logro Fors! E2).
+probar NO "for ( ; ; )  (ningun hueco queda vacio)" "$C void idMetVar ( ) { for ( ; ; ) ; } } eof"
+probar NO "for ( var i = 0 ; ; i )  (sin condicion)" \
+  "$C void idMetVar ( ) { for ( var idMetVar = intLiteral ; ; idMetVar ) ; } } eof"
+probar NO "for ( int i = 0 ; c ; i )  (la variable de control se declara con var)" \
+  "$C void idMetVar ( ) { for ( int idMetVar = intLiteral ; true ; idMetVar ) ; } } eof"
 probar NO "for ( C x : l )  (la variable de control se declara con var)" \
   "$C void idMetVar ( ) { for ( idClase idMetVar : idMetVar ) ; } } eof"
 probar SI "c ? a : b"               "$C void idMetVar ( ) { idMetVar = true ? intLiteral : intLiteral ; } } eof"
@@ -71,7 +74,11 @@ probar SI "el medio admite otro ternario"        "$C void idMetVar ( ) { idMetVa
 probar SI "var x = c ? a : b ;"        "$C void idMetVar ( ) { var idMetVar = true ? intLiteral : intLiteral ; } } eof"
 probar SI "atributo: int x = c ? a : b ;"  "$C int idMetVar = true ? intLiteral : intLiteral ; } eof"
 probar SI "local clasica: int x = c ? a : b ;" "$C void idMetVar ( ) { int idMetVar = true ? intLiteral : intLiteral ; } } eof"
-probar SI "for ( var i = c ? a : b ; ; )"      "$C void idMetVar ( ) { for ( var idMetVar = true ? intLiteral : intLiteral ; ; ) ; } } eof"
+# El declarador clasico sigue el criterio del `var` de la base: sin `=` anidado,
+# salvo entre parentesis (respuesta del profesor).
+probar NO "local clasica: int x = y = 2 ;"   "$C void idMetVar ( ) { int idMetVar = idMetVar = intLiteral ; } } eof"
+probar SI "local clasica: int x = ( y = 2 ) ;" "$C void idMetVar ( ) { int idMetVar = ( idMetVar = intLiteral ) ; } } eof"
+probar SI "for ( var i = c ? a : b ; c ; i )"   "$C void idMetVar ( ) { for ( var idMetVar = true ? intLiteral : intLiteral ; true ; idMetVar ) ; } } eof"
 probar SI "x ++"                    "$C void idMetVar ( ) { idMetVar ++ ; } } eof"
 
 echo "--- Inicializacion de Arreglos ---"

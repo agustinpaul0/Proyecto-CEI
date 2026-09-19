@@ -1,2 +1,2 @@
-///[Error:A_|2]
-A_ class R_ { }
+///[Error:extends|2]
+extends WI0_1

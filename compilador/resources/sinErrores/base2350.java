@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class I_ { private static void g ( I [ ] y , char twx0jqP_2 ) { if ( + false = ! this ++ ? false : false ) { for ( ; ; ) P [ ] hq ; return ; } } static public void tb ( Tp < A > k , NO < R_ > z9 ) { { X p , q ; Y [ ] [ ] [ ] [ ] pp , q ; int [ ] f ; } } } class S_q < V > extends U_ { private static void a ( ) { { if ( null ) return ; else 2127.4f ; } } } class YcqH implements IW < O > { } class JP extends G43 { }
+class I_ { private static void g ( I [ ] y , char twx0jqP_2 ) { if ( + false = ! this ++ ? false : false ) { 7578.F ; } else '\'' == '\"' + null ; while ( - C5 . uh ( ) <= ! "" ++ ) return + false ; } } interface Fq { }

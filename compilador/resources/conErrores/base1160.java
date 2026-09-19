@@ -1,2 +1,2 @@
-///[Error:.|2]
-class G__ extends HH_ < P_ > { } class WEA__ZZ { } interface H_ < G > extends L5 < E7 < Z > > { public void g ( ) ; G_x47U5 < G_ < E > > s ( ) ; void d ( ) ; } class Q3 < F > extends X1 < X > { static boolean [ ] [ ] m_2i ( boolean [ ] [ ] [ ] [ ] m , Dw [ ] u , float j , T [ ] [ ] [ ] w_02FV_U ) { int w = true ; new boolean . iS ++ ; char [ ] x_ , dn ; ! this -- ; Y y ; ; } char nv = Yer_o . z1 ( ) ++ ; } interface QT { public int u ( E_ [ ] [ ] [ ] c ) ; }
+///[Error:N|2]
+N class T6 implements R__ { static public VY < Z > [ ] [ ] r ( ) { } static private J r ( ) { return ; } public Q y ( ) { } static void w1PEm ( ) { } } class FPT < T > { static void r ( FwR_a < Hif < A > > [ ] [ ] [ ] hDl_ ) { } }

@@ -1,2 +1,2 @@
-///[Error:Ue_5a_|2]
-Ue_5a_ < C >
+///[Error:;|2]
+interface R_9 < T > extends J3_ { W t ; }

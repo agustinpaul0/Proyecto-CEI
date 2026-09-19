@@ -1,2 +1,2 @@
-///[Error:L|2]
-L interface VsAoQLupia_N_T < I > { }
+///[Error:NVl|2]
+NVl

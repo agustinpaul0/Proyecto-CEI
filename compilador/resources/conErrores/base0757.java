@@ -1,2 +1,2 @@
-///[Error:true|2]
-true interface C4 extends Ns < N > { } interface R_ < J > { int [ ] toW_ ( ) ; } class LRk_e { public void e ( ) { } }
+///[Error:<|2]
+interface J_E { } class N3dO9 < U > { } interface H_ < N > extends Mop < G9 < Q > > { } class Q__ < V > implements T42FG67 < K6 < E > > { } class Ba extends WpVY8 { } interface HczTA < A > { void m5 ( ) ; void qZ ( char [ ] [ ] j , H9b_S v ) ; public void m_5X ( L qT_Af ) ; } class Clw { } class YaP { float n_7Xm6 ; } interface D9 < T > extends P8 < S > { E6 l ( ) ; public void q ( ) ; } class W8 < R > { } interface < M > { } class O4 extends U15G < S5 < R > > { V [ ] [ ] [ ] [ ] d71 ; } interface S_ < I > { } interface Ra < X > { void qP ( ) ; void kCx ( ) ; void d_0q_ ( ) ; } interface Q_N_l75 extends GcK { } class MA { }

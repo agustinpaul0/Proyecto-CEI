@@ -1,2 +1,2 @@
-///[Error:--|2]
-class N_ < F > implements Yj < I > { public static void i_ ( ) { boolean k_0 , ral_4vp5 = -- % + false ? + false : ! null ; int [ ] f ; } } interface H_ < R > { }
+///[Error:)|2]
+interface SIb extends D_ < S > { } interface T_M9 extends Rw < V_e > { } interface A6 < Z > extends V2 < P3 > { } class CxL8 implements ZU_ { static void b ( int yGI , char p5 , H_ h6 , C [ ] v ) { E h = - 91898 , qU ; while ( true == + ) { } } char [ ] [ ] t2HP1Q7 ; D4_ ( float i ) { H_ < K > [ ] [ ] s , eH ; } public static K2_3 emN ( K r_ ) { { ; } } } class Qa_R extends S_ { }

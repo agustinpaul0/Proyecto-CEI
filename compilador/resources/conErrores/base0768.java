@@ -1,2 +1,2 @@
-///[Error:y|2]
-class J_ extends Gn { } interface J5 { public void f ( ) ; void o_ ( ) ; public void g ( y ) ; public char g8 ( ) ; }
+///[Error:P_c|2]
+interface Lh < B > extends YSI < E_ < X_ < A > > > { void f ( ) ; public void vX ( ) ; public int vL ( ) ; public void z ( ) ; } P_c

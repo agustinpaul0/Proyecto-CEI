@@ -1,2 +1,2 @@
-///[Error:OGG|2]
-OGG [ ] c ( int o ) ; interface W1 < G > { We < K > s ( ) ; }
+///[Error:RW_|2]
+class P8p_ implements E6 { } RW_

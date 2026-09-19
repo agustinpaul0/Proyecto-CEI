@@ -1,2 +1,2 @@
-///[Error:EB|2]
-interface HE_1 { N r ( char [ ] [ ] p , char w_ , float y ) ; public D [ ] [ ] uYKG ( ) ; } interface QR extends UMq { void eG5 ( ) ; } interface E5o < A > { } EB
+///[Error:)|2]
+interface CJ < C > { } class Om implements HK { static boolean [ ] n ( ) { } void sB ( ) { } public int [ ] li ; } interface JD { boolean [ ] e ( B [ ] [ ] [ ] [ ] g__ ) ; void r_ ( char n2 , char c ) ; public F1 [ ] w_sF ( char ) ; }

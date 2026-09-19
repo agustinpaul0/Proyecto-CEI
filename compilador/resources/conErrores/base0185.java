@@ -1,2 +1,2 @@
-///[Error:RHP|2]
-RHP class Q_k { }
+///[Error:e9|2]
+interface GF0o < D > { public e9 ( Z_ < OEt < A > > m ) ; }

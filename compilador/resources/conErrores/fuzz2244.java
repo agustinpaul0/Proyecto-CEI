@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface Dh extends SA < L_x > { } < K >
+///[Error:Kyu_U|2]
+Kyu_U

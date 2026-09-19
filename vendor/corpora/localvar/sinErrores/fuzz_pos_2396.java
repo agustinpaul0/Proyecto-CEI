@@ -1,0 +1,2 @@
+class JKGXP_ {
+}

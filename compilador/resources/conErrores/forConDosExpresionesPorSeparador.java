@@ -1,6 +1,6 @@
 ///[Error:,|4]
 class C1 {
   void m(){
-    for(var i = 0, j = 0; ; ) ;
+    for(var i = 0, j = 0; a; b) ;
   }
 }

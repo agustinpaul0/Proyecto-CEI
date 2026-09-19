@@ -1,2 +1,2 @@
-///[Error:Ux|2]
-Ux
+///[Error:(|2]
+interface XD < U > extends Ev { public void x ( ) ; C p6 ( ) ; } interface Oo extends Wf { public J [ ] [ ] [ ] [ ] y ( boolean q ) ; public void x__ ( ) ; } class RNo < O > { public float c ( ) { { ; } return ; { B [ ] t ; } } } class RNc8Io2 < F > { static DU__M8A_p_o_ < NOZ < Gc > > [ ] [ ] x_ ( int [ ] lG ) { } public void ( R [ ] b2_t_ , char t ) { { F n ; } } private static char [ ] c ( K75_5v [ ] [ ] eh , int ll ) { char c ; } } interface Q_Xj < E > extends Em { }

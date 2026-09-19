@@ -1,2 +1,2 @@
-///[Error:}|2]
-class E_ { } class F2 < L > implements Zb3__ { Z e_O8__ ( char [ ] [ ] [ ] [ ] c ) } interface D4K extends Ue0 { }
+///[Error:(|2]
+interface Aw_ < K > extends QK4_ < D > { void nV ( ) ; public void p4EJ ( ) ; Bq6i < KZG > [ ] ( ) ; Di5 < Z > w ( ) ; public boolean [ ] p_ ( ) ; }

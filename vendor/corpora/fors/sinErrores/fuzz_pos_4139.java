@@ -1,0 +1,2 @@
+interface SZ < E > {
+}

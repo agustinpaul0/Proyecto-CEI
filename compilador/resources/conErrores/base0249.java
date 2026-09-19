@@ -1,2 +1,2 @@
-///[Error:>|2]
-class KY < > { }
+///[Error:(|2]
+interface R4 extends A_ { public Du3 < VU > l ( boolean [ ] gF , O [ ] v , char wk5 ) ; } interface P5_ { public void i ( Q y , P1 < I > [ ] u ) ; ( char [ ] [ ] [ ] [ ] c , Lc < E > o , W nNl , CXAj < Cy_3 > n , char [ ] oT , P k , TD_ q_2 ) } class Kr < I > implements Pr < V > { } interface D_ extends Hmy3c < Q_ > { } class Iw_Eq implements HC { static float x ( ) { int [ ] o_ = true , aT ; } static X l7F0 ( F [ ] [ ] u ) { float g9b , t ; } void hH ( boolean [ ] uXM ) { } }

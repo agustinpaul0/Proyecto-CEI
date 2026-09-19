@@ -1,2 +1,2 @@
-///[Error:D_u5|2]
-class C_K { static void r ( TG0z_ < QZ_X < K > > q9_Q , float to_ , int [ ] y ) { { if ( this -- = false ) while ( - null ) for ( ; ; ) for ( ; ; ) ; } } } D_u5 < G0_8b >
+///[Error:{|2]
+interface B_ < U > { float tN ( S [ ] [ ] lZ , char f , UKq < J > nXzX2r_eJ , Jh__ [ ] v ) ; void gU ( Ne < Z_h > dwn , X [ ] [ ] [ ] [ ] a_x ) ; } { return ; ; ; }

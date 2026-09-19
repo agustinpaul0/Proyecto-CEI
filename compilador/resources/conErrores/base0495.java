@@ -1,2 +1,2 @@
-///[Error:.|2]
-class Bc < C > { void n ( ) { } float m = . g . x ( ) . aS ( ) ; }
+///[Error:<|2]
+< C > interface H_ extends R_ < A_5 < U7v > > { }

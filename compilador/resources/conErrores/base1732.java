@@ -1,2 +1,2 @@
-///[Error:w|2]
-class D_ extends RA2 { } class G_ < A > extends YN < E > { static public void ulzL ( w ) { var fP = ! this != + '\"' ; } static float [ ] v ( ) { return ! 08F ; ; } }
+///[Error:N_|2]
+interface Qc < M > { public void t N_ < X7z > q ; }

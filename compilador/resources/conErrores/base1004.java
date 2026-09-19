@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface N_4 { I [ ] ( ) ; }
+///[Error:<|2]
+class OE_ < U > extends < W > { }

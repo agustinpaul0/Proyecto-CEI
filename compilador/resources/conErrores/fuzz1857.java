@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface F3N < Z > { } public R q ( ) ; class R_G_ implements V4 { }
+///[Error:}|2]
+class F35_82 < F > implements GE5 { char n9OR } interface P___ extends Jg { }

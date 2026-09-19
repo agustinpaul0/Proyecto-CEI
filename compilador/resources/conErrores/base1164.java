@@ -1,2 +1,2 @@
-///[Error:LA|2]
-class Zg < B > implements L8 { } LA
+///[Error:{|2]
+class U52_Lj_h < H > extends { }

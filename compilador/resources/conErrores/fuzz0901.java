@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface D41 < I > extends Snu < NfY > { } class E625PgS implements Y6_ { public boolean [ ] w2H ( ) void qH ( ) { N [ ] r = ! true % true ; return ; JN_p . f ( ) . i_S ; } static I y ( ) { } }
+///[Error:Y|2]
+class L0 extends I_ { static private void e ( ) { } private static void a ( ) { return true || - 05d % true ; float [ ] [ ] [ ] z , u , v_uq ; { int [ ] q ; L4 [ ] [ ] n ; K r ; } var b = + false ; { return ; ; ; } } private T [ ] u ( ) { } public static void i Y U_X_ ( ) { var a8 = + false ; return ; } public static BfB qPd ( C_9 p ) { { C [ ] gj ; } } } class FN < E > extends Y5M4oL { }

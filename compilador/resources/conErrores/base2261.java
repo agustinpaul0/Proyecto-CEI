@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface R4d < Q > { } < X >
+///[Error:K|2]
+interface OO6 { } K

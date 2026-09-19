@@ -1,2 +1,2 @@
-///[Error:private|2]
-class F__ extends J6_b0 { } private int [ ] [ ] o_5 ( G e ) { }
+///[Error:Rg7|2]
+Rg7 interface R_ extends CC4mK8 < O4 < UFAcy < S > > > { H [ ] [ ] t ( ) ; }

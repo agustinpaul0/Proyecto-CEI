@@ -1,0 +1,2 @@
+interface EHL < X > {
+}

@@ -1,2 +1,2 @@
-///[Error:;|2]
-class IG < M > implements D8 { public static V xQj ( V_ < P__Xj_De_zF < O > > [ ] [ ] k7 , F [ ] [ ] qNQ807_R ) { { float w ; while ( + null ) Z_o ab_1 , j4 ; return ; } var s21 = Ff . yfjb ( ) -- * - false == false ? ! '\b' : - '\t' ; if ( + this -- ) for ( ; ; ) float [ ] [ ] yr , l2 ; var k = 00384 + true ; } public float [ ] hT__4 = true ? ! TH . i ( ) = ! false <= + 565f : "\b|Y" -- - + O_ . v ( ) ? true < ! 361294 = - true : + null <= ! 886876 ; static M ; ; } interface Jv { }
+///[Error:{|2]
+class Eyo extends { } interface QnJ < W > { }

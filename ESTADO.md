@@ -3,7 +3,7 @@
 Dónde está cada etapa y qué queda por resolver. Se actualiza al cerrar cualquier tarea; el detalle
 técnico vive en `documentacion/`, acá va sólo el estado.
 
-**Última actualización:** 18/09/2026
+**Última actualización:** 19/09/2026
 
 ---
 
@@ -41,15 +41,18 @@ Simple de Clase 5.
 
 | | |
 |---|---|
-| Gramática | 97 no terminales, 198 producciones, 59 terminales; LL(1) verificada |
+| Gramática | 97 no terminales, 197 producciones, 59 terminales; LL(1) verificada |
 | Ambigüedades | 2, las dos declaradas con su regla de resolución |
-| Analizador | una clase por sección; cita 198 de 198 producciones |
-| Corpus propio | 10.251 fuentes (10.044 generadas con Grammarinator), 72 casos de gramática, 8 de la cátedra |
-| Corpus externo | 16.512 fuentes de Giuliano Taormina; coinciden todos |
-| Suite | 26.246 tests; 98,6 % de líneas, 94,1 % de ramas; mutación 91 % |
+| Analizador | una clase por sección; cita 197 de 197 producciones |
+| Corpus propio | 10.405 fuentes (10.061 generadas con Grammarinator, 184 importadas de un corpus ajeno), 75 casos de gramática, 8 de la cátedra |
+| Corpus externo | 29.101 fuentes de Giuliano Taormina; en todos coincide el primer código |
+| Suite | 26.642 tests; 98,6 % de líneas, 94,1 % de ramas; mutación 91 % |
 | Informe | `etapas/etapa-2/entregables/`, 31 páginas |
 
 ### Decisiones cerradas en esta etapa
+
+Las que indicó el profesor están reunidas, con ejemplos, en
+[`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
 - Los logros **no son configurables**.
 - `public static` y `static public` son los dos válidos; repetir el modificador no. `protected` no
@@ -62,9 +65,25 @@ Simple de Clase 5.
   confirmó el profesor.
 - La variable de control del `for` se declara **con `var` y nada más**, como confirmó el profesor:
   los logros son independientes entre sí, así que el `for` no toma el declarador tipado de
-  Variables Locales Clásicas. `for(;;)` vale, como en Java (JLS §14.14.1).
+  Variables Locales Clásicas.
+- Cada hueco del `for` estándar lleva **exactamente una expresión**, como indicó el profesor: la
+  Pauta dice *«una sola sentencia/expresión por separador»*. `for(;;)` no vale, ni un encabezado
+  con alguna parte vacía.
+- El declarador clásico **no admite asignaciones anidadas salvo entre paréntesis**, con el mismo
+  criterio que el `var` de la base, como confirmó el profesor: `int x = y = 2;` no vale e
+  `int x = (y = 2);` sí.
 - Cada declarador de una variable local clásica lleva su propia inicialización opcional, como en
   Java (JLS §14.4): `int x = 10, y = 11, z = 12;` e `int x, y, z = 10;` valen los dos.
+
+### Dos lecturas de la base contra Java, a sabiendas
+
+El corpus de Giuliano Taormina sigue a Java en las dos, y este compilador a la gramática base. Están
+documentadas en el informe, por si el profesor las marca:
+
+- **Varios atributos en una declaración**, `int a, b = 0;`: la base declara un atributo por
+  `<Atributo>`, y el logro de declaradores múltiples es el de variables locales. Java lo admite.
+- **`new int[2][]` sin inicializador**: la base exige tamaño en toda dimensión. Java lo admite; la
+  respuesta del profesor fue sobre el inicializador.
 
 ---
 

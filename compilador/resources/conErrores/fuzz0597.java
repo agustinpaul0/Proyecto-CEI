@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends E_8 < X >
+///[Error:a9x|2]
+class N_ { public static void cG ( ) { } static void c_ ( U0 [ ] [ ] oXT ) { } static public void fJ ( PD e ) { } } class B9 < A > implements Qd6 < T > { boolean [ ] bm ( ) { } } interface G04Mj4 extends KG < DV > { } interface J9 { G_OY_s < R9Ti8M < YzR > > [ ] b ( ) ; boolean [ ] [ ] [ ] [ ] [ ] [ ] g ( B74 < X3 < J > > t , W8 [ ] tp_ , boolean [ ] s_J8 , Z c , a9x ) ; O [ ] [ ] dl ( S e , D [ ] hN , M2F [ ] a , float [ ] [ ] [ ] o , float [ ] t8 ) ; char [ ] boN ( S t0 ) ; }

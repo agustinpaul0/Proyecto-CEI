@@ -1,2 +1,2 @@
-///[Error:)|2]
-class Jz < M > { } interface Hu < G > { public void c ( X9 [ ] y , TQ < JI > eN_ , char [ ] [ ] r ) ; public S4 [ ] f_ ( L b , char [ ] [ ] l_ ) ; public N r ( X [ ] [ ] ) ; } interface SOV_ { public void yR_QV4 ( I [ ] [ ] [ ] [ ] x , S t ) ; }
+///[Error:D4A|2]
+interface Xm < E > extends DS < S8 < Bh81I__3 > > { } D4A

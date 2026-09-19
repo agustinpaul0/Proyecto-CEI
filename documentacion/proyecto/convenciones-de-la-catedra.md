@@ -1,7 +1,9 @@
 # Convenciones de la cátedra e invariantes técnicas duras
 
 Índice: [`../AGENTS.md`](../../AGENTS.md). Protocolo si algo no está cubierto acá:
-[`protocolo-de-investigacion.md`](protocolo-de-investigacion.md).
+[`protocolo-de-investigacion.md`](protocolo-de-investigacion.md). Las indicaciones directas del
+profesor, que no están en el material escrito, están en
+[`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md).
 
 ## Convenciones de la cátedra — romperlas desaprueba la entrega
 

@@ -1,0 +1,2 @@
+interface BD < Z > {
+}

@@ -1,2 +1,2 @@
-///[Error:H_0z|2]
-class F6 < A > extends Zu_jx < QHI_ < BLt_i9 < Vt < AJI4 > > > > { } H_0z class Y56 < Q > { LD < U > [ ] [ ] k_ ( Go g3 , boolean [ ] [ ] n ) { var v_h97 = '\r' ; for ( ; ; ) true ; { { } ; ; } ; } } class IMdna < Y > extends FO < IG7Y0 > { }
+///[Error:[|2]
+class QM < N > { } interface YX < J > extends I2gn0e_ { } class Hix implements T8 { boolean y ( [ ] [ ] [ ] ) { } } interface N2M extends P4jT_ { public void a_ ( AtAH [ ] [ ] a ) ; public B_ < U9 < D8 > > [ ] [ ] l2 ( ) ; }

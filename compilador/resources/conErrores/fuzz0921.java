@@ -1,2 +1,2 @@
-///[Error:public|2]
-class J1 < S > { } public class QpIIE < O > { } class MI < Q > { public static void s1 ( ) { boolean c = null , h , y_0 , t ; var k_ = ! false ; H_ [ ] [ ] s5_ , f , x ; } public static O_f_ < Q > m ( C [ ] r3Rt ) { } } class I__ { } class SJfm < J > extends E_ < C_em2 < Lr > > { B l0___Tm___ ( char [ ] t__Rx3lO___ , U [ ] y_ ) { } void n ( ) { { } + null ; } static V [ ] q ( ) { A4 < W_ > c , b ; } } class ZI < Y > implements Eu < Y8av < J5g < VtN < O6 > > > > { static private void f ( ) { } }
+///[Error:;|2]
+interface RNtU { } class U7x < J > extends E_ < W > { static SE5 [ ] [ ] jsb ( ) { N ; } } interface U5 { void n ( ) ; void z ( char [ ] uX , GM < U9 < VW > > x ) ; }

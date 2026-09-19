@@ -1,2 +1,2 @@
-///[Error:K|2]
-interface D_G extends T_W { } K
+///[Error:>|2]
+interface Wx { public void zF_Fy ( Fy_ < > [ ] [ ] [ ] j ) ; } interface W72_z extends Es { } class Ccs extends CJe0 { }

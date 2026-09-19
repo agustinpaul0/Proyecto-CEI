@@ -1,2 +1,2 @@
-///[Error:(|2]
-class RB_ extends PA { static void ( ) { } } class FN { } interface Jm { }
+///[Error:{|2]
+interface LL9 extends { }

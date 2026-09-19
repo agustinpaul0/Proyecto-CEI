@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface KW { public D8 [ ] [ ] k ( ) ; public }
+///[Error:static|2]
+class FSB implements US { } static void z_ ( boolean brm , U [ ] [ ] cb3 ) { { } }

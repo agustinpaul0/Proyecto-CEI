@@ -1,2 +1,2 @@
-///[Error:null|2]
-class B_ < T > { public static boolean [ ] [ ] [ ] hE ( L h ) { } } class F8 < R > extends XW_ { static void ke null }
+///[Error:(|2]
+interface QP4_ < C > extends B48G < LxQ > { } class A_ < O > { private static void kB ( ) { return ; ! "F" . y . r_5 . w4 -- == - 'N' = null ; char [ ] [ ] [ ] s , hd__JF , v ; } V [ ] ( ) { } U_s_ ( B c_ ) { } static boolean r1 ( ) { } }

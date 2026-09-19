@@ -1,2 +1,2 @@
-///[Error:{|2]
-{ } class WZ < J > implements Gv { public void s_ ( P5Vt < X50 > [ ] s ) { F [ ] [ ] r , sTL = + null ; } }
+///[Error:>|2]
+interface Y_a < L > extends ESb1_o_ < I_ < > > { I0 [ ] [ ] tv ( ) ; }

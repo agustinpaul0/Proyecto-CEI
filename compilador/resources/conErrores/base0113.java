@@ -1,2 +1,2 @@
-///[Error:<=|2]
-class Ks < R > implements W_v < Bw < G > > { static char [ ] <= + this ++ - + '\b' >= ! null }
+///[Error::|2]
+class Y8 < U > { Cp oi4 = null % w ( ) . x ++ ? + 03585 % null = + '\b' ? : true <= null : - q ( ) -- ; }

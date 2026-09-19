@@ -1,2 +1,2 @@
-///[Error:public|2]
-class Q_P { } public P_k3 h ( ) ;
+///[Error:,|2]
+class KUj implements Ff < M > { B_2lIm uUO ( , Gf [ ] w , T e ) { } } interface R3 < K > { public boolean [ ] e ( ) ; }

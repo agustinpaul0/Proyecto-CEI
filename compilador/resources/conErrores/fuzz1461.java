@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Cd2 { void x_C { } } interface RS extends MW { boolean [ ] h ( ) ; }
+///[Error:)|2]
+interface GO__ < I > { void s ( int ) ; public void uz__ ( ) ; } class AU < D > extends VR_ { }

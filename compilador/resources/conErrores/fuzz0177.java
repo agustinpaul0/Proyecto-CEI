@@ -1,2 +1,2 @@
-///[Error:-|2]
-class Ua6t < A > implements B_ < Q > { public void rPR57 ( ) - 4520 }
+///[Error:int|2]
+class U7_ extends N7 < C > { static private void t_ ( ) { } J a int }

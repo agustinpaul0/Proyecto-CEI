@@ -1,2 +1,2 @@
-///[Error:RaEA|2]
-RaEA
+///[Error:extends|2]
+extends Hb5_ < G4 >

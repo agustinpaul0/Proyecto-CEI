@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface K18_ < Z > { void n ( ) ; void xa5 ( [ ] m ) ; } interface Zu { public H [ ] [ ] v1j ( int e , M su3 , Q [ ] [ ] x , B [ ] [ ] [ ] h , boolean c_ ) ; public R4_C [ ] u ( Q [ ] [ ] c8 ) ; }
+///[Error:(|2]
+interface Y5 { } ( ) { return true ; } interface C_ extends UH { } interface C38__ < E > extends Jh { } interface GH extends L8 < V8_3__ > { }

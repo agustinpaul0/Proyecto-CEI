@@ -1,2 +1,2 @@
-///[Error:""|2]
-class Yuk { void "" . xZ } interface E_f_A44 extends B4 { } interface I_ < R > extends OQ { }
+///[Error:(|2]
+interface P__p { } class I_JkYA < T > extends Rd { static void ( ) }

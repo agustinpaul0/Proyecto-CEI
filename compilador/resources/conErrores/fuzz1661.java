@@ -1,2 +1,2 @@
-///[Error:int|2]
-int interface C_T { } interface C_ { public B5c [ ] wn___ ( ) ; char [ ] uT ( ) ; public R_ < Po < J > > [ ] a ( ) ; public N pI ( W3zt j_ , int iQ_ ) ; public int u ( ) ; } interface Mx extends M_0 < A > { void bUe ( Fv_ < O_ < U > > e4 ) ; } interface V__ { Z [ ] x5 ( U [ ] jy , D [ ] [ ] [ ] [ ] z , char [ ] [ ] [ ] h ) ; X [ ] [ ] [ ] x ( U [ ] [ ] [ ] [ ] p_7 , Fgn < A > [ ] jeb5 ) ; }
+///[Error:{|2]
+class Q_ { N a ( float [ ] [ ] p , X [ ] u , float [ ] [ ] [ ] u , Mn z5Q , D [ ] [ ] [ ] [ ] p , float [ ] z ) { } static void d ( C_ [ ] [ ] tsw_9C , U7V c5CQJ , boolean [ ] [ ] l , float [ ] i ) { } } class Ax3S { private static int [ ] [ ] c4 ( ) { } } { { ; } null ; JNC . a8_u0K ( ) ; W n , xd6_ ; return ; } class B7 < Q > { Sv4 [ ] dK3a ( ) { if ( - null ) - 'o' ; } public void p_ ( float v ) { R [ ] [ ] [ ] [ ] [ ] iq ; } } class Ia implements C3 { } interface R_ < M > { FF j ( ) ; }

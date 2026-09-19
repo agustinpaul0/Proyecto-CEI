@@ -1,2 +1,2 @@
-///[Error:U|2]
-class DJ__ extends Kp < F > { } U class RI < F > implements Uy4_U < K_k7 > { } class B7_z { }
+///[Error:=|2]
+interface P410pk extends P8_ < S1__Zp0573 < K > > { } class TMc < Q > extends CK { void aD ( ) { float [ ] [ ] [ ] [ ] [ ] x = false ; while ( = true ) 88753d ; if ( ! null ) return ; } } interface Y_ < E > extends N0 < A > { } interface On { public void e ( P zx6u , int i ) ; }

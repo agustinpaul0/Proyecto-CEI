@@ -1,2 +1,2 @@
-///[Error:>|2]
-class JU < > extends V6s_ < L > { } class G41 { } interface G8 { }
+///[Error:A|2]
+A class C8rw < X > implements Q25_k { } class J2P023 extends L_jf2_ { }

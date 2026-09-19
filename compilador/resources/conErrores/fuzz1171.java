@@ -1,2 +1,2 @@
-///[Error:implements|2]
-interface T9_ { } class implements R_3_rk4S { } interface Ui extends L0_ { }
+///[Error:[|2]
+interface E_Yh__0 { [ ] } class I_ extends I__K < V > { } interface Z__ extends KyV < Z > { public void a ( ) ; }

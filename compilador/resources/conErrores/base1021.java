@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface A_2dg < K > { } ( ) { ; } class U_9 { } interface AL0 { }
+///[Error:D_e|2]
+D_e

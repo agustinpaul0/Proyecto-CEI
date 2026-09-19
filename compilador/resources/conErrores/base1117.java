@@ -1,2 +1,2 @@
-///[Error:{|2]
-class YG3w_ { } class DS < Z > { } interface P_8 extends An { } class K_346_ < W > { static private X [ ] bL ( GO < I_Z > [ ] h5_20_ , O [ ] l , E [ ] [ ] [ ] [ ] aQ , float s , H z ) { } } class Ii implements { }
+///[Error:<|2]
+class AU < Q > extends T1 { } class Eh4v extends C47g < D > { static void b ( G_80hG v , M [ ] u , Yk_ < XaEC > t6 ) { } } < L > class D44 extends C__ { }

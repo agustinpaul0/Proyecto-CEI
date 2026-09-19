@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface B4 < Y > extends Dc { void }
+///[Error:ME|2]
+ME < A6 < AIO > >

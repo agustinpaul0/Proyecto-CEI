@@ -1,2 +1,2 @@
-///[Error:for|2]
-interface HC extends EtOt { } class Sh implements Js { void o_ ( char [ ] et5 ) { C [ ] j0 = null >= + '@' ; } void n_ ( ) { } static public JG o0_6o ( ) { } } class ZWSJ < J > implements Fs { void d_5M_PL4 ( M iPE6 ) { U1 . d6_Y6 ( ) < true ; } static public void mjn ( KL < K1d > [ ] ok ) for ( ; false ; + false ) if ( - null ) L p ; else boolean kH ; } class E1 { } class PXc < U > implements X_NZGs < P_ < X > > { } class U_8Bz7__ extends Eo < G_ < W > > { static private int [ ] [ ] [ ] [ ] p ( ) { } char d = ! "" && + '\"' ? - true : false ; public static boolean dR__ ( ) { } public static void d ( ) { ; ; } }
+///[Error:}|2]
+class ND6 implements Pt_ < PC > { } class PN implements Yf_ { static public void e_Q ( F [ ] b ) { ! "" ++ > ! true } }

@@ -1,0 +1,2 @@
+interface Ybi < K > {
+}

@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Gc8R < Z > { N [ ] [ ] } class H__6 < M > extends E__n < F > { }
+///[Error:DW_t|2]
+DW_t class Lb implements BG { } interface L5 { }

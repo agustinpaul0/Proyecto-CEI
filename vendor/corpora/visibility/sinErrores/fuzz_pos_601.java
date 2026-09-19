@@ -1,0 +1,2 @@
+interface S4 {
+}

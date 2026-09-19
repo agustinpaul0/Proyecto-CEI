@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends TS_
+///[Error:J|2]
+J interface Q_ < G > { }

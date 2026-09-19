@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class XI < M > implements W_ { static public void k ( ) { return ; ; float e , dD = - 0. || true , x ; for ( ; ; false ) P y_w_i , r , hG , m__5G_ , m ; } static public int g4 ( ) { float vfNe3 ; } }
+class XI < M > implements W_ { static public void k ( ) { return ; ; float e , dD = - 0. || true , x ; for ( var v71 : true ) Y8i < Oj < G > > bie ; - this . m . w -- > + true ; { } } public static int [ ] [ ] [ ] [ ] h ( ) { } }

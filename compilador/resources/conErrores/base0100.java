@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface P8 extends L_ { public void u ( ) ; } class IfH extends I3h < Dzmg < Q0N2 > > { public static float m_ ( ) { } void j { } public static void wd ( ) { if ( - true ) C_ . vM__ ( ) . t -- ; else return ; } private void f ( ) { G a_h ; } } interface VA__ extends W5 < Cj_ < U > > { } interface Z_kO < V > extends FJ { void rH ( ) ; }
+///[Error:}|2]
+class KN < W > implements JJ5_ < D6 > { } interface L6 < A > { public char [ ] j ( ) ; } interface F0 extends Wk7iP < W > { } class E8f7 extends W_G4 { private static C99J4w r5 }

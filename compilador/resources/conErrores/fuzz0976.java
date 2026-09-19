@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Y7 implements Ot < > { }
+///[Error:{|2]
+interface Ufs { } interface { }

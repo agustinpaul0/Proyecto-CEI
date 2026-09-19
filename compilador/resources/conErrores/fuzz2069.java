@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface Y5z6_ < W > extends X_ < > { }
+///[Error:48f|2]
+48f class Q4 { }

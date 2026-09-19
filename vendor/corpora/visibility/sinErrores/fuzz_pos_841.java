@@ -1,0 +1,7 @@
+class H4 implements KY {
+private boolean v ;
+}
+interface T_Oj extends R_4 {
+void z9 ( A7 [ ] [ ] [ ] u ) ;
+void r ( ) ;
+}

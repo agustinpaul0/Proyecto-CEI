@@ -1,2 +1,2 @@
-///[Error:I|2]
-interface ON extends M_4U < A > { } I interface Z_N { public char [ ] [ ] f ( LqS < H > j ) ; }
+///[Error:return|2]
+interface S8K extends M_ < E > { public Xv < V > [ ] [ ] i_z3 ( float p_5 ) ; } class Id < E > implements HY_ { static private int h ( Uj5Pb < U > [ ] in , D_ q ) { } private static P_ < Yw25EC < R > > [ ] m ( ) { this . vZ ; } float [ ] jP0Tq ( M5_ < P > l , L v ) return ; public int [ ] tE = true ? + 536F == ! false : ! 141030869.1 ; private static void n2 ( ) { } static Z c ( Y_ [ ] [ ] [ ] t ) { } } class Y5 < L > extends P6 { void b ( boolean [ ] [ ] i ) { { } ; while ( false ) J [ ] [ ] j ; ; } } interface DB < B > { } interface N_6 < M > extends C_ < I9q < P > > { public O [ ] t_T ( ) ; Ky_p < Ng < Z > > [ ] [ ] [ ] b4_Um ( ) ; } interface Sd extends GQl { public void s ( ) ; }

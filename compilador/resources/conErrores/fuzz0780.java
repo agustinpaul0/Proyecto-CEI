@@ -1,2 +1,2 @@
-///[Error:>=|2]
-class YAtn extends K4 { private static void mO_W >= ! true } interface Hn47 < B > extends T7 < Oc_9_n > { void z ( ) ; public Y [ ] d_ ( ) ; public FK7 < W > a5 ( boolean [ ] x_QZ , I36 < I > eF28 , B l_jk ) ; public AC5 [ ] o__ ( H3_ < I > [ ] [ ] [ ] c_n ) ; void fJ ( boolean [ ] [ ] [ ] [ ] [ ] [ ] iI , S_6U t9e ) ; } class K2P < H > extends A_ < E > { char c = ! F4 . uB_ ( ) -- != null <= ! "a" ++ - this . u ++ ; public static A sH ( ) { { } } } class Enj implements P0 { private void o4S ( ) { while ( ! null ) for ( ; ; ) { } } } class B_ { } class D4b < D > implements S_b3g < WK < A > > { int q ; }
+///[Error:M|2]
+interface IrY extends Hj { public A k ( char a_ , Fsz < We0 > l_5 ) ; } M s = '\f' , q , p , e , a ;

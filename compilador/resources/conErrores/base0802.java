@@ -1,2 +1,2 @@
-///[Error:U|2]
-class O1 extends U { }
+///[Error:RoW|2]
+RoW interface Ww0S < W > extends U_S_ { }

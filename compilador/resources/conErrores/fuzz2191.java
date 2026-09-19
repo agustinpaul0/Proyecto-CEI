@@ -1,2 +1,2 @@
-///[Error:extends|2]
-class extends H2 < H_5u > { }
+///[Error:(|2]
+interface JX < L > extends JL < F > { char w_1 ( ) ; void g_ ( ) ; public float j2 ( boolean b0526_ , float [ ] [ ] [ ] twH ) ; Y rNaCho ( ) ; void ( A_ y ) ; } class H__f implements Hv4 { } class MP0d < J > extends A8__ < T > { static YL1e sTo ( ) { return - false ; if ( this / + '\t' = null ) var oX = null ; else float c ; } static private void d ( B5c [ ] [ ] [ ] c ) { } } interface I6 extends Z_ { public void c07 ( ) ; public void s ( ) ; public F [ ] o ( ) ; } class Gp9 < A > { private P [ ] [ ] [ ] e ( B_OV zY ) { I_l6 . j ( ) . iin1 -- ; } } interface ZwZT < Z > extends VK { } class Wp { } class O_F { public R [ ] [ ] i_2d ( ) { ; } }

@@ -1,0 +1,2 @@
+interface E0t {
+}

@@ -1,2 +1,2 @@
-///[Error:zy|2]
-interface Dh extends SA < L_x > { } interface U7 < K > extends X_i < B_ < AY < K > > > { zy ( ) ; }
+///[Error:[|2]
+class S0 < B > implements LTAVS < QBD < WM_7r > > { } [ ] [ ] [ ] [ ] [ ] interface S1 extends GVG < G > { void s2_ ( ) ; }

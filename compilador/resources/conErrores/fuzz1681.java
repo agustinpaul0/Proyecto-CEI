@@ -1,2 +1,2 @@
-///[Error:V_O|2]
-V_O < C > class WR8 extends OK < Mj > { } interface EEj_ < P > { } interface L3 { }
+///[Error:n0|2]
+class Iw extends Bq { public static boolean u5_ ( int i ) { int hb ; } char jP ( ) { } } interface KD < L > extends V8 < N > { public U_ < N > uV ( n0 ) ; }

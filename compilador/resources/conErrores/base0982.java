@@ -1,2 +1,2 @@
-///[Error:<|2]
-class DFt implements < I > { } interface L_E extends Y9_F { }
+///[Error:(|2]
+class E0 < A > extends S_x_ { } class Xa implements G_ < U > { private static G [ ] cU85 ( ) { return "" -- ; { F_ < K > y9ym , q_ ; null ; } O ng_5 , k ; { } } private static IFK < I > [ ] x_ ( ) { while ( + this -- - 6D = - null ) Jl93I4 r ; { } } } interface Jjzx9F < B > { void ( ) ; public ItOJ u ( ) ; public void gj ( Ci_ [ ] [ ] fJ ) ; K e___ ( ZIp < K_I > a_ ) ; public char [ ] [ ] [ ] oI ( ) ; }

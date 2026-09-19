@@ -1,0 +1,3 @@
+interface HF {
+void w ( ) ;
+}

@@ -1,2 +1,2 @@
-///[Error:tc|2]
-interface R_ extends FN { public boolean wL8_ ( tc , W [ ] o , P x3T ) ; }
+///[Error:void|2]
+interface D41 < I > extends Snu < NfY > { } class E625PgS implements Y6_ { public boolean [ ] w2H ( ) void qH ( ) { N [ ] r = ! true % true ; return ; JN_p . f ( ) . i_S ; } static I y ( ) { } }

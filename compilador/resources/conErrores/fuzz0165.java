@@ -1,2 +1,2 @@
-///[Error:-|2]
-class B_nB < Z > implements B6 { static void x_ ( boolean [ ] j_ ) { } } interface Xd < C > { } interface H_ < W > { int [ ] at_q ( I [ ] x ) ; } class X_ { static private X [ ] [ ] u6 ( ) { } } class Mr < X > implements Mz < Md0a > { static private int [ ] [ ] n ( I w ) { + 998 ; var yO2 = null ; } public static Z [ ] e - true ; int [ ] h ; { } } class M_ { QE < R13 < I > > u ( S a ) { } static void p ( ) { } }
+///[Error:extends|2]
+class Z4 extends Gm5 < C_ > { } class Iy implements QV < J4 > { } extends E_8 class S6 < S > extends X_9vr { }

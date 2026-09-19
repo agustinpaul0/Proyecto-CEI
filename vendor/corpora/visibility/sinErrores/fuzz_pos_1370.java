@@ -1,0 +1,2 @@
+class Dd extends YEf {
+}

@@ -1,0 +1,2 @@
+interface Cu < Q > {
+}

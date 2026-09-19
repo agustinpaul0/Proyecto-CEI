@@ -1,0 +1,18 @@
+// [Error:}|11]
+class RasO < T > implements L4 {
+}
+interface AI__ extends X0 {
+char [ ] [ ] [ ] [ ] x ( ) ;
+I [ ] [ ] [ ] uq_l ( ) ;
+}
+class Yu {
+}
+class Ul15 extends Pm {
+J9_7 < GJR > }
+class D_ extends R0 < SA > {
+}
+interface F5_50_ < I > extends E_a3 {
+H_ < C > [ ] c ( int a ) ;
+}
+class CP_ < N > implements X_ < NM_k < P > > {
+}

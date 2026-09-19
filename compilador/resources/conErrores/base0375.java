@@ -1,2 +1,2 @@
-///[Error:E_|2]
-E_
+///[Error:{|2]
+interface C9M extends { }

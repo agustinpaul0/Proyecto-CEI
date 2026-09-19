@@ -1,2 +1,2 @@
-///[Error:>|2]
-class N3 < > extends Ku { }
+///[Error:I|2]
+class Wz < Y > { } I

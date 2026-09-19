@@ -1,2 +1,2 @@
-///[Error:T__|2]
-T__ < JoZc < B > >
+///[Error:>|2]
+interface R1W < E > extends X_0G6b < RP7mU < > > { }

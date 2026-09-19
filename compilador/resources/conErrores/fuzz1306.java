@@ -1,2 +1,2 @@
-///[Error:float|2]
-class C2 < Q > extends W_E_ { } float [ ] y ( ) { }
+///[Error:<|2]
+< R > class KAmfc < Y > implements T3 { }

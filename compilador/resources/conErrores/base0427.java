@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } public void k ( ) ; class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ qF ( T [ ] [ ] k , boolean gE ) { var u = true ; for ( ; ; ) E n ; '0' ; { } } static boolean [ ] z ( ) { { ; } } private static R__ [ ] [ ] [ ] l1 ( float [ ] [ ] t_6 ) { } } interface XHi < T > extends D2M < Ej5 < L > > { public int [ ] [ ] p ( ) ; } interface M_b { } interface B_ < U > extends W8 { void c_ ( float [ ] ypg , R y , boolean l , int o ) ; } interface Sg < T > extends ZY { }
+///[Error:{|2]
+class G_ < Y > { boolean [ ] [ ] o ; } interface A_ extends IWS_5_ < V_ > { void z ( S k_ ) ; } interface Y_AR extends { } interface MBdj_ extends Eu_3 { }

@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Akak { void iQ ( N h ) ; } interface Zh { public [ ] [ ] xWj5 ( WI6_ < V > [ ] y ) ; void p_ ( int d , int [ ] rb , Z_ y ) ; public R [ ] [ ] j ( ) ; public int g ( ) ; NW_ m ( ) ; }
+///[Error:<|2]
+class XY_ < C > extends P_M < D > { private M5 < YK < < YW0v_ > > > [ ] c = - W9_t . n ( ) . z . jn -- ; static QoH < FL_ < VpZ > > w ( M7 < S > i , boolean yV ) { float c = "\"" ++ - 1D % false ; } }

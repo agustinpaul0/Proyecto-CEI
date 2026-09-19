@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface RR extends Z3n < > { }
+///[Error:}|2]
+interface P8_Y < N > extends RA6 { F }

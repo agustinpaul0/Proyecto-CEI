@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Hc_W < F > { } class K8m implements P_S { static void i6_ ( char [ ] xE ) { var gIr932 = false >= V_ . mZ ( ) -- ; } static void v ( ) { } D f_ = ! true + this ++ ? false != ! this ++ / - '\b' || null = null && null : + N_B . vErn ( ) -- ; Pow_ ( ) { if ( null ) { } else ; for ( ; ; ) NND [ ] [ ] az ; } static private int l ( ) { } public static void m3 ( ) { for ( ; ; ) F [ ] de_U ; } } interface Flu < C > extends K__ { public void x8v ( [ ] n ) ; } interface JjF__c < O > extends M__ { void e ( char [ ] o ) ; public B__r x_5 ( boolean jN ) ; }
+///[Error:P|2]
+interface VU < Z > { } class JT extends N_ { public J9irN ( K [ ] w_N , C_4 f_ , F [ ] ny ) { } } P

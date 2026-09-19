@@ -1,2 +1,2 @@
-///[Error:>|2]
-class C_kD < C > extends M_ { static T t ( Yu < F > k_ ) { } public void n_ ( ) { if ( 2f - ! '\b' = false ) "1" ++ ; } static public void f ( X_v2SVM7 < G > h02 ) { if ( Jn . g ( ) . n -- ) for ( ; ; ) H3XC < N_ > g ; else G [ ] f ; } } interface U_1 < K > extends FH { public void kyY61 ( Ku x_saF ) ; F nc ( ) ; public void y8y ( ) ; } interface QM_0Z < F > extends R4_PMU < > { void p2Iw0Ay ( AJ6 [ ] f3 ) ; void g_9U ( F_ h , boolean z ) ; char [ ] [ ] m_a ( J5_2K [ ] g9U7 ) ; } interface Tcwn { } class XY8 < B > { public void e ( ) { char n , t , u_4 , f ; } void s ( U3R [ ] h ) { } }
+///[Error:CKf|2]
+CKf interface N2 < U > extends Ii { }

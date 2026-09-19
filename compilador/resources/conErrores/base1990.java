@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface X15 { S public void g ( boolean [ ] [ ] ur , O wxI_4 , U_7_ k ) ; public void o ( ) ; }
+///[Error:{|2]
+class U_ implements Ze { public void { S r ; ; } static public void h_ ( O i ) { } } interface Fiw < E > { }

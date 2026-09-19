@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface O4_BgD6___ < K > { public L cqg ( G [ ] q ) ; } class Q7 < U > implements { } class V_ < U > extends Jm2 < Y > { } interface Y88_7D_ < Q > { } class FY < W > { } interface XN { public Z [ ] [ ] qO ( ) ; }
+///[Error:T|2]
+T class Za < G > { } class L4 < C > { } class PZ implements K_ < W > { }

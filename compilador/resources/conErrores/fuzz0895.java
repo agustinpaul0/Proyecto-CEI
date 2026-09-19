@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface PO < E > { public void s3_ ( [ ] u2v , boolean h ) ; public void ff____nOd ( ) ; } class Oe { } interface W6_ < S > { }
+///[Error:(|2]
+interface L8B0F < Q > { int [ ] [ ] [ ] [ ] [ ] btL ( ) ; } interface P_LzZ_ < Q > extends X99 { } class K___ < J > { public void nx ( U p1_ ) { } } class OC implements U1 < O > { } interface H_ < M > extends M4 { } interface A_Z extends QmW < D > { public void nr ( A [ ] [ ] [ ] [ ] v ) ; char ( ) ; void zO ( ERc_ [ ] m ) ; public O [ ] [ ] p9 ( H zK , int [ ] vS ) ; }

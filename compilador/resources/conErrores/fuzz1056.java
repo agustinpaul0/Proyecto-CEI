@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface DER___p_ < T > extends Ec { void f_K ( ) ; } class X_S < S > { } class BB < > extends W_ { }
+///[Error:M|2]
+interface Jw { void g9Xr ( char c ) ; } M interface VC8 < B > { } interface L2l extends W_ < Cs < Z > > { }

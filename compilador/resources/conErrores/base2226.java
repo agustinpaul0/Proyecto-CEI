@@ -1,2 +1,2 @@
 ///[Error:<|2]
-< Y > class Te extends X4 { }
+class U9G implements < M > { }

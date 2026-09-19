@@ -1,2 +1,2 @@
-///[Error:Go|2]
-class EM7 < J > { } Go class J6E_ implements S1F8lK4K { } class O0g < L > { }
+///[Error:}|2]
+interface X8 < D > { void } class ML9 implements Y_ { }

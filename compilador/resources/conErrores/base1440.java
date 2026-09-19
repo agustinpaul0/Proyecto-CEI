@@ -1,2 +1,2 @@
-///[Error:L|2]
-L interface ATw < L > extends S73 { }
+///[Error:extends|2]
+extends M_

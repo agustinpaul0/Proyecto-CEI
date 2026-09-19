@@ -152,8 +152,7 @@ EXPLICACION = {
     "InicializacionDeDeclarador": "El `= expresión` opcional de una variable local clásica.",
     "Return": "`return` con o sin valor. Que el valor corresponda al tipo del método es "
               "semántico.",
-    "ExpresionOpcional": "INSERTADO. Una expresión que puede no estar: el valor del `return` y "
-                         "las dos cláusulas finales del `for`.",
+    "ExpresionOpcional": "INSERTADO. Una expresión que puede no estar: el valor del `return`.",
     "If": "El `if` con su rama `else` opcional.",
     "ElseOpcional": "INSERTADO por la factorización del `if`. Es el *dangling else*: la "
                     "ambigüedad clásica, que no se resuelve reescribiendo la gramática sino con "
@@ -161,8 +160,8 @@ EXPLICACION = {
                     "que la liga al `if` más cercano, como en Java.",
     "While": "El `while` clásico.",
     "For": "El `for`, con todo el trabajo en el encabezado.",
-    "EncabezadoFor": "Las tres formas del encabezado: vacío hasta el primer `;`, con la "
-                     "variable de control declarada con `var`, o con una expresión. La variable "
+    "EncabezadoFor": "Las dos formas del encabezado: con la variable de control declarada con "
+                     "`var`, o con una expresión. Ningún hueco queda vacío. La variable "
                      "se declara con `var` y nada más: el `for` no toma el declarador tipado de "
                      "las variables locales clásicas, porque los logros son independientes "
                      "entre sí.",
@@ -170,7 +169,8 @@ EXPLICACION = {
                             "iteradores (`for(var e : lista)`) y un `=` un for estándar "
                             "(`for(var i = 0; i < n; i++)`).",
     "ClausulasFinalesFor": "INSERTADO. Las dos cláusulas después del inicializador: condición e "
-                           "incremento, las dos opcionales. `for(;;)` es válido.",
+                           "incremento, una expresión cada una y obligatoria. `for(;;)` no es "
+                           "válido.",
 
     # --- Expresiones ---
     "Expresion": "El nivel MÁS ALTO de la jerarquía: una `<ExpresionCompuesta>` seguida de un "

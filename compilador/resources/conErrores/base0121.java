@@ -1,2 +1,2 @@
-///[Error:private|2]
-private class AH { void t ( FO < U > [ ] [ ] aH , X_ < VW0_ > [ ] [ ] [ ] t9 ) { } M j9J_QC ( ) { } private V s = 416468 > ! this ++ ; static void f ( CG3R_ < M > ag__v_R_ , Q [ ] [ ] [ ] ve , E a_d ) { } boolean [ ] [ ] u ( L psD_ ) { } public static char [ ] vf3 ( ) { int [ ] d0 ; } boolean rX = ! true ; }
+///[Error:char|2]
+interface QI { } interface W6 < C > { } interface L_ < D > { } interface EL { } class S_ extends U_ { public static M [ ] [ ] [ ] [ ] [ ] char [ ] [ ] [ ] h } interface NZ extends W3_Sb { }

@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Ad implements Rh_ { } interface Og < > extends UH < F > { } interface WV { } class K_A_O implements V4 < V_G > { int s ; } class Gh_9 extends MoU__ { } interface GP { } interface Ky { }
+///[Error:NL|2]
+interface F5W < N > { public void g_ ( VxY < C > [ ] [ ] k ) ; } interface Ek_7 extends M_ { } interface C_z4_ extends S0_ { } NL

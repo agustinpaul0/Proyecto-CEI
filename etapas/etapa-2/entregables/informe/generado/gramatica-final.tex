@@ -116,7 +116,6 @@
 
 \begin{producciones}
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
-\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
 \regla{EncabezadoFor}{\nt{Expresion} \nt{ClausulasFinalesFor}}
 \end{producciones}
@@ -127,7 +126,7 @@
 \end{producciones}
 
 \begin{producciones}
-\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
+\regla{ClausulasFinalesFor}{\tl{;} \nt{Expresion} \tl{;} \nt{Expresion}}
 \end{producciones}
 
 \begin{producciones}

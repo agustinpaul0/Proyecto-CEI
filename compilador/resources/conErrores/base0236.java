@@ -1,2 +1,2 @@
-///[Error:}|2]
-class Ht { static private void aB_54e }
+///[Error:MEww|2]
+MEww < R >

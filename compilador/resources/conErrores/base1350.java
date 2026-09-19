@@ -1,2 +1,2 @@
-///[Error:>|2]
-class I_2__ < A > implements MD < Y_U < I0u5v > > { } class IA0 { static public float [ ] [ ] yW ( ) { } } class IP < > extends B7R1G_Z < I > { private float e_w ( ) { T g_m3Yq , x , a8E_l ; } } class ZcV__n implements SL < Xi < H7 > > { public static void t ( boolean [ ] [ ] f ) { } void uX ( ) { } } interface Gx_ { } class D__Y implements UG { } interface B_ < A > extends I_ { void r ( X [ ] k ) ; }
+///[Error:char|2]
+char interface QS < O > { } interface P3 < Y > extends SZP < B9 < K > > { L [ ] t ( ) ; public G6nl < R_ < A > > x8 ( ) ; public void j ( ) ; } interface D_3n extends P_E_ < M > { void iI ( V j , N kuz , Q d , EMR3 < B > p4 , K_1 [ ] [ ] uS ) ; } class Z_29 < E > extends R_W_7 { void j ( T [ ] fV , float q ) { ! this ++ > false ; return ; - null ; } }

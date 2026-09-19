@@ -1,2 +1,2 @@
-///[Error:A8rJ|2]
-A8rJ
+///[Error:<|2]
+class P3_ extends Q_ { } < Z >

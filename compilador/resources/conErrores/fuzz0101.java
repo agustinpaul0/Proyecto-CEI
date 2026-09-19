@@ -1,2 +1,2 @@
-///[Error:}|2]
-class U5 { static void yy6 ( ) { } private void e ( float q ) { null % - 'i' == false - - true ; } S aX ( ) }
+///[Error:A_|2]
+class O_ < C > extends Nq < RP < F > > { } interface Jphf { } A_ class LE implements RL { } interface DQ < C > { }

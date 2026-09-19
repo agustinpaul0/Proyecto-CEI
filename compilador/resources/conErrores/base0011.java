@@ -1,2 +1,2 @@
-///[Error:k|2]
-interface X15 { public D_ < Q_f < S > > [ ] n ( ) ; public void g ( boolean [ ] [ ] ur , O wxI_4 , k ) ; public void o ( ) ; }
+///[Error:W13|2]
+class UA < L > { static private int W13 < X > [ ] [ ] [ ] kG ( ) { if ( "" ++ + false = + true ) ; } static void kvm272NS ( X c ) { '\"' % X2 . i ( ) ++ ? - null : - true ; } }

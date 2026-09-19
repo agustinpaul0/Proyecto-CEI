@@ -1,2 +1,2 @@
-///[Error:null|2]
-class Y4 implements Gd < X > { static private int [ ] [ ] giu ( Y c ) null public void iI ( float [ ] j6 ) { } } interface Dj < F > { public void y ( Z_R < L > [ ] [ ] [ ] [ ] [ ] ay ) ; } interface WQ { public void mHH ( X keO_ , int [ ] xAK ) ; public D3_Bc x ( ) ; void q4r ( ) ; int [ ] [ ] [ ] x ( ) ; } class Z_Md extends Ux < M921 < F0 < U > > > { QI784 ( K_ [ ] [ ] [ ] [ ] [ ] c ) { } } interface A_ extends V2_z { void j ( int h , I b , W6K_ u , int x ) ; } interface Du extends Z7_ { public boolean [ ] r ( ) ; public D h ( ) ; }
+///[Error:{|2]
+interface K0UB extends NH < O > { } interface G6 extends { }

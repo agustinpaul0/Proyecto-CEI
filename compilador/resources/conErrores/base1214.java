@@ -1,2 +1,2 @@
-///[Error:b_5G|2]
-interface XJ { public void y ( S [ ] p , C_ [ ] m , char q , T f ) ; } interface IF extends V885 < E > { I [ ] r ( b_5G , char e , S b ) ; } interface YD_5 extends Z_D { }
+///[Error:char|2]
+char class G__6 implements HT { static void l_ ( ) { { var l = - 'm' % + true ; } while ( ! 54F != this ++ ) false % '\f' / null ; } } interface Vi < C > extends Cpr { void e ( ) ; public void gh ( ) ; } interface G0 extends T6O { public WuS a ( int [ ] [ ] [ ] [ ] t_2 ) ; Wa z ( G [ ] [ ] [ ] j , OiE < ZO > [ ] gE , float zY ) ; char [ ] t84_ ( S b , BitDQ5 [ ] [ ] yv77_ ) ; } interface G9W extends X__U { }

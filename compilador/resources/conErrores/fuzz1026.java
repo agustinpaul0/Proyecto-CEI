@@ -1,2 +1,2 @@
-///[Error:}|2]
-class G__ < N > { } interface Fy extends Pm { } class K_ < R > { void l }
+///[Error:)|2]
+class U___ extends J8 { private static void e0 ( R18_P_ [ ] [ ] [ ] ) { } }

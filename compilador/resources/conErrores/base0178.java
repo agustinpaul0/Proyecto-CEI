@@ -1,2 +1,2 @@
-///[Error:void|2]
-void c ( boolean [ ] [ ] [ ] cc_ , Y [ ] c ) ;
+///[Error:<|2]
+interface KpH extends Ftt < GO__a < < V > > > { }

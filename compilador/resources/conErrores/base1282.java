@@ -1,2 +1,2 @@
-///[Error:B|2]
-B interface F3_3 < R > extends Hs2 { }
+///[Error:P|2]
+P t__

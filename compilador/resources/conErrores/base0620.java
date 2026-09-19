@@ -1,2 +1,2 @@
-///[Error:<|2]
-< P > class M19895Jgu < O > { }
+///[Error:Uu|2]
+Uu

@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface M4 < G > extends VR < V > { public void v2 ( Q [ ] r , K [ ] n_G__Y4__ ) ; } < S > interface RF { }
+///[Error:e|2]
+interface U__w < U > extends AR < X > { public void v ( ) ; public e ( float pz ) ; }

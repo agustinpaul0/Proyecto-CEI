@@ -1,2 +1,2 @@
-///[Error:static|2]
-class E3 implements Ew < K8Z > { static N [ ] x ( ) { true = false * - null >= + false ? - 4f : 1f ; } } class Ap implements Fe_ < P > { void u5 static private void s_ ( char [ ] i ) { } }
+///[Error:rst_|2]
+interface Ch extends S6U < Z0 > { } class SX extends V_ { Ja ( ) { } } interface Kd_ < D > { void kz ( boolean [ ] [ ] n5 , O6XL < Ga4_9 < Y_ > > f , V r , Hkd [ ] nT , int [ ] [ ] g_ , O yV1 , int [ ] [ ] sSQb_Be ) ; ERH [ ] a_ ( ) ; } rst_ class UN extends E_2m < OQ < K44 > > { } class AY implements Nm6 { static private void u ( char sc , Z q ) { ; { { } } return ; I z_ ; ; } private static void x_ ( int [ ] c ) { { } U__ ho ; } public Z [ ] b = true ; } interface V0 { public Sf [ ] [ ] r_Tg ( I3R82gSB z3 ) ; } interface U6 < R > { }

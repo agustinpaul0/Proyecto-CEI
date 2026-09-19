@@ -1,0 +1,2 @@
+interface I_ < B > {
+}

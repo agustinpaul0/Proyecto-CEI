@@ -1,2 +1,2 @@
-///[Error:<|2]
-< U > interface Y_a { int [ ] [ ] c ( boolean [ ] [ ] [ ] q ) ; V [ ] [ ] h3 ( boolean [ ] [ ] v ) ; void maj ( ) ; }
+///[Error:(|2]
+interface U__w < U > extends AR < X > { public void ( ) ; public U e ( float pz ) ; }

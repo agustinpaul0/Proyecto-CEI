@@ -1,0 +1,2 @@
+interface Vv < I > {
+}

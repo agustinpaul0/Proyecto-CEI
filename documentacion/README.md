@@ -18,6 +18,9 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 | [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
 | [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos y reglas de sintaxis. |
 
+Lo que el profesor indicó explícitamente, con ejemplos de qué acepta el compilador y qué no, está
+reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
+
 ## Por dónde empezar
 
 **Si querés entender el compilador**, en este orden:

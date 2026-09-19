@@ -1,2 +1,2 @@
-///[Error:,|2]
-class B_ < Q > implements BG { } class Td < G > extends LQ { static public void q ( ) { char ww = + Dc . s ( ) -- - + '\"' <= ! null != + false ? + true || null : ! , dF3y ; } }
+///[Error:[|2]
+[ ] [ ] interface L8j { public void f ( EWEx2 [ ] n , X g ) ; void h ( Lv_ [ ] [ ] o , Ba < M39 < D_8_g > > [ ] [ ] [ ] q ) ; }

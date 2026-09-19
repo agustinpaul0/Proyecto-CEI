@@ -1,2 +1,2 @@
-///[Error:}|2]
-class N_w__ < A > implements KAc { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] u ( M [ ] w2 , Z uUt , C n ) }
+///[Error:{|2]
+class V1 < A > extends { } class Xjpm extends Tz5 { } class A71H implements X_0T < Q > { }

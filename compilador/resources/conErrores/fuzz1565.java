@@ -1,2 +1,2 @@
-///[Error:U|2]
-interface Fk extends U { } interface V_ extends Sx < D1 > { }
+///[Error:<|2]
+interface < S > { } interface Hfg_7 < V > extends H_ < G > { FI < E > qV ( ) ; }

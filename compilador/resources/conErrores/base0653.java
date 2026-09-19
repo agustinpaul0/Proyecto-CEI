@@ -1,2 +1,2 @@
-///[Error:<|2]
-class SQ_ < O > implements FD { static void bd ( < S > [ ] [ ] a , O [ ] p ) { } } class N_ < O > extends CA { private void pI_z ( ) { J_ e = false , s_h8 ; while ( ! 1.03 / null ) return ; Y6__ < G > [ ] ug0 ; for ( ; ; ) false ; Y y_ ; } }
+///[Error:float|2]
+class Z5 implements JH8 < Vs < Y69 > > { } class ZDt8 { static public boolean [ ] f ( boolean p ) { { } } public O_ [ ] [ ] [ ] mZy float [ ] x ( int [ ] b ) { return - false ; ! this ++ > true ; float p ; } U__ nm ; } interface VS4_C < B > extends Q2G < GS_ > { float u_ ( ) ; public void e__9 ( char c , UB x_2 , C [ ] [ ] [ ] [ ] [ ] q ) ; } interface VUu extends YO < B > { }

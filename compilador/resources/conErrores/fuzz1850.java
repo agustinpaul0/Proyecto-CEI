@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface PH8 { void ( float j , N6Vu < L > [ ] [ ] sU ) ; }
+///[Error:VY_53C|2]
+VY_53C

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface F_ < X > extends H_ < LcsR < > > { }
+///[Error:implements|2]
+implements KQ < L >

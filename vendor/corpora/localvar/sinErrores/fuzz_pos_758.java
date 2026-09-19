@@ -1,0 +1,2 @@
+interface M_ < C > {
+}

@@ -1,0 +1,2 @@
+interface ZR < I > {
+}

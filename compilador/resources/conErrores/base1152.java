@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Fy7 implements TS480_t4E_ { } interface UC { } class D_99 extends { }
+///[Error:N2_J_FK_p|2]
+N2_J_FK_p

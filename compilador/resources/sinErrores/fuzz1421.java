@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class Xu implements E4 { } interface A_07 { } class X_ < X > implements J_ { } class Pa { A [ ] [ ] k0 ( ) { } static void fM_ ( R aJ6 , T [ ] [ ] [ ] ku ) { var rH = ! true ; } } class Z__O1 < D > { void a3 ( MC94 p , Z_O wx986 , boolean [ ] [ ] d ) { } } class E6 implements Ra { static private int [ ] [ ] r_D ( ) { } } interface T_Z < I > extends Z_ { }
+class Xu implements E4 { } interface A_07 { } class X_ < X > implements J_ { } class Pa { A [ ] [ ] k0 ( ) { } static void fM_ ( R aJ6 , T [ ] [ ] [ ] ku ) { ; } }

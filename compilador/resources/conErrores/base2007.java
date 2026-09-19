@@ -1,2 +1,2 @@
-///[Error:void|2]
-class J_N_Y < V > { } class D2 extends C4 < E > { X [ ] k ( float p ) { var o = - "\n{" . pF -- != ! "" ; } } class V_3o_ implements Blt < B > { } class C_ extends W2 { S q ( ) { ; for ( ; ; ) int i ; } static K [ ] [ ] [ ] o_ ( ) { } } interface D_ < T > { public I_9 x ( ) ; public J vB ( A [ ] [ ] [ ] z ) ; public void v ( int z , float c ) ; void agE ( NA [ ] q ) ; public float [ ] b ( Lj_ [ ] f , boolean mM ) ; public R e ( ) ; } class U2 < H > implements XdY { private Su < S > [ ] l ( ) { { ; } } static void k ( ) { P3_4_l . h__ ( ) . q ++ ; + true ; Y p ; N [ ] m ; return ; ; } } void h ( ) ;
+///[Error:[|2]
+interface GM { public void d_ ( [ ] a_Jct , char [ ] g ) ; public void b ( ) ; W [ ] f ( GL < NpB > c ) ; } class Yj_c { } interface Kl extends Nd { public void a ( ) ; } interface EE1t < B > { }

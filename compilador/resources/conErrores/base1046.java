@@ -1,2 +1,2 @@
-///[Error:H_L69|2]
-H_L69
+///[Error:<|2]
+class C_ implements < S > { }

@@ -1,0 +1,2 @@
+class EHR_ < E > {
+}

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface A8U < I > { void nFRq ( char [ ] [ ] [ ] [ ] [ ] sW ) ; public char j ( ) ; } class Oh3iS implements L_ < > { static void j ( ) { } }
+///[Error:<|2]
+interface U6 extends Cw8 { } class YS extends Ka { private static int [ ] [ ] o4 ( ) { } } < T >

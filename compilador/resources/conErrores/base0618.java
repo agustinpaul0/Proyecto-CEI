@@ -1,2 +1,2 @@
-///[Error:Uu|2]
-Uu
+///[Error:boolean|2]
+class V_ < L > extends V_A_Q { } class M_Hf < P > extends I__ < N6_n > { } class J1H9 < T > { private static void v ( U p , G eX , char s , B_ [ ] x ) { } T_ < E2 > [ ] zF__z9 ; public static CI < P4 < Uh > > [ ] [ ] xEG ( K1 [ ] q ) { while ( ! null ) char [ ] k , t , o5WJL ; } static public I4K [ ] bL ( ) { } static M b0str ( boolean [ ] [ ] [ ] f4 , int l ) { J [ ] [ ] j__T ; G [ ] [ ] [ ] e , c_ , ku ; } } boolean

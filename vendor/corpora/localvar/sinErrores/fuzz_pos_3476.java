@@ -1,0 +1,2 @@
+interface QJC__ {
+}

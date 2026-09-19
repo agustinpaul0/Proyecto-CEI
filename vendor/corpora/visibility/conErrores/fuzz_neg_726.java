@@ -1,0 +1,22 @@
+// [Error:F|10]
+interface SH_SCm__w extends ZK < G > {
+}
+interface E331 extends Zs {
+void s ( X [ ] [ ] [ ] i , boolean p , DCK0 < V > eW__7 ) ;
+int r_w_o ( char [ ] [ ] [ ] [ ] ro , D t ) ;
+void hV ( ) ;
+}
+interface S_ extends CY_ < F > {
+void j F [ ] [ ] h_ ;
+}
+interface P_AZ_ {
+}
+interface C_ {
+}
+class Fr implements Q7 {
+public void l2M ( ) {
+! 811388 < null ;
+}
+}
+class XI extends Prb {
+}

@@ -1,0 +1,2 @@
+interface Qb_ < K > {
+}

@@ -1,2 +1,2 @@
-///[Error:mu|2]
-interface Mq < V > { void e ( ) ; public mu ( Z qq , Fj [ ] z7J ) ; public void a_ ( G j_D2 , Y0H [ ] r , char [ ] [ ] b2 , boolean [ ] h_ , B [ ] wy ) ; }
+///[Error:u304|2]
+interface J_l { } interface L42 extends T5N < K0 < Ocoz_1 > > { u304 public U l ( ) ; } interface I3JZm extends FW_ { }

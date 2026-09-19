@@ -1,0 +1,3 @@
+class Dx {
+int [ ] e ;
+}

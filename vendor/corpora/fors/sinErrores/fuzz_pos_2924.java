@@ -1,0 +1,2 @@
+class Qyb < K > {
+}

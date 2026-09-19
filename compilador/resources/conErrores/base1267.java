@@ -1,2 +1,2 @@
-///[Error:x|2]
-interface XD < U > extends Ev { public x ( ) ; C p6 ( ) ; } interface Oo extends Wf { public J [ ] [ ] [ ] [ ] y ( boolean q ) ; public void x__ ( ) ; } class RNo < O > { public float c ( ) { for ( ; ; ) return ; while ( - true ) { } return ; } } class Ni < X > { } class H__x57Jd8 < T > extends AD0__p_o_ < NOZ < Gc > > { private R_W [ ] [ ] [ ] y = ! 41092944 != + false ; } interface Nj < H > { } class Sy < B > implements Hc { static void lk ( S k_5v ) { ; } static public void w0J2L ( boolean z ) { } } interface C_j < E > extends Em { }
+///[Error:}|2]
+interface MD < Q > { public } class M0 { } class Z8 < N > { }

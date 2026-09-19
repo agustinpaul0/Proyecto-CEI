@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Jz_MYv8 < V > implements C6 < Y_ < UZ8 > > { public B_ < M > [ ] [ ] rGt5I [ ] { ; O [ ] q , cq ; } } class WE { }
+///[Error:{|2]
+interface X_Y < B > { } class LlM < H > implements { char [ ] [ ] i ; } interface QoB2k { }

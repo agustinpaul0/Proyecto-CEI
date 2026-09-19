@@ -1,2 +1,2 @@
-///[Error:Qp|2]
-Qp < Rg___ > interface B_ extends RJV2 { void g ( ) ; void h3 ( ) ; public void n ( ) ; }
+///[Error:j|2]
+interface Mf < H > { } interface H_ < I > extends GiD { public void fJ ( j ) ; public S [ ] [ ] e ( ) ; }

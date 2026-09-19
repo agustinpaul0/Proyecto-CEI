@@ -1,2 +1,2 @@
-///[Error:d|2]
-interface LK { R_ < W > [ ] l ( ) ; V zm ( ) ; public void h ( ) ; A bx ( FER q ) ; Q a_3Il ( I_Y [ ] z , int [ ] [ ] iR_ , char [ ] c_gG , float l ) ; } class AZ7 extends Bw { private int h ; static KLK < S > [ ] e ( ) { } } interface PL_ { } interface QD < M > extends TMyDd < V2c < T > > { M [ ] [ ] [ ] [ ] [ ] [ ] s ( G u ) ; } interface Gh_M < K > extends Z_ { } interface X_ < M > { void o ( Wh < Y > [ ] [ ] l ) ; void o ( d , V_e [ ] [ ] [ ] [ ] o ) ; } interface HJJ_ { } interface T__ { public Q o ( ) ; char [ ] p_ ( ) ; }
+///[Error:extends|2]
+extends TS_

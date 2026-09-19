@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface Zwu < O > { } interface Iz < B > { void n7w ; }
+///[Error:}|2]
+interface H_It10 < Z > { char }

@@ -1,2 +1,2 @@
-///[Error:Z69|2]
-Z69
+///[Error:}|2]
+class Y4 implements Gd < X > { static private int [ ] [ ] giu ( Y c ) }

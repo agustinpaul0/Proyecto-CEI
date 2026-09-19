@@ -1,2 +1,2 @@
-///[Error:Km_|2]
-interface M0 < X > { } Km_
+///[Error:extends|2]
+extends G_ interface X_ < Z > { }

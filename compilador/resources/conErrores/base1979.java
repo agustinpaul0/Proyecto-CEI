@@ -1,2 +1,2 @@
-///[Error:<|2]
-class UF < T > implements X9 { } class P_Ui extends EH_ < V > { } < R >
+///[Error:;|2]
+interface V__ < C > { void k____ ; int [ ] b_P ( Lj_ < GVpQGf > xR , boolean [ ] y ) ; }

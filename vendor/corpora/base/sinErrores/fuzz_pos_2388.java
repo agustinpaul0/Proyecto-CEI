@@ -1,0 +1,2 @@
+interface Ko_ {
+}

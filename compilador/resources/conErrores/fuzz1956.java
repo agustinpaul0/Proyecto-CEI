@@ -1,2 +1,2 @@
-///[Error:public|2]
-interface V_ < T > extends Fac { void tEGFI ( ) ; } public static void qy_ ( ) { null ; }
+///[Error:implements|2]
+interface B0l { } class implements SQ_ < J > { }

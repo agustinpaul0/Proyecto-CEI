@@ -1,2 +1,2 @@
-///[Error:;|2]
-class Wr_rk < P > extends BEl < B_ > { static void o8 ( ) { } private static V_ [ ] [ ] u ( ) { return true = ; } }
+///[Error:(|2]
+interface Q9 { } interface XnZ < I > extends Sfw4 { public void vc ( R [ ] [ ] lN ) ; Hrp [ ] [ ] ( ) ; }

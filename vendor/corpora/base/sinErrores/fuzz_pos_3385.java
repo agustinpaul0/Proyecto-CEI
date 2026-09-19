@@ -1,0 +1,2 @@
+interface By extends EWa {
+}

@@ -1,2 +1,2 @@
-///[Error:Ka|2]
-interface U6 extends Cw8 { } Ka interface OP < T > extends C10 < R86Ly03dP_ > { }
+///[Error:}|2]
+class L9 extends Vc < Aj < U_h < P_ > > > { void jk } class H_G < A > { void ypz ( G1 mQ07X ) { } } class G_ < V > extends M9_0 < D > { }

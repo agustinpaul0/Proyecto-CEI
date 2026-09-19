@@ -1,2 +1,2 @@
-///[Error:-|2]
-- 0.3e81 interface Gi { }
+///[Error:(|2]
+class ZZC < W > implements KP < QgOk_yO < X_12_5_ < Vk9 < YD < U > > > > > { } interface QP { void m ( U g1 ) ; boolean ( ) ; void z ( int p ) ; }

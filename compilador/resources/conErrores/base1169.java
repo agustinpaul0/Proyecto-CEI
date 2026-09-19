@@ -1,2 +1,2 @@
-///[Error:)|2]
-class J_U_ extends Lr < YX > { } interface QeeR { public void x8 ( Z ) ; }
+///[Error:public|2]
+class LV extends KO_ { static void i ( KIy < XL < Z > > [ ] t2tSo ) public void l ( ) { } } interface E_ < N > { }

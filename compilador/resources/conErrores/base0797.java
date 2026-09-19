@@ -1,2 +1,2 @@
-///[Error:(|2]
-interface MP < G > { } interface Jx < M > extends BL < D > { public void uN ( char j , O [ ] j ) ; } ( )
+///[Error:<|2]
+interface R4d < Q > { } interface < D > extends G2LC < X > { }

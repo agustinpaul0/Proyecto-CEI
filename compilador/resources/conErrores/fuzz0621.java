@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface JA4H { } class Sn < I > extends X_ < D > { public static Z [ ] pJ_ ( N b , S j ) { } static void g_6 ( ) { } C [ ] i_ ( boolean m ) { if ( - 7.D != - false ) boolean w , y5h ; else S_m . b_ ( ) -- ; } } interface Ula < K > { } interface Y8 < B > { void z1 ( boolean g , K [ ] r__ ) ; U [ ] n_ ( boolean en_ ) ; } class J_G implements E8 < Q_0_ > { } class Z4 extends A_m < I > { } class WI < B > implements < F > { }
+///[Error::|2]
+class Og < L > extends U_TM { static Y5r h ( TEc [ ] [ ] [ ] [ ] [ ] [ ] jk ) { { } } D e8 ; static void g ( ) { J [ ] a_ = + 'S' , p4d8 = + true ; } private static M i ( ) { } private O_ < T > [ ] o_ = - false ? ! : - true ; void n ( D [ ] uW , boolean [ ] w ) { } } class CR_h < X > implements Q_L < RRPXj > { } class MWc5 < M > implements ThoK3NL < F1 > { } interface EMvsG < V > extends Yw { public void w ( ) ; public void h ( ) ; }

@@ -1,2 +1,2 @@
 ///[Error:[|2]
-class Kws < U > extends Jw < U_ > { static private L5__ < N_ > a [ ] { } } interface Fy < H > extends A_J8 { }
+class FP extends VyY < U_ > { } interface A8_1 < G > extends MV { public F4 [ ] x ( ) ; void l_ [ ] [ ] ; void n ( int [ ] [ ] pnE , int gl1i2 , char j , O [ ] [ ] iJ , N [ ] z ) ; } class Xdeu { private void f ( int xl_ , char [ ] z , boolean [ ] rwvcBN_ , O a ) { } }

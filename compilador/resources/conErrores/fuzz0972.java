@@ -1,2 +1,2 @@
-///[Error:{|2]
-class QI extends { }
+///[Error:Jq|2]
+Jq

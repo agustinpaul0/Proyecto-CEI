@@ -1,0 +1,2 @@
+interface Zg3GI {
+}

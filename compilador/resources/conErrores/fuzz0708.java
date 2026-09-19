@@ -1,2 +1,2 @@
-///[Error:BZ0|2]
-class V1 < U > extends E_j2i { } interface Ca < P > extends B_ < O > { } BZ0
+///[Error:>|2]
+interface R9 extends Q7_L { public Rb < > kE9 ( X m_5 ) ; Pz_L5_ [ ] a ( ) ; }

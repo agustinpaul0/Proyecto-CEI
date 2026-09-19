@@ -1,2 +1,2 @@
-///[Error:static|2]
-class Cb extends Ii < Q_F > { static private void w static public void vmbz ( Z7N < L3X < P > > h , char [ ] a2_3 ) { } }
+///[Error:{|2]
+class JRx_ { } class IZ < Z > extends Ar < X > { } interface M6 < J > extends { } class Wv < F > implements Rf { }

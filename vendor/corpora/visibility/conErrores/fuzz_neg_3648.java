@@ -1,0 +1,6 @@
+// [Error:z|3]
+interface HRpVX < Q > {
+int n ( z , char [ ] [ ] [ ] [ ] b , Jo0_v < Lw > [ ] [ ] g_ ) ;
+}
+interface G0 {
+}

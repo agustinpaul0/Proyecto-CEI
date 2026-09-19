@@ -1,2 +1,2 @@
-///[Error:JT|2]
-interface VU < Z > { } JT interface A7_ extends DY < AL > { public P s__ ( S [ ] [ ] [ ] [ ] [ ] xV , X [ ] a ) ; }
+///[Error:++|2]
+class I_ { private static void g ( I [ ] y , char twx0jqP_2 ) { if ( + false = ! ++ ? false : false ) { 7578.F ; } else '\'' == '\"' + null ; while ( - C5 . uh ( ) <= ! "" ++ ) return + false ; } } interface Fq { }

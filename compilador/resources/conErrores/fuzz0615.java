@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface KWWB1 extends Al { public Mk_ < X > w ( K dUI ) ; D [ ] lMc ( ) ; public X2 [ ] [ ] [ ] [ ] [ ] [ ] [ ] eV6 ( [ ] [ ] [ ] , A8z3 bel , E fxYn ) ; } interface RR__ < J > extends Pd { void j8 ( ) ; void k ( int [ ] [ ] [ ] [ ] [ ] [ ] j ) ; }
+///[Error:""|2]
+class T2y_O < J > implements P_ < Q > { } class BU3hlZt5 < U > implements A_8 < K > { } interface T__T2Gj_0O2 < Y > { } class M9 implements Me_F < T > { public static Z m ( ) { } } "" class Z_ { }

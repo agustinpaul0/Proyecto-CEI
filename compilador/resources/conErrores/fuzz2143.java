@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface B6Yx extends MT < I6 > { char [ ] yFfD ( boolean [ ] i , [ ] [ ] o ) ; }
+///[Error:(|2]
+class Pb < D > extends T_ < X > { static Q [ ] [ ] [ ] [ ] ( ) { } }

@@ -1,2 +1,2 @@
-///[Error:p|2]
-interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } interface Zq < M > extends A2 { public void k ( ) ; } class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ qF ( T [ ] [ ] k , boolean gE ) { var u = true ; for ( ; ; ) E n ; '0' ; { } } static boolean [ ] z ( ) { { ; } } private static R__ [ ] [ ] [ ] l1 ( float [ ] [ ] t_6 ) { } } interface XHi < T > extends D2M < Ej5 < L > > { public p ( ) ; } interface M_b { } interface B_ < U > extends W8 { void c_ ( float [ ] ypg , R y , boolean l , int o ) ; } interface Sg < T > extends ZY { }
+///[Error:X1|2]
+X1 interface VK < U > { public SD < G > [ ] [ ] rU ( ) ; }

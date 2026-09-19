@@ -1,2 +1,2 @@
-///[Error:023|2]
-class OgGan < N > { public Z [ ] [ ] qZ ; void dt ( boolean s_ ) 023 }
+///[Error:>|2]
+interface ZD < C > extends G_ < > { void c ( Y ph , float x , I [ ] [ ] m ) ; } class C8rw < X > implements Q25_k { } class J2P023 extends L_jf2_ { }

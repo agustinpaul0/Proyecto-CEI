@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class Y1 implements M_ < Q_ > { void u4 ( char y , char [ ] l ) { } static public void blt ( int f ) { } public char [ ] [ ] [ ] [ ] [ ] [ ] l ( ) { } A w_ ( int [ ] l , P [ ] n7_D , H [ ] [ ] p , int [ ] [ ] tO ) { } float q87Zw ( Z [ ] u_ ) { for ( ; ; ) for ( ; ; ) ; F3 . r2 ( ) . tp_ ++ ; } }
+class Y1 implements M_ < Q_ > { void u4 ( char y , char [ ] l ) { } static public void blt ( int f ) { } public char [ ] [ ] [ ] [ ] [ ] [ ] l ( ) { } A w_ ( int [ ] l , P [ ] n7_D , H [ ] [ ] p , int [ ] [ ] tO ) { } float q87Zw ( Z [ ] u_ ) { { - true ; } "" . lj -- ; C c ; ; } }

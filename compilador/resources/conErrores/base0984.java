@@ -1,2 +1,2 @@
 ///[Error:}|2]
-interface I_ < L > { void w ( int o ) ; float d9 ( ) ; SQ < D0 > z ( ) ; R6 }
+class I_ < V > extends WMyH { } interface V9 extends E3 { } class Xf < X > extends Q60r_ < U > { void aO } interface J7R_ < B > { }

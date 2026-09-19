@@ -1,2 +1,2 @@
-///[Error:(|2]
-class Yj extends ON1 < TDq > { static DjJ < W > [ ] gM ( ) { } U8 [ ] [ ] sf ; void ( Gc [ ] [ ] t ) { } }
+///[Error:x4|2]
+class XSP < J > extends P1T < R_ > { } x4

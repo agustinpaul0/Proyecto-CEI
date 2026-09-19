@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface F_ extends < V > { }
+///[Error:W|2]
+W interface BN < U > { }

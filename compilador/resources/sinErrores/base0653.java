@@ -1,2 +1,2 @@
 // Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface U9t { } class Wt extends YQ < Ox1bm > { YwR_k ( ) { } boolean mh_ ( Hl < V > [ ] xI ) { for ( var r = null ; ; ) var o = null ; } } class U_8 < B > extends T_8 { void x6g7U ( ) { } } interface Yv < W > { public void n ( D [ ] [ ] c8__7 , int [ ] [ ] x2Z ) ; void t_ ( ) ; void o8zI ( ) ; public float x0 ( ) ; Q pZ ( D [ ] [ ] [ ] [ ] fO , L [ ] y_ ) ; }
+interface U9t { } class Wt extends YQ < Ox1bm > { YwR_k ( ) { } boolean mh_ ( Hl < V > [ ] xI ) { for ( '\f' * - false ; null ; true ) var b88 = null ; } public static char [ ] i ( ) { } void x ( ) { } }

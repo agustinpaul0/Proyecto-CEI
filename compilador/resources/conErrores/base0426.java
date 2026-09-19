@@ -1,2 +1,2 @@
-///[Error:{|2]
-class C91 implements Y_ { static O x ( ) { if ( '9' = HI . l5I_I ( ) -- ? + false : 9f ) ; for ( var x : ! this ++ % - 784465 = + null ) { return ; for ( ; ; ) return ; } } void y__K ( O [ ] [ ] z ) { for ( var ui = 8631240 ; ; ) return ; } static void { if ( + P_b . o ( ) = 60555F ) var u2_ = true % - null ; } }
+///[Error:F|2]
+interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } interface Zq < M > extends A2 { public void k ( ) ; } class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ qF ( T [ ] [ ] k , boolean gE ) { var u = true ; 2e38 ; M t ; char y_ , t ; } } interface Inp__ extends O_ { } class R_ < O > extends Cf < P > { static void p5 ( char i , A_ e4 ) F }

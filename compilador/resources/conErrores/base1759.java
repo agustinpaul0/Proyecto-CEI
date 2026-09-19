@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Hlra_ < K > implements Z_37_ < > { private static void x ( ) { } }
+///[Error:}|2]
+class CP6 < W > { static public void }

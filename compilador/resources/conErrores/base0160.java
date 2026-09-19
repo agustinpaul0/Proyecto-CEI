@@ -1,2 +1,2 @@
-///[Error:=|2]
-interface Ew { public Ey [ ] [ ] d0 ( ) ; public void i ( I [ ] [ ] [ ] [ ] b , char [ ] y ) ; } class Hw { E [ ] [ ] = - true == + kP6 ( ) . k ++ ; X [ ] [ ] n ; }
+///[Error:sH|2]
+interface H_Y < N > { public void zZ03f_ ( ) ; } class Ow_ extends C5e < Dm < X > > { } interface D_ < E > { sH } interface C1o < R > { }

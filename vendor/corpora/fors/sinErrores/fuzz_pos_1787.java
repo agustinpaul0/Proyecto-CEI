@@ -1,0 +1,2 @@
+class Zbx < C > {
+}

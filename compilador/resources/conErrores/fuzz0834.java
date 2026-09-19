@@ -1,2 +1,2 @@
-///[Error:I6|2]
-I6 class ZYhph < A > implements TU < A > { } interface G_ < L > extends Gq { }
+///[Error:public|2]
+public boolean tyg ( char [ ] f , boolean si1 , Z_UR_lU b_t_5 ) ;

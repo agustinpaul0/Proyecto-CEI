@@ -1,2 +1,2 @@
-///[Error:void|2]
-class C18 < R > extends Fm { static void e_ ( ER [ ] m ) { } } interface IR_ < T > { } interface XT22 extends A3 { void r ( R y , X u ) ; public U re ( ) ; } interface SP { } class GuT_ extends OM < A_ > { } interface V_ < N > extends G_d < R2 > { } void o ( int [ ] w , Z1 [ ] [ ] [ ] [ ] w ) ; class D7 { boolean [ ] [ ] [ ] m ; }
+///[Error:c|2]
+c interface J_I extends BD_ < I > { void hgw ( ) ; public OOU < Q > mM ( O x ) ; } interface CZ extends D_ { } class U9 implements G_ < T > { public static float [ ] r_ ( ) { } N [ ] z ( ) { } } interface Vb { void s ( I l ) ; void qyT2dR ( ) ; } interface L_ < U > { public void o ( ) ; } class C_ < B > extends Z4_ { }

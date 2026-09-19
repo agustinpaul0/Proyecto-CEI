@@ -1,0 +1,2 @@
+interface JOPb < H > {
+}

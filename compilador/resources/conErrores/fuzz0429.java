@@ -1,2 +1,2 @@
-///[Error:leg|2]
-interface B52 extends L6_U { W3 [ ] [ ] [ ] tr58 ( ) ; public void qd63B ( N [ ] bm , leg ) ; M [ ] n ( K s9 , M l ) ; }
+///[Error:<|2]
+interface D_ extends E5 { public float [ ] [ ] j ( ) ; } class T9B < G > { boolean q = - q [ + true ] . e ( ) . x4sA1 -- ; } < Xy < A > >

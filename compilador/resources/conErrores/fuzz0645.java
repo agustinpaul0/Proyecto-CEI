@@ -1,2 +1,2 @@
-///[Error:char|2]
-interface H_ < K > { boolean [ ] b7 char z4 ; }
+///[Error:W61|2]
+interface E5 < G > { } W61 interface Xh { }

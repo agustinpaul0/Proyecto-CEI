@@ -1,2 +1,2 @@
-///[Error:static|2]
-class ND6 implements Pt_ < PC > { } static public void e_Q ( F [ ] b ) { for ( ! null = '\f' - ! null ; + false + null ; ) { } } static private void js_ ( char [ ] oSk , V zl , L z4 ) { QJ2 . x2_ ( + false ) -- ; } class E_ extends HI_ { } interface X_ < Z > { V m ( int oV__ ) ; void d4z ( ) ; } class G_ < M > implements F_8 < W > { US ( S6 zb3 ) { if ( true ) for ( ; ; ) float [ ] [ ] g ; else ! false ; } }
+///[Error:kA_X|2]
+class A_A1 extends Gb { } interface Ph < D > { } class E_ extends P_ < E9 < H__ < Pn < D_83_5 > > > > { static public kA_X ( Y [ ] t , int [ ] [ ] i ) { } static boolean [ ] [ ] [ ] [ ] [ ] [ ] u ( float r ) { } char i ; W_ < L > nP_a ; static private void rL0 ( X_ i , float vV_4 ) { } void b ( ) { } } interface S_ < H > extends P_ < K > { public int a91_ ( ) ; }

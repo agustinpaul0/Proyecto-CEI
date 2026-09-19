@@ -1,2 +1,2 @@
-///[Error:{|2]
-class L_ extends { private static void j5 ( ) { } }
+///[Error:<|2]
+class VY3 < B > implements FQ_ < P > { U [ ] [ ] [ ] [ ] k < void qJ ( ) { while ( HEl . r ( ) . m -- ? - true : - false ) this ++ == - true ; } } class A1_ { W_2 wV1 ( D yJ , Q q_ ) { } } class Q_ < N > { static public float ww5_ ( G__ r9 ) { ; } static float [ ] d ( int r , boolean [ ] [ ] [ ] [ ] sLe_X ) { if ( this -- - null ) ; else A [ ] [ ] [ ] gPi8 , z7Q , s ; } } class UI_ < D > implements JH7 { static public void n ( char [ ] d , float l2 , float [ ] [ ] d__ , int t , S [ ] [ ] y ) { int h = null < ! true ; boolean [ ] a , n2 , i___ , c_ , ac ; r -- ; int [ ] f , ozM ; AW__2 a , k ; } static public void f_ ( X to ) { ! Wd53 . t ( ) . sb . x -- ; } } interface ZLp extends Dl < U > { }

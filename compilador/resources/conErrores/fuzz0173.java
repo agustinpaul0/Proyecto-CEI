@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface T3 { DG < Z > [ ] [ ] j ( ) ; L } class K__2 < E > { } interface Y_ < Z > extends NG77 < C7 > { }
+///[Error:-|2]
+class Ua6t < A > implements B_ < Q > { public void rPR57 ( ) - 4520 }

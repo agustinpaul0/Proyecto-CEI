@@ -1,0 +1,16 @@
+// [Error:}|13]
+interface U587r2 extends K_ {
+void i ( int [ ] [ ] [ ] [ ] [ ] dw , KuL jo ) ;
+void v ( ) ;
+}
+class H_ {
+}
+interface AK {
+J n ( H j ) ;
+}
+interface Q2 {
+Zr < U > cQ ( ) ;
+Lw }
+interface D_J < N > extends R_ < B > {
+Vo i_2Br ( ) ;
+}

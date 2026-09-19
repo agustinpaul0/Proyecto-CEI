@@ -1,2 +1,2 @@
-///[Error:void|2]
-class M_mS < A > implements Nb { char k ( char [ ] [ ] [ ] r ) { return true = ! 8439d >= false ; } static public int [ ] o ( ) { } } interface H_ < F > extends B2 < I > { } class AtE < J > implements V_e < U > { void kZ ( ) { } static private float [ ] [ ] g ( ) { } public boolean x void ye ( ) { } C [ ] cH ( C e ) { } public void b ( ) { } } class Dx_z { } interface G84_ < Z > { void q ( G s ) ; }
+///[Error:int|2]
+interface UC < E > { } int

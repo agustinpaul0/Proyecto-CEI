@@ -1,2 +1,2 @@
-///[Error:void|2]
-void u ( ) ; void r ( ) ;
+///[Error:{|2]
+class N_ extends { }

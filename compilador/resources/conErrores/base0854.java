@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends G7 < D >
+///[Error:<|2]
+class Bj < K > implements Lp < P_7 > { private float y ; private static boolean [ ] [ ] o ( ) { ; Az < K > k_ = true , q9 ; } static I [ ] qV1 ( ) { { v ( ) ; } } public ZH [ ] r0 ; } class < M > implements WKx { } class N__l implements V_ < IAZ_ < R > > { int ho ( ) { float [ ] j ; } void t ( ) { + W02m_ . wo_ ( ) . c1j ++ * - true ; } } interface K51 extends Ykw___ { } class H6 < P > implements Mn4 < DKm < AbV0E < GOmk_ > > > { } class DD_ extends BQ_ < C_ < R > > { C e ; static B m ( boolean [ ] [ ] t , boolean [ ] [ ] t ) { } }

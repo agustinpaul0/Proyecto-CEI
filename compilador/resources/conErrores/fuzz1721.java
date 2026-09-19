@@ -1,2 +1,2 @@
-///[Error:true|2]
-class R9 implements Bw < S > { } class U_ implements Ic < VB > { void true } class I__ < Q > { Q [ ] [ ] s_ ( ) { } } interface B_ { }
+///[Error:[|2]
+interface P3 < B > extends MDC < S > { public void e ( int [ ] j_ ) ; [ ] [ ] nJ ( F [ ] [ ] s ) ; }

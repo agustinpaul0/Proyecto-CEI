@@ -1,2 +1,2 @@
-///[Error:Bc|2]
-interface Vb < K > { J_ < U__s_H_uJ > e ( ) ; } Bc < A_d > [ ] [ ] [ ] vI ( ) ; interface T_ < I > { void xF ( ) ; } interface Nn extends E3 < B > { public void w5 ( HS_ h6 , Uy < F_9Wb < M > > [ ] [ ] q0 ) ; } class IxV_ implements Cp_ < EY < A > > { } interface T3 < I > extends N_ { } class Z4 extends Ba < Z > { } class G1 { L h ( ) { { } } static O5g < O > v_2B ( ) { Z [ ] [ ] [ ] g , kfJ ; ; return ; } } class Pr_ < K > implements Oy6 < P > { static public B_f_95y < G > [ ] djEcc_u_I ( ) { - null ; ; { } ; } int [ ] [ ] u ; float m0 ; }
+///[Error:[|2]
+interface KV { Tz [ ] m ( int p0_ , H i1 ) ; void s9 ( ) ; public [ ] [ ] [ ] [ ] j ( char [ ] t0 ) ; } class P_a_ < L > extends Hl { }

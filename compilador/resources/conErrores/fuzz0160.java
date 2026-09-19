@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Ock < L > implements { static private int [ ] c ( ) { this * - "\f" . t ( ) . z8_ ++ - false < true % true ; } } class Yt < C > extends YNS { private static int y ( ) { } static boolean d ( U [ ] r , T_ lI , int [ ] xo ) { } }
+///[Error:<|2]
+interface U2 extends P_8 { void z ( ) ; P [ ] [ ] lL ( ) ; } class < C > { } interface R_92m < B > { }

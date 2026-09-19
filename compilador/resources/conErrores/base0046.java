@@ -1,2 +1,2 @@
-///[Error:,|2]
-interface Ps extends Tk { } class OCY_y8r { } class F8_ < Q > extends Ny__ { K_a_1 ( ) { } void f_u ( D7__ < E_ > l ) { } } interface Sr extends A7 { } class R74 < N > extends Is < S > { Z hl1 = 54489 ; static K [ ] q ( int [ ] v ) { } static void ns ( ) { { } g_O_ , pa ; { ; } { } return ; ; } private void y ( ) { for ( ; ; ) ; return ; ; } } interface Uh { } class Wch implements G1u < Exzv > { } interface Mlf_ < A > { }
+///[Error:true|2]
+class Qf65 < H > implements R2 { } interface H5 { } true interface F31 < A > { void e50__Av ( O [ ] [ ] q4_0_ ) ; public boolean oT ( int [ ] [ ] q , char [ ] p_ ) ; E3Z < D_ < SPk < K > > > [ ] [ ] nW_u ( ) ; }

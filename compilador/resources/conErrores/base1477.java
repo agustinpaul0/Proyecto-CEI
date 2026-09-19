@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Gt < C > extends SjPn7_f < A > { } [ ] [ ] [ ] [ ] [ ] [ ] [ ] class P_e6alr implements IF0 { }
+///[Error:C_t_|2]
+class G__0 implements J_ { } C_t_ interface MY_ { S r ( ) ; }

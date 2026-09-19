@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface H7Q_KlN_ { } interface Ii { public void b_nDz ( [ ] ) ; public void m93 ( ) ; } interface PU_ < M > { }
+///[Error:u|2]
+class L_N implements A1 { } interface A_ { public void o2 ( ) ; } class AF implements Gs_ < Lm_t < F > > { static L [ ] u ( ) { } } class A_ < F > implements CH < C__ > { } interface Uy < D > { void j ( u , K [ ] [ ] iR ) ; }

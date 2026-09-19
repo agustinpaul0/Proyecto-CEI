@@ -1,2 +1,2 @@
-///[Error:'\n'|2]
-interface ZF5 { } '\n' interface Q_ < F > extends Qx_ { } interface QO < V > extends V_ { } interface CW < B > extends YrZX { void p ( X d , P f7 ) ; }
+///[Error:<|2]
+interface BMk < I > { public int [ ] f ( ) ; } class OpZ_9_ < Z > extends L_u { static J_y < A > m ( G_ [ ] [ ] [ ] [ ] [ ] [ ] i6 ) < M1 > static int [ ] r ( K0 < M__ < UL > > [ ] [ ] d ) { } } class Fz6k < S > implements U_ { }

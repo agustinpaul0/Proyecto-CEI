@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Pu__ extends BC__Z6 { A [ ] [ ] m ( char wT__ , [ ] [ ] u_3hSV ) ; public Sm3w_2 < MF_ < U > > p ( WX < E > [ ] [ ] k , L [ ] [ ] fhK ) ; } interface O46iV { public void t ( char l , W yb , X_0O [ ] [ ] [ ] w ) ; }
+///[Error:<|2]
+< C > interface G_ < B > { Xt < BS > [ ] z ( ) ; } interface Ct_2 { } interface G57 < S > extends O_ < I > { }

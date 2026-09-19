@@ -1,0 +1,2 @@
+interface UF extends VO {
+}

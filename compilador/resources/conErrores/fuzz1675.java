@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Nr < L > extends X_ < V > { } interface Z9 < > { }
+///[Error:int|2]
+int interface C_T { } interface C_ { public B5c [ ] wn___ ( ) ; char [ ] uT ( ) ; public R_ < Po < J > > [ ] a ( ) ; public N pI ( W3zt j_ , int iQ_ ) ; public int u ( ) ; } interface Mx extends M_0 < A > { void bUe ( Fv_ < O_ < U > > e4 ) ; } interface V__ { Z [ ] x5 ( U [ ] jy , D [ ] [ ] [ ] [ ] z , char [ ] [ ] [ ] h ) ; X [ ] [ ] [ ] x ( U [ ] [ ] [ ] [ ] p_7 , Fgn < A > [ ] jeb5 ) ; }

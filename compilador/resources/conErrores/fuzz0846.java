@@ -1,2 +1,2 @@
-///[Error:Dp|2]
-interface C_Ef < X > { public Z0 < Y > u ( Y2_ < J > [ ] [ ] m , GV [ ] cH ) ; } class C3 < H > implements Z_ < M_ < M_SJF < OW > > > { char [ ] [ ] [ ] h ( Zi91_ [ ] x ) { } static void g ( RAY [ ] [ ] [ ] tK , int hfd ) { } static public void i ( Tv [ ] [ ] [ ] rk8 ) { } static public E [ ] zr ( ) { } } class Dp implements Emf2 < H > { } Dp
+///[Error:{|2]
+class P2 extends { } interface QC_D3W_2 < S > { } class PQ extends Bj_3R { public void s ( int i , float ki ) { } public boolean [ ] m ( M [ ] [ ] [ ] a ) { } } class Xh implements W3 { void n ( ) { R [ ] [ ] [ ] [ ] [ ] s , a , w8 , p ; } } interface A2 < A > { }

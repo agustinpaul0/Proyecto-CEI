@@ -147,7 +147,7 @@ public static final ConjuntoDePrimeros EXPRESION_BASICA_OPERADOR_UNARIO = de(
 El motivo es que el código se pueda leer contra la gramática del informe renglón por renglón, y que
 un cambio en la gramática tenga un único lugar donde reflejarse.
 
-Las 198 constantes —una por producción— **se generan**, no se escriben:
+Las 197 constantes —una por producción— **se generan**, no se escriben:
 
 ```bash
 python3 herramientas/primeros_a_java.py gramatica/minijava-ll1-final.g
@@ -232,7 +232,7 @@ python3 herramientas/comparar_con_gramatica.py 'ruta/*.java'
 ```
 
 Corre el analizador en Java y el simulador del Esquema Simple sobre los mismos fuentes y exige el
-**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **10.251 fuentes** del
+**mismo veredicto** y, cuando los dos rechazan, el **mismo token**. Sobre las **10.405 fuentes** del
 corpus versionado coinciden en todas.
 
 Y hay un tercero. `herramientas/gramatica_a_javacc.py` genera, desde la misma gramática, un parser

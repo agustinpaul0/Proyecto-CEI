@@ -1,2 +1,2 @@
-///[Error:extends|2]
-extends N8T2 < B > interface Iq { public void qa__ ( ) ; }
+///[Error:I5s|2]
+I5s

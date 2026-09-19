@@ -1,2 +1,2 @@
-///[Error:JT__|2]
-JT__ < PoWY < Nh < K > > > [ ] class LG6__ < J > extends L1CSHIm < RSd > { }
+///[Error:g|2]
+class T_V < Z > { } interface Kd < R > extends U_A_ { } interface X6 < L > { } class P9 { private g ( I [ ] h9 ) { while ( ! true ) { } } }

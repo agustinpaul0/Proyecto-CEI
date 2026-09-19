@@ -184,18 +184,15 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "for(;;) ;",
-            "for(; i < 10; ) ;",
-            "for(var i = 0; ; ) ;",
+            "for(var i = 0; i < 10; i++) ;",
             "for(var i = 0; i < 10; i) ;",
-            "for(Clase.crear(); ; ) ;",
-            "for(Clase.crear().campo; ; ) ;",
+            "for(i = 0; i < 10; i = i + 1) ;",
+            "for(Clase.crear(); ok(); avanzar()) ;",
+            "for(Clase.crear().campo; a; b) ;",
             "for(var e : lista) ;",
-            "for(i = 0; i < 10; ) ;",
-            "for(; ; i++) ;",
-            "for(;;) { m1(); }",
-            "for(;;) for(;;) ;",
-            "for(;;) if (a) ; else ;",
+            "for(var i = 0; i < 10; i++) { m1(); }",
+            "for(var i = 0; i < 10; i++) for(var j = 0; j < 10; j++) ;",
+            "for(var i = 0; i < 10; i++) if (a) ; else ;",
     })
     void seAceptaCadaFormaDelFor(String sentencia, @TempDir Path dir) {
         aceptar(dir, envolverEnMetodo(sentencia));
@@ -206,32 +203,50 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
     // (respuesta del profesor).
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
-            "for(int i = 0; i < 10; ) ;  | int",
-            "for(int[] v = null; ; ) ;   | int",
-            "for(int x : arreglo) ;      | int",
-            "for(T t = null; ; ) ;       | T",
-            "for(T t : lista) ;          | T",
-            "for(Persona p = null; ; ) ; | p",
-            "for(Persona p : personas) ; | p",
-            "for(Lista<T> x : lista) ;   | <",
+            "for(int i = 0; i < 10; i++) ; | int",
+            "for(int[] v = null; a; b) ;   | int",
+            "for(int x : arreglo) ;        | int",
+            "for(T t = null; a; b) ;       | T",
+            "for(T t : lista) ;            | T",
+            "for(Persona p = null; a; b) ; | p",
+            "for(Persona p : personas) ;   | p",
+            "for(Lista<T> x : lista) ;     | <",
     })
     void laVariableDeControlDelForSeDeclaraConVar(String sentencia, String lexema,
                                                   @TempDir Path dir) {
         assertEquals(lexema, rechazar(dir, envolverEnMetodo(sentencia)).getLexemaOfensivo());
     }
 
+    // «Una sola sentencia/expresión por separador» (Pautas, logro Fors! E2): cada
+    // hueco lleva exactamente una, así que ninguno queda vacío (respuesta del
+    // profesor).
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "for(;;) ;                       | ;",
+            "for(; i < 10; i++) ;            | ;",
+            "for(i = 0; ; i++) ;             | ;",
+            "for(var i = 0; ; i++) ;         | ;",
+            "for(i = 0; i < 10; ) ;          | )",
+            "for(var i = 0; i < 10; ) ;      | )",
+            "for(var i = 0; ; ) ;            | ;",
+    })
+    void elForExigeUnaExpresionEnCadaHueco(String sentencia, String lexema,
+                                           @TempDir Path dir) {
+        assertEquals(lexema, rechazar(dir, envolverEnMetodo(sentencia)).getLexemaOfensivo());
+    }
+
     @Test
     void laVariableDeControlDelForLlevaInicializacion(@TempDir Path dir) {
-        assertEquals(";", rechazar(dir, envolverEnMetodo("for(var i; ; ) ;"))
+        assertEquals(";", rechazar(dir, envolverEnMetodo("for(var i; a; b) ;"))
                 .getLexemaOfensivo());
     }
 
     // El logro restringe a una sola sentencia o expresión por separador.
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
-            "for(var i = 0, j = 0; ; ) ; | ,",
-            "for(i = 0, j = 0; ; ) ;     | ,",
-            "for(; ; i++, j++) ;         | ,",
+            "for(var i = 0, j = 0; a; b) ; | ,",
+            "for(i = 0, j = 0; a; b) ;     | ,",
+            "for(i = 0; a; i++, j++) ;     | ,",
     })
     void elForNoAdmiteVariasExpresionesPorSeparador(String sentencia, String lexema,
                                                     @TempDir Path dir) {
@@ -240,7 +255,7 @@ class MiembrosYSentenciasTest extends BaseDeAnalisis {
 
     @Test
     void elForDeIteradoresNoLlevaClausulasFinales(@TempDir Path dir) {
-        assertEquals(";", rechazar(dir, envolverEnMetodo("for(var e : lista; ; ) ;"))
+        assertEquals(";", rechazar(dir, envolverEnMetodo("for(var e : lista; a; b) ;"))
                 .getLexemaOfensivo());
     }
 

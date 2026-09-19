@@ -1,2 +1,2 @@
-///[Error:{|2]
-class PD__xR < W > { } class L_0_ < B > extends MX < Tc > { private static K [ ] [ ] [ ] [ ] [ ] t_ { } } class H__9kq_Boc { }
+///[Error:int|2]
+int class MxW_1x implements T__93 < M6 < AG > > { } interface Di < T > { }

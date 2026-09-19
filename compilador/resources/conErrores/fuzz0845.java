@@ -1,2 +1,2 @@
-///[Error:<|2]
-class R_ implements < X > { }
+///[Error:I6|2]
+I6 class ZYhph < A > implements TU < A > { } interface G_ < L > extends Gq { }

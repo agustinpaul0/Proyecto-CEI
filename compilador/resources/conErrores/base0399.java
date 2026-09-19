@@ -1,2 +1,2 @@
-///[Error:G|2]
-interface O_ < Z > { public char [ ] c_ G g ; }
+///[Error:>|2]
+interface Y__ < G > extends T_ < > { }

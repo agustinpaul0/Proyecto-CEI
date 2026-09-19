@@ -742,21 +742,21 @@ terminales nuevos. Se descartó porque despega la implementación del esquema de
 
 Un \nt{For} nuevo como alternativa de \nt{Sentencia}. La variable de control se declara con
 \tl{var} y nada más: los logros son independientes entre sí, así que el \tl{for} no toma el
-declarador tipado de Variables locales Clásicas (lo respondió el profesor). El encabezado empieza
-con \tl{;}, con \tl{var} o con una expresión, y las tres alternativas son disjuntas. El desempate
+declarador tipado de Variables locales Clásicas (lo respondió el profesor). Y ningún hueco queda
+vacío: la Pauta pide \emph{una} sentencia o expresión por separador, también según el profesor. El
+encabezado empieza con \tl{var} o con una expresión, y las dos alternativas son disjuntas. El desempate
 entre el \tl{for} estándar y el de iteradores es de un solo token y está justo después de
 \texttt{var x}: \tl{:} es de iteradores, \tl{=} es estándar.
 \begin{producciones}
 \regla{For}{\tl{for} \tl{(} \nt{EncabezadoFor} \tl{)} \nt{Sentencia}}
-\regla{EncabezadoFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
 \regla{EncabezadoFor}{\tl{var} \tl{idMetVar} \nt{EncabezadoForTrasVar}}
 \regla{EncabezadoFor}{\nt{Expresion} \nt{ClausulasFinalesFor}}
 \regla{EncabezadoForTrasVar}{\tl{:} \nt{Expresion}}
 \regla{EncabezadoForTrasVar}{\tl{=} \nt{ExpresionCompuesta} \nt{ClausulasFinalesFor}}
-\regla{ClausulasFinalesFor}{\tl{;} \nt{ExpresionOpcional} \tl{;} \nt{ExpresionOpcional}}
+\regla{ClausulasFinalesFor}{\tl{;} \nt{Expresion} \tl{;} \nt{Expresion}}
 \end{producciones}
-\nt{ClausulasFinalesFor} con una sola \nt{ExpresionOpcional} por separador es la lectura literal de
-«se restringe a una sola sentencia o expresión por separador».
+\nt{ClausulasFinalesFor} con exactamente una \nt{Expresion} por separador es la lectura literal de
+«se restringe a una sola sentencia o expresión por separador»: \texttt{for(;;)} no es válido.
 
 \subsection{Operador Ternario E2}
 
@@ -1004,7 +1004,7 @@ constructor sin un ciclo. \\
 \texttt{AnalizadorDe\{Clases, Miembros, Tipos, Sentencias, Fors, Expresiones, Referencias,
 Creacion, Argumentos\}} & Una sección de la gramática cada una. \\
 \texttt{primeros/\allowbreak PrimerosDeX} & Una constante por producción, \textbf{generada} desde la gramática:
-198 en total, divididas por la misma sección. \\
+197 en total, divididas por la misma sección. \\
 \texttt{recuperacion/\allowbreak \{RecuperadorDePanico, ContextoDeSincronizacion\}} & La recuperación en Modo Pánico. \\
 \texttt{errores/\allowbreak ExcepcionSintactica} & El único error que produce el analizador. \\
 \bottomrule
@@ -1119,7 +1119,9 @@ Los dos operandos del ternario & El del medio es una \nt{Expresion} completa y e
 no, tal cual el JLS 15.25: \texttt{a ? b = 1 : c} es válido y \texttt{a ? b : c = d} no. &
 \S\ref{sec:logros} \\
 La asignación no encadena & \texttt{a = b = c} nunca fue válido en \textsc{MiniJava}; se preservó.
-\textbf{No es una decisión libre}: está en la regla original. & \S\ref{sec:transformaciones} \\
+\textbf{No es una decisión libre}: está en la regla original. El declarador clásico sigue el mismo
+criterio que el \tl{var} de la base, como confirmó el profesor: \texttt{int x = y = 2;} no es
+válido e \texttt{int x = (y = 2);} sí. & \S\ref{sec:transformaciones} \\
 Lado izquierdo del \tl{=} & Una \nt{ExpresionCompuesta}, como en la regla original: \texttt{a ? b :
 c = d} no deriva, igual que en Java. & \S\ref{sec:logros} \\
 Genéricos anidados & \texttt{List<List<Persona>{}>} cierra con dos \tl{>} separados: el léxico no
@@ -1129,12 +1131,21 @@ Java un método de interfaz privado exige cuerpo y \textsc{MiniJava} no tiene fo
 \S\ref{sec:logro-visibilidad} \\
 Orden de los modificadores & Los dos: \texttt{public static} y \texttt{static public}. Repetir el
 modificador se rechaza, y lo impone la gramática sola. & \S\ref{sec:logro-visibilidad} \\
-Inicializador de arreglos & Como en Java: con inicializador ninguna dimensión lleva tamaño, y admite
-la coma final. Sin inicializador rige la base: toda dimensión con tamaño. & \S\ref{sec:logros} \\
+Inicializador de arreglos & Como en Java, como respondió el profesor: con inicializador ninguna
+dimensión lleva tamaño, y admite la coma final. Sin inicializador rige la base: toda dimensión con
+tamaño. \textbf{Se sabe que Java admite} \texttt{new int[2][]} (JLS 15.10.1); la respuesta del
+profesor fue sobre el inicializador, y este proyecto se apega a ella sin extenderla. & \S\ref{sec:logros} \\
+Un atributo por declaración & Como en la base: \texttt{int a, b;} no es válido como atributo.
+\textbf{Se sabe que Java lo admite}. El logro de Variables Locales Clásicas habla de variables
+locales declaradas en una sentencia, y el de Atributos Inicializados agrega sólo la inicialización;
+ninguno agrega la lista de declaradores al atributo. & \S\ref{sec:logros} \\
 Notación diamante & Sólo al instanciar: \texttt{new C<>()} sí, \texttt{new C<>[3]} y
 \texttt{List<> x;} no. Impuesto por la gramática, no delegado al semántico. & \S\ref{sec:logros} \\
 La variable de control del \tl{for} & Se declara con \tl{var} y nada más, como respondió el
-profesor: \texttt{for (int i = 0; ; )} no es válido. \texttt{for(;;)} sí, como en Java. & \S\ref{sec:logros} \\
+profesor: \texttt{for (int i = 0; i < n; i++)} no es válido. & \S\ref{sec:logros} \\
+Los huecos del \tl{for} & Cada uno lleva exactamente una expresión, como indicó el profesor: la
+Pauta dice «una sola sentencia/expresión por separador». \texttt{for(;;)} no es válido. &
+\S\ref{sec:logros} \\
 \tl{float} en la gramática & Se agrega como \nt{TipoPrimitivo} y como \nt{Primitivo}; sin eso el
 logro de la Etapa 1 quedaría inutilizable en ésta. & \S\ref{sec:logros} \\
 \bottomrule

@@ -1,2 +1,2 @@
-///[Error:NtmNh8_|2]
-NtmNh8_
+///[Error:<|2]
+class < Z > { }

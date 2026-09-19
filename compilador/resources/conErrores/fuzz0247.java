@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface extends G_si < D > { float [ ] l ( ) ; }
+///[Error:public|2]
+interface D_ { } public void j_Om4p_w ( ) ; interface YG extends T_ { } interface V_ < J > extends H6s2d { }

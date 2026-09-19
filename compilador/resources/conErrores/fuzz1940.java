@@ -1,2 +1,2 @@
-///[Error:implements|2]
-interface B0l { } class implements SQ_ < J > { }
+///[Error:Z9|2]
+interface A_5 < N > { } Z9

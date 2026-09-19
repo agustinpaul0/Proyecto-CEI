@@ -1,0 +1,2 @@
+class QWsfg implements CZ {
+}

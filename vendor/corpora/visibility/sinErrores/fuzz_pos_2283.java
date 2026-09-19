@@ -1,0 +1,2 @@
+interface Te < R > {
+}

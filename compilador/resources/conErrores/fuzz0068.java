@@ -1,2 +1,2 @@
-///[Error:O5d|2]
-O5d
+///[Error:}|2]
+class HC { private Bi }

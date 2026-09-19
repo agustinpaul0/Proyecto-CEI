@@ -1,2 +1,2 @@
-///[Error:Wi|2]
-Wi < Z0 < Et > > x
+///[Error:(|2]
+interface F5e { } interface Qs extends K_ < S > { ( ) }

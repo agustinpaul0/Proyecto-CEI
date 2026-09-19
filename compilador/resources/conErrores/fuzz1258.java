@@ -1,2 +1,2 @@
 ///[Error:<|2]
-interface < W > { }
+interface V11_q < I > extends < Z > { }

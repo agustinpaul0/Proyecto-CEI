@@ -1,2 +1,2 @@
-///[Error:[|2]
-class O_ extends Y_U { } interface Br < C > { public void y ( ) ; I [ ] [ ] v ( ) ; public void p9N ( ) ; } interface E7_ < G > { public I22 < N > fs ( char [ ] x19 , float b ) ; } interface AFmE { void f ( float [ ] [ ] e ) ; } class O_ < D > implements G82 < S > { } [ ] [ ] [ ]
+///[Error:public|2]
+class Bkb { } class G7 < U > { } interface Y2N { } class Xpsq0 extends I__8n < Qyg < X_9_ > > { char [ ] [ ] [ ] [ ] k = false ; } interface P6__2 < K > extends GX < Qy > { public void w_KX ( ) ; B_9 < I8 < K > > public W x ( char tx , U [ ] [ ] [ ] [ ] aR , X__ u ) ; }

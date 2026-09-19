@@ -1,2 +1,2 @@
-///[Error:[|2]
-class H7 < Z > implements Iq < Du < U_FBa > > { Yh ( Q [ ] [ ] [ ] tn1 , X [ ] [ ] [ ] [ ] a_ , [ ] [ ] [ ] [ ] ys , D n , F [ ] [ ] is ) { } }
+///[Error:K0xYvg_CY_|2]
+interface Qb extends M9 < Y > { Q [ ] o6MT ( ) ; public void c ( ) ; } K0xYvg_CY_

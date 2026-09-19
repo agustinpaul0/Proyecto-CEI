@@ -1,2 +1,2 @@
-///[Error:[|2]
-class G_ implements Aq < D > { static void awgP ( [ ] [ ] bz ) { } char [ ] [ ] [ ] k35_ ( ) { } N [ ] i ( C [ ] hNW , U_ t5 , H [ ] [ ] l ) { } GG_ ( ) { null < ! false ; - M9 . n40 ( ) ; } void p ( N k , U_ r__ , float or5 ) { if ( true ) return ; else ; } }
+///[Error:Is|2]
+interface YU { boolean [ ] [ ] [ ] [ ] x1 ( char [ ] [ ] we7u_ , char fGT ) ; public U17 < O_Y < Q > > ee ( ) ; } class UTx extends A0_ { } Is < A__ < H > > [ ] [ ] [ ] n ;

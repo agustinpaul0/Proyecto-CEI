@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface < Q > extends CR { }
+///[Error:int|2]
+int

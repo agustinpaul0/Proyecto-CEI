@@ -184,13 +184,14 @@
 <While> ::= **while** `(` <Expresion> `)` <Sentencia>  
 
 > Fors! E2
-> Una sola sentencia/expresión por separador. La variable de control se declara
-> con `var` y nada más: los logros son independientes entre sí, así que el for no
-> toma el declarador tipado de Variables Locales Clásicas (respuesta del profesor).
+> Una sola sentencia/expresión por separador, y exactamente una: ningún hueco
+> queda vacío, así que `for(;;)` no deriva (Pautas, logro Fors! E2, y respuesta
+> del profesor). La variable de control se declara con `var` y nada más: los
+> logros son independientes entre sí, así que el for no toma el declarador tipado
+> de Variables Locales Clásicas (respuesta del profesor).
 
 <For> ::= **for** `(` <EncabezadoFor> `)` <Sentencia>  
 
-<EncabezadoFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  
 <EncabezadoFor> ::= **var** **idMetVar** <EncabezadoForTrasVar>  
 <EncabezadoFor> ::= <Expresion> <ClausulasFinalesFor>  
 
@@ -199,9 +200,9 @@
 <EncabezadoForTrasVar> ::= `:` <Expresion>  
 <EncabezadoForTrasVar> ::= `=` <ExpresionCondicional> <ClausulasFinalesFor>  
 
-> Una sola expresión por separador.
+> Una sola expresión por separador, obligatoria.
 
-<ClausulasFinalesFor> ::= `;` <ExpresionOpcional> `;` <ExpresionOpcional>  
+<ClausulasFinalesFor> ::= `;` <Expresion> `;` <Expresion>  
 
 > EXPRESIONES
 > Las expresiones se organizan en capas, de menor a mayor precedencia:

@@ -813,9 +813,10 @@ cambio futuro en las expresiones no hay que espejarlo.
 
 **Transformación.** Un `<For>` nuevo como alternativa de `<Sentencia>`. La variable de control se
 declara con `var` y nada más: los logros son independientes entre sí, así que el encabezado no
-toma el declarador tipado de Variables locales Clásicas —lo respondió el profesor—. El encabezado
-empieza entonces con `;`, con `var` o con una expresión, y las tres son disjuntas: ninguna
-expresión empieza con `var` ni con `;`.
+toma el declarador tipado de Variables locales Clásicas —lo respondió el profesor—. Y ningún hueco
+queda vacío: la Pauta pide *una* sentencia/expresión por separador, también según el profesor. El
+encabezado empieza entonces con `var` o con una expresión, y las dos son disjuntas: ninguna
+expresión empieza con `var`.
 
 El desempate entre el `for` estándar y el de iteradores es **de un solo token** y está justo
 después de `var x`: `:` es de iteradores, `=` es estándar.
@@ -823,17 +824,16 @@ después de `var x`: `:` es de iteradores, `=` es estándar.
 ```
 <For> ::= for ( <EncabezadoFor> ) <Sentencia>
 
-<EncabezadoFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
-                  | var idMetVar <EncabezadoForTrasVar>
+<EncabezadoFor> ::= var idMetVar <EncabezadoForTrasVar>
                   | <Expresion> <ClausulasFinalesFor>
 
 <EncabezadoForTrasVar> ::= : <Expresion>
                          | = <ExpresionCompuesta> <ClausulasFinalesFor>
 
-<ClausulasFinalesFor> ::= ; <ExpresionOpcional> ; <ExpresionOpcional>
+<ClausulasFinalesFor> ::= ; <Expresion> ; <Expresion>
 ```
 
-`<ClausulasFinalesFor>` con una sola `<ExpresionOpcional>` por separador es la lectura literal de
+`<ClausulasFinalesFor>` con exactamente una `<Expresion>` por separador es la lectura literal de
 *«se restringe a una sola sentencia/expresión por separador»*.
 
 ### 5.4 Operador Ternario E2
@@ -963,17 +963,17 @@ rechazaría.
 cd compilador
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g                  # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # todas declaradas
-bash herramientas/casos-gramatica.sh                                              # 72/72
+bash herramientas/casos-gramatica.sh                                              # 75/75
 ```
 
-- **97 no terminales, 198 producciones, 59 terminales.**
+- **97 no terminales, 197 producciones, 59 terminales.**
 - **LL(1)**: toda producción de todo no terminal tiene Primeros disjuntos.
-- **72 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
-  debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c` y
-  `a ? b : c = d` se rechazan, `List<> x;` se rechaza y `new List<>()` se acepta, `static public` y
+- **75 casos** de aceptación y rechazo, cubriendo por cada construcción su propia sintaxis y la que
+  debe rechazar. Entre ellos, los que fijan las decisiones difíciles: `a = b = c`,
+  `int x = y = 2` y `a ? b : c = d` se rechazan, `int x = (y = 2)` se acepta, `List<> x;` se rechaza y `new List<>()` se acepta, `static public` y
   `public static` se aceptan los dos y `public private` no, `new int[]{1,2}` se acepta y
-  `new int[2]{1,2}` no, `for (;;)` se acepta y `for (int i = 0; ; )` no.
+  `new int[2]{1,2}` no, y `for (;;)` y `for (int i = 0; c; i)` no se aceptan.
 
 El costo total de la corrección más los logros, respecto de la gramática base de la cátedra:
-**de 60 a 97 no terminales y de 126 a 198 producciones**, sin ninguna ambigüedad sin declarar y sin
+**de 60 a 97 no terminales y de 126 a 197 producciones**, sin ninguna ambigüedad sin declarar y sin
 ningún conflicto de predicción.

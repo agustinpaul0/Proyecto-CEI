@@ -1,2 +1,2 @@
-///[Error:hL|2]
-class DAc < Q > { static public boolean [ ] z1I ( int q ) { } } class YI < Y > implements X1____ { private void k ( J [ ] u ) { F v , y22 = false , g ; for ( ; ; ) ; } } class D6 < S > implements ET6u { U [ ] d_6ri = 803022 * 517 / t . p ( ) -- ? + false % - this . v ++ = ! false < - null || - false : + 9142 ; } interface K6 < B > { L_ < C > vv ( Q__ < E > [ ] f , int v2 ) ; } interface Q_ < P > { V_ < F > [ ] c8 ( float [ ] o_3 , float [ ] [ ] p ) ; hL ( ) ; }
+///[Error:{|2]
+class Ock < L > implements { static private int [ ] c ( ) { this * - "\f" . t ( ) . z8_ ++ - false < true % true ; } } class Yt < C > extends YNS { private static int y ( ) { } static boolean d ( U [ ] r , T_ lI , int [ ] xo ) { } }

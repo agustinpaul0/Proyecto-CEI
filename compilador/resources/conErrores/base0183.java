@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface G22__3 < B > extends MD2G6 < > { }
+///[Error:WJ|2]
+WJ

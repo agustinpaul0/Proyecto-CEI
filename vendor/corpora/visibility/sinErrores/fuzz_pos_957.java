@@ -1,0 +1,2 @@
+class GEP implements Be {
+}

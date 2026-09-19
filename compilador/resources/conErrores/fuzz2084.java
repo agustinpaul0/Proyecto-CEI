@@ -1,2 +1,2 @@
-///[Error:{|2]
-class RP extends { }
+///[Error:while|2]
+class Oq_6 < G > { char [ ] [ ] [ ] [ ] w ; static void v ( ) { } static S e ( int [ ] [ ] [ ] [ ] [ ] [ ] d , T6 < Q > [ ] z ) { if ( + false ) return ; else I [ ] h_ ; } } class I_g__8 < E > { } class Lw { private static void ap2 ( ) while ( ! this = true ) this ++ ; { } }

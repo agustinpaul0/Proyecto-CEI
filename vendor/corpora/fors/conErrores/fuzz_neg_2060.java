@@ -1,0 +1,8 @@
+// [Error:extends|8]
+interface XS extends A0_ < K > {
+}
+class Oek1 extends Gt {
+}
+interface R__ < D > extends NQ_ < N7 < X > > {
+}
+extends T7cZ_v < BeJ >

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface M5 extends { } interface J1_e < F > { }
+///[Error:-|2]
+class A_ implements ZLv { public static void ur ( ) - public static void dK_ ( ) { } }

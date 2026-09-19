@@ -1,2 +1,2 @@
-///[Error:[|2]
-class Lx_ < Q > implements H_ < CD < X > > { M sITQ ( ) { } G [ ] [ ] bFm ( ) { } static void g ( ) { while ( - D_xy . z3 ( ) && 6.f = ! true && false ) char vG4 , o , jT , yj3Hw ; } } class A__ < O > { static public [ ] weUFS__uH1 ( ) { } private static void dv ( P uT_ , char xd ) { } static S [ ] [ ] j ( ) { } }
+///[Error:;|2]
+interface K1Q extends Jz5 < J > { } class C0 < T > implements B9 { ZV_ x ( U [ ] yy4G ) { while ( + this -- = true ) "\n" . i ( ) ++ ; } WE_4 ( ) { } } class XZpgx9W extends P_ < C0T_ < M > > { } class Bs_T3 < C > implements RO < R > { public static void ; boolean pS = 85E-1 ; } class G__ { } class I3___S6X { F [ ] ja = - this . jO6 > + 2398 != 27. < false ; }

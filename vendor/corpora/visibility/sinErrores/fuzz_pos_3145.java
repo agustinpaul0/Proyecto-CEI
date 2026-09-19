@@ -1,0 +1,2 @@
+interface PMB4 {
+}

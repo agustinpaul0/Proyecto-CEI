@@ -1,2 +1,2 @@
-///[Error:FlWI|2]
-FlWI interface Q___4C_6 { }
+///[Error:{|2]
+class K1 < A > extends J_b < P > { static void { } static private void d ( ) { } }

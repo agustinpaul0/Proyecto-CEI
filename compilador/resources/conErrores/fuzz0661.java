@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Q5_ < R > extends Xz < V > { private J_ ( D_ < F3_i_ > [ ] eb90 , O [ ] [ ] e1_b ) { } static public void l8 ( int m , char [ ] fjU6q ) { while ( - false = '>' % 'n' >= + true ) float ow ; var u_ = + null ; return ; } private static I [ ] [ ] [ ] [ ] q ( ) { return ; Qx_ . j_ ( ) . g ( ) -- ; for ( ; ; ) { } } } class < E > { } class Yf1 < M > implements M_ { } interface FWe < B > { public void g ( HnV q6 ) ; }
+///[Error:)|2]
+interface A3 { public void d_w6 ( P_0u [ ] ) ; }

@@ -1,2 +1,2 @@
-///[Error:D4A|2]
-interface Xm < E > extends DS < S8 < Bh81I__3 > > { } D4A
+///[Error:}|2]
+class C__PO < I > extends R_ < I8 < Pa > > { V k } interface P6_DX extends A7 < P__9_W > { }

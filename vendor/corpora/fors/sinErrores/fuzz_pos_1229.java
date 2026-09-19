@@ -1,0 +1,2 @@
+interface Zm < B > {
+}

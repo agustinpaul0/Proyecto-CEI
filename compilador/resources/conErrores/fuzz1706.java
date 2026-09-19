@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface P3 < B > extends MDC < S > { public void e ( int [ ] j_ ) ; [ ] [ ] nJ ( F [ ] [ ] s ) ; }
+///[Error:}|2]
+class YM < M > extends Abcf < G > { static public R }

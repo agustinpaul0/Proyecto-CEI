@@ -1,2 +1,2 @@
-///[Error:{|2]
-class U4y < Z > extends HBY_t6 { static int [ ] t_4_6_ ( ) { if ( '\n' ? "" -- : null * '3' % - false ) L4 [ ] [ ] [ ] [ ] n ; else if ( 8d < 3d < + false = true ) { } } } class { float j_ ( ) { } boolean [ ] vFPo_0 = S__ . p ( ) . gh -- + - F_ . i9 ( ) . d__ -- ; static Q [ ] [ ] [ ] [ ] a_ ( I_e [ ] [ ] v_6 , R q_ ) { ; } static public void t ( M [ ] t , H0 t ) { } void h ( ) { int [ ] [ ] [ ] [ ] ac ; } private YbT ( ) { } }
+///[Error:(|2]
+interface I2L < G > extends Pb { } interface Ft extends Bp < H > { Y ( ) ; }

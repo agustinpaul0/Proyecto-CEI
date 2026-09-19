@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface XG < C > { } extends Uf < S_ < J > >
+///[Error:char|2]
+interface X_Y < B > { } char interface QoB2k { }

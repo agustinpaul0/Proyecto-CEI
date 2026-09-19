@@ -1,2 +1,2 @@
-///[Error:=|2]
-interface RL < F > { } = + true
+///[Error:Z|2]
+Z

@@ -1,2 +1,2 @@
-///[Error:Y_W|2]
-class NM < D > implements LH { static E Y_W [ ] [ ] [ ] [ ] [ ] [ ] static void d ( ) { } static public void p ( ) { } } class D_6 < Z > { }
+///[Error:*|2]
+class Ha implements Nxp { public void f ( L0Lk < L > [ ] [ ] [ ] ep1 ) { var n = * '\'' ? ! '*' % - false : null ; } } class QR extends F_Qq8_ < Y9 > { } interface B2 < R > { } interface D7 { F [ ] a2 ( ) ; } class P1f__1R { X yc_ ; static private void n_g ( ) { if ( false ) return ; ! true ; { return ; } } void l ( int s16 ) { } V2vb_ [ ] [ ] g = + false ; T om ( ) { } static public J rbep ( ) { P [ ] [ ] aLXm ; } } interface H9 { } interface H2F { } interface Xq < A > { } interface Y6 { } interface HQ < C > { }

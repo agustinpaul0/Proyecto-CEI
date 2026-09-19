@@ -1,0 +1,2 @@
+interface HwU < Z > {
+}

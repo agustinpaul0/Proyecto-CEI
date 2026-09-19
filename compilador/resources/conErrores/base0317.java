@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface OxA extends Ng5 < ZZ < L > > { } interface < Q > { }
+///[Error:W__|2]
+interface A9Z extends FD < W > { } W__

@@ -1,2 +1,2 @@
-///[Error:;|2]
-interface D5 { } class BF implements Y_z < D_ > { static char g ( Z_f < DS > y ) { if ( - true ? 3. : + false - true ) C ; else { boolean xr_ , gJ ; return ; } } static public O j0m ( ) { } }
+///[Error:C_|2]
+class YSb implements Ec < U8 < Oe > > { } class F_Q_ implements Y_M { } interface S0 { } C_

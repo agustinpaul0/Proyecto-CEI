@@ -1,2 +1,2 @@
-///[Error:R|2]
-interface W_ { } class VZ < U > implements ZN < S1 > { void k ( ) { } } R interface Pb < X > { } interface CX extends UY2 < S_ < Y > > { void y__ ( char [ ] nq , M2 g__ , L66 [ ] [ ] eQr , L85 [ ] [ ] [ ] [ ] j ) ; void n ( Y [ ] [ ] a0 ) ; } class Y_312 < R > { }
+///[Error:float|2]
+interface T9 < U > extends U_770 { } class Kq4 { BM ( G em3 ) { } } interface A7 extends XM < O > { } class W_DK_ { } interface Y_ < A > { } interface GR_M < T > { } float interface BN extends S_ < W > { } class Ug_ implements KBU { }

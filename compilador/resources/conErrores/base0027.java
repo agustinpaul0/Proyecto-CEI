@@ -1,2 +1,2 @@
-///[Error:<|2]
-interface E1 < K > { } < E >
+///[Error:public|2]
+public void k ( ) ;

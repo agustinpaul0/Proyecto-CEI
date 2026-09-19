@@ -1,2 +1,2 @@
-///[Error:>=|2]
->= interface O_ extends F_2F1 { public void l9 ( ) ; public TX_T r5 ( Y [ ] [ ] [ ] [ ] [ ] ueQa , M m ) ; }
+///[Error:(|2]
+interface U8 < T > extends B_Q < MI > { ( ) } class X4_ implements R_4 < RB > { }

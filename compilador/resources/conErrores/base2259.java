@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Y1 < Q > extends { } interface E5 extends SZ1_3 { } interface Y2 extends Gq < J > { } interface DpD extends F92_ { } interface J8__ < Q > { } class T_S_ implements Qh < Q > { }
+///[Error:,|2]
+class HO_ { R [ ] [ ] x ( , Z [ ] [ ] g ) { } D [ ] [ ] [ ] x ; } interface W442 < J > extends L_7 < DxN < P9 < D > > > { } class Q_hm extends V0 { } class M06 extends V_ < N5_ < E > > { }

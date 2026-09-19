@@ -1,2 +1,2 @@
-///[Error:F2|2]
-class E_ { } F2 interface D4K extends Ue0 { }
+///[Error:I|2]
+class B_nB < Z > implements B6 { static void x_ ( boolean [ ] j_ ) { } } interface Xd < C > { } interface H_ < W > { int [ ] at_q ( I [ ] x ) ; } class X_ { static private X [ ] [ ] u6 ( ) { } } class Mr < X > implements Mz < Md0a > { static private int [ ] [ ] n I w } interface R2_g < O > extends JK < SP < H > > { } interface I4__ < L > extends RW { I j7O ( R [ ] [ ] [ ] [ ] r , J u6 ) ; }

@@ -1,2 +1,2 @@
-///[Error:q|2]
-interface Z49 < G > { q ( ) ; public void fsq ( Z iV_ ) ; }
+///[Error:(|2]
+interface PH8 { void ( float j , N6Vu < L > [ ] [ ] sU ) ; }

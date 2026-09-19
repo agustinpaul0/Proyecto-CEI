@@ -1,2 +1,2 @@
-///[Error:Q|2]
-interface LF { } interface HQs { public B s0 ( ) ; FSv_ < X > [ ] dL_6aE5Cx ( ) ; void x6_ ( I kD , F i6 ) ; } class A_ implements D1U_k < U_ > { } Q
+///[Error:(|2]
+class CE0u1 < W > extends Yo { public P [ ] [ ] [ ] w7 ( OH [ ] xt7_x4 ) { } } class U_ implements AI { J jQ ( char k ) { } static private void b_p9 ( Z [ ] o , char p , Gw_57 < Gd > u1 ) { ! 72050e24 || + true * ! false > 1.F = true * - null ; } } class HW implements M8 { static boolean n ( T [ ] l_ , boolean zH ) { } private static Zdph_BV < R > kkK5 ( ) { } } class FdSj < D > extends Bs < Q > { } class SChA < P > { static public void ( O o0 , E [ ] s ) { C9_ . h ( ) -- ; } Q_J ( ) { } }

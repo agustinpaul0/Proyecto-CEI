@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface NBr { } interface M_T extends NQ < Z > { } interface K__ < R > { } class XXw < D > { } interface extends HA24G < J > { B5Q6 r ( K [ ] r , R [ ] [ ] [ ] [ ] [ ] [ ] cET , Vh_ [ ] [ ] lr7 , int [ ] [ ] l4 , int [ ] [ ] [ ] l ) ; public void gk ( int x ) ; J____Z_ q54__h ( B [ ] [ ] [ ] kL , M odoR_ ) ; }
+///[Error:++|2]
+class M_ < A > { public static void c9 ( ) { return ; { } boolean u = 4433D , u5P_ = + null , y ; } static private T [ ] n ( LRe q , int c ) { var b = E9 . hR ( ) . d -- ? 6.82E+1d = - null : + false ; if ( "\"" -- == ++ ? false : false ) float [ ] [ ] h = + null , a ; else if ( ! false ) { } else B d ; } } class Vn extends S_ < My2_68 > { } class M_Xe extends KG_P { } class XF3 < U > implements A1_ { public static Z [ ] [ ] [ ] [ ] [ ] fy ( ) { M_ d ; while ( null ) ; } }

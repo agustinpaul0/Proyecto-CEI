@@ -1,0 +1,2 @@
+interface TOh < Y > {
+}

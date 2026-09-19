@@ -1,2 +1,2 @@
-///[Error:V|2]
-class JE__e implements Bl { public GX ( FkF < Nn < ZpZ_UJ > > [ ] [ ] [ ] c ) { } } class NA implements V { static private void b ( ) { } } class Tw < P > extends T_ { }
+///[Error:)|2]
+interface Mv < C > { public void zk ( int v ) ; } interface EF < Z > { public Z2 q4_ ( char [ ] [ ] ) ; public void m ( ) ; }

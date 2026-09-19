@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Y_Q_ < U > { } class D_D extends { void e__ ( ) { } } class IPz extends P_ < K > { }
+///[Error:>|2]
+interface V1 < K > { public void u ( ) ; void a ( U [ ] p ) ; } interface RB extends E4 < Y > { } class Tv { } class NZ implements C_ < > { }

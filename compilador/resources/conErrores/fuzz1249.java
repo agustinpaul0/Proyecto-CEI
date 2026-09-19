@@ -1,2 +1,2 @@
-///[Error:)|2]
-class Cs_ implements Jto { static void c ( boolean [ ] [ ] q , Z24yc56b3_ a , ) { } }
+///[Error:,|2]
+interface Us_5 < Q > { void kZk6 ( ) ; public void aL ( , E_k a ) ; }

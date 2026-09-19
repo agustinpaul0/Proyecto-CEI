@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Z_ extends A_K { } interface I_ < G > extends Ou < X > { } class Fd__n < G > extends SPW_QH { private static void pEe_t ( P iZL ) { { return ; } } private void tD ( ) { return ; X t3 ; } } [ ] [ ] [ ]
+///[Error:static|2]
+interface Z_ extends A_K { } interface I_ < G > extends Ou < X > { } class Fd__n < G > extends SPW_QH { private static void pEe_t ( P iZL ) { { return ; } } private void tD ( ) { return ; X t3 ; } } class Iq extends T_ < H > { I [ ] [ ] a2 ; private static A [ ] [ ] [ ] [ ] [ ] [ ] [ ] b ( char [ ] [ ] [ ] [ ] s_nmw ) { float c ; } } class Tq1_z { } static char d_3 ( ) { D z ; { } ; }

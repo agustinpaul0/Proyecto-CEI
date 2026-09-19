@@ -16,9 +16,6 @@ public final class PrimerosDeFors {
     // For -> for ( EncabezadoFor ) Sentencia
     public static final ConjuntoDePrimeros FOR_FOR = de(TipoDeToken.PR_FOR);
 
-    // EncabezadoFor -> ; ExpresionOpcional ; ExpresionOpcional
-    public static final ConjuntoDePrimeros ENCABEZADO_FOR_PUNTO_Y_COMA = de(TipoDeToken.PUNTO_Y_COMA);
-
     // EncabezadoFor -> var idMetVar EncabezadoForTrasVar
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_VAR = de(TipoDeToken.PR_VAR);
 
@@ -35,7 +32,7 @@ public final class PrimerosDeFors {
     // EncabezadoForTrasVar -> = ExpresionCondicional ClausulasFinalesFor
     public static final ConjuntoDePrimeros ENCABEZADO_FOR_TRAS_VAR_ASIGNACION = de(TipoDeToken.OP_ASIGNACION);
 
-    // ClausulasFinalesFor -> ; ExpresionOpcional ; ExpresionOpcional
+    // ClausulasFinalesFor -> ; Expresion ; Expresion
     public static final ConjuntoDePrimeros CLAUSULAS_FINALES_FOR_PUNTO_Y_COMA = de(TipoDeToken.PUNTO_Y_COMA);
 
     private PrimerosDeFors() {

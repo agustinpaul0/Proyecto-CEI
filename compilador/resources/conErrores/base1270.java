@@ -1,2 +1,2 @@
-///[Error:{|2]
-class S_ < Y > implements Q_ { void w ( BG < N > sK1_ , I [ ] [ ] q ) { } L [ ] [ ] [ ] f ( ) { } } class QS0_ { static void i { } int w_k8 = null ; } class B_ < L > extends C7 < H_ > { } interface C_ { } interface O_z < E > { boolean m ( int cD ) ; char [ ] [ ] [ ] g ( ) ; }
+///[Error:extends|2]
+class extends GO { } interface B__ { public Q_0 l_ ( OYi4 < O > [ ] th , I [ ] [ ] [ ] [ ] [ ] d , P [ ] [ ] d , J b , boolean o , I bh , boolean r , A yUFJ ) ; char [ ] [ ] ae ( ) ; }

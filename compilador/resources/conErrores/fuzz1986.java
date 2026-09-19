@@ -1,2 +1,2 @@
-///[Error:(|2]
-class I8 < D > { AARG ( ) { } static public void ( ) { } } class R_ implements P_ < R > { }
+///[Error:public|2]
+public void a ( ) ;

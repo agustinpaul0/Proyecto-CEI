@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface EN extends Z_ < M > { S s ( UA5F_ ) ; }
+///[Error:q|2]
+interface Mh_ < Q > { } q

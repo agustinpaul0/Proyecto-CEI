@@ -1,0 +1,2 @@
+class N_hdn {
+}

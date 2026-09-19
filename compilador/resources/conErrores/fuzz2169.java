@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Dt < A > implements Qn < > { }
+///[Error:extends|2]
+class extends O5d { }

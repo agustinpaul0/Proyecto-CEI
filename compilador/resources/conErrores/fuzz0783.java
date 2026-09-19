@@ -1,2 +1,2 @@
-///[Error:45|2]
-class F9 < U > { static private W7B < D > [ ] [ ] [ ] [ ] [ ] tNO ( C [ ] d ) { for ( ; - 1960 ? true : + true ; "" . iH3g0 ++ == ! false ? ! true : null ) ; var z_ = ! true <= "" . g8Z ++ 45 < ! 153 % + true ; } } interface O__ < N > extends U_Q { }
+///[Error:A8_1|2]
+class FP extends VyY < U_ > { } A8_1 class Xdeu { private void f ( int xl_ , char [ ] z , boolean [ ] rwvcBN_ , O a ) { } }

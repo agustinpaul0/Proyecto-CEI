@@ -1,2 +1,2 @@
-///[Error:E_|2]
-interface A9_ { } interface LC extends M_ < Q > { } E_ < ED >
+///[Error:Rk|2]
+interface K_ < V > extends RX < J53 < C > > { } interface KO < K > extends X78 { public void n ( float k_ ) ; } interface Vlg < E > { Ex [ ] [ ] y ( ) ; public R s ( VK < K > [ ] zcR , Z_ < Pup > [ ] v8Q ) ; public void z ( D [ ] [ ] a , char i , C [ ] y ) ; public void xS_ ( ) ; public float [ ] [ ] [ ] [ ] sn_ Rk < C6 > [ ] [ ] ; } class QG implements AI { } class C_3_g extends BRA < Dq > { } class Ws implements RuL { }

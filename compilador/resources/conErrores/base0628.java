@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Ysy_A < K > extends { }
+///[Error:evc|2]
+interface R_ { public evc ( ) ; public void k ( P t__ ) ; }

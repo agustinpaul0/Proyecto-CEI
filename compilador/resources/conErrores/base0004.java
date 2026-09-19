@@ -1,2 +1,2 @@
-///[Error:YsZ|2]
-YsZ
+///[Error:U|2]
+class Nr { static public void U y }

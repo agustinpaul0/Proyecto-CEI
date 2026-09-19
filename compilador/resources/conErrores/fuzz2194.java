@@ -1,2 +1,2 @@
-///[Error:<|2]
-< X > interface KxCr3_8n extends K_3 < W_ < JH7 > > { } class J_ < S > extends E_V < Ba3 > { } interface G_0 extends DI < Z > { public void x ( float d ) ; } interface TUJki < J > extends O8 < G > { }
+///[Error:}|2]
+class TwY_ implements Llgl1 { C [ ] [ ] f ( ) { } public static F_ < P > [ ] v } interface Gi { }

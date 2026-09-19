@@ -1,2 +1,2 @@
-///[Error:P|2]
-interface D_ { } P
+///[Error:;|2]
+interface S_ < R > { void c_ ; }

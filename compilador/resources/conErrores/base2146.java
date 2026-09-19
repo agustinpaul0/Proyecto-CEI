@@ -1,2 +1,2 @@
-///[Error:public|2]
-public J c_Z ( int [ ] f ) ; boolean [ ] [ ] t_ ( ) ; void mvzr6 ( ) ;
+///[Error:S|2]
+class NrdgW { public static void S ud_ , X u , Fv w , char b , I [ ] n static JaA kh ( ) { } } interface JFVE < R > { }

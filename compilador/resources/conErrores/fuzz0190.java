@@ -1,2 +1,2 @@
-///[Error:<|2]
-class J6uB_ < F > extends Ik_ < M > { boolean [ ] [ ] r ( int [ ] [ ] [ ] b ) { boolean < ; A l = ! this ++ ? - false : false ; - 'b' % + this ++ || '\b' = true ; } }
+///[Error:}|2]
+class N04 { public static void } class S3 < U > { } interface PD1 { }

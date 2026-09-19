@@ -1,2 +1,2 @@
-///[Error:Ibn|2]
-Ibn interface YT < U > { } interface DvH1 < N > extends Qpr < E > { }
+///[Error:;|2]
+interface W_ { } interface W3 { char x2 ; }

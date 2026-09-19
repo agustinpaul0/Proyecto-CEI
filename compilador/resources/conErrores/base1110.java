@@ -1,2 +1,2 @@
-///[Error:)|2]
-interface Y14 { public O1 fu ( int ) ; }
+///[Error:R___|2]
+R___ < C >

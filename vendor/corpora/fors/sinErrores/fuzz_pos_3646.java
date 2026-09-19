@@ -1,0 +1,2 @@
+interface H7_ {
+}

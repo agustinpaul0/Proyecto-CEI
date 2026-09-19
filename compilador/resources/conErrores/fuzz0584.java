@@ -1,2 +1,2 @@
-///[Error:static|2]
-static void x1y ( ) { } class W_1 { }
+///[Error:{|2]
+class Rjkp implements TR { static void x1y ( ) { } } class { }

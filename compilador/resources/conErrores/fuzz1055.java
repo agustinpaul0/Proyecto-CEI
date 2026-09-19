@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface WL < O > { } static Tt5d_S b ( Q p_3_ ) { }
+///[Error:extends|2]
+interface J_I extends P_ { } class F0u < M > { } extends O3 < YQ90 >

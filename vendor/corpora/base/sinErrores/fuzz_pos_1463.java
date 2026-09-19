@@ -1,0 +1,2 @@
+interface Wi < O > {
+}

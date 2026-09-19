@@ -1,2 +1,2 @@
-///[Error:{|2]
-class { }
+///[Error:+|2]
++ 8. = true class DH < E > implements R1 { } class O3 < T > extends HD { } interface Nq_QXW { public W2 < D > o ( float [ ] gx9 ) ; public W [ ] x8qa_ITK ( float [ ] h ) ; } class QE < M > { public static void mWM_ ( char x_ ) { } static public T_ < C > f ( Z_ [ ] z9q1Gt ) { return ; int o ; a ++ ; { } } } interface X_ extends Vi { } interface WL { O_0jf_ c ( ) ; void j ( ) ; void kXr ( ) ; }

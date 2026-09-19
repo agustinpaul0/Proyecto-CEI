@@ -1,2 +1,2 @@
-///[Error:Gj|2]
-Gj
+///[Error:}|2]
+interface KW { public D8 [ ] [ ] k ( ) ; public }

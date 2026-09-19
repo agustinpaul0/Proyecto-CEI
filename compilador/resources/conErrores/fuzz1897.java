@@ -1,2 +1,2 @@
-///[Error:lB|2]
-lB class L34 < P > implements Z_v_ < IL < G > > { static public void a_ ( S_T < J > [ ] z , F dCI ) { } }
+///[Error:m|2]
+interface Jj_ < Q > extends T8_ { public void q ( char p6 ) ; public void p7_ ( ) ; m } interface V_ < L > { public void i8 ( ) ; boolean a_ ( ) ; }

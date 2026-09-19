@@ -1,0 +1,4 @@
+class YO {
+I eeS ( ) {
+}
+}

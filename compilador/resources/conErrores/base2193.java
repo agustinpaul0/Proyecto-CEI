@@ -1,2 +1,2 @@
-///[Error:H_Qd|2]
-interface VI < G > { } interface Gqq extends F5WK1Q { } H_Qd interface Pd extends N_g { void h39V ( DL8 < W_ > [ ] uZ , int [ ] ip , A [ ] i ) ; }
+///[Error:}|2]
+class BT extends X_ < D6 > { I [ ] [ ] [ ] y } interface Nl { public void h ( ) ; public void yD ( char g ) ; void e ( ) ; }

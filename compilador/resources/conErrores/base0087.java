@@ -1,2 +1,2 @@
-///[Error:<|2]
-class U4EW implements C8 < S9c > { char [ ] [ ] [ ] [ ] bH ( Q9_2 < VX7tW < G > > [ ] [ ] v_x ) { for ( - 606842 <= "" -- = + true ; ; ) for ( 258 || null ; ; ) var x = null ; for ( false ; ; ) Le_ . t ( ) . l ( ) . h -- ; return ; } } class Us { private H9 ( ) { "" . v_ ++ >= 36710 ; R p = null ; } } class GW_F extends O1 < < F > > { char a188 ( D [ ] [ ] q , N [ ] [ ] [ ] [ ] q ) { } } class ZA < M > implements QO { }
+///[Error:R_|2]
+interface G_ extends X_W_ { I__4_ < R_ > [ ] u ( ) ; } R_

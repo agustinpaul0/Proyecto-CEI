@@ -1,2 +1,2 @@
-///[Error:%|2]
-class M_ { } class R0 < T > implements Qq { UA ( ) { + null - + % null = 6767 ; } }
+///[Error:>|2]
+class LC < L > extends CVN_ < Y_l < > > { }

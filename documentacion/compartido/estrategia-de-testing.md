@@ -53,8 +53,9 @@ porque cada mutante volvería a correr miles de casos parametrizados.
 El corpus del sintáctico —`resources/sinErrores/` y `resources/conErrores/`— tiene dos orígenes,
 y la distinción importa:
 
-- **Escrito a mano** (~200 casos, 55 de ellos importados de un corpus ajeno): lo que un generador
-  al azar no busca. El archivo vacío, el de sólo comentarios, la clase sin miembros, `for(;;)`,
+- **Escrito a mano** (~340 casos, 184 de ellos importados de un corpus ajeno): lo que un generador
+  al azar no busca. El archivo vacío, el de sólo comentarios, la clase sin miembros, cada hueco
+  vacío del `for`,
   `new int[]{,}`, cien bloques anidados, el
   error en el primer token, el error en el último, el `$` del EOF. **Cada expectativa se predice
   antes de correr el compilador**: si no coincide, o el caso estaba mal escrito o el compilador
@@ -189,7 +190,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `MiembrosYSentenciasTest` | Miembros, visibilidad, atributos inicializados, sentencias, variables clásicas, fors. |
 | `ExpresionesTest` | Las capas de precedencia, ternario, posfijos, creación, inicializadores, diamante. |
 | `LenguajeDeLaBaseYDeLosLogrosTest` | El lenguaje, regla por regla: lo que define la gramática de la cátedra y, donde no define nada, Java. Cada caso nombra la regla que decide su veredicto. |
-| `CorpusExternoTest` | 16.512 fuentes generados a partir de la gramática de otra persona; tienen que coincidir todos. |
+| `CorpusExternoTest` | 29.101 fuentes generados a partir de la gramática de otra persona; el primer código de cada uno tiene que coincidir. |
 | `ModoPanicoTest` | Que la recuperación reporte todos los errores, avance siempre y no cambie el primero. |
 | `CasosDeLaCatedraTest` | Los ocho fuentes que la cátedra adjunta, cada error en el token exacto. |
 | `catedra.TesterDeCasosSintacticos{Sin,Con}Errores` | Los testers de la cátedra sobre el corpus, con su criterio intacto. |
@@ -226,30 +227,40 @@ No hay forma de elegir con qué logros correr: la suite tiene una sola configura
 
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
-ese hueco corriendo el compilador contra **16.512 fuentes generados a partir de otra gramática** de
-MiniJava (`vendor/tests/`). No comparte con este proyecto ni el código ni los criterios.
+ese hueco corriendo el compilador contra **29.101 fuentes generados a partir de otra gramática** de
+MiniJava (`vendor/corpora/`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos.
-> La carpeta **no se versiona** —la atribución está en su `CREDITOS.md`— y el test se saltea si no está.
+> La atribución y la poda están en su `CREDITOS.md`, y el original tal como llegó es `vendor/corpora.zip`.
 
-**Coinciden los 16.512**, y el test exige que no aparezca ninguna divergencia.
+**Coinciden los 29.101**, con el criterio del tester estricto: el **primer** código que emite el
+compilador es el que el caso declara. Buscarlo en cualquier parte de la salida no alcanza: con Modo
+Pánico, dos analizadores que rechazan en tokens distintos pueden terminar emitiendo el mismo código
+más adelante, y eso pasaba en 358 casos.
 
-**El corpus se podó, y cada poda está justificada.** El original traía 30.000 casos:
+**El corpus se podó, y cada poda está justificada.** El zip trae 50.234 fuentes:
 
-- **~1.854 por la barra invertida en un literal.** §2.3.3 da una regla posicional —la comilla de
+- **19.214 del logro MiniLambdas**, que este proyecto no implementa: sus carpetas propias y todo
+  fuente con `->` en las demás. Las gramáticas de `fors`, `localvar` y `visibility` también generan
+  lambdas.
+- **339 repetidos**: todos los corpus se generaron con la misma semilla, así que las derivaciones
+  que no tocan el logro propio salen idénticas en varios.
+- **52 idénticos a casos escritos a mano de una versión anterior del corpus**, ya importados.
+- **480 por la barra invertida en un literal.** §2.3.3 da una regla posicional —la comilla de
   cierre nunca está antecedida por `\`— y no una de apareamiento, así que acá el literal no cierra;
-  su *fuzzer* asume la semántica de Java. Una sola discrepancia repetida miles de veces.
-- **11.577 que usan construcciones que la gramática de este proyecto no tiene**: su gramática las
-  genera, así que el veredicto de su generador no aplica acá.
-- **57 más, revisados uno por uno**: genéricos al instanciar (`new Clase<Arg>()`, que la gramática
-  de la cátedra genera y la suya no), el logro de Visibilidad Mejorada (sus corpus `base` y
-  `localvar` se generaron sin él), y un puñado que las dos implementaciones rechazan en distinto
-  token porque su gramática cubre menos. **Ninguno escondía un defecto propio**: se verificó caso
-  por caso qué construcción lo explicaba.
+  su *fuzzer* asume la semántica de Java. Se verificó reemplazando `\\` por `\t`: los 480
+  coinciden.
+- **919 revisados por categoría**: construcciones que su gramática deriva y ésta no —la visibilidad
+  repetida (`public static public`), dimensiones por declarador (`T[] y, [] x;`), varios atributos
+  por declaración, una asignación en el operando derecho de un ternario, el diamante al crear un
+  arreglo, `new int[2][]`— y casos cuyo corpus se generó sin un logro que este compilador tiene.
+  **Ninguno escondía un defecto propio**: la tabla de `CREDITOS.md` da la fuente de cada categoría y
+  quién tendría que corregirla.
 
-Los **55 casos escritos a mano** de ese corpus sí se importaron —son curados y legibles, y están en
-`resources/` con el prefijo `ext`—; los generados no se copian ni se versionan.
+Los **casos escritos a mano** de ese corpus que coinciden se importaron —son curados y legibles, y
+están en `resources/` con el prefijo `ext`, 184 en total—; los generados se corren desde
+`vendor/corpora/`.
 
 ### La verificación diferencial contra la gramática
 

@@ -1,0 +1,2 @@
+class TcD < B > {
+}

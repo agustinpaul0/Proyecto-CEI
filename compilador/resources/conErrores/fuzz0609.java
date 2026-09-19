@@ -1,2 +1,2 @@
-///[Error:""|2]
-class T2y_O < J > implements P_ < Q > { } class BU3hlZt5 < U > implements A_8 < K > { } interface T__T2Gj_0O2 < Y > { } class M9 implements Me_F < T > { public static Z m ( ) { } } "" class Z_ { }
+///[Error:(|2]
+interface EI5X extends Ls { public void ( F_f < K > [ ] i_a0y ) ; public float aC ( ) ; } class I3U extends B_ { }

@@ -1,0 +1,3 @@
+interface ZoVZ {
+void g ( ) ;
+}

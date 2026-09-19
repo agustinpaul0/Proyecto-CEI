@@ -1,2 +1,2 @@
-///[Error:>|2]
-class Jr < > implements DT9_ { private static void yyak ( ) { } }
+///[Error:W4_M|2]
+W4_M

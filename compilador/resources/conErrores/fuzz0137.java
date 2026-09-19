@@ -1,2 +1,2 @@
-///[Error:I__|2]
-I__ class EV extends D1 { }
+///[Error:w44|2]
+interface CFS { public w44 ( ) ; }

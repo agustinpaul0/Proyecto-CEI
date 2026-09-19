@@ -1,2 +1,2 @@
-///[Error:<|2]
-class Yv7 { } < E >
+///[Error:J4B_|2]
+J4B_

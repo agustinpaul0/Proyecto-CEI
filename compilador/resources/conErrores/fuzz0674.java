@@ -1,2 +1,2 @@
-///[Error:""|2]
-"" . x6 . k ++
+///[Error:{|2]
+class Q3 < U > implements { }

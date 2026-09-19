@@ -1,2 +1,2 @@
-///[Error:Kz_|2]
-Kz_ class R_ { }
+///[Error:>|2]
+class Jr < > implements DT9_ { private static void yyak ( ) { } }

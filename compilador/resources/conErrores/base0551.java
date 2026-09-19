@@ -1,2 +1,2 @@
-///[Error:float|2]
-interface NW extends L1Ie { AJ3 < F > [ ] [ ] nJM ( ) ; } class T2 < S > implements M2p { static public boolean jj8s float rs8_D_ { for ( L_ . l ( ) ++ * "" -- = null != false ; ! true != + null ; ) { "l" . i ; { ; } } } static public void ir ( B1 < VA_ < SM_ > > [ ] v ) { } void p0 ( ) { var e = false ; } } interface G7 < E > extends IO < K > { float l ( ) ; } interface D5y < D > { public void gvnN ( ) ; }
+///[Error:void|2]
+void interface M0 < I > extends VF_ < KV < Up1 < T > > > { } interface U8e_1_ < Z > { void mK ( ) ; } interface Z_ { }

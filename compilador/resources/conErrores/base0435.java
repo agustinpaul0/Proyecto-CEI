@@ -1,2 +1,2 @@
-///[Error:static|2]
-interface AB extends EB < M3 > { } static UWJ < PEj < Eg > > [ ] [ ] b3_ ( ) { ; Z l__JE , b ; }
+///[Error:<|2]
+interface < H > extends N3f_ { void g7 ( T9 < N__ > v_I_ , D p_l ) ; } class LKF_AdaC implements F4Gh7rk < G > { }

@@ -1,2 +1,2 @@
-///[Error:B_9M_|2]
-B_9M_
+///[Error:public|2]
+class HU < U > { public public static void p ( ) { return ; } }

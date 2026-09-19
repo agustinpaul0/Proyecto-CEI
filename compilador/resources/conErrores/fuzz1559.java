@@ -1,2 +1,2 @@
-///[Error:{|2]
-class Le0 implements { } interface D_Q < Y > { void c_ ( ) ; C q__N ( ) ; }
+///[Error:<|2]
+class < R > { } class N_ implements O0__22T_ { }

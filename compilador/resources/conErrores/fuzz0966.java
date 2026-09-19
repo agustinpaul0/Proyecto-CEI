@@ -1,2 +1,2 @@
-///[Error:int|2]
-interface E4 { } class Wx implements W5 { } class D_ < I > extends NsQ_ { private S [ ] [ ] g ( ) { } private static T j7DB_ ( ) int } interface SY35_ < D > { } class Tq5T < C > implements XT < K_ < M > > { } interface F_ { K3_5 xc ( ) ; } class Q5_0 < V > { static private float o_ ( ) { for ( ; ; ) Q_ b6 ; N_ . i ( ) -- ; return ; int [ ] o__ ; } } interface ZR { public B [ ] [ ] [ ] [ ] e ( ) ; } class I_Hk implements V1 { } interface VS < O > { public Z [ ] [ ] j ( ) ; }
+///[Error:>|2]
+class HQC < > { }

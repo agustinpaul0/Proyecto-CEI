@@ -283,6 +283,15 @@ def casos_de_expresiones():
     con_error("parentesisSinAbrir", envolver("var x = a + b);"), ")", 3)
     con_error("corcheteSinCerrar", envolver("var x = a[0;"), ";", 3)
     con_error("asignacionEncadenada", envolver("a = b = c;"), "=", 3)
+    # El declarador clásico sigue el criterio del `var` de la base: el lado
+    # derecho de un `=` no lleva otro, salvo entre paréntesis (respuesta del
+    # profesor).
+    con_error("declaradorClasicoConAsignacionEncadenada", envolver("int x = y = 2;"), "=", 3)
+    con_error("segundoDeclaradorConAsignacionEncadenada", envolver("int x, y = z = 2;"),
+              "=", 3)
+    con_error("varConAsignacionEncadenada", envolver("var x = y = 2;"), "=", 3)
+    correcto("declaradorClasicoConAsignacionParentizada",
+             envolver("int x = (y = 2); int z, w = (v = 3); var u = (t = 4);"))
     con_error("ternarioSinRamaFalsa", envolver("var x = a ? b;"), ";", 3)
     con_error("ternarioSinDosPuntos", envolver("var x = a ? b c;"), "c", 3)
     con_error("asignacionEnLaRamaDerechaDelTernario", envolver("var x = a ? b : c = 1;"),
@@ -312,19 +321,26 @@ def casos_de_expresiones():
 
 def casos_de_fors():
     correcto("cadaFormaDeFor", envolver(
-        "for(;;) ; for(var i = 0; ; ) ; for(; i < 10; ) ; for(; ; i) ;"
-        " for(var i = 0; i < 10; i) ; for(var e : lista) ;"))
+        "for(var i = 0; i < 10; i) ; for(i = 0; i < 10; i) ;"
+        " for(Clase.m1(); a; b) ; for(var e : lista) ;"))
     correcto("forConPosfijo", envolver("for(var i = 0; i < 10; i++) ;"))
-    correcto("forsAnidados", envolver("for(;;) for(;;) for(;;) ;"))
+    correcto("forsAnidados", envolver(
+        "for(var i = 0; i < n; i++) for(var j = 0; j < n; j++) for(var e : lista) ;"))
     correcto("forConBloque", envolver("for(var i = 0; i < 10; i++) { m1(); m2(); }"))
 
-    con_error("forConDosExpresionesPorSeparador", envolver("for(var i = 0, j = 0; ; ) ;"),
+    con_error("forConDosExpresionesPorSeparador", envolver("for(var i = 0, j = 0; a; b) ;"),
               ",", 3)
-    con_error("forDeIteradoresConClausulas", envolver("for(var e : lista; ; ) ;"), ";", 3)
+    con_error("forDeIteradoresConClausulas", envolver("for(var e : lista; a; b) ;"), ";", 3)
     con_error("forSinParentesis", envolver("for ;; ;"), ";", 3)
-    con_error("forConUnSoloSeparador", envolver("for(;) ;"), ")", 3)
+    con_error("forConUnSoloSeparador", envolver("for(i = 0; a) ;"), ")", 3)
+    # «Una sola sentencia/expresión por separador» (Pautas, logro Fors! E2): cada
+    # hueco lleva exactamente una, ninguno queda vacío (respuesta del profesor).
+    con_error("forSinPartes", envolver("for(;;) ;"), ";", 3)
+    con_error("forSinInicializacion", envolver("for(; i < 10; i++) ;"), ";", 3)
+    con_error("forSinCondicion", envolver("for(var i = 0; ; i++) ;"), ";", 3)
+    con_error("forSinActualizacion", envolver("for(var i = 0; i < 10; ) ;"), ")", 3)
     # Despues de `for (var i` tiene que venir `:` o `=`.
-    con_error("forConVarSinInicializar", envolver("for(var i;;) ;"), ";", 3)
+    con_error("forConVarSinInicializar", envolver("for(var i; a; b) ;"), ";", 3)
     # La variable de control se declara con `var`: el for no toma el declarador
     # tipado de Variables Locales Clasicas.
     con_error("forConDeclaradorTipado", envolver("for(int i = 0; i < 10; i) ;"), "int", 3)

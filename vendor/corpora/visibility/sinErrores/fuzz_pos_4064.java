@@ -1,0 +1,2 @@
+interface Hw < Q > {
+}

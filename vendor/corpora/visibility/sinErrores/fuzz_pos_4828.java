@@ -1,0 +1,2 @@
+interface I__ < Y > {
+}

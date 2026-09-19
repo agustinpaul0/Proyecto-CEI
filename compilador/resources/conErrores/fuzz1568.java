@@ -1,2 +1,2 @@
-///[Error:}|2]
-interface Us_5 < Q > { void kZk6 ( ) ; public }
+///[Error:U|2]
+interface Fk extends U { } interface V_ extends Sx < D1 > { }

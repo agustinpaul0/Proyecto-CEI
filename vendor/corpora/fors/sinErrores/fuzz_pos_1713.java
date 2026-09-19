@@ -1,0 +1,2 @@
+interface U0 {
+}

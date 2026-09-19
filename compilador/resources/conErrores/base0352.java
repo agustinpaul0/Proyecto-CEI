@@ -1,2 +1,2 @@
-///[Error:void|2]
-void k_s ( ) ;
+///[Error:{|2]
+class Gu implements { }

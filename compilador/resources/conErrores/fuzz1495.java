@@ -1,2 +1,2 @@
-///[Error:public|2]
-public interface AS__ { void eD ( Dx u_ ) ; M [ ] k9 ( ) ; } interface Rt < W > { } class Q_ < Y > implements ZH < W9 < W865 < M > > > { }
+///[Error:<|2]
+class Yv7 { } < E >

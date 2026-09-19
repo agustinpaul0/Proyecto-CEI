@@ -1,2 +1,2 @@
-///[Error:X|2]
-class Vb < G > extends X { } interface L_ < R > extends Uk { public E h ( ) ; } class W_ extends T_ < F7_VV_ > { }
+///[Error:R5U__|2]
+R5U__ class Yz < H > { }

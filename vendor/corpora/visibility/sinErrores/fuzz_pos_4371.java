@@ -1,0 +1,2 @@
+interface FAR_ {
+}

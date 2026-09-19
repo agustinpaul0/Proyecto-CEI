@@ -1,2 +1,2 @@
-///[Error:extends|2]
-interface QX < P > { } class MM3l7V implements L5_ { public static boolean h__ ( B [ ] i0K4_ ) { char [ ] v = this -- < false ? false : - null , vm1XOz ; } } interface LnK_ { void g_ ( KM [ ] [ ] [ ] w , VR [ ] [ ] t , KL_ [ ] xhv ) ; } class extends Hl < Y5 < NpYGL < D6 < LI2t > > > > { char pu__Q = - "" . c ( ) -- != - 5451513f / - false ? + B_ . l2A ( ) -- ? + false : + true : - '\"' ? - 372036 : ! false ; char ll ; } class ZWT < K > implements U1 < G > { static public void eKFG ( ) { for ( ; ; ) int k , p , p ; } } class A2 < X > extends Nw < Os < CH < RoqeQ < AN > > > > { } class XA_ implements L4 < L_Q > { } class MC_ { void s ( ) { } } class D9 implements H70 < JD > { } class J_4 { public char [ ] i ; }
+///[Error:th|2]
+class Zp411 implements F_ < W > { } class K6 implements K_9x { } class Qd < W > extends R9 < L > { Q_ [ ] [ ] rN1 ; static private th ( ) { } private static void uK ( float i_fY ) { Y y ; } void yA_ ( ) { } }

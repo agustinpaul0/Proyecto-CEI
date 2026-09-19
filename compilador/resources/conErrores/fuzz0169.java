@@ -1,2 +1,2 @@
-///[Error:public|2]
-public class I_ implements Xf { } interface X7 { void l ( int v_ , I [ ] sq ) ; } interface Xg9w { }
+///[Error:}|2]
+interface T3 { DG < Z > [ ] [ ] j ( ) ; L } class K__2 < E > { } interface Y_ < Z > extends NG77 < C7 > { }

@@ -1,2 +1,2 @@
-///[Error:void|2]
-interface Q_5 { } void class FW8u { }
+///[Error:[|2]
+interface Y_ { public void e ( ) ; boolean [ ] [ ] [ ] [ ] j ( W w ) ; void yk ( ) ; [ ] [ ] m ( ) ; } class CWX { R0E < Xd > nK ( E d ) { } }

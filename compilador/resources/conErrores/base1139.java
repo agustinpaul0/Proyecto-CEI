@@ -1,2 +1,2 @@
-///[Error:[|2]
-interface Y_a < L > extends ESb1_o_ < I_ < RI_ > > { [ ] tv ( ) ; }
+///[Error:{|2]
+interface OD < B > extends { }

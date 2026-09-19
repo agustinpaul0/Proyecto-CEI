@@ -1,2 +1,2 @@
-///[Error:[|2]
-[ ] interface U__W extends T585 < C > { }
+///[Error:>|2]
+class P_ < > extends B3 { }

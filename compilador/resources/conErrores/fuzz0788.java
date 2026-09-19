@@ -1,2 +1,2 @@
-///[Error:float|2]
-float [ ] tx ( I_33 < P > m , boolean a ) { } ZSA ( M_ < V > [ ] t0 , Q [ ] [ ] [ ] [ ] [ ] mS ) { C w = - "" * null ? true : + true , h = ! true ; return ; } static G4v [ ] x ( B vo57_ , H [ ] [ ] y7 ) { } public static void t ( P v ) { if ( ! 3.F ) float y , e9 , o5c ; else { } } int u ( ) { } static S_ < FHvk < B > > [ ] [ ] y5 ( ) { C l , jJ_bbus , c5 ; { } J38_y__ . t_w ( ) ; } void gI9 ( ) { for ( ; ; ) boolean i ; return ; }
+///[Error:P_Xt|2]
+interface U8 extends Sy < Bh_U > { } P_Xt < X3U_6 < J > > [ ] [ ] [ ]

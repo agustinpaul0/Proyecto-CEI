@@ -1,0 +1,2 @@
+interface I__ {
+}

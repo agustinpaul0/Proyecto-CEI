@@ -1,2 +1,2 @@
-///[Error:{|2]
-class OE_ < U > extends { }
+///[Error:C|2]
+C

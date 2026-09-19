@@ -1,0 +1,2 @@
+class Nbmuy_ {
+}

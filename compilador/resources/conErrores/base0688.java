@@ -1,2 +1,2 @@
-///[Error:E|2]
-E class P_ implements Bc < DW < A_l < E9 < L > > > > { }
+///[Error:%|2]
+class P_y { FJj8JK ( ) { return % - 1763 >= null ; } } class RW1_ implements WX { }

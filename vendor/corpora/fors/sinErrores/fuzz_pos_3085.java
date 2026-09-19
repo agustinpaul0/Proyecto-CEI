@@ -1,0 +1,2 @@
+class QavF < L > {
+}

@@ -1,2 +1,2 @@
-///[Error:>|2]
-interface X_ extends Qx < > { } class X_g4 < N > extends F5W2 < K > { }
+///[Error:true|2]
+class Vx { static int s true }

@@ -1,2 +1,2 @@
-///[Error:{|2]
-interface Y_ < G > extends { }
+///[Error:(|2]
+interface Z_3i { public I op6_ ( char i , Il < FI < H7 > > h , boolean [ ] k , H o , float s , boolean [ ] r ) ; } interface S6 < G > extends NuU < E > { public void ( ) ; } class AE implements P6 { } interface Dp < Q > extends M3jx { } interface MMlu { } class Q2 < F > extends NV { } interface Tz extends J26 { E_ < M > [ ] h_ ( float w , float [ ] [ ] [ ] b ) ; } interface N_4MAN < W > { } class Q9 extends X8 < D > { }

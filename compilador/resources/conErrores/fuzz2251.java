@@ -1,2 +1,2 @@
 ///[Error:}|2]
-class T_ < Y > { static void h }
+class TC_ extends ONv < Ko_L8_ > { A nl }

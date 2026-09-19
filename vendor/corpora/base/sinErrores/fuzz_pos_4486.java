@@ -1,0 +1,2 @@
+class QsQ_ < Q > {
+}

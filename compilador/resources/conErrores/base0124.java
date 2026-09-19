@@ -1,2 +1,2 @@
-///[Error:void|2]
-class M2 extends ML < Q > { } void interface CK { public void q ( FR_ f , Hg < U > [ ] b , O a9 , Z7 f ) ; }
+///[Error:}|2]
+interface Fs5u_ < K > { public Z [ ] zg ( Hi9 < Llh > hQZG , float o ) ; } class FF implements A01 { static void t ( D [ ] d_4bK ) }
