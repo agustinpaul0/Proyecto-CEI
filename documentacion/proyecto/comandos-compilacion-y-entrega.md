@@ -44,7 +44,7 @@ proyecto Maven en `compilador/` y el informe en `etapas/etapa-2/entregables/`. T
 **después del último push**.
 
 El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
-`compilador/src/test/resources/corpus-externo/`: son 29.101 fuentes y unos 10 megabytes. Está fuera
+`compilador/resources/corpus-externo/`: son 29.101 fuentes y unos 10 megabytes. Está fuera
 de `resources/sinErrores/` y `resources/conErrores/`, así que los testers de la cátedra no lo
 recorren.
 

@@ -50,8 +50,8 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso). Los originales están en `vendor/`, que
   **no se versiona** y no lo lee nada del proyecto: lo que se usa está copiado adentro de
   `compilador/` (los testers en `src/test/java/catedra/`, los 8 casos del sintáctico en
-  `src/test/resources/catedra/`).
-- Material ajeno de un compañero: `compilador/src/test/resources/corpus-externo/`, el corpus de
+  `resources/catedra/`).
+- Material ajeno de un compañero: `compilador/resources/corpus-externo/`, el corpus de
   fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La atribución está en su
   `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`.
 - Lo que el profesor indicó explícitamente está reunido en

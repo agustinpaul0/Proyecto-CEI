@@ -6,7 +6,7 @@ la secuencia de tokens al simulador del Esquema Simple. Permite validar la
 gramática contra fuentes de verdad —incluidos los casos de la cátedra— antes de
 que exista el analizador sintáctico en Java.
 
-    python3 herramientas/aceptar_fuente.py src/test/resources/catedra/sinErrores/*.java
+    python3 herramientas/aceptar_fuente.py resources/catedra/sinErrores/*.java
 """
 import re
 import subprocess

@@ -228,7 +228,7 @@ No hay forma de elegir con qué logros correr: la suite tiene una sola configura
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
 ese hueco corriendo el compilador contra **29.101 fuentes generados a partir de otra gramática** de
-MiniJava (`compilador/src/test/resources/corpus-externo/`). No comparte con este proyecto ni el código ni los criterios.
+MiniJava (`compilador/resources/corpus-externo/`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos.
