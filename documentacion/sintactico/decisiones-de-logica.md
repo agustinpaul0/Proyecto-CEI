@@ -201,10 +201,12 @@ new int[][]{{}{}}             INVÁLIDO    (sin coma entre los elementos, como e
 ```
 
 **`new int[2][]` es válido en Java, y acá no, a sabiendas.** El JLS lo admite
-(`new PrimitiveType DimExprs [Dims]`, §15.10.1) y `javac` lo compila. La consulta al profesor fue
-sobre la creación **con** inicializador, y su respuesta —como en Java— se aplica a eso. La creación
-**sin** inicializador la define la gramática base, con toda dimensión con su tamaño, y se mantiene:
-este proyecto se apega a la respuesta del profesor y no la extiende a lo que no se preguntó.
+(`new PrimitiveType DimExprs [Dims]`, §15.10.1) y `javac` lo compila. El profesor indicó hacerlo como
+en Java y aclaró que en la corrección considera correctas las dos variantes, la de este compilador y
+la de Java puro. Se conserva la de la base por coherencia con el criterio de todo el proyecto: donde
+la gramática de la cátedra define una construcción, se respeta, y «como en Java» rige para lo que el
+logro agrega. La creación sin inicializador ya estaba en la base; el logro incorpora el
+inicializador. Es el mismo criterio de §12, un atributo por declaración.
 
 Las listas vacías valen en cualquier nivel: `new int[][]{}`, `new int[][]{{}}` y
 `new int[][]{{}, {}}` son válidos, como en Java. Que el anidamiento del inicializador coincida con

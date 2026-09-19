@@ -33,7 +33,7 @@ python3 herramientas/primeros.py gramatica/minijava-ll1-final.g    # ES LL(1)
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --ambiguedades   # registro
 python3 herramientas/primeros.py gramatica/minijava-ll1-final.g --nt Miembro     # un NT
 bash herramientas/casos-gramatica.sh                                # 75 casos
-python3 herramientas/aceptar_fuente.py ../vendor/testersSintactico/resources/*/*.java
+python3 herramientas/aceptar_fuente.py src/test/resources/catedra/*/*.java
 python3 herramientas/equivalencia_de_lenguajes.py   # mismo lenguaje que la de la cátedra
 python3 herramientas/auditar_analizador.py          # el código cita exactamente estas producciones
 ```

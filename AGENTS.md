@@ -47,10 +47,13 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
   `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso) y `testersSintactico/`
-  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso), todos en `vendor/`.
-- Material ajeno de un compañero: `vendor/corpora/`, el corpus de fuzzing de Giuliano Taormina ya
-  podado (el original es `vendor/corpora.zip`), que corre `CorpusExternoTest`. La poda y sus
-  motivos están en `vendor/corpora/CREDITOS.md`.
+  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso). Los originales están en `vendor/`, que
+  **no se versiona** y no lo lee nada del proyecto: lo que se usa está copiado adentro de
+  `compilador/` (los testers en `src/test/java/catedra/`, los 8 casos del sintáctico en
+  `src/test/resources/catedra/`).
+- Material ajeno de un compañero: `compilador/src/test/resources/corpus-externo/`, el corpus de
+  fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La poda y sus motivos
+  están en su `CREDITOS.md`.
 - Lo que el profesor indicó explícitamente está reunido en
   [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 

@@ -47,7 +47,7 @@ Simple de Clase 5.
 | Corpus propio | 10.405 fuentes (10.061 generadas con Grammarinator, 184 importadas de un corpus ajeno), 75 casos de gramática, 8 de la cátedra |
 | Corpus externo | 29.101 fuentes de Giuliano Taormina; en todos coincide el primer código |
 | Suite | 26.642 tests; 98,6 % de líneas, 94,1 % de ramas; mutación 91 % |
-| Informe | `etapas/etapa-2/entregables/`, 31 páginas |
+| Informe | `etapas/etapa-2/entregables/`, 32 páginas |
 
 ### Decisiones cerradas en esta etapa
 
@@ -82,8 +82,8 @@ documentadas en el informe, por si el profesor las marca:
 
 - **Varios atributos en una declaración**, `int a, b = 0;`: la base declara un atributo por
   `<Atributo>`, y el logro de declaradores múltiples es el de variables locales. Java lo admite.
-- **`new int[2][]` sin inicializador**: la base exige tamaño en toda dimensión. Java lo admite; la
-  respuesta del profesor fue sobre el inicializador.
+- **`new int[2][]` sin inicializador**: la base exige tamaño en toda dimensión. Java lo admite. El
+  profesor ya respondió que acepta las dos variantes en la corrección.
 
 ---
 

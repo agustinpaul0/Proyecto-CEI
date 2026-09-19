@@ -14,21 +14,21 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 // Verificación diferencial contra un corpus AJENO: fuentes generados por fuzzing
-// a partir de otra gramática de MiniJava, en `vendor/corpora/`. Es el mismo
-// argumento que `comparar_con_gramatica.py` —dos implementaciones independientes
-// tienen que coincidir— pero con una gramática que no salió de este proyecto, así
-// que no comparte ni siquiera las decisiones.
+// a partir de otra gramática de MiniJava, en `src/test/resources/corpus-externo/`.
+// Es el mismo argumento que `comparar_con_gramatica.py` —dos implementaciones
+// independientes tienen que coincidir— pero con una gramática que no salió de
+// este proyecto, así que no comparte ni siquiera las decisiones.
 //
 // EL CORPUS Y SU FUZZER SON DE GIULIANO TAORMINA, compañero de la materia, que los
 // compartió para que cada uno pudiera contrastar su analizador. No son material de
 // este proyecto: acá sólo se corre el compilador contra ellos.
 //
 // Los casos escritos a mano de ese corpus ya están importados —los `ext*` de
-// resources/— y se verifican con el resto. Acá van los generados, que se corren
-// desde vendor/ sin copiarlos al corpus propio.
+// resources/— y se verifican con el resto. Acá van los generados, fuera de
+// resources/sinErrores y resources/conErrores para que los testers de la cátedra
+// corran sólo el corpus propio.
 //
 // El criterio es el del tester estricto: el PRIMER código que emite el
 // compilador tiene que ser el que el caso declara. Con Modo Pánico, buscarlo en
@@ -36,24 +36,19 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 // rechazan en tokens distintos y la recuperación termina coincidiendo.
 //
 // El corpus se podó, y cada categoría de la poda está justificada en
-// `vendor/corpora/CREDITOS.md`: el logro MiniLambdas, los casos repetidos por la
+// `corpus-externo/CREDITOS.md`: el logro MiniLambdas, los casos repetidos por la
 // semilla, la lectura de la barra invertida en un literal, y las construcciones en
 // que su gramática se aparta de la de este proyecto. Ninguno escondía un defecto
 // propio.
-//
-// El corpus es opcional: si la carpeta no está, la clase se saltea entera.
 @Tag("sintactico")
 class CorpusExternoTest {
 
     private static final Path CORPORA =
-            Path.of("..", "vendor", "corpora");
+            Path.of("src", "test", "resources", "corpus-externo");
     private static final List<String> GENERADOS = List.of("base", "localvar", "fors", "visibility");
 
     @Test
     void elCorpusExternoNoRevelaNingunaDivergencia() throws IOException {
-        assumeTrue(Files.isDirectory(CORPORA),
-                "el corpus externo no está presente: " + CORPORA.toAbsolutePath().normalize());
-
         List<String> divergencias = new ArrayList<>();
         int comparados = 0;
 
@@ -61,9 +56,6 @@ class CorpusExternoTest {
             for (boolean valido : new boolean[] { true, false }) {
                 Path carpeta = CORPORA.resolve(corpus)
                         .resolve(valido ? "sinErrores" : "conErrores");
-                if (!Files.isDirectory(carpeta)) {
-                    continue;
-                }
                 try (Stream<Path> casos = Files.list(carpeta)) {
                     for (Path caso : casos.filter(CorpusExternoTest::esFuente).sorted().toList()) {
                         comparados++;
@@ -89,8 +81,7 @@ class CorpusExternoTest {
     }
 
     // El veredicto que el caso declara: `[SinErrores]` o el código de su primera
-    // línea. El corpus generado usa `// [Error:…]` y el escrito a mano `///`, así
-    // que se saca el prefijo y los espacios.
+    // línea, que viene como `// [Error:…]`: se saca el prefijo y los espacios.
     private static boolean coincide(String fuente, String salida, boolean valido) {
         String declarado = valido ? "[SinErrores]" : veredictoDeclarado(fuente);
         return declarado.equals(primerCodigo(salida));

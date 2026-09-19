@@ -91,9 +91,12 @@ coma final es opcional (JLS §10.6). El inicializador sólo aparece después de 
 | `int[] a = {1, 2};` | `[Error:{\|3]` |
 
 Sin inicializador rige la creación de la gramática base, `new TipoBase DimensionesConTamanio`, en
-la que toda dimensión lleva su tamaño. **Se sabe que Java admite `new int[2][]`** (JLS §15.10.1). La
-consulta al profesor fue sobre la creación con inicializador, y su respuesta se aplica a eso; este
-proyecto se apega a ella y no la extiende a la creación sin inicializador, que define la base.
+la que toda dimensión lleva su tamaño. **Se sabe que Java admite `new int[2][]`** (JLS §15.10.1). El
+profesor respondió: *«Hacelo igual que en Java […] aun así para la corrección voy a considerar todo
+como correcto (como funciona tu compilador y la versión pura de java… en el semántico lo
+ajustamos)»*. Las dos variantes son válidas para la corrección; se conserva la de la base por
+coherencia con el criterio del proyecto: donde la base define una construcción, se respeta, y «como
+en Java» rige para lo que el logro agrega, que es el inicializador.
 
 | Sentencia | Resultado |
 |---|---|

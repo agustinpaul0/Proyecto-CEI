@@ -822,6 +822,16 @@ desde \nt{Creacion}, que es la restricción del logro.
 \end{tabular}
 \end{center}
 
+\paso{Por qué \texttt{new int[2][]} se rechaza} Java lo admite: la creación sin inicializador
+permite dimensiones vacías después de las que llevan tamaño (JLS 15.10.1,
+\texttt{new PrimitiveType DimExprs [Dims]}). Ante la consulta, el profesor indicó hacerlo como en
+Java y aclaró que en la corrección considera correctas las dos variantes, la de este compilador y la
+de Java puro. Se mantuvo la creación sin inicializador de la base por coherencia con el criterio
+que sigue todo el proyecto: donde la gramática de la cátedra define una construcción, se respeta,
+y «como en Java» rige para lo que el logro agrega. La creación sin inicializador ya estaba en la
+base; el logro incorpora el inicializador y nada más. Es el mismo criterio por el que un atributo se
+declara de a uno aunque Java admita \texttt{int a, b;}.
+
 \subsection{Genericidad Avanzada E2}
 
 Dos cosas distintas. El \textbf{anidamiento} sale de una sola recursión:
@@ -1133,8 +1143,9 @@ Orden de los modificadores & Los dos: \texttt{public static} y \texttt{static pu
 modificador se rechaza, y lo impone la gramática sola. & \S\ref{sec:logro-visibilidad} \\
 Inicializador de arreglos & Como en Java, como respondió el profesor: con inicializador ninguna
 dimensión lleva tamaño, y admite la coma final. Sin inicializador rige la base: toda dimensión con
-tamaño. \textbf{Se sabe que Java admite} \texttt{new int[2][]} (JLS 15.10.1); la respuesta del
-profesor fue sobre el inicializador, y este proyecto se apega a ella sin extenderla. & \S\ref{sec:logros} \\
+tamaño. \textbf{Se sabe que Java admite} \texttt{new int[2][]} (JLS 15.10.1); el profesor considera
+correctas las dos variantes, y se conserva la de la base por coherencia con el resto de la
+gramática. & \S\ref{sec:logros} \\
 Un atributo por declaración & Como en la base: \texttt{int a, b;} no es válido como atributo.
 \textbf{Se sabe que Java lo admite}. El logro de Variables Locales Clásicas habla de variables
 locales declaradas en una sentencia, y el de Atributos Inicializados agrega sólo la inicialización;

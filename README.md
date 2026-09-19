@@ -23,8 +23,7 @@ documentacion/        toda la documentación, organizada por fase del compilador
                         proyecto/     cómo se trabaja: flujo, protocolo, convenciones y comandos
                         minijava/     los PDF de la cátedra que describen el lenguaje
 etapas/               consignas, material y entregables de la cátedra, una carpeta por etapa
-vendor/               copia de referencia intacta de los zips originales de la cátedra, y el
-                      corpus externo de un compañero (no versionado, ver vendor/tests/CREDITOS.md)
+vendor/               material de terceros tal como llegó, no versionado: sólo para copiar de ahí
 compilador/           proyecto Maven — el código fuente, los tests y las gramáticas
 .claude/              configuración de Claude Code: permisos, hook de tests, comandos y skills
 ```

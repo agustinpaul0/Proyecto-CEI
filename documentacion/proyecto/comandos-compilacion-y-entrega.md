@@ -43,6 +43,11 @@ El zip es la descarga del repositorio desde GitHub, así que lleva exactamente l
 proyecto Maven en `compilador/` y el informe en `etapas/etapa-2/entregables/`. Tiene que bajarse
 **después del último push**.
 
+El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
+`compilador/src/test/resources/corpus-externo/`: son 29.101 fuentes y unos 10 megabytes. Está fuera
+de `resources/sinErrores/` y `resources/conErrores/`, así que los testers de la cátedra no lo
+recorren.
+
 **No hay ningún paso de copia.** El corpus de la etapa **activa** vive directamente en
 `resources/sinErrores/` y `resources/conErrores/`, que es exactamente donde los testers de la
 cátedra lo buscan —lo tienen escrito a fuego, sin subcarpeta—; el de la Etapa 1 queda archivado en

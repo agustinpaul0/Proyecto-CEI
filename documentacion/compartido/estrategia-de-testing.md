@@ -228,11 +228,11 @@ No hay forma de elegir con qué logros correr: la suite tiene una sola configura
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
 ese hueco corriendo el compilador contra **29.101 fuentes generados a partir de otra gramática** de
-MiniJava (`vendor/corpora/`). No comparte con este proyecto ni el código ni los criterios.
+MiniJava (`compilador/src/test/resources/corpus-externo/`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos.
-> La atribución y la poda están en su `CREDITOS.md`, y el original tal como llegó es `vendor/corpora.zip`.
+> La atribución y la poda están en su `CREDITOS.md`.
 
 **Coinciden los 29.101**, con el criterio del tester estricto: el **primer** código que emite el
 compilador es el que el caso declara. Buscarlo en cualquier parte de la salida no alcanza: con Modo
@@ -260,7 +260,7 @@ más adelante, y eso pasaba en 358 casos.
 
 Los **casos escritos a mano** de ese corpus que coinciden se importaron —son curados y legibles, y
 están en `resources/` con el prefijo `ext`, 184 en total—; los generados se corren desde
-`vendor/corpora/`.
+`corpus-externo/`, fuera del corpus que recorren los testers de la cátedra.
 
 ### La verificación diferencial contra la gramática
 

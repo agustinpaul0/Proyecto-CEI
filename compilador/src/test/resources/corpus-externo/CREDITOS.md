@@ -4,15 +4,17 @@ Todo lo que hay en esta carpeta **es de Giuliano Taormina**, compañero de la ma
 compartió para que cada uno pudiera contrastar su analizador contra una gramática que no fuera la
 propia. El generador que produjo los casos también es suyo.
 
-No son material de este proyecto. Acá sólo se corre el compilador contra ellos. La carpeta tiene el
-corpus ya podado; el original, tal como llegó, es `vendor/corpora.zip`.
+No son material de este proyecto. Acá sólo se corre el compilador contra ellos, con
+`CorpusExternoTest`. La carpeta tiene el corpus ya podado.
 
 ## Qué hay
 
-| Carpeta | Qué es | Dónde se usa |
-|---|---|---|
-| `base/`, `localvar/`, `fors/`, `visibility/` | generados por *fuzzing* | `CorpusExternoTest`, desde acá mismo |
-| `*-manual/` | casos escritos a mano | los que coinciden están importados a `compilador/resources/` con el prefijo `ext`, y corren con el resto de la suite |
+| Carpeta | Qué es |
+|---|---|
+| `base/`, `localvar/`, `fors/`, `visibility/` | Los casos generados por *fuzzing*, cada uno con `sinErrores/` y `conErrores/`. |
+
+Los casos que escribió a mano venían en carpetas `*-manual/`. Los que coinciden están importados a
+`compilador/resources/` con el prefijo `ext`, y corren con el resto del corpus.
 
 Cada corpus generado se produjo con la gramática de un logro distinto de la suya. Este compilador
 tiene todos sus logros a la vez, así que el veredicto de un caso sólo vale si no depende de un
@@ -20,8 +22,8 @@ logro que su corpus no tenía.
 
 ## La poda
 
-El zip trae 50.234 fuentes y quedan 29.101 generados y 129 escritos a mano. Se sacaron, en este
-orden:
+El zip original trae 50.234 fuentes y quedan 29.101 generados y 129 escritos a mano. Se sacaron,
+en este orden:
 
 | Poda | Casos | Por qué |
 |---|---:|---|
@@ -45,7 +47,7 @@ código esperado más adelante.
 | Corpus generado sin un logro | 30 | `base` y `localvar` no tienen Visibilidad Mejorada, Variables Locales Clásicas, Inicialización de Arreglos ni Genericidad Avanzada; este compilador sí. | alcance | nadie |
 | Asignación anidada | 20 | Admite un `=` en el operando derecho del ternario o con un ternario como lado izquierdo. | JLS §15.25 y §15.26, `javac`: *«unexpected type»* | él |
 | Paréntesis vacíos: `( )` | 3 | Restos de la lambda sin parámetros tras una mutación. | MiniLambdas fuera de alcance | nadie |
-| `new int[2][]` sin inicializador | 2 | Sin inicializador, la base exige tamaño en toda dimensión. Java lo admite. | gramática base | él, salvo que el profesor diga otra cosa |
+| `new int[2][]` sin inicializador | 2 | Sin inicializador, la base exige tamaño en toda dimensión. Java lo admite. | gramática base; el profesor acepta las dos variantes | nadie |
 | Diamante al crear arreglo: `new C<>[5]` | 2 | Su gramática lo deriva. | Pautas: el diamante es sólo al instanciar una clase. JLS §15.10.1 y §15.9: `<>` sólo existe en `TypeArgumentsOrDiamond`, que es de la creación de instancias; `javac` (`--release` 8 a 25): *«cannot create array with '<>'»* | él |
 | Escritos a mano | 25 | Revisados uno por uno: las mismas categorías, más los `BaseRechaza*` escritos para su gramática sin logros. | — | — |
 

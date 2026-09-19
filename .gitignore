@@ -38,3 +38,8 @@ __pycache__/
 
 # Claude Code — overrides personales (la config compartida sí se versiona)
 .claude/settings.local.json
+
+
+# Material de terceros tal como llegó (zips de la cátedra y corpus de un compañero).
+# Sólo sirve para copiar de ahí lo que usa el proyecto, que vive en compilador/.
+vendor/
