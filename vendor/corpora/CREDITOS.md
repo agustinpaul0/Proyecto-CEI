@@ -42,12 +42,11 @@ código esperado más adelante.
 | Barra invertida en un literal | 480 | Su léxico cierra `'\\'` y `"a\\"`; §2.3.3 da una regla posicional y acá el literal no cierra. Se verificó reemplazando `\\` por `\t`: los 480 coinciden. | *Aspectos Léxicos* §2.3.3 | él |
 | Dimensiones por declarador: `T[] y, [] x;` | 55 | Su gramática deja que cada declarador agregue dimensiones delante del nombre. | `javac`: *«<identifier> expected»* | él |
 | Varios atributos por declaración: `int a, b;` | 35 | La base declara un atributo por `<Atributo>`; el logro de declaradores múltiples es el de variables locales. Java sí lo admite. | gramática base | él, salvo que el profesor diga otra cosa |
-| Corpus generado sin un logro | 29 | `base` y `localvar` no tienen Visibilidad Mejorada, Variables Locales Clásicas ni Inicialización de Arreglos; este compilador sí. | alcance | nadie |
+| Corpus generado sin un logro | 30 | `base` y `localvar` no tienen Visibilidad Mejorada, Variables Locales Clásicas, Inicialización de Arreglos ni Genericidad Avanzada; este compilador sí. | alcance | nadie |
 | Asignación anidada | 20 | Admite un `=` en el operando derecho del ternario o con un ternario como lado izquierdo. | JLS §15.25 y §15.26, `javac`: *«unexpected type»* | él |
 | Paréntesis vacíos: `( )` | 3 | Restos de la lambda sin parámetros tras una mutación. | MiniLambdas fuera de alcance | nadie |
 | `new int[2][]` sin inicializador | 2 | Sin inicializador, la base exige tamaño en toda dimensión. Java lo admite. | gramática base | él, salvo que el profesor diga otra cosa |
 | Diamante al crear arreglo: `new C<>[5]` | 2 | Su gramática lo deriva. | Pautas: el diamante es sólo al instanciar una clase. JLS §15.10.1 y §15.9: `<>` sólo existe en `TypeArgumentsOrDiamond`, que es de la creación de instancias; `javac` (`--release` 8 a 25): *«cannot create array with '<>'»* | él |
-| Genérico al instanciar: `new C<T>()` en `base` | 1 | Su gramática base no lo deriva; la de la cátedra sí. | gramática base | él |
 | Escritos a mano | 25 | Revisados uno por uno: las mismas categorías, más los `BaseRechaza*` escritos para su gramática sin logros. | — | — |
 
 **Ninguna divergencia escondía un defecto propio.**
