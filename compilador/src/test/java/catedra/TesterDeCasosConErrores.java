@@ -16,9 +16,9 @@ import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
-import org.junit.jupiter.api.Tag;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -28,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 // para mostrar que la entrega pasa su batería tal como ella la escribió;
 // minijava.casos.TesterDeCasosConErroresEstricto verifica lo demás.
 @RunWith(Parameterized.class)
-@Tag("lexico")
+@Category(EtapaLexica.class)
 public class TesterDeCasosConErrores {
 
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/lexico/conErrores/";

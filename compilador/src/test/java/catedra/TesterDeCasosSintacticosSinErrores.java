@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Tag;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -27,7 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 //
 // minijava.casos.TesterDeCasosSintacticosEstricto endurece lo demás.
 @RunWith(Parameterized.class)
-@Tag("sintactico")
+@Category(EtapaSintactica.class)
 public class TesterDeCasosSintacticosSinErrores {
 
     private static final String MENSAJE_DE_EXITO = "[SinErrores]";

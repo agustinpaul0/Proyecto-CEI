@@ -56,11 +56,19 @@ El zip es la descarga del repositorio desde GitHub, así que lleva lo versionado
 en `compilador/` y el informe en `etapas/etapa-N/entregables/`. Tiene que bajarse **después del
 último push**.
 
-El zip tiene que pesar menos de 20 MB. Por eso el `.gitattributes` de la raíz marca como
-`export-ignore` las slides de clase y las Pautas de la cátedra (`etapas/**/Clase*.pdf` y
-`etapas/**/Pautas*.pdf`): siguen versionadas, pero GitHub no las mete en la descarga.
-`git archive HEAD --format=zip -o prueba.zip` arma el mismo zip localmente y sirve para medirlo
-antes de pushear.
+Se versiona sólo lo que hace a la entrega:
+- el proyecto Maven, con su corpus;
+- la documentación y los informes;
+- todo lo usado para desarrollar con IA, que el profesor pidió revisar: `AGENTS.md`, `CLAUDE.md`,
+  `.claude/`, `.agents/` y `.codex/`.
+
+No se versionan las slides ni las Pautas de la cátedra (`etapas/**/Clase*.pdf` y
+`etapas/**/Pautas*.pdf`, en el `.gitignore`): viven sólo en la copia local, donde se leen. Tampoco
+`vendor/`. Los PDF de `documentacion/minijava/`, que describen el lenguaje, sí se versionan: la
+documentación los cita.
+
+El zip tiene que pesar menos de 20 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo
+zip localmente y sirve para medirlo antes de pushear.
 
 **No hay ningún paso de copia.** Los testers de la cátedra buscan el corpus en
 `resources/sinErrores/` y `resources/conErrores/`, escrito a fuego y sin subcarpeta, así que el

@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Tag;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -30,7 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 // ella la escribió; minijava.casos.TesterDeCasosSemanticosEstricto verifica
 // que además sea el ÚNICO código.
 @RunWith(Parameterized.class)
-@Tag("semantico")
+@Category(EtapaSemantica.class)
 public class TesterDeCasosSemanticosConErrores {
 
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";

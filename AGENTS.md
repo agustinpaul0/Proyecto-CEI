@@ -16,6 +16,9 @@ leer Clase 02 (slides 34-62) como imágenes se pierde el ejemplo completo de imp
 **Regla**: al empezar una etapa nueva, releer todos los PDFs de esa etapa como imágenes antes de
 diseñar, aunque ya se haya hecho una pasada de texto.
 
+Las slides y las Pautas de `etapas/` **no se versionan** (están en el `.gitignore`): viven sólo en la
+copia local, que es de donde se leen.
+
 ## 0.1. Ante la duda, como en Java — y cómo averiguarlo bien
 
 Regla escrita explícitamente por la cátedra, última línea de `etapas/etapa-1/README.md`: *"todo lo
@@ -78,7 +81,8 @@ pueda, en lugar de comentar hay que renombrar o extraer. Ante la duda, no coment
 en [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md).
 
 Desarrollo pensado para abrirse y correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`,
-donde está el `pom.xml`).
+donde está el `pom.xml`). La configuración versionada «Suite Etapa 3», de `compilador/.run/`, corre
+sólo los tests de la etapa que se entrega.
 
 ## 2. Qué leer según la tarea
 

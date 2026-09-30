@@ -43,3 +43,8 @@ __pycache__/
 # Material de terceros tal como llegó (zips de la cátedra y corpus de un compañero).
 # Sólo sirve para copiar de ahí lo que usa el proyecto, que vive en compilador/.
 vendor/
+
+# Material de la cátedra que no hace a la entrega: las slides y las Pautas de cada
+# etapa. Viven sólo en la copia local, donde se leen (AGENTS.md §0).
+/etapas/**/Clase*.pdf
+/etapas/**/Pautas*.pdf

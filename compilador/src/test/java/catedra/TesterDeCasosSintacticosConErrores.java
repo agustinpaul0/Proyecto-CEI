@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Tag;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -30,7 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 // ella la escribió; minijava.casos.TesterDeCasosSintacticosEstricto verifica
 // que además sea el PRIMER código y que no haya ninguno de más.
 @RunWith(Parameterized.class)
-@Tag("sintactico")
+@Category(EtapaSintactica.class)
 public class TesterDeCasosSintacticosConErrores {
 
     private static final String TEST_FILES_DIRECTORY_PATH = "resources/sintactico/conErrores/";

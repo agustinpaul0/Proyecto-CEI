@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/home/agus/uni/cei/proyecto/.codex/hooks/suite-al-cerrar.sh'"
+          }
+        ]
+      }
+    ]
+  }
+}

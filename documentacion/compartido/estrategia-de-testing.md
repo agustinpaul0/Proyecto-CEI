@@ -295,6 +295,12 @@ relativas duras: `resources/sinErrores/` y `resources/conErrores/` los del semá
 `resources/sintactico/…` los del sintáctico, y `resources/lexico/…` los del léxico. Es el valor por defecto cuando IntelliJ importa el
 proyecto Maven correctamente.
 
+> **Los testers de la cátedra se etiquetan con una `@Category` de JUnit 4.** Son de JUnit 4 y el
+> motor *vintage* no ve el `@Tag` de Jupiter. Cada uno lleva la categoría de su etapa
+> (`catedra.EtapaLexica`, `catedra.EtapaSintactica`, `catedra.EtapaSemantica`), que el motor expone
+> como etiqueta con su nombre completo, y cada perfil de fase la incluye en su filtro. La
+> configuración «Suite Etapa 3» de IntelliJ (`compilador/.run/`) filtra por las mismas etiquetas.
+
 > **Las clases de propiedades etiquetan con el `@Tag` de jqwik, no con el de JUnit.** Los perfiles
 > de fase filtran por etiqueta, y jqwik **ignora** `org.junit.jupiter.api.Tag`: una clase de
 > propiedades que lo use queda sin etiquetar para su motor y el perfil la **saltea en silencio**,

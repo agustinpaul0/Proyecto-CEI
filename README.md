@@ -8,8 +8,11 @@ símbolos y chequeo de declaraciones).
 ## Abrir el proyecto
 
 Desde IntelliJ IDEA: `File → Open` y seleccionar la carpeta **`compilador/`** (ahí vive el `pom.xml`).
-IntelliJ importa el proyecto Maven automáticamente y la suite de tests corre desde la GUI sin
-configuración adicional (click derecho sobre `src/test/java` → `Run 'All Tests'`).
+IntelliJ importa el proyecto Maven automáticamente, junto con las configuraciones de ejecución de
+`compilador/.run/`. **«Suite Etapa 3»** corre los tests de la etapa que se entrega (los propios y
+los testers de la cátedra) más los comunes; «Suite Etapa 3 (Maven)» hace lo mismo con
+`mvn test -Pfase-semantico`. La suite entera de las tres etapas sigue corriendo con click derecho
+sobre `src/test/java` → `Run 'All Tests'`.
 
 ## Estructura del repositorio
 
@@ -30,6 +33,8 @@ etapas/               consignas, material y entregables de la cátedra, una carp
 vendor/               material de terceros tal como llegó, no versionado: sólo para copiar de ahí
 compilador/           proyecto Maven — el código fuente, los tests y las gramáticas
 .claude/              configuración de Claude Code: permisos, hook de tests, comandos y skills
+.agents/, .codex/     las mismas skills y el mismo hook, para otros agentes (Codex)
+                      — todo lo usado para desarrollar con IA se versiona, a pedido del profesor
 ```
 
 El índice de la documentación es [`documentacion/README.md`](documentacion/README.md), y cada

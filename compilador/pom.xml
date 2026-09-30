@@ -164,25 +164,26 @@
     <profiles>
         <!-- Cada etapa se corrige por separado, así que su suite tiene que poder
              correrse sola. Los tests de comun/ van en todas: son el piso de
-             cada fase. -->
+             cada fase. Los testers de la cátedra son de JUnit 4 y se filtran por
+             su @Category, que el motor vintage expone como catedra.EtapaX. -->
         <profile>
             <id>fase-lexico</id>
             <properties>
-                <fases>lexico,comun</fases>
+                <fases>lexico,comun,catedra.EtapaLexica</fases>
             </properties>
         </profile>
 
         <profile>
             <id>fase-sintactico</id>
             <properties>
-                <fases>sintactico,comun</fases>
+                <fases>sintactico,comun,catedra.EtapaSintactica</fases>
             </properties>
         </profile>
 
         <profile>
             <id>fase-semantico</id>
             <properties>
-                <fases>semantico,comun</fases>
+                <fases>semantico,comun,catedra.EtapaSemantica</fases>
             </properties>
         </profile>
 
