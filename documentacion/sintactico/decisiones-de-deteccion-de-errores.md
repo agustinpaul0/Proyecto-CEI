@@ -53,10 +53,10 @@ donde `Y` es el lexema del token con el que se produjo el error y `N` su línea.
 token `eof` es `$` (Pautas, slide 26).
 
 > **Verificado contra los casos de la cátedra.** Los cuatro fuentes con error de
-> `compilador/resources/catedra/` declaran en su primera línea el código que esperan.
+> `compilador/resources/catedra/sintactico/` declaran en su primera línea el código que esperan.
 > Simulando el Esquema Simple sobre la gramática, el rechazo cae en el token exacto de los cuatro:
 > `[Error:,|3]`, `[Error:clasesita|3]`, `[Error:hola|5]`, `[Error:else|7]`. Reproducible con
-> `python3 herramientas/aceptar_fuente.py resources/catedra/*/*.java`.
+> `python3 herramientas/aceptar_fuente.py resources/catedra/sintactico/*/*.java`.
 
 ## 3. Ambigüedades resueltas por regla de implementación
 

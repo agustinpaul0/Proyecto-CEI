@@ -38,14 +38,30 @@ La Etapa 2 agrega las suyas, de `Pautas Etapa 2.pdf`:
   `Compilacion Exitosa`.
 - Invocación: la misma de la Etapa 1, `java -jar Compilador.jar <archivo-fuente>` (slide 28).
 
+La Etapa 3 agrega las suyas, de `Pautas Etapa 3.pdf`:
+
+- La tabla de símbolos es global. El sintáctico la llena y, si terminó sin errores, el Módulo
+  Principal le pide el chequeo de declaraciones (slides 13-21).
+- Error semántico → mensaje con el lexema y la línea, y al final `[Error:Lexema|NroLinea]`. Ejemplo
+  de la slide 28: `class A extends B{}` produce `Error Semantico en linea 1: La clase B no esta
+  declarada` y `[Error:B|1]`.
+- El token de cada error sale de la slide 30: en un nombre repetido, la declaración posterior; en
+  un método mal redefinido, su nombre en la clase hija; en un tipo no declarado, ese token; si no hay
+  uno claramente asociado, el nombre de la entidad con el problema.
+- Análisis exitoso → `Compilacion Exitosa` y después `[SinErrores]` (slide 31).
+- El informe indica cómo compilar y correr, e incluye el diagrama de clases de la tabla de símbolos
+  y los logros que se intentan (slide 36).
+
 ## Invariantes técnicas duras
 
 - **Sin `System.exit()` en ningún punto del código de producción.** Los testers de la cátedra
-  (`TesterDeCasosSinErrores` y `TesterDeCasosConErrores`, los del léxico y los del sintáctico)
+  (`TesterDeCasosSinErrores` y `TesterDeCasosConErrores`, los de las tres etapas)
   invocan `Main.main()` **in-process y repetidamente**, una vez por caso parametrizado, dentro del mismo proceso JVM. Un `System.exit()`
   mataría la corrida completa de tests a la primera invocación.
-- **Sin estado estático mutable.** Por la misma razón: el proceso de test es compartido entre
-  invocaciones sucesivas de `main()`.
+- **La tabla de símbolos es el único estado estático mutable.** El proceso de test es compartido
+  entre invocaciones sucesivas de `main()`. La tabla es estática por recomendación del profesor, y
+  `TablaDeSimbolos.inicializar()` la deja limpia al empezar cada compilación. No hay otro estado
+  estático mutable, y los tests no corren en paralelo.
 - **Regla de línea del EOF**: `línea = cantidad de saltos de línea consumidos + 1`. Verificada contra
   los 3 casos de ejemplo de la cátedra: `lexSinErrores01.java` (21 `\n`, termina en newline → EOF en
   línea **22**), `lexSinErrores02.java` (12 `\n`, no termina en newline → EOF en línea **13**),
@@ -60,8 +76,9 @@ La Etapa 2 agrega las suyas, de `Pautas Etapa 2.pdf`:
 - El *working directory* de los tests debe ser la raíz del proyecto Maven (`compilador/`), porque los
   testers usan paths relativos duros. Los testers **de la cátedra** esperan `resources/sinErrores/`
   y `resources/conErrores/`, sin subcarpeta, así que **ahí vive el corpus de la etapa que se está
-  entregando** y armar el zip no requiere copiar nada. El de la etapa anterior queda archivado en
-  `resources/lexico/` (ver [`comandos-compilacion-y-entrega.md`](comandos-compilacion-y-entrega.md)).
+  entregando** y armar el zip no requiere copiar nada. Los de las etapas anteriores quedan
+  archivados en `resources/lexico/` y `resources/sintactico/` (ver
+  [`comandos-compilacion-y-entrega.md`](comandos-compilacion-y-entrega.md)).
 - **El código de error `[Error:Lexema|NroLinea]` no lleva columna** — es el contrato exacto de la
   cátedra y el tester lo compara literal. La columna (Reporte de Error Elegante,
   [`especificacion-lexica-de-minijava.md`](../lexico/especificacion-lexica-de-minijava.md)) va sólo en el mensaje legible que antecede

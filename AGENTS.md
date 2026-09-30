@@ -38,19 +38,26 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las decisiones
   cerradas, en
   [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md).**
-- Etapas 3-5: sin especificación todavía (aparecerán en `etapas/etapa-3/` etc. cuando se publiquen).
+- **Etapa 3** (terminada, entrega 09/10/2026; anticipada hasta el 07/10 a las 16:00): Analizador
+  Semántico, Parte I: tabla de símbolos y chequeo de declaraciones. Sin logros de código, por
+  decisión del usuario: sólo Entrega Anticipada, Imbatibilidad y Kudos. **El estado y las
+  decisiones están en [`documentacion/semantico/README.md`](documentacion/semantico/README.md); lo
+  que falta consultar al profesor, en [`dudas.md`](dudas.md).**
+- Etapas 4-5: sin especificación todavía (aparecerán en `etapas/etapa-4/` etc. cuando se publiquen).
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:
-  `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf` y
-  `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf`.
+  `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf`,
+  `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf` y
+  `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf`.
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
-  `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso) y `testersSintactico/`
-  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso). Los originales están en `vendor/`, que
-  **no se versiona** y no lo lee nada del proyecto: lo que se usa está copiado adentro de
-  `compilador/` (los testers en `src/test/java/catedra/`, los 8 casos del sintáctico en
-  `resources/catedra/`).
+  `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso), `testersSintactico/`
+  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso) y `testersSemantico1/` (2 testers JUnit 4
+  + 8 casos de ejemplo, sin guía). Los originales están en `vendor/`, que **no se versiona** y no
+  lo lee nada del proyecto: lo que se usa está copiado adentro de `compilador/` (los testers en
+  `src/test/java/catedra/`, los casos de ejemplo en `resources/catedra/sintactico/` y
+  `resources/catedra/semantico/`).
 - Material ajeno de un compañero: `compilador/resources/corpus-externo/`, el corpus de
   fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La atribución está en su
   `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`.
@@ -88,6 +95,8 @@ donde está el `pom.xml`).
 | Tocar la gramática, el parser, los Primeros o el informe de la Etapa 2 | [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md) + [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md) (las decisiones cerradas) |
 | Entender Primeros, LL(1), factorización, o implementar el parser | `etapas/etapa-2/Clase 3 - Sint1…pdf`, `Clase 4 - Sint2…pdf` y `Clase 5 - Sint3…pdf` (slides 33-62) |
 | Consultar el contrato de salida, los logros o la invocación de la Etapa 2 | `etapas/etapa-2/Pautas Etapa 2.pdf` (errores 25-26, invocación 28, logros 34-44) |
+| Tocar la tabla de símbolos, la EDT o un control semántico | [`documentacion/semantico/README.md`](documentacion/semantico/README.md) + `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf` (los controles) + `etapas/etapa-3/Clase 6…8` |
+| Consultar el contrato de salida, el token de cada error o los logros de la Etapa 3 | `etapas/etapa-3/Pautas Etapa 3.pdf` (errores 28-30, éxito 31, informe 36, logros 38-41) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `documentacion/proyecto/` | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) — **antes** de escribir código |
 | Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (tokens, ER formal y decisiones) |
 | Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/lexico/patron-state-metodo-por-estado.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |
@@ -102,7 +111,7 @@ donde está el `pom.xml`).
 | Archivo | Contenido |
 |---|---|
 | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) | Protocolo obligatorio ante cualquier duda de comportamiento no resuelta explícitamente: MiniJava primero, Java verificado contra la especificación después, informar siempre. |
-| [`documentacion/proyecto/convenciones-de-la-catedra.md`](documentacion/proyecto/convenciones-de-la-catedra.md) | Convenciones no negociables de la cátedra, de las dos etapas, + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
+| [`documentacion/proyecto/convenciones-de-la-catedra.md`](documentacion/proyecto/convenciones-de-la-catedra.md) | Convenciones no negociables de la cátedra, de las tres etapas, + invariantes técnicas duras (sin `System.exit()`, regla de línea del EOF, etc.). |
 | [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md) | Workflow paso a paso antes de implementar y ante un bug; estilo de comentarios; regla vital de deuda técnica cero + documentación actualizada al cerrar cualquier tarea. |
 | [`documentacion/proyecto/comandos-compilacion-y-entrega.md`](documentacion/proyecto/comandos-compilacion-y-entrega.md) | Comandos Maven, versión de Java, armado del zip y formato del informe. |
 
@@ -146,6 +155,15 @@ Etapa 2, en [`documentacion/sintactico/`](documentacion/sintactico/README.md):
   [`decisiones-de-logica.md`](documentacion/sintactico/decisiones-de-logica.md),
   [`decisiones-de-deteccion-de-errores.md`](documentacion/sintactico/decisiones-de-deteccion-de-errores.md)
   y [`resolucion-de-logros.md`](documentacion/sintactico/resolucion-de-logros.md).
+
+Etapa 3, en [`documentacion/semantico/`](documentacion/semantico/README.md):
+[`arquitectura-del-analizador-semantico.md`](documentacion/semantico/arquitectura-del-analizador-semantico.md)
+(con el diagrama de clases de la tabla),
+[`esquema-de-traduccion.md`](documentacion/semantico/esquema-de-traduccion.md),
+[`decisiones-de-diseno.md`](documentacion/semantico/decisiones-de-diseno.md),
+[`decisiones-de-logica.md`](documentacion/semantico/decisiones-de-logica.md),
+[`decisiones-de-deteccion-de-errores.md`](documentacion/semantico/decisiones-de-deteccion-de-errores.md)
+y [`resolucion-de-logros.md`](documentacion/semantico/resolucion-de-logros.md).
 
 Compartida entre etapas, en [`documentacion/compartido/`](documentacion/compartido/README.md):
 [`estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md),

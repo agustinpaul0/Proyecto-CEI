@@ -1,0 +1,67 @@
+% Preámbulo del informe de la Etapa 3: el de la Etapa 2 sin la notación de la
+% gramática. Computer Modern a 12pt, como los documentos de la cátedra, y todo en
+% negro.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage[spanish,es-noquoting,es-noshorthands,es-tabla]{babel}
+\usepackage[a4paper,margin=2.6cm,headsep=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage[hidelinks,bookmarks=true]{hyperref}
+
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{pgf-umlcd}
+% Generalización e implementación de UML: triángulo abierto, línea llena o de trazos.
+\tikzset{generaliza/.style={draw=black, -{Triangle[open, length=3mm, width=3mm]}},
+        implementa/.style={generaliza, dashed}}
+\DeclareUnicodeCharacter{2014}{---}
+\DeclareUnicodeCharacter{2026}{\ldots}
+
+% --- Paleta ------------------------------------------------------------------
+\definecolor{tinta}{rgb}{0,0,0}
+\renewcommand{\umltextcolor}{black}
+\renewcommand{\umlfillcolor}{white}
+\renewcommand{\umldrawcolor}{black}
+
+\color{tinta}
+
+% --- Títulos ------------------------------------------------------------------
+\titleformat{\section}{\Large\bfseries\color{tinta}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{tinta}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\bfseries\color{tinta}}{\thesubsubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.4ex plus 1ex minus .2ex}{1.3ex plus .2ex}
+
+% --- Encabezado y pie ---------------------------------------------------------
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{tinta}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize\color{tinta}Compiladores e Intérpretes — Etapa 3}
+\fancyhead[R]{\footnotesize\color{tinta}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\color{tinta}\thepage}
+
+% --- Bloques de consola --------------------------------------------------------
+% \footnotesize y no \small: la línea más larga de una sesión de consola tiene
+% 82 caracteres y a \small no entra en la caja de texto.
+\DefineVerbatimEnvironment{consola}{Verbatim}%
+  {fontsize=\footnotesize,xleftmargin=1.1em,formatcom=\color{tinta}}
+
+\setlength{\emergencystretch}{4.5em}
+\tolerance=3000
+
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.25ex,topsep=0.5ex}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.25ex,topsep=0.5ex}
+\setlist[description]{leftmargin=1.3em,itemsep=0.35ex,topsep=0.6ex}
+\renewcommand{\arraystretch}{1.25}

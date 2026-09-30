@@ -14,9 +14,10 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 |---|---|
 | [`lexico/`](lexico/README.md) | **Etapa 1 — Analizador Léxico.** Arquitectura, especificación de los tokens, decisiones y logros. |
 | [`sintactico/`](sintactico/README.md) | **Etapa 2 — Analizador Sintáctico.** La gramática (original, transformación y final), arquitectura, decisiones y logros. |
+| [`semantico/`](semantico/README.md) | **Etapa 3 — Analizador Semántico, Parte I.** La tabla de símbolos, el esquema de traducción, los controles y sus errores. |
 | [`compartido/`](compartido/README.md) | Lo que **no pertenece a una sola etapa**: la estrategia de testing, el manejo de errores y el manejador de archivo. |
 | [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
-| [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos y reglas de sintaxis. |
+| [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos, reglas de sintaxis y semántica. |
 
 Lo que el profesor indicó explícitamente, con ejemplos de qué acepta el compilador y qué no, está
 reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
@@ -28,7 +29,8 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 1. [`lexico/arquitectura-del-analizador-lexico.md`](lexico/arquitectura-del-analizador-lexico.md)
    — qué hace el proyecto y cómo está construido.
 2. [`sintactico/README.md`](sintactico/README.md) — la Etapa 2, el analizador sintáctico.
-3. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
+3. [`semantico/README.md`](semantico/README.md) — la Etapa 3, la tabla de símbolos.
+4. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
 
 **Si vas a escribir código**, primero:
 
@@ -43,7 +45,8 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 |---|---|---|
 | 1 | Analizador Léxico + Módulo Principal | entregada y corregida, sin observaciones |
 | 2 | Analizador Sintáctico Descendente Recursivo | **completa** — gramática, analizador, los nueve logros y el corpus |
-| 3 a 5 | Semántico y siguientes | sin especificación todavía |
+| 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | **completa** — sin logros de código, con consultas abiertas en [`../dudas.md`](../dudas.md) |
+| 4 y 5 | Semántico, Parte II, y siguientes | sin especificación todavía |
 
 ## Las dos reglas que gobiernan todas las decisiones
 

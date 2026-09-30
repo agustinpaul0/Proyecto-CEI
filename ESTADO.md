@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 19/09/2026
+**Última actualización:** 29/09/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -13,7 +13,9 @@ y su corpus (158 casos) está en `compilador/resources/lexico/` (`mvn test -Pfas
 
 ## Etapa 2 — Analizador Sintáctico: TERMINADA
 
-Entrega 23/09/2026. Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5.
+Entrega 23/09/2026. Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
+aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
+(`mvn test -Pfase-sintactico`).
 
 | | |
 |---|---|
@@ -27,9 +29,43 @@ Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el info
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
 el profesor acepta las dos variantes.
 
-## Etapas 3 a 5: SIN EMPEZAR
+**Pendiente abierto:** que la corrección de la Etapa 2 confirme el criterio de `new int[2][]`
+(`CONVENCIONES-CATEDRA.md` §4). Si la entrega sale aprobada sin nada que corregir, queda
+confirmado y no se toca nada; si no, el cambio es de gramática y sigue el circuito de la Etapa 2.
+Falta que el usuario avise el resultado.
 
-Sin especificación publicada. Lo que la Etapa 2 les deja pendiente está en
-[`defectos-de-la-gramatica-original.md` §9](documentacion/sintactico/defectos-de-la-gramatica-original.md):
-sobre todo, resolver nombres contra su declaración, que el lado izquierdo de un `=` y el operando de
-`++`/`--` sean variables, y qué inicializa `int x, y, z = 10;` (en Java, sólo `z`).
+## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
+
+Entrega 09/10/2026; la anticipada vence el 07/10 a las 16:00. Tabla de símbolos estática,
+construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo de declaraciones en
+dos pasadas más la consolidación. Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y
+Kudos.
+
+| | |
+|---|---|
+| Controles | 21, más el constructor por defecto |
+| Corpus | 90 casos con error, 41 correctos y los 8 de la cátedra |
+| Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
+| Informe | `etapas/etapa-3/entregables/` |
+
+Las resoluciones que esperan confirmación del profesor están en [`dudas.md`](dudas.md). Todas están
+implementadas; si una respuesta es distinta, se ajusta con un caso de test.
+
+## Etapa 4: SIN EMPEZAR
+
+Sin especificación publicada. Queda pendiente todo lo que se chequea en los cuerpos, que la Etapa 2
+dejó pasar a propósito y la Etapa 3 no mira:
+- resolver los nombres contra su declaración;
+- que el lado izquierdo de un `=` y el operando de `++`/`--` sean variables;
+- que una sentencia-expresión sea una asignación o una llamada;
+- la compatibilidad de tipos y la aridad de las llamadas;
+- las variables locales repetidas;
+- qué inicializa `int x, y, z = 10;` (en Java, sólo `z`);
+- que el inicializador de un arreglo coincida con sus dimensiones;
+- la precedencia de los operadores binarios, que la gramática de la cátedra pone en un solo nivel;
+- el rango de los literales `float`;
+- las expresiones que inicializan atributos.
+
+La sección B de [`dudas.md`](dudas.md) le consulta todo esto al profesor.
+
+## Etapa 5: SIN EMPEZAR

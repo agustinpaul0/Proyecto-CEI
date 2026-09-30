@@ -35,7 +35,7 @@ error reportado en el lugar equivocado, silenciosamente, tres etapas más adelan
 | **Unitario** | Unidades aisladas y deterministas: el manejador de archivo, los tipos de token, el formateador de errores. | `ManejadorDeArchivoEficienteTest`, `TipoDeTokenTest`, `FormateadorDeErrorTest` |
 | **Data-driven** | Muchas entradas evaluadas con la misma lógica: fuente → stream de tokens esperado. | `AnalizadorLexico*Test`, `LimitesNumericosTest`, `PosicionDelCaretTest` |
 | **De integración** | Interacción entre piezas: manejador → analizador, analizador → módulo principal. | `ModuloPrincipalLexicoTest`, `ModuloPrincipalSintacticoTest`, `ReporteDeErrorEleganteTest` |
-| **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 4 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `TesterDeCasosSintacticosEstricto`, `MainTest` |
+| **End-to-end** | El pipeline completo, entrando por `Main.main()` sobre archivos reales. | los 6 testers de la cátedra, `TesterDeCasosConErroresEstricto`, `TesterDeCasosSintacticosEstricto`, `TesterDeCasosSemanticosEstricto`, `RobustezDelSemanticoTest`, `MainTest` |
 | **Negativo** | Un caso por cada tipo de error léxico: que el programa inválido se rechace **correctamente**. | `TipoDeErrorLexicoTest`, `resources/lexico/conErrores/` |
 | **Basado en propiedades** | Invariantes que deben valer para **cualquier** entrada, no para casos elegidos. | `AnalizadorLexicoPropiedadesTest`, `PropiedadesDelReporteTest`, `AnalizadorSintacticoPropiedadesTest` |
 | **Fuzzing** | Robustez ante entradas sin ninguna estructura: bytes arbitrarios en el léxico, programas derivados de la gramática y después mutados en el sintáctico. | `AnalizadorLexicoFuzzTest`, `CorpusDeRegresionTest`, `resources/{sinErrores,conErrores}/` |
@@ -50,7 +50,7 @@ porque cada mutante volvería a correr miles de casos parametrizados.
 
 ### El corpus del analizador sintáctico no se escribió a mano del todo
 
-El corpus del sintáctico —`resources/sinErrores/` y `resources/conErrores/`— tiene dos orígenes,
+El corpus del sintáctico —`resources/sintactico/sinErrores/` y `resources/sintactico/conErrores/`— tiene dos orígenes,
 y la distinción importa:
 
 - **Escrito a mano** (~340 casos, 184 de ellos importados de un corpus ajeno): lo que un generador
@@ -128,9 +128,22 @@ resources/
 │   ├── sinErrores/    76 archivos   oráculo: //#lexema,nroLinea   (un token esperado, en orden)
 │   ├── conErrores/    82 archivos   oráculo: // [Error:lexema|nroLinea]
 │   └── regresion/                    entradas que rompieron una corrida de fuzzing
-├── sinErrores/                       el corpus de la Etapa 2, en la raíz porque ahí lo buscan
-└── conErrores/                       los testers de la cátedra
+├── sintactico/
+│   ├── sinErrores/                   oráculo: ninguno (tiene que compilar sin errores)
+│   └── conErrores/                   oráculo: ///[Error:lexema|nroLinea] en la primera línea
+├── catedra/
+│   ├── sintactico/                   los 8 casos de ejemplo del tester de la Etapa 2
+│   └── semantico/                    los 8 casos de ejemplo del tester de la Etapa 3
+├── sinErrores/                       el corpus de la Etapa 3, en la raíz porque ahí lo buscan
+└── conErrores/                       los testers de la cátedra; oráculo como el del sintáctico
 ```
+
+El corpus de la Etapa 3 tiene al menos un caso con error por cada control semántico, con el token
+que fija la Pautas slide 30, y un caso correcto para cada construcción que se acepta. Su tester
+estricto, `TesterDeCasosSemanticosEstricto`, exige más que el de la cátedra: un único reporte de
+tres renglones, y que el mensaje nombre la misma línea que el código. `RobustezDelSemanticoTest`
+corre el compilador completo sobre los corpus de las etapas anteriores y el externo, unos 39.600
+fuentes, y exige que ninguno lo haga caer.
 
 ### El tester estricto, y por qué existe
 
@@ -210,15 +223,16 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 ```bash
 cd compilador
 
-mvn test                 # suite propia + los 4 testers de la cátedra, en la misma pasada
+mvn test                 # suite propia + los 6 testers de la cátedra, en la misma pasada
 mvn verify               # además exige el umbral de cobertura de JaCoCo
 mvn -Pmutacion verify    # análisis de mutación con PIT (verify: es la fase a la que está atado)
 
 mvn test -Dvolcado=resumen   # el volcado por caso, en su forma corta
 mvn test -Dvolcado=off       # sin volcado
 
-mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en las dos fases)
+mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en todas las fases)
 mvn test -Pfase-sintactico   # sólo el sintáctico
+mvn test -Pfase-semantico    # sólo el semántico
 ```
 
 No hay forma de elegir con qué logros correr: la suite tiene una sola configuración.
@@ -277,8 +291,8 @@ Los testers de la cátedra están escritos con JUnit 4; corren junto a los propi
 *vintage engine*, sin necesidad de tocarlos.
 
 **El *working directory* debe ser `compilador/`**, porque los testers de la cátedra usan rutas
-relativas duras: `resources/sinErrores/` y `resources/conErrores/` los del sintáctico, y
-`resources/lexico/…` las copias del léxico. Es el valor por defecto cuando IntelliJ importa el
+relativas duras: `resources/sinErrores/` y `resources/conErrores/` los del semántico,
+`resources/sintactico/…` los del sintáctico, y `resources/lexico/…` los del léxico. Es el valor por defecto cuando IntelliJ importa el
 proyecto Maven correctamente.
 
 > **Las clases de propiedades etiquetan con el `@Tag` de jqwik, no con el de JUnit.** Los perfiles

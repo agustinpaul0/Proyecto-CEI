@@ -127,6 +127,14 @@ class TablaDeSimbolosTest extends BaseDeTablaDeSimbolos {
         assertEquals("Error Semantico en linea 2: La clase A1 ya esta declarada", error.getMessage());
     }
 
+    @Test
+    void elMensajeNombraElMetodoConSuAridad(@TempDir Path dir) {
+        var error = rechazar(dir, "interface Ix { void m(int a); }\nclass Aa implements Ix { }\n");
+
+        assertEquals("Error Semantico en linea 2: La clase Aa no implementa el metodo m/1 de la interfaz Ix",
+                error.getMessage());
+    }
+
     private List<String> nombres(List<Metodo> metodos) {
         return metodos.stream().map(Metodo::nombre).toList();
     }

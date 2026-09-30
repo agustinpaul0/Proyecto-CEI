@@ -15,8 +15,11 @@ siguiendo las convenciones de `compilador/herramientas/README.md`:
   + 1, y depende de cuántas líneas de expectativa lleva el propio archivo) y el desplazamiento
   que la cabecera de comentarios le mete al fuente en los casos de `conErrores/`.
 - Nombre del archivo en el mismo estilo camelCase descriptivo que el resto del corpus.
-- Si el caso cubre una regla léxica discutible, referenciá en `documentacion/lexico/especificacion-lexica-de-minijava.md`
-  la decisión que lo respalda; si no existe, seguí `documentacion/proyecto/protocolo-de-investigacion.md` primero.
+- Si el caso cubre una regla discutible, referenciá la decisión que lo respalda: las léxicas en
+  `documentacion/lexico/especificacion-lexica-de-minijava.md`, las semánticas en
+  `documentacion/semantico/decisiones-de-logica.md`. Si no existe, seguí
+  `documentacion/proyecto/protocolo-de-investigacion.md` primero.
+- Los nombres de clase tienen al menos dos caracteres: una mayúscula sola es un `idGen`.
 
 Después corré `mvn test -Dvolcado=resumen` desde `compilador/` y confirmá que el caso pasa con
 las expectativas que predijiste.

@@ -305,18 +305,22 @@ compilador/
 │   │   ├── sinErrores/           ← 76 casos válidos, con oráculo //#lexema,línea
 │   │   ├── conErrores/           ← 82 casos con error, con oráculo // [Error:lexema|línea]
 │   │   └── regresion/            ← casos que reprodujeron un defecto real (nunca se borran)
-│   ├── sinErrores/               ← el corpus de la Etapa 2, donde lo buscan los testers
+│   ├── sintactico/               ← el corpus de la Etapa 2
+│   ├── catedra/                  ← los casos de ejemplo de la cátedra, por etapa
+│   ├── corpus-externo/           ← el corpus de un compañero (CorpusExternoTest)
+│   ├── sinErrores/               ← el corpus de la Etapa 3, donde lo buscan los testers
 │   └── conErrores/
 └── src/
     ├── main/java/minijava/
     │   ├── aplicacion/           ← Main, OpcionesDeInvocacion, ModuloPrincipalLexico,
-    │   │                            ModuloPrincipalSintactico
+    │   │                            ModuloPrincipalSintactico, ModuloPrincipalSemantico
     │   ├── comun/                ← lo que cruza todas las etapas
     │   │   ├── io/               ← SourceManager + SourceManagerImpl (ORIGINALES de la cátedra,
     │   │   │                        contenido intacto), ManejadorDeArchivo + el reemplazo propio
     │   │   └── salida/           ← interfaz Salida + SalidaEstandar
     │   ├── sintactico/           ← AnalizadorSintactico, partes/, primeros/, recuperacion/,
     │   │                            errores/ (Etapa 2)
+    │   ├── semantico/            ← tabla/, entidades/, tipos/, errores/ (Etapa 3)
     │   └── lexico/               ← AnalizadorLexico (el driver)
     │       ├── tokens/           ← Token (record inmutable), TipoDeToken (59 valores),
     │       │                        TablaDeLexemas (los 52 tokens de lexema fijo)
@@ -330,7 +334,7 @@ compilador/
     │                                en comentarios/ identificadores/ literales/ numeros/
     │                                operadores/
     └── test/java/
-        ├── catedra/              ← los 4 testers de la cátedra, 2 del léxico y 2 del sintáctico
+        ├── catedra/              ← los 6 testers de la cátedra, 2 por etapa
         │                            (sólo se cambió el paquete y el import de Main, cambio que la
         │                            guía de uso autoriza)
         └── minijava/             ← suite propia, espejando la estructura de producción
@@ -452,7 +456,7 @@ El corte de `estados/` en familias deja package-private a `EstadosFloat.esSufijo
 que queda `public` es `RecuperacionDeLitString`, y a cambio es directamente testeable en vez de
 sólo a través de un litString completo.
 
-Tests bajo `compilador/src/test/java/`: `catedra/` (los 4 testers de la cátedra, paquete propio —
+Tests bajo `compilador/src/test/java/`: `catedra/` (los 6 testers de la cátedra, paquete propio —
 no son entregables, se pueden editar libremente) y `minijava/...` (espejo de la estructura de
 producción).
 

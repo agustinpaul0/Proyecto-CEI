@@ -51,6 +51,7 @@ class ConsolidacionTest extends BaseDeTablaDeSimbolos {
 
         assertEquals(List.of("x", "y"), clase("Bb").atributos().stream().map(Atributo::nombre).toList());
         assertEquals(2, metodo("Bb", "m", 0).token().linea());
+        assertEquals(List.of("debugPrint", "toString", "m"), nombres(clase("Bb").metodos()));
     }
 
     // Documento §5: con argumento se instancia, sin argumento se conserva la T.
@@ -94,6 +95,13 @@ class ConsolidacionTest extends BaseDeTablaDeSimbolos {
 
         assertEquals(List.of("m", "n"), nombres(interfaz("Ib").metodos()));
         assertEquals("String", metodo("Ib", "m", 0).retorno().nombre());
+    }
+
+    @Test
+    void unaInterfazDeclaradaAntesQueSuAncestroLoHeredaEntero(@TempDir Path dir) throws Exception {
+        compilar(dir, "interface Ic extends Ib { }\ninterface Ib extends Ia { void n(); }\ninterface Ia { void m(); }\n");
+
+        assertEquals(List.of("m", "n"), nombres(interfaz("Ic").metodos()));
     }
 
     @Test

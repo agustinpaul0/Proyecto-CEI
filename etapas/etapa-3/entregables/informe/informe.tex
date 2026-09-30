@@ -1,0 +1,240 @@
+\documentclass[12pt,a4paper]{article}
+\input{preambulo}
+\usepackage{ragged2e}
+
+\begin{document}
+
+% ===========================================================================
+% Portada
+% ===========================================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\raggedright
+\vspace*{2.2cm}
+
+{\footnotesize\sffamily
+UNIVERSIDAD NACIONAL DEL SUR\\
+Departamento de Ciencias e Ingeniería de la Computación\\
+Compiladores e Intérpretes --- Segundo Cuatrimestre de 2026\par}
+
+\vspace{2.4cm}
+{\rule{\textwidth}{0.6pt}}
+\vspace{1.1cm}
+
+{\Huge\bfseries Compilador de MiniJava\par}
+\vspace{0.5cm}
+{\LARGE\color{tinta} Etapa 3 --- Analizador Semántico I\\[0.25cm]
+\large Tabla de Símbolos y Chequeo de Declaraciones\par}
+
+\vspace{1.1cm}
+{\rule{\textwidth}{0.6pt}}
+
+\vspace{2.6cm}
+{\large Agustín Paul\par}
+\vspace{0.2cm}
+{\normalsize L.U. 147524\par}
+\vspace{0.4cm}
+{Informe de entrega\par}
+
+\vfill
+{\color{tinta}\footnotesize \today\par}
+\end{titlepage}
+
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+\RaggedRight
+
+% ===========================================================================
+\section{Cómo compilar y ejecutar}
+% ===========================================================================
+
+Proyecto Maven con Java~25. Desde la carpeta \texttt{compilador/}:
+
+\begin{consola}
+$ mvn package          # compila, corre la suite y arma target/Compilador.jar
+$ java -jar target/Compilador.jar programa1.java
+Compilacion Exitosa
+
+[SinErrores]
+\end{consola}
+
+El fuente es el único argumento y puede tener cualquier extensión. Las etapas anteriores siguen
+disponibles: \texttt{-{}-etapa=1} corre sólo el léxico y \texttt{-{}-etapa=2} sólo el sintáctico.
+
+% ===========================================================================
+\section{La tabla de símbolos}
+% ===========================================================================
+
+La tabla es estática y de acceso global. El sintáctico la llena con las acciones de un esquema de
+traducción sobre su gramática LL(1): cada clase, interfaz, atributo, método, constructor y
+parámetro se crea apenas se lo reconoce y se agrega a la entidad actual. Si el análisis sintáctico
+termina sin errores, el Módulo Principal le pide a la tabla:
+
+\begin{enumerate}
+  \item \texttt{chequearDeclaraciones()}: primero, el primer nombre repetido, que se registró al
+        parsear; después, cada tipo controla su herencia, la ausencia de ciclos y los tipos de sus
+        miembros;
+  \item \texttt{consolidar()}: cada tipo incorpora lo heredado de su ancestro, que se consolida
+        antes. Los tipos genéricos se instancian o se conservan según la herencia, y ahí se
+        controlan las redefiniciones y las interfaces implementadas.
+\end{enumerate}
+
+El primer error semántico termina el análisis. Las tablas se recorren en orden de declaración,
+así que el error reportado es siempre el mismo.
+
+\medskip
+Las entidades de la tabla (figura~\ref{fig:entidades}) guardan el token de su declaración, que es
+de donde salen el lexema y la línea de cada error. Los tipos (figura~\ref{fig:tipos}) se modelan
+con una jerarquía uniforme, con primitivos y referencias por separado.
+
+\begin{figure}[H]
+\centering
+\footnotesize
+\begin{tikzpicture}
+\begin{class}[text width=6.4cm]{TablaDeSimbolos}{0,0}
+  \attribute{\textit{estática}}
+  \attribute{tipos : Map<String, TipoDeclarado>}
+  \attribute{claseActual : Clase}
+  \attribute{interfazActual : Interfaz}
+  \attribute{unidadActual : Unidad}
+  \operation{inicializar()}
+  \operation{chequearDeclaraciones()}
+  \operation{consolidar()}
+\end{class}
+
+\begin{abstractclass}[text width=6.4cm]{TipoDeclarado}{0,-5.4}
+  \attribute{token : Token}
+  \attribute{parametroDeTipo : Token [0..1]}
+  \attribute{metodos : Map<ClaveDeMetodo, Metodo>}
+  \operation{estaBienDeclarado()}
+  \operation{consolidar()}
+\end{abstractclass}
+
+\begin{class}[text width=6.2cm]{Clase}{-3.9,-10}
+  \attribute{padre : TipoReferencia}
+  \attribute{interfaz : TipoReferencia [0..1]}
+  \attribute{atributos : Map<String, Atributo>}
+  \attribute{constructores : Map<int, Constructor>}
+\end{class}
+
+\begin{class}[text width=5cm]{Interfaz}{4.1,-10}
+  \attribute{extendida : TipoReferencia [0..1]}
+\end{class}
+
+\begin{class}[text width=3.3cm]{Atributo}{-5.5,-14.2}
+  \attribute{token : Token}
+  \attribute{tipo : Tipo}
+\end{class}
+
+\begin{abstractclass}[text width=4.4cm]{Unidad}{0,-14.2}
+  \attribute{token : Token}
+  \attribute{parametros : List<Parametro>}
+\end{abstractclass}
+
+\begin{class}[text width=3.3cm]{Parametro}{5.5,-14.2}
+  \attribute{token : Token}
+  \attribute{tipo : Tipo}
+  \attribute{posicion : int}
+\end{class}
+
+\begin{class}[text width=3.6cm]{Metodo}{-2.4,-18}
+  \attribute{estatico : boolean}
+  \attribute{retorno : Tipo}
+\end{class}
+
+\begin{class}[text width=2.8cm]{Constructor}{2.4,-18}
+\end{class}
+
+\composition{TablaDeSimbolos}{}{*}{TipoDeclarado}
+\draw[generaliza] (Clase.north) -- (TipoDeclarado.south -| Clase.north);
+\draw[generaliza] (Interfaz.north) -- (TipoDeclarado.south -| Interfaz.north);
+\draw[generaliza] (Metodo.north) -- (Unidad.south -| Metodo.north);
+\draw[generaliza] (Constructor.north) -- (Unidad.south -| Constructor.north);
+\end{tikzpicture}
+\caption{Las entidades de la tabla de símbolos.}
+\label{fig:entidades}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\footnotesize
+\begin{tikzpicture}
+\begin{interface}[text width=5.4cm]{Tipo}{0,0}
+  \attribute{\textit{sellada}}
+  \operation{nombre() : String}
+  \operation{verificarEn(contexto, estatico)}
+  \operation{instanciar(Sustitucion) : Tipo}
+\end{interface}
+\begin{class}[text width=2.4cm]{TipoPrimitivo}{-6.5,-4.2}
+  \attribute{boolean, char,}
+  \attribute{int, float}
+\end{class}
+\begin{class}[text width=1.6cm]{TipoVoid}{-3.7,-4.2}
+\end{class}
+\begin{class}[text width=3.4cm]{TipoReferencia}{-0.6,-4.2}
+  \attribute{token : Token}
+  \attribute{argumento : Tipo [0..1]}
+\end{class}
+\begin{class}[text width=2.7cm]{VariableDeTipo}{3.0,-4.2}
+  \attribute{token : Token}
+\end{class}
+\begin{class}[text width=2.9cm]{TipoArreglo}{6.3,-4.2}
+  \attribute{base : Tipo}
+  \attribute{dimensiones : int}
+\end{class}
+\foreach \hija in {TipoPrimitivo, TipoVoid, TipoReferencia, VariableDeTipo, TipoArreglo} {
+  \draw[implementa] (\hija.north) |- ++(0,0.6) -| (Tipo.south);
+}
+\end{tikzpicture}
+\caption{Los tipos. Dos tipos son iguales si se escriben igual, e \texttt{instanciar} reemplaza
+el parámetro de tipo de un ancestro por el argumento de la herencia.}
+\label{fig:tipos}
+\end{figure}
+
+% ===========================================================================
+\section{Errores semánticos}
+% ===========================================================================
+
+Cada error se reporta como en las Pautas: \texttt{Error Semantico en linea N: ...}, un renglón en
+blanco y \texttt{[Error:lexema|N]}. El token es el que fija la slide~30.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{9.6cm} >{\raggedright\arraybackslash}p{5.4cm}}
+\toprule
+\textbf{Error} & \textbf{Token reportado} \\
+\midrule
+Clase, interfaz, atributo, método (nombre y aridad), constructor (aridad) o parámetro repetido,
+incluidas \texttt{Object}, \texttt{String} y \texttt{System} & la declaración posterior \\
+Constructor con otro nombre que su clase & el nombre del constructor \\
+Tipo no declarado, en la herencia o en un miembro & ese tipo \\
+Clase que extiende una interfaz o implementa una clase; interfaz que extiende una clase & el tipo
+referido \\
+Herencia de \texttt{String} o \texttt{System}, que son \texttt{final} en Java & el tipo referido \\
+Argumento genérico sobre un tipo no genérico & el tipo \\
+Parámetro de tipo no declarado, o usado en un método estático & el parámetro \\
+Herencia circular & la primera clase declarada del ciclo \\
+Atributo con el nombre de uno heredado & el atributo de la hija \\
+Redefinición con otra signatura; redeclaración de un estático heredado; estático con la clave de
+uno de instancia heredado; interfaz que contradice a \texttt{Object} & el método de la hija \\
+Clase que no implementa un método de su interfaz & la clase \\
+Implementación con otra signatura, o estática & el método, si es propio; si no, la clase \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ===========================================================================
+\section{Logros}
+% ===========================================================================
+
+Se intentan los logros que no requieren código:
+
+\begin{itemize}
+  \item \textbf{Entrega Anticipada Semántica I}.
+  \item \textbf{Imbatibilidad Semántica I}. Los 8 casos de la cátedra dan el código exacto, y el
+        corpus propio cubre cada control con al menos un caso, con error y sin él.
+  \item \textbf{Kudos}.
+\end{itemize}
+
+\end{document}
