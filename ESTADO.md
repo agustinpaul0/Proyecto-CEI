@@ -36,7 +36,9 @@ Falta que el usuario avise el resultado.
 
 ## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
 
-Entrega 09/10/2026; la anticipada vence el 07/10 a las 16:00. Tabla de símbolos estática,
+Entrega 09/10/2026; la anticipada vence el 07/10 a las 16:00. Corre aislada con `--etapa=3`, que
+es también la etapa por defecto, y su corpus está en la raíz de `compilador/resources/`
+(`mvn test -Pfase-semantico`). Tabla de símbolos estática,
 construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo de declaraciones en
 dos pasadas más la consolidación. Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y
 Kudos.

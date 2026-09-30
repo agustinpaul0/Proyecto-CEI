@@ -18,7 +18,7 @@ import java.util.List;
 // Pautas Etapa 3, slides 15-25: crea la tabla de símbolos, corre el sintáctico
 // que la llena y, sólo si terminó sin errores, le pide el chequeo de
 // declaraciones y la consolidación. El primer error semántico corta el análisis.
-public final class ModuloPrincipalSemantico {
+public final class ModuloPrincipalSemantico implements ModuloPrincipal {
 
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
@@ -30,6 +30,7 @@ public final class ModuloPrincipalSemantico {
         this.formateadorDeError = new FormateadorDeError();
     }
 
+    @Override
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);

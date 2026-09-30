@@ -86,7 +86,7 @@ public class TesterDeCasosSemanticosSinErrores {
     private void probarExito(String nombre) {
         String ruta = TEST_FILES_DIRECTORY_PATH + nombre;
 
-        Main.main(new String[] { ruta });
+        Main.main(new String[] { "--etapa=3", ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);

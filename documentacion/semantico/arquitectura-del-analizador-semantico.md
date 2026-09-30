@@ -30,7 +30,8 @@ flowchart LR
    `consolidar()`. El primer error semántico corta el análisis. Si no hay ninguno, la salida es
    `Compilacion Exitosa` y `[SinErrores]`.
 
-`--etapa=1` y `--etapa=2` corren el léxico y el sintáctico solos. La etapa por defecto es la 3.
+`--etapa=3` corre esta etapa, y es también la etapa por defecto. `--etapa=1` y `--etapa=2` corren
+el léxico y el sintáctico solos.
 
 ## La tabla de símbolos
 

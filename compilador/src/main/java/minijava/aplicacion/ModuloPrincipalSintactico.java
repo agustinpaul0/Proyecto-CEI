@@ -14,7 +14,7 @@ import minijava.sintactico.errores.ExcepcionSintactica;
 import java.io.IOException;
 import java.util.List;
 
-public final class ModuloPrincipalSintactico {
+public final class ModuloPrincipalSintactico implements ModuloPrincipal {
 
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
@@ -26,6 +26,7 @@ public final class ModuloPrincipalSintactico {
         this.formateadorDeError = new FormateadorDeError();
     }
 
+    @Override
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);

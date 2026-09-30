@@ -9,7 +9,10 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,6 +68,24 @@ class MainTest {
 
         assertTrue(salida.contains("[Error:Nada|1]"), salida);
         assertFalse(salida.contains("(pr_class,class,1)"), salida);
+    }
+
+    @Test
+    void conEtapaTresCorreElAnalizadorSemantico(@TempDir Path dir) throws Exception {
+        Path archivo = dir.resolve("fuente.mjava");
+        Files.writeString(archivo, "class C1 extends Nada {}\n");
+
+        String salida = capturarSalidaDe("--etapa=3", archivo.toString());
+
+        assertTrue(salida.contains("[Error:Nada|1]"), salida);
+    }
+
+    // Cada etapa que OpcionesDeInvocacion acepta tiene su módulo principal, y ninguna más.
+    @Test
+    void hayUnModuloPrincipalPorCadaEtapa() {
+        assertEquals(IntStream.rangeClosed(1, OpcionesDeInvocacion.ETAPA_POR_DEFECTO)
+                        .boxed().collect(Collectors.toSet()),
+                Main.MODULO_POR_ETAPA.keySet());
     }
 
     // La Etapa 2 sólo mira la sintaxis: la clase no declarada no es asunto suyo.

@@ -34,9 +34,16 @@ java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErro
 
 # Etapa 2: sólo el sintáctico, sin tabla de símbolos.
 java -jar target/Compilador.jar --etapa=2 resources/sintactico/sinErrores/todosLosLogrosJuntos.java
+
+# Etapa 3: el chequeo de declaraciones. Es también la etapa por defecto.
+java -jar target/Compilador.jar --etapa=3 resources/sinErrores/herenciaGenericaConArgumento.java
 ```
 
-Sin `--etapa`, corre la Etapa 3.
+Sin `--etapa`, corre la última etapa, la 3. Cada etapa tiene su opción explícita, y los testers de
+la cátedra de cada una la pasan (`--etapa=1`, `--etapa=2`, `--etapa=3`), así que una etapa nueva
+no obliga a tocarlos. `Main` elige el módulo principal en un mapa de etapa a módulo: una etapa
+nueva es una entrada más, y `MainTest` controla que el mapa cubra exactamente las etapas que
+acepta la opción.
 
 `--etapa` es la única opción: **no hay forma de elegir con qué logros correr**.
 

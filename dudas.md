@@ -139,3 +139,37 @@ Todos estos casos pasan hoy el análisis sintáctico. ¿Se controlan todos en la
 | `new int[]{{}}` | que el inicializador coincida con las dimensiones |
 | `3.5e38f` | el rango del `float` (Java: «floating-point number too large») |
 | `a + b * c` | la precedencia: la gramática de la cátedra pone los 13 operadores binarios en un solo nivel. ¿Se aplica la de Java? |
+
+## C. Diferencias con los casos de prueba de un compañero
+
+Corrimos los 93 casos de prueba de un compañero y coincidimos en 86. En los 7 restantes, los dos
+compiladores detectan el mismo error en la misma línea: sólo cambia el lexema reportado. Son
+exactamente las consultas 4 y 5.
+
+**Herencia circular (3 casos).**
+
+```java
+class ClaseUno extends ClaseDos { }
+class ClaseDos extends ClaseTres { }
+class ClaseTres extends ClaseUno { }
+```
+
+→ Él reporta `[Error:ClaseDos|1]`, el tipo del `extends` de la primera clase. Nosotros,
+`[Error:ClaseUno|1]`, la clase.
+
+Por qué: la Pautas slide 30 pide el nombre de la entidad con el problema cuando no hay un token
+claramente asociado, y `javac` marca la clase: «cyclic inheritance involving ClaseUno», con el
+cursor en `class ClaseUno`. Lo mismo pasa con un ciclo de interfaces y con uno de cuatro clases.
+
+**Argumento genérico sobre un tipo que no es genérico (4 casos).**
+
+```java
+class Simple { }
+class Derivada extends Simple<String> { }
+```
+
+→ Él reporta `[Error:String|2]`, el argumento. Nosotros, `[Error:Simple|2]`, el tipo.
+
+Por qué: `String` existe y sería un argumento válido; lo que está mal es que `Simple` no declara un
+parámetro de tipo. `javac` responsabiliza al tipo: «type Simple does not take parameters». Lo mismo
+pasa con `implements`, con un atributo y con un parámetro.

@@ -1,0 +1,209 @@
+% El contenido de dudas.md, de la raíz del repositorio, para mostrarlo impreso. Si
+% cambia uno, cambia el otro. El PDF se copia a la raíz como dudas.pdf.
+\documentclass[12pt,a4paper]{article}
+\input{../entregables/informe/preambulo}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\rightarrow}}
+\fancyhead[R]{\footnotesize\color{tinta}Dudas}
+
+\newcommand{\cod}[1]{\texttt{#1}}
+\newcommand{\pregunta}[1]{\par\medskip\needspace{4\baselineskip}\noindent\textbf{#1}\par\smallskip}
+\DefineVerbatimEnvironment{fuente}{Verbatim}%
+  {fontsize=\small,xleftmargin=1.2em,frame=leftline,framerule=1.2pt,framesep=0.8em}
+\usepackage{needspace}
+\titleformat{\section}{\Large\bfseries\raggedright}{\thesection}{0.7em}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55ex}
+
+\begin{document}
+\thispagestyle{fancy}
+\raggedright
+
+{\LARGE\bfseries Dudas --- Etapa 3 (chequeo de declaraciones)\par}
+\smallskip
+{\color{tinta}\rule{\textwidth}{0.6pt}}
+\medskip
+
+Cada punto trae un ejemplo, la salida que da hoy el compilador y por qué. Para contestar alcanza
+con confirmar o con elegir la alternativa. Las líneas de los ejemplos cuentan desde 1.
+
+\section*{Criterio general}
+
+Usted indicó que los logros son independientes entre etapas. Por eso el semántico se implementa
+para el MiniJava base del documento «Semántica de MiniJava – Parte I». Lo que agregan los logros
+de la Etapa 2 (\cod{private}, genéricos anidados, atributos inicializados) se sigue aceptando
+sintácticamente, pero no suma controles en esta etapa.
+
+\textbf{¿Es correcto?}
+
+\section*{A. Etapa 3}
+
+\pregunta{1. ¿Hay que exigir un \cod{main}?}
+
+\cod{class Aa \{ \}} → \cod{[SinErrores]}.
+
+El documento no lo pide, y Java compila sin \cod{main}. La duda aparece porque los 5 casos
+correctos del tester traen \cod{class Init \{ static void main() \{ \} \}}. Si hay que exigirlo,
+falta saber dos cosas: si alcanza con que haya uno, y qué lexema y qué línea se reportan, porque
+no hay ningún token al que apuntar.
+
+\pregunta{2. \cod{private} y herencia.}
+
+\begin{fuente}
+class Aa { private int x; }
+class Bb extends Aa { int x; }
+\end{fuente}
+
+→ \cod{[Error:x|2]}: el atributo ya está declarado en un ancestro.
+
+Por el criterio general, la visibilidad no afecta ningún control. En Java este programa compila,
+porque un miembro \cod{private} no se hereda.
+
+\pregunta{3. Genéricos anidados.}
+
+\begin{fuente}
+class Caja<T> { }
+class Par<T> { }
+class Aa { Caja<Par<Nada>> x; }
+\end{fuente}
+
+→ \cod{[SinErrores]}, aunque \cod{Nada} no existe.
+
+Se controla sólo el primer nivel: que \cod{Caja} sea genérica y que \cod{Par} exista. El documento
+define el argumento como «el nombre de una clase o interfaz existente». Controlar el anidamiento es
+el logro Genericidad Avanzada E3, que no perseguimos.
+
+\pregunta{4. Herencia circular: ¿qué token se reporta?}
+
+\begin{fuente}
+class Aa extends Bb { }
+class Bb extends Aa { }
+\end{fuente}
+
+→ \cod{[Error:Aa|1]}: la primera clase declarada que forma parte del ciclo.
+
+Para lo que no tiene un token claramente asociado, la Pautas slide 30 pide usar el nombre de la
+entidad con el problema. \cod{javac} marca el mismo lugar: «cyclic inheritance involving Aa».\\
+Alternativa: \cod{[Error:Bb|1]}, el tipo que aparece en el \cod{extends}.
+
+\pregunta{5. Argumento genérico sobre un tipo que no es genérico: ¿qué token se reporta?}
+
+\begin{fuente}
+class Caja { }
+class Aa { Caja<String> x; }
+\end{fuente}
+
+→ \cod{[Error:Caja|2]}: el tipo que no declara parámetro. \cod{javac} dice «type Caja does not take
+parameters».\\
+Alternativa: \cod{[Error:String|2]}, el argumento.
+
+\pregunta{6. \cod{extends String} y \cod{extends System}.}
+
+\cod{class Aa extends String \{ \}} → \cod{[Error:String|1]}.
+
+Es como en Java, donde las dos clases son \cod{final}: \cod{javac} dice «cannot inherit from final
+String». El documento sólo dice que las dos «heredan de Object».
+
+\pregunta{7. El parámetro de tipo en un método estático.}
+
+\cod{class Caja<T> \{ static T crear() \{ \} \}} → \cod{[Error:T|1]}.
+
+Es como en Java: \cod{javac} dice «non-static type variable T cannot be referenced from a static
+context». El documento permite usar \cod{T} «en atributos, retornos y parámetros formales», y no
+distingue los métodos estáticos.
+
+\pregunta{8. Una interfaz no puede contradecir a \cod{Object}.}
+
+\cod{interface Ix \{ int toString(); \}} → \cod{[Error:toString|1]}.
+
+Es como en Java, donde una interfaz incluye los métodos públicos de \cod{Object}: \cod{javac} dice
+«toString() in Ix cannot override toString() in Object».
+
+\pregunta{9. Un método estático que coincide con uno de la interfaz: ¿qué token se reporta?}
+
+\begin{fuente}
+interface Ix { void m(); }
+class Aa implements Ix { static void m() { } }
+\end{fuente}
+
+Que es error está fuera de duda: el documento §6.2 dice que un método estático no implementa uno
+de interfaz.
+
+→ \cod{[Error:m|2]}: el método que está mal. \cod{javac} marca el mismo lugar: «m() in Aa cannot
+implement m() in Ix».\\
+Alternativa: \cod{[Error:Aa|2]}, la clase que no implementa.
+
+\pregunta{10. En esta etapa los cuerpos no se chequean.}
+
+\cod{class Aa \{ void m() \{ this.b().a = 5; \} \}} → \cod{[SinErrores]}, aunque \cod{b} no está
+declarado.
+
+El documento §1 deja los cuerpos para la Etapa 4. Es el mismo caso que \cod{sintCorrecto04}, del
+tester de la Etapa 2.
+
+\section*{B. Para la Etapa 4 (lo que la Etapa 2 dejó al semántico)}
+
+\pregunta{11. \cod{int x, y, z = 10;} (logro Variables Locales Clásicas).}
+
+En Java esta línea inicializa \textbf{sólo} \cod{z}: si después se usa \cod{x}, \cod{javac} dice
+«variable x might not have been initialized». ¿Se lee igual, o las tres variables valen 10?
+
+\pregunta{12. Lo que el sintáctico deja pasar a propósito.}
+
+Todos estos casos pasan hoy el análisis sintáctico. ¿Se controlan todos en la Etapa 4, como en
+Java?
+
+\smallskip
+\begin{tabular}{>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{9.4cm}}
+\toprule
+\textbf{Ejemplo} & \textbf{Qué se controla} \\
+\midrule
+\cod{5 = x;} & que el lado izquierdo del \cod{=} sea una variable \\
+\cod{5 + 3;} & que la sentencia sea una asignación o una llamada (Java: «not a statement») \\
+\cod{m()++;} & que el operando de \cod{++} o \cod{-{}-} sea una variable \\
+\cod{noDeclarada = 5;} & que los nombres estén declarados \\
+\cod{int x = "hola";} y \cod{return;} en un método \cod{int} & la compatibilidad de tipos \\
+\cod{m(1, 2, 3)} con \cod{m} de un solo parámetro & la aridad de la llamada \\
+\cod{int x; int x;} en un mismo bloque & las variables locales repetidas \\
+\cod{new int[]\{\{\}\}} & que el inicializador coincida con las dimensiones \\
+\cod{3.5e38f} & el rango del \cod{float} (Java: «floating-point number too large») \\
+\cod{a + b * c} & la precedencia: la gramática de la cátedra pone los 13 operadores binarios en
+un solo nivel. ¿Se aplica la de Java? \\
+\bottomrule
+\end{tabular}
+
+\needspace{14\baselineskip}
+\section*{C. Diferencias con los casos de prueba de un compañero}
+
+Corrimos los 93 casos de prueba de un compañero y coincidimos en 86. En los 7 restantes, los dos
+compiladores detectan el mismo error en la misma línea: sólo cambia el lexema reportado. Son
+exactamente las consultas 4 y 5.
+
+\pregunta{Herencia circular (3 casos).}
+
+\begin{fuente}
+class ClaseUno extends ClaseDos { }
+class ClaseDos extends ClaseTres { }
+class ClaseTres extends ClaseUno { }
+\end{fuente}
+
+→ Él reporta \cod{[Error:ClaseDos|1]}, el tipo del \cod{extends} de la primera clase. Nosotros,
+\cod{[Error:ClaseUno|1]}, la clase.
+
+Por qué: la Pautas slide 30 pide el nombre de la entidad con el problema cuando no hay un token
+claramente asociado, y \cod{javac} marca la clase: «cyclic inheritance involving ClaseUno», con el
+cursor en \cod{class ClaseUno}. Lo mismo pasa con un ciclo de interfaces y con uno de cuatro clases.
+
+\pregunta{Argumento genérico sobre un tipo que no es genérico (4 casos).}
+
+\begin{fuente}
+class Simple { }
+class Derivada extends Simple<String> { }
+\end{fuente}
+
+→ Él reporta \cod{[Error:String|2]}, el argumento. Nosotros, \cod{[Error:Simple|2]}, el tipo.
+
+Por qué: \cod{String} existe y sería un argumento válido; lo que está mal es que \cod{Simple} no
+declara un parámetro de tipo. \cod{javac} responsabiliza al tipo: «type Simple does not take
+parameters». Lo mismo pasa con \cod{implements}, con un atributo y con un parámetro.
+
+\end{document}

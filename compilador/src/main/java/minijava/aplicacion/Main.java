@@ -4,11 +4,18 @@ import minijava.comun.salida.Salida;
 import minijava.comun.salida.SalidaEstandar;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.function.Function;
 
 public final class Main {
 
     private static final String USO =
             "Uso: java -jar Compilador.jar [--etapa=1|2|3] <archivo-fuente>";
+
+    static final Map<Integer, Function<Salida, ModuloPrincipal>> MODULO_POR_ETAPA = Map.of(
+            1, ModuloPrincipalLexico::new,
+            2, ModuloPrincipalSintactico::new,
+            3, ModuloPrincipalSemantico::new);
 
     public static void main(String[] args) {
         // Sin System.exit() ni excepciones que escapen: los testers de la cátedra
@@ -23,11 +30,7 @@ public final class Main {
         }
         String ruta = opciones.rutaFuente().get();
         try {
-            switch (opciones.etapa()) {
-                case 1 -> new ModuloPrincipalLexico(salida).ejecutar(ruta);
-                case 2 -> new ModuloPrincipalSintactico(salida).ejecutar(ruta);
-                default -> new ModuloPrincipalSemantico(salida).ejecutar(ruta);
-            }
+            MODULO_POR_ETAPA.get(opciones.etapa()).apply(salida).ejecutar(ruta);
         } catch (IOException excepcion) {
             salida.imprimir("No se pudo leer el archivo fuente: " + ruta);
         }

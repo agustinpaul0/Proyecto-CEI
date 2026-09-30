@@ -12,7 +12,7 @@ import minijava.lexico.tokens.Token;
 
 import java.io.IOException;
 
-public final class ModuloPrincipalLexico {
+public final class ModuloPrincipalLexico implements ModuloPrincipal {
 
     private final Salida salida;
     private final FormateadorDeError formateadorDeError;
@@ -22,6 +22,7 @@ public final class ModuloPrincipalLexico {
         this.formateadorDeError = new FormateadorDeError();
     }
 
+    @Override
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);

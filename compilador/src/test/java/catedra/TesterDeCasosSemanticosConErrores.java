@@ -92,7 +92,7 @@ public class TesterDeCasosSemanticosConErrores {
 
         String codigoEsperado = codigoDeError(ruta);
 
-        Main.main(new String[] { ruta });
+        Main.main(new String[] { "--etapa=3", ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);
