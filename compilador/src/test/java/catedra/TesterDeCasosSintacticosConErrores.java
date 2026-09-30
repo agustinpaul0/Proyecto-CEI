@@ -33,7 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Tag("sintactico")
 public class TesterDeCasosSintacticosConErrores {
 
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sintactico/conErrores/";
     // La primera línea es "///[Error:Lexema|NroLinea]": se saltea el "///".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -92,7 +92,7 @@ public class TesterDeCasosSintacticosConErrores {
 
         String codigoEsperado = codigoDeError(ruta);
 
-        Main.main(new String[] { ruta });
+        Main.main(new String[] { "--etapa=2", ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);

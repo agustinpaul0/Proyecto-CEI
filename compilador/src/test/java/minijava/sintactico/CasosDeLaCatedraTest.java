@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Los 8 fuentes que la cátedra adjunta en testersSintactico, copiados a
-// resources/catedra/. Cada uno declara en su primera línea el código
+// resources/catedra/sintactico/. Cada uno declara en su primera línea el código
 // que espera, y el compilador tiene que darlo exacto: no alcanza con aceptar o
 // rechazar, el error tiene que caer en el mismo token.
 @Tag("sintactico")
 class CasosDeLaCatedraTest {
 
-    private static final Path RAIZ = Path.of("resources", "catedra");
+    private static final Path RAIZ = Path.of("resources", "catedra", "sintactico");
 
     private static final List<String> CASOS = List.of(
             "sinErrores/sintCorrecto01.java", "sinErrores/sintCorrecto02.java",

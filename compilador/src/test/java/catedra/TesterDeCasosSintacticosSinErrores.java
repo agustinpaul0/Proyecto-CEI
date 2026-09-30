@@ -31,7 +31,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TesterDeCasosSintacticosSinErrores {
 
     private static final String MENSAJE_DE_EXITO = "[SinErrores]";
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sintactico/sinErrores/";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static final PrintStream CONSOLA = System.out;
 
@@ -86,7 +86,7 @@ public class TesterDeCasosSintacticosSinErrores {
     private void probarExito(String nombre) {
         String ruta = TEST_FILES_DIRECTORY_PATH + nombre;
 
-        Main.main(new String[] { ruta });
+        Main.main(new String[] { "--etapa=2", ruta });
 
         String salida = outContent.toString();
         VolcadoDeCasos.volcar(CONSOLA, ruta, salida);

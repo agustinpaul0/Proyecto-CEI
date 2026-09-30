@@ -17,8 +17,8 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-SIN_ERRORES = RAIZ / "resources" / "sinErrores"
-CON_ERRORES = RAIZ / "resources" / "conErrores"
+SIN_ERRORES = RAIZ / "resources" / "sintactico" / "sinErrores"
+CON_ERRORES = RAIZ / "resources" / "sintactico" / "conErrores"
 
 def correcto(nombre, fuente):
     destino = SIN_ERRORES / f"{nombre}.java"

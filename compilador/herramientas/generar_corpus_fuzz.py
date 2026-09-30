@@ -34,8 +34,8 @@ TRABAJO = HERRAMIENTAS / "fuzz" / "trabajo"
 JARS = HERRAMIENTAS / "fuzz" / "jars"
 VENV = RAIZ / ".venv" / "bin"
 
-SIN_ERRORES = RAIZ / "resources" / "sinErrores"
-CON_ERRORES = RAIZ / "resources" / "conErrores"
+SIN_ERRORES = RAIZ / "resources" / "sintactico" / "sinErrores"
+CON_ERRORES = RAIZ / "resources" / "sintactico" / "conErrores"
 
 
 def correr(comando, **kwargs):

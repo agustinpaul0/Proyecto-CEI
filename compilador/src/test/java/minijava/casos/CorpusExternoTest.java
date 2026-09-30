@@ -26,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // este proyecto: acá sólo se corre el compilador contra ellos.
 //
 // Los casos escritos a mano de ese corpus ya están importados —los `ext*` de
-// resources/— y se verifican con el resto. Acá van los generados, fuera de
-// resources/sinErrores y resources/conErrores para que los testers de la cátedra
-// corran sólo el corpus propio.
+// resources/sintactico/— y se verifican con el resto. Acá van los generados,
+// fuera de resources/sintactico/ para que los testers de la cátedra corran sólo
+// el corpus propio.
 //
 // El criterio es el del tester estricto: el PRIMER código que emite el
 // compilador tiene que ser el que el caso declara. Con Modo Pánico, buscarlo en

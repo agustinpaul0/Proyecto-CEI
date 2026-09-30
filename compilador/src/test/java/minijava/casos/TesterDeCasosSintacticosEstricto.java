@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Tag("sintactico")
 class TesterDeCasosSintacticosEstricto {
 
-    private static final Path SIN_ERRORES = Path.of("resources", "sinErrores");
-    private static final Path CON_ERRORES = Path.of("resources", "conErrores");
+    private static final Path SIN_ERRORES = Path.of("resources", "sintactico", "sinErrores");
+    private static final Path CON_ERRORES = Path.of("resources", "sintactico", "conErrores");
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
     static Stream<Path> casosCorrectos() throws IOException {
