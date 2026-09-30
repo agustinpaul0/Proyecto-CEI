@@ -12,10 +12,6 @@ public final class ExcepcionSemantica extends Exception {
         this.token = token;
     }
 
-    public Token getToken() {
-        return token;
-    }
-
     public String getLexemaOfensivo() {
         return token.lexema();
     }

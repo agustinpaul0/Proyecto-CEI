@@ -114,15 +114,14 @@ public final class Clase extends TipoDeclarado {
 
     private void verificarPadre(TipoReferencia referencia) throws ExcepcionSemantica {
         referencia.verificarEn(this, false);
-        TipoDeclarado declarado = referencia.declaracion();
-        if (declarado instanceof Interfaz) {
-            throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
-                    + " no puede extender la interfaz " + declarado.nombre()
+        switch (referencia.declaracion()) {
+            case Interfaz interfaz -> throw new ExcepcionSemantica(referencia.token(), "La clase "
+                    + nombre() + " no puede extender la interfaz " + interfaz.nombre()
                     + ": una clase extiende una clase y implementa una interfaz");
-        }
-        if (declarado instanceof Clase clase && clase.esFinal) {
-            throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
-                    + " no puede heredar de la clase final " + declarado.nombre());
+            case Clase clase when clase.esFinal -> throw new ExcepcionSemantica(referencia.token(),
+                    "La clase " + nombre() + " no puede heredar de la clase final " + clase.nombre());
+            case Clase clase -> {
+            }
         }
     }
 

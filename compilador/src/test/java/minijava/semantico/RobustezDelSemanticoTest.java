@@ -1,0 +1,80 @@
+package minijava.semantico;
+
+import minijava.aplicacion.ModuloPrincipalSemantico;
+import minijava.comun.salida.SalidaEnMemoria;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+// La tabla de símbolos se llena con acciones en el parser, y esas acciones corren
+// también cuando el Modo Pánico corta una declaración por la mitad. Sobre todos
+// los fuentes de las etapas anteriores —correctos, con errores léxicos y
+// sintácticos, y el corpus externo— el compilador completo nunca puede caerse,
+// y siempre termina en un código de la cátedra.
+@Tag("semantico")
+class RobustezDelSemanticoTest {
+
+    @ParameterizedTest
+    @ValueSource(strings = {"lexico", "sintactico", "corpus-externo"})
+    void elCompiladorCompletoTerminaSiempreEnUnCodigo(String corpus) throws IOException {
+        List<String> fallas = new ArrayList<>();
+        for (Path fuente : fuentesDe(Path.of("resources", corpus))) {
+            List<String> salida = ejecutar(fuente, fallas);
+            if (salida != null && !terminaEnUnCodigo(salida)) {
+                fallas.add(fuente + " -> " + salida);
+            }
+        }
+        assertEquals(List.of(), fallas);
+    }
+
+    // Un fuente sintácticamente válido llega al semántico, que da un único
+    // reporte: el éxito o el primer error.
+    @Test
+    void unFuenteSintacticamenteValidoDaUnSoloReporte() throws IOException {
+        List<String> fallas = new ArrayList<>();
+        List<Path> fuentes = fuentesDe(Path.of("resources", "sintactico", "sinErrores"));
+        for (Path fuente : fuentes) {
+            List<String> salida = ejecutar(fuente, fallas);
+            if (salida != null && salida.size() != 3) {
+                fallas.add(fuente + " -> " + salida);
+            }
+        }
+        assertTrue(fuentes.size() > 1000, "el corpus sintactico no esta donde se lo busca");
+        assertEquals(List.of(), fallas);
+    }
+
+    private List<String> ejecutar(Path fuente, List<String> fallas) {
+        SalidaEnMemoria salida = new SalidaEnMemoria();
+        try {
+            new ModuloPrincipalSemantico(salida).ejecutar(fuente.toString());
+            return salida.getLineas();
+        } catch (IOException | RuntimeException excepcion) {
+            fallas.add(fuente + " -> " + excepcion);
+            return null;
+        }
+    }
+
+    private boolean terminaEnUnCodigo(List<String> salida) {
+        String ultima = salida.getLast();
+        return ultima.equals("[SinErrores]") || ultima.startsWith("[Error:");
+    }
+
+    private List<Path> fuentesDe(Path raiz) throws IOException {
+        try (Stream<Path> archivos = Files.walk(raiz)) {
+            return archivos.filter(Files::isRegularFile)
+                    .filter(archivo -> archivo.toString().endsWith(".java"))
+                    .sorted().toList();
+        }
+    }
+}

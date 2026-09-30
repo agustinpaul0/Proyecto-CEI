@@ -163,8 +163,8 @@
 
     <profiles>
         <!-- Cada etapa se corrige por separado, así que su suite tiene que poder
-             correrse sola. Los tests de comun/ van en las dos: son el piso de
-             las dos fases. -->
+             correrse sola. Los tests de comun/ van en todas: son el piso de
+             cada fase. -->
         <profile>
             <id>fase-lexico</id>
             <properties>
@@ -176,6 +176,13 @@
             <id>fase-sintactico</id>
             <properties>
                 <fases>sintactico,comun</fases>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>fase-semantico</id>
+            <properties>
+                <fases>semantico,comun</fases>
             </properties>
         </profile>
 
@@ -221,6 +228,8 @@
                                 <param>minijava.lexico.*Test</param>
                                 <param>minijava.comun.*.*Test</param>
                                 <param>minijava.aplicacion.*Test</param>
+                                <param>minijava.semantico.*Test</param>
+                                <param>minijava.casos.TesterDeCasosSemanticosEstricto</param>
                             </targetTests>
                             <!-- La implementación de referencia de la cátedra no se
                                  testea ni se usa: mutarla sólo produce ruido. -->
@@ -237,6 +246,7 @@
                                 <param>minijava.lexico.*PropiedadesTest</param>
                                 <param>minijava.lexico.*FuzzTest</param>
                                 <param>minijava.sintactico.*PropiedadesTest</param>
+                                <param>minijava.semantico.RobustezDelSemanticoTest</param>
                             </excludedTestClasses>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>
