@@ -2,12 +2,20 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.semantico.entidades.Clase;
+import minijava.semantico.entidades.Interfaz;
+import minijava.semantico.tabla.TablaDeSimbolos;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeClases;
 import minijava.sintactico.recuperacion.ContextoDeSincronizacion;
 
-// Las unidades de compilación: clases, interfaces y sus cabeceras.
+import java.util.Optional;
+
+// Las unidades de compilación: clases, interfaces y sus cabeceras. Cada clase o
+// interfaz se crea apenas se lee su nombre y queda como la actual de la tabla de
+// símbolos: sus miembros y su herencia se le agregan a ella.
 public final class AnalizadorDeClases extends ParteDelAnalizador {
 
     public AnalizadorDeClases(Sintaxis sintaxis) {
@@ -38,19 +46,26 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // Clase -> class idClase GenericidadOpcional HerenciaOpcional { ListaMiembros }
     private void clase() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PR_CLASS);
+        Token nombre = actual();
         match(TipoDeToken.ID_CLASE);
-        genericidadOpcional();
+        Clase clase = new Clase(nombre);
+        TablaDeSimbolos.declararClase(clase);
+        clase.setParametroDeTipo(genericidadOpcional());
         herenciaOpcional();
         match(TipoDeToken.LLAVE_A);
         listaMiembros();
         match(TipoDeToken.LLAVE_C);
+        clase.cerrar();
     }
 
     // Interfaz -> interface idClase GenericidadOpcional ExtensionOpcional { ListaMetodosInterfaz }
     private void interfaz() throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.PR_INTERFACE);
+        Token nombre = actual();
         match(TipoDeToken.ID_CLASE);
-        genericidadOpcional();
+        Interfaz interfaz = new Interfaz(nombre);
+        TablaDeSimbolos.declararInterfaz(interfaz);
+        interfaz.setParametroDeTipo(genericidadOpcional());
         extensionOpcional();
         match(TipoDeToken.LLAVE_A);
         listaMetodosInterfaz();
@@ -61,26 +76,34 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     //
     // Una clase o interfaz está limitada a UN parámetro de tipo: el logro de
     // genericidad avanzada agrega el anidamiento, no la cantidad.
-    private void genericidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+    private Optional<Token> genericidadOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeClases.GENERICIDAD_OPCIONAL_MENOR)) {
             match(TipoDeToken.OP_MENOR);
+            Token parametro = actual();
             match(TipoDeToken.ID_GEN);
             match(TipoDeToken.OP_MAYOR);
+            return Optional.of(parametro);
         } else {
             // GenericidadOpcional -> EPSILON
+            return Optional.empty();
         }
     }
 
     // HerenciaOpcional -> extends TipoReferencia | implements TipoReferencia | EPSILON
+    //
+    // Sin `extends`, la clase extiende Object (documento de semántica §4).
     private void herenciaOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+        Clase clase = TablaDeSimbolos.claseActual();
         if (estaEn(PrimerosDeClases.HERENCIA_OPCIONAL_EXTENDS)) {
             match(TipoDeToken.PR_EXTENDS);
-            sintaxis.tipos().tipoReferencia();
+            clase.setPadre(sintaxis.tipos().tipoReferencia());
         } else if (estaEn(PrimerosDeClases.HERENCIA_OPCIONAL_IMPLEMENTS)) {
             match(TipoDeToken.PR_IMPLEMENTS);
-            sintaxis.tipos().tipoReferencia();
+            clase.setPadre(TablaDeSimbolos.referenciaAObject(clase.token().linea()));
+            clase.setInterfaz(sintaxis.tipos().tipoReferencia());
         } else {
             // HerenciaOpcional -> EPSILON
+            clase.setPadre(TablaDeSimbolos.referenciaAObject(clase.token().linea()));
         }
     }
 
@@ -88,7 +111,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     private void extensionOpcional() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeClases.EXTENSION_OPCIONAL_EXTENDS)) {
             match(TipoDeToken.PR_EXTENDS);
-            sintaxis.tipos().tipoReferencia();
+            TablaDeSimbolos.interfazActual().setExtendida(sintaxis.tipos().tipoReferencia());
         } else {
             // ExtensionOpcional -> EPSILON
         }

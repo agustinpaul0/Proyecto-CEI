@@ -7,6 +7,7 @@ import minijava.lexico.AnalizadorLexico;
 import minijava.lexico.contexto.ContextoLexico;
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.errores.FormateadorDeError;
+import minijava.semantico.tabla.TablaDeSimbolos;
 import minijava.sintactico.AnalizadorSintactico;
 import minijava.sintactico.errores.ExcepcionSintactica;
 
@@ -28,6 +29,7 @@ public final class ModuloPrincipalSintactico {
     public void ejecutar(String rutaFuente) throws IOException {
         ManejadorDeArchivo manejador = new ManejadorDeArchivoEficiente();
         manejador.open(rutaFuente);
+        TablaDeSimbolos.inicializar();
         var analizador = new AnalizadorSintactico(
                 new AnalizadorLexico(new ContextoLexico(manejador)));
 

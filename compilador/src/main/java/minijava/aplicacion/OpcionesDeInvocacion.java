@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// Un solo jar sirve a las dos etapas, porque la Etapa 1 se corrige por separado
+// Un solo jar sirve a todas las etapas, porque cada una se corrige por separado
 // y tiene que seguir siendo ejecutable sin recompilar nada.
 //
 // El contrato de invocación de las Pautas (Etapa 2, slide 28) es
@@ -15,7 +15,7 @@ public record OpcionesDeInvocacion(
         Optional<String> rutaFuente,
         List<String> avisos) {
 
-    public static final int ETAPA_POR_DEFECTO = 2;
+    public static final int ETAPA_POR_DEFECTO = 3;
 
     private static final String OPCION_ETAPA = "--etapa=";
 
@@ -42,7 +42,7 @@ public record OpcionesDeInvocacion(
     private static int etapaDe(String valor, int actual, List<String> avisos) {
         try {
             int etapa = Integer.parseInt(valor.trim());
-            if (etapa == 1 || etapa == 2) {
+            if (etapa >= 1 && etapa <= ETAPA_POR_DEFECTO) {
                 return etapa;
             }
         } catch (NumberFormatException excepcion) {

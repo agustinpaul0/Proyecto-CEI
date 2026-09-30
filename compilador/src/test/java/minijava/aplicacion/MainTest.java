@@ -46,7 +46,7 @@ class MainTest {
         assertTrue(salida.contains("No se pudo leer el archivo fuente"), salida);
     }
 
-    // La cátedra exige aceptar cualquier extensión, no sólo .java, en las dos etapas.
+    // La cátedra exige aceptar cualquier extensión, no sólo .java, en todas las etapas.
     @Test
     void aceptaCualquierExtensionDeArchivo(@TempDir Path dir) throws Exception {
         Path archivo = dir.resolve("fuente.loquesea");
@@ -57,14 +57,25 @@ class MainTest {
     }
 
     @Test
-    void sinEtapaCorreElAnalizadorSintactico(@TempDir Path dir) throws Exception {
+    void sinEtapaCorreElAnalizadorSemantico(@TempDir Path dir) throws Exception {
         Path archivo = dir.resolve("fuente.mjava");
-        Files.writeString(archivo, "class C1 {}\n");
+        Files.writeString(archivo, "class C1 extends Nada {}\n");
 
         String salida = capturarSalidaDe(archivo.toString());
 
-        assertTrue(salida.contains("Compilacion Exitosa"), salida);
+        assertTrue(salida.contains("[Error:Nada|1]"), salida);
         assertFalse(salida.contains("(pr_class,class,1)"), salida);
+    }
+
+    // La Etapa 2 sólo mira la sintaxis: la clase no declarada no es asunto suyo.
+    @Test
+    void conEtapaDosCorreSoloElAnalizadorSintactico(@TempDir Path dir) throws Exception {
+        Path archivo = dir.resolve("fuente.mjava");
+        Files.writeString(archivo, "class C1 extends Nada {}\n");
+
+        String salida = capturarSalidaDe("--etapa=2", archivo.toString());
+
+        assertTrue(salida.contains("[SinErrores]"), salida);
     }
 
     @Test

@@ -2,12 +2,31 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.semantico.entidades.Atributo;
+import minijava.semantico.entidades.Constructor;
+import minijava.semantico.entidades.Metodo;
+import minijava.semantico.entidades.Miembro;
+import minijava.semantico.tabla.TablaDeSimbolos;
+import minijava.semantico.tipos.Tipo;
+import minijava.semantico.tipos.TipoArreglo;
+import minijava.semantico.tipos.TipoReferencia;
+import minijava.semantico.tipos.TipoVoid;
+import minijava.semantico.tipos.VariableDeTipo;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeMiembros;
 
 // Atributos, métodos y constructores. Es donde vive la factorización que decide
 // entre constructor y miembro con tipo de referencia, y entre atributo y método.
+//
+// Cada miembro se crea apenas se sabe qué es y se agrega a la clase actual de la
+// tabla de símbolos. La visibilidad se reconoce y no se registra: es un logro de
+// la Etapa 2, y los logros no suman controles en la Etapa 3.
+//
+// `miembroDesdeIdClase` y `atributoOMetodo` son los únicos métodos que reciben
+// atributos de entrada: la factorización consumió el tipo y el nombre antes de
+// saber si el miembro es un atributo, un método o un constructor.
 public final class AnalizadorDeMiembros extends ParteDelAnalizador {
 
     public AnalizadorDeMiembros(Sintaxis sintaxis) {
@@ -24,14 +43,17 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     public void miembro() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_VISIBILIDAD)) {
             visibilidad();
-            miembroTrasVisibilidad();
+            TablaDeSimbolos.claseActual().agregarMiembro(miembroTrasVisibilidad());
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_STATIC)) {
             match(TipoDeToken.PR_STATIC);
             visibilidadOpcional();
-            tipoMetodo();
-            metodo();
+            Tipo retorno = tipoMetodo();
+            Metodo metodo = metodo();
+            metodo.hacerEstatico();
+            metodo.setRetorno(retorno);
+            TablaDeSimbolos.claseActual().agregarMiembro(metodo);
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_MIEMBRO_SIN_MODIFICADORES)) {
-            miembroSinModificadores();
+            TablaDeSimbolos.claseActual().agregarMiembro(miembroSinModificadores());
         } else {
             throw errorEsperando(PrimerosDeMiembros.MIEMBRO_VISIBILIDAD,
                     PrimerosDeMiembros.MIEMBRO_STATIC,
@@ -41,13 +63,16 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
 
     // MiembroTrasVisibilidad -> static TipoMetodo Metodo
     // MiembroTrasVisibilidad -> MiembroSinModificadores
-    private void miembroTrasVisibilidad() throws ExcepcionLexica, ExcepcionSintactica {
+    private Miembro miembroTrasVisibilidad() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_STATIC)) {
             match(TipoDeToken.PR_STATIC);
-            tipoMetodo();
-            metodo();
+            Tipo retorno = tipoMetodo();
+            Metodo metodo = metodo();
+            metodo.hacerEstatico();
+            metodo.setRetorno(retorno);
+            return metodo;
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_MIEMBRO_SIN_MODIFICADORES)) {
-            miembroSinModificadores();
+            return miembroSinModificadores();
         } else {
             throw errorEsperando(PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_STATIC,
                     PrimerosDeMiembros.MIEMBRO_TRAS_VISIBILIDAD_MIEMBRO_SIN_MODIFICADORES);
@@ -60,18 +85,24 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     // cuerpo, y éste termina en `;`.
     public void metodoInterfaz() throws ExcepcionLexica, ExcepcionSintactica {
         publicOpcional();
-        tipoMetodo();
+        Tipo retorno = tipoMetodo();
+        Token nombre = actual();
         match(TipoDeToken.ID_MV);
+        Metodo metodo = new Metodo(nombre);
+        metodo.setRetorno(retorno);
+        TablaDeSimbolos.setUnidadActual(metodo);
         sintaxis.tipos().argsFormales();
         match(TipoDeToken.PUNTO_Y_COMA);
+        TablaDeSimbolos.interfazActual().agregarMetodo(metodo);
     }
 
     // TipoMetodo -> Tipo | void
-    public void tipoMetodo() throws ExcepcionLexica, ExcepcionSintactica {
+    public Tipo tipoMetodo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.TIPO_METODO_VOID)) {
             match(TipoDeToken.PR_VOID);
+            return TipoVoid.VOID;
         } else if (estaEn(PrimerosDeMiembros.TIPO_METODO_TIPO)) {
-            sintaxis.tipos().tipo();
+            return sintaxis.tipos().tipo();
         } else {
             throw errorEsperando(PrimerosDeMiembros.TIPO_METODO_TIPO, PrimerosDeMiembros.TIPO_METODO_VOID);
         }
@@ -108,23 +139,29 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     //                          | TipoPrimitivo DimensionesOpcionales idMetVar AtributoOMetodo
     //                          | idGen DimensionesOpcionales idMetVar AtributoOMetodo
     //                          | idClase MiembroDesdeIdClase
-    private void miembroSinModificadores() throws ExcepcionLexica, ExcepcionSintactica {
+    private Miembro miembroSinModificadores() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_VOID)) {
             match(TipoDeToken.PR_VOID);
-            metodo();
+            Metodo metodo = metodo();
+            metodo.setRetorno(TipoVoid.VOID);
+            return metodo;
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO)) {
-            sintaxis.tipos().tipoPrimitivo();
-            sintaxis.tipos().dimensionesOpcionales();
+            Tipo base = sintaxis.tipos().tipoPrimitivo();
+            Tipo tipo = TipoArreglo.de(base, sintaxis.tipos().dimensionesOpcionales());
+            Token nombre = actual();
             match(TipoDeToken.ID_MV);
-            atributoOMetodo();
+            return atributoOMetodo(tipo, nombre);
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_GEN)) {
+            Token parametro = actual();
             match(TipoDeToken.ID_GEN);
-            sintaxis.tipos().dimensionesOpcionales();
+            Tipo tipo = TipoArreglo.de(new VariableDeTipo(parametro), sintaxis.tipos().dimensionesOpcionales());
+            Token nombre = actual();
             match(TipoDeToken.ID_MV);
-            atributoOMetodo();
+            return atributoOMetodo(tipo, nombre);
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_CLASE)) {
+            Token idClase = actual();
             match(TipoDeToken.ID_CLASE);
-            miembroDesdeIdClase();
+            return miembroDesdeIdClase(idClase);
         } else {
             throw errorEsperando(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_VOID,
                     PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_TIPO_PRIMITIVO,
@@ -138,14 +175,18 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     //
     // El constructor no lleva un `public` propio —lo absorbe <Visibilidad>—, así
     // que compite con el atributo o método de tipo referencia por el token idClase.
-    private void miembroDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
+    private Miembro miembroDesdeIdClase(Token idClase) throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO)) {
+            Constructor constructor = new Constructor(idClase);
+            TablaDeSimbolos.setUnidadActual(constructor);
             cuerpoDeMetodo();
+            return constructor;
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL)) {
-            sintaxis.tipos().tipoGenericoOpcional();
-            sintaxis.tipos().dimensionesOpcionales();
+            TipoReferencia base = new TipoReferencia(idClase, sintaxis.tipos().tipoGenericoOpcional());
+            Tipo tipo = TipoArreglo.de(base, sintaxis.tipos().dimensionesOpcionales());
+            Token nombre = actual();
             match(TipoDeToken.ID_MV);
-            atributoOMetodo();
+            return atributoOMetodo(tipo, nombre);
         } else {
             throw errorEsperando(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_CUERPO_DE_METODO,
                     PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL);
@@ -153,12 +194,17 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     }
 
     // AtributoOMetodo -> InicializacionDeAtributo ; | CuerpoDeMetodo
-    private void atributoOMetodo() throws ExcepcionLexica, ExcepcionSintactica {
+    private Miembro atributoOMetodo(Tipo tipo, Token nombre) throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.ATRIBUTO_OMETODO_INICIALIZACION_DE_ATRIBUTO)) {
             inicializacionDeAtributo();
             match(TipoDeToken.PUNTO_Y_COMA);
+            return new Atributo(nombre, tipo);
         } else if (estaEn(PrimerosDeMiembros.ATRIBUTO_OMETODO_CUERPO_DE_METODO)) {
+            Metodo metodo = new Metodo(nombre);
+            metodo.setRetorno(tipo);
+            TablaDeSimbolos.setUnidadActual(metodo);
             cuerpoDeMetodo();
+            return metodo;
         } else {
             throw errorEsperando(PrimerosDeMiembros.ATRIBUTO_OMETODO_INICIALIZACION_DE_ATRIBUTO,
                     PrimerosDeMiembros.ATRIBUTO_OMETODO_CUERPO_DE_METODO);
@@ -177,9 +223,13 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     }
 
     // Metodo -> idMetVar CuerpoDeMetodo
-    private void metodo() throws ExcepcionLexica, ExcepcionSintactica {
+    private Metodo metodo() throws ExcepcionLexica, ExcepcionSintactica {
+        Token nombre = actual();
         match(TipoDeToken.ID_MV);
+        Metodo metodo = new Metodo(nombre);
+        TablaDeSimbolos.setUnidadActual(metodo);
         cuerpoDeMetodo();
+        return metodo;
     }
 
     // PublicOpcional -> public
