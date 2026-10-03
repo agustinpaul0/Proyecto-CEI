@@ -38,6 +38,11 @@ La Etapa 2 agrega las suyas, de `Pautas Etapa 2.pdf`:
   `Compilacion Exitosa`.
 - Invocación: la misma de la Etapa 1, `java -jar Compilador.jar <archivo-fuente>` (slide 28).
 
+**Cada etapa puede asumir que su entrada es válida para la etapa anterior.** El semántico trabaja
+sobre programas que pasan la Etapa 2 sin errores: no se agrega código para tolerar o recuperar
+programas sintácticamente inválidos. Si el fuente tiene un error léxico o sintáctico, se reporta
+como en esa etapa y el semántico no corre (indicación del profesor).
+
 La Etapa 3 agrega las suyas, de `Pautas Etapa 3.pdf`:
 
 - La tabla de símbolos es global. El sintáctico la llena y, si terminó sin errores, el Módulo
