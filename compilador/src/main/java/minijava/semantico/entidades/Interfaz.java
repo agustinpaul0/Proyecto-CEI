@@ -9,28 +9,27 @@ import java.util.Optional;
 
 public final class Interfaz extends TipoDeclarado {
 
-    private Optional<TipoReferencia> extendida = Optional.empty();
+    private TipoReferencia extendida;
 
     public Interfaz(Token token) {
         super(token);
     }
 
     public void setExtendida(TipoReferencia extendida) {
-        this.extendida = Optional.of(extendida);
+        this.extendida = extendida;
     }
 
     public Optional<TipoReferencia> extendida() {
-        return extendida;
+        return Optional.ofNullable(extendida);
     }
 
     @Override
     public void estaBienDeclarado() throws ExcepcionSemantica {
-        if (extendida.isPresent()) {
-            TipoReferencia referencia = extendida.get();
-            referencia.verificarEn(this, false);
-            TipoDeclarado declarado = referencia.declaracion();
+        if (extendida != null) {
+            extendida.verificarEn(this, false);
+            TipoDeclarado declarado = extendida.declaracion();
             if (declarado instanceof Clase) {
-                throw new ExcepcionSemantica(referencia.token(), "La interfaz " + nombre()
+                throw new ExcepcionSemantica(extendida.token(), "La interfaz " + nombre()
                         + " no puede extender la clase " + declarado.nombre()
                         + ": una interfaz solo extiende interfaces");
             }
@@ -43,15 +42,15 @@ public final class Interfaz extends TipoDeclarado {
 
     @Override
     protected Optional<TipoDeclarado> ancestroDirecto() {
-        return extendida.flatMap(e -> TablaDeSimbolos.tipo(e.nombreDelTipo()));
+        return extendida().flatMap(e -> TablaDeSimbolos.tipo(e.nombreDelTipo()));
     }
 
     @Override
     protected void consolidarConAncestros() throws ExcepcionSemantica {
-        if (extendida.isPresent()) {
-            Interfaz ancestro = (Interfaz) extendida.get().declaracion();
+        if (extendida != null) {
+            Interfaz ancestro = (Interfaz) extendida.declaracion();
             ancestro.consolidar();
-            heredarMetodos(ancestro, sustitucionHacia(extendida.get(), ancestro),
+            heredarMetodos(ancestro, sustitucionHacia(extendida, ancestro),
                     Interfaz::controlarRedefinicion);
         }
         verificarContraObject();

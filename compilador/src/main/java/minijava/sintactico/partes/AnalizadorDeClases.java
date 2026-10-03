@@ -50,7 +50,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
         match(TipoDeToken.ID_CLASE);
         Clase clase = new Clase(nombre);
         TablaDeSimbolos.declararClase(clase);
-        clase.setParametroDeTipo(genericidadOpcional());
+        genericidadOpcional().ifPresent(clase::setParametroDeTipo);
         herenciaOpcional();
         match(TipoDeToken.LLAVE_A);
         listaMiembros();
@@ -65,7 +65,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
         match(TipoDeToken.ID_CLASE);
         Interfaz interfaz = new Interfaz(nombre);
         TablaDeSimbolos.declararInterfaz(interfaz);
-        interfaz.setParametroDeTipo(genericidadOpcional());
+        genericidadOpcional().ifPresent(interfaz::setParametroDeTipo);
         extensionOpcional();
         match(TipoDeToken.LLAVE_A);
         listaMetodosInterfaz();

@@ -26,6 +26,13 @@ class TablaDeSimbolosTest extends BaseDeTablaDeSimbolos {
                 TablaDeSimbolos.tipos().stream().map(t -> t.nombre()).toList());
     }
 
+    @Test
+    void unTipoDeclaradoSeImprimeConSuNombre() {
+        TablaDeSimbolos.inicializar();
+
+        assertEquals("[Object, String, System]", TablaDeSimbolos.tipos().toString());
+    }
+
     // Documento de semántica §7.
     @Test
     void objectDeclaraDebugPrintEstaticoYToStringDeInstancia() {

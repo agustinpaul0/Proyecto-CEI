@@ -37,76 +37,268 @@ el léxico y el sintáctico solos.
 
 Es anidada, porque un mismo nombre significa cosas distintas en contextos distintos (Clase 7,
 slides 13-15). La tabla global guarda los tipos declarados: cada clase o interfaz tiene sus
-propias tablas de miembros, y cada método o constructor, su lista de parámetros. Los miembros
-subrayados son estáticos, como en UML.
+propias tablas de miembros, y cada método o constructor, su lista de parámetros.
 
+Los diagramas son UML y muestran todos los campos, constructores y métodos del código:
+
+- lo subrayado es estático, y lo que está en cursiva, abstracto;
+- la visibilidad va adelante: `+` pública, `#` protegida, `~` de paquete y `-` privada;
+- una referencia a otra clase dibujada es una relación, con su nombre y su multiplicidad en el
+  extremo de la clase referenciada: `0..1` si puede faltar, `*` si es una colección;
+- una caja sin miembros es una clase que se detalla en otro diagrama.
+
+`herramientas/diagramas_de_clases.py` verifica que cada diagrama coincida con el código y los
+renderiza para el informe, que muestra estos mismos diagramas.
+
+### La tabla
+
+Todos sus miembros son estáticos: es la tabla global sin singleton que recomendó el profesor.
+`EntidadesPredefinidas` carga `Object`, `String` y `System` cada vez que se inicializa.
+
+<!-- diagrama: tabla -->
 ```mermaid
+---
+config:
+  layout: elk
+---
 classDiagram
+    direction TB
     class TablaDeSimbolos {
-        tipos: Map~String, TipoDeclarado~$
-        claseActual: Clase$
-        interfazActual: Interfaz$
-        unidadActual: Unidad$
-        inicializar()$
-        chequearDeclaraciones()$
-        consolidar()$
+        -tipos : Map~String, TipoDeclarado~$
+        -claseActual : Clase$
+        -interfazActual : Interfaz$
+        -unidadActual : Unidad$
+        -primerRepetido : ExcepcionSemantica$
+        -TablaDeSimbolos()
+        +inicializar()$
+        +declararClase(Clase)$
+        +declararInterfaz(Interfaz)$
+        -declarar(TipoDeclarado, String)$
+        +claseActual()$ Clase
+        +interfazActual()$ Interfaz
+        +unidadActual()$ Unidad
+        +setUnidadActual(Unidad)$
+        +tipo(String)$ Optional~TipoDeclarado~
+        +object()$ TipoDeclarado
+        +referenciaAObject(int)$ TipoReferencia
+        +tipos()$ List~TipoDeclarado~
+        +registrarRepetido(ExcepcionSemantica)$
+        +chequearDeclaraciones()$
+        +consolidar()$
+    }
+    class EntidadesPredefinidas {
+        ~OBJECT : String$
+        -STRING : String$
+        -SYSTEM : String$
+        -LINEA_PREDEFINIDA : int$
+        -EntidadesPredefinidas()
+        ~cargar()$
+        -cargarObject()$
+        -cargarString()$
+        -cargarSystem()$
+        -metodo(String, Tipo)$ Metodo
+        -metodo(String, Tipo, String, Tipo)$ Metodo
+        -estatico(Metodo)$ Metodo
+        -referencia(String)$ TipoReferencia
+        -idClase(String)$ Token
+    }
+    class ExcepcionSemantica {
+        +ExcepcionSemantica(Token, String)
+        +getLexemaOfensivo() String
+        +getLinea() int
+    }
+    class Token {
+        <<record>>
+        -tipo : TipoDeToken
+        -lexema : String
+        -linea : int
     }
     class TipoDeclarado {
-        <<abstracta>>
-        token: Token
-        parametroDeTipo: Token?
-        metodos: Map~ClaveDeMetodo, Metodo~
-        estaBienDeclarado()
-        consolidar()
+        <<abstract>>
+    }
+    TablaDeSimbolos "1" *-- "*" TipoDeclarado
+    TablaDeSimbolos ..> EntidadesPredefinidas : carga
+    TablaDeSimbolos ..> ExcepcionSemantica : lanza
+    ExcepcionSemantica --> "1" Token : token
+```
+
+### Las clases y las interfaces
+
+`metodosPropios` son los métodos declarados en el fuente, y `metodos` es la tabla consolidada, que
+suma los heredados. Con `Clase` pasa lo mismo con `atributosPropios` y `atributos`.
+
+<!-- diagrama: tipos-declarados -->
+```mermaid
+---
+config:
+  layout: elk
+---
+classDiagram
+    direction LR
+    class TipoDeclarado {
+        <<abstract>>
+        -consolidado : boolean
+        #TipoDeclarado(Token)
+        +token() Token
+        +nombre() String
+        +setParametroDeTipo(Token)
+        +parametroDeTipo() Optional~Token~
+        +esGenerico() boolean
+        +declaraParametroDeTipo(String) boolean
+        +agregarMetodo(Metodo)
+        +metodo(ClaveDeMetodo) Optional~Metodo~
+        +metodos() List~Metodo~
+        #metodosPropios() List~Metodo~
+        #esPropio(Metodo) boolean
+        +toString() String
+        +estaBienDeclarado()*
+        +consolidar()
+        #consolidarConAncestros()*
+        #heredarMetodos(TipoDeclarado, Sustitucion, ControlDeRedefinicion)
+        #sustitucionHacia(TipoReferencia, TipoDeclarado)$ Sustitucion
+        #verificarQueNoHayaCiclo()
+        #ancestroDirecto()* Optional~TipoDeclarado~
+    }
+    class ControlDeRedefinicion {
+        <<interface>>
+        +controlar(Metodo, Metodo, TipoDeclarado)*
     }
     class Clase {
-        padre: TipoReferencia
-        interfaz: TipoReferencia?
-        atributos: Map~String, Atributo~
-        constructores: Map~Integer, Constructor~
+        +Clase(Token)
+        +setPadre(TipoReferencia)
+        +setInterfaz(TipoReferencia)
+        +padre() Optional~TipoReferencia~
+        +interfaz() Optional~TipoReferencia~
+        +agregarMiembro(Miembro)
+        +agregarAtributo(Atributo)
+        +agregarConstructor(Constructor)
+        +cerrar()
+        +atributo(String) Optional~Atributo~
+        +atributos() List~Atributo~
+        +constructores() List~Constructor~
+        +estaBienDeclarado()
+        -verificarPadre(TipoReferencia)
+        -verificarInterfaz(TipoReferencia)
+        #ancestroDirecto() Optional~TipoDeclarado~
+        #consolidarConAncestros()
+        -heredarAtributos(Clase, Sustitucion)
+        -controlarRedefinicion(Metodo, Metodo, TipoDeclarado)$
+        -verificarImplementacion(Interfaz, Sustitucion)
     }
     class Interfaz {
-        extendida: TipoReferencia?
+        +Interfaz(Token)
+        +setExtendida(TipoReferencia)
+        +extendida() Optional~TipoReferencia~
+        +estaBienDeclarado()
+        #ancestroDirecto() Optional~TipoDeclarado~
+        #consolidarConAncestros()
+        -controlarRedefinicion(Metodo, Metodo, TipoDeclarado)$
+        -verificarContraObject()
     }
-    class Unidad {
-        <<abstracta>>
-        token: Token
-        parametros: List~Parametro~
+    class Token {
+        <<record>>
     }
-    class Metodo {
-        estatico: boolean
-        retorno: Tipo
+    class TipoReferencia
+    class Metodo
+    class Atributo {
+        <<record>>
     }
     class Constructor
-    class Atributo {
-        token: Token
-        tipo: Tipo
-    }
-    class Parametro {
-        token: Token
-        tipo: Tipo
-        posicion: int
-    }
-    class Tipo {
-        <<interfaz sellada>>
-        nombre()
-        verificarEn(contexto, estatico)
-        instanciar(sustitucion)
-    }
-    TablaDeSimbolos --> "*" TipoDeclarado
     TipoDeclarado <|-- Clase
     TipoDeclarado <|-- Interfaz
-    TipoDeclarado --> "*" Metodo
-    Clase --> "*" Atributo
-    Clase --> "*" Constructor
+    TipoDeclarado ..> ControlDeRedefinicion : usa
+    TipoDeclarado --> "1" Token : token
+    TipoDeclarado --> "0..1" Token : parametroDeTipo
+    TipoDeclarado "1" *-- "*" Metodo : metodosPropios
+    TipoDeclarado o-- "*" Metodo : metodos
+    Clase --> "0..1" TipoReferencia : padre
+    Clase --> "0..1" TipoReferencia : interfaz
+    Clase "1" *-- "*" Atributo : atributosPropios
+    Clase o-- "*" Atributo : atributos
+    Clase "1" *-- "*" Constructor : constructores
+    Interfaz --> "0..1" TipoReferencia : extendida
+```
+
+### Los miembros
+
+`Unidad` es la base de métodos y constructores: en la Etapa 4 les cuelga el cuerpo.
+
+<!-- diagrama: miembros -->
+```mermaid
+---
+config:
+  layout: elk
+---
+classDiagram
+    direction TB
+    class Miembro {
+        <<interface>>
+    }
+    class Atributo {
+        <<record>>
+        +nombre() String
+        ~estaBienDeclarado(TipoDeclarado)
+        ~instanciado(Sustitucion) Atributo
+    }
+    class Unidad {
+        <<abstract>>
+        #Unidad(Token)
+        #Unidad(Token, List~Parametro~)
+        +token() Token
+        +nombre() String
+        +parametros() List~Parametro~
+        +aridad() int
+        +agregarParametro(Token, Tipo)
+        #verificarParametrosEn(TipoDeclarado, boolean)
+    }
+    class Metodo {
+        -estatico : boolean
+        +Metodo(Token)
+        -Metodo(Token, List~Parametro~, boolean, Tipo)
+        +hacerEstatico()
+        +setRetorno(Tipo)
+        +esEstatico() boolean
+        +retorno() Tipo
+        +clave() ClaveDeMetodo
+        +mismaSignaturaQue(Metodo) boolean
+        ~estaBienDeclarado(TipoDeclarado)
+        ~instanciado(Sustitucion) Metodo
+    }
+    class Constructor {
+        +Constructor(Token)
+        ~estaBienDeclarado(Clase)
+    }
+    class Parametro {
+        <<record>>
+        -posicion : int
+        +nombre() String
+        ~instanciado(Sustitucion) Parametro
+    }
+    class ClaveDeMetodo {
+        <<record>>
+        -nombre : String
+        -aridad : int
+        +toString() String
+    }
+    class Token {
+        <<record>>
+    }
+    class Tipo {
+        <<interface>>
+    }
+    Miembro <|.. Atributo
+    Miembro <|.. Metodo
+    Miembro <|.. Constructor
     Unidad <|-- Metodo
     Unidad <|-- Constructor
-    Unidad --> "*" Parametro
-    Tipo <|-- TipoPrimitivo
-    Tipo <|-- TipoVoid
-    Tipo <|-- TipoReferencia
-    Tipo <|-- VariableDeTipo
-    Tipo <|-- TipoArreglo
+    Unidad --> "1" Token : token
+    Unidad "1" *-- "*" Parametro : parametros
+    Metodo --> "1" Tipo : retorno
+    Metodo ..> ClaveDeMetodo : clave
+    Atributo --> "1" Token : token
+    Atributo --> "1" Tipo : tipo
+    Parametro --> "1" Token : token
+    Parametro --> "1" Tipo : tipo
 ```
 
 Cada entidad guarda **el token de su declaración**. El chequeo corre con el parseo terminado, sin
@@ -135,6 +327,90 @@ Cada tipo sabe tres cosas:
 - **nombrarse**: dos tipos son iguales si se escriben igual. El léxico lo garantiza, porque una
   clase tiene al menos dos caracteres y un parámetro de tipo tiene uno solo;
 - **instanciarse**: reemplazar la `T` por un argumento. `Sustitucion` es ese reemplazo.
+
+<!-- diagrama: tipos -->
+```mermaid
+---
+config:
+  layout: elk
+---
+classDiagram
+    direction LR
+    class Tipo {
+        <<interface>>
+        +nombre()* String
+        +verificarEn(TipoDeclarado, boolean)*
+        +instanciar(Sustitucion)* Tipo
+        +esIgualA(Tipo) boolean
+    }
+    class TipoPrimitivo {
+        <<enumeration>>
+        BOOLEAN
+        CHAR
+        INT
+        FLOAT
+        -nombre : String
+        -TipoPrimitivo(String)
+        +nombre() String
+        +verificarEn(TipoDeclarado, boolean)
+        +instanciar(Sustitucion) Tipo
+    }
+    class TipoVoid {
+        <<enumeration>>
+        VOID
+        +nombre() String
+        +verificarEn(TipoDeclarado, boolean)
+        +instanciar(Sustitucion) Tipo
+    }
+    class TipoReferencia {
+        +TipoReferencia(Token)
+        +TipoReferencia(Token, Tipo)
+        +token() Token
+        +argumento() Optional~Tipo~
+        +nombre() String
+        +nombreDelTipo() String
+        +verificarEn(TipoDeclarado, boolean)
+        +declaracion() TipoDeclarado
+        +instanciar(Sustitucion) Tipo
+    }
+    class VariableDeTipo {
+        <<record>>
+        +nombre() String
+        +verificarEn(TipoDeclarado, boolean)
+        +instanciar(Sustitucion) Tipo
+    }
+    class TipoArreglo {
+        <<record>>
+        -dimensiones : int
+        +de(Tipo, int)$ Tipo
+        +nombre() String
+        +verificarEn(TipoDeclarado, boolean)
+        +instanciar(Sustitucion) Tipo
+    }
+    class Sustitucion {
+        <<interface>>
+        +reemplazoDe(String)* Optional~Tipo~
+        +identidad()$ Sustitucion
+        +de(String, Tipo)$ Sustitucion
+    }
+    class Token {
+        <<record>>
+    }
+    class TipoDeclarado {
+        <<abstract>>
+    }
+    Tipo <|.. TipoPrimitivo
+    Tipo <|.. TipoVoid
+    Tipo <|.. TipoReferencia
+    Tipo <|.. VariableDeTipo
+    Tipo <|.. TipoArreglo
+    Tipo ..> Sustitucion : instanciar
+    TipoReferencia --> "1" Token : token
+    TipoReferencia --> "0..1" Tipo : argumento
+    TipoReferencia ..> TipoDeclarado : declaracion
+    VariableDeTipo --> "1" Token : token
+    TipoArreglo --> "1" Tipo : base
+```
 
 ## El chequeo
 

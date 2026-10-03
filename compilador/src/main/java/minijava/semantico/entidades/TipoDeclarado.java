@@ -19,7 +19,7 @@ import java.util.Optional;
 public abstract sealed class TipoDeclarado permits Clase, Interfaz {
 
     private final Token token;
-    private Optional<Token> parametroDeTipo = Optional.empty();
+    private Token parametroDeTipo;
     private final Map<ClaveDeMetodo, Metodo> metodosPropios = new LinkedHashMap<>();
     private Map<ClaveDeMetodo, Metodo> metodos = metodosPropios;
     private boolean consolidado;
@@ -36,20 +36,20 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
         return token.lexema();
     }
 
-    public void setParametroDeTipo(Optional<Token> parametro) {
+    public void setParametroDeTipo(Token parametro) {
         this.parametroDeTipo = parametro;
     }
 
     public Optional<Token> parametroDeTipo() {
-        return parametroDeTipo;
+        return Optional.ofNullable(parametroDeTipo);
     }
 
     public boolean esGenerico() {
-        return parametroDeTipo.isPresent();
+        return parametroDeTipo != null;
     }
 
     public boolean declaraParametroDeTipo(String nombre) {
-        return parametroDeTipo.map(Token::lexema).filter(nombre::equals).isPresent();
+        return esGenerico() && parametroDeTipo.lexema().equals(nombre);
     }
 
     public void agregarMetodo(Metodo metodo) {
@@ -76,6 +76,11 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
 
     protected boolean esPropio(Metodo metodo) {
         return metodosPropios.get(metodo.clave()) == metodo;
+    }
+
+    @Override
+    public String toString() {
+        return nombre();
     }
 
     public abstract void estaBienDeclarado() throws ExcepcionSemantica;
@@ -114,10 +119,10 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
     }
 
     protected static Sustitucion sustitucionHacia(TipoReferencia referencia, TipoDeclarado ancestro) {
-        if (ancestro.parametroDeTipo.isEmpty() || referencia.argumento().isEmpty()) {
+        if (!ancestro.esGenerico() || referencia.argumento().isEmpty()) {
             return Sustitucion.identidad();
         }
-        return Sustitucion.de(ancestro.parametroDeTipo.get().lexema(), referencia.argumento().get());
+        return Sustitucion.de(ancestro.parametroDeTipo.lexema(), referencia.argumento().get());
     }
 
     // El ciclo se reporta en el nombre de este tipo, la entidad con el problema

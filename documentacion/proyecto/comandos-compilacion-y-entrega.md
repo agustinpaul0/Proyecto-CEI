@@ -105,4 +105,8 @@ documentación usual de un proyecto de software y los logros que se intentan); l
 intentan). Requisitos fijados por el usuario: **lo más breve y conciso posible**, con sólo lo que
 exigen las Pautas y sin repetir `documentacion/`; **paleta de colores monocromática**, **portada
 minimalista** e **índice/tabla de contenidos**. Los diagramas de clases siguen UML: un miembro
-estático va **subrayado**, no con un renglón que diga «estática», que se leería como un atributo.
+estático va **subrayado**, no con un renglón que diga «estática», que se leería como un atributo, y
+una referencia a otra clase dibujada es una relación con su multiplicidad (`0..1`, `*`) en el
+extremo de la clase referenciada. Se escriben una sola vez, en Mermaid, en la documentación de la
+etapa; `herramientas/diagramas_de_clases.py` verifica que coincidan con el código y los renderiza
+para el informe.

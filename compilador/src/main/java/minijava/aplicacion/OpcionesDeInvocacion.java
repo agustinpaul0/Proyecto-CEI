@@ -2,17 +2,17 @@ package minijava.aplicacion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 // Un solo jar sirve a todas las etapas, porque cada una se corrige por separado
 // y tiene que seguir siendo ejecutable sin recompilar nada.
 //
 // El contrato de invocación de las Pautas (Etapa 2, slide 28) es
 // `java -jar Compilador.jar programa1.java`, con cualquier extensión: por eso el
-// único argumento obligatorio es la ruta, y las opciones llevan `--`.
+// único argumento obligatorio es la ruta, y las opciones llevan `--`. Sin ruta,
+// `rutaFuente` es null.
 public record OpcionesDeInvocacion(
         int etapa,
-        Optional<String> rutaFuente,
+        String rutaFuente,
         List<String> avisos) {
 
     public static final int ETAPA_POR_DEFECTO = 3;
@@ -36,7 +36,7 @@ public record OpcionesDeInvocacion(
             }
         }
 
-        return new OpcionesDeInvocacion(etapa, Optional.ofNullable(ruta), List.copyOf(avisos));
+        return new OpcionesDeInvocacion(etapa, ruta, List.copyOf(avisos));
     }
 
     private static int etapaDe(String valor, int actual, List<String> avisos) {

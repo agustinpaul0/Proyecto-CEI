@@ -60,7 +60,7 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
     public TipoReferencia tipoReferencia() throws ExcepcionLexica, ExcepcionSintactica {
         Token nombre = actual();
         match(TipoDeToken.ID_CLASE);
-        return new TipoReferencia(nombre, tipoGenericoOpcional());
+        return new TipoReferencia(nombre, tipoGenericoOpcional().orElse(null));
     }
 
     // TipoPrimitivo -> boolean | char | int
@@ -116,7 +116,7 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE)) {
             Token nombre = actual();
             match(TipoDeToken.ID_CLASE);
-            return new TipoReferencia(nombre, tipoGenericoOpcional());
+            return new TipoReferencia(nombre, tipoGenericoOpcional().orElse(null));
         } else {
             throw errorEsperando(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_GEN,
                     PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE);

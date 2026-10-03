@@ -1,8 +1,6 @@
 \documentclass[12pt,a4paper]{article}
 \input{preambulo}
 \usepackage{ragged2e}
-\usetikzlibrary{calc}
-\tikzset{compone/.style={draw=black, {Diamond[length=3mm, width=2mm]}-}}
 
 \begin{document}
 
@@ -88,117 +86,40 @@ El primer error semántico termina el análisis. Las tablas se recorren en orden
 así que el error reportado es siempre el mismo.
 
 \medskip
-Las entidades de la tabla (figura~\ref{fig:entidades}) guardan el token de su declaración, que es
-de donde salen el lexema y la línea de cada error. Los tipos (figura~\ref{fig:tipos}) se modelan
-con una jerarquía uniforme, con primitivos y referencias por separado.
+Los diagramas de clases (figuras~\ref{fig:tabla} a~\ref{fig:tipos}) muestran todos los campos,
+constructores y métodos del código. Lo subrayado es estático y lo que está en cursiva, abstracto.
+Una referencia a otra clase dibujada es una relación, con su multiplicidad en el extremo de la
+clase referenciada, y una caja sin miembros se detalla en otro diagrama. Cada entidad guarda el
+token de su declaración, que es de donde salen el lexema y la línea de cada error.
 
 \begin{figure}[H]
 \centering
-\footnotesize
-\begin{tikzpicture}
-\begin{class}[text width=6.4cm]{TablaDeSimbolos}{0,0}
-  \attribute{\underline{tipos : Map<String, TipoDeclarado>}}
-  \attribute{\underline{claseActual : Clase}}
-  \attribute{\underline{interfazActual : Interfaz}}
-  \attribute{\underline{unidadActual : Unidad}}
-  \operation{\underline{inicializar()}}
-  \operation{\underline{chequearDeclaraciones()}}
-  \operation{\underline{consolidar()}}
-\end{class}
+\includegraphics[width=0.82\textwidth]{generado/tabla.pdf}
+\caption{La tabla de símbolos. Todos sus miembros son estáticos.}
+\label{fig:tabla}
+\end{figure}
 
-\begin{abstractclass}[text width=6.4cm]{TipoDeclarado}{0,-4.6}
-  \attribute{token : Token}
-  \attribute{parametroDeTipo : Token [0..1]}
-  \attribute{metodos : Map<ClaveDeMetodo, Metodo>}
-  \operation{estaBienDeclarado()}
-  \operation{consolidar()}
-\end{abstractclass}
+\begin{landscape}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{generado/tipos-declarados.pdf}
+\caption{Las clases y las interfaces. \texttt{metodosPropios} y \texttt{atributosPropios} son
+los declarados en el fuente; \texttt{metodos} y \texttt{atributos}, la tabla consolidada, que
+suma los heredados.}
+\label{fig:tipos-declarados}
+\end{figure}
+\end{landscape}
 
-\begin{class}[text width=6.2cm]{Clase}{-4,-9.2}
-  \attribute{padre : TipoReferencia}
-  \attribute{interfaz : TipoReferencia [0..1]}
-  \attribute{atributos : Map<String, Atributo>}
-  \attribute{constructores : Map<int, Constructor>}
-\end{class}
-
-\begin{class}[text width=5.6cm]{Interfaz}{3.6,-9.2}
-  \attribute{extendida : TipoReferencia [0..1]}
-\end{class}
-
-\begin{class}[text width=3cm]{Atributo}{-6,-13.6}
-  \attribute{token : Token}
-  \attribute{tipo : Tipo}
-\end{class}
-
-\begin{abstractclass}[text width=4.4cm]{Unidad}{1.2,-13.6}
-  \attribute{token : Token}
-  \attribute{parametros : List<Parametro>}
-\end{abstractclass}
-
-\begin{class}[text width=2.8cm]{Parametro}{6.2,-13.6}
-  \attribute{token : Token}
-  \attribute{tipo : Tipo}
-  \attribute{posicion : int}
-\end{class}
-
-\begin{class}[text width=3.6cm]{Metodo}{1.8,-18}
-  \attribute{estatico : boolean}
-  \attribute{retorno : Tipo}
-\end{class}
-
-\begin{class}[text width=2.8cm]{Constructor}{-2,-18}
-\end{class}
-
-% Generalizaciones: cada hija sube hasta una barra común bajo su padre.
-\foreach \hija in {Clase, Interfaz} {
-  \draw[generaliza] (\hija.north) |- ($(TipoDeclarado.south)+(0,-0.6)$) -- (TipoDeclarado.south);
-}
-\foreach \hija in {Metodo, Constructor} {
-  \draw[generaliza] (\hija.north) |- ($(Unidad.south)+(0,-0.6)$) -- (Unidad.south);
-}
-
-% Composiciones: el rombo va del lado del dueño.
-\draw[compone] (TablaDeSimbolos.south) -- node[right, pos=0.85] {*} (TipoDeclarado.north);
-\draw[compone] (Clase.south -| Atributo.north) -- node[right, pos=0.85] {*} (Atributo.north);
-\draw[compone] (Clase.south) |- node[above, pos=0.97] {*} (Constructor.west);
-\draw[compone] (Unidad.east) -- node[above, pos=0.85] {*} (Unidad.east -| Parametro.west);
-\draw[compone] (TipoDeclarado.east) -| ($(Parametro.east)+(0.4,0)$) |- node[above, pos=0.93] {*} (Metodo.east);
-\end{tikzpicture}
-\caption{Las entidades de la tabla de símbolos. Los miembros subrayados son estáticos, como en
-UML: la tabla tiene acceso global y no se instancia.}
-\label{fig:entidades}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{generado/miembros.pdf}
+\caption{Los miembros. \texttt{Unidad} es la base de métodos y constructores.}
+\label{fig:miembros}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\footnotesize
-\begin{tikzpicture}
-\begin{interface}[text width=5.4cm]{Tipo}{0,0}
-  \operation{nombre() : String}
-  \operation{verificarEn(contexto, estatico)}
-  \operation{instanciar(Sustitucion) : Tipo}
-\end{interface}
-\begin{class}[text width=2.4cm]{TipoPrimitivo}{-6.5,-4.2}
-  \attribute{boolean, char,}
-  \attribute{int, float}
-\end{class}
-\begin{class}[text width=1.6cm]{TipoVoid}{-3.7,-4.2}
-\end{class}
-\begin{class}[text width=3.4cm]{TipoReferencia}{-0.6,-4.2}
-  \attribute{token : Token}
-  \attribute{argumento : Tipo [0..1]}
-\end{class}
-\begin{class}[text width=2.7cm]{VariableDeTipo}{3.0,-4.2}
-  \attribute{token : Token}
-\end{class}
-\begin{class}[text width=2.9cm]{TipoArreglo}{6.3,-4.2}
-  \attribute{base : Tipo}
-  \attribute{dimensiones : int}
-\end{class}
-\foreach \hija in {TipoPrimitivo, TipoVoid, TipoReferencia, VariableDeTipo, TipoArreglo} {
-  \draw[implementa] (\hija.north) |- ++(0,0.6) -| (Tipo.south);
-}
-\end{tikzpicture}
+\includegraphics[width=\textwidth]{generado/tipos.pdf}
 \caption{Los tipos. \texttt{Tipo} es una interfaz sellada: sólo la implementan estas cinco. Dos
 tipos son iguales si se escriben igual, e \texttt{instanciar} reemplaza el parámetro de tipo de un
 ancestro por el argumento de la herencia.}

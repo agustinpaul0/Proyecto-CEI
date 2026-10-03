@@ -24,11 +24,11 @@ public final class Main {
         OpcionesDeInvocacion opciones = OpcionesDeInvocacion.parsear(args);
         opciones.avisos().forEach(salida::imprimir);
 
-        if (opciones.rutaFuente().isEmpty()) {
+        String ruta = opciones.rutaFuente();
+        if (ruta == null) {
             salida.imprimir(USO);
             return;
         }
-        String ruta = opciones.rutaFuente().get();
         try {
             MODULO_POR_ETAPA.get(opciones.etapa()).apply(salida).ejecutar(ruta);
         } catch (IOException excepcion) {

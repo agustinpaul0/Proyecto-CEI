@@ -182,7 +182,8 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
             cuerpoDeMetodo();
             return constructor;
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_DESDE_ID_CLASE_TIPO_GENERICO_OPCIONAL)) {
-            TipoReferencia base = new TipoReferencia(idClase, sintaxis.tipos().tipoGenericoOpcional());
+            TipoReferencia base = new TipoReferencia(idClase,
+                    sintaxis.tipos().tipoGenericoOpcional().orElse(null));
             Tipo tipo = TipoArreglo.de(base, sintaxis.tipos().dimensionesOpcionales());
             Token nombre = actual();
             match(TipoDeToken.ID_MV);

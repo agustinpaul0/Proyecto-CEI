@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("comun")
@@ -21,7 +22,7 @@ class OpcionesDeInvocacionTest {
         var opciones = parsear("programa1.java");
 
         assertEquals(3, opciones.etapa());
-        assertEquals("programa1.java", opciones.rutaFuente().orElseThrow());
+        assertEquals("programa1.java", opciones.rutaFuente());
         assertTrue(opciones.avisos().isEmpty());
     }
 
@@ -29,7 +30,7 @@ class OpcionesDeInvocacionTest {
     void sinArgumentosNoHayRutaYLaEtapaEsLaPorDefecto() {
         var opciones = parsear();
 
-        assertTrue(opciones.rutaFuente().isEmpty());
+        assertNull(opciones.rutaFuente());
         assertEquals(OpcionesDeInvocacion.ETAPA_POR_DEFECTO, opciones.etapa());
     }
 
@@ -59,14 +60,14 @@ class OpcionesDeInvocacionTest {
         assertEquals(1, opciones.avisos().size());
         assertTrue(opciones.avisos().getFirst().contains("Etapa no soportada"),
                 opciones.avisos().toString());
-        assertEquals("fuente.java", opciones.rutaFuente().orElseThrow());
+        assertEquals("fuente.java", opciones.rutaFuente());
     }
 
     @Test
     void unaOpcionDesconocidaAvisaYNoSeConfundeConLaRuta() {
         var opciones = parsear("--inventada", "fuente.java");
 
-        assertEquals("fuente.java", opciones.rutaFuente().orElseThrow());
+        assertEquals("fuente.java", opciones.rutaFuente());
         assertEquals(1, opciones.avisos().size());
         assertTrue(opciones.avisos().getFirst().contains("--inventada"), opciones.avisos().toString());
     }
@@ -75,7 +76,7 @@ class OpcionesDeInvocacionTest {
     void unSegundoArchivoAvisaYSeQuedaConElPrimero() {
         var opciones = parsear("uno.java", "dos.java");
 
-        assertEquals("uno.java", opciones.rutaFuente().orElseThrow());
+        assertEquals("uno.java", opciones.rutaFuente());
         assertEquals(1, opciones.avisos().size());
         assertTrue(opciones.avisos().getFirst().contains("dos.java"), opciones.avisos().toString());
     }
@@ -84,7 +85,7 @@ class OpcionesDeInvocacionTest {
     @ParameterizedTest
     @ValueSource(strings = {"programa1.java", "fuente.mjava", "sinExtension", "a.b.c", "-guion.java"})
     void laRutaSeAceptaConCualquierExtension(String ruta) {
-        assertEquals(ruta, parsear(ruta).rutaFuente().orElseThrow());
+        assertEquals(ruta, parsear(ruta).rutaFuente());
     }
 
     @Test

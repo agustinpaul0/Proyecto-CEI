@@ -13,8 +13,8 @@ import java.util.Optional;
 
 public final class Clase extends TipoDeclarado {
 
-    private Optional<TipoReferencia> padre = Optional.empty();
-    private Optional<TipoReferencia> interfaz = Optional.empty();
+    private TipoReferencia padre;
+    private TipoReferencia interfaz;
     private final Map<String, Atributo> atributosPropios = new LinkedHashMap<>();
     private Map<String, Atributo> atributos = atributosPropios;
     private final Map<Integer, Constructor> constructores = new LinkedHashMap<>();
@@ -24,19 +24,19 @@ public final class Clase extends TipoDeclarado {
     }
 
     public void setPadre(TipoReferencia padre) {
-        this.padre = Optional.of(padre);
+        this.padre = padre;
     }
 
     public void setInterfaz(TipoReferencia interfaz) {
-        this.interfaz = Optional.of(interfaz);
+        this.interfaz = interfaz;
     }
 
     public Optional<TipoReferencia> padre() {
-        return padre;
+        return Optional.ofNullable(padre);
     }
 
     public Optional<TipoReferencia> interfaz() {
-        return interfaz;
+        return Optional.ofNullable(interfaz);
     }
 
     public void agregarMiembro(Miembro miembro) {
@@ -88,11 +88,11 @@ public final class Clase extends TipoDeclarado {
 
     @Override
     public void estaBienDeclarado() throws ExcepcionSemantica {
-        if (padre.isPresent()) {
-            verificarPadre(padre.get());
+        if (padre != null) {
+            verificarPadre(padre);
         }
-        if (interfaz.isPresent()) {
-            verificarInterfaz(interfaz.get());
+        if (interfaz != null) {
+            verificarInterfaz(interfaz);
         }
         verificarQueNoHayaCiclo();
         for (Atributo atributo : atributosPropios.values()) {
@@ -128,22 +128,22 @@ public final class Clase extends TipoDeclarado {
 
     @Override
     protected Optional<TipoDeclarado> ancestroDirecto() {
-        return padre.flatMap(p -> TablaDeSimbolos.tipo(p.nombreDelTipo()));
+        return padre().flatMap(p -> TablaDeSimbolos.tipo(p.nombreDelTipo()));
     }
 
     @Override
     protected void consolidarConAncestros() throws ExcepcionSemantica {
-        if (padre.isPresent()) {
-            Clase ancestro = (Clase) padre.get().declaracion();
+        if (padre != null) {
+            Clase ancestro = (Clase) padre.declaracion();
             ancestro.consolidar();
-            Sustitucion sustitucion = sustitucionHacia(padre.get(), ancestro);
+            Sustitucion sustitucion = sustitucionHacia(padre, ancestro);
             heredarAtributos(ancestro, sustitucion);
             heredarMetodos(ancestro, sustitucion, Clase::controlarRedefinicion);
         }
-        if (interfaz.isPresent()) {
-            Interfaz implementada = (Interfaz) interfaz.get().declaracion();
+        if (interfaz != null) {
+            Interfaz implementada = (Interfaz) interfaz.declaracion();
             implementada.consolidar();
-            verificarImplementacion(implementada, sustitucionHacia(interfaz.get(), implementada));
+            verificarImplementacion(implementada, sustitucionHacia(interfaz, implementada));
         }
     }
 

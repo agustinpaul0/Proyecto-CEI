@@ -12,7 +12,6 @@ import minijava.semantico.tipos.VariableDeTipo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -82,6 +81,6 @@ class TiposTest {
     }
 
     private static TipoReferencia generica(String nombre, Tipo argumento) {
-        return new TipoReferencia(new Token(TipoDeToken.ID_CLASE, nombre, 1), Optional.of(argumento));
+        return new TipoReferencia(new Token(TipoDeToken.ID_CLASE, nombre, 1), argumento);
     }
 }

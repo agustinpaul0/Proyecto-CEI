@@ -11,15 +11,31 @@ import java.util.Optional;
 // una referencia; si es una referencia genérica (`Caja<Par<String>>`), de ella
 // se controla sólo que exista: el anidamiento es el logro Genericidad Avanzada
 // E3, que no se persigue.
-public record TipoReferencia(Token token, Optional<Tipo> argumento) implements Tipo {
+public final class TipoReferencia implements Tipo {
+
+    private final Token token;
+    private final Tipo argumento;
 
     public TipoReferencia(Token token) {
-        this(token, Optional.empty());
+        this(token, null);
+    }
+
+    public TipoReferencia(Token token, Tipo argumento) {
+        this.token = token;
+        this.argumento = argumento;
+    }
+
+    public Token token() {
+        return token;
+    }
+
+    public Optional<Tipo> argumento() {
+        return Optional.ofNullable(argumento);
     }
 
     @Override
     public String nombre() {
-        return argumento.map(a -> token.lexema() + "<" + a.nombre() + ">").orElse(token.lexema());
+        return argumento().map(a -> token.lexema() + "<" + a.nombre() + ">").orElse(token.lexema());
     }
 
     public String nombreDelTipo() {
@@ -29,14 +45,14 @@ public record TipoReferencia(Token token, Optional<Tipo> argumento) implements T
     @Override
     public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
         TipoDeclarado declarado = declaracion();
-        if (argumento.isEmpty()) {
+        if (argumento == null) {
             return;
         }
         if (!declarado.esGenerico()) {
             throw new ExcepcionSemantica(token, "El tipo " + nombreDelTipo()
                     + " no es generico y no admite argumento de tipo");
         }
-        switch (argumento.get()) {
+        switch (argumento) {
             case TipoReferencia referencia -> referencia.declaracion();
             case Tipo otro -> otro.verificarEn(contexto, enContextoEstatico);
         }
@@ -52,6 +68,6 @@ public record TipoReferencia(Token token, Optional<Tipo> argumento) implements T
 
     @Override
     public Tipo instanciar(Sustitucion sustitucion) {
-        return new TipoReferencia(token, argumento.map(a -> a.instanciar(sustitucion)));
+        return argumento == null ? this : new TipoReferencia(token, argumento.instanciar(sustitucion));
     }
 }

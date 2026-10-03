@@ -28,7 +28,7 @@ public final class TablaDeSimbolos {
     private static Clase claseActual;
     private static Interfaz interfazActual;
     private static Unidad unidadActual;
-    private static Optional<ExcepcionSemantica> primerRepetido;
+    private static ExcepcionSemantica primerRepetido;
 
     static {
         inicializar();
@@ -42,7 +42,7 @@ public final class TablaDeSimbolos {
         claseActual = null;
         interfazActual = null;
         unidadActual = null;
-        primerRepetido = Optional.empty();
+        primerRepetido = null;
         EntidadesPredefinidas.cargar();
     }
 
@@ -99,14 +99,14 @@ public final class TablaDeSimbolos {
     }
 
     public static void registrarRepetido(ExcepcionSemantica repetido) {
-        if (primerRepetido.isEmpty()) {
-            primerRepetido = Optional.of(repetido);
+        if (primerRepetido == null) {
+            primerRepetido = repetido;
         }
     }
 
     public static void chequearDeclaraciones() throws ExcepcionSemantica {
-        if (primerRepetido.isPresent()) {
-            throw primerRepetido.get();
+        if (primerRepetido != null) {
+            throw primerRepetido;
         }
         for (TipoDeclarado tipo : tipos.values()) {
             tipo.estaBienDeclarado();
