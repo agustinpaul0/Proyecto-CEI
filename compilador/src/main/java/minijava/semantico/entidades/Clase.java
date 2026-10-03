@@ -18,7 +18,6 @@ public final class Clase extends TipoDeclarado {
     private final Map<String, Atributo> atributosPropios = new LinkedHashMap<>();
     private Map<String, Atributo> atributos = atributosPropios;
     private final Map<Integer, Constructor> constructores = new LinkedHashMap<>();
-    private boolean esFinal;
 
     public Clase(Token token) {
         super(token);
@@ -38,11 +37,6 @@ public final class Clase extends TipoDeclarado {
 
     public Optional<TipoReferencia> interfaz() {
         return interfaz;
-    }
-
-    // String y System son `final` en Java; el documento no dice nada, y rige Java.
-    public void hacerFinal() {
-        esFinal = true;
     }
 
     public void agregarMiembro(Miembro miembro) {
@@ -114,14 +108,11 @@ public final class Clase extends TipoDeclarado {
 
     private void verificarPadre(TipoReferencia referencia) throws ExcepcionSemantica {
         referencia.verificarEn(this, false);
-        switch (referencia.declaracion()) {
-            case Interfaz interfaz -> throw new ExcepcionSemantica(referencia.token(), "La clase "
-                    + nombre() + " no puede extender la interfaz " + interfaz.nombre()
+        TipoDeclarado declarado = referencia.declaracion();
+        if (declarado instanceof Interfaz) {
+            throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
+                    + " no puede extender la interfaz " + declarado.nombre()
                     + ": una clase extiende una clase y implementa una interfaz");
-            case Clase clase when clase.esFinal -> throw new ExcepcionSemantica(referencia.token(),
-                    "La clase " + nombre() + " no puede heredar de la clase final " + clase.nombre());
-            case Clase clase -> {
-            }
         }
     }
 

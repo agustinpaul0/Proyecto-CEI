@@ -21,7 +21,6 @@ AGENTS.md             memoria operativa del proyecto: convenciones, arquitectura
                       de testing y workflow — punto de partida para entender cualquier decisión
 CLAUDE.md             importa AGENTS.md para que Claude Code lo cargue solo en cada sesión
 ESTADO.md             dónde está cada etapa y qué queda pendiente
-dudas.md              las consultas abiertas para el profesor
 documentacion/        toda la documentación, organizada por fase del compilador:
                         lexico/       Etapa 1 — analizador léxico
                         sintactico/   Etapa 2 — analizador sintáctico y la gramática

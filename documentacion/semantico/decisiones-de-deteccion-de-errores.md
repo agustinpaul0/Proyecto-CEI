@@ -34,22 +34,23 @@ Lo fija la Pautas slide 30:
 | 6 | Constructor con otro nombre | `class Aa { Bb() { } }` | `Bb` (regla 4) |
 | 7 | Herencia de un tipo no declarado | `class B2 extends C3` | `C3` (regla 3) |
 | 8 | Herencia del tipo equivocado | `class Aa extends Ix`, con `Ix` interfaz | `Ix` (regla 3) |
-| 9 | Herencia de una clase `final` | `class Aa extends String` | `String` (regla 3) |
-| 10 | Argumento sobre un tipo no genérico | `Caja<String> x;`, con `Caja` no genérica | `Caja` (regla 3) |
-| 11 | Argumento no declarado | `Caja<Nada> x;` | `Nada` (regla 3) |
-| 12 | `T` fuera de la clase que la declara, o en un método estático | `class Aa { T x; }` | `T` (regla 3) |
-| 13 | Tipo no declarado en un atributo, retorno o parámetro | `Nada[] x;` | `Nada` (regla 3) |
-| 14 | Herencia circular | `class Aa extends Bb` `class Bb extends Aa` | `Aa`, la primera declarada del ciclo (regla 4) |
-| 15 | Atributo con el nombre de uno heredado | `int x;` en `Aa` y en `Bb extends Aa` | el `x` de `Bb` (regla 1) |
-| 16 | Redefinición con otra signatura | `void m1()` en `A1` e `int m1()` en `B2` | el `m1` de `B2` (regla 2) |
-| 17 | Redeclaración de un estático heredado | `void debugPrint(int i)` en cualquier clase | ese `debugPrint` (regla 2) |
-| 18 | Estático con la clave de uno de instancia heredado | `static String toString()` | ese `toString` (regla 2) |
-| 19 | Interfaz que contradice a `Object` | `interface Ix { int toString(); }` | `toString` (regla 2) |
-| 20 | Clase que no implementa un método de su interfaz | `class Aa implements Ix { }` | `Aa` (regla 4) |
-| 21 | Implementación con otra signatura, o estática | `static void m()` para el `void m()` de `Ix` | `m`, si es propio; `Aa`, si es heredado |
+| 9 | Argumento sobre un tipo no genérico | `Caja<String> x;`, con `Caja` no genérica | `Caja` (regla 3) |
+| 10 | Argumento no declarado | `Caja<Nada> x;` | `Nada` (regla 3) |
+| 11 | `T` fuera de la clase que la declara, o en un método estático | `class Aa { T x; }` | `T` (regla 3) |
+| 12 | Tipo no declarado en un atributo, retorno o parámetro | `Nada[] x;` | `Nada` (regla 3) |
+| 13 | Herencia circular | `class Aa extends Bb` `class Bb extends Aa` | `Aa`, la primera declarada del ciclo (regla 4) |
+| 14 | Atributo con el nombre de uno heredado | `int x;` en `Aa` y en `Bb extends Aa` | el `x` de `Bb` (regla 1) |
+| 15 | Redefinición con otra signatura | `void m1()` en `A1` e `int m1()` en `B2` | el `m1` de `B2` (regla 2) |
+| 16 | Redeclaración de un estático heredado | `void debugPrint(int i)` en cualquier clase | ese `debugPrint` (regla 2) |
+| 17 | Estático con la clave de uno de instancia heredado | `static String toString()` | ese `toString` (regla 2) |
+| 18 | Interfaz que contradice a `Object` | `interface Ix { int toString(); }` | `toString` (regla 2) |
+| 19 | Clase que no implementa un método de su interfaz | `class Aa implements Ix { }` | `Aa` (regla 4) |
+| 20 | Implementación con otra signatura, o estática | `static void m()` para el `void m()` de `Ix` | `m`, si es propio; `Aa`, si es heredado |
 
-Los tokens de los errores 14, 20 y 21 coinciden con los que marca `javac`. Los de los errores 10, 14
-y 21 tienen una alternativa razonable, y están consultados en [`../../dudas.md`](../../dudas.md).
+Los tokens de los errores 13, 19 y 20 coinciden con los que marca `javac`. En los errores 9, 13 y 20
+el profesor dejó el token a elección, y se sigue a `javac`
+([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §5): en el 9, `javac` nombra al tipo
+en el mensaje («type Caja does not take parameters»).
 
 ## En qué orden se detectan
 
@@ -63,7 +64,7 @@ El error reportado es el primero que se encuentra en este orden:
    ancestro. Dentro de una clase van primero los atributos heredados, después los métodos y por
    último la interfaz.
 
-Por esto, el error 14 se reporta en la primera clase declarada **que está en el ciclo**. Si una
+Por esto, el error 13 se reporta en la primera clase declarada **que está en el ciclo**. Si una
 clase anterior extiende a una del ciclo sin ser parte de él, su recorrido termina sin error, y el
 ciclo lo reporta su primer integrante cuando le toca.
 

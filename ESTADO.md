@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 29/09/2026
+**Última actualización:** 03/10/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -30,7 +30,7 @@ por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no val
 el profesor acepta las dos variantes.
 
 **Pendiente abierto:** que la corrección de la Etapa 2 confirme el criterio de `new int[2][]`
-(`CONVENCIONES-CATEDRA.md` §4). Si la entrega sale aprobada sin nada que corregir, queda
+(`CONVENCIONES-CATEDRA.md` §10). Si la entrega sale aprobada sin nada que corregir, queda
 confirmado y no se toca nada; si no, el cambio es de gramática y sigue el circuito de la Etapa 2.
 Falta que el usuario avise el resultado.
 
@@ -45,18 +45,19 @@ Kudos.
 
 | | |
 |---|---|
-| Controles | 21, más el constructor por defecto |
-| Corpus | 90 casos con error, 41 correctos y los 8 de la cátedra |
+| Controles | 20, más el constructor por defecto |
+| Corpus | 90 casos con error, 43 correctos y los 8 de la cátedra |
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
-Las resoluciones que esperan confirmación del profesor están en [`dudas.md`](dudas.md). Todas están
-implementadas; si una respuesta es distinta, se ajusta con un caso de test.
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). No queda
+ninguna abierta.
 
 ## Etapa 4: SIN EMPEZAR
 
 Sin especificación publicada. Queda pendiente todo lo que se chequea en los cuerpos, que la Etapa 2
-dejó pasar a propósito y la Etapa 3 no mira:
+dejó pasar a propósito y la Etapa 3 no mira. El profesor confirmó que todo esto es chequeo de
+sentencias y corresponde a la Etapa 4:
 - resolver los nombres contra su declaración;
 - que el lado izquierdo de un `=` y el operando de `++`/`--` sean variables;
 - que una sentencia-expresión sea una asignación o una llamada;
@@ -67,7 +68,5 @@ dejó pasar a propósito y la Etapa 3 no mira:
 - la precedencia de los operadores binarios, que la gramática de la cátedra pone en un solo nivel;
 - el rango de los literales `float`;
 - las expresiones que inicializan atributos.
-
-La sección B de [`dudas.md`](dudas.md) le consulta todo esto al profesor.
 
 ## Etapa 5: SIN EMPEZAR

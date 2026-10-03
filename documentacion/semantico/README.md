@@ -10,10 +10,10 @@ La especificación es «MiniJava-Semantica-2026-Parte 1», en
 | Alcance | Las declaraciones: clases, interfaces, atributos, encabezados de métodos y constructores, y parámetros. Los cuerpos quedan para la Etapa 4. |
 | Construcción | Acciones de un Esquema de Traducción sobre la gramática LL(1) de la Etapa 2 |
 | Chequeo | Nombres repetidos al parsear; después `estaBienDeclarado()` y `consolidar()` sobre la tabla |
-| Controles | 21, más el constructor por defecto |
+| Controles | 20, más el constructor por defecto |
 | Logros | Sólo los que no piden código: Entrega Anticipada, Imbatibilidad y Kudos |
-| Corpus | 90 casos con error, 41 correctos y los 8 de la cátedra |
-| Consultas abiertas | [`../../dudas.md`](../../dudas.md) |
+| Corpus | 90 casos con error, 43 correctos y los 8 de la cátedra |
+| Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1 a §6 |
 
 ## Documentos
 

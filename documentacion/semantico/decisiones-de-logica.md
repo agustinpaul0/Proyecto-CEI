@@ -16,8 +16,9 @@ aceptando sintácticamente, pero no suma controles:
 | `int x = 5;` (Atributos Inicializados) | el atributo se registra; la expresión es de la Etapa 4 |
 | `float` (logro de la Etapa 1, confirmado por el profesor) | es un tipo primitivo más |
 
-Controlar el anidamiento genérico es el logro Genericidad Avanzada E3, que no se persigue. Hasta
-dónde llega este criterio es la consulta principal de [`../../dudas.md`](../../dudas.md).
+Controlar el anidamiento genérico es el logro Genericidad Avanzada E3, que no se persigue. El
+profesor confirmó el criterio: si un logro no se continúa, los programas con que se prueba esta
+etapa no traen esa construcción ([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1).
 
 ## 2. Los cuerpos no se chequean
 
@@ -40,8 +41,8 @@ Documento §1. Un cuerpo con nombres no declarados compila: `sintCorrecto04`, de
 - Una clase extiende una clase y implementa una interfaz; una interfaz extiende una interfaz
   (documento §4). La gramática ya impide que una clase haga las dos cosas a la vez.
 - Sin `extends`, una clase extiende `Object`, también cuando implementa una interfaz.
-- `String` y `System` son `final`, como en Java: «cannot inherit from final String». El documento
-  sólo dice que heredan de `Object`.
+- `String` y `System` se pueden extender: `final` es parte del logro Sobrecarga! E3, que no se
+  persigue (respuesta del profesor). Una hija de `System` hereda sus diez métodos estáticos.
 - La herencia es acíclica, entre clases y entre interfaces. Una clase que extiende a otra de un
   ciclo sin ser parte de él no es la que se reporta ([`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md)).
 - Una clase puede extender otra declarada más adelante: la tabla se completa antes de chequear.
@@ -101,4 +102,4 @@ no se pueden redeclarar, ni como clase ni como interfaz.
 
 ## 9. `main` no se exige
 
-El documento no lo pide y Java compila sin él. Es la consulta 1 de [`../../dudas.md`](../../dudas.md).
+El documento no lo pide, Java compila sin él, y el profesor confirmó que no se exige.

@@ -40,7 +40,6 @@ final class EntidadesPredefinidas {
         Clase string = new Clase(idClase(STRING));
         TablaDeSimbolos.declararClase(string);
         string.setPadre(TablaDeSimbolos.referenciaAObject(LINEA_PREDEFINIDA));
-        string.hacerFinal();
         string.cerrar();
     }
 
@@ -48,7 +47,6 @@ final class EntidadesPredefinidas {
         Clase system = new Clase(idClase(SYSTEM));
         TablaDeSimbolos.declararClase(system);
         system.setPadre(TablaDeSimbolos.referenciaAObject(LINEA_PREDEFINIDA));
-        system.hacerFinal();
         system.agregarMetodo(estatico(metodo("read", TipoPrimitivo.INT)));
         system.agregarMetodo(estatico(metodo("printB", TipoVoid.VOID, "b", TipoPrimitivo.BOOLEAN)));
         system.agregarMetodo(estatico(metodo("printC", TipoVoid.VOID, "c", TipoPrimitivo.CHAR)));

@@ -146,7 +146,7 @@ repetido no se inserta, se **registra**, y `chequearDeclaraciones()` lo lanza an
 error ([`decisiones-de-diseno.md`](decisiones-de-diseno.md) §2).
 
 **Segunda pasada, `estaBienDeclarado()`**, sobre cada tipo en orden de declaración: la herencia
-(que el tipo exista, que sea del tipo correcto y que no sea `final`), la herencia circular, y los
+(que el tipo exista y que sea del tipo correcto), la herencia circular, y los
 tipos de los atributos, los constructores y los métodos.
 
 **Consolidación, `consolidar()`.** Un tipo se consolida después de su ancestro: si el ancestro no

@@ -45,7 +45,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   Semántico, Parte I: tabla de símbolos y chequeo de declaraciones. Sin logros de código, por
   decisión del usuario: sólo Entrega Anticipada, Imbatibilidad y Kudos. **El estado y las
   decisiones están en [`documentacion/semantico/README.md`](documentacion/semantico/README.md); lo
-  que falta consultar al profesor, en [`dudas.md`](dudas.md).**
+  que contestó el profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
 - Etapas 4-5: sin especificación todavía (aparecerán en `etapas/etapa-4/` etc. cuando se publiquen).
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:

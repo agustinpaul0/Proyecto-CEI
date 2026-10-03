@@ -1,9 +1,0 @@
-# Intermedios de LaTeX: el .tex y el PDF final sí se versionan.
-*.aux
-*.fdb_latexmk
-*.fls
-*.log
-*.out
-*.toc
-*.synctex.gz
-dudas.pdf

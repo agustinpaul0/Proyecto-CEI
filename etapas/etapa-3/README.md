@@ -13,5 +13,5 @@ partida general del repositorio sigue siendo [`AGENTS.md`](../../AGENTS.md).
 
 Los controles que pide la etapa están en el documento de la cátedra «MiniJava-Semantica-2026-Parte
 1», que describe el lenguaje y por eso vive con los demás en
-[`documentacion/minijava/`](../../documentacion/minijava). Las preguntas abiertas para el
-profesor están en [`dudas.md`](../../dudas.md).
+[`documentacion/minijava/`](../../documentacion/minijava). Lo que contestó el profesor está en
+[`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md).
