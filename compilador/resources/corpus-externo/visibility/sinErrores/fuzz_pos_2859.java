@@ -1,3 +1,0 @@
-interface Ki {
-void l ( ) ;
-}

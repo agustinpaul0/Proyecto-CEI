@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class JS < Y > implements JSuT { } interface HW { char [ ] o ( R [ ] [ ] [ ] k_ ) ; public TiP3b < K1 > m ( J r , G i3 , K2 < V7 > u ) ; } interface VWr { } interface NnZ { public void gW ( T m ) ; float h ( H [ ] [ ] n3 , N6 i , A y ) ; E [ ] [ ] [ ] [ ] [ ] o ( ) ; public void fo5a ( ) ; } interface Bcj extends BvH___ < H > { }

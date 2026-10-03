@@ -1,2 +1,0 @@
-interface Kdq_ < Z > {
-}

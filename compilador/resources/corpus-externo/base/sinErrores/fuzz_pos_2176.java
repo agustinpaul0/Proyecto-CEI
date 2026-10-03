@@ -1,2 +1,0 @@
-interface Rn_S {
-}

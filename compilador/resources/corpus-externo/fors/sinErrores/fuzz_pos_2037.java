@@ -1,2 +1,0 @@
-interface Ew3bm {
-}

@@ -1,2 +1,0 @@
-interface Hk < O > {
-}

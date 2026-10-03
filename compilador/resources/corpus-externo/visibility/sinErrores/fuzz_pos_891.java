@@ -1,2 +1,0 @@
-interface KS_ < V > {
-}

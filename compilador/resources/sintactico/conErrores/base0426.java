@@ -1,2 +1,0 @@
-///[Error:F|2]
-interface K_ < R > extends N6 { } class C_ extends P_ < T2_7 < N_O > > { } interface Zq < M > extends A2 { public void k ( ) ; } class L_2n < N > { static public void omx ( ) { R [ ] [ ] p , u ; } public static Ky_ qF ( T [ ] [ ] k , boolean gE ) { var u = true ; 2e38 ; M t ; char y_ , t ; } } interface Inp__ extends O_ { } class R_ < O > extends Cf < P > { static void p5 ( char i , A_ e4 ) F }

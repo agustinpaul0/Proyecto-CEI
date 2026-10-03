@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface UEU9_KEbU < I > { } class FPf { static public void n_ ( Su1 < B > d , N [ ] g ) { } } interface C6 < B > { Q1 < GW > [ ] [ ] [ ] [ ] p ( ) ; public void wC ( char [ ] [ ] e ) ; } interface P5AN5 { } interface V9__88 extends M8 { public void q4 ( AH_ [ ] [ ] [ ] [ ] [ ] [ ] auK , K i ) ; float p__wF ( ) ; } class KT implements B8M7 < E > { public static void c ( ) { } } interface LH extends H__v_IT { } interface RF_ < Q > { }

@@ -1,2 +1,0 @@
-interface S_ < D > {
-}

@@ -1,2 +1,0 @@
-interface Qd extends AM {
-}

@@ -1,4 +1,0 @@
-class YO {
-I eeS ( ) {
-}
-}

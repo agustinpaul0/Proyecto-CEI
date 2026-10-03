@@ -1,2 +1,0 @@
-class Ch implements OS {
-}

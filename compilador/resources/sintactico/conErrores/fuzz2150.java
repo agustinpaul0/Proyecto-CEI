@@ -1,2 +1,0 @@
-///[Error:static|2]
-interface FJps___ < M > extends V_ { } interface JiT < S > { } class Bv implements LiH0 { static void a ( ) { W___7 . v ( true ) ++ ; } static X [ ] [ ] [ ] [ ] static public N bI_E ( ) { ; } static Q8 < O > [ ] [ ] ge ( ) { if ( ! true ) H [ ] f ; else E_ e ; 35451 ; { } F [ ] [ ] [ ] o , pMrD ; } } interface M_u_e { } class Io14Y_ < C > { } class K5_ < E > { } class Ls7T7 implements T8LF848 < Gu_ > { } class Q72_P < C > implements Qvy < O_ > { }

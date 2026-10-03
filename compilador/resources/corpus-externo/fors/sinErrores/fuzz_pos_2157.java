@@ -1,2 +1,0 @@
-interface PF_ {
-}

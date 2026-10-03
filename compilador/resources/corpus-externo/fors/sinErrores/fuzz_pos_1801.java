@@ -1,2 +1,0 @@
-interface LN < J > {
-}

@@ -1,2 +1,0 @@
-class DR extends No {
-}

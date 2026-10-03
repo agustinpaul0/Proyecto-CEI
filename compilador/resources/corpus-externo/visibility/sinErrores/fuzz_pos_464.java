@@ -1,3 +1,0 @@
-interface Sf {
-Td [ ] hq ( ) ;
-}

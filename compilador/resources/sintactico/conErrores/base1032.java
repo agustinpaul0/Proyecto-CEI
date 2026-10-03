@@ -1,2 +1,0 @@
-///[Error:{|2]
-class PL { } class YO1 < T > implements Ek < Y___ > { char n ( char [ ] [ ] ozG , char f_ , char [ ] [ ] u , boolean qD , boolean [ ] c ) { var kv = this . p ++ * "" ; } static void kyqA ( DPp < Ed < B1 > > l , Z za , float l ) { var cxz_j = + RW_1 . e ( ) ++ > ! null % true % + true ; } Ey < Gb9Z < M > > [ ] p { } WU__Wi e ( ) { return ; { } } } interface CW { } class Kx796 < U > { }

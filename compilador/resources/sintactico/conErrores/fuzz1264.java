@@ -1,2 +1,0 @@
-///[Error:B9nth|2]
-interface Sh_ < H > { void x ( ) ; } B9nth class I9x_d implements DP < Y7_R > { public H [ ] s ( W [ ] [ ] [ ] [ ] [ ] u ) { if ( true ) boolean [ ] n , m_ ; else - false ; } public static Z s3 ( int [ ] r , int e , int fm6 , float [ ] j ) { } void f ( ) { var s = - null ; return ; ; } } class OB < A > extends G5W_X { Da4_ [ ] [ ] [ ] [ ] q1_zS08X ( X [ ] [ ] [ ] [ ] o5N ) { } } interface Mn < C > { } interface N8 < R > extends I1 { } class UuR < Y > implements Hk { } class M_3V extends Sx2 { }

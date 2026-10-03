@@ -1,2 +1,0 @@
-interface D5f {
-}

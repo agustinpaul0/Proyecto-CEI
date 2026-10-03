@@ -1,3 +1,0 @@
-interface YK {
-void h ( ) ;
-}

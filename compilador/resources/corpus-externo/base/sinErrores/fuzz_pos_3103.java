@@ -1,2 +1,0 @@
-interface Fj < V > {
-}

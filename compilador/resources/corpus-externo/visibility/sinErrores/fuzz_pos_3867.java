@@ -1,3 +1,0 @@
-interface Ff {
-void kN ( ) ;
-}

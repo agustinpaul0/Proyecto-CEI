@@ -1,2 +1,0 @@
-interface TT < L > {
-}

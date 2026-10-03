@@ -1,2 +1,0 @@
-interface HJ7 {
-}

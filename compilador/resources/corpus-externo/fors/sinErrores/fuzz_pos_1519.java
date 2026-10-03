@@ -1,3 +1,0 @@
-interface Cq {
-W g ( ) ;
-}

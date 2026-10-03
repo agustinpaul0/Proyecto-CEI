@@ -1,2 +1,0 @@
-class Xt implements RB {
-}

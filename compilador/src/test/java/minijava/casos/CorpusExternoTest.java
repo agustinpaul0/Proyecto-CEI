@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // Verificación diferencial contra un corpus AJENO: fuentes generados por fuzzing
-// a partir de otra gramática de MiniJava, en `resources/corpus-externo/`.
+// a partir de otra gramática de MiniJava, empaquetados en `resources/corpus-externo/`.
 // Es el mismo argumento que `comparar_con_gramatica.py` —dos implementaciones
 // independientes tienen que coincidir— pero con una gramática que no salió de
 // este proyecto, así que no comparte ni siquiera las decisiones.
@@ -43,8 +43,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Tag("sintactico")
 class CorpusExternoTest {
 
-    private static final Path CORPORA =
-            Path.of("resources", "corpus-externo");
     private static final List<String> GENERADOS = List.of("base", "localvar", "fors", "visibility");
 
     @Test
@@ -52,9 +50,10 @@ class CorpusExternoTest {
         List<String> divergencias = new ArrayList<>();
         int comparados = 0;
 
+        Path corpora = CorpusEmpaquetado.extraido(CorpusEmpaquetado.CORPUS_EXTERNO);
         for (String corpus : GENERADOS) {
             for (boolean valido : new boolean[] { true, false }) {
-                Path carpeta = CORPORA.resolve(corpus)
+                Path carpeta = corpora.resolve(corpus)
                         .resolve(valido ? "sinErrores" : "conErrores");
                 try (Stream<Path> casos = Files.list(carpeta)) {
                     for (Path caso : casos.filter(CorpusExternoTest::esFuente).sorted().toList()) {

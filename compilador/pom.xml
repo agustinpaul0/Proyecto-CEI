@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.14.1</junit.version>
         <jqwik.version>1.9.1</jqwik.version>
+        <commons-compress.version>1.26.1</commons-compress.version>
         <!-- Volcado a consola de la salida del compilador por cada caso del corpus:
              completo (default) | resumen | off. Ver VolcadoDeCasos. -->
         <volcado>completo</volcado>
@@ -52,6 +53,14 @@
             <groupId>net.jqwik</groupId>
             <artifactId>jqwik</artifactId>
             <version>${jqwik.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Para leer los corpus generados, que se versionan como .tar.gz
+             (CorpusEmpaquetado). -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${commons-compress.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

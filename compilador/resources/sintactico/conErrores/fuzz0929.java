@@ -1,2 +1,0 @@
-///[Error:static|2]
-class YMG < M > implements JmxX < KU_Fo > { static private void ag ( A_U b_ , Y_ < UC > [ ] [ ] lO , float iP , OnDi [ ] [ ] i , LT b ) static void q ( ) { } private static float [ ] o ( NbalJ [ ] s , Tr [ ] ihT7 , W_ e_xFw7 ) { if ( "" * - 9622121 || ! null ) S x ; else false ; var q = - '[' ; if ( false ) return ; } static void p ( boolean z_7 ) { } private int c ( ) { BS8H < D > k , p ; } char v ; static private void c__ ( ) { } public A s ; public static KS [ ] qQ2_7UQ72_ ( ) { { } { } ; } } class Q_o < P > { }

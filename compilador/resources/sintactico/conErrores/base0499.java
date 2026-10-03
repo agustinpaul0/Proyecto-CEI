@@ -1,2 +1,0 @@
-///[Error:static|2]
-class Xp < T > implements Vd < POh < V > > { static private Z a_G_ static private C [ ] u ( U f , float fN_ , boolean w , float l62 ) { } public static Y [ ] [ ] [ ] m_ ( ) { } R [ ] [ ] d ( ) { if ( 'F' ) ; else { ; ; } } static private void f ( Z xi , IU1C_ [ ] x , boolean p3P , float [ ] [ ] u ) { { } } } class WP implements S1s_k__ { static public void j ( ) { } static void s ( ) { } F [ ] h ; }

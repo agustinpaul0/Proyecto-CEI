@@ -1,2 +1,0 @@
-interface VA__ < O > {
-}

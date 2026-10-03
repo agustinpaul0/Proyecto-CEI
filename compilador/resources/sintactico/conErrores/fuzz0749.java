@@ -1,2 +1,0 @@
-///[Error:(|2]
-class P_ extends H_ { void k ( X u ) { } } class BcBr { Y_ ( ) { } void bX6_ ( ) { float [ ] i = false >= false , f9 , j , h ; N_ < A > e_ ; if ( + true ) ; return ; int w , ir09W , w ; } private static void e ( SW4 < O > u , float [ ] [ ] [ ] wN ) { } F5 ( ) { } D c = "\b%" -- ? - true : - '\"' > ! null ; } class W5 implements Ka_ { } interface OM { C o ( D o_ ) ; } interface PZl < P > extends Fh < Rl < G > > { int [ ] [ ] [ ] d9 ( S_ t , B_ < X > hn_C ) ; ( ) } interface Z26_ { V [ ] [ ] t ( ) ; } class ZU < P > extends PI { }

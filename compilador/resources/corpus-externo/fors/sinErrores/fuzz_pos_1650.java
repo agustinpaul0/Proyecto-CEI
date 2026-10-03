@@ -1,2 +1,0 @@
-interface Xu < F > {
-}

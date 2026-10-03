@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface N4 { void k ( X [ ] s__ , char [ ] [ ] d_54q , J [ ] [ ] e5S_ , ZC_ s_ , int [ ] [ ] s , int [ ] [ ] [ ] [ ] c , int f_c , int d , Y_ [ ] [ ] [ ] jb , float j ) ; float [ ] s96_fR ( ) ; Wz__ZL < MHw__0_ > [ ] ohI3 ( ) ; L [ ] [ ] [ ] [ ] [ ] [ ] w6W ( ) ; G a__0 ( boolean [ ] [ ] e ) ; } class XI < G > { public static L iB ( ) { } } interface A6 { public S w ( ) ; }

@@ -1,2 +1,0 @@
-class Rz extends Eu {
-}

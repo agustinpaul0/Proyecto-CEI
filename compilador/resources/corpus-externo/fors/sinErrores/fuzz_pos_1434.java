@@ -1,2 +1,0 @@
-interface Z7G {
-}

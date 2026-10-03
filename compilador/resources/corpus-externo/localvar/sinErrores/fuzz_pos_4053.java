@@ -1,2 +1,0 @@
-class ObtF implements Ty {
-}

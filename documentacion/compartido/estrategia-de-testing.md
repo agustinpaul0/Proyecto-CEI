@@ -50,10 +50,10 @@ porque cada mutante volvería a correr miles de casos parametrizados.
 
 ### El corpus del analizador sintáctico no se escribió a mano del todo
 
-El corpus del sintáctico —`resources/sintactico/sinErrores/` y `resources/sintactico/conErrores/`— tiene dos orígenes,
-y la distinción importa:
+El corpus del sintáctico tiene dos orígenes, y la distinción importa:
 
-- **Escrito a mano** (~340 casos, 184 de ellos importados de un corpus ajeno): lo que un generador
+- **Escrito a mano** (~340 casos, 184 de ellos importados de un corpus ajeno), suelto en
+  `resources/sintactico/sinErrores/` y `resources/sintactico/conErrores/`: lo que un generador
   al azar no busca. El archivo vacío, el de sólo comentarios, la clase sin miembros, cada hueco
   vacío del `for`,
   `new int[]{,}`, cien bloques anidados, el
@@ -64,7 +64,15 @@ y la distinción importa:
   a parsear en árboles y los muta; el oráculo JavaCC dice qué veredicto corresponde. Un caso entra
   sólo si todos los oráculos de control coinciden. Son dos lotes, `base` y `fuzz`, con semillas
   separadas y sin casos repetidos entre ellos. Se regenera con `make fuzz` desde una semilla
-  versionada.
+  versionada, y se versiona empaquetado en `resources/sintactico/sintactico-generado.tar.gz`.
+
+**Los corpus generados se versionan empaquetados.** Son decenas de miles de fuentes chicos, y
+sueltos, las cabeceras que el zip de entrega lleva por archivo pesaban tanto como los fuentes: los
+dos corpus generados ocupaban 15 de los 18 MB del zip. En `.tar.gz` ocupan 5 MB. Los arma
+`herramientas/empaquetar_corpus.py`, y el archivo sale idéntico byte a byte si el corpus no cambió.
+Los tests los descomprimen una vez en `target/corpus/` (`CorpusEmpaquetado`) y los recorren como
+cualquier carpeta. Los testers de la cátedra recorren sólo los casos sueltos; los generados los
+recorre el tester estricto.
 
 ## 3. Las invariantes, que son lo más valioso de la suite
 
@@ -242,7 +250,7 @@ No hay forma de elegir con qué logros correr: la suite tiene una sola configura
 El argumento de la sección anterior tiene un límite: las dos implementaciones que se comparan
 salieron del mismo archivo de gramática, así que comparten sus decisiones. `CorpusExternoTest` cierra
 ese hueco corriendo el compilador contra **29.101 fuentes generados a partir de otra gramática** de
-MiniJava (`compilador/resources/corpus-externo/`). No comparte con este proyecto ni el código ni los criterios.
+MiniJava (`compilador/resources/corpus-externo/corpus-externo.tar.gz`). No comparte con este proyecto ni el código ni los criterios.
 
 > **El corpus y su generador son de Giuliano Taormina, compañero de la materia**, que los compartió para que cada uno pudiera contrastar su analizador. No son material
 > de este proyecto: acá sólo se corre el compilador contra ellos.
@@ -274,7 +282,7 @@ más adelante, y eso pasaba en 358 casos.
 
 Los **casos escritos a mano** de ese corpus que coinciden se importaron —son curados y legibles, y
 están en `resources/` con el prefijo `ext`, 184 en total—; los generados se corren desde
-`corpus-externo/`, fuera del corpus que recorren los testers de la cátedra.
+`corpus-externo/`, empaquetados y fuera del corpus que recorren los testers de la cátedra.
 
 ### La verificación diferencial contra la gramática
 

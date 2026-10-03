@@ -1,2 +1,0 @@
-///[Error:[|2]
-interface MWR_ extends G78 < TI_ > { } interface PfC < Q > extends RPf < Re < K > > { } [ ] class Zeb_ < N > extends E1 < A > { void tX ( ) { } void vR__FS ( float [ ] [ ] [ ] [ ] n , L_ e_ ) { } static private void kJ ( V9C [ ] [ ] h , boolean [ ] [ ] [ ] g , D [ ] [ ] q7_ ) { if ( false ) boolean [ ] x , rb2_ ; N [ ] [ ] [ ] m_ , p , w ; ; } public void c ( ) { } private boolean [ ] k ( ) { } }

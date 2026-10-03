@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class J9Z_3Q < G > implements T_2 < D > { } interface Tn { } class Om_ < G > { } interface F4 < G > { } interface Gw9_Xq extends Z_ { } class W_3Km { static void nE ( ) { } static boolean [ ] [ ] it__3u ( ) { return ; int ga , tA ; ; } U [ ] qQ ( ) { return ; } } interface RU < D > { char w ( Op < R > wt , B f__ , char hb , char [ ] [ ] p6 ) ; } class SI { }

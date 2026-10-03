@@ -1,3 +1,0 @@
-interface Pw {
-void v ( ) ;
-}

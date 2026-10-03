@@ -1,2 +1,0 @@
-///[Error:{|2]
-interface P8 extends L_ { public void u ( ) ; } class IfH extends I3h < Dzmg < Q0N2 > > { public static float m_ ( ) { } void j ( ) { } public static void wd ( ) { if ( - true ) C_ . vM__ ( ) . t -- ; else return ; } private void f ( ) { G_c t , vZ ; } } class W5 < X > { private void x7_ { } } class Z_2pd implements L1 { I [ ] t_9 ; }

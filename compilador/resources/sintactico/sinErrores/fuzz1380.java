@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface M8Iuh { void gF_ ( ) ; void tf ( ) ; } class Uq extends U7 < K_ > { private I [ ] [ ] [ ] [ ] e = + true * true ? ! M2 . j ( ) -- > "\n.\rV" -- : ! '\"' ; } class LmO___pA < C > { T9 ( ) { true ; if ( false - ! null ) return ; else ; if ( null ) IZ < ZF > os ; else ; } static float a ( ) { { } } }

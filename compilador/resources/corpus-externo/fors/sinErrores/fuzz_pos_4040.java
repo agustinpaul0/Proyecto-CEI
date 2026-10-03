@@ -1,2 +1,0 @@
-interface YBSR < C > {
-}

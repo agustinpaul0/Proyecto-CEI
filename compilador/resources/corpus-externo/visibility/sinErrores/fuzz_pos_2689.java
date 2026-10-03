@@ -1,2 +1,0 @@
-interface Qm extends Vlwm {
-}

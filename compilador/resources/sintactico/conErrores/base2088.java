@@ -1,2 +1,0 @@
-///[Error::|2]
-interface Z__B < K > { } class InI < B > { static private char g ( int [ ] w_1 ) { return "" . z > ! this ++ || ! 's' = 032. ; } char g = - 'o' ? 872841.e-19D : + "" ++ ? : "" ? false : null ; G [ ] wFZkRY ( ) { } static private void jO ( ) { } static public void t ( int [ ] [ ] v ) { { } } private static void t4 ( boolean [ ] w2_ ) { return ; } static public F9c < H > q ( ) { X3P . afvA_ ( ) ; } static X [ ] n9 ( ) { } public U [ ] [ ] [ ] [ ] y_ ; void a_T ( ) { } } class Fm_ < M > implements CD < F > { static public void in ( ) { } }

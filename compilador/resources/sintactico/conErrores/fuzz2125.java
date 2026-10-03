@@ -1,2 +1,0 @@
-///[Error:b|2]
-interface B__ extends JY2 { public R h ( N9 [ ] [ ] x , M_ < M_ < U > > t ) ; } class O_ < W > extends P_2 { private static U3 < M > [ ] s_U ( ) b W [ ] dK ( ) { } } interface Q_B_ { void x ( char [ ] [ ] p_ZE ) ; } interface Wmu extends O1 < WJ > { } interface WP2 { public void h ( C [ ] [ ] [ ] [ ] [ ] [ ] [ ] o_ , V [ ] [ ] [ ] [ ] [ ] y ) ; void q ( ) ; public T t0 ( char [ ] [ ] [ ] [ ] [ ] s2Am8R ) ; }

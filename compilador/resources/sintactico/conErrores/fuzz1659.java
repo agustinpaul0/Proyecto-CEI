@@ -1,2 +1,0 @@
-///[Error:static|2]
-interface E_V < N > extends A_Gr { } class N21_S < G > extends C60 < IU6 > { private static char [ ] f static I [ ] [ ] aM ( ) { } static public void m ( char [ ] [ ] x ) { int [ ] [ ] d , ebD , h ; float t , eMW , pq ; "K" ++ ; Pa . tp19 ( ) ; } boolean nD ( ) { f ( ) -- ; I n28 ; ; } P cPj ( ) { boolean [ ] [ ] hG , r , o_ , j ; } static void p ( Gm_ [ ] [ ] go ) { } static public void xG4_ ( float [ ] [ ] a9_ ) { } static public void m ( ) { char b ; } }

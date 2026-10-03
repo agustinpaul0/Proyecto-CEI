@@ -1,2 +1,0 @@
-interface B61Cr {
-}

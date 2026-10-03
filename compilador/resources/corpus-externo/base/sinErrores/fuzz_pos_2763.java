@@ -1,2 +1,0 @@
-class Fs extends As {
-}

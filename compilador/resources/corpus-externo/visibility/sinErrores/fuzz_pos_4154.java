@@ -1,2 +1,0 @@
-class Hj implements VVC {
-}

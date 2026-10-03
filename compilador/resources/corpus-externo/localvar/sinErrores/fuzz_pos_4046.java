@@ -1,3 +1,0 @@
-interface Fd {
-void m ( ) ;
-}

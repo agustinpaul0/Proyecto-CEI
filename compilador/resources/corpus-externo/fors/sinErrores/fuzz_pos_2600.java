@@ -1,2 +1,0 @@
-interface AlAS < E > {
-}

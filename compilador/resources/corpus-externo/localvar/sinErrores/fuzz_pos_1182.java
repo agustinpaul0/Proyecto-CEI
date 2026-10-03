@@ -1,3 +1,0 @@
-interface Id {
-void wJ ( ) ;
-}

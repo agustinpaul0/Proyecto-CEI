@@ -1,2 +1,0 @@
-class XvZ extends ST {
-}

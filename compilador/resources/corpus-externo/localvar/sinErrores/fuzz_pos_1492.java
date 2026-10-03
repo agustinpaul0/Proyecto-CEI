@@ -1,2 +1,0 @@
-interface YF_p {
-}

@@ -36,11 +36,15 @@ class TesterDeCasosSintacticosEstricto {
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
     static Stream<Path> casosCorrectos() throws IOException {
-        return casosDe(SIN_ERRORES);
+        return Stream.concat(casosDe(SIN_ERRORES), casosDe(generados().resolve("sinErrores")));
     }
 
     static Stream<Path> casosConErrores() throws IOException {
-        return casosDe(CON_ERRORES);
+        return Stream.concat(casosDe(CON_ERRORES), casosDe(generados().resolve("conErrores")));
+    }
+
+    private static Path generados() throws IOException {
+        return CorpusEmpaquetado.extraido(CorpusEmpaquetado.SINTACTICO_GENERADO);
     }
 
     private static Stream<Path> casosDe(Path directorio) throws IOException {
@@ -55,9 +59,11 @@ class TesterDeCasosSintacticosEstricto {
     }
 
     @AfterAll
-    static void informarElCorpusProcesado() {
+    static void informarElCorpusProcesado() throws IOException {
         VolcadoDeCasos.resumirDirectorio(SIN_ERRORES.toString());
         VolcadoDeCasos.resumirDirectorio(CON_ERRORES.toString());
+        VolcadoDeCasos.resumirDirectorio(generados().resolve("sinErrores").toString());
+        VolcadoDeCasos.resumirDirectorio(generados().resolve("conErrores").toString());
     }
 
     @ParameterizedTest(name = "{0}")

@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class F6y < B > extends DR { } class I6R < V > implements E_ < S > { private static P__ < N_4M < XPf > > [ ] [ ] ms8k ( Ceu [ ] j_LF ) { } } class Cq < G > implements E_ft < Y__z9_ > { void z ( int d ) { ; } } class Qjc { IG5_2O ( ) { } Ul1c [ ] [ ] d8K_n3 ; } interface CEo { } class U_ < A > implements J__C { } class X_oE { }

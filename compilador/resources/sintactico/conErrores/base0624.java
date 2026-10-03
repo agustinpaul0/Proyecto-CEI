@@ -1,2 +1,0 @@
-///[Error:{|2]
-class ZMZ < I > extends BJ < Q > { public static void y ( ) { } } class GAv6 extends Q0 { int h_ ; } interface Rj extends Isr { } class R9H implements S7 < M4 > { static private boolean zt ( ) { } public O [ ] [ ] [ ] [ ] [ ] x_ ; } class B8v < P > extends Xh < T > { public static float [ ] [ ] b6__xQX { } }

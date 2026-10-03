@@ -1,3 +1,0 @@
-interface ZoVZ {
-void g ( ) ;
-}

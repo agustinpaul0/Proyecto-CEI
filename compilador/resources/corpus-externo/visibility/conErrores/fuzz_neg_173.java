@@ -1,8 +1,0 @@
-// [Error:}|8]
-interface Gv extends PS {
-M u_QP_ ( ) ;
-}
-class MHk {
-}
-class R__ {
-public }

@@ -1,2 +1,0 @@
-interface TO < J > {
-}

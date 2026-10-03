@@ -1,2 +1,0 @@
-///[Error:+|2]
-interface I4 < H > { } interface G1 < W > extends D_ < Qi9 < A > > { public void q ( ) ; } interface V_3 < G > { } class Wg extends AK < QV < R > > { public char [ ] d = 069f ; static private boolean + "a" . f -- ; G qh , y , g , f9 , gk ; L b , t3 , o ; ; ; static void to ( ) { Rb . a ( ) -- ; return ; } } class V_ { boolean e4 ( ) { } } class M6o implements A__v { V [ ] [ ] y9_ ( int [ ] x ) { boolean [ ] r , s , l1 ; ; } }

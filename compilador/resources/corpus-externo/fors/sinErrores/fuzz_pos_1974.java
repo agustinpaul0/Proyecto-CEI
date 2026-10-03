@@ -1,3 +1,0 @@
-interface Me {
-void c ( ) ;
-}

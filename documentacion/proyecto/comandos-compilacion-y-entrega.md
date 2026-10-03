@@ -67,7 +67,7 @@ No se versionan las slides ni las Pautas de la cátedra (`etapas/**/Clase*.pdf` 
 `vendor/`. Los PDF de `documentacion/minijava/`, que describen el lenguaje, sí se versionan: la
 documentación los cita.
 
-El zip tiene que pesar menos de 20 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo
+El zip tiene que pesar menos de 20 MB; el de la Etapa 3 pesa 7,3 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo
 zip localmente y sirve para medirlo antes de pushear.
 
 **No hay ningún paso de copia.** Los testers de la cátedra buscan el corpus en
@@ -77,8 +77,10 @@ quedan archivados en `resources/lexico/` y `resources/sintactico/`, y sus tester
 Cada uno se corre entero con su perfil (`-Pfase-lexico`, `-Pfase-sintactico`).
 
 El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
-`compilador/resources/corpus-externo/`: son 29.101 fuentes y unos 10 megabytes. Los testers de la
-cátedra no lo recorren.
+`compilador/resources/corpus-externo/`. Son 29.101 fuentes, empaquetados en un `.tar.gz` de 4,4 MB,
+y los testers de la cátedra no lo recorren. Los generados del sintáctico van empaquetados de la
+misma forma: sueltos, las cabeceras del zip pesaban tanto como los fuentes
+([`estrategia-de-testing.md`](../compartido/estrategia-de-testing.md) §2).
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 que la cátedra tiene
 también busca en `resources/sinErrores/`, así que sobre esta entrega encontraría los casos de la

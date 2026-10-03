@@ -1,2 +1,0 @@
-interface HX_A {
-}

@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface I4 { void rF_6G ( Z [ ] h_4 ) ; public X_7j o1 ( ) ; void or ( ) ; void j ( char [ ] y6 ) ; } interface F_rR < I > extends S_ < W > { void s ( ) ; VeB f ( ) ; Y z_ ( ) ; public void u ( ) ; } interface D_pv1 < Q > { } interface Ky < K > extends X8U < I > { public int w ( ) ; } class KPF < F > extends Ww { public BNC_c ( ) { } } class C9_ < R > extends T_ { }

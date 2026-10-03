@@ -1,2 +1,0 @@
-interface Lx < D > {
-}

@@ -19,6 +19,9 @@ Cómo funciona, de punta a punta:
 
 Hay un solo oráculo, porque hay una sola gramática. Un caso entra al corpus si
 el oráculo y el generador coinciden en su veredicto.
+
+5. El corpus se empaqueta en resources/sintactico/sintactico-generado.tar.gz
+   (empaquetar_corpus.py) y se borra fuzz/trabajo/, que pesa cientos de MB.
 """
 import argparse
 import hashlib
@@ -27,6 +30,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from empaquetar_corpus import empaquetar
+
 RAIZ = Path(__file__).resolve().parent.parent
 GRAMATICA = RAIZ / "gramatica" / "minijava-ll1-final.g"
 HERRAMIENTAS = RAIZ / "herramientas"
@@ -34,8 +39,10 @@ TRABAJO = HERRAMIENTAS / "fuzz" / "trabajo"
 JARS = HERRAMIENTAS / "fuzz" / "jars"
 VENV = RAIZ / ".venv" / "bin"
 
-SIN_ERRORES = RAIZ / "resources" / "sintactico" / "sinErrores"
-CON_ERRORES = RAIZ / "resources" / "sintactico" / "conErrores"
+CORPUS = TRABAJO / "corpus"
+SIN_ERRORES = CORPUS / "sinErrores"
+CON_ERRORES = CORPUS / "conErrores"
+ARCHIVO = RAIZ / "resources" / "sintactico" / "sintactico-generado.tar.gz"
 
 
 def correr(comando, **kwargs):
@@ -229,12 +236,9 @@ def main():
     ap.add_argument("--semilla", type=int, default=20260923)
     args = ap.parse_args()
 
-    SIN_ERRORES.mkdir(parents=True, exist_ok=True)
-    CON_ERRORES.mkdir(parents=True, exist_ok=True)
-    TRABAJO.mkdir(parents=True, exist_ok=True)
-    for carpeta in (SIN_ERRORES, CON_ERRORES):
-        for viejo in list(carpeta.glob("fuzz*.java")) + list(carpeta.glob("base*.java")):
-            viejo.unlink()
+    shutil.rmtree(CORPUS, ignore_errors=True)
+    SIN_ERRORES.mkdir(parents=True)
+    CON_ERRORES.mkdir(parents=True)
 
     # Dos lotes con la misma gramática y el mismo oráculo. Grammarinator siembra el
     # caso i con `semilla + i`, así que la semilla del segundo lote se aleja más
@@ -251,6 +255,9 @@ def main():
     print(f"\nlote base: {len(base[0])} positivos y {len(base[1])} negativos.")
     print(f"lote fuzz: {len(fuzz[0])} positivos y {len(fuzz[1])} negativos.")
     print(f"semilla {args.semilla}.")
+
+    print(f"{empaquetar(CORPUS, ARCHIVO)} fuentes en {ARCHIVO.relative_to(RAIZ)}")
+    shutil.rmtree(TRABAJO)
 
 
 if __name__ == "__main__":

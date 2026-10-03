@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface Y0_ < Y > extends QPZ { G z ( ) ; } class B_ implements Y3 { public Ow ( ) { } private void a ( H_ < H6_8u4 > [ ] k , C4 y3 ) { } } class O53 implements PpB { V84 ( ) { var fG = null >= true ? + false : ! false ; } } interface QFu < Y > extends S_m < Q > { } interface V04F < V > { public void b75 ( ) ; } interface Hg extends L2 { }

@@ -1,2 +1,0 @@
-///[Error:void|2]
-class X_ < B > extends QuM < L > { float x ; public static GlW < V > void l ( ) { ; } static void s ( ) { } void b ( float [ ] [ ] [ ] [ ] a2y2 , V1 ir , O n ) { while ( ! false ) L w ; { return ; { } ; } } } class MxuIa___ < Z > extends CE { boolean l ( ) { ; } } class C8 < V > implements D67 { } interface Bg < A > { } interface Y2__ extends UjDB < Q_Q__ > { } interface ZPou extends V_W { void lEz ( ) ; }

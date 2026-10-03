@@ -1,2 +1,0 @@
-///[Error:float|2]
-interface I_ < F > extends A_ { public N l1T ( ) ; } class Lb78 < Y > { } class A8_H_O { static private void p_Q_g ( ) { } public static float [ ] m ( J5B_xy_ < R > n_ , G2v [ ] [ ] n , Mj m ) { var u = + false ; M [ ] [ ] j ; ; '\b' ; } } class P_ implements Dt__1 { private R3i2 [ ] m ; static Ww8g < My > [ ] q ( E__0 [ ] [ ] [ ] d , JW [ ] z , int [ ] m ) { } void l___ ( ) { { return ; { } } S [ ] [ ] [ ] [ ] a_n ; ; return ; } private static void b float [ ] [ ] mpJp { } } class T_b < A > implements Bj < TpNY > { }

@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface OjK { void mO_3 ( int [ ] m ) ; } class E6__fxX implements JY { P a ( ) { } static void p ( ) { for ( var h5 = 4d ; true ; true ) if ( + true ) { float [ ] [ ] o_ ; } else { { } } } static void d ( int [ ] p , O7G skC , char [ ] d , char [ ] k70 ) { while ( + 60f ) { { ; } } } } interface S_4Xe extends B2_ { public void sf ( ) ; }

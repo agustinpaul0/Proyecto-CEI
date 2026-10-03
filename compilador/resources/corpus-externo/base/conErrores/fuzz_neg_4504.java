@@ -1,2 +1,0 @@
-// [Error:+|2]
-+ "" [ new boolean [ 7028 = null > - null ] [ + true = ! null ] [ ! true ] . b ( ) . s_ [ ' ' = "1@+" / "" ] > ! j_ ( false ) [ ! d ( ) . g ] [ d_ . f_ || 225 == - null = "" ] . r ( ) = 7666137 ] [ ! null = ( '\u5EF0' ) ]

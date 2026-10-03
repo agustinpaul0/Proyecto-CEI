@@ -1,2 +1,0 @@
-interface Qb_ < K > {
-}

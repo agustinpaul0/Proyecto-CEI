@@ -1,2 +1,0 @@
-///[Error:}|2]
-class O88_ { } class Ib < X > { void yAd ( ) { } static private void r ( boolean y , S7 < U > [ ] [ ] hW ) { for ( + false = ! false ; - 2.674 ; ! true <= ! true ) } float tW7G5 ( D d , Efg [ ] x , Jk [ ] ic , Z c4 ) { } void p ( ) { while ( false ) ! null ; { } this -- ; } C [ ] [ ] r ( ) { L_ . k ( ) ; } } interface LH < O > extends W5 { void k ( ) ; } interface W6_ { public void l5 ( ) ; } class OF3 extends X_ { static private void iz ( ) { } public static void j ( float [ ] [ ] [ ] t9 ) { } }

@@ -1,2 +1,0 @@
-///[Error:Oh_Ye|2]
-interface SE extends Dz_D0 { float [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] lR ( ) ; public float t ( ) ; } interface Yul extends K8B7I < J > { } class G9 < H > { static void j ( ) { } public OG ( YwoY [ ] pdk , H c ) { var ig = - true ; P3 [ ] w6 ; } } interface WaQ { public void yI ( ) ; public void bP ( float r ) ; char [ ] s ( ) ; W ik ( ) ; } interface UhW < R > { } Oh_Ye class I2_ < J > { static void i ( B u ) { float s_ ; S_K . v ( ) ; M_ kCA ; } }

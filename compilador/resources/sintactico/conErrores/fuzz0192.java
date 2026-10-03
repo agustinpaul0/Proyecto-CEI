@@ -1,2 +1,0 @@
-///[Error:%|2]
-class Hv < K > implements G__ < J > { } class Q7 { static private void p ( ) { } Yo_ ( ) { var d2t = ! this -- >= % null ; ; boolean [ ] [ ] k8 ; } } interface P_ < H > extends X_J < I > { } interface Rr1f < H > extends CJ < O7W < M > > { } interface G_ { void d ( O [ ] [ ] [ ] [ ] [ ] [ ] v4 , U_ < B0_9_ > dQ_zW ) ; void jc ( V xi ) ; } interface J7 < E > extends WR < O > { } class Fo < A > extends O__MmP_ { static private void j ( ) { I [ ] [ ] [ ] [ ] [ ] fz8 ; St_ . w_ ( ) ++ ; return ; } A6_G [ ] b ( ) { } static void oBQ ( ) { } }

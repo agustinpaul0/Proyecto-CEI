@@ -1,2 +1,0 @@
-interface SOr extends TC {
-}

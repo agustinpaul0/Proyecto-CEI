@@ -1,11 +1,12 @@
 package minijava.semantico;
 
 import minijava.aplicacion.ModuloPrincipalSemantico;
+import minijava.casos.CorpusEmpaquetado;
 import minijava.comun.salida.SalidaEnMemoria;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("semantico")
 class RobustezDelSemanticoTest {
 
+    static Stream<Path> corpus() throws IOException {
+        return Stream.of(Path.of("resources", "lexico"), Path.of("resources", "sintactico"),
+                CorpusEmpaquetado.extraido(CorpusEmpaquetado.SINTACTICO_GENERADO),
+                CorpusEmpaquetado.extraido(CorpusEmpaquetado.CORPUS_EXTERNO));
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = {"lexico", "sintactico", "corpus-externo"})
-    void elCompiladorCompletoTerminaSiempreEnUnCodigo(String corpus) throws IOException {
+    @MethodSource("corpus")
+    void elCompiladorCompletoTerminaSiempreEnUnCodigo(Path corpus) throws IOException {
         List<String> fallas = new ArrayList<>();
-        for (Path fuente : fuentesDe(Path.of("resources", corpus))) {
+        for (Path fuente : fuentesDe(corpus)) {
             List<String> salida = ejecutar(fuente, fallas);
             if (salida != null && !terminaEnUnCodigo(salida)) {
                 fallas.add(fuente + " -> " + salida);
@@ -43,7 +50,10 @@ class RobustezDelSemanticoTest {
     @Test
     void unFuenteSintacticamenteValidoDaUnSoloReporte() throws IOException {
         List<String> fallas = new ArrayList<>();
-        List<Path> fuentes = fuentesDe(Path.of("resources", "sintactico", "sinErrores"));
+        List<Path> fuentes = Stream.concat(
+                fuentesDe(Path.of("resources", "sintactico", "sinErrores")).stream(),
+                fuentesDe(CorpusEmpaquetado.extraido(CorpusEmpaquetado.SINTACTICO_GENERADO)
+                        .resolve("sinErrores")).stream()).toList();
         for (Path fuente : fuentes) {
             List<String> salida = ejecutar(fuente, fallas);
             if (salida != null && salida.size() != 3) {

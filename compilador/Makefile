@@ -5,7 +5,7 @@
 #
 #     make venv    # instala Grammarinator en .venv/
 #     make fuzz    # regenera el corpus con la semilla versionada
-#     make limpiar
+#     make limpiar # borra el venv, los jars y los intermedios: todo se regenera
 
 VENV        := .venv
 PIP         := $(VENV)/bin/pip
@@ -46,4 +46,5 @@ fuzz: $(LISTO) jars
 		--positivos $(POSITIVOS) --negativos $(NEGATIVOS) --semilla $(SEMILLA)
 
 limpiar:
-	rm -rf herramientas/fuzz/trabajo
+	rm -rf herramientas/fuzz/trabajo $(JARS) $(VENV)
+	find herramientas -name __pycache__ -type d -prune -exec rm -rf {} +

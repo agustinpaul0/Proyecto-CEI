@@ -1,2 +1,0 @@
-interface Xb_b {
-}

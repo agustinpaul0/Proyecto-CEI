@@ -1,2 +1,0 @@
-///[Error:private|2]
-interface Qm < B > { void k ( ) ; } interface Cj_X < O > { public void i ( int [ ] [ ] xk___ , char eiA ) ; } class I63 < Z > extends Xok < Z > { } class E3 { static public void t ( ) { return ; if ( - true ) Y zG , gT , w_ ; ; } static S zG private PK < B7 < O > > [ ] oh56 ( ) { return ; } static private HYj x__ ( G [ ] [ ] [ ] l , C [ ] [ ] onbz ) { p . l -- ; } } class U2_ { static public L t ( ) { } private static K6A k ( R8 b , P [ ] n ) { } } interface H_l < J > { void t ( Xxv z , Ch_q a7 , A n8 ) ; }

@@ -1,2 +1,0 @@
-interface JQ extends KbN {
-}

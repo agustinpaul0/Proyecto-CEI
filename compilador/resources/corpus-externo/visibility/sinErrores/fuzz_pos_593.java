@@ -1,2 +1,0 @@
-interface G7_ {
-}

@@ -1,2 +1,0 @@
-///[Error:public|2]
-class J_ < U > { public static void ya ( F2 < JF > xu ) { return '\f' || + false = - 1012 ; ; { boolean r ; } if ( 4D ) return ; else C [ ] s_4u , i , c_2 ; while ( + null ) ; ; } } class R8 < J > extends Fu { static D [ ] public H fiL ; } interface CA < A > extends O0v6 < F > { X_ r1 ( ) ; } class R_Um implements F6 { static void az6 ( boolean b6Hf , int sZ0z_ol ) { } public char [ ] b = "\r_\rD" . d_y__5 ++ <= 9.400e45d && null > - false ? ! '\t' : false ; static char [ ] w ( ) { } } interface G_ { }

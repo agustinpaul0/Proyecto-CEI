@@ -1,2 +1,0 @@
-interface FC_ < A > {
-}

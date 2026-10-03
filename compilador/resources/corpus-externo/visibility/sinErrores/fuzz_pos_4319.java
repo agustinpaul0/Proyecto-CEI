@@ -1,2 +1,0 @@
-interface BZW extends ChU {
-}

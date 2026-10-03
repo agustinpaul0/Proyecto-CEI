@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class WE < J > implements U49 { static public int [ ] mm__ ( boolean [ ] [ ] c , float c ) { } L6 ( Y_0 [ ] sq , Yw2q_ u , boolean [ ] k_Y ) { } public static void w1 ( char [ ] u , BI < I > [ ] [ ] [ ] [ ] [ ] c ) { } private static Y j__ ( ) { } boolean [ ] cf = 9e0d ? 433523 > 07D = + true : + 402221. || false + + true ; } class XA implements YU < I5 < U > > { }

@@ -1,2 +1,0 @@
-interface QJX4Q {
-}

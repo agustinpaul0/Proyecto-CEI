@@ -1,2 +1,0 @@
-interface Qu extends UoC {
-}

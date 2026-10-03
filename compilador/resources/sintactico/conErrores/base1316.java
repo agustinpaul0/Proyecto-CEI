@@ -1,2 +1,0 @@
-///[Error:SF|2]
-class BIj < V > { } class Tb1 extends D_ < P7 < P50 < P > > > { void v ( ) { if ( - X6 . x5 ( ) ++ || - 37275 && ! true != + false ? true : false ) boolean [ ] [ ] [ ] [ ] [ ] jD = - null ; else if ( false ) boolean [ ] e1 ; else char x ; } static private int [ ] [ ] s ( ) { } } class W8__a < Z > implements K_P_f { } SF < D > class Q_ < Z > { private static void j ( ) { } private IO_ ( ) { } void n ( ) { this -- ; } } class KJ { static B v ( int g ) { ; } } class R__ { }

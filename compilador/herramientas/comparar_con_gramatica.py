@@ -24,21 +24,25 @@ from primeros import analizar, parsear  # noqa: E402
 
 GRAMATICA = "gramatica/minijava-ll1-final.g"
 JAR = "target/Compilador.jar"
+# Los generados se leen de donde los descomprimen los tests (CorpusEmpaquetado):
+# antes de comparar hay que correr `mvn test` una vez.
+PATRONES_DEL_CORPUS = ["resources/sintactico/*Errores/*.java",
+                       "target/corpus/sintactico-generado/*Errores/*.java"]
 
 
 def veredicto_de_java(ruta):
-    salida = subprocess.run(["java", "-jar", JAR, ruta],
+    salida = subprocess.run(["java", "-jar", JAR, "--etapa=2", ruta],
                             capture_output=True, text=True).stdout
     return ruta, salida
 
 
 def main():
-    patron = sys.argv[1] if len(sys.argv) > 1 else "resources/sintactico/*Errores/*.java"
+    patrones = sys.argv[1:] or PATRONES_DEL_CORPUS
     with open(GRAMATICA, encoding="utf-8") as archivo:
         g = parsear(archivo.read())
     vaciables, primeros_nt, _ = analizar(g)
 
-    rutas = sorted(glob.glob(patron))
+    rutas = sorted(ruta for patron in patrones for ruta in glob.glob(patron))
     # Una JVM por fuente sobre un corpus de miles tarda demasiado en serie.
     hilos = min(32, (os.cpu_count() or 4) * 4)
     with concurrent.futures.ThreadPoolExecutor(max_workers=hilos) as ejecutor:

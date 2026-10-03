@@ -48,7 +48,7 @@ python3 herramientas/equivalencia_de_lenguajes.py    # mismo lenguaje que la de 
 python3 herramientas/auditar_analizador.py           # 197/197 producciones citadas
 bash herramientas/casos-gramatica.sh                                              # 75 casos
 python3 herramientas/aceptar_fuente.py resources/catedra/sintactico/*/*.java   # 8/8
-python3 herramientas/comparar_con_gramatica.py       # 10.405 fuentes del corpus
+python3 herramientas/comparar_con_gramatica.py       # 10.405 fuentes del corpus, después de mvn test
 ```
 
 Son **cinco verificaciones independientes** y conviene tener claro qué prueba cada una:
@@ -59,7 +59,7 @@ Son **cinco verificaciones independientes** y conviene tener claro qué prueba c
 | `equivalencia_de_lenguajes.py` | Que corregir la gramática **no cambió el lenguaje**: compara el núcleo LL(1) sin logros (`minijava-ll1.g`) con la de la cátedra mediante un reconocedor de Earley y una cadena por cada producción de cada una. Y que la gramática final **contenga** a la de la cátedra: los logros agregan construcciones, ninguno quita una que la base define. |
 | `auditar_analizador.py` | Que el código y la gramática **no se hayan separado**: cada producción la implementa un método y cada cita corresponde a una producción real. |
 | `comparar_con_gramatica.py` | Que el analizador en Java y el simulador de la gramática den el **mismo veredicto y el mismo token** sobre las 10.405 fuentes del corpus. El tercer reconocedor, el oráculo JavaCC, ya intervino al etiquetar cada caso. |
-| `CorpusExternoTest` | Que el analizador coincida con **29.101 fuentes generados a partir de otra gramática** — el corpus y su *fuzzer* son de Giuliano Taormina, compañero de la materia (`compilador/resources/corpus-externo/`). En todos, el primer código que emite es el que el caso declara. Es la única verificación que no comparte decisiones con este proyecto. |
+| `CorpusExternoTest` | Que el analizador coincida con **29.101 fuentes generados a partir de otra gramática** — el corpus y su *fuzzer* son de Giuliano Taormina, compañero de la materia (`compilador/resources/corpus-externo/`, empaquetado). En todos, el primer código que emite es el que el caso declara. Es la única verificación que no comparte decisiones con este proyecto. |
 
 Qué hace cada archivo de gramática está en
 [`../../compilador/gramatica/README.md`](../../compilador/gramatica/README.md).

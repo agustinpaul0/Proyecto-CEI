@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-class F_F extends PCg4 { void sa ( L5h u_y , boolean [ ] [ ] [ ] m , char q_s ) { } } interface I_h { } class Z2 < D > implements X4j < P8 < O > > { private void w ( ) { M [ ] [ ] [ ] dak ; } void bjT ( B3MCo < UO4V > [ ] [ ] ck ) { YkU . zR__ ( ) -- ; this ; } J [ ] hY = ! null ; private boolean k ( int [ ] [ ] n ) { { } } static public void b ( ) { true ; ! '\b' ; } }

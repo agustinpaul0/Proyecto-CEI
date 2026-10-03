@@ -1,2 +1,0 @@
-interface NK < A > {
-}

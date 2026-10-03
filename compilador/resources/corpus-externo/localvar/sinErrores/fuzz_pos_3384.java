@@ -1,2 +1,0 @@
-interface Cx < Y > {
-}

@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface PH_kYq_ < G > { public boolean [ ] [ ] gC5 ( L w , boolean xw ) ; void fHn ( P [ ] k__t ) ; } class X72a implements WXZK < S > { void sG ( V_ [ ] t ) { } private static void q ( ) { var g = 'q' ? + null : ! false ; } U_k ( ) { ; } private void h_S ( ) { } public static void hK ( ) { return ; ; return ; } static X r2 ( ) { } private char y ( ) { I qT6_ ; { } ; } public static void v ( ) { } }

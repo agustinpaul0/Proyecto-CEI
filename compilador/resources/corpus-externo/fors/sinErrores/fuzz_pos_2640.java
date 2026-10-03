@@ -1,2 +1,0 @@
-interface M_e {
-}

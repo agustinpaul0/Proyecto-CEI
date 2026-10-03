@@ -5,11 +5,12 @@ compartió para que cada uno pudiera contrastar su analizador contra una gramát
 propia. El generador que produjo los casos también es suyo.
 
 No son material de este proyecto. Acá sólo se corre el compilador contra ellos, con
-`CorpusExternoTest`. La carpeta tiene el corpus ya podado.
+`CorpusExternoTest`. La carpeta tiene el corpus ya podado y empaquetado en `corpus-externo.tar.gz`,
+que se abre con `tar xzf`.
 
 ## Qué hay
 
-| Carpeta | Qué es |
+| Carpeta, dentro del `.tar.gz` | Qué es |
 |---|---|
 | `base/`, `localvar/`, `fors/`, `visibility/` | Los casos generados por *fuzzing*, cada uno con `sinErrores/` y `conErrores/`. |
 

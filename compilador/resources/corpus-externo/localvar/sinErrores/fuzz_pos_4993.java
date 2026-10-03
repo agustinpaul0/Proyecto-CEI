@@ -1,2 +1,0 @@
-interface MB extends IZ {
-}

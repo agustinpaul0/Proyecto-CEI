@@ -1,2 +1,0 @@
-interface U2T {
-}

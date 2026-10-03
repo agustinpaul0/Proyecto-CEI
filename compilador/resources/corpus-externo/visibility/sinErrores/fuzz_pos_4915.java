@@ -1,2 +1,0 @@
-interface RJ__ {
-}

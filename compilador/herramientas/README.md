@@ -29,7 +29,8 @@ desde ella, y escriben casos de corpus en lote.
 
 | Herramienta | Para qué |
 |---|---|
-| `generar_corpus_fuzz.py` | El corpus generado del sintáctico, de punta a punta. Se invoca con `make fuzz`. |
+| `generar_corpus_fuzz.py` | El corpus generado del sintáctico, de punta a punta, empaquetado en `resources/sintactico/sintactico-generado.tar.gz`. Se invoca con `make fuzz`, y al terminar borra `fuzz/trabajo/`. |
+| `empaquetar_corpus.py` | Empaqueta un corpus generado en un `.tar.gz` reproducible: sueltos, sus miles de archivos inflan el zip de entrega. |
 | `lote_sintactico.py` | El corpus del sintáctico **escrito a mano**, con las expectativas predichas. |
 | `lote*.py`, `generar_casos.py` | Escriben casos del corpus léxico en lote. |
 

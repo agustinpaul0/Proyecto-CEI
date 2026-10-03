@@ -1,2 +1,0 @@
-///[Error:int|2]
-class B_nB < Z > implements B6 { static void x_ ( boolean [ ] j_ ) { } } interface Xd < C > { } int [ ] at_q ( I [ ] x ) ; class X_ { static private X [ ] [ ] u6 ( ) { } } class Mr < X > implements Mz < Md0a > { static private int [ ] [ ] n ( I w ) { boolean [ ] [ ] [ ] l8 ; } } interface R2_g < O > extends JK < SP < H > > { } interface I4__ < L > extends RW { I j7O ( R [ ] [ ] [ ] [ ] r , J u6 ) ; }

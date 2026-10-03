@@ -1,2 +1,0 @@
-interface QY5O {
-}

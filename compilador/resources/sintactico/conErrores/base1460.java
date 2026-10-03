@@ -1,2 +1,0 @@
-///[Error:n483n|2]
-class DP_ { } class QJK_x implements I8_ { public static int [ ] n ( ) { while ( Hj_u . g ( ) . r_f ++ = true <= null ) O w , k ; return ; } static void k7 ( ) { var dx = 340 > 53301 ; if ( null ) if ( false ) return ; else N0 . r ( ) . zm6 ++ ; V vX = false ; } static public char u0SR ( L [ ] [ ] [ ] [ ] tO ) { EP__a < Z > [ ] id7 ; } static P [ ] [ ] dK ( ) { } } interface Z_ < H > { } n483n ( P yr ) { for ( ! true > - true ; true ; null ) C v9 , g0 ; { } int z ; } interface Rk_F < H > extends Ht { } interface I1EJI < P > { }

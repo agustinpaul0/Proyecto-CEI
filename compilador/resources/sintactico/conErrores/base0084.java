@@ -1,2 +1,0 @@
-///[Error:extends|2]
-class U4EW implements C8 < S9c > { char [ ] [ ] [ ] [ ] bH ( Q9_2 < VX7tW < G > > [ ] [ ] v_x ) { for ( - 606842 <= "" -- = + true ; "" ++ && - 5805 ; + null ) H [ ] [ ] e = ! '\f' , e_ ; } static private O q ( ) { } static Z q ( J y_ ) { } static private void m6_ ( H a ) { } } class DK < P > { ZO ( VwK < R_T > x , B i , J j2 , D___1 [ ] [ ] [ ] mC ) { for ( + this == false ; + 99F ; 6318 < true ) ; } } interface Se { } interface extends G_H < Z > { } interface P_ extends H_ < H_N_ < G > > { }

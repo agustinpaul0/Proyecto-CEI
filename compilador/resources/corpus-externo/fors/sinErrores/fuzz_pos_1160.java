@@ -1,2 +1,0 @@
-class HbT < Y > {
-}

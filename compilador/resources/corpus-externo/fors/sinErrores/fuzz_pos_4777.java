@@ -1,2 +1,0 @@
-interface DW < I > {
-}

@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-class D5 implements Ip___ < J > { } interface M_ extends OB7S < U_X > { } class IAS { public int [ ] c ( Cl [ ] [ ] [ ] n6 ) { while ( ! null ) { } } } class O__C extends BjG { static void h9 ( ) { char [ ] [ ] [ ] qc = - 91224 , xdtA = true , n , e , jS0_ , g , d1 ; } void w ( ) { } private static int [ ] [ ] [ ] [ ] [ ] p88 ( ) { this ++ ; Mnr . m ( ) -- ; } R e ; } class XR implements K_ < K > { }

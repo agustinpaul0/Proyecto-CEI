@@ -1,2 +1,0 @@
-interface TzHT < T > {
-}

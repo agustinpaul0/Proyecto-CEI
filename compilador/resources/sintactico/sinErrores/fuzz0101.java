@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface ObiD2 { } interface K1_ { } interface L4 < L > { } interface D6 { Y a4 ( ) ; } class IEk9 < M > extends L_D_q { } class JK extends W6cw < Mx__r < V_j7__8I > > { } class Ft implements PGm { } class Jt { } interface S1 < Q > { } class X5 extends Co { Cz3Hd ( ) { ; ; } public void z ( ) { } } interface Ti_ extends SF { } class Yy < F > { } class Fd < I > extends Y_sT { static int yX ( ) { } public V n1 ; H vl7 ; }

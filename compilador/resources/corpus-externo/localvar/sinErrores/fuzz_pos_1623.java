@@ -1,2 +1,0 @@
-class OGN_ < B > {
-}

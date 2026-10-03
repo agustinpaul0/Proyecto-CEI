@@ -1,3 +1,0 @@
-class Dx {
-int [ ] e ;
-}

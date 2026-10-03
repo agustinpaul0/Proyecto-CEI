@@ -1,2 +1,0 @@
-interface BsIE < K > {
-}

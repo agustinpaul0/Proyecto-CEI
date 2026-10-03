@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20277324).
-interface EI4N extends J_y { } interface XPvIy_x_ < Q > { } class W_ < U > { } class MU < Z > implements J89_ { static private boolean g ( W t , Go2xu7y1AIH8 < VA > [ ] u , C b , R5 z ) { } } class Bq extends Ct_Q_ < L > { static W [ ] v ( ) { } } interface JCt90 < G > { } class GwR extends K63 < J0 < OO > > { C uC1 ( X yU_ ) { { return ; ; } } void i ( ) { } }

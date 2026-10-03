@@ -1,2 +1,0 @@
-// Generado por herramientas/generar_corpus_fuzz.py (semilla 20260923).
-interface O2GZ63 < C > extends Cc_t1 < T_C > { void g ( char [ ] p , boolean [ ] [ ] [ ] [ ] [ ] [ ] e_ ) ; void m9__8 ( X [ ] [ ] [ ] [ ] [ ] p ) ; public void w__Rs ( ) ; public T i_ ( W [ ] mQLV ) ; } interface DOhzA extends C1 { } class Jf < U > { } class O6W extends C_ { public void e ( ) { } public static void k ( Kg_ o ) { } } class L7_13 implements N5B__N9_895_c { YI ( Sn m7l6 , D [ ] [ ] c ) { } }

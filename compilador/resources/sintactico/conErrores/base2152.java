@@ -1,2 +1,0 @@
-///[Error:[|2]
-class Yuk { void zH ( ) { char z0Mxt = "" . xZ ; if ( + 'c' ) P s9 = true ; for ( null <= true ; null ; null ) ; return ; M_ . r ( ) ; "" . dq ; ; } } interface U_ extends RO_ < H > { } interface Y_ < F > { public void oT ( J p , X0q < GK_G_a > v , GX < U3 > [ ] n , P5 v , CT < C_ > y , J [ ] [ ] [ ] [ ] s , SL9 gF8 , [ ] u ) ; } interface Xu { } class Az__ < P > { public float l_ ( V [ ] dqK , float i9 ) { float vU ; } } class H__ { private void z_ ( ) { { ; } } static O [ ] rW ( J v , int [ ] l ) { return ; } static public float [ ] [ ] [ ] [ ] l ( ) { } }

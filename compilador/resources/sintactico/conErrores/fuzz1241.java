@@ -1,2 +1,0 @@
-///[Error:float|2]
-float [ ] [ ] [ ] [ ] [ ] [ ] [ ] u_8 ( ) { return ; { } } interface At { } class A_mD_ < Y > extends Ua < X__9 > { } interface L2 < K > { public void l ( Uc2kJ [ ] [ ] [ ] h , D_ < U > [ ] e ) ; void n ( ) ; } interface A_ < N > extends B_ < Z > { } interface E4 < T > extends F_a_ < Y5_I < N > > { } interface EV < L > { public char x ( float [ ] [ ] [ ] [ ] [ ] z , boolean q4 ) ; public void p ( char c ) ; float [ ] [ ] x ( ) ; } class If < E > { R f ( ) { LRX [ ] [ ] u ; } }
