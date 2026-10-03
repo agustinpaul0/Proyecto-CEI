@@ -13,7 +13,7 @@ y su corpus (158 casos) está en `compilador/resources/lexico/` (`mvn test -Pfas
 
 ## Etapa 2 — Analizador Sintáctico: TERMINADA
 
-Entregada y corregida sin observaciones (38 puntos). Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
+Entregada y corregida sin observaciones (32 puntos). Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
 aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 (`mvn test -Pfase-sintactico`).
 
