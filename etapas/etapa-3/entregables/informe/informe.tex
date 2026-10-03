@@ -95,14 +95,13 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
 \footnotesize
 \begin{tikzpicture}
 \begin{class}[text width=6.4cm]{TablaDeSimbolos}{0,0}
-  \attribute{\textit{estática}}
-  \attribute{tipos : Map<String, TipoDeclarado>}
-  \attribute{claseActual : Clase}
-  \attribute{interfazActual : Interfaz}
-  \attribute{unidadActual : Unidad}
-  \operation{inicializar()}
-  \operation{chequearDeclaraciones()}
-  \operation{consolidar()}
+  \attribute{\underline{tipos : Map<String, TipoDeclarado>}}
+  \attribute{\underline{claseActual : Clase}}
+  \attribute{\underline{interfazActual : Interfaz}}
+  \attribute{\underline{unidadActual : Unidad}}
+  \operation{\underline{inicializar()}}
+  \operation{\underline{chequearDeclaraciones()}}
+  \operation{\underline{consolidar()}}
 \end{class}
 
 \begin{abstractclass}[text width=6.4cm]{TipoDeclarado}{0,-5.4}
@@ -154,7 +153,8 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
 \draw[generaliza] (Metodo.north) -- (Unidad.south -| Metodo.north);
 \draw[generaliza] (Constructor.north) -- (Unidad.south -| Constructor.north);
 \end{tikzpicture}
-\caption{Las entidades de la tabla de símbolos.}
+\caption{Las entidades de la tabla de símbolos. Los miembros subrayados son estáticos, como en
+UML: la tabla tiene acceso global y no se instancia.}
 \label{fig:entidades}
 \end{figure}
 
@@ -163,7 +163,6 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
 \footnotesize
 \begin{tikzpicture}
 \begin{interface}[text width=5.4cm]{Tipo}{0,0}
-  \attribute{\textit{sellada}}
   \operation{nombre() : String}
   \operation{verificarEn(contexto, estatico)}
   \operation{instanciar(Sustitucion) : Tipo}
@@ -189,8 +188,9 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
   \draw[implementa] (\hija.north) |- ++(0,0.6) -| (Tipo.south);
 }
 \end{tikzpicture}
-\caption{Los tipos. Dos tipos son iguales si se escriben igual, e \texttt{instanciar} reemplaza
-el parámetro de tipo de un ancestro por el argumento de la herencia.}
+\caption{Los tipos. \texttt{Tipo} es una interfaz sellada: sólo la implementan estas cinco. Dos
+tipos son iguales si se escriben igual, e \texttt{instanciar} reemplaza el parámetro de tipo de un
+ancestro por el argumento de la herencia.}
 \label{fig:tipos}
 \end{figure}
 
