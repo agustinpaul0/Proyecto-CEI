@@ -68,7 +68,7 @@ sólo en la copia local, donde se leen. Tampoco las notas ni las devoluciones de
 (`etapas/*/*.pdf` y `etapas/*/*.docx`), ni `vendor/`. Los PDF de `documentacion/minijava/`,
 que describen el lenguaje, sí se versionan: la documentación los cita.
 
-El zip tiene que pesar menos de 20 MB; el de la Etapa 3 pesa 7,3 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo
+El zip tiene que pesar menos de 20 MB; el de la Etapa 3 pesa 7,7 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo
 zip localmente y sirve para medirlo antes de pushear.
 
 **No hay ningún paso de copia.** Los testers de la cátedra buscan el corpus en
