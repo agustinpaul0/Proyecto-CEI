@@ -37,19 +37,19 @@ el léxico y el sintáctico solos.
 
 Es anidada, porque un mismo nombre significa cosas distintas en contextos distintos (Clase 7,
 slides 13-15). La tabla global guarda los tipos declarados: cada clase o interfaz tiene sus
-propias tablas de miembros, y cada método o constructor, su lista de parámetros.
+propias tablas de miembros, y cada método o constructor, su lista de parámetros. Los miembros
+subrayados son estáticos, como en UML.
 
 ```mermaid
 classDiagram
     class TablaDeSimbolos {
-        <<estática>>
-        tipos: Map~String, TipoDeclarado~
-        claseActual: Clase
-        interfazActual: Interfaz
-        unidadActual: Unidad
-        inicializar()
-        chequearDeclaraciones()
-        consolidar()
+        tipos: Map~String, TipoDeclarado~$
+        claseActual: Clase$
+        interfazActual: Interfaz$
+        unidadActual: Unidad$
+        inicializar()$
+        chequearDeclaraciones()$
+        consolidar()$
     }
     class TipoDeclarado {
         <<abstracta>>

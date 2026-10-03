@@ -104,4 +104,5 @@ documentación usual de un proyecto de software y los logros que se intentan); l
 (cómo compilar y correr, el diagrama de clases de la tabla de símbolos y los logros que se
 intentan). Requisitos fijados por el usuario: **lo más breve y conciso posible**, con sólo lo que
 exigen las Pautas y sin repetir `documentacion/`; **paleta de colores monocromática**, **portada
-minimalista** e **índice/tabla de contenidos**.
+minimalista** e **índice/tabla de contenidos**. Los diagramas de clases siguen UML: un miembro
+estático va **subrayado**, no con un renglón que diga «estática», que se leería como un atributo.
