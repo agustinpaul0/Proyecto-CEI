@@ -1,6 +1,8 @@
 \documentclass[12pt,a4paper]{article}
 \input{preambulo}
 \usepackage{ragged2e}
+\usetikzlibrary{calc}
+\tikzset{compone/.style={draw=black, {Diamond[length=3mm, width=2mm]}-}}
 
 \begin{document}
 
@@ -104,7 +106,7 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
   \operation{\underline{consolidar()}}
 \end{class}
 
-\begin{abstractclass}[text width=6.4cm]{TipoDeclarado}{0,-5.4}
+\begin{abstractclass}[text width=6.4cm]{TipoDeclarado}{0,-4.6}
   \attribute{token : Token}
   \attribute{parametroDeTipo : Token [0..1]}
   \attribute{metodos : Map<ClaveDeMetodo, Metodo>}
@@ -112,46 +114,55 @@ con una jerarquía uniforme, con primitivos y referencias por separado.
   \operation{consolidar()}
 \end{abstractclass}
 
-\begin{class}[text width=6.2cm]{Clase}{-3.9,-10}
+\begin{class}[text width=6.2cm]{Clase}{-4,-9.2}
   \attribute{padre : TipoReferencia}
   \attribute{interfaz : TipoReferencia [0..1]}
   \attribute{atributos : Map<String, Atributo>}
   \attribute{constructores : Map<int, Constructor>}
 \end{class}
 
-\begin{class}[text width=5cm]{Interfaz}{4.1,-10}
+\begin{class}[text width=5.6cm]{Interfaz}{3.6,-9.2}
   \attribute{extendida : TipoReferencia [0..1]}
 \end{class}
 
-\begin{class}[text width=3.3cm]{Atributo}{-5.5,-14.2}
+\begin{class}[text width=3cm]{Atributo}{-6,-13.6}
   \attribute{token : Token}
   \attribute{tipo : Tipo}
 \end{class}
 
-\begin{abstractclass}[text width=4.4cm]{Unidad}{0,-14.2}
+\begin{abstractclass}[text width=4.4cm]{Unidad}{1.2,-13.6}
   \attribute{token : Token}
   \attribute{parametros : List<Parametro>}
 \end{abstractclass}
 
-\begin{class}[text width=3.3cm]{Parametro}{5.5,-14.2}
+\begin{class}[text width=2.8cm]{Parametro}{6.2,-13.6}
   \attribute{token : Token}
   \attribute{tipo : Tipo}
   \attribute{posicion : int}
 \end{class}
 
-\begin{class}[text width=3.6cm]{Metodo}{-2.4,-18}
+\begin{class}[text width=3.6cm]{Metodo}{1.8,-18}
   \attribute{estatico : boolean}
   \attribute{retorno : Tipo}
 \end{class}
 
-\begin{class}[text width=2.8cm]{Constructor}{2.4,-18}
+\begin{class}[text width=2.8cm]{Constructor}{-2,-18}
 \end{class}
 
-\composition{TablaDeSimbolos}{}{*}{TipoDeclarado}
-\draw[generaliza] (Clase.north) -- (TipoDeclarado.south -| Clase.north);
-\draw[generaliza] (Interfaz.north) -- (TipoDeclarado.south -| Interfaz.north);
-\draw[generaliza] (Metodo.north) -- (Unidad.south -| Metodo.north);
-\draw[generaliza] (Constructor.north) -- (Unidad.south -| Constructor.north);
+% Generalizaciones: cada hija sube hasta una barra común bajo su padre.
+\foreach \hija in {Clase, Interfaz} {
+  \draw[generaliza] (\hija.north) |- ($(TipoDeclarado.south)+(0,-0.6)$) -- (TipoDeclarado.south);
+}
+\foreach \hija in {Metodo, Constructor} {
+  \draw[generaliza] (\hija.north) |- ($(Unidad.south)+(0,-0.6)$) -- (Unidad.south);
+}
+
+% Composiciones: el rombo va del lado del dueño.
+\draw[compone] (TablaDeSimbolos.south) -- node[right, pos=0.85] {*} (TipoDeclarado.north);
+\draw[compone] (Clase.south -| Atributo.north) -- node[right, pos=0.85] {*} (Atributo.north);
+\draw[compone] (Clase.south) |- node[above, pos=0.97] {*} (Constructor.west);
+\draw[compone] (Unidad.east) -- node[above, pos=0.85] {*} (Unidad.east -| Parametro.west);
+\draw[compone] (TipoDeclarado.east) -| ($(Parametro.east)+(0.4,0)$) |- node[above, pos=0.93] {*} (Metodo.east);
 \end{tikzpicture}
 \caption{Las entidades de la tabla de símbolos. Los miembros subrayados son estáticos, como en
 UML: la tabla tiene acceso global y no se instancia.}
