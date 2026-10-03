@@ -45,6 +45,8 @@ __pycache__/
 vendor/
 
 # Material de la cátedra que no hace a la entrega: las slides y las Pautas de cada
-# etapa. Viven sólo en la copia local, donde se leen (AGENTS.md §0).
+# etapa, y la información administrativa de la materia. Viven sólo en la copia
+# local, donde se leen (AGENTS.md §0).
+/etapas/*.pdf
 /etapas/**/Clase*.pdf
 /etapas/**/Pautas*.pdf
