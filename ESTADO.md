@@ -7,13 +7,13 @@ Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que in
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
-Entregada y corregida sin errores ni observaciones, con sus 8 logros. Corre aislada con `--etapa=1`
+Entregada y corregida sin errores ni observaciones, con sus 8 logros: 26 puntos, el máximo. Corre aislada con `--etapa=1`
 y su corpus (158 casos) está en `compilador/resources/lexico/` (`mvn test -Pfase-lexico`).
 `--etapa=1` reconoce también `for`, `private` y `?`, que agrega la Etapa 2.
 
 ## Etapa 2 — Analizador Sintáctico: TERMINADA
 
-Entregada y corregida sin observaciones (32 puntos). Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
+Entregada y corregida sin observaciones, con los 12 logros perseguidos: 32 puntos, el máximo sin MiniLambdas. Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
 aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 (`mvn test -Pfase-sintactico`).
 

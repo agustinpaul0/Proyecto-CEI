@@ -64,7 +64,8 @@ Se versiona sólo lo que hace a la entrega:
 
 No se versionan las slides, las Pautas ni la información administrativa de la cátedra
 (`etapas/*.pdf`, `etapas/**/Clase*.pdf` y `etapas/**/Pautas*.pdf`, en el `.gitignore`): viven
-sólo en la copia local, donde se leen. Tampoco `vendor/`. Los PDF de `documentacion/minijava/`,
+sólo en la copia local, donde se leen. Tampoco las notas ni las devoluciones de cada corrección
+(`etapas/*/*.pdf` y `etapas/*/*.docx`), ni `vendor/`. Los PDF de `documentacion/minijava/`,
 que describen el lenguaje, sí se versionan: la documentación los cita.
 
 El zip tiene que pesar menos de 20 MB; el de la Etapa 3 pesa 7,3 MB. `git archive HEAD --format=zip -o prueba.zip` arma el mismo

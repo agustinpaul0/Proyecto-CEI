@@ -50,3 +50,7 @@ vendor/
 /etapas/*.pdf
 /etapas/**/Clase*.pdf
 /etapas/**/Pautas*.pdf
+
+# Las notas y las devoluciones de cada corrección: son del alumno, no del proyecto.
+/etapas/*/*.pdf
+/etapas/*/*.docx
