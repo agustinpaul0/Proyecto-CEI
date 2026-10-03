@@ -36,7 +36,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
 
 - **Etapa 1** (entregada y **corregida**, sin errores ni observaciones): Analizador Léxico + Módulo Principal cliente
   por consola. Tiene que seguir siendo ejecutable y testeable de forma aislada.
-- **Etapa 2** (terminada, entrega 23/09/2026): Analizador Sintáctico Descendente Recursivo
+- **Etapa 2** (entregada y **corregida**, sin observaciones): Analizador Sintáctico Descendente Recursivo
   Predictivo LL(1). **El estado y la verificación están en
   [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las decisiones
   cerradas, en

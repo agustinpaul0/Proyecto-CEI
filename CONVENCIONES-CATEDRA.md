@@ -157,7 +157,8 @@ profesor respondió: *«Hacelo igual que en Java […] aun así para la correcci
 como correcto (como funciona tu compilador y la versión pura de java… en el semántico lo
 ajustamos)»*. Las dos variantes son válidas para la corrección; se conserva la de la base por
 coherencia con el criterio del proyecto: donde la base define una construcción, se respeta, y «como
-en Java» rige para lo que el logro agrega, que es el inicializador.
+en Java» rige para lo que el logro agrega, que es el inicializador. La corrección de la Etapa 2 no
+tuvo observaciones, así que el criterio queda confirmado.
 
 | Sentencia | Resultado |
 |---|---|

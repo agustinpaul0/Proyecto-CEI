@@ -44,7 +44,7 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 | Etapa | Qué es | Estado |
 |---|---|---|
 | 1 | Analizador Léxico + Módulo Principal | entregada y corregida, sin observaciones |
-| 2 | Analizador Sintáctico Descendente Recursivo | **completa** — gramática, analizador, los nueve logros y el corpus |
+| 2 | Analizador Sintáctico Descendente Recursivo | entregada y corregida, sin observaciones |
 | 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | **completa** — sin logros de código |
 | 4 y 5 | Semántico, Parte II, y siguientes | sin especificación todavía |
 

@@ -13,7 +13,7 @@ y su corpus (158 casos) está en `compilador/resources/lexico/` (`mvn test -Pfas
 
 ## Etapa 2 — Analizador Sintáctico: TERMINADA
 
-Entrega 23/09/2026. Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
+Entregada y corregida sin observaciones (38 puntos). Descendente recursivo predictivo LL(1), Esquema Simple de Clase 5. Corre
 aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 (`mvn test -Pfase-sintactico`).
 
@@ -27,12 +27,7 @@ aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 
 Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el informe: un atributo
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
-el profesor acepta las dos variantes.
-
-**Pendiente abierto:** que la corrección de la Etapa 2 confirme el criterio de `new int[2][]`
-(`CONVENCIONES-CATEDRA.md` §10). Si la entrega sale aprobada sin nada que corregir, queda
-confirmado y no se toca nada; si no, el cambio es de gramática y sigue el circuito de la Etapa 2.
-Falta que el usuario avise el resultado.
+el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §10).
 
 ## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
 
