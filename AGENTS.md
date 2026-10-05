@@ -41,7 +41,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   [`documentacion/sintactico/README.md`](documentacion/sintactico/README.md); las decisiones
   cerradas, en
   [`documentacion/sintactico/decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md).**
-- **Etapa 3** (terminada, entrega 09/10/2026; anticipada hasta el 07/10 a las 16:00): Analizador
+- **Etapa 3** (entregada el 05/10/2026 como Entrega Anticipada, falta la corrección): Analizador
   Semántico, Parte I: tabla de símbolos y chequeo de declaraciones. Sin logros de código, por
   decisión del usuario: sólo Entrega Anticipada, Imbatibilidad y Kudos. **El estado y las
   decisiones están en [`documentacion/semantico/README.md`](documentacion/semantico/README.md); lo

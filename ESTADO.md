@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 03/10/2026
+**Última actualización:** 05/10/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -29,9 +29,10 @@ Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el info
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
 el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §10).
 
-## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
+## Etapa 3 — Analizador Semántico, Parte I: ENTREGADA
 
-Entrega 09/10/2026; la anticipada vence el 07/10 a las 16:00. Corre aislada con `--etapa=3`, que
+Entregada el 05/10/2026, dentro del plazo de la Entrega Anticipada (07/10), con el commit
+`fc7a341f`; falta la corrección. Corre aislada con `--etapa=3`, que
 es también la etapa por defecto, y su corpus está en la raíz de `compilador/resources/`
 (`mvn test -Pfase-semantico`). Tabla de símbolos estática,
 construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo de declaraciones en
