@@ -82,7 +82,7 @@ en [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-d
 
 Desarrollo pensado para abrirse y correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`,
 donde está el `pom.xml`). La configuración versionada «Suite Etapa 3», de `compilador/.run/`, corre
-sólo los tests de la etapa que se entrega.
+sólo los tests de la etapa que se entrega; no va en el zip de entrega (`.gitattributes`).
 
 ## 2. Qué leer según la tarea
 

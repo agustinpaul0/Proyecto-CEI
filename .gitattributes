@@ -1,0 +1,8 @@
+# Lo que no va en el zip de entrega que arma GitHub (git archive): la entrega
+# lleva sólo fuentes, tests y documentación, sin archivos de control de
+# versiones ni de configuración del IDE (información administrativa de la
+# cátedra). Siguen versionados: sólo se excluyen del zip.
+.gitignore export-ignore
+.gitattributes export-ignore
+compilador/.run export-ignore
+compilador/.run/** export-ignore

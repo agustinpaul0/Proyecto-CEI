@@ -62,6 +62,11 @@ Se versiona sólo lo que hace a la entrega:
 - todo lo usado para desarrollar con IA, que el profesor pidió revisar: `AGENTS.md`, `CLAUDE.md`,
   `.claude/`, `.agents/` y `.codex/`.
 
+La información administrativa de la cátedra pide que la entrega no lleve archivos de control de
+versiones ni de configuración del IDE. Los `.gitignore`, el `.gitattributes` y las configuraciones
+de IntelliJ de `compilador/.run/` siguen versionados, pero el `.gitattributes` los marca
+`export-ignore` y GitHub los deja fuera del zip.
+
 No se versionan las slides, las Pautas ni la información administrativa de la cátedra
 (`etapas/*.pdf`, `etapas/**/Clase*.pdf` y `etapas/**/Pautas*.pdf`, en el `.gitignore`): viven
 sólo en la copia local, donde se leen. Tampoco las notas ni las devoluciones de cada corrección
