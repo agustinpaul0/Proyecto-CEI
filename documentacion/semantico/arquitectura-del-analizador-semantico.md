@@ -43,8 +43,9 @@ Los diagramas son UML y muestran todos los campos, constructores y métodos del 
 
 - lo subrayado es estático, y lo que está en cursiva, abstracto;
 - la visibilidad va adelante: `+` pública, `#` protegida, `~` de paquete y `-` privada;
-- una referencia a otra clase dibujada es una relación, con su nombre y su multiplicidad en el
-  extremo de la clase referenciada: `0..1` si puede faltar, `*` si es una colección;
+- una referencia a otra clase dibujada es una relación, rotulada con el nombre del campo y su
+  multiplicidad: `0..1` si puede faltar, `*` si es una colección, y sin multiplicidad si es
+  exactamente una;
 - una caja sin miembros es una clase que se detalla en otro diagrama.
 
 `herramientas/diagramas_de_clases.py` verifica que cada diagrama coincida con el código y los
@@ -116,10 +117,10 @@ classDiagram
     class ClaseOInterfaz {
         <<abstract>>
     }
-    TablaDeSimbolos "1" *-- "*" ClaseOInterfaz
+    TablaDeSimbolos *-- ClaseOInterfaz : *
     TablaDeSimbolos ..> EntidadesPredefinidas : carga
     TablaDeSimbolos ..> ExcepcionSemantica : lanza
-    ExcepcionSemantica --> "1" Token : token
+    ExcepcionSemantica --> Token : token
 ```
 
 ### Las clases y las interfaces
@@ -207,16 +208,16 @@ classDiagram
     ClaseOInterfaz <|-- Clase
     ClaseOInterfaz <|-- Interfaz
     ClaseOInterfaz ..> ControlDeRedefinicion : usa
-    ClaseOInterfaz --> "1" Token : token
-    ClaseOInterfaz --> "0..1" Token : parametroDeTipo
-    ClaseOInterfaz "1" *-- "*" Metodo : metodosPropios
-    ClaseOInterfaz o-- "*" Metodo : metodos
-    Clase --> "0..1" TipoReferencia : padre
-    Clase --> "0..1" TipoReferencia : interfaz
-    Clase "1" *-- "*" Atributo : atributosPropios
-    Clase o-- "*" Atributo : atributos
-    Clase "1" *-- "*" Constructor : constructores
-    Interfaz --> "0..1" TipoReferencia : extendida
+    ClaseOInterfaz --> Token : token
+    ClaseOInterfaz --> Token : parametroDeTipo 0..1
+    ClaseOInterfaz *-- Metodo : metodosPropios *
+    ClaseOInterfaz o-- Metodo : metodos *
+    Clase --> TipoReferencia : padre 0..1
+    Clase --> TipoReferencia : interfaz 0..1
+    Clase *-- Atributo : atributosPropios *
+    Clase o-- Atributo : atributos *
+    Clase *-- Constructor : constructores *
+    Interfaz --> TipoReferencia : extendida 0..1
 ```
 
 ### Los miembros
@@ -291,14 +292,14 @@ classDiagram
     Miembro <|.. Constructor
     Unidad <|-- Metodo
     Unidad <|-- Constructor
-    Unidad --> "1" Token : token
-    Unidad "1" *-- "*" Parametro : parametros
-    Metodo --> "1" Tipo : retorno
+    Unidad --> Token : token
+    Unidad *-- Parametro : parametros *
+    Metodo --> Tipo : retorno
     Metodo ..> ClaveDeMetodo : clave
-    Atributo --> "1" Token : token
-    Atributo --> "1" Tipo : tipo
-    Parametro --> "1" Token : token
-    Parametro --> "1" Tipo : tipo
+    Atributo --> Token : token
+    Atributo --> Tipo : tipo
+    Parametro --> Token : token
+    Parametro --> Tipo : tipo
 ```
 
 Cada entidad guarda **el token de su declaración**. El chequeo corre con el parseo terminado, sin
@@ -405,11 +406,11 @@ classDiagram
     Tipo <|.. VariableDeTipo
     Tipo <|.. TipoArreglo
     Tipo ..> Sustitucion : instanciar
-    TipoReferencia --> "1" Token : token
-    TipoReferencia --> "0..1" Tipo : argumento
+    TipoReferencia --> Token : token
+    TipoReferencia --> Tipo : argumento 0..1
     TipoReferencia ..> ClaseOInterfaz : declaracion
-    VariableDeTipo --> "1" Token : token
-    TipoArreglo --> "1" Tipo : base
+    VariableDeTipo --> Token : token
+    TipoArreglo --> Tipo : base
 ```
 
 ## El chequeo

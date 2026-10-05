@@ -88,8 +88,9 @@ así que el error reportado es siempre el mismo.
 \medskip
 Los diagramas de clases (figuras~\ref{fig:tabla} a~\ref{fig:tipos}) muestran todos los campos,
 constructores y métodos del código. Lo subrayado es estático y lo que está en cursiva, abstracto.
-Una referencia a otra clase dibujada es una relación, con su multiplicidad en el extremo de la
-clase referenciada, y una caja sin miembros se detalla en otro diagrama. Cada entidad guarda el
+Una referencia a otra clase dibujada es una relación, rotulada con el nombre del campo y su
+multiplicidad (\texttt{0..1} si puede faltar, \texttt{*} si es una colección, ninguna si es
+exactamente una), y una caja sin miembros se detalla en otro diagrama. Cada entidad guarda el
 token de su declaración, que es de donde salen el lexema y la línea de cada error.
 
 \begin{figure}[H]

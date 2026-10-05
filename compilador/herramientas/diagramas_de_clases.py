@@ -136,9 +136,9 @@ def miembros_del_codigo():
 
 BLOQUE = re.compile(r"<!-- diagrama: ([\w-]+) -->\s*```mermaid\n(.*?)```", re.S)
 # Sólo las asociaciones representan un campo: su etiqueta es el nombre del campo
-# de la clase de la izquierda. Una dependencia (`..>`) no es un campo.
-ASOCIACION = re.compile(r'^\s*(\w+)\s*(?:"[^"]*"\s*)?(?:\*--|o--|-->)\s*'
-                        r'(?:"[^"]*"\s*)?\w+\s*:\s*(\w+)\s*$')
+# de la clase de la izquierda, seguido de su multiplicidad si no es exactamente
+# uno (`padre 0..1`, `metodos *`). Una dependencia (`..>`) no es un campo.
+ASOCIACION = re.compile(r'^\s*(\w+)\s*(?:\*--|o--|-->)\s*\w+\s*:\s*(\w+)(?:\s+(?:0\.\.1|\*))?\s*$')
 
 
 def diagramas():
