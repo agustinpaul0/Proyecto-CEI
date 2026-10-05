@@ -53,7 +53,7 @@ dos son peores:
 
 ## 5. Una jerarquía de tipos sellada
 
-`Tipo` es una interfaz sellada con cinco variantes. `Unidad` y `TipoDeclarado` son clases
+`Tipo` es una interfaz sellada con cinco variantes. `Unidad` y `ClaseOInterfaz` son clases
 selladas, y `Miembro` es una interfaz sellada. Así, cada `switch` sobre ellas es exhaustivo y lo
 controla el compilador de Java.
 

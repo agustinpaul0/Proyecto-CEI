@@ -27,7 +27,7 @@ class TablaDeSimbolosTest extends BaseDeTablaDeSimbolos {
     }
 
     @Test
-    void unTipoDeclaradoSeImprimeConSuNombre() {
+    void unClaseOInterfazSeImprimeConSuNombre() {
         TablaDeSimbolos.inicializar();
 
         assertEquals("[Object, String, System]", TablaDeSimbolos.tipos().toString());

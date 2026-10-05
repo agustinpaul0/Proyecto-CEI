@@ -1,7 +1,7 @@
 package minijava.semantico.tipos;
 
 import minijava.lexico.tokens.Token;
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 
 public record VariableDeTipo(Token token) implements Tipo {
@@ -12,7 +12,7 @@ public record VariableDeTipo(Token token) implements Tipo {
     }
 
     @Override
-    public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
+    public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
         if (!contexto.declaraParametroDeTipo(nombre())) {
             throw new ExcepcionSemantica(token, "El parametro de tipo " + nombre()
                     + " no esta declarado en " + contexto.nombre());

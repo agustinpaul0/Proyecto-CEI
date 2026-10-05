@@ -1,6 +1,6 @@
 package minijava.semantico.tipos;
 
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 
 public enum TipoVoid implements Tipo {
     VOID;
@@ -11,7 +11,7 @@ public enum TipoVoid implements Tipo {
     }
 
     @Override
-    public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) {
+    public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) {
     }
 
     @Override

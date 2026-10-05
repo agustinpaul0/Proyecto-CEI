@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public final class Clase extends TipoDeclarado {
+public final class Clase extends ClaseOInterfaz {
 
     private TipoReferencia padre;
     private TipoReferencia interfaz;
@@ -108,7 +108,7 @@ public final class Clase extends TipoDeclarado {
 
     private void verificarPadre(TipoReferencia referencia) throws ExcepcionSemantica {
         referencia.verificarEn(this, false);
-        TipoDeclarado declarado = referencia.declaracion();
+        ClaseOInterfaz declarado = referencia.declaracion();
         if (declarado instanceof Interfaz) {
             throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
                     + " no puede extender la interfaz " + declarado.nombre()
@@ -118,7 +118,7 @@ public final class Clase extends TipoDeclarado {
 
     private void verificarInterfaz(TipoReferencia referencia) throws ExcepcionSemantica {
         referencia.verificarEn(this, false);
-        TipoDeclarado declarado = referencia.declaracion();
+        ClaseOInterfaz declarado = referencia.declaracion();
         if (declarado instanceof Clase) {
             throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
                     + " no puede implementar la clase " + declarado.nombre()
@@ -127,7 +127,7 @@ public final class Clase extends TipoDeclarado {
     }
 
     @Override
-    protected Optional<TipoDeclarado> ancestroDirecto() {
+    protected Optional<ClaseOInterfaz> ancestroDirecto() {
         return padre().flatMap(p -> TablaDeSimbolos.tipo(p.nombreDelTipo()));
     }
 
@@ -164,7 +164,7 @@ public final class Clase extends TipoDeclarado {
 
     // Documento §6.2: los métodos estáticos no participan de la redefinición, y la
     // de instancia exige exactamente la misma signatura.
-    private static void controlarRedefinicion(Metodo propio, Metodo heredado, TipoDeclarado ancestro)
+    private static void controlarRedefinicion(Metodo propio, Metodo heredado, ClaseOInterfaz ancestro)
             throws ExcepcionSemantica {
         if (heredado.esEstatico()) {
             throw new ExcepcionSemantica(propio.token(), "El metodo " + propio.nombre()

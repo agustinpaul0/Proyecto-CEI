@@ -1,7 +1,7 @@
 package minijava.semantico.tipos;
 
 import minijava.lexico.tokens.Token;
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tabla.TablaDeSimbolos;
 
@@ -43,8 +43,8 @@ public final class TipoReferencia implements Tipo {
     }
 
     @Override
-    public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
-        TipoDeclarado declarado = declaracion();
+    public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
+        ClaseOInterfaz declarado = declaracion();
         if (argumento == null) {
             return;
         }
@@ -58,8 +58,8 @@ public final class TipoReferencia implements Tipo {
         }
     }
 
-    public TipoDeclarado declaracion() throws ExcepcionSemantica {
-        Optional<TipoDeclarado> declarado = TablaDeSimbolos.tipo(nombreDelTipo());
+    public ClaseOInterfaz declaracion() throws ExcepcionSemantica {
+        Optional<ClaseOInterfaz> declarado = TablaDeSimbolos.tipo(nombreDelTipo());
         if (declarado.isEmpty()) {
             throw new ExcepcionSemantica(token, "La clase o interfaz " + nombreDelTipo() + " no esta declarada");
         }

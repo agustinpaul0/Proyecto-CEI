@@ -1,6 +1,6 @@
 package minijava.semantico.tipos;
 
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 
 public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoReferencia, VariableDeTipo, TipoArreglo {
@@ -10,7 +10,7 @@ public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoReferencia, Va
     // `contexto` es la clase o interfaz donde aparece el tipo: es la que decide qué
     // parámetro de tipo es válido. Un método estático no puede usar ese parámetro
     // (JLS §8.1.2), por eso viaja `enContextoEstatico`.
-    void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) throws ExcepcionSemantica;
+    void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica;
 
     Tipo instanciar(Sustitucion sustitucion);
 

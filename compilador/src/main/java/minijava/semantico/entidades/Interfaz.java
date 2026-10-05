@@ -7,7 +7,7 @@ import minijava.semantico.tipos.TipoReferencia;
 
 import java.util.Optional;
 
-public final class Interfaz extends TipoDeclarado {
+public final class Interfaz extends ClaseOInterfaz {
 
     private TipoReferencia extendida;
 
@@ -27,7 +27,7 @@ public final class Interfaz extends TipoDeclarado {
     public void estaBienDeclarado() throws ExcepcionSemantica {
         if (extendida != null) {
             extendida.verificarEn(this, false);
-            TipoDeclarado declarado = extendida.declaracion();
+            ClaseOInterfaz declarado = extendida.declaracion();
             if (declarado instanceof Clase) {
                 throw new ExcepcionSemantica(extendida.token(), "La interfaz " + nombre()
                         + " no puede extender la clase " + declarado.nombre()
@@ -41,7 +41,7 @@ public final class Interfaz extends TipoDeclarado {
     }
 
     @Override
-    protected Optional<TipoDeclarado> ancestroDirecto() {
+    protected Optional<ClaseOInterfaz> ancestroDirecto() {
         return extendida().flatMap(e -> TablaDeSimbolos.tipo(e.nombreDelTipo()));
     }
 
@@ -56,7 +56,7 @@ public final class Interfaz extends TipoDeclarado {
         verificarContraObject();
     }
 
-    private static void controlarRedefinicion(Metodo propio, Metodo heredado, TipoDeclarado ancestro)
+    private static void controlarRedefinicion(Metodo propio, Metodo heredado, ClaseOInterfaz ancestro)
             throws ExcepcionSemantica {
         if (!propio.mismaSignaturaQue(heredado)) {
             throw new ExcepcionSemantica(propio.token(), "El metodo " + propio.nombre()
@@ -68,7 +68,7 @@ public final class Interfaz extends TipoDeclarado {
     // instancia de Object, así que uno propio con la misma clave tiene que tener
     // su misma signatura. Los estáticos de Object no son miembros de la interfaz.
     private void verificarContraObject() throws ExcepcionSemantica {
-        TipoDeclarado object = TablaDeSimbolos.object();
+        ClaseOInterfaz object = TablaDeSimbolos.object();
         for (Metodo propio : metodosPropios()) {
             Optional<Metodo> deObject = object.metodo(propio.clave());
             if (deObject.isPresent() && !deObject.get().esEstatico()

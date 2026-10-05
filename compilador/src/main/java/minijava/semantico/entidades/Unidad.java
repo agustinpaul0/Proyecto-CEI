@@ -49,7 +49,7 @@ public abstract sealed class Unidad permits Metodo, Constructor {
         }
     }
 
-    protected void verificarParametrosEn(TipoDeclarado contexto, boolean enContextoEstatico)
+    protected void verificarParametrosEn(ClaseOInterfaz contexto, boolean enContextoEstatico)
             throws ExcepcionSemantica {
         for (Parametro parametro : parametros) {
             parametro.tipo().verificarEn(contexto, enContextoEstatico);

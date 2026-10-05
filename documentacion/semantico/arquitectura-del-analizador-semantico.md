@@ -36,7 +36,7 @@ el léxico y el sintáctico solos.
 ## La tabla de símbolos
 
 Es anidada, porque un mismo nombre significa cosas distintas en contextos distintos (Clase 7,
-slides 13-15). La tabla global guarda los tipos declarados: cada clase o interfaz tiene sus
+slides 13-15). La tabla global guarda las clases y las interfaces: cada una tiene sus
 propias tablas de miembros, y cada método o constructor, su lista de parámetros.
 
 Los diagramas son UML y muestran todos los campos, constructores y métodos del código:
@@ -64,7 +64,7 @@ config:
 classDiagram
     direction TB
     class TablaDeSimbolos {
-        -tipos : Map~String, TipoDeclarado~$
+        -tipos : Map~String, ClaseOInterfaz~$
         -claseActual : Clase$
         -interfazActual : Interfaz$
         -unidadActual : Unidad$
@@ -73,15 +73,15 @@ classDiagram
         +inicializar()$
         +declararClase(Clase)$
         +declararInterfaz(Interfaz)$
-        -declarar(TipoDeclarado, String)$
+        -declarar(ClaseOInterfaz, String)$
         +claseActual()$ Clase
         +interfazActual()$ Interfaz
         +unidadActual()$ Unidad
         +setUnidadActual(Unidad)$
-        +tipo(String)$ Optional~TipoDeclarado~
-        +object()$ TipoDeclarado
+        +tipo(String)$ Optional~ClaseOInterfaz~
+        +object()$ ClaseOInterfaz
         +referenciaAObject(int)$ TipoReferencia
-        +tipos()$ List~TipoDeclarado~
+        +tipos()$ List~ClaseOInterfaz~
         +registrarRepetido(ExcepcionSemantica)$
         +chequearDeclaraciones()$
         +consolidar()$
@@ -113,10 +113,10 @@ classDiagram
         -lexema : String
         -linea : int
     }
-    class TipoDeclarado {
+    class ClaseOInterfaz {
         <<abstract>>
     }
-    TablaDeSimbolos "1" *-- "*" TipoDeclarado
+    TablaDeSimbolos "1" *-- "*" ClaseOInterfaz
     TablaDeSimbolos ..> EntidadesPredefinidas : carga
     TablaDeSimbolos ..> ExcepcionSemantica : lanza
     ExcepcionSemantica --> "1" Token : token
@@ -127,7 +127,7 @@ classDiagram
 `metodosPropios` son los métodos declarados en el fuente, y `metodos` es la tabla consolidada, que
 suma los heredados. Con `Clase` pasa lo mismo con `atributosPropios` y `atributos`.
 
-<!-- diagrama: tipos-declarados -->
+<!-- diagrama: clases-e-interfaces -->
 ```mermaid
 ---
 config:
@@ -135,10 +135,10 @@ config:
 ---
 classDiagram
     direction LR
-    class TipoDeclarado {
+    class ClaseOInterfaz {
         <<abstract>>
         -consolidado : boolean
-        #TipoDeclarado(Token)
+        #ClaseOInterfaz(Token)
         +token() Token
         +nombre() String
         +setParametroDeTipo(Token)
@@ -154,14 +154,14 @@ classDiagram
         +estaBienDeclarado()*
         +consolidar()
         #consolidarConAncestros()*
-        #heredarMetodos(TipoDeclarado, Sustitucion, ControlDeRedefinicion)
-        #sustitucionHacia(TipoReferencia, TipoDeclarado)$ Sustitucion
+        #heredarMetodos(ClaseOInterfaz, Sustitucion, ControlDeRedefinicion)
+        #sustitucionHacia(TipoReferencia, ClaseOInterfaz)$ Sustitucion
         #verificarQueNoHayaCiclo()
-        #ancestroDirecto()* Optional~TipoDeclarado~
+        #ancestroDirecto()* Optional~ClaseOInterfaz~
     }
     class ControlDeRedefinicion {
         <<interface>>
-        +controlar(Metodo, Metodo, TipoDeclarado)*
+        +controlar(Metodo, Metodo, ClaseOInterfaz)*
     }
     class Clase {
         +Clase(Token)
@@ -179,10 +179,10 @@ classDiagram
         +estaBienDeclarado()
         -verificarPadre(TipoReferencia)
         -verificarInterfaz(TipoReferencia)
-        #ancestroDirecto() Optional~TipoDeclarado~
+        #ancestroDirecto() Optional~ClaseOInterfaz~
         #consolidarConAncestros()
         -heredarAtributos(Clase, Sustitucion)
-        -controlarRedefinicion(Metodo, Metodo, TipoDeclarado)$
+        -controlarRedefinicion(Metodo, Metodo, ClaseOInterfaz)$
         -verificarImplementacion(Interfaz, Sustitucion)
     }
     class Interfaz {
@@ -190,9 +190,9 @@ classDiagram
         +setExtendida(TipoReferencia)
         +extendida() Optional~TipoReferencia~
         +estaBienDeclarado()
-        #ancestroDirecto() Optional~TipoDeclarado~
+        #ancestroDirecto() Optional~ClaseOInterfaz~
         #consolidarConAncestros()
-        -controlarRedefinicion(Metodo, Metodo, TipoDeclarado)$
+        -controlarRedefinicion(Metodo, Metodo, ClaseOInterfaz)$
         -verificarContraObject()
     }
     class Token {
@@ -204,13 +204,13 @@ classDiagram
         <<record>>
     }
     class Constructor
-    TipoDeclarado <|-- Clase
-    TipoDeclarado <|-- Interfaz
-    TipoDeclarado ..> ControlDeRedefinicion : usa
-    TipoDeclarado --> "1" Token : token
-    TipoDeclarado --> "0..1" Token : parametroDeTipo
-    TipoDeclarado "1" *-- "*" Metodo : metodosPropios
-    TipoDeclarado o-- "*" Metodo : metodos
+    ClaseOInterfaz <|-- Clase
+    ClaseOInterfaz <|-- Interfaz
+    ClaseOInterfaz ..> ControlDeRedefinicion : usa
+    ClaseOInterfaz --> "1" Token : token
+    ClaseOInterfaz --> "0..1" Token : parametroDeTipo
+    ClaseOInterfaz "1" *-- "*" Metodo : metodosPropios
+    ClaseOInterfaz o-- "*" Metodo : metodos
     Clase --> "0..1" TipoReferencia : padre
     Clase --> "0..1" TipoReferencia : interfaz
     Clase "1" *-- "*" Atributo : atributosPropios
@@ -237,7 +237,7 @@ classDiagram
     class Atributo {
         <<record>>
         +nombre() String
-        ~estaBienDeclarado(TipoDeclarado)
+        ~estaBienDeclarado(ClaseOInterfaz)
         ~instanciado(Sustitucion) Atributo
     }
     class Unidad {
@@ -249,7 +249,7 @@ classDiagram
         +parametros() List~Parametro~
         +aridad() int
         +agregarParametro(Token, Tipo)
-        #verificarParametrosEn(TipoDeclarado, boolean)
+        #verificarParametrosEn(ClaseOInterfaz, boolean)
     }
     class Metodo {
         -estatico : boolean
@@ -261,7 +261,7 @@ classDiagram
         +retorno() Tipo
         +clave() ClaveDeMetodo
         +mismaSignaturaQue(Metodo) boolean
-        ~estaBienDeclarado(TipoDeclarado)
+        ~estaBienDeclarado(ClaseOInterfaz)
         ~instanciado(Sustitucion) Metodo
     }
     class Constructor {
@@ -339,7 +339,7 @@ classDiagram
     class Tipo {
         <<interface>>
         +nombre()* String
-        +verificarEn(TipoDeclarado, boolean)*
+        +verificarEn(ClaseOInterfaz, boolean)*
         +instanciar(Sustitucion)* Tipo
         +esIgualA(Tipo) boolean
     }
@@ -352,14 +352,14 @@ classDiagram
         -nombre : String
         -TipoPrimitivo(String)
         +nombre() String
-        +verificarEn(TipoDeclarado, boolean)
+        +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
     }
     class TipoVoid {
         <<enumeration>>
         VOID
         +nombre() String
-        +verificarEn(TipoDeclarado, boolean)
+        +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
     }
     class TipoReferencia {
@@ -369,14 +369,14 @@ classDiagram
         +argumento() Optional~Tipo~
         +nombre() String
         +nombreDelTipo() String
-        +verificarEn(TipoDeclarado, boolean)
-        +declaracion() TipoDeclarado
+        +verificarEn(ClaseOInterfaz, boolean)
+        +declaracion() ClaseOInterfaz
         +instanciar(Sustitucion) Tipo
     }
     class VariableDeTipo {
         <<record>>
         +nombre() String
-        +verificarEn(TipoDeclarado, boolean)
+        +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
     }
     class TipoArreglo {
@@ -384,7 +384,7 @@ classDiagram
         -dimensiones : int
         +de(Tipo, int)$ Tipo
         +nombre() String
-        +verificarEn(TipoDeclarado, boolean)
+        +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
     }
     class Sustitucion {
@@ -396,7 +396,7 @@ classDiagram
     class Token {
         <<record>>
     }
-    class TipoDeclarado {
+    class ClaseOInterfaz {
         <<abstract>>
     }
     Tipo <|.. TipoPrimitivo
@@ -407,7 +407,7 @@ classDiagram
     Tipo ..> Sustitucion : instanciar
     TipoReferencia --> "1" Token : token
     TipoReferencia --> "0..1" Tipo : argumento
-    TipoReferencia ..> TipoDeclarado : declaracion
+    TipoReferencia ..> ClaseOInterfaz : declaracion
     VariableDeTipo --> "1" Token : token
     TipoArreglo --> "1" Tipo : base
 ```
@@ -441,7 +441,7 @@ La lista completa de controles, con su token, está en
 | Paquete | Qué hay |
 |---|---|
 | `minijava.semantico.tabla` | `TablaDeSimbolos` y `EntidadesPredefinidas` |
-| `minijava.semantico.entidades` | `TipoDeclarado`, `Clase`, `Interfaz`, `Unidad`, `Metodo`, `Constructor`, `Atributo`, `Parametro`, `ClaveDeMetodo`, `Miembro` |
+| `minijava.semantico.entidades` | `ClaseOInterfaz`, `Clase`, `Interfaz`, `Unidad`, `Metodo`, `Constructor`, `Atributo`, `Parametro`, `ClaveDeMetodo`, `Miembro` |
 | `minijava.semantico.tipos` | `Tipo` y sus cinco variantes, `Sustitucion` |
 | `minijava.semantico.errores` | `ExcepcionSemantica` |
 | `minijava.sintactico.partes` | `AnalizadorDeClases`, `AnalizadorDeMiembros` y `AnalizadorDeTipos`, con las acciones de la EDT |

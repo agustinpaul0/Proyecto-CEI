@@ -16,7 +16,7 @@ import java.util.Optional;
 //
 // `metodosPropios` son los declarados en el fuente; `metodos` son los de la
 // tabla consolidada, que suma los heredados. Hasta consolidar coinciden.
-public abstract sealed class TipoDeclarado permits Clase, Interfaz {
+public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
 
     private final Token token;
     private Token parametroDeTipo;
@@ -24,7 +24,7 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
     private Map<ClaveDeMetodo, Metodo> metodos = metodosPropios;
     private boolean consolidado;
 
-    protected TipoDeclarado(Token token) {
+    protected ClaseOInterfaz(Token token) {
         this.token = token;
     }
 
@@ -97,7 +97,7 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
 
     protected abstract void consolidarConAncestros() throws ExcepcionSemantica;
 
-    protected void heredarMetodos(TipoDeclarado ancestro, Sustitucion sustitucion,
+    protected void heredarMetodos(ClaseOInterfaz ancestro, Sustitucion sustitucion,
                                   ControlDeRedefinicion controlDeRedefinicion) throws ExcepcionSemantica {
         Map<ClaveDeMetodo, Metodo> consolidados = new LinkedHashMap<>();
         for (Metodo heredado : ancestro.metodos.values()) {
@@ -115,10 +115,10 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
 
     @FunctionalInterface
     protected interface ControlDeRedefinicion {
-        void controlar(Metodo propio, Metodo heredado, TipoDeclarado ancestro) throws ExcepcionSemantica;
+        void controlar(Metodo propio, Metodo heredado, ClaseOInterfaz ancestro) throws ExcepcionSemantica;
     }
 
-    protected static Sustitucion sustitucionHacia(TipoReferencia referencia, TipoDeclarado ancestro) {
+    protected static Sustitucion sustitucionHacia(TipoReferencia referencia, ClaseOInterfaz ancestro) {
         if (!ancestro.esGenerico() || referencia.argumento().isEmpty()) {
             return Sustitucion.identidad();
         }
@@ -129,8 +129,8 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
     // (Pautas slide 30). Un ciclo más arriba que no pasa por este tipo lo reporta
     // el primero de ese ciclo, cuando le toca su chequeo.
     protected void verificarQueNoHayaCiclo() throws ExcepcionSemantica {
-        HashSet<TipoDeclarado> visitados = new HashSet<>();
-        Optional<TipoDeclarado> actual = ancestroDirecto();
+        HashSet<ClaseOInterfaz> visitados = new HashSet<>();
+        Optional<ClaseOInterfaz> actual = ancestroDirecto();
         while (actual.isPresent() && visitados.add(actual.get())) {
             if (actual.get() == this) {
                 throw new ExcepcionSemantica(token, "Herencia circular: " + nombre()
@@ -141,5 +141,5 @@ public abstract sealed class TipoDeclarado permits Clase, Interfaz {
     }
 
     // Un ancestro no declarado da vacío, sin error: lo reporta el chequeo de la herencia.
-    protected abstract Optional<TipoDeclarado> ancestroDirecto();
+    protected abstract Optional<ClaseOInterfaz> ancestroDirecto();
 }

@@ -1,6 +1,6 @@
 package minijava.semantico.tipos;
 
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 
 // `float` es tipo primitivo por el logro de la Etapa 1 que confirmó el profesor.
 public enum TipoPrimitivo implements Tipo {
@@ -21,7 +21,7 @@ public enum TipoPrimitivo implements Tipo {
     }
 
     @Override
-    public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) {
+    public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) {
     }
 
     @Override

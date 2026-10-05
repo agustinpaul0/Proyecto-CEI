@@ -1,6 +1,6 @@
 package minijava.semantico.tipos;
 
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 
 public record TipoArreglo(Tipo base, int dimensiones) implements Tipo {
@@ -15,7 +15,7 @@ public record TipoArreglo(Tipo base, int dimensiones) implements Tipo {
     }
 
     @Override
-    public void verificarEn(TipoDeclarado contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
+    public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
         base.verificarEn(contexto, enContextoEstatico);
     }
 

@@ -11,7 +11,7 @@ public record Atributo(Token token, Tipo tipo) implements Miembro {
         return token.lexema();
     }
 
-    void estaBienDeclarado(TipoDeclarado contexto) throws ExcepcionSemantica {
+    void estaBienDeclarado(ClaseOInterfaz contexto) throws ExcepcionSemantica {
         tipo.verificarEn(contexto, false);
     }
 

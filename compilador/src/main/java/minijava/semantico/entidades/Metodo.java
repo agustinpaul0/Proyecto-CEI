@@ -57,7 +57,7 @@ public final class Metodo extends Unidad implements Miembro {
         return true;
     }
 
-    void estaBienDeclarado(TipoDeclarado contexto) throws ExcepcionSemantica {
+    void estaBienDeclarado(ClaseOInterfaz contexto) throws ExcepcionSemantica {
         retorno.verificarEn(contexto, estatico);
         verificarParametrosEn(contexto, estatico);
     }

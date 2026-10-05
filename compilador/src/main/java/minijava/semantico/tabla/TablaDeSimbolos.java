@@ -4,7 +4,7 @@ import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.entidades.Clase;
 import minijava.semantico.entidades.Interfaz;
-import minijava.semantico.entidades.TipoDeclarado;
+import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.entidades.Unidad;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tipos.TipoReferencia;
@@ -24,7 +24,7 @@ import java.util.Optional;
 // corre si el sintáctico terminó sin errores (Pautas slide 20).
 public final class TablaDeSimbolos {
 
-    private static Map<String, TipoDeclarado> tipos;
+    private static Map<String, ClaseOInterfaz> tipos;
     private static Clase claseActual;
     private static Interfaz interfazActual;
     private static Unidad unidadActual;
@@ -56,7 +56,7 @@ public final class TablaDeSimbolos {
         declarar(interfaz, "La interfaz ");
     }
 
-    private static void declarar(TipoDeclarado tipo, String descripcion) {
+    private static void declarar(ClaseOInterfaz tipo, String descripcion) {
         if (tipos.containsKey(tipo.nombre())) {
             registrarRepetido(new ExcepcionSemantica(tipo.token(),
                     descripcion + tipo.nombre() + " ya esta declarada"));
@@ -81,11 +81,11 @@ public final class TablaDeSimbolos {
         unidadActual = unidad;
     }
 
-    public static Optional<TipoDeclarado> tipo(String nombre) {
+    public static Optional<ClaseOInterfaz> tipo(String nombre) {
         return Optional.ofNullable(tipos.get(nombre));
     }
 
-    public static TipoDeclarado object() {
+    public static ClaseOInterfaz object() {
         return tipos.get(EntidadesPredefinidas.OBJECT);
     }
 
@@ -94,7 +94,7 @@ public final class TablaDeSimbolos {
         return new TipoReferencia(new Token(TipoDeToken.ID_CLASE, EntidadesPredefinidas.OBJECT, linea));
     }
 
-    public static List<TipoDeclarado> tipos() {
+    public static List<ClaseOInterfaz> tipos() {
         return List.copyOf(tipos.values());
     }
 
@@ -108,7 +108,7 @@ public final class TablaDeSimbolos {
         if (primerRepetido != null) {
             throw primerRepetido;
         }
-        for (TipoDeclarado tipo : tipos.values()) {
+        for (ClaseOInterfaz tipo : tipos.values()) {
             tipo.estaBienDeclarado();
         }
     }
@@ -116,7 +116,7 @@ public final class TablaDeSimbolos {
     // Todos los tipos se chequean antes de consolidar cualquiera: la consolidación
     // supone que no hay ciclos y que todo ancestro existe y es del tipo correcto.
     public static void consolidar() throws ExcepcionSemantica {
-        for (TipoDeclarado tipo : tipos.values()) {
+        for (ClaseOInterfaz tipo : tipos.values()) {
             tipo.consolidar();
         }
     }
