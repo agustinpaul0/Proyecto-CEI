@@ -33,7 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Category(EtapaSemantica.class)
 public class TesterDeCasosSemanticosConErrores {
 
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/conErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/declaraciones/conErrores/";
     // La primera línea es "///[Error:Lexema|NroLinea]": se saltea el "///".
     private static final int LARGO_DEL_PREFIJO_DE_COMENTARIO = 3;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

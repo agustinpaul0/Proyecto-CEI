@@ -57,6 +57,21 @@ La Etapa 3 agrega las suyas, de `Pautas Etapa 3.pdf`:
 - El informe indica cómo compilar y correr, e incluye el diagrama de clases de la tabla de símbolos
   y los logros que se intentan (slide 36).
 
+La Etapa 4 agrega las suyas, de `Pautas Etapa 4.pdf`:
+
+- El sintáctico arma los AST de los métodos y constructores y los asocia a su entrada en la tabla
+  de símbolos (slides 3, 12 y 20).
+- Si el chequeo de declaraciones termina sin errores, el Módulo Principal le pide a la tabla el
+  chequeo de sentencias, que resuelve los nombres y controla la correctitud de cada AST (slides 21-23).
+  Un error en el chequeo de sentencias se lanza como excepción y cancela el resto del análisis
+  (slide 25).
+- Error → el lexema del token del nodo que tiene el error y su línea, y al final
+  `[Error:Lexema|NroLinea]`. Ejemplos de las slides 30 y 31: `(4+true);` da `[Error:+|3]`, y
+  `a = 10;` con `a` sin declarar, `[Error:a|3]`.
+- Análisis exitoso → `Compilacion Exitosa` y después `[SinErrores]` (slide 32).
+- El informe indica cómo compilar y correr, e incluye el diagrama de clases de los AST y los logros
+  que se intentan (slide 38).
+
 ## Invariantes técnicas duras
 
 - **Sin `System.exit()` en ningún punto del código de producción.** Los testers de la cátedra
@@ -82,7 +97,7 @@ La Etapa 3 agrega las suyas, de `Pautas Etapa 3.pdf`:
   testers usan paths relativos duros. Los testers **de la cátedra** esperan `resources/sinErrores/`
   y `resources/conErrores/`, sin subcarpeta, así que **ahí vive el corpus de la etapa que se está
   entregando** y armar el zip no requiere copiar nada. Los de las etapas anteriores quedan
-  archivados en `resources/lexico/` y `resources/sintactico/` (ver
+  archivados en `resources/lexico/`, `resources/sintactico/` y `resources/declaraciones/` (ver
   [`comandos-compilacion-y-entrega.md`](comandos-compilacion-y-entrega.md)).
 - **El código de error `[Error:Lexema|NroLinea]` no lleva columna** — es el contrato exacto de la
   cátedra y el tester lo compara literal. La columna (Reporte de Error Elegante,

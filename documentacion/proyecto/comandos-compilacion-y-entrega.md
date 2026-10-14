@@ -21,6 +21,7 @@ mvn package                # genera target/Compilador.jar
 mvn test -Pfase-lexico
 mvn test -Pfase-sintactico
 mvn test -Pfase-semantico
+mvn test -Pfase-sentencias
 ```
 
 ### Invocar el compilador
@@ -35,12 +36,15 @@ java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErro
 # Etapa 2: sólo el sintáctico, sin tabla de símbolos.
 java -jar target/Compilador.jar --etapa=2 resources/sintactico/sinErrores/todosLosLogrosJuntos.java
 
-# Etapa 3: el chequeo de declaraciones. Es también la etapa por defecto.
-java -jar target/Compilador.jar --etapa=3 resources/sinErrores/herenciaGenericaConArgumento.java
+# Etapa 3: el chequeo de declaraciones, sin mirar los cuerpos.
+java -jar target/Compilador.jar --etapa=3 resources/declaraciones/sinErrores/herenciaGenericaConArgumento.java
+
+# Etapa 4: además, el chequeo de sentencias. Es también la etapa por defecto.
+java -jar target/Compilador.jar resources/catedra/sentencias/conErrores/semIIError04.java
 ```
 
-Sin `--etapa`, corre la última etapa, la 3. Cada etapa tiene su opción explícita, y los testers de
-la cátedra de cada una la pasan (`--etapa=1`, `--etapa=2`, `--etapa=3`), así que una etapa nueva
+Sin `--etapa`, corre la última etapa, la 4. Cada etapa tiene su opción explícita, y los testers de
+la cátedra de cada una la pasan (`--etapa=1` a `--etapa=4`), así que una etapa nueva
 no obliga a tocarlos. `Main` elige el módulo principal en un mapa de etapa a módulo: una etapa
 nueva es una entrada más, y `MainTest` controla que el mapa cubra exactamente las etapas que
 acepta la opción.
@@ -78,21 +82,23 @@ zip localmente y sirve para medirlo antes de pushear.
 
 **No hay ningún paso de copia.** Los testers de la cátedra buscan el corpus en
 `resources/sinErrores/` y `resources/conErrores/`, escrito a fuego y sin subcarpeta, así que el
-corpus de la etapa **que se entrega** vive ahí: hoy, el de la Etapa 3. Los de las etapas anteriores
-quedan archivados en `resources/lexico/` y `resources/sintactico/`, y sus testers los buscan ahí.
-Cada uno se corre entero con su perfil (`-Pfase-lexico`, `-Pfase-sintactico`).
+corpus de la etapa **que se entrega** vive ahí: hoy, el de la Etapa 4. Los de las etapas anteriores
+quedan archivados en `resources/lexico/`, `resources/sintactico/` y `resources/declaraciones/`, y
+sus testers los buscan ahí. Cada uno se corre entero con su perfil (`-Pfase-lexico`,
+`-Pfase-sintactico`, `-Pfase-semantico`).
 
 El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
 `compilador/resources/corpus-externo/`. Son 29.101 fuentes, empaquetados en un `.tar.gz` de 4,4 MB,
 y los testers de la cátedra no lo recorren. Los generados del sintáctico van empaquetados de la
-misma forma: sueltos, las cabeceras del zip pesaban tanto como los fuentes
+misma forma, y también el generado de la Etapa 4 (`resources/sentencias-generado.tar.gz`): sueltos,
+las cabeceras del zip pesaban tanto como los fuentes
 ([`estrategia-de-testing.md`](../compartido/estrategia-de-testing.md) §2).
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 que la cátedra tiene
 también busca en `resources/sinErrores/`, así que sobre esta entrega encontraría los casos de la
-Etapa 3. Es deliberado: la raíz le pertenece a la etapa que se está entregando, y las anteriores ya
-tienen su corpus completo en su carpeta. Cuando arranque la Etapa 4, el corpus del semántico se
-muda a `resources/semantico/` y el nuevo ocupa la raíz.
+Etapa 4. Es deliberado: la raíz le pertenece a la etapa que se está entregando, y las anteriores ya
+tienen su corpus completo en su carpeta. Cuando arranque una etapa nueva, el corpus de la actual se
+muda a su carpeta y el nuevo ocupa la raíz.
 
 Java: `maven.compiler.release=25` (coincide con el JDK instalado; no hay ninguna directiva de la
 cátedra que fije una versión distinta). JaCoCo en `0.8.15` — versiones anteriores (`0.8.12` y por

@@ -12,7 +12,6 @@ import minijava.semantico.tipos.Tipo;
 import minijava.semantico.tipos.TipoArreglo;
 import minijava.semantico.tipos.TipoReferencia;
 import minijava.semantico.tipos.TipoVoid;
-import minijava.semantico.tipos.VariableDeTipo;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeMiembros;
@@ -109,9 +108,11 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
     }
 
     // CuerpoDeMetodo -> ArgsFormales Bloque
+    //
+    // El AST del bloque se cuelga de la unidad actual (Pautas Etapa 4, slide 20).
     public void cuerpoDeMetodo() throws ExcepcionLexica, ExcepcionSintactica {
         sintaxis.tipos().argsFormales();
-        sintaxis.sentencias().bloque();
+        TablaDeSimbolos.unidadActual().setCuerpo(sintaxis.sentencias().bloque());
     }
 
     // Visibilidad -> public | private
@@ -154,7 +155,7 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeMiembros.MIEMBRO_SIN_MODIFICADORES_ID_GEN)) {
             Token parametro = actual();
             match(TipoDeToken.ID_GEN);
-            Tipo tipo = TipoArreglo.de(new VariableDeTipo(parametro), sintaxis.tipos().dimensionesOpcionales());
+            Tipo tipo = TipoArreglo.de(sintaxis.tipos().variableDeTipo(parametro), sintaxis.tipos().dimensionesOpcionales());
             Token nombre = actual();
             match(TipoDeToken.ID_MV);
             return atributoOMetodo(tipo, nombre);
@@ -214,6 +215,9 @@ public final class AnalizadorDeMiembros extends ParteDelAnalizador {
 
     // InicializacionDeAtributo -> = ExpresionCondicional
     // InicializacionDeAtributo -> EPSILON
+    //
+    // Controlar la inicialización es el logro Atributos Inicializados – Chequeado,
+    // que no se persigue: la expresión se reconoce y se descarta.
     private void inicializacionDeAtributo() throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeMiembros.INICIALIZACION_DE_ATRIBUTO_ASIGNACION)) {
             match(TipoDeToken.OP_ASIGNACION);

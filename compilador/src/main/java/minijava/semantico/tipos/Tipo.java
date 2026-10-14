@@ -3,7 +3,7 @@ package minijava.semantico.tipos;
 import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 
-public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoReferencia, VariableDeTipo, TipoArreglo {
+public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoNull, TipoReferencia, VariableDeTipo, TipoArreglo {
 
     String nombre();
 
@@ -14,10 +14,17 @@ public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoReferencia, Va
 
     Tipo instanciar(Sustitucion sustitucion);
 
-    // Dos tipos son el mismo si se escriben igual: los nombres de clase tienen al
-    // menos dos caracteres y los parámetros de tipo uno solo, así que el nombre no
-    // confunde un parámetro con una clase.
+    // Documento §9: si un valor de este tipo puede usarse donde se exige `destino`.
+    boolean conformaCon(Tipo destino);
+
+    // El nombre sin ambigüedad. Coincide con `nombre()` salvo para un parámetro de
+    // tipo, que suma la clase o interfaz que lo declara (documento §5.1): la `T`
+    // que se conserva de un ancestro no es la `T` de la clase que la hereda.
+    default String identidad() {
+        return nombre();
+    }
+
     default boolean esIgualA(Tipo otro) {
-        return nombre().equals(otro.nombre());
+        return identidad().equals(otro.identidad());
     }
 }

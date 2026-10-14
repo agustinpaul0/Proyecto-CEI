@@ -6,6 +6,8 @@ import minijava.semantico.tabla.TablaDeSimbolos;
 import minijava.semantico.tipos.Sustitucion;
 import minijava.semantico.tipos.TipoReferencia;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public final class Clase extends ClaseOInterfaz {
                     "El constructor de " + nombre() + " con " + constructor.aridad()
                             + " parametros ya esta declarado"));
         } else {
+            constructor.setDeclarante(this);
             constructores.put(constructor.aridad(), constructor);
         }
     }
@@ -70,7 +73,7 @@ public final class Clase extends ClaseOInterfaz {
     // parámetros y con cuerpo vacío.
     public void cerrar() {
         if (constructores.isEmpty()) {
-            constructores.put(0, new Constructor(token()));
+            agregarConstructor(new Constructor(token()));
         }
     }
 
@@ -84,6 +87,35 @@ public final class Clase extends ClaseOInterfaz {
 
     public List<Constructor> constructores() {
         return List.copyOf(constructores.values());
+    }
+
+    // Documento §10.3: el constructor se elige por aridad, sin buscar en ancestros.
+    public Optional<Constructor> constructor(int aridad) {
+        return Optional.ofNullable(constructores.get(aridad));
+    }
+
+    @Override
+    public List<TipoReferencia> ancestrosDirectos() {
+        List<TipoReferencia> ancestros = new ArrayList<>();
+        padre().ifPresent(ancestros::add);
+        interfaz().ifPresent(ancestros::add);
+        return ancestros;
+    }
+
+    // Documento §14 y Clase 10, slide 51: un cuerpo se chequea sólo en la clase
+    // que lo declara, así que los métodos heredados de la tabla consolidada se
+    // saltean. Las unidades se recorren en el orden del fuente, como javac.
+    public void chequearSentencias() throws ExcepcionSemantica {
+        List<Unidad> propias = new ArrayList<>(constructores.values());
+        for (Metodo metodo : metodos()) {
+            if (metodo.declarante() == this) {
+                propias.add(metodo);
+            }
+        }
+        propias.sort(Comparator.comparingInt(unidad -> unidad.token().linea()));
+        for (Unidad unidad : propias) {
+            unidad.chequearCuerpo(this);
+        }
     }
 
     @Override
@@ -107,7 +139,7 @@ public final class Clase extends ClaseOInterfaz {
     }
 
     private void verificarPadre(TipoReferencia referencia) throws ExcepcionSemantica {
-        referencia.verificarEn(this, false);
+        referencia.verificarComoAncestroEn(this, false);
         ClaseOInterfaz declarado = referencia.declaracion();
         if (declarado instanceof Interfaz) {
             throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()
@@ -117,7 +149,7 @@ public final class Clase extends ClaseOInterfaz {
     }
 
     private void verificarInterfaz(TipoReferencia referencia) throws ExcepcionSemantica {
-        referencia.verificarEn(this, false);
+        referencia.verificarComoAncestroEn(this, false);
         ClaseOInterfaz declarado = referencia.declaracion();
         if (declarado instanceof Clase) {
             throw new ExcepcionSemantica(referencia.token(), "La clase " + nombre()

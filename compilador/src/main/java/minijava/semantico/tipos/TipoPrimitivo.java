@@ -28,4 +28,10 @@ public enum TipoPrimitivo implements Tipo {
     public Tipo instanciar(Sustitucion sustitucion) {
         return this;
     }
+
+    // Documento §9.1: sin conversiones entre primitivos, ni siquiera de char a int.
+    @Override
+    public boolean conformaCon(Tipo destino) {
+        return destino == this;
+    }
 }

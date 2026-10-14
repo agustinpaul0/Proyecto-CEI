@@ -2,11 +2,26 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.semantico.ast.expresiones.ExpresionNoControlada;
+import minijava.semantico.ast.expresiones.NodoCreacionArreglo;
+import minijava.semantico.ast.expresiones.NodoCreacionObjeto;
+import minijava.semantico.ast.expresiones.NodoExpresion;
+import minijava.semantico.tipos.Tipo;
+import minijava.semantico.tipos.TipoReferencia;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeCreacion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // La creación con `new` y los inicializadores de arreglo.
+//
+// El token `new` baja como atributo heredado hasta donde se sabe qué se crea:
+// es donde javac ubica los errores de la creación. El diamante y el inicializador
+// de arreglo son de logros que no se controlan y quedan como
+// ExpresionNoControlada.
 public final class AnalizadorDeCreacion extends ParteDelAnalizador {
 
     public AnalizadorDeCreacion(Sintaxis sintaxis) {
@@ -14,24 +29,26 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     }
 
     // Creacion -> new ArregloOInstancia
-    public void creacion() throws ExcepcionLexica, ExcepcionSintactica {
+    public NodoExpresion creacion() throws ExcepcionLexica, ExcepcionSintactica {
+        Token nuevo = actual();
         match(TipoDeToken.PR_NEW);
-        arregloOInstancia();
+        return arregloOInstancia(nuevo);
     }
 
     // ArregloOInstancia -> TipoPrimitivo CreacionDeArreglo
     //                    | idGen CreacionDeArreglo
     //                    | idClase CreacionDesdeIdClase
-    private void arregloOInstancia() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion arregloOInstancia(Token nuevo) throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.ARREGLO_OINSTANCIA_TIPO_PRIMITIVO)) {
-            sintaxis.tipos().tipoPrimitivo();
-            creacionDeArreglo();
+            return creacionDeArreglo(nuevo, sintaxis.tipos().tipoPrimitivo());
         } else if (estaEn(PrimerosDeCreacion.ARREGLO_OINSTANCIA_ID_GEN)) {
+            Token parametro = actual();
             match(TipoDeToken.ID_GEN);
-            creacionDeArreglo();
+            return creacionDeArreglo(nuevo, sintaxis.tipos().variableDeTipo(parametro));
         } else if (estaEn(PrimerosDeCreacion.ARREGLO_OINSTANCIA_ID_CLASE)) {
+            Token clase = actual();
             match(TipoDeToken.ID_CLASE);
-            creacionDesdeIdClase();
+            return creacionDesdeIdClase(nuevo, clase);
         } else {
             throw errorEsperando(PrimerosDeCreacion.ARREGLO_OINSTANCIA_TIPO_PRIMITIVO,
                     PrimerosDeCreacion.ARREGLO_OINSTANCIA_ID_GEN, PrimerosDeCreacion.ARREGLO_OINSTANCIA_ID_CLASE);
@@ -39,12 +56,13 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     }
 
     // CreacionDesdeIdClase -> < GenericoDeCreacion | ArregloOInstanciaDeClase
-    private void creacionDesdeIdClase() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion creacionDesdeIdClase(Token nuevo, Token clase)
+            throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_MENOR)) {
             match(TipoDeToken.OP_MENOR);
-            genericoDeCreacion();
+            return genericoDeCreacion(nuevo, clase);
         } else if (estaEn(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARREGLO_OINSTANCIA_DE_CLASE)) {
-            arregloOInstanciaDeClase();
+            return arregloOInstanciaDeClase(nuevo, new TipoReferencia(clase));
         } else {
             throw errorEsperando(PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_MENOR,
                     PrimerosDeCreacion.CREACION_DESDE_ID_CLASE_ARREGLO_OINSTANCIA_DE_CLASE);
@@ -57,14 +75,15 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     // El diamante `<>` se admite sólo en la rama que va a ArgsActuales: `new C<>()`
     // es válido y `new C<>[3]` no. La restricción del logro la impone la gramática,
     // no queda delegada al semántico.
-    private void genericoDeCreacion() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion genericoDeCreacion(Token nuevo, Token clase) throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.GENERICO_DE_CREACION_MAYOR)) {
             match(TipoDeToken.OP_MAYOR);
             sintaxis.argumentos().argsActuales();
+            return new ExpresionNoControlada(nuevo);
         } else if (estaEn(PrimerosDeCreacion.GENERICO_DE_CREACION_INSTANCIADO_OPARAMETRICO)) {
-            sintaxis.tipos().instanciadoOParametrico();
+            Tipo argumento = sintaxis.tipos().instanciadoOParametrico();
             match(TipoDeToken.OP_MAYOR);
-            arregloOInstanciaDeClase();
+            return arregloOInstanciaDeClase(nuevo, new TipoReferencia(clase, argumento));
         } else {
             throw errorEsperando(PrimerosDeCreacion.GENERICO_DE_CREACION_MAYOR,
                     PrimerosDeCreacion.GENERICO_DE_CREACION_INSTANCIADO_OPARAMETRICO);
@@ -72,11 +91,12 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     }
 
     // ArregloOInstanciaDeClase -> CreacionDeArreglo | ArgsActuales
-    private void arregloOInstanciaDeClase() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion arregloOInstanciaDeClase(Token nuevo, TipoReferencia tipo)
+            throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.ARREGLO_OINSTANCIA_DE_CLASE_CREACION_DE_ARREGLO)) {
-            creacionDeArreglo();
+            return creacionDeArreglo(nuevo, tipo);
         } else if (estaEn(PrimerosDeCreacion.ARREGLO_OINSTANCIA_DE_CLASE_ARGS_ACTUALES)) {
-            sintaxis.argumentos().argsActuales();
+            return new NodoCreacionObjeto(nuevo, tipo, sintaxis.argumentos().argsActuales());
         } else {
             throw errorEsperando(PrimerosDeCreacion.ARREGLO_OINSTANCIA_DE_CLASE_CREACION_DE_ARREGLO,
                     PrimerosDeCreacion.ARREGLO_OINSTANCIA_DE_CLASE_ARGS_ACTUALES);
@@ -84,9 +104,9 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     }
 
     // CreacionDeArreglo -> [ RestoCreacionDeArreglo
-    private void creacionDeArreglo() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion creacionDeArreglo(Token nuevo, Tipo base) throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.CORCHETE_A);
-        restoCreacionDeArreglo();
+        return restoCreacionDeArreglo(nuevo, base);
     }
 
     // RestoCreacionDeArreglo -> Expresion ] DimensionesConTamanioOpcional
@@ -94,15 +114,19 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     //
     // Con tamaño es la creación de MiniJava base; sin tamaño, la de Java con
     // inicializador, donde ninguna dimensión lleva tamaño (JLS 15.10.1).
-    private void restoCreacionDeArreglo() throws ExcepcionLexica, ExcepcionSintactica {
+    private NodoExpresion restoCreacionDeArreglo(Token nuevo, Tipo base)
+            throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_EXPRESION)) {
-            sintaxis.expresiones().expresion();
+            List<NodoExpresion> tamanios = new ArrayList<>();
+            tamanios.add(sintaxis.expresiones().expresion());
             match(TipoDeToken.CORCHETE_C);
-            dimensionesConTamanioOpcional();
+            dimensionesConTamanioOpcional(tamanios);
+            return new NodoCreacionArreglo(nuevo, base, tamanios);
         } else if (estaEn(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_CORCHETE_C)) {
             match(TipoDeToken.CORCHETE_C);
             sintaxis.tipos().dimensionesOpcionales();
             inicializadorDeArreglo();
+            return new ExpresionNoControlada(nuevo);
         } else {
             throw errorEsperando(PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_EXPRESION,
                     PrimerosDeCreacion.RESTO_CREACION_DE_ARREGLO_CORCHETE_C);
@@ -114,17 +138,18 @@ public final class AnalizadorDeCreacion extends ParteDelAnalizador {
     // Voraz: `new int[3][4]` consume el segundo `[` como otra dimensión de la
     // creación y no como un acceso al arreglo recién creado. Es la ambigüedad
     // heredada de la gramática de la cátedra, y coincide con Java.
-    private void dimensionesConTamanio() throws ExcepcionLexica, ExcepcionSintactica {
+    private void dimensionesConTamanio(List<NodoExpresion> tamanios) throws ExcepcionLexica, ExcepcionSintactica {
         match(TipoDeToken.CORCHETE_A);
-        sintaxis.expresiones().expresion();
+        tamanios.add(sintaxis.expresiones().expresion());
         match(TipoDeToken.CORCHETE_C);
-        dimensionesConTamanioOpcional();
+        dimensionesConTamanioOpcional(tamanios);
     }
 
     // DimensionesConTamanioOpcional -> DimensionesConTamanio | EPSILON
-    private void dimensionesConTamanioOpcional() throws ExcepcionLexica, ExcepcionSintactica {
+    private void dimensionesConTamanioOpcional(List<NodoExpresion> tamanios)
+            throws ExcepcionLexica, ExcepcionSintactica {
         if (estaEn(PrimerosDeCreacion.DIMENSIONES_CON_TAMANIO_OPCIONAL_DIMENSIONES_CON_TAMANIO)) {
-            dimensionesConTamanio();
+            dimensionesConTamanio(tamanios);
         } else {
             // DimensionesConTamanioOpcional -> EPSILON
         }

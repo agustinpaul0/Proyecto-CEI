@@ -6,7 +6,9 @@ argument-hint: "[sinErrores|conErrores] [descripción del caso]"
 Caso pedido: $ARGUMENTS
 
 Agregá el caso a `compilador/resources/sinErrores/` o `compilador/resources/conErrores/`
-siguiendo las convenciones de `compilador/herramientas/README.md`:
+siguiendo las convenciones de `compilador/herramientas/README.md`. Los casos de la Etapa 4 se
+escriben como datos en `compilador/herramientas/sentencias/casos_*.py` (con `bien(...)` o
+`mal(...)` y la línea del error marcada con `// <-`) y se vuelcan con `lote_sentencias.py`:
 
 - **Predecí las expectativas a mano, antes de correr nada.** Si el caso después falla, lo
   primero a decidir es si el equivocado es el oráculo o el compilador — varios casos del corpus
@@ -17,7 +19,7 @@ siguiendo las convenciones de `compilador/herramientas/README.md`:
 - Nombre del archivo en el mismo estilo camelCase descriptivo que el resto del corpus.
 - Si el caso cubre una regla discutible, referenciá la decisión que lo respalda: las léxicas en
   `documentacion/lexico/especificacion-lexica-de-minijava.md`, las semánticas en
-  `documentacion/semantico/decisiones-de-logica.md`. Si no existe, seguí
+  `documentacion/semantico/decisiones-de-logica.md` o `documentacion/sentencias/decisiones-de-logica.md`. Si no existe, seguí
   `documentacion/proyecto/protocolo-de-investigacion.md` primero.
 - Los nombres de clase tienen al menos dos caracteres: una mayúscula sola es un `idGen`.
 

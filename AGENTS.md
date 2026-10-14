@@ -46,24 +46,35 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   decisión del usuario: sólo Entrega Anticipada, Imbatibilidad y Kudos. **El estado y las
   decisiones están en [`documentacion/semantico/README.md`](documentacion/semantico/README.md); lo
   que contestó el profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
-- Etapas 4-5: sin especificación todavía (aparecerán en `etapas/etapa-4/` etc. cuando se publiquen).
+- **Etapa 4** (entrega 30/10/2026 a las 16:00; Entrega Anticipada hasta el 28/10): Analizador
+  Semántico, Parte II: AST y chequeo de sentencias. Sin logros de código, por decisión del usuario:
+  sólo Imbatibilidad, Entrega Anticipada y Grandioso Laburo!. **El estado y las decisiones están en
+  [`documentacion/sentencias/README.md`](documentacion/sentencias/README.md); las consultas abiertas,
+  en `etapas/etapa-4/consultas/dudas.pdf`; la guía de la revisión manual, en
+  `etapas/etapa-4/revision/`.**
+- Etapa 5 (traducción a código de la máquina virtual): sin especificación todavía.
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:
   `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf`,
-  `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf` y
-  `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf`.
+  `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf`,
+  `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf` (la fuente de la Etapa 3) y
+  `documentacion/minijava/MiniJava-Semantica-Completa-2026.pdf` (la de la Etapa 4, que reemplaza a la
+  Parte I donde se contradicen).
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
   `testersLexico/` (2 testers JUnit 4 + 5 casos de ejemplo + guía de uso), `testersSintactico/`
-  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso) y `testersSemantico1/` (2 testers JUnit 4
-  + 8 casos de ejemplo, sin guía). Los originales están en `vendor/`, que **no se versiona** y no
+  (2 testers JUnit 4 + 8 casos de ejemplo + guía de uso), `testersSemantico1/` (2 testers JUnit 4
+  + 8 casos de ejemplo, sin guía) y `testersSemantico2/` (2 testers JUnit 4 + 10 casos de ejemplo,
+  con la guía de la Etapa 2). Los originales están en `vendor/`, que **no se versiona** y no
   lo lee nada del proyecto: lo que se usa está copiado adentro de `compilador/` (los testers en
-  `src/test/java/catedra/`, los casos de ejemplo en `resources/catedra/sintactico/` y
-  `resources/catedra/semantico/`).
+  `src/test/java/catedra/`, los casos de ejemplo en `resources/catedra/sintactico/`,
+  `resources/catedra/semantico/` y `resources/catedra/sentencias/`).
 - Material ajeno de un compañero: `compilador/resources/corpus-externo/`, el corpus de
   fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La atribución está en su
-  `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`.
+  `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`. Y los casos
+  `salamanca*.java` del corpus de la Etapa 4, de la suite de Santiago Salamanca: el original está en
+  `vendor/testsCompaneroSentencias/` y la atribución, en `compilador/resources/CREDITOS.md`.
 - Lo que el profesor indicó explícitamente está reunido en
   [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
@@ -81,8 +92,9 @@ pueda, en lugar de comentar hay que renombrar o extraer. Ante la duda, no coment
 en [`documentacion/proyecto/flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md).
 
 Desarrollo pensado para abrirse y correrse en **IntelliJ IDEA** (abrir la carpeta `compilador/`,
-donde está el `pom.xml`). La configuración versionada «Suite Etapa 3», de `compilador/.run/`, corre
-sólo los tests de la etapa que se entrega; no va en el zip de entrega (`.gitattributes`).
+donde está el `pom.xml`). Las configuraciones versionadas «Suite Etapa 3» y «Suite Etapa 4», de
+`compilador/.run/`, corren sólo los tests de cada etapa; no van en el zip de entrega
+(`.gitattributes`).
 
 ## 2. Qué leer según la tarea
 
@@ -101,6 +113,8 @@ sólo los tests de la etapa que se entrega; no va en el zip de entrega (`.gitatt
 | Consultar el contrato de salida, los logros o la invocación de la Etapa 2 | `etapas/etapa-2/Pautas Etapa 2.pdf` (errores 25-26, invocación 28, logros 34-44) |
 | Tocar la tabla de símbolos, la EDT o un control semántico | [`documentacion/semantico/README.md`](documentacion/semantico/README.md) + `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf` (los controles) + `etapas/etapa-3/Clase 6…8` |
 | Consultar el contrato de salida, el token de cada error o los logros de la Etapa 3 | `etapas/etapa-3/Pautas Etapa 3.pdf` (errores 28-30, éxito 31, informe 36, logros 38-41) |
+| Tocar los AST, el `Contexto` o un control de sentencias | [`documentacion/sentencias/README.md`](documentacion/sentencias/README.md) + `documentacion/minijava/MiniJava-Semantica-Completa-2026.pdf` (§9 a §14) + `etapas/etapa-4/Clase 09…11` |
+| Consultar el contrato de salida, el token de cada error o los logros de la Etapa 4 | `etapas/etapa-4/Pautas Etapa 4.pdf` (flujo 15-27, errores 30-31, éxito 32, informe 38, logros 39-48) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `documentacion/proyecto/` | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) — **antes** de escribir código |
 | Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (tokens, ER formal y decisiones) |
 | Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/lexico/patron-state-metodo-por-estado.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |
@@ -168,6 +182,15 @@ Etapa 3, en [`documentacion/semantico/`](documentacion/semantico/README.md):
 [`decisiones-de-logica.md`](documentacion/semantico/decisiones-de-logica.md),
 [`decisiones-de-deteccion-de-errores.md`](documentacion/semantico/decisiones-de-deteccion-de-errores.md)
 y [`resolucion-de-logros.md`](documentacion/semantico/resolucion-de-logros.md).
+
+Etapa 4, en [`documentacion/sentencias/`](documentacion/sentencias/README.md):
+[`arquitectura-del-chequeo-de-sentencias.md`](documentacion/sentencias/arquitectura-del-chequeo-de-sentencias.md)
+(con los diagramas de clases de los AST),
+[`esquema-de-traduccion.md`](documentacion/sentencias/esquema-de-traduccion.md),
+[`decisiones-de-diseno.md`](documentacion/sentencias/decisiones-de-diseno.md),
+[`decisiones-de-logica.md`](documentacion/sentencias/decisiones-de-logica.md),
+[`decisiones-de-deteccion-de-errores.md`](documentacion/sentencias/decisiones-de-deteccion-de-errores.md)
+y [`resolucion-de-logros.md`](documentacion/sentencias/resolucion-de-logros.md).
 
 Compartida entre etapas, en [`documentacion/compartido/`](documentacion/compartido/README.md):
 [`estrategia-de-testing.md`](documentacion/compartido/estrategia-de-testing.md),

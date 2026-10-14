@@ -7,10 +7,9 @@ import minijava.semantico.tabla.TablaDeSimbolos;
 
 import java.util.Optional;
 
-// `Caja`, `Caja<T>` o `Caja<String>`. El argumento es un parámetro de tipo o
-// una referencia; si es una referencia genérica (`Caja<Par<String>>`), de ella
-// se controla sólo que exista: el anidamiento es el logro Genericidad Avanzada
-// E3, que no se persigue.
+// `Caja<T>` o `Caja<String>`, y `Caja` sólo si no es genérica. La forma raw de
+// un tipo genérico vale únicamente en una cláusula `extends` o `implements`
+// (documento §5.2).
 public final class TipoReferencia implements Tipo {
 
     private final Token token;
@@ -38,12 +37,31 @@ public final class TipoReferencia implements Tipo {
         return argumento().map(a -> token.lexema() + "<" + a.nombre() + ">").orElse(token.lexema());
     }
 
+    @Override
+    public String identidad() {
+        return argumento().map(a -> token.lexema() + "<" + a.identidad() + ">").orElse(token.lexema());
+    }
+
     public String nombreDelTipo() {
         return token.lexema();
     }
 
+    public boolean esObject() {
+        return argumento == null && nombreDelTipo().equals(TablaDeSimbolos.object().nombre());
+    }
+
     @Override
     public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
+        verificarComoAncestroEn(contexto, enContextoEstatico);
+        if (argumento == null && declaracion().esGenerico()) {
+            throw new ExcepcionSemantica(token, "El tipo " + nombreDelTipo()
+                    + " es generico y se usa sin argumento de tipo");
+        }
+    }
+
+    // En una cláusula de herencia el argumento es optativo (documento §5).
+    public void verificarComoAncestroEn(ClaseOInterfaz contexto, boolean enContextoEstatico)
+            throws ExcepcionSemantica {
         ClaseOInterfaz declarado = declaracion();
         if (argumento == null) {
             return;
@@ -52,10 +70,7 @@ public final class TipoReferencia implements Tipo {
             throw new ExcepcionSemantica(token, "El tipo " + nombreDelTipo()
                     + " no es generico y no admite argumento de tipo");
         }
-        switch (argumento) {
-            case TipoReferencia referencia -> referencia.declaracion();
-            case Tipo otro -> otro.verificarEn(contexto, enContextoEstatico);
-        }
+        argumento.verificarEn(contexto, enContextoEstatico);
     }
 
     public ClaseOInterfaz declaracion() throws ExcepcionSemantica {
@@ -67,7 +82,28 @@ public final class TipoReferencia implements Tipo {
     }
 
     @Override
-    public Tipo instanciar(Sustitucion sustitucion) {
+    public TipoReferencia instanciar(Sustitucion sustitucion) {
         return argumento == null ? this : new TipoReferencia(token, argumento.instanciar(sustitucion));
+    }
+
+    // Documento §9.2 y §9.3: conforma con Object y con sus ancestros, recorridos
+    // con la sustitución de cada relación; los argumentos son invariantes. Se usa
+    // sólo después del chequeo de declaraciones, así que el tipo existe.
+    @Override
+    public boolean conformaCon(Tipo destino) {
+        if (!(destino instanceof TipoReferencia referencia)) {
+            return false;
+        }
+        if (esIgualA(referencia) || referencia.esObject()) {
+            return true;
+        }
+        ClaseOInterfaz declarado = TablaDeSimbolos.tipo(nombreDelTipo()).orElseThrow();
+        Sustitucion sustitucion = ClaseOInterfaz.sustitucionHacia(this, declarado);
+        for (TipoReferencia ancestro : declarado.ancestrosDirectos()) {
+            if (ancestro.instanciar(sustitucion).conformaCon(destino)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

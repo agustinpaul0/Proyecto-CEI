@@ -1,6 +1,7 @@
 package minijava.semantico.entidades;
 
 import minijava.lexico.tokens.Token;
+import minijava.semantico.ast.sentencias.NodoBloque;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tipos.Sustitucion;
 import minijava.semantico.tipos.Tipo;
@@ -17,8 +18,9 @@ public final class Metodo extends Unidad implements Miembro {
         super(nombre);
     }
 
-    private Metodo(Token nombre, List<Parametro> parametros, boolean estatico, Tipo retorno) {
-        super(nombre, parametros);
+    private Metodo(Token nombre, List<Parametro> parametros, boolean estatico, Tipo retorno,
+                   ClaseOInterfaz declarante, NodoBloque cuerpo) {
+        super(nombre, parametros, declarante, cuerpo);
         this.estatico = estatico;
         this.retorno = retorno;
     }
@@ -67,6 +69,7 @@ public final class Metodo extends Unidad implements Miembro {
         for (Parametro parametro : parametros()) {
             instanciados.add(parametro.instanciado(sustitucion));
         }
-        return new Metodo(token(), instanciados, estatico, retorno.instanciar(sustitucion));
+        return new Metodo(token(), instanciados, estatico, retorno.instanciar(sustitucion),
+                declarante(), cuerpo());
     }
 }

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("semantico")
 class TiposTest {
 
-    private static final Sustitucion T_POR_STRING = Sustitucion.de("T", referencia("String"));
+    private static final Sustitucion T_POR_STRING = Sustitucion.de("Caja", "T", referencia("String"));
 
     @Test
     void cadaTipoSeNombraComoSeEscribe() {
@@ -67,13 +67,23 @@ class TiposTest {
         assertEquals("Caja", referencia("Caja").instanciar(T_POR_STRING).nombre());
     }
 
+    // Documento §5.1: la T de otra clase es otro tipo, aunque se llame igual.
+    @Test
+    void instanciarNoTocaLaTDeOtraClase() {
+        Tipo deOtraClase = new VariableDeTipo(new Token(TipoDeToken.ID_GEN, "T", 1), "Base");
+
+        assertEquals("T", deOtraClase.instanciar(T_POR_STRING).nombre());
+        assertFalse(deOtraClase.esIgualA(variable("T")));
+        assertEquals("T@Base", deOtraClase.identidad());
+    }
+
     @Test
     void laIdentidadConservaElParametro() {
         assertEquals("T", variable("T").instanciar(Sustitucion.identidad()).nombre());
     }
 
     private static Tipo variable(String nombre) {
-        return new VariableDeTipo(new Token(TipoDeToken.ID_GEN, nombre, 1));
+        return new VariableDeTipo(new Token(TipoDeToken.ID_GEN, nombre, 1), "Caja");
     }
 
     private static TipoReferencia referencia(String nombre) {

@@ -37,11 +37,16 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
         } else if (estaEn(PrimerosDeTipos.TIPO_BASE_ID_GEN)) {
             Token nombre = actual();
             match(TipoDeToken.ID_GEN);
-            return new VariableDeTipo(nombre);
+            return variableDeTipo(nombre);
         } else {
             throw errorEsperando(PrimerosDeTipos.TIPO_BASE_TIPO_PRIMITIVO,
                     PrimerosDeTipos.TIPO_BASE_TIPO_REFERENCIA, PrimerosDeTipos.TIPO_BASE_ID_GEN);
         }
+    }
+
+    // Una `T` es de la clase o interfaz donde se escribe (documento §5.1).
+    public VariableDeTipo variableDeTipo(Token nombre) {
+        return new VariableDeTipo(nombre, TablaDeSimbolos.tipoActual().nombre());
     }
 
     // DimensionesOpcionales -> [ ] DimensionesOpcionales | EPSILON
@@ -112,7 +117,7 @@ public final class AnalizadorDeTipos extends ParteDelAnalizador {
         if (estaEn(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_GEN)) {
             Token nombre = actual();
             match(TipoDeToken.ID_GEN);
-            return new VariableDeTipo(nombre);
+            return variableDeTipo(nombre);
         } else if (estaEn(PrimerosDeTipos.INSTANCIADO_OPARAMETRICO_ID_CLASE)) {
             Token nombre = actual();
             match(TipoDeToken.ID_CLASE);

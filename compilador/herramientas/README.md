@@ -20,7 +20,7 @@ desde ella, y escriben casos de corpus en lote.
 |---|---|
 | `primeros_a_java.py` | Las clases `PrimerosDeX` que usa el analizador, una por sección de la gramática. |
 | `gramatica_a_markdown.py`, `gramatica_a_latex.py` | La gramática final en markdown y las tablas del informe. |
-| `diagramas_de_clases.py` | Verifica que los diagramas de clases de `documentacion/semantico/arquitectura-del-analizador-semantico.md` muestren cada campo, constructor y método del código, y los renderiza en PDF para el informe de la Etapa 3. Necesita `npx` y Chrome. |
+| `diagramas_de_clases.py` | Verifica que los diagramas de clases de `documentacion/semantico/arquitectura-del-analizador-semantico.md` y `documentacion/sentencias/arquitectura-del-chequeo-de-sentencias.md` muestren cada campo, constructor y método del código, y renderiza en PDF los de la etapa en curso para su informe. Necesita `npx` y Chrome. |
 | `explicacion_de_reglas.py` | La gramática explicada no terminal por no terminal: qué genera cada producción y por qué está escrita así. **No es material de entrega**, es un documento de estudio; sale a `~/downloads/explicacion-reglas.pdf`. |
 | `gramatica_a_antlr.py` | La gramática ANTLR con la que Grammarinator deriva y muta fuentes. |
 | `gramatica_a_javacc.py` | El oráculo JavaCC: un tercer reconocedor de la misma gramática. |
@@ -33,6 +33,8 @@ desde ella, y escriben casos de corpus en lote.
 | `generar_corpus_fuzz.py` | El corpus generado del sintáctico, de punta a punta, empaquetado en `resources/sintactico/sintactico-generado.tar.gz`. Se invoca con `make fuzz`, y al terminar borra `fuzz/trabajo/`. |
 | `empaquetar_corpus.py` | Empaqueta un corpus generado en un `.tar.gz` reproducible: sueltos, sus miles de archivos inflan el zip de entrega. |
 | `lote_sintactico.py` | El corpus del sintáctico **escrito a mano**, con las expectativas predichas. |
+| `sentencias/lote_sentencias.py` | El corpus de la Etapa 4 **escrito a mano**: los casos son datos en `sentencias/casos_*.py`, con el lexema esperado y la línea del error marcada con `// <-`. |
+| `sentencias/generar_corpus_sentencias.py` | El corpus combinatorio de la Etapa 4, contrastado celda por celda con `javac` (`sentencias/OraculoJavac.java`) y empaquetado en `resources/sentencias-generado.tar.gz`. |
 | `lote*.py`, `generar_casos.py` | Escriben casos del corpus léxico en lote. |
 
 ## Los generadores del corpus léxico

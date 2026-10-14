@@ -15,19 +15,34 @@ import minijava.sintactico.errores.ExcepcionSintactica;
 import java.io.IOException;
 import java.util.List;
 
-// Pautas Etapa 3, slides 15-25: crea la tabla de símbolos, corre el sintáctico
-// que la llena y, sólo si terminó sin errores, le pide el chequeo de
-// declaraciones y la consolidación. El primer error semántico corta el análisis.
+// Pautas Etapa 3, slides 15-25, y Etapa 4, slides 15-27: crea la tabla de
+// símbolos, corre el sintáctico que la llena con las declaraciones y los AST y,
+// sólo si terminó sin errores, le pide el chequeo de declaraciones y la
+// consolidación. En la Etapa 4 sigue con el chequeo de sentencias, que corre
+// sobre la tabla consolidada (Clase 10, slide 50). El primer error semántico
+// corta el análisis.
 public final class ModuloPrincipalSemantico implements ModuloPrincipal {
 
     private static final String MENSAJE_DE_EXITO = "Compilacion Exitosa";
 
     private final Salida salida;
     private final FormateadorDeError formateadorDeError;
+    private final boolean chequeaSentencias;
 
+    // La Etapa 3: sólo las declaraciones.
     public ModuloPrincipalSemantico(Salida salida) {
+        this(salida, false);
+    }
+
+    private ModuloPrincipalSemantico(Salida salida, boolean chequeaSentencias) {
         this.salida = salida;
         this.formateadorDeError = new FormateadorDeError();
+        this.chequeaSentencias = chequeaSentencias;
+    }
+
+    // La Etapa 4: las declaraciones y después las sentencias.
+    public static ModuloPrincipalSemantico conChequeoDeSentencias(Salida salida) {
+        return new ModuloPrincipalSemantico(salida, true);
     }
 
     @Override
@@ -41,7 +56,7 @@ public final class ModuloPrincipalSemantico implements ModuloPrincipal {
         try {
             List<ExcepcionSintactica> errores = analizador.analizar();
             if (errores.isEmpty()) {
-                chequearDeclaraciones();
+                chequearSemantica();
             } else {
                 errores.forEach(this::reportar);
             }
@@ -53,10 +68,13 @@ public final class ModuloPrincipalSemantico implements ModuloPrincipal {
         }
     }
 
-    private void chequearDeclaraciones() {
+    private void chequearSemantica() {
         try {
             TablaDeSimbolos.chequearDeclaraciones();
             TablaDeSimbolos.consolidar();
+            if (chequeaSentencias) {
+                TablaDeSimbolos.chequearSentencias();
+            }
             salida.imprimir(MENSAJE_DE_EXITO);
             salida.imprimir("");
             salida.imprimir("[SinErrores]");

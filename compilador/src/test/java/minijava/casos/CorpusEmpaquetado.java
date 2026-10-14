@@ -23,6 +23,8 @@ public final class CorpusEmpaquetado {
             Path.of("resources", "corpus-externo", "corpus-externo.tar.gz");
     public static final Path SINTACTICO_GENERADO =
             Path.of("resources", "sintactico", "sintactico-generado.tar.gz");
+    public static final Path SENTENCIAS_GENERADO =
+            Path.of("resources", "sentencias-generado.tar.gz");
 
     private static final Path DESTINO = Path.of("target", "corpus");
     private static final String EXTENSION = ".tar.gz";

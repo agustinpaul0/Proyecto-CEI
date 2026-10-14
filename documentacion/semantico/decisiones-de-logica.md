@@ -12,12 +12,11 @@ aceptando sintácticamente, pero no suma controles:
 | Construcción (logro de la Etapa 2) | En la Etapa 3 |
 |---|---|
 | `private` y `public` (Visibilidad Mejorada) | no se registran; no afectan ningún control |
-| `Caja<Par<String>>` (Genericidad Avanzada E2) | se controla sólo el primer nivel: que `Caja` sea genérica y que `Par` exista |
-| `int x = 5;` (Atributos Inicializados) | el atributo se registra; la expresión es de la Etapa 4 |
+| `Caja<Par<String>>` (Genericidad Avanzada E2) | se controla entero, como cualquier otro tipo |
+| `int x = 5;` (Atributos Inicializados) | el atributo se registra; la expresión no se controla |
 | `float` (logro de la Etapa 1, confirmado por el profesor) | es un tipo primitivo más |
 
-Controlar el anidamiento genérico es el logro Genericidad Avanzada E3, que no se persigue. El
-profesor confirmó el criterio: si un logro no se continúa, los programas con que se prueba esta
+El profesor confirmó el criterio: si un logro no se continúa, los programas con que se prueba esta
 etapa no traen esa construcción ([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1).
 
 ## 2. Los cuerpos no se chequean
@@ -29,8 +28,10 @@ Documento §1. Un cuerpo con nombres no declarados compila: `sintCorrecto04`, de
 
 - Un tipo referencia nombra una clase, una interfaz o una predefinida (documento §3).
 - Con argumento, el tipo tiene que ser genérico. El argumento es una `T` válida o una clase o
-  interfaz existente.
-- Sin argumento sobre un tipo genérico (`Caja`) es válido: es la forma cruda.
+  interfaz existente y no genérica (documento completo §3).
+- Un tipo genérico sin argumento (`Caja`, la forma raw) vale sólo en `extends` e `implements`
+  (documento completo §5.2). En un atributo, un parámetro, un retorno o el tipo base de un arreglo
+  es un error.
 - Una `T` vale sólo dentro de la clase o interfaz que la declara. Tampoco vale en un método
   estático, como en Java: «non-static type variable T cannot be referenced from a static context».
   El documento no distingue los métodos estáticos.

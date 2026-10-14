@@ -58,6 +58,7 @@ public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
                     "El metodo " + metodo.nombre() + " con " + metodo.aridad()
                             + " parametros ya esta declarado en " + nombre()));
         } else {
+            metodo.setDeclarante(this);
             metodosPropios.put(metodo.clave(), metodo);
         }
     }
@@ -118,12 +119,19 @@ public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
         void controlar(Metodo propio, Metodo heredado, ClaseOInterfaz ancestro) throws ExcepcionSemantica;
     }
 
-    protected static Sustitucion sustitucionHacia(TipoReferencia referencia, ClaseOInterfaz ancestro) {
-        if (!ancestro.esGenerico() || referencia.argumento().isEmpty()) {
+    // Cómo se ven los miembros de `declarado` a través de `referencia`: con
+    // `Caja<String>`, la T de Caja es String (documento §5 y §5.1).
+    public static Sustitucion sustitucionHacia(TipoReferencia referencia, ClaseOInterfaz declarado) {
+        if (!declarado.esGenerico() || referencia.argumento().isEmpty()) {
             return Sustitucion.identidad();
         }
-        return Sustitucion.de(ancestro.parametroDeTipo.lexema(), referencia.argumento().get());
+        return Sustitucion.de(declarado.nombre(), declarado.parametroDeTipo.lexema(),
+                referencia.argumento().get());
     }
+
+    // La clase padre y la interfaz implementada, o la interfaz extendida, tal como
+    // se escribieron en el encabezado.
+    public abstract List<TipoReferencia> ancestrosDirectos();
 
     // El ciclo se reporta en el nombre de este tipo, la entidad con el problema
     // (Pautas slide 30). Un ciclo más arriba que no pasa por este tipo lo reporta

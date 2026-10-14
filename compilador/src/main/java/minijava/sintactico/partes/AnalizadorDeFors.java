@@ -2,6 +2,9 @@ package minijava.sintactico.partes;
 
 import minijava.lexico.errores.ExcepcionLexica;
 import minijava.lexico.tokens.TipoDeToken;
+import minijava.lexico.tokens.Token;
+import minijava.semantico.ast.sentencias.NodoSentencia;
+import minijava.semantico.ast.sentencias.SentenciaNoControlada;
 import minijava.sintactico.Sintaxis;
 import minijava.sintactico.errores.ExcepcionSintactica;
 import minijava.sintactico.primeros.PrimerosDeFors;
@@ -10,6 +13,9 @@ import minijava.sintactico.primeros.PrimerosDeFors;
 // la variable de control declarada con `var`. El `:` distingue el for de
 // iteradores del estándar y aparece justo después de la variable, así que el
 // desempate es de un solo token.
+//
+// Controlar el for es el logro For E4, que no se persigue: se reconoce entero y
+// queda como SentenciaNoControlada.
 public final class AnalizadorDeFors extends ParteDelAnalizador {
 
     public AnalizadorDeFors(Sintaxis sintaxis) {
@@ -17,12 +23,14 @@ public final class AnalizadorDeFors extends ParteDelAnalizador {
     }
 
     // For -> for ( EncabezadoFor ) Sentencia
-    public void sentenciaFor() throws ExcepcionLexica, ExcepcionSintactica {
+    public NodoSentencia sentenciaFor() throws ExcepcionLexica, ExcepcionSintactica {
+        Token palabraFor = actual();
         match(TipoDeToken.PR_FOR);
         match(TipoDeToken.PAREN_A);
         encabezadoFor();
         match(TipoDeToken.PAREN_C);
         sintaxis.sentencias().sentencia();
+        return new SentenciaNoControlada(palabraFor);
     }
 
     // EncabezadoFor -> var idMetVar EncabezadoForTrasVar

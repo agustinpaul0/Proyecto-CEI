@@ -139,11 +139,17 @@ resources/
 ├── sintactico/
 │   ├── sinErrores/                   oráculo: ninguno (tiene que compilar sin errores)
 │   └── conErrores/                   oráculo: ///[Error:lexema|nroLinea] en la primera línea
+├── declaraciones/
+│   ├── sinErrores/                   el corpus de la Etapa 3
+│   └── conErrores/                   oráculo como el del sintáctico
 ├── catedra/
 │   ├── sintactico/                   los 8 casos de ejemplo del tester de la Etapa 2
-│   └── semantico/                    los 8 casos de ejemplo del tester de la Etapa 3
-├── sinErrores/                       el corpus de la Etapa 3, en la raíz porque ahí lo buscan
-└── conErrores/                       los testers de la cátedra; oráculo como el del sintáctico
+│   ├── semantico/                    los 8 casos de ejemplo del tester de la Etapa 3
+│   └── sentencias/                   los 10 casos de ejemplo del tester de la Etapa 4
+├── sinErrores/                       el corpus de la Etapa 4, en la raíz porque ahí lo buscan
+├── conErrores/                       los testers de la cátedra; oráculo como el del sintáctico
+├── sentencias-generado.tar.gz        el corpus combinatorio de la Etapa 4
+└── CREDITOS.md                       los casos importados de Santiago Salamanca
 ```
 
 El corpus de la Etapa 3 tiene al menos un caso con error por cada control semántico, con el token
@@ -152,6 +158,30 @@ estricto, `TesterDeCasosSemanticosEstricto`, exige más que el de la cátedra: u
 tres renglones, y que el mensaje nombre la misma línea que el código. `RobustezDelSemanticoTest`
 corre el compilador completo sobre los corpus de las etapas anteriores y el externo, unos 39.600
 fuentes, y exige que ninguno lo haga caer.
+
+El corpus de la Etapa 4 tiene tres partes:
+
+- **A mano**: unos 390 casos con la expectativa predicha antes de correr, escritos como datos en
+  `herramientas/sentencias/casos_*.py` y volcados por `lote_sentencias.py`. Cada caso marca con
+  `// <-` la línea del error y declara el lexema; la herramienta calcula el número de línea.
+  Cubren cada control del documento completo, con los bordes: el error en la primera y la última
+  sentencia, adentro de paréntesis y argumentos, a varios niveles de bloques, en el código
+  inalcanzable, en el contexto estático, con cadenas de herencia genérica de tres niveles.
+- **De Santiago Salamanca**: 126 casos de su suite, con los tokens de `javac` donde la cátedra no
+  fija el token (`resources/CREDITOS.md`).
+- **Generado**: 2.905 casos de `herramientas/sentencias/generar_corpus_sentencias.py`, que recorre
+  las matrices de la conformidad (asignación, argumento y retorno, 25 tipos de origen por 23 de
+  destino), de los operadores binarios y unarios, y de las condiciones, índices y tamaños. El código
+  de cada celda lo da un modelo de las reglas de MiniJava escrito aparte del compilador, y cada
+  celda se compila además con `javac` 25 (`OraculoJavac.java`, en una sola JVM): donde MiniJava y
+  Java coinciden, `javac` tiene que dar el mismo veredicto; donde difieren a propósito (char se
+  promueve a int, hay boxing, los arreglos son covariantes, `+` concatena), el opuesto. Si no, la
+  herramienta falla sin escribir nada.
+
+`TesterDeCasosSentenciasEstricto` y `CorpusGeneradoSentenciasTest` exigen un único reporte con el
+código exacto. `ConsistenciaEntreEtapasTest` corre el corpus de la Etapa 3 con la 4: los errores de
+declaración no cambian. `RobustezDelChequeoDeSentenciasTest` corre la Etapa 4 sobre unos 40.000
+fuentes de las etapas anteriores sin que ninguno la haga caer.
 
 ### El tester estricto, y por qué existe
 
@@ -218,6 +248,21 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `TesterDeCasosSintacticosEstricto` | El mismo corpus, exigiendo que el código declarado sea el **primero** y que no haya ninguno de más. |
 | `AnalizadorSintacticoPropiedadesTest` | Invariantes sobre sopas de tokens al azar. |
 | `primeros.ConjuntoDePrimerosTest`, `errores.ExcepcionSintacticaTest` | El álgebra de los conjuntos de Primeros y el formato del error. |
+
+### Del chequeo de sentencias
+
+| Suite | Qué cubre |
+|---|---|
+| `EsquemaDeTraduccionDeSentenciasTest` | El AST que arma cada producción, comparado como expresión S. |
+| `ConformidadTest` | La conformidad del §9, regla por regla: primitivos, `null`, `void`, clases, interfaces, genéricos invariantes, herencia con y sin argumento, `T`, arreglos. |
+| `ContextoTest` | Los ámbitos de las locales, los parámetros, el contexto estático y el tipo de `this`. |
+| `EstructuraDeLosNodosTest` | La información estructural de cada nodo: asignable, llamada, asignación, paréntesis, y el token de sus errores. |
+| `TesterDeCasosSentenciasEstricto`, `catedra.TesterDeCasosSentencias{Sin,Con}Errores` | El corpus a mano, con el criterio estricto y con el de la cátedra. |
+| `CasosDeLaCatedraSentenciasTest` | Los casos de la cátedra con su código exacto, y que la etapa por defecto sea la 4. |
+| `CorpusGeneradoSentenciasTest` | Las 2.905 celdas del corpus generado. |
+| `SentenciasPropiedadesTest` | Expresiones int y boolean al azar, totalmente parentizadas: bien tipadas compilan, y con una hoja del tipo equivocado fallan en el nodo que la contiene. |
+| `SentenciasFuzzTest` | Mutaciones a ciegas de los fuentes correctos: el compilador siempre termina en un código. |
+| `ConsistenciaEntreEtapasTest`, `RobustezDelChequeoDeSentenciasTest` | El corpus de la Etapa 3 con la 4, y la Etapa 4 sobre todos los fuentes anteriores. |
 
 ### Compartidas
 
@@ -299,7 +344,8 @@ Los testers de la cátedra están escritos con JUnit 4; corren junto a los propi
 *vintage engine*, sin necesidad de tocarlos.
 
 **El *working directory* debe ser `compilador/`**, porque los testers de la cátedra usan rutas
-relativas duras: `resources/sinErrores/` y `resources/conErrores/` los del semántico,
+relativas duras: `resources/sinErrores/` y `resources/conErrores/` los de la Etapa 4,
+`resources/declaraciones/…` los de la Etapa 3,
 `resources/sintactico/…` los del sintáctico, y `resources/lexico/…` los del léxico. Es el valor por defecto cuando IntelliJ importa el
 proyecto Maven correctamente.
 
@@ -442,6 +488,11 @@ Cuando la cátedra no especifica un comportamiento, `AGENTS.md` §0.1 manda hace
 Y de una tercera: los floats **no** tienen límite de dígitos, ni en la cátedra ni en Java; lo que
 Java rechaza es un valor fuera de rango, y eso es semántico, no léxico.
 
+En la Etapa 4, `javac` fija el token de cada error donde la cátedra no lo hace
+([`../sentencias/decisiones-de-deteccion-de-errores.md`](../sentencias/decisiones-de-deteccion-de-errores.md)),
+y es el oráculo de contraste del corpus generado: cada una de sus 2.905 celdas se compila con
+`javac` al generarla.
+
 **Regla**: todo test cuyo oráculo sea "así hace Java" lleva en su comentario la salida **real** de
 `javac`, copiada de la corrida, para que sea rastreable y no una afirmación de memoria.
 
@@ -505,8 +556,10 @@ pasarle el `PrintStream` original, o el volcado se lo comen ellos mismos.
 
 ### Mutation testing (PIT) — referencia y por qué ciertos sobrevivientes no se cazan
 
-La última corrida alcanzó **90 % de mutantes matados** (889/983), *test strength* 92 %, con 97 % de
-cobertura de línea sobre las clases mutadas. El umbral versionado —`umbral.mutacion` en el
+La última corrida, con la Etapa 4, alcanzó **94 % de mutantes matados** (1.351/1.437) y *test
+strength* 95 %. En el paquete del AST sobrevive un solo mutante, equivalente para la suite: el número
+de argumento dentro del texto del mensaje, que los tests no comparan porque validan el código y no
+la redacción (§1). El umbral versionado —`umbral.mutacion` en el
 `pom.xml`— es 88, y `mvn -Pmutacion verify` falla por debajo.
 
 **Patrón recurrente de mutante equivalente en este código base**: varios estados hacen

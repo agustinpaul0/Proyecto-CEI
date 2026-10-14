@@ -5,6 +5,7 @@ import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tabla.TablaDeSimbolos;
 import minijava.semantico.tipos.TipoReferencia;
 
+import java.util.List;
 import java.util.Optional;
 
 public final class Interfaz extends ClaseOInterfaz {
@@ -26,7 +27,7 @@ public final class Interfaz extends ClaseOInterfaz {
     @Override
     public void estaBienDeclarado() throws ExcepcionSemantica {
         if (extendida != null) {
-            extendida.verificarEn(this, false);
+            extendida.verificarComoAncestroEn(this, false);
             ClaseOInterfaz declarado = extendida.declaracion();
             if (declarado instanceof Clase) {
                 throw new ExcepcionSemantica(extendida.token(), "La interfaz " + nombre()
@@ -38,6 +39,11 @@ public final class Interfaz extends ClaseOInterfaz {
         for (Metodo metodo : metodosPropios()) {
             metodo.estaBienDeclarado(this);
         }
+    }
+
+    @Override
+    public List<TipoReferencia> ancestrosDirectos() {
+        return extendida().map(List::of).orElse(List.of());
     }
 
     @Override

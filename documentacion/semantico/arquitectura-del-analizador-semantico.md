@@ -30,8 +30,9 @@ flowchart LR
    `consolidar()`. El primer error semántico corta el análisis. Si no hay ninguno, la salida es
    `Compilacion Exitosa` y `[SinErrores]`.
 
-`--etapa=3` corre esta etapa, y es también la etapa por defecto. `--etapa=1` y `--etapa=2` corren
-el léxico y el sintáctico solos.
+`--etapa=3` corre esta etapa. `--etapa=1` y `--etapa=2` corren el léxico y el sintáctico solos, y
+`--etapa=4`, la etapa por defecto, sigue con el chequeo de sentencias
+([`../sentencias/README.md`](../sentencias/README.md)).
 
 ## La tabla de símbolos
 
@@ -68,6 +69,7 @@ classDiagram
         -tipos : Map~String, ClaseOInterfaz~$
         -claseActual : Clase$
         -interfazActual : Interfaz$
+        -tipoActual : ClaseOInterfaz$
         -unidadActual : Unidad$
         -primerRepetido : ExcepcionSemantica$
         -TablaDeSimbolos()
@@ -77,15 +79,19 @@ classDiagram
         -declarar(ClaseOInterfaz, String)$
         +claseActual()$ Clase
         +interfazActual()$ Interfaz
+        +tipoActual()$ ClaseOInterfaz
         +unidadActual()$ Unidad
         +setUnidadActual(Unidad)$
         +tipo(String)$ Optional~ClaseOInterfaz~
         +object()$ ClaseOInterfaz
         +referenciaAObject(int)$ TipoReferencia
+        +referenciaAString(int)$ TipoReferencia
+        -referenciaA(String, int)$ TipoReferencia
         +tipos()$ List~ClaseOInterfaz~
         +registrarRepetido(ExcepcionSemantica)$
         +chequearDeclaraciones()$
         +consolidar()$
+        +chequearSentencias()$
     }
     class EntidadesPredefinidas {
         ~OBJECT : String$
@@ -156,7 +162,8 @@ classDiagram
         +consolidar()
         #consolidarConAncestros()*
         #heredarMetodos(ClaseOInterfaz, Sustitucion, ControlDeRedefinicion)
-        #sustitucionHacia(TipoReferencia, ClaseOInterfaz)$ Sustitucion
+        +sustitucionHacia(TipoReferencia, ClaseOInterfaz)$ Sustitucion
+        +ancestrosDirectos()* List~TipoReferencia~
         #verificarQueNoHayaCiclo()
         #ancestroDirecto()* Optional~ClaseOInterfaz~
     }
@@ -177,6 +184,9 @@ classDiagram
         +atributo(String) Optional~Atributo~
         +atributos() List~Atributo~
         +constructores() List~Constructor~
+        +constructor(int) Optional~Constructor~
+        +ancestrosDirectos() List~TipoReferencia~
+        +chequearSentencias()
         +estaBienDeclarado()
         -verificarPadre(TipoReferencia)
         -verificarInterfaz(TipoReferencia)
@@ -190,6 +200,7 @@ classDiagram
         +Interfaz(Token)
         +setExtendida(TipoReferencia)
         +extendida() Optional~TipoReferencia~
+        +ancestrosDirectos() List~TipoReferencia~
         +estaBienDeclarado()
         #ancestroDirecto() Optional~ClaseOInterfaz~
         #consolidarConAncestros()
@@ -222,7 +233,8 @@ classDiagram
 
 ### Los miembros
 
-`Unidad` es la base de métodos y constructores: en la Etapa 4 les cuelga el cuerpo.
+`Unidad` es la base de métodos y constructores. De cada una cuelga su cuerpo, el AST que chequea la
+Etapa 4, y guarda su `declarante`, la clase o interfaz que la declara.
 
 <!-- diagrama: miembros -->
 ```mermaid
@@ -245,17 +257,23 @@ classDiagram
         <<abstract>>
         #Unidad(Token)
         #Unidad(Token, List~Parametro~)
+        #Unidad(Token, List~Parametro~, ClaseOInterfaz, NodoBloque)
         +token() Token
         +nombre() String
         +parametros() List~Parametro~
         +aridad() int
+        ~setDeclarante(ClaseOInterfaz)
+        +declarante() ClaseOInterfaz
+        +setCuerpo(NodoBloque)
+        +cuerpo() NodoBloque
+        ~chequearCuerpo(Clase)
         +agregarParametro(Token, Tipo)
         #verificarParametrosEn(ClaseOInterfaz, boolean)
     }
     class Metodo {
         -estatico : boolean
         +Metodo(Token)
-        -Metodo(Token, List~Parametro~, boolean, Tipo)
+        -Metodo(Token, List~Parametro~, boolean, Tipo, ClaseOInterfaz, NodoBloque)
         +hacerEstatico()
         +setRetorno(Tipo)
         +esEstatico() boolean
@@ -287,12 +305,18 @@ classDiagram
     class Tipo {
         <<interface>>
     }
+    class ClaseOInterfaz {
+        <<abstract>>
+    }
+    class NodoBloque
     Miembro <|.. Atributo
     Miembro <|.. Metodo
     Miembro <|.. Constructor
     Unidad <|-- Metodo
     Unidad <|-- Constructor
     Unidad --> Token : token
+    Unidad --> ClaseOInterfaz : declarante
+    Unidad --> NodoBloque : cuerpo 0..1
     Unidad *-- Parametro : parametros *
     Metodo --> Tipo : retorno
     Metodo ..> ClaveDeMetodo : clave
@@ -318,15 +342,17 @@ jerarquía uniforme (Clase 7, slides 29-31). `Tipo` es una interfaz sellada:
 |---|---|---|
 | `TipoPrimitivo` | `boolean`, `char`, `int`, `float` | siempre |
 | `TipoVoid` | `void` | siempre; la gramática lo admite sólo como retorno |
-| `TipoReferencia` | `Caja`, `Caja<T>`, `Caja<String>` | el nombre está en la tabla; si lleva argumento, el tipo es genérico y el argumento es válido |
+| `TipoReferencia` | `Aa`, `Caja<T>`, `Caja<String>` | el nombre está en la tabla; lleva argumento si y sólo si el tipo es genérico, salvo en `extends` e `implements`, donde es optativo; el argumento es una `T` válida o una clase o interfaz no genérica |
 | `VariableDeTipo` | `T` | la clase o interfaz actual declara esa `T`, y el método no es estático |
 | `TipoArreglo` | `int[][]`, `T[]` | su tipo base es válido |
 
 Cada tipo sabe tres cosas:
 
 - **validarse** en un contexto (`verificarEn`);
-- **nombrarse**: dos tipos son iguales si se escriben igual. El léxico lo garantiza, porque una
-  clase tiene al menos dos caracteres y un parámetro de tipo tiene uno solo;
+- **nombrarse**: dos tipos son iguales si tienen la misma `identidad()`, que es como se escriben
+  salvo para un parámetro de tipo, que suma la clase o interfaz que lo declara (documento completo
+  §5.1). El léxico garantiza que el nombre no confunde una clase con un parámetro, porque una clase
+  tiene al menos dos caracteres y un parámetro de tipo tiene uno solo;
 - **instanciarse**: reemplazar la `T` por un argumento. `Sustitucion` es ese reemplazo.
 
 <!-- diagrama: tipos -->
@@ -342,6 +368,8 @@ classDiagram
         +nombre()* String
         +verificarEn(ClaseOInterfaz, boolean)*
         +instanciar(Sustitucion)* Tipo
+        +conformaCon(Tipo)* boolean
+        +identidad() String
         +esIgualA(Tipo) boolean
     }
     class TipoPrimitivo {
@@ -355,6 +383,7 @@ classDiagram
         +nombre() String
         +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
+        +conformaCon(Tipo) boolean
     }
     class TipoVoid {
         <<enumeration>>
@@ -362,6 +391,15 @@ classDiagram
         +nombre() String
         +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
+        +conformaCon(Tipo) boolean
+    }
+    class TipoNull {
+        <<enumeration>>
+        NULL
+        +nombre() String
+        +verificarEn(ClaseOInterfaz, boolean)
+        +instanciar(Sustitucion) Tipo
+        +conformaCon(Tipo) boolean
     }
     class TipoReferencia {
         +TipoReferencia(Token)
@@ -369,30 +407,40 @@ classDiagram
         +token() Token
         +argumento() Optional~Tipo~
         +nombre() String
+        +identidad() String
         +nombreDelTipo() String
+        +esObject() boolean
         +verificarEn(ClaseOInterfaz, boolean)
+        +verificarComoAncestroEn(ClaseOInterfaz, boolean)
         +declaracion() ClaseOInterfaz
-        +instanciar(Sustitucion) Tipo
+        +instanciar(Sustitucion) TipoReferencia
+        +conformaCon(Tipo) boolean
     }
     class VariableDeTipo {
         <<record>>
+        -declarante : String
         +nombre() String
+        +identidad() String
         +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
+        +conformaCon(Tipo) boolean
     }
     class TipoArreglo {
         <<record>>
         -dimensiones : int
         +de(Tipo, int)$ Tipo
         +nombre() String
+        +identidad() String
         +verificarEn(ClaseOInterfaz, boolean)
         +instanciar(Sustitucion) Tipo
+        +conformaCon(Tipo) boolean
+        +componente() Tipo
     }
     class Sustitucion {
         <<interface>>
-        +reemplazoDe(String)* Optional~Tipo~
+        +reemplazoDe(VariableDeTipo)* Optional~Tipo~
         +identidad()$ Sustitucion
-        +de(String, Tipo)$ Sustitucion
+        +de(String, String, Tipo)$ Sustitucion
     }
     class Token {
         <<record>>
@@ -402,6 +450,7 @@ classDiagram
     }
     Tipo <|.. TipoPrimitivo
     Tipo <|.. TipoVoid
+    Tipo <|.. TipoNull
     Tipo <|.. TipoReferencia
     Tipo <|.. VariableDeTipo
     Tipo <|.. TipoArreglo
@@ -448,4 +497,4 @@ La lista completa de controles, con su token, está en
 | `minijava.sintactico.partes` | `AnalizadorDeClases`, `AnalizadorDeMiembros` y `AnalizadorDeTipos`, con las acciones de la EDT |
 | `minijava.aplicacion` | `ModuloPrincipalSemantico` |
 
-`Unidad` es la base de métodos y constructores. En la Etapa 4 les cuelga el cuerpo.
+`Unidad` es la base de métodos y constructores, y de cada una cuelga su cuerpo.

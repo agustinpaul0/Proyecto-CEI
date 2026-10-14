@@ -15,7 +15,7 @@ import minijava.semantico.tipos.TipoVoid;
 final class EntidadesPredefinidas {
 
     static final String OBJECT = "Object";
-    private static final String STRING = "String";
+    static final String STRING = "String";
     private static final String SYSTEM = "System";
     private static final int LINEA_PREDEFINIDA = 0;
 

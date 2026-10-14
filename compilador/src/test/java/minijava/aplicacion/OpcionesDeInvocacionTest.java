@@ -18,10 +18,10 @@ class OpcionesDeInvocacionTest {
 
     // El contrato de las Pautas: un único argumento, la ruta, sin ninguna opción.
     @Test
-    void conSoloLaRutaCorreLaEtapaTres() {
+    void conSoloLaRutaCorreLaEtapaCuatro() {
         var opciones = parsear("programa1.java");
 
-        assertEquals(3, opciones.etapa());
+        assertEquals(4, opciones.etapa());
         assertEquals("programa1.java", opciones.rutaFuente());
         assertTrue(opciones.avisos().isEmpty());
     }
@@ -36,14 +36,14 @@ class OpcionesDeInvocacionTest {
 
     // Cada etapa anterior se corrige por separado y es ejecutable de forma aislada.
     @ParameterizedTest
-    @ValueSource(ints = {1, 2})
+    @ValueSource(ints = {1, 2, 3})
     void unaEtapaAnteriorSeSeleccionaConSuOpcion(int etapa) {
         assertEquals(etapa, parsear("--etapa=" + etapa, "programa1.java").etapa());
     }
 
     @Test
-    void laEtapaTresExplicitaEsLoMismoQueNoIndicarNinguna() {
-        assertEquals(parsear("fuente.java").etapa(), parsear("--etapa=3", "fuente.java").etapa());
+    void laEtapaCuatroExplicitaEsLoMismoQueNoIndicarNinguna() {
+        assertEquals(parsear("fuente.java").etapa(), parsear("--etapa=4", "fuente.java").etapa());
     }
 
     @Test
@@ -52,7 +52,7 @@ class OpcionesDeInvocacionTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"--etapa=0", "--etapa=4", "--etapa=x", "--etapa="})
+    @ValueSource(strings = {"--etapa=0", "--etapa=5", "--etapa=x", "--etapa="})
     void unaEtapaNoSoportadaAvisaYCaeEnLaPorDefecto(String argumento) {
         var opciones = parsear(argumento, "fuente.java");
 

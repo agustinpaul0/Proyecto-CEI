@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("semantico")
 class TesterDeCasosSemanticosEstricto {
 
-    private static final Path SIN_ERRORES = Path.of("resources", "sinErrores");
-    private static final Path CON_ERRORES = Path.of("resources", "conErrores");
+    private static final Path SIN_ERRORES = Path.of("resources", "declaraciones", "sinErrores");
+    private static final Path CON_ERRORES = Path.of("resources", "declaraciones", "conErrores");
     private static final String PREFIJO_DEL_MENSAJE = "Error Semantico en linea ";
 
     static Stream<Path> casosCorrectos() throws IOException {

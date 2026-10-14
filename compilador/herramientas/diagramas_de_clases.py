@@ -5,12 +5,14 @@ renderiza para el informe.
     python3 herramientas/diagramas_de_clases.py --verificar   # sólo compara
     python3 herramientas/diagramas_de_clases.py               # compara y renderiza
 
-Los diagramas viven en un solo lugar: los bloques ```mermaid``` de
-documentacion/semantico/arquitectura-del-analizador-semantico.md, cada uno
-precedido por `<!-- diagrama: nombre -->`. El informe no los copia: incluye el
-PDF que esta herramienta renderiza de esos mismos bloques en
-etapas/etapa-3/entregables/informe/generado/, así la documentación y el informe
-muestran siempre el mismo diagrama.
+Los diagramas viven en un solo lugar: los bloques ```mermaid``` de los
+documentos de arquitectura del semántico —el de la tabla de símbolos, de la
+Etapa 3, y el del AST, de la Etapa 4—, cada uno precedido por
+`<!-- diagrama: nombre -->`. El informe no los copia: incluye el PDF que esta
+herramienta renderiza de esos mismos bloques en
+etapas/etapa-N/entregables/informe/generado/, así la documentación y el informe
+muestran siempre el mismo diagrama. Se renderizan sólo los de la etapa en
+curso; los de la Etapa 3 se verifican igual, porque describen código vivo.
 
 La verificación exige que cada campo, constructor y método declarado en el
 código del semántico aparezca en el diagrama de su clase: como miembro de la
@@ -32,8 +34,10 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 REPOSITORIO = RAIZ.parent
 CODIGO = RAIZ / "src" / "main" / "java" / "minijava" / "semantico"
-DOCUMENTO = REPOSITORIO / "documentacion" / "semantico" / "arquitectura-del-analizador-semantico.md"
-SALIDA = REPOSITORIO / "etapas" / "etapa-3" / "entregables" / "informe" / "generado"
+DOCUMENTOS = [REPOSITORIO / "documentacion" / "semantico" / "arquitectura-del-analizador-semantico.md",
+              REPOSITORIO / "documentacion" / "sentencias" / "arquitectura-del-chequeo-de-sentencias.md"]
+DOCUMENTO_EN_CURSO = DOCUMENTOS[-1]
+SALIDA = REPOSITORIO / "etapas" / "etapa-4" / "entregables" / "informe" / "generado"
 CHROME = "/usr/bin/google-chrome"
 MERMAID_CLI = "@mermaid-js/mermaid-cli@11"
 
@@ -141,8 +145,9 @@ BLOQUE = re.compile(r"<!-- diagrama: ([\w-]+) -->\s*```mermaid\n(.*?)```", re.S)
 ASOCIACION = re.compile(r'^\s*(\w+)\s*(?:\*--|o--|-->)\s*\w+\s*:\s*(\w+)(?:\s+(?:0\.\.1|\*))?\s*$')
 
 
-def diagramas():
-    return BLOQUE.findall(DOCUMENTO.read_text(encoding="utf-8"))
+def diagramas(documentos=DOCUMENTOS):
+    return [bloque for documento in documentos
+            for bloque in BLOQUE.findall(documento.read_text(encoding="utf-8"))]
 
 
 def miembros_de_los_diagramas():
@@ -210,7 +215,7 @@ def renderizar():
         (trabajo / "configuracion.json").write_text(json.dumps(CONFIGURACION))
         (trabajo / "puppeteer.json").write_text(
             json.dumps({"executablePath": CHROME, "args": ["--no-sandbox"]}))
-        for nombre, codigo in diagramas():
+        for nombre, codigo in diagramas([DOCUMENTO_EN_CURSO]):
             fuente = trabajo / f"{nombre}.mmd"
             fuente.write_text(codigo, encoding="utf-8")
             subprocess.run(["npx", "-y", MERMAID_CLI, "-q",

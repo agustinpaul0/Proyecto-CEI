@@ -27,6 +27,7 @@ public final class TablaDeSimbolos {
     private static Map<String, ClaseOInterfaz> tipos;
     private static Clase claseActual;
     private static Interfaz interfazActual;
+    private static ClaseOInterfaz tipoActual;
     private static Unidad unidadActual;
     private static ExcepcionSemantica primerRepetido;
 
@@ -41,6 +42,7 @@ public final class TablaDeSimbolos {
         tipos = new LinkedHashMap<>();
         claseActual = null;
         interfazActual = null;
+        tipoActual = null;
         unidadActual = null;
         primerRepetido = null;
         EntidadesPredefinidas.cargar();
@@ -57,6 +59,7 @@ public final class TablaDeSimbolos {
     }
 
     private static void declarar(ClaseOInterfaz tipo, String descripcion) {
+        tipoActual = tipo;
         if (tipos.containsKey(tipo.nombre())) {
             registrarRepetido(new ExcepcionSemantica(tipo.token(),
                     descripcion + tipo.nombre() + " ya esta declarada"));
@@ -71,6 +74,11 @@ public final class TablaDeSimbolos {
 
     public static Interfaz interfazActual() {
         return interfazActual;
+    }
+
+    // La clase o interfaz que se está parseando: la que declara cada `T` que aparece.
+    public static ClaseOInterfaz tipoActual() {
+        return tipoActual;
     }
 
     public static Unidad unidadActual() {
@@ -91,7 +99,16 @@ public final class TablaDeSimbolos {
 
     // La herencia implícita de una clase sin `extends` (documento §4).
     public static TipoReferencia referenciaAObject(int linea) {
-        return new TipoReferencia(new Token(TipoDeToken.ID_CLASE, EntidadesPredefinidas.OBJECT, linea));
+        return referenciaA(EntidadesPredefinidas.OBJECT, linea);
+    }
+
+    // El tipo de los literales de cadena (documento §11.1).
+    public static TipoReferencia referenciaAString(int linea) {
+        return referenciaA(EntidadesPredefinidas.STRING, linea);
+    }
+
+    private static TipoReferencia referenciaA(String nombre, int linea) {
+        return new TipoReferencia(new Token(TipoDeToken.ID_CLASE, nombre, linea));
     }
 
     public static List<ClaseOInterfaz> tipos() {
@@ -118,6 +135,16 @@ public final class TablaDeSimbolos {
     public static void consolidar() throws ExcepcionSemantica {
         for (ClaseOInterfaz tipo : tipos.values()) {
             tipo.consolidar();
+        }
+    }
+
+    // Pautas Etapa 4, slide 22: corre sólo sobre la tabla consolidada. Las
+    // interfaces no tienen cuerpos.
+    public static void chequearSentencias() throws ExcepcionSemantica {
+        for (ClaseOInterfaz tipo : tipos.values()) {
+            if (tipo instanceof Clase clase) {
+                clase.chequearSentencias();
+            }
         }
     }
 }

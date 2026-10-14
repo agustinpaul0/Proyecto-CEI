@@ -46,6 +46,7 @@ Lo fija la Pautas slide 30:
 | 18 | Interfaz que contradice a `Object` | `interface Ix { int toString(); }` | `toString` (regla 2) |
 | 19 | Clase que no implementa un método de su interfaz | `class Aa implements Ix { }` | `Aa` (regla 4) |
 | 20 | Implementación con otra signatura, o estática | `static void m()` para el `void m()` de `Ix` | `m`, si es propio; `Aa`, si es heredado |
+| 21 | Tipo genérico sin argumento fuera de `extends` e `implements`, también como argumento | `Caja x;`, `Caja<Caja> y;` | `Caja` (regla 3) |
 
 Los tokens de los errores 13, 19 y 20 coinciden con los que marca `javac`. En los errores 9, 13 y 20
 el profesor dejó el token a elección, y se sigue a `javac`

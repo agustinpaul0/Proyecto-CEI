@@ -18,4 +18,10 @@ public enum TipoVoid implements Tipo {
     public Tipo instanciar(Sustitucion sustitucion) {
         return this;
     }
+
+    // Documento §9.5: una llamada void no produce un valor que se pueda usar.
+    @Override
+    public boolean conformaCon(Tipo destino) {
+        return false;
+    }
 }

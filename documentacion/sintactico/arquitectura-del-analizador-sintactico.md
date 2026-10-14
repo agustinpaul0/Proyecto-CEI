@@ -74,6 +74,11 @@ private void restoExpresionCompuesta() throws ExcepcionLexica, ExcepcionSintacti
 
 Derivar a vacío no es un error: si el token no sirve, lo detecta quien llamó.
 
+Los ejemplos muestran el esquema del sintáctico solo. Los métodos de sentencias y expresiones,
+además, devuelven el nodo del AST de lo que reconocieron, y los «Resto» reciben el nodo armado a
+su izquierda: es el esquema de traducción de la Etapa 4
+([`../sentencias/esquema-de-traduccion.md`](../sentencias/esquema-de-traduccion.md)).
+
 Esa tercera forma es la que le permite al Esquema Simple prescindir de los Siguientes.
 
 ## 3. `match`, el único punto que consume entrada

@@ -8,6 +8,7 @@ Viven acá y no dentro de `etapas/` porque los usan todas las etapas.
 | `Aspectos Lexicos MiniJava 2026.pdf` | Palabras clave, identificadores, literales, símbolos de puntuación y operadores. Es la fuente de los 56 tokens. |
 | `Reglas de Sintaxis MiniJava 2026.pdf` | La gramática del lenguaje en notación BNF-extendida. Es la fuente de la Etapa 2. |
 | `MiniJava-Semantica-2026-Parte 1.pdf` | Los controles semánticos de las declaraciones: tabla de símbolos, tipos, genericidad, herencia y entidades predefinidas. Es la fuente de la Etapa 3. |
+| `MiniJava-Semantica-Completa-2026.pdf` | El documento completo: las declaraciones de la Parte I, con las aclaraciones de genericidad y contexto estático, y los controles de expresiones y sentencias (conformidad, nombres, operadores, llamadas, arreglos, sentencias). Es la fuente de la Etapa 4, y reemplaza a la Parte I donde se contradicen. |
 
 ## Cómo leerlos
 
@@ -24,6 +25,9 @@ permitido usar extracción de texto **sólo** para ubicar en qué página está 
   que es su transcripción fiel, y el resto de
   [`../sintactico/`](../sintactico/README.md)
 - Semántica, Parte I → [`../semantico/`](../semantico/README.md)
+- Semántica, documento completo → [`../sentencias/`](../sentencias/README.md), y los cambios que
+  impone a las declaraciones, en
+  [`../sentencias/decisiones-de-logica.md`](../sentencias/decisiones-de-logica.md) §4
 
 Una nota sobre la transcripción: el PDF de sintaxis escribe `[]` como si fuera un símbolo, pero
 léxicamente son **dos** tokens — «Aspectos Léxicos» no define ningún token `[]`. La transcripción

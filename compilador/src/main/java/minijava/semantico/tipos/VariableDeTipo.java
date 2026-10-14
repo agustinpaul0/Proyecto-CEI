@@ -4,11 +4,17 @@ import minijava.lexico.tokens.Token;
 import minijava.semantico.entidades.ClaseOInterfaz;
 import minijava.semantico.errores.ExcepcionSemantica;
 
-public record VariableDeTipo(Token token) implements Tipo {
+// `declarante` es el nombre de la clase o interfaz donde se escribió la `T`.
+public record VariableDeTipo(Token token, String declarante) implements Tipo {
 
     @Override
     public String nombre() {
         return token.lexema();
+    }
+
+    @Override
+    public String identidad() {
+        return nombre() + "@" + declarante;
     }
 
     @Override
@@ -25,6 +31,12 @@ public record VariableDeTipo(Token token) implements Tipo {
 
     @Override
     public Tipo instanciar(Sustitucion sustitucion) {
-        return sustitucion.reemplazoDe(nombre()).orElse(this);
+        return sustitucion.reemplazoDe(this).orElse(this);
+    }
+
+    // Documento §9.3: sin cotas, ni siquiera Object; sólo conforma consigo mismo.
+    @Override
+    public boolean conformaCon(Tipo destino) {
+        return esIgualA(destino);
     }
 }

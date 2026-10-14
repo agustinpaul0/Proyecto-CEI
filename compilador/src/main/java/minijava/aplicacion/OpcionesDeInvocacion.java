@@ -15,7 +15,7 @@ public record OpcionesDeInvocacion(
         String rutaFuente,
         List<String> avisos) {
 
-    public static final int ETAPA_POR_DEFECTO = 3;
+    public static final int ETAPA_POR_DEFECTO = 4;
 
     private static final String OPCION_ETAPA = "--etapa=";
 

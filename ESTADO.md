@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 05/10/2026
+**Última actualización:** 14/10/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -32,37 +32,44 @@ el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCION
 ## Etapa 3 — Analizador Semántico, Parte I: ENTREGADA
 
 Entregada el 05/10/2026, dentro del plazo de la Entrega Anticipada (07/10), con el commit
-`fc7a341f`; falta la corrección. Corre aislada con `--etapa=3`, que
-es también la etapa por defecto, y su corpus está en la raíz de `compilador/resources/`
-(`mvn test -Pfase-semantico`). Tabla de símbolos estática,
+`fc7a341f`; falta la corrección. Corre aislada con `--etapa=3`, y su corpus está en
+`compilador/resources/declaraciones/` (`mvn test -Pfase-semantico`). Tabla de símbolos estática,
 construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo de declaraciones en
 dos pasadas más la consolidación. Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y
 Kudos.
 
 | | |
 |---|---|
-| Controles | 20, más el constructor por defecto |
-| Corpus | 90 casos con error, 43 correctos y los 8 de la cátedra |
+| Controles | 21, más el constructor por defecto |
+| Corpus | 92 casos con error, 42 correctos y los 8 de la cátedra |
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). No queda
-ninguna abierta.
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). El
+documento completo de semántica, publicado con la Etapa 4, prohíbe los tipos raw que la Parte I
+permitía; el chequeo de declaraciones lo sigue, también con `--etapa=3`
+(`documentacion/sentencias/decisiones-de-logica.md` §4).
 
-## Etapa 4: SIN EMPEZAR
+## Etapa 4 — Analizador Semántico, Parte II: IMPLEMENTADA, SIN ENTREGAR
 
-Sin especificación publicada. Queda pendiente todo lo que se chequea en los cuerpos, que la Etapa 2
-dejó pasar a propósito y la Etapa 3 no mira. El profesor confirmó que todo esto es chequeo de
-sentencias y corresponde a la Etapa 4:
-- resolver los nombres contra su declaración;
-- que el lado izquierdo de un `=` y el operando de `++`/`--` sean variables;
-- que una sentencia-expresión sea una asignación o una llamada;
-- la compatibilidad de tipos y la aridad de las llamadas;
-- las variables locales repetidas;
-- qué inicializa `int x, y, z = 10;` (en Java, sólo `z`);
-- que el inicializador de un arreglo coincida con sus dimensiones;
-- la precedencia de los operadores binarios, que la gramática de la cátedra pone en un solo nivel;
-- el rango de los literales `float`;
-- las expresiones que inicializan atributos.
+Entrega: 30/10/2026 a las 16:00; Entrega Anticipada, hasta el 28/10 a las 16:00. Corre con
+`--etapa=4`, que es la etapa por defecto, y su corpus está en la raíz de `compilador/resources/`
+(`mvn test -Pfase-sentencias`). El sintáctico arma el AST de cada cuerpo con acciones de una EDT y
+lo cuelga de su unidad; después de las declaraciones y la consolidación, cada nodo se chequea por
+delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Grandioso Laburo!.
+
+| | |
+|---|---|
+| Corpus a mano | 394 casos propios (87 correctos, 307 con error) y 126 de Santiago Salamanca |
+| Corpus generado | 2.905 casos, cada uno contrastado con `javac` 25 |
+| Cátedra | 10 casos: dan su código salvo `semIICorrecto03`, que usa `++` (duda 2) |
+| Propiedades y fuzz | 4.500 expresiones al azar y 3.000 mutaciones |
+| Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
+| Informe | `etapas/etapa-4/entregables/` |
+
+Quedan seis consultas abiertas, en `etapas/etapa-4/consultas/dudas.pdf`: la precedencia de los
+binarios, el `++` del caso de la cátedra, los tipos raw en las declaraciones, la identidad de dos
+`T`, el `toString()` sobre una interfaz y el token de un argumento que no conforma. Falta la
+revisión manual (`etapas/etapa-4/revision/`).
 
 ## Etapa 5: SIN EMPEZAR

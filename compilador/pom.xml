@@ -197,6 +197,13 @@
         </profile>
 
         <profile>
+            <id>fase-sentencias</id>
+            <properties>
+                <fases>sentencias,comun,catedra.EtapaSentencias</fases>
+            </properties>
+        </profile>
+
+        <profile>
             <id>mutacion</id>
             <build>
                 <plugins>
@@ -240,6 +247,8 @@
                                 <param>minijava.aplicacion.*Test</param>
                                 <param>minijava.semantico.*Test</param>
                                 <param>minijava.casos.TesterDeCasosSemanticosEstricto</param>
+                                <param>minijava.sentencias.*Test</param>
+                                <param>minijava.casos.TesterDeCasosSentenciasEstricto</param>
                             </targetTests>
                             <!-- La implementación de referencia de la cátedra no se
                                  testea ni se usa: mutarla sólo produce ruido. -->
@@ -257,6 +266,10 @@
                                 <param>minijava.lexico.*FuzzTest</param>
                                 <param>minijava.sintactico.*PropiedadesTest</param>
                                 <param>minijava.semantico.RobustezDelSemanticoTest</param>
+                                <param>minijava.sentencias.*PropiedadesTest</param>
+                                <param>minijava.sentencias.*FuzzTest</param>
+                                <param>minijava.sentencias.Robustez*Test</param>
+                                <param>minijava.sentencias.CorpusGenerado*Test</param>
                             </excludedTestClasses>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>

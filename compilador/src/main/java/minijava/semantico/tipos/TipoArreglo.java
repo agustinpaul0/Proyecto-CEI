@@ -15,6 +15,11 @@ public record TipoArreglo(Tipo base, int dimensiones) implements Tipo {
     }
 
     @Override
+    public String identidad() {
+        return base.identidad() + "[]".repeat(dimensiones);
+    }
+
+    @Override
     public void verificarEn(ClaseOInterfaz contexto, boolean enContextoEstatico) throws ExcepcionSemantica {
         base.verificarEn(contexto, enContextoEstatico);
     }
@@ -22,5 +27,16 @@ public record TipoArreglo(Tipo base, int dimensiones) implements Tipo {
     @Override
     public Tipo instanciar(Sustitucion sustitucion) {
         return new TipoArreglo(base.instanciar(sustitucion), dimensiones);
+    }
+
+    // Documento §9.4: los arreglos son invariantes, y todos conforman con Object.
+    @Override
+    public boolean conformaCon(Tipo destino) {
+        return esIgualA(destino) || destino instanceof TipoReferencia referencia && referencia.esObject();
+    }
+
+    // Cada indexación saca una dimensión (documento §11.8).
+    public Tipo componente() {
+        return de(base, dimensiones - 1);
     }
 }
