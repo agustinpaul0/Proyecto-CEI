@@ -17,8 +17,7 @@ informe en markdown.
    imágenes, página por página**, no con extracción de texto. Es la especificación.
 3. `etapas/etapa-4/Pautas Etapa 4.pdf` y las Clases 09, 10 y 11 de `etapas/etapa-4/`, también como
    imágenes.
-4. `documentacion/sentencias/` entero, `CONVENCIONES-CATEDRA.md` y
-   `etapas/etapa-4/consultas/dudas.pdf` (las consultas abiertas).
+4. `documentacion/sentencias/` entero y `CONVENCIONES-CATEDRA.md`.
 5. `etapas/etapa-4/revision/guia-de-revision.md`: el mapa de los archivos.
 
 ## Qué auditar
