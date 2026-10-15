@@ -50,7 +50,7 @@ Lo fija la Pautas slide 30:
 
 Los tokens de los errores 13, 19 y 20 coinciden con los que marca `javac`. En los errores 9, 13 y 20
 el profesor dejó el token a elección, y se sigue a `javac`
-([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §5): en el 9, `javac` nombra al tipo
+([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §11): en el 9, `javac` nombra al tipo
 en el mensaje («type Caja does not take parameters»).
 
 ## En qué orden se detectan

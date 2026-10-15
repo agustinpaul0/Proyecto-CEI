@@ -27,7 +27,7 @@ aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 
 Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el informe: un atributo
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
-el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §10).
+el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §16).
 
 ## Etapa 3 — Analizador Semántico, Parte I: ENTREGADA
 
@@ -45,7 +45,7 @@ Kudos.
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). El
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §7 a §12). El
 documento completo de semántica, publicado con la Etapa 4, prohíbe los tipos raw que la Parte I
 permitía; el chequeo de declaraciones lo sigue, también con `--etapa=3`
 (`documentacion/sentencias/decisiones-de-logica.md` §4).
@@ -62,14 +62,13 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 |---|---|
 | Corpus a mano | 394 casos propios (87 correctos, 307 con error) y 126 de Santiago Salamanca |
 | Corpus generado | 2.905 casos, cada uno contrastado con `javac` 25 |
-| Cátedra | 10 casos: dan su código salvo `semIICorrecto03`, que usa `++` (duda 2) |
+| Cátedra | 10 casos: todos dan su código, con `semIICorrecto03` corregido por el profesor |
 | Propiedades y fuzz | 4.500 expresiones al azar y 3.000 mutaciones |
 | Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-4/entregables/` |
 
-Quedan seis consultas abiertas, en `etapas/etapa-4/consultas/dudas.pdf`: la precedencia de los
-binarios, el `++` del caso de la cátedra, los tipos raw en las declaraciones, la identidad de dos
-`T`, el `toString()` sobre una interfaz y el token de un argumento que no conforma. Falta la
-revisión manual (`etapas/etapa-4/revision/`).
+Queda abierta la duda 4 (`etapas/etapa-4/consultas/dudas.pdf`): el profesor contestó que heredar
+de un genérico sin argumento es un error, y el documento completo, §5, lo permite explícitamente.
+Falta la revisión manual (`etapas/etapa-4/revision/`).
 
 ## Etapa 5: SIN EMPEZAR

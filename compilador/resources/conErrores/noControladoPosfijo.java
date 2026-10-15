@@ -1,5 +1,5 @@
 ///[Error:++|7]
-// el ++ posfijo es de un logro que no se controla (duda 2)
+// el ++ posfijo es de un logro que no se controla
 class Aa {
     int a1;
     int a2;

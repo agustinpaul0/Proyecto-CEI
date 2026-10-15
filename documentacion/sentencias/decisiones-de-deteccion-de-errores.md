@@ -42,7 +42,7 @@ Los casos de la cátedra fijan dos:
 - `semIIError04`: con un argumento que no conforma con su parámetro, el nombre del método.
 
 Para el resto, el criterio es el de la Etapa 3
-([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §5): **el token que marca
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §11): **el token que marca
 `javac`**, verificado caso por caso con `javac` 25. `javac` marca un token representativo de cada
 expresión: el operador de una binaria o unaria, el `(` de los argumentos de una llamada, el `.` de un
 acceso a atributo, el `[` de una indexación, el `new` de una creación, el nombre de una variable. Los
@@ -61,8 +61,8 @@ Cada fila tiene al menos un caso en `compilador/resources/conErrores/`.
 | Operador con tipos que no admite | `i + true` | `+` | Pautas slide 30 |
 | Método sin receptor no declarado, o sin esa aridad | `f(1, 2);` | `f` | `javac` |
 | Método de instancia sin receptor en un estático | `n();` | `n` | `javac` |
-| Argumento que no conforma con su parámetro, en un método | `f(true)`, `a.f(true)`, `Aa.f(true)` | `f` | cátedra (`semIIError04`) — consultado (duda 6) |
-| Argumento que no conforma con su parámetro, en un constructor | `new Aa(true)` | `true` | `javac` — consultado (duda 6) |
+| Argumento que no conforma con su parámetro, en un método | `f(true)`, `a.f(true)`, `Aa.f(true)` | `f` | cátedra (`semIIError04`), confirmado por el profesor |
+| Argumento que no conforma con su parámetro, en un constructor | `new Aa(true)` | `new` | el profesor, como el constructor sin esa aridad |
 | Método o atributo no declarado en el receptor | `a.f();`, `a.x` | `.` | `javac` |
 | Miembro de un tipo que no tiene miembros: primitivo, `void`, `T` | `x.f()`, `v().x` | `.` | `javac` |
 | Clase no declarada en `Clase.m()` | `Nada.f();` | `Nada` | `javac` |
@@ -95,7 +95,7 @@ De sus 137 casos, coincidimos en el token con 115. De los otros 22:
   que chequea los dos lados antes que la asignabilidad, y el error es la `x`;
 - `semIIError61`, una herencia circular, que reportamos en la primera clase del ciclo, como en la
   Etapa 3;
-- `semIICorrecto03` es el caso de la cátedra con `a1++` (§1 de
+- `semIICorrecto03` es el caso de la cátedra con `a1++`, que el profesor corrigió (§1 de
   [`decisiones-de-logica.md`](decisiones-de-logica.md));
 - `semIICorrecto56` no es correcto: llama a `crear()` desde una clase que no lo declara.
 

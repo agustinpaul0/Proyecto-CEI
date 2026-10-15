@@ -251,9 +251,7 @@ classDiagram
     }
     class Argumentos {
         -Argumentos()
-        ~chequearEnLaLlamada(List~NodoExpresion~, List~Parametro~, Sustitucion, Token, Contexto)$
-        ~chequearEnElArgumento(List~NodoExpresion~, List~Parametro~, Sustitucion, Contexto)$
-        -chequear(List~NodoExpresion~, List~Parametro~, Sustitucion, Token, Contexto)$
+        ~chequear(List~NodoExpresion~, List~Parametro~, Sustitucion, Token, Contexto)$
         ~comoTexto(List~NodoExpresion~)$ String
     }
     NodoExpresion <|-- NodoLiteral

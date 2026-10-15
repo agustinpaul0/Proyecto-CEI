@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // resources/catedra/sentencias/. El compilador tiene que dar exactamente el
 // código que cada uno declara en su primera línea, y nada más.
 //
-// Falta semIICorrecto03: usa el `++` posfijo, que es de un logro cuyo control no
-// se persigue (consulta 2 de etapas/etapa-4/consultas/dudas.pdf).
+// semIICorrecto03 traía `a1++ + 10`; el profesor indicó que va `a1+4+ + 10`.
 @Tag("sentencias")
 class CasosDeLaCatedraSentenciasTest {
 
@@ -34,6 +33,7 @@ class CasosDeLaCatedraSentenciasTest {
     @ValueSource(strings = {
             "sinErrores/semIICorrecto01.java",
             "sinErrores/semIICorrecto02.java",
+            "sinErrores/semIICorrecto03.java",
             "sinErrores/semIICorrecto04.java",
             "sinErrores/semIICorrecto05.java",
             "conErrores/semIIError01.java",

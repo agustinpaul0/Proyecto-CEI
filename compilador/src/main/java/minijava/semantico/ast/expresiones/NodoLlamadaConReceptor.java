@@ -54,7 +54,7 @@ public final class NodoLlamadaConReceptor extends NodoEncadenado {
             default -> throw sinMiembros(tipoDelReceptor);
         }
         Metodo elegido = metodo.orElseThrow(() -> noDeclarado("El metodo " + clave, tipoDelReceptor));
-        Argumentos.chequearEnLaLlamada(argumentos, elegido.parametros(), sustitucion, nombre, contexto);
+        Argumentos.chequear(argumentos, elegido.parametros(), sustitucion, nombre, contexto);
         return elegido.retorno().instanciar(sustitucion);
     }
 

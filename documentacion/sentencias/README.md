@@ -10,6 +10,7 @@ junto con Pautas Etapa 4 y las Clases 09, 10 y 11 en `etapas/etapa-4/`.
 | Construcción | Los AST, con acciones de un Esquema de Traducción sobre la gramática LL(1) de la Etapa 2; cada uno se cuelga de su método o constructor. |
 | Chequeo | Después de las declaraciones y la consolidación, `chequear` en cada nodo, por delegación. |
 | Logros | Sólo los que no piden código: Imbatibilidad Semántica II, Entrega Anticipada y Grandioso Laburo! |
+| Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1 a §6 |
 | Consultas abiertas | `etapas/etapa-4/consultas/dudas.pdf` |
 
 ## Documentos
@@ -37,6 +38,6 @@ java -jar target/Compilador.jar resources/catedra/sentencias/conErrores/semIIErr
 |---|---|
 | Corpus a mano (`resources/sinErrores`, `resources/conErrores`) | 394 propios y 126 de Santiago Salamanca |
 | Corpus generado (`resources/sentencias-generado.tar.gz`) | 2.905, contrastados con `javac` 25 |
-| Cátedra (`resources/catedra/sentencias`) | 10, con `semIICorrecto03` consultado |
+| Cátedra (`resources/catedra/sentencias`) | 10, con `semIICorrecto03` corregido por el profesor |
 | Propiedades y fuzz | 4.500 expresiones al azar y 3.000 mutaciones |
 | Robustez | los unos 40.000 fuentes de las etapas anteriores |

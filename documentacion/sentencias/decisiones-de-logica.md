@@ -2,13 +2,13 @@
 
 Qué controla la etapa. La fuente es *MiniJava-Semantica-Completa-2026* («el documento»), en
 [`../minijava/`](../minijava/README.md). Lo que el documento no dice se resuelve como en Java,
-verificado con `javac` 25 caso por caso. Las consultas abiertas al profesor están en
-`etapas/etapa-4/consultas/dudas.pdf`.
+verificado con `javac` 25 caso por caso. Lo que contestó el profesor está en
+[`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md).
 
 ## 1. Los logros son independientes entre etapas
 
 Es el criterio que el profesor confirmó en la Etapa 3
-([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1): los programas con que se
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §7): los programas con que se
 prueba una etapa no traen construcciones de logros que no se persiguen en ella. En la Etapa 4 no se
 persigue ningún logro de código, así que el chequeo es el del MiniJava base del documento.
 
@@ -31,8 +31,8 @@ sin controlarlo.
 conforma sólo consigo mismo y no participa de ningún operador. Controlar sus usos es el logro Floats
 y Coerción.
 
-El caso de la cátedra `semIICorrecto03` usa `a1++` y espera `[SinErrores]`. Con este criterio no
-puede compilar; está consultado (duda 2).
+El caso de la cátedra `semIICorrecto03` traía `a1++ + 10`. El profesor confirmó que es un error del
+caso: va `a1+4+ + 10`.
 
 ## 2. Qué se controla
 
@@ -72,7 +72,8 @@ El documento completo reemplaza a la Parte I, que era la fuente de la Etapa 3. D
 
 - **Tipos raw** (§5.2). Fuera de `extends` e `implements`, una clase o interfaz genérica sin
   argumento es un error: también en atributos, parámetros, retornos y tipos base de arreglos, que se
-  controlan en las declaraciones. La Parte I, §3, lo permitía. Está consultado (duda 3).
+  controlan en las declaraciones. La Parte I, §3, lo permitía; el profesor confirmó el documento
+  completo, y que en la Etapa 3 también debía ser error.
 - **El argumento de tipo** (§3, 4.º párrafo) es un parámetro válido o una clase o interfaz **no
   genérica**: `Caja<Caja>` es un error. Un argumento con su propio argumento (`Caja<Par<String>>`)
   es del logro Genericidad Avanzada; se controla entero, como cualquier otro tipo.
@@ -88,6 +89,8 @@ consultado (duda 4).
 
 ## 6. Donde la cátedra fija el orden, no se sigue a Java
 
+El profesor confirmó los dos.
+
 | Pregunta | La cátedra | Java |
 |---|---|---|
 | En una asignación, ¿qué se reporta primero: un destino no asignable o un error del lado derecho? | Clase 11, slides 26, 31 y 36: se chequean los dos lados, después la conformidad y al final la asignabilidad. `this = x;` con `x` sin declarar da `[Error:x\|N]`. | `javac` reporta primero `cannot assign to 'this'`. |
@@ -100,5 +103,5 @@ regla de la cátedra que la contradiga.
 
 | Pregunta | Java | Decisión |
 |---|---|---|
-| ¿Un receptor de tipo interfaz ofrece `toString()`? El §10.2 nombra sólo los métodos declarados y heredados de la interfaz. | Sí: una interfaz tiene los métodos públicos de instancia de `Object` (JLS §9.2). `debugPrint` es estático y no es miembro de la interfaz. | Igual que Java. Consultado (duda 5). |
+| ¿Un receptor de tipo interfaz ofrece `toString()`? El §10.2 nombra sólo los métodos declarados y heredados de la interfaz. | Sí: una interfaz tiene los métodos públicos de instancia de `Object` (JLS §9.2). `debugPrint` es estático y no es miembro de la interfaz. | Igual que Java; lo confirmó el profesor. |
 | ¿Se controla que el cuerpo de un `if` no sea una declaración antes que la declaración? | Sí: «variable declaration not allowed here» es un error del parser. | Igual que Java. |

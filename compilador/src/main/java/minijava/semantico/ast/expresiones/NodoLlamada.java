@@ -33,7 +33,7 @@ public final class NodoLlamada extends NodoExpresion {
             throw new ExcepcionSemantica(nombre, "El metodo de instancia " + clave
                     + " no se puede llamar sin receptor en un metodo estatico");
         }
-        Argumentos.chequearEnLaLlamada(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
+        Argumentos.chequear(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
         return metodo.retorno();
     }
 

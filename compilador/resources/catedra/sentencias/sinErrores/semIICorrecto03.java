@@ -6,7 +6,7 @@ class A1 {
     int a2;
     
      void m1(){
-        a2 = a1++ + 10;
+        a2 = a1+4+ + 10;
     }
     
 

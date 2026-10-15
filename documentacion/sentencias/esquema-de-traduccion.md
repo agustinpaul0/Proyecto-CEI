@@ -102,7 +102,7 @@ RestoExpresionCompuesta(izq) → ε { RestoExpresionCompuesta.nodo = izq }
 ```
 
 Los trece operadores van en un mismo nivel, sin la precedencia de Java (documento §11, 2.º párrafo;
-duda 1 de `etapas/etapa-4/consultas/dudas.pdf`). Todo eso vive en este único método del parser.
+lo confirmó el profesor). Todo eso vive en este único método del parser.
 
 ```
 Expresion → ExpresionCompuesta RestoExpresion(ExpresionCompuesta.nodo)

@@ -48,7 +48,7 @@ public final class NodoLlamadaEstatica extends NodoExpresion {
             throw new ExcepcionSemantica(punto, "El metodo " + clave
                     + " es de instancia y no se puede llamar con el nombre de la clase");
         }
-        Argumentos.chequearEnLaLlamada(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
+        Argumentos.chequear(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
         return metodo.retorno();
     }
 

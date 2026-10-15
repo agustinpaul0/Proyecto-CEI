@@ -36,8 +36,8 @@ public final class NodoCreacionObjeto extends NodoExpresion {
         Constructor constructor = clase.constructor(argumentos.size()).orElseThrow(() ->
                 new ExcepcionSemantica(nuevo, clase.nombre() + " no tiene un constructor con "
                         + argumentos.size() + " parametros"));
-        Argumentos.chequearEnElArgumento(argumentos, constructor.parametros(),
-                ClaseOInterfaz.sustitucionHacia(tipo, clase), contexto);
+        Argumentos.chequear(argumentos, constructor.parametros(),
+                ClaseOInterfaz.sustitucionHacia(tipo, clase), nuevo, contexto);
         return tipo;
     }
 

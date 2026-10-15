@@ -8,7 +8,7 @@ Son los que no piden código.
 
 | Logro | Qué exige | Cómo se busca |
 |---|---|---|
-| **Imbatibilidad Semántica II** | Pasar toda la batería de la cátedra | Los casos adjuntos dan el código exacto (`CasosDeLaCatedraSentenciasTest`), salvo `semIICorrecto03`, consultado (duda 2). Cada control del documento tiene casos con y sin error, y el corpus generado recorre las matrices de tipos contrastadas con `javac`. |
+| **Imbatibilidad Semántica II** | Pasar toda la batería de la cátedra | Los casos adjuntos dan el código exacto (`CasosDeLaCatedraSentenciasTest`), con `semIICorrecto03` corregido como indicó el profesor. Cada control del documento tiene casos con y sin error, y el corpus generado recorre las matrices de tipos contrastadas con `javac`. |
 | **Entrega Anticipada** | Entregar 48 horas antes del cierre: hasta el 28/10/2026 a las 16:00 | Fecha |
 | **Grandioso Laburo!** | Sólo errores menores | Ídem Imbatibilidad |
 

@@ -1,4 +1,4 @@
-// los binarios van en un nivel y asocian a izquierda (§11, duda 1)
+// los binarios van en un nivel y asocian a izquierda (§11)
 class Aa {
     void m(int a, int b, boolean r) {
         var x = a - b - a;

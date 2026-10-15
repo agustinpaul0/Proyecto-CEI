@@ -17,29 +17,16 @@ final class Argumentos {
     private Argumentos() {
     }
 
-    // En una llamada a método el error va en el nombre del método, como en el
-    // caso de la cátedra semIIError04.
-    static void chequearEnLaLlamada(List<NodoExpresion> argumentos, List<Parametro> formales,
-                                    Sustitucion sustitucion, Token metodo, Contexto contexto)
-            throws ExcepcionSemantica {
-        chequear(argumentos, formales, sustitucion, metodo, contexto);
-    }
-
-    // En un constructor la cátedra no fija el token: va en el argumento, como en javac.
-    static void chequearEnElArgumento(List<NodoExpresion> argumentos, List<Parametro> formales,
-                                      Sustitucion sustitucion, Contexto contexto) throws ExcepcionSemantica {
-        chequear(argumentos, formales, sustitucion, null, contexto);
-    }
-
-    private static void chequear(List<NodoExpresion> argumentos, List<Parametro> formales,
-                                 Sustitucion sustitucion, Token metodo, Contexto contexto)
+    // El error va en el nombre del método, como en el caso de la cátedra
+    // semIIError04, o en el `new` de un constructor, como indicó el profesor.
+    static void chequear(List<NodoExpresion> argumentos, List<Parametro> formales,
+                         Sustitucion sustitucion, Token culpable, Contexto contexto)
             throws ExcepcionSemantica {
         for (int i = 0; i < argumentos.size(); i++) {
             NodoExpresion argumento = argumentos.get(i);
             Tipo actual = argumento.chequear(contexto);
             Tipo formal = formales.get(i).tipo().instanciar(sustitucion);
             if (!actual.conformaCon(formal)) {
-                Token culpable = metodo == null ? argumento.token() : metodo;
                 throw new ExcepcionSemantica(culpable, "El argumento " + (i + 1) + " es de tipo "
                         + actual.nombre() + " y no conforma con el parametro, de tipo " + formal.nombre());
             }
