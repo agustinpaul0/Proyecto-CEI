@@ -187,7 +187,7 @@ class Aa {
 }
 """)
 
-bien("toStringSobreArreglosEInterfaces", "un arreglo y una interfaz ofrecen el toString de Object (§11.8, duda 5)", """
+bien("toStringSobreArreglosEInterfaces", "un arreglo y una interfaz ofrecen el toString de Object (§11.8)", """
 interface Ix { }
 class Aa {
     void m(int[] v, Ix i, String s) {

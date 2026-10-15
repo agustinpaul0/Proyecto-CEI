@@ -261,7 +261,7 @@ class Uso {
 }
 """)
 
-mal("argumentoIncompatibleConConstructor", "true", "en un constructor el error va en el argumento, como en javac", """
+mal("argumentoIncompatibleConConstructor", "new", "en un constructor el error va en el new, como el constructor sin esa aridad", """
 class Aa { Aa(int x) { } }
 class Uso {
     void m() {
@@ -270,7 +270,7 @@ class Uso {
 }
 """)
 
-mal("argumentoGenericoIncompatibleConConstructor", "3", "el parametro T se ve como String desde Caja<String> (§11.7)", """
+mal("argumentoGenericoIncompatibleConConstructor", "new", "el parametro T se ve como String desde Caja<String> (§11.7)", """
 class Caja<T> { Caja(T inicial) { } }
 class Uso {
     void m() {

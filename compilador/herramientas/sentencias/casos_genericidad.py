@@ -236,7 +236,7 @@ class Uso {
 }
 """)
 
-mal("herenciaSinArgumentoNoDaObject", "=", "el T conservado por extends Base no es Object (§5.1)", """
+mal("herenciaSinArgumentoNoDaObject", "=", "el T conservado por extends Base no es Object (§5)", """
 class Base<T> {
     T obtener() { return null; }
 }
@@ -260,14 +260,15 @@ class Uso {
 }
 """)
 
-mal("TConservadaNoEsLaDeLaHija", "=", "Der<T> extends Base: la T heredada es la de Base, no la de Der (§5.1, duda 4)", """
+mal("TConservadaNoEsLaDeOtraClase", "=", "la T que Derivada conserva de Base no es la T de Par (§5.1)", """
 class Base<T> {
-    T dato;
+    T obtener() { return null; }
 }
-class Der<T> extends Base {
+class Derivada extends Base { }
+class Par<T> {
     T propio;
-    void m() {
-        propio = dato; // <-
+    void m(Derivada d) {
+        propio = d.obtener(); // <-
     }
 }
 """)
@@ -327,28 +328,28 @@ class Caja<T> {
 }
 """)
 
-mal("atributoRawEnLaDeclaracion", "Caja", "fuera de la herencia, un generico sin argumento es error (§5.2, duda 3)", """
+mal("atributoRawEnLaDeclaracion", "Caja", "fuera de la herencia, un generico sin argumento es error (§5.2)", """
 class Caja<T> { }
 class Uso {
     Caja dato; // <-
 }
 """)
 
-mal("parametroRawEnLaDeclaracion", "Caja", "un parametro tampoco puede ser raw (§5.2, duda 3)", """
+mal("parametroRawEnLaDeclaracion", "Caja", "un parametro tampoco puede ser raw (§5.2)", """
 class Caja<T> { }
 class Uso {
     void m(Caja c) { } // <-
 }
 """)
 
-mal("retornoRawEnLaDeclaracion", "Caja", "un retorno tampoco puede ser raw (§5.2, duda 3)", """
+mal("retornoRawEnLaDeclaracion", "Caja", "un retorno tampoco puede ser raw (§5.2)", """
 class Caja<T> { }
 class Uso {
     Caja m() { return null; } // <-
 }
 """)
 
-mal("arregloRawEnLaDeclaracion", "Caja", "ni el tipo base de un arreglo (§5.2, duda 3)", """
+mal("arregloRawEnLaDeclaracion", "Caja", "ni el tipo base de un arreglo (§5.2)", """
 class Caja<T> { }
 class Uso {
     Caja[] datos; // <-

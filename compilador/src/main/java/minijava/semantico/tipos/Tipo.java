@@ -19,7 +19,7 @@ public sealed interface Tipo permits TipoPrimitivo, TipoVoid, TipoNull, TipoRefe
 
     // El nombre sin ambigüedad. Coincide con `nombre()` salvo para un parámetro de
     // tipo, que suma la clase o interfaz que lo declara (documento §5.1): la `T`
-    // que se conserva de un ancestro no es la `T` de la clase que la hereda.
+    // que `Derivada extends Base` conserva de `Base` no es la `T` de otra clase.
     default String identidad() {
         return nombre();
     }

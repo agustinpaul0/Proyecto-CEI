@@ -31,7 +31,7 @@ Van los trece en un mismo nivel y asocian a izquierda, como fija el documento co
 
 Desarrollo: [`sentencias/esquema-de-traduccion.md`](documentacion/sentencias/esquema-de-traduccion.md).
 
-### 2. Un genérico sin argumento es un error fuera de la herencia
+### 2. Un genérico sin argumento es un error fuera de la herencia, y en ella no suma un parámetro
 
 En atributos, parámetros, retornos, tipos base de arreglos y creaciones, como dice el documento
 completo, §5.2. La Parte I lo permitía en las declaraciones; el profesor aclaró que en la Etapa 3
@@ -40,6 +40,17 @@ también debía ser error, aunque no lo prueba en la Etapa 4.
 | Fuente | Resultado |
 |---|---|
 | `class Caja<T> { }` y `class Aa { Caja x; }`, en las líneas 1 y 2 | `[Error:Caja\|2]` |
+
+En la herencia sí vale, y el tipo conserva el parámetro del ancestro (documento §5). Como un tipo
+tiene a lo sumo un parámetro, el que hereda sin argumento no puede declarar el suyo: se hereda con
+el argumento o sin parámetro propio. Vale también para `implements` y la extensión de interfaces.
+
+| Fuente | Resultado |
+|---|---|
+| `class Base<T> { }` y `class Der extends Base { }`, en las líneas 1 y 2 | `[SinErrores]` |
+| `class Base<T> { }` y `class Der<T> extends Base<T> { }` | `[SinErrores]` |
+| `class Base<T> { }` y `class Der<T> extends Base<String> { }` | `[SinErrores]` |
+| `class Base<T> { }` y `class Der<T> extends Base { }`, en las líneas 1 y 2 | `[Error:Base\|2]` |
 
 Desarrollo: [`sentencias/decisiones-de-logica.md` §4](documentacion/sentencias/decisiones-de-logica.md).
 

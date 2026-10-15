@@ -40,14 +40,15 @@ Kudos.
 
 | | |
 |---|---|
-| Controles | 21, más el constructor por defecto |
-| Corpus | 92 casos con error, 42 correctos y los 8 de la cátedra |
+| Controles | 22, más el constructor por defecto |
+| Corpus | 100 casos con error, 43 correctos y los 8 de la cátedra |
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
 El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §7 a §12). El
 documento completo de semántica, publicado con la Etapa 4, prohíbe los tipos raw que la Parte I
-permitía; el chequeo de declaraciones lo sigue, también con `--etapa=3`
+permitía, y el profesor aclaró que un tipo que hereda sin argumento no puede declarar su propio
+parámetro (el control 22). El chequeo de declaraciones sigue los dos, también con `--etapa=3`
 (`documentacion/sentencias/decisiones-de-logica.md` §4).
 
 ## Etapa 4 — Analizador Semántico, Parte II: IMPLEMENTADA, SIN ENTREGAR
@@ -67,8 +68,6 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 | Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-4/entregables/` |
 
-Queda abierta la duda 4 (`etapas/etapa-4/consultas/dudas.pdf`): el profesor contestó que heredar
-de un genérico sin argumento es un error, y el documento completo, §5, lo permite explícitamente.
-Falta la revisión manual (`etapas/etapa-4/revision/`).
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). Falta la revisión manual (`etapas/etapa-4/revision/`).
 
 ## Etapa 5: SIN EMPEZAR

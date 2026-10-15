@@ -11,7 +11,6 @@ junto con Pautas Etapa 4 y las Clases 09, 10 y 11 en `etapas/etapa-4/`.
 | Chequeo | Después de las declaraciones y la consolidación, `chequear` en cada nodo, por delegación. |
 | Logros | Sólo los que no piden código: Imbatibilidad Semántica II, Entrega Anticipada y Grandioso Laburo! |
 | Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1 a §6 |
-| Consultas abiertas | `etapas/etapa-4/consultas/dudas.pdf` |
 
 ## Documentos
 

@@ -68,7 +68,7 @@ Lo que el documento deja afuera explícitamente:
 
 ## 4. Cambios al chequeo de declaraciones
 
-El documento completo reemplaza a la Parte I, que era la fuente de la Etapa 3. Dos cosas cambian:
+El documento completo reemplaza a la Parte I, que era la fuente de la Etapa 3. Tres cosas cambian:
 
 - **Tipos raw** (§5.2). Fuera de `extends` e `implements`, una clase o interfaz genérica sin
   argumento es un error: también en atributos, parámetros, retornos y tipos base de arreglos, que se
@@ -77,15 +77,19 @@ El documento completo reemplaza a la Parte I, que era la fuente de la Etapa 3. D
 - **El argumento de tipo** (§3, 4.º párrafo) es un parámetro válido o una clase o interfaz **no
   genérica**: `Caja<Caja>` es un error. Un argumento con su propio argumento (`Caja<Par<String>>`)
   es del logro Genericidad Avanzada; se controla entero, como cualquier otro tipo.
+- **Un solo parámetro de tipo** (§5, aclarado por el profesor). Al heredar sin argumento, el tipo
+  conserva el parámetro de su ancestro, así que no puede declarar otro: `class Der<T> extends Base`,
+  con `Base<T>`, es un error en `Base`. Se hereda con argumento (`Base<T>`, `Base<String>`) o sin
+  parámetro propio (`class Der extends Base`).
 
 Los dos rigen también con `--etapa=3`, porque el chequeo de declaraciones es uno solo.
 
 ## 5. Dos parámetros de tipo con el mismo nombre son tipos distintos
 
 Documento §5.1: «Para representar los tipos se debe conservar su declaración de origen, además del
-nombre». La `T` que `class Der<T> extends Base` conserva de `Base` no es la `T` de `Der`: no
-conforman entre sí, y una redefinición que cambie una por otra no tiene la misma signatura. Está
-consultado (duda 4).
+nombre». La `T` que `class Derivada extends Base` conserva de `Base` no es la `T` de otra clase
+genérica: dentro de `Par<T>`, `d.obtener()` con `d` de tipo `Derivada` no conforma con la `T` de
+`Par`.
 
 ## 6. Donde la cátedra fija el orden, no se sigue a Java
 

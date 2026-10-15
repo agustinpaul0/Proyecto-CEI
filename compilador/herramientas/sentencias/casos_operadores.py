@@ -108,7 +108,7 @@ class Aa {
 }
 """)
 
-bien("agrupacionPlanaDeIzquierdaADerecha", "los binarios van en un nivel y asocian a izquierda (§11, duda 1)", """
+bien("agrupacionPlanaDeIzquierdaADerecha", "los binarios van en un nivel y asocian a izquierda (§11)", """
 class Aa {
     void m(int a, int b, boolean r) {
         var x = a - b - a;
@@ -396,7 +396,7 @@ class Aa {
 }
 """)
 
-mal("precedenciaPlanaMenorYSuma", "+", "en un solo nivel x < y + 1 es (x < y) + 1 (§11, duda 1)", """
+mal("precedenciaPlanaMenorYSuma", "+", "en un solo nivel x < y + 1 es (x < y) + 1 (§11)", """
 class Aa {
     void m(int x, int y) {
         var b = x < y + 1; // <-
@@ -404,7 +404,7 @@ class Aa {
 }
 """)
 
-mal("precedenciaPlanaOrYComparacion", "||", "en un solo nivel b || x == 1 es (b || x) == 1 (§11, duda 1)", """
+mal("precedenciaPlanaOrYComparacion", "||", "en un solo nivel b || x == 1 es (b || x) == 1 (§11)", """
 class Aa {
     void m(boolean b, int x, boolean r) {
         r = b || x == 1; // <-
@@ -412,7 +412,7 @@ class Aa {
 }
 """)
 
-mal("precedenciaPlanaSumaYAnd", "&&", "en un solo nivel x + 1 > 0 && b vale, y x > 0 && x < 1 es ((x > 0) && x) < 1 y falla en el && (§11, duda 1)", """
+mal("precedenciaPlanaSumaYAnd", "&&", "en un solo nivel x + 1 > 0 && b vale, y x > 0 && x < 1 es ((x > 0) && x) < 1 y falla en el && (§11)", """
 class Aa {
     void m(boolean b, int x, boolean r) {
         r = x + 1 > 0 && b;

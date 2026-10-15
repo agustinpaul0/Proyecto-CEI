@@ -47,6 +47,7 @@ Lo fija la Pautas slide 30:
 | 19 | Clase que no implementa un método de su interfaz | `class Aa implements Ix { }` | `Aa` (regla 4) |
 | 20 | Implementación con otra signatura, o estática | `static void m()` para el `void m()` de `Ix` | `m`, si es propio; `Aa`, si es heredado |
 | 21 | Tipo genérico sin argumento fuera de `extends` e `implements`, también como argumento | `Caja x;`, `Caja<Caja> y;` | `Caja` (regla 3) |
+| 22 | Genérico que hereda sin argumento de un tipo con parámetro, propio o conservado | `class Der<T> extends Base`, con `Base<T>` | `Base` (regla 3) |
 
 Los tokens de los errores 13, 19 y 20 coinciden con los que marca `javac`. En los errores 9, 13 y 20
 el profesor dejó el token a elección, y se sigue a `javac`
@@ -59,7 +60,7 @@ El error reportado es el primero que se encuentra en este orden:
 
 1. **el primer nombre repetido del fuente**, porque se detecta al parsear (documento §8);
 2. **la segunda pasada**, tipo por tipo en orden de declaración. Dentro de cada tipo va primero la
-   herencia, después el ciclo, después los atributos, los constructores y los métodos, y cada lista
+   herencia, después el ciclo, después el error 22, después los atributos, los constructores y los métodos, y cada lista
    en el orden del fuente;
 3. **la consolidación**, también en orden de declaración, pero cada tipo consolida primero a su
    ancestro. Dentro de una clase van primero los atributos heredados, después los métodos y por

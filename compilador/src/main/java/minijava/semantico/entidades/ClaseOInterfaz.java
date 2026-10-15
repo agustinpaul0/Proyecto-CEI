@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 // Clases e interfaces comparten la tabla global de tipos (documento §4).
 //
@@ -150,4 +151,37 @@ public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
 
     // Un ancestro no declarado da vacío, sin error: lo reporta el chequeo de la herencia.
     protected abstract Optional<ClaseOInterfaz> ancestroDirecto();
+
+    // Un tipo tiene a lo sumo un parámetro de tipo, contando el que conserva al
+    // heredar sin argumento (documento §5): `class Der<T> extends Base`, con
+    // `Base<T>`, tendría dos. Lo indicó el profesor; el error va en el ancestro.
+    protected void verificarUnSoloParametroDeTipo() throws ExcepcionSemantica {
+        if (!esGenerico()) {
+            return;
+        }
+        Optional<TipoReferencia> conservado = ancestroQueAportaUnParametro(new HashSet<>());
+        if (conservado.isPresent()) {
+            throw new ExcepcionSemantica(conservado.get().token(), nombre() + " declara su parametro de tipo "
+                    + parametroDeTipo.lexema() + " y conserva otro al heredar sin argumento de "
+                    + conservado.get().nombreDelTipo());
+        }
+    }
+
+    // El conjunto de visitados corta un ciclo de más arriba, que todavía no se reportó.
+    private Optional<TipoReferencia> ancestroQueAportaUnParametro(Set<ClaseOInterfaz> visitados) {
+        if (!visitados.add(this)) {
+            return Optional.empty();
+        }
+        for (TipoReferencia ancestro : ancestrosDirectos()) {
+            if (ancestro.argumento().isEmpty() && TablaDeSimbolos.tipo(ancestro.nombreDelTipo())
+                    .filter(declarado -> declarado.tieneParametroDeTipo(visitados)).isPresent()) {
+                return Optional.of(ancestro);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private boolean tieneParametroDeTipo(Set<ClaseOInterfaz> visitados) {
+        return esGenerico() || ancestroQueAportaUnParametro(visitados).isPresent();
+    }
 }

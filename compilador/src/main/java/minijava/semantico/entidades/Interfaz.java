@@ -36,6 +36,7 @@ public final class Interfaz extends ClaseOInterfaz {
             }
         }
         verificarQueNoHayaCiclo();
+        verificarUnSoloParametroDeTipo();
         for (Metodo metodo : metodosPropios()) {
             metodo.estaBienDeclarado(this);
         }

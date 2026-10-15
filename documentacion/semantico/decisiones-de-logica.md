@@ -58,6 +58,11 @@ Documento §5:
 - la instanciación se encadena: `Otra<U> extends Caja<U>` hereda `U obtener()`, y
   `Final extends Otra<Object>` hereda `Object obtener()`.
 
+Un tipo tiene a lo sumo un parámetro, contando el que conserva (indicación del profesor): si hereda
+sin argumento de un tipo con parámetro, propio o conservado, no puede declarar el suyo.
+`class Der<T> extends Caja` es un error; `class Der<T> extends Caja<T>` y
+`class Der extends Caja` valen. Lo mismo con `implements` y con la extensión de interfaces.
+
 Las redefiniciones se comparan contra lo heredado **ya instanciado**. Consecuencia de la forma
 cruda: `class Aa implements Ix` con `interface Ix<T> { T m(); }` no se puede implementar, porque
 `Aa` no puede declarar `T`.

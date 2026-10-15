@@ -127,6 +127,7 @@ public final class Clase extends ClaseOInterfaz {
             verificarInterfaz(interfaz);
         }
         verificarQueNoHayaCiclo();
+        verificarUnSoloParametroDeTipo();
         for (Atributo atributo : atributosPropios.values()) {
             atributo.estaBienDeclarado(this);
         }
