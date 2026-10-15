@@ -166,6 +166,9 @@ classDiagram
         +ancestrosDirectos()* List~TipoReferencia~
         #verificarQueNoHayaCiclo()
         #ancestroDirecto()* Optional~ClaseOInterfaz~
+        #verificarUnSoloParametroDeTipo()
+        -ancestroQueAportaUnParametro(Set~ClaseOInterfaz~) Optional~TipoReferencia~
+        -tieneParametroDeTipo(Set~ClaseOInterfaz~) boolean
     }
     class ControlDeRedefinicion {
         <<interface>>
