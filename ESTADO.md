@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 14/10/2026
+**Última actualización:** 16/10/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -29,14 +29,20 @@ Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el info
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
 el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §16).
 
-## Etapa 3 — Analizador Semántico, Parte I: ENTREGADA
+## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
 
 Entregada el 05/10/2026, dentro del plazo de la Entrega Anticipada (07/10), con el commit
-`fc7a341f`; falta la corrección. Corre aislada con `--etapa=3`, y su corpus está en
+`fc7a341f`, y corregida sin comentarios. Corre aislada con `--etapa=3`, y su corpus está en
 `compilador/resources/declaraciones/` (`mvn test -Pfase-semantico`). Tabla de símbolos estática,
 construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo de declaraciones en
 dos pasadas más la consolidación. Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y
 Kudos.
+
+**Pendiente abierto:** la planilla de la corrección (`etapas/etapa-3/Paul.pdf`) acredita los 8
+logros de la etapa y 26 puntos, pero el informe declara sólo los 3 sin código: lo que corresponde es
+12 + 3 × 2 = 18 puntos, y 76 en total en lugar de 84. Sobran Sobrecarga!, Herencia Múltiple, Métodos
+Genéricos, Multi-Detección y Genericidad Avanzada, que el compilador no implementa. Falta avisarle a
+la cátedra.
 
 | | |
 |---|---|

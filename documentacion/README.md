@@ -47,7 +47,7 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 |---|---|---|
 | 1 | Analizador Léxico + Módulo Principal | entregada y corregida, sin observaciones |
 | 2 | Analizador Sintáctico Descendente Recursivo | entregada y corregida, sin observaciones |
-| 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | entregada, sin corregir — sin logros de código |
+| 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | entregada y corregida, sin observaciones |
 | 4 | Analizador Semántico, Parte II: AST y chequeo de sentencias | **implementada** — sin logros de código |
 | 5 | Traducción a código de la máquina virtual | sin especificación todavía |
 
