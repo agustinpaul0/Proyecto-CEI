@@ -50,8 +50,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   Semántico, Parte II: AST y chequeo de sentencias. Sin logros de código, por decisión del usuario:
   sólo Imbatibilidad, Entrega Anticipada y Grandioso Laburo!. **El estado y las decisiones están en
   [`documentacion/sentencias/README.md`](documentacion/sentencias/README.md); lo que contestó el
-  profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md); la guía de la revisión manual,
-  en `etapas/etapa-4/revision/`.**
+  profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
 - Etapa 5 (traducción a código de la máquina virtual): sin especificación todavía.
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:

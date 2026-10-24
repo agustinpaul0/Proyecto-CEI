@@ -71,6 +71,6 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 | Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-4/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7). Falta la revisión manual (`etapas/etapa-4/revision/`).
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7).
 
 ## Etapa 5: SIN EMPEZAR
