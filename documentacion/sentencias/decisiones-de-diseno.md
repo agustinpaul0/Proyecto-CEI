@@ -57,8 +57,10 @@ slide 33), y la asignación chequea su lado izquierdo antes de preguntar si es a
 
 Clase 10, slide 51, y documento §14: con la herencia por copia, un método aparece en la tabla de cada
 descendiente, y su cuerpo se chequea una sola vez, en la clase que lo declara. Cada `Unidad` guarda
-su `declarante`, que el profesor sugirió, y la copia de la consolidación lo conserva junto con el
-cuerpo. `Clase.chequearSentencias()` saltea las unidades de otro declarante.
+su `declarante`, como sugirió el profesor
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §7), y la copia de la
+consolidación lo conserva junto con el cuerpo. `Clase.chequearSentencias()` saltea las unidades de
+otro declarante.
 
 **Alternativa descartada:** recorrer sólo los métodos propios de cada clase, sin `declarante`. Da el
 mismo resultado, pero deja implícito en el recorrido algo que el documento pide registrar.

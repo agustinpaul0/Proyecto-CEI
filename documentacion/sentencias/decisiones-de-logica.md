@@ -8,7 +8,7 @@ verificado con `javac` 25 caso por caso. Lo que contestó el profesor está en
 ## 1. Los logros son independientes entre etapas
 
 Es el criterio que el profesor confirmó en la Etapa 3
-([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §7): los programas con que se
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §8): los programas con que se
 prueba una etapa no traen construcciones de logros que no se persiguen en ella. En la Etapa 4 no se
 persigue ningún logro de código, así que el chequeo es el del MiniJava base del documento.
 

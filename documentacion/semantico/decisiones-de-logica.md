@@ -17,7 +17,7 @@ aceptando sintácticamente, pero no suma controles:
 | `float` (logro de la Etapa 1, confirmado por el profesor) | es un tipo primitivo más |
 
 El profesor confirmó el criterio: si un logro no se continúa, los programas con que se prueba esta
-etapa no traen esa construcción ([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §7).
+etapa no traen esa construcción ([`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §8).
 
 ## 2. Los cuerpos no se chequean
 

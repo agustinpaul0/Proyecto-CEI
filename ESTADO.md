@@ -27,7 +27,7 @@ aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 
 Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el informe: un atributo
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
-el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §16).
+el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §17).
 
 ## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
 
@@ -48,7 +48,7 @@ Puntos.
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §7 a §12). El
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §8 a §13). El
 documento completo de semántica, publicado con la Etapa 4, prohíbe los tipos raw que la Parte I
 permitía, y el profesor aclaró que un tipo que hereda sin argumento no puede declarar su propio
 parámetro (el control 22). El chequeo de declaraciones sigue los dos, también con `--etapa=3`
@@ -71,6 +71,6 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 | Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-4/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §6). Falta la revisión manual (`etapas/etapa-4/revision/`).
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7). Falta la revisión manual (`etapas/etapa-4/revision/`).
 
 ## Etapa 5: SIN EMPEZAR

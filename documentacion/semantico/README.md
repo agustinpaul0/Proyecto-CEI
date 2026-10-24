@@ -13,7 +13,7 @@ La especificación es «MiniJava-Semantica-2026-Parte 1», en
 | Controles | 22, más el constructor por defecto |
 | Logros | Sólo los que no piden código: Entrega Anticipada, Imbatibilidad y Kudos |
 | Corpus | 100 casos con error, 43 correctos y los 8 de la cátedra, en `compilador/resources/declaraciones/` |
-| Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §7 a §12 |
+| Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §8 a §13 |
 
 ## Documentos
 

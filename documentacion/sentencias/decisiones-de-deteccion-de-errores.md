@@ -42,7 +42,7 @@ Los casos de la cátedra fijan dos:
 - `semIIError04`: con un argumento que no conforma con su parámetro, el nombre del método.
 
 Para el resto, el criterio es el de la Etapa 3
-([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §11): **el token que marca
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §12): **el token que marca
 `javac`**, verificado caso por caso con `javac` 25. `javac` marca un token representativo de cada
 expresión: el operador de una binaria o unaria, el `(` de los argumentos de una llamada, el `.` de un
 acceso a atributo, el `[` de una indexación, el `new` de una creación, el nombre de una variable. Los
