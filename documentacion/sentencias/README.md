@@ -35,7 +35,7 @@ java -jar target/Compilador.jar resources/catedra/sentencias/conErrores/semIIErr
 
 | Batería | Casos |
 |---|---|
-| Corpus a mano (`resources/sinErrores`, `resources/conErrores`) | 394 propios y 126 de Santiago Salamanca |
+| Corpus a mano (`resources/sinErrores`, `resources/conErrores`) | 397 propios y 126 de Santiago Salamanca |
 | Corpus generado (`resources/sentencias-generado.tar.gz`) | 2.905, contrastados con `javac` 25 |
 | Cátedra (`resources/catedra/sentencias`) | 10, con `semIICorrecto03` corregido por el profesor |
 | Propiedades y fuzz | 4.500 expresiones al azar y 3.000 mutaciones |

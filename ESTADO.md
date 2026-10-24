@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 16/10/2026
+**Última actualización:** 24/10/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -38,11 +38,8 @@ construida con acciones de una EDT sobre la gramática de la Etapa 2, y chequeo 
 dos pasadas más la consolidación. Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y
 Kudos.
 
-**Pendiente abierto:** la planilla de la corrección (`etapas/etapa-3/Paul.pdf`) acredita los 8
-logros de la etapa y 26 puntos, pero el informe declara sólo los 3 sin código: lo que corresponde es
-12 + 3 × 2 = 18 puntos, y 76 en total en lugar de 84. Sobran Sobrecarga!, Herencia Múltiple, Métodos
-Genéricos, Multi-Detección y Genericidad Avanzada, que el compilador no implementa. Falta avisarle a
-la cátedra.
+Puntaje: los 3 logros sin código, 12 + 3 × 2 = 18 puntos, y 76 en total en la Tabla general de
+Puntos.
 
 | | |
 |---|---|
@@ -67,7 +64,7 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 
 | | |
 |---|---|
-| Corpus a mano | 394 casos propios (87 correctos, 307 con error) y 126 de Santiago Salamanca |
+| Corpus a mano | 397 casos propios (88 correctos, 309 con error) y 126 de Santiago Salamanca |
 | Corpus generado | 2.905 casos, cada uno contrastado con `javac` 25 |
 | Cátedra | 10 casos: todos dan su código, con `semIICorrecto03` corregido por el profesor |
 | Propiedades y fuzz | 4.500 expresiones al azar y 3.000 mutaciones |

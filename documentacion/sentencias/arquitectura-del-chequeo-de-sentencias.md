@@ -432,7 +432,9 @@ El chequeo usa los tipos de la Etapa 3
   consigo mismo; `void`, con nada; `null`, con cualquier referencia, arreglo o parámetro de tipo; una
   referencia, con `Object` y con sus ancestros, recorridos con la sustitución de cada relación de
   herencia y con los argumentos invariantes; un arreglo, consigo mismo y con `Object`; un parámetro
-  de tipo, sólo consigo mismo.
+  de tipo, sólo consigo mismo. Una herencia sin argumento se recorre con el parámetro que conserva:
+  `class Derivada extends Base`, con `Base<T>`, conforma con `Base<T>`, con la `T` de `Base`
+  (documento §5 y §9.3), y no con `Base<String>`.
 - **`TipoNull`**, el tipo especial del literal `null`, que no se puede escribir (§3 y §9.5).
 - **La identidad de un parámetro de tipo.** `VariableDeTipo` guarda el nombre de la clase o interfaz
   donde se escribió, y dos `T` son el mismo tipo sólo si los declara la misma clase (documento §5.1:

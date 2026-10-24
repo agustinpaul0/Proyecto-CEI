@@ -100,10 +100,22 @@ public final class TipoReferencia implements Tipo {
         ClaseOInterfaz declarado = TablaDeSimbolos.tipo(nombreDelTipo()).orElseThrow();
         Sustitucion sustitucion = ClaseOInterfaz.sustitucionHacia(this, declarado);
         for (TipoReferencia ancestro : declarado.ancestrosDirectos()) {
-            if (ancestro.instanciar(sustitucion).conformaCon(destino)) {
+            if (ancestro.conParametroConservado().instanciar(sustitucion).conformaCon(destino)) {
                 return true;
             }
         }
         return false;
+    }
+
+    // Documento §5: heredar sin argumento conserva el parámetro del ancestro, y es
+    // el único que tiene el descendiente. `extends Base` se recorre como
+    // `extends Base<T>`, con la T que declara Base.
+    private TipoReferencia conParametroConservado() {
+        ClaseOInterfaz declarado = TablaDeSimbolos.tipo(nombreDelTipo()).orElseThrow();
+        if (argumento != null || !declarado.esGenerico()) {
+            return this;
+        }
+        return new TipoReferencia(token, new VariableDeTipo(declarado.parametroDeTipo().orElseThrow(),
+                declarado.nombre()));
     }
 }

@@ -20,6 +20,10 @@ public final class Clase extends ClaseOInterfaz {
     private final Map<String, Atributo> atributosPropios = new LinkedHashMap<>();
     private Map<String, Atributo> atributos = atributosPropios;
     private final Map<Integer, Constructor> constructores = new LinkedHashMap<>();
+    // El orden del fuente, que decide qué error se reporta primero. No alcanza
+    // con la línea: el token no guarda la columna, y dos unidades pueden
+    // compartir una línea.
+    private final List<Unidad> unidadesEnOrden = new ArrayList<>();
 
     public Clase(Token token) {
         super(token);
@@ -44,8 +48,14 @@ public final class Clase extends ClaseOInterfaz {
     public void agregarMiembro(Miembro miembro) {
         switch (miembro) {
             case Atributo atributo -> agregarAtributo(atributo);
-            case Metodo metodo -> agregarMetodo(metodo);
-            case Constructor constructor -> agregarConstructor(constructor);
+            case Metodo metodo -> {
+                unidadesEnOrden.add(metodo);
+                agregarMetodo(metodo);
+            }
+            case Constructor constructor -> {
+                unidadesEnOrden.add(constructor);
+                agregarConstructor(constructor);
+            }
         }
     }
 
@@ -112,7 +122,7 @@ public final class Clase extends ClaseOInterfaz {
                 propias.add(metodo);
             }
         }
-        propias.sort(Comparator.comparingInt(unidad -> unidad.token().linea()));
+        propias.sort(Comparator.comparingInt(unidadesEnOrden::indexOf));
         for (Unidad unidad : propias) {
             unidad.chequearCuerpo(this);
         }
