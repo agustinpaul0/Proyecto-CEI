@@ -231,6 +231,7 @@ classDiagram
     Clase *-- Atributo : atributosPropios *
     Clase o-- Atributo : atributos *
     Clase *-- Constructor : constructores *
+    Clase o-- Unidad : unidadesEnOrden *
     Interfaz --> TipoReferencia : extendida 0..1
 ```
 
@@ -418,6 +419,7 @@ classDiagram
         +declaracion() ClaseOInterfaz
         +instanciar(Sustitucion) TipoReferencia
         +conformaCon(Tipo) boolean
+        -conParametroConservado() TipoReferencia
     }
     class VariableDeTipo {
         <<record>>
