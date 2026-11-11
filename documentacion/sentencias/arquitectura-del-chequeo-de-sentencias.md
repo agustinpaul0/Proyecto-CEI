@@ -55,7 +55,8 @@ recursión a izquierda y factorizar se agregaron no terminales como `RestoExpres
 la regla original con lo que les pasa su padre ([`esquema-de-traduccion.md`](esquema-de-traduccion.md)).
 
 Cada nodo es una clase chica con dos responsabilidades: sus propios controles y delegar en sus hijos
-(Pautas Etapa 4, slides 7-8; Clase 10, slides 25-28).
+(Pautas Etapa 4, slides 7-8; Clase 10, slides 25-28). Una tercera, generar su código, es de la Etapa 5
+([`../generacion/arquitectura-de-la-generacion.md`](../generacion/arquitectura-de-la-generacion.md)).
 
 - Una **sentencia** se chequea y no tiene tipo: `void chequear(Contexto)`.
 - Una **expresión** se chequea y devuelve su tipo: `Tipo chequear(Contexto)`.
@@ -94,15 +95,19 @@ classDiagram
         +chequear(Contexto)*
         #chequearCondicion(NodoExpresion, Contexto)$
         #chequearCuerpo(NodoSentencia, Contexto)$
+        +generar(Generador)*
     }
     class NodoBloque {
         +NodoBloque(List~NodoSentencia~)
         +chequear(Contexto)
         +toString() String
+        -locales : int
+        +generar(Generador)
     }
     class NodoVacia {
         +chequear(Contexto)
         +toString() String
+        +generar(Generador)
     }
     class NodoVarLocal {
         -nombre : Token
@@ -110,6 +115,7 @@ classDiagram
         +nombre() Token
         +chequear(Contexto)
         +toString() String
+        +generar(Generador)
     }
     class NodoReturn {
         -palabraReturn : Token
@@ -118,30 +124,40 @@ classDiagram
         -chequearSinValor(Contexto)
         -chequearConValor(Contexto)
         +toString() String
+        -unidad : Unidad
+        -localesVivas : int
+        +generar(Generador)
     }
     class NodoIf {
         +NodoIf(NodoExpresion, NodoSentencia, NodoSentencia)
         +chequear(Contexto)
         +toString() String
+        +generar(Generador)
     }
     class NodoWhile {
         +NodoWhile(NodoExpresion, NodoSentencia)
         +chequear(Contexto)
         +toString() String
+        +generar(Generador)
     }
     class NodoSentenciaExpresion {
         +NodoSentenciaExpresion(NodoExpresion)
         +chequear(Contexto)
         +toString() String
+        -dejaUnValor : boolean
+        +generar(Generador)
     }
     class SentenciaNoControlada {
         -token : Token
         +SentenciaNoControlada(Token)
         +chequear(Contexto)
         +toString() String
+        +generar(Generador)
     }
     class NodoExpresion {
         <<abstract>>
+        +generar(Generador)*
+        +generarAlmacenamiento(Generador)
     }
     NodoSentencia <|-- NodoBloque
     NodoSentencia <|-- NodoVacia
@@ -185,6 +201,8 @@ classDiagram
         +esLlamada() boolean
         +esAsignacion() boolean
         +empiezaConParentesis() boolean
+        +generar(Generador)*
+        +generarAlmacenamiento(Generador)
     }
     class NodoLiteral {
         -literal : Token
@@ -192,6 +210,8 @@ classDiagram
         +chequear(Contexto) Tipo
         +token() Token
         +toString() String
+        +generar(Generador)
+        -generarString(Generador)
     }
     class NodoVariable {
         -nombre : Token
@@ -200,6 +220,9 @@ classDiagram
         +token() Token
         +esAsignable() boolean
         +toString() String
+        -ubicacion : Ubicacion
+        +generar(Generador)
+        +generarAlmacenamiento(Generador)
     }
     class NodoThis {
         -palabraThis : Token
@@ -207,6 +230,7 @@ classDiagram
         +chequear(Contexto) Tipo
         +token() Token
         +toString() String
+        +generar(Generador)
     }
     class NodoParentizada {
         -parentesis : Token
@@ -216,6 +240,7 @@ classDiagram
         +parentesis() Token
         +empiezaConParentesis() boolean
         +toString() String
+        +generar(Generador)
     }
     class NodoAsignacion {
         -igual : Token
@@ -224,6 +249,7 @@ classDiagram
         +token() Token
         +esAsignacion() boolean
         +toString() String
+        +generar(Generador)
     }
     class NodoBinario {
         -operador : Token
@@ -234,6 +260,9 @@ classDiagram
         -error(Tipo, Tipo) ExcepcionSemantica
         +token() Token
         +toString() String
+        +generar(Generador)
+        -cortocircuito(Generador, String)
+        -instruccion() String
     }
     class NodoUnario {
         -operador : Token
@@ -241,6 +270,7 @@ classDiagram
         +chequear(Contexto) Tipo
         +token() Token
         +toString() String
+        +generar(Generador)
     }
     class ExpresionNoControlada {
         -token : Token
@@ -248,11 +278,17 @@ classDiagram
         +chequear(Contexto) Tipo
         +token() Token
         +toString() String
+        +generar(Generador)
     }
     class Argumentos {
         -Argumentos()
         ~chequear(List~NodoExpresion~, List~Parametro~, Sustitucion, Token, Contexto)$
         ~comoTexto(List~NodoExpresion~)$ String
+    }
+    class Llamadas {
+        -Llamadas()
+        ~estatica(Generador, Metodo, List~NodoExpresion~)$
+        ~dinamica(Generador, Metodo, int, List~NodoExpresion~)$
     }
     NodoExpresion <|-- NodoLiteral
     NodoExpresion <|-- NodoVariable
@@ -289,6 +325,8 @@ classDiagram
     direction TB
     class NodoExpresion {
         <<abstract>>
+        +generar(Generador)*
+        +generarAlmacenamiento(Generador)
     }
     class NodoEncadenado {
         <<abstract>>
@@ -308,6 +346,9 @@ classDiagram
         -atributoDe(TipoReferencia) Tipo
         +esAsignable() boolean
         +toString() String
+        -offset : int
+        +generar(Generador)
+        +generarAlmacenamiento(Generador)
     }
     class NodoLlamadaConReceptor {
         -parentesis : Token
@@ -317,6 +358,9 @@ classDiagram
         +token() Token
         +esLlamada() boolean
         +toString() String
+        -elegido : Metodo
+        -offsetEnVT : int
+        +generar(Generador)
     }
     class NodoAccesoArreglo {
         -corchete : Token
@@ -326,6 +370,9 @@ classDiagram
         +esAsignable() boolean
         +empiezaConParentesis() boolean
         +toString() String
+        +generar(Generador)
+        +generarAlmacenamiento(Generador)
+        -generarDireccion(Generador)
     }
     class NodoLlamada {
         -nombre : Token
@@ -335,6 +382,9 @@ classDiagram
         +token() Token
         +esLlamada() boolean
         +toString() String
+        -metodo : Metodo
+        -offsetEnVT : int
+        +generar(Generador)
     }
     class NodoLlamadaEstatica {
         -clase : Token
@@ -346,6 +396,8 @@ classDiagram
         +token() Token
         +esLlamada() boolean
         +toString() String
+        -metodo : Metodo
+        +generar(Generador)
     }
     class NodoCreacionObjeto {
         -nuevo : Token
@@ -355,6 +407,9 @@ classDiagram
         +token() Token
         +esLlamada() boolean
         +toString() String
+        -clase : Clase
+        -constructor : Constructor
+        +generar(Generador)
     }
     class NodoCreacionArreglo {
         -nuevo : Token
@@ -363,6 +418,7 @@ classDiagram
         +chequear(Contexto) Tipo
         +token() Token
         +toString() String
+        +generar(Generador)
     }
     NodoExpresion <|-- NodoEncadenado
     NodoEncadenado <|-- NodoAccesoAtributo
@@ -413,11 +469,16 @@ classDiagram
         +localOParametro(String) Optional~Tipo~
         -local(String) Optional~VariableLocal~
         -parametro(String) Optional~Parametro~
+        +unidad() Unidad
+        +localesVivas() int
+        +localesDelBloqueActual() int
+        +ubicacionDeLocalOParametro(String) Optional~Ubicacion~
     }
     class VariableLocal {
         <<record>>
         -token : Token
         -tipo : Tipo
+        -offset : int
     }
     Contexto *-- VariableLocal : bloques *
 ```

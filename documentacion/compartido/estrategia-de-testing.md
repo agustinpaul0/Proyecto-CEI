@@ -258,11 +258,29 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 | `ContextoTest` | Los ámbitos de las locales, los parámetros, el contexto estático y el tipo de `this`. |
 | `EstructuraDeLosNodosTest` | La información estructural de cada nodo: asignable, llamada, asignación, paréntesis, y el token de sus errores. |
 | `TesterDeCasosSentenciasEstricto`, `catedra.TesterDeCasosSentencias{Sin,Con}Errores` | El corpus a mano, con el criterio estricto y con el de la cátedra. |
-| `CasosDeLaCatedraSentenciasTest` | Los casos de la cátedra con su código exacto, y que la etapa por defecto sea la 4. |
+| `CasosDeLaCatedraSentenciasTest` | Los casos de la cátedra con su código exacto, y que la etapa por defecto también chequee las sentencias. |
 | `CorpusGeneradoSentenciasTest` | Las 2.905 celdas del corpus generado. |
 | `SentenciasPropiedadesTest` | Expresiones int y boolean al azar, totalmente parentizadas: bien tipadas compilan, y con una hoja del tipo equivocado fallan en el nodo que la contiene. |
 | `SentenciasFuzzTest` | Mutaciones a ciegas de los fuentes correctos: el compilador siempre termina en un código. |
 | `ConsistenciaEntreEtapasTest`, `RobustezDelChequeoDeSentenciasTest` | El corpus de la Etapa 3 con la 4, y la Etapa 4 sobre todos los fuentes anteriores. |
+
+### De la generación de código
+
+El oráculo nunca es el propio compilador: la salida esperada la fija la cátedra, la cuenta hecha a
+mano en la primera línea de cada caso, o Java. La CeIVM corre en el mismo proceso, por su API
+(`EjecutorCeIVM`), y Java también, con `javax.tools` y un cargador de clases (`EjecutorJava`), que
+adapta lo poco en que MiniJava no es Java: `debugPrint`, `System` y la visibilidad de los métodos.
+
+| Suite | Qué cubre |
+|---|---|
+| `catedra.TesterDeCasosGeneracionSinErrores` | El tester de la cátedra, con su criterio intacto: lanza la CeIVM en un proceso y busca los fragmentos de la primera línea. |
+| `EjecucionDelCorpusTest` | Los 55 programas de `resources/sinErrores/`: la salida de la primera línea, en orden, y exactamente la misma salida que en Java. Un caso marcado `// sin-contraste` depende de algo en que MiniJava difiere de Java a propósito. |
+| `ContrasteDiferencialTest` | Programas generados al azar con semillas fijas (`GeneradorDeProgramas`): jerarquías, redefiniciones, interfaces, estáticos, recursión, arreglos, genéricos y todos los operadores. Tienen que imprimir lo mismo en la CeIVM que en Java: 300 por defecto, y los que pida `-Ddiferencial.programas`. |
+| `ErroresDeCompilacionTest` | Los errores del punto de entrada, y los 376 de la Etapa 4 corridos por la Etapa 5: el mismo código, y no se escribe la salida. |
+| `ErroresDeEjecucionTest` | Rango, tamaño negativo, referencias nulas y división por cero: lo impreso antes del error, el error, y nada después. |
+| `DisposicionTest` | Las VT, los CIR y los desplazamientos de parámetros, resultado y `this`. |
+| `PiezasDelGeneradorTest` | Las etiquetas, el `Generador`, el valor de cada escape y el malloc que deja el bloque en cero. |
+| `RobustezDeLaGeneracionTest` | Los ~40.000 fuentes de las etapas anteriores con un `main` agregado: el compilador nunca se cae, y lo que genera ensambla en la CeIVM. |
 
 ### Compartidas
 
@@ -276,7 +294,7 @@ que no sea una `ExcepcionLexica`, y que la salida respete el formato.
 ```bash
 cd compilador
 
-mvn test                 # suite propia + los 6 testers de la cátedra, en la misma pasada
+mvn test                 # suite propia + los 9 testers de la cátedra, en la misma pasada
 mvn verify               # además exige el umbral de cobertura de JaCoCo
 mvn -Pmutacion verify    # análisis de mutación con PIT (verify: es la fase a la que está atado)
 
@@ -285,7 +303,10 @@ mvn test -Dvolcado=off       # sin volcado
 
 mvn test -Pfase-lexico       # sólo el léxico (los de comun/ corren en todas las fases)
 mvn test -Pfase-sintactico   # sólo el sintáctico
-mvn test -Pfase-semantico    # sólo el semántico
+mvn test -Pfase-semantico    # sólo el chequeo de declaraciones
+mvn test -Pfase-sentencias   # sólo el chequeo de sentencias
+mvn test -Pfase-generacion   # sólo la generación de código
+mvn test -Pfase-generacion -Ddiferencial.programas=3000   # el contraste diferencial, más grande
 ```
 
 No hay forma de elegir con qué logros correr: la suite tiene una sola configuración.

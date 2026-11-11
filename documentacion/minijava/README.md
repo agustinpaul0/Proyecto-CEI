@@ -29,8 +29,7 @@ permitido usar extracción de texto **sólo** para ubicar en qué página está 
 - Semántica, documento completo → [`../sentencias/`](../sentencias/README.md), y los cambios que
   impone a las declaraciones, en
   [`../sentencias/decisiones-de-logica.md`](../sentencias/decisiones-de-logica.md) §4
-- Apunte CeIVM → todavía sin documentación propia: el plan de la Etapa 5 está en
-  [`../../etapas/etapa-5/plan.md`](../../etapas/etapa-5/plan.md)
+- Apunte CeIVM → [`../generacion/`](../generacion/README.md)
 
 Una nota sobre la transcripción: el PDF de sintaxis escribe `[]` como si fuera un símbolo, pero
 léxicamente son **dos** tokens — «Aspectos Léxicos» no define ningún token `[]`. La transcripción

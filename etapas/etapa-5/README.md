@@ -15,11 +15,14 @@ no es la única herramienta que utiliza la cátedra para la evaluación de la et
 ---
 
 **Nota del proyecto (no es parte de la consigna original de la cátedra):** esta etapa se transcribe
-de las Pautas, porque el material no trajo un texto de consigna aparte. El plan de desarrollo está
-en [`plan.md`](plan.md) y las consultas al profesor, en [`consultas/`](consultas/). El punto de
-partida general del repositorio sigue siendo [`AGENTS.md`](../../AGENTS.md).
+de las Pautas, porque el material no trajo un texto de consigna aparte. El estado de esta etapa y
+cómo se verifica están en
+[`documentacion/generacion/README.md`](../../documentacion/generacion/README.md), y las consultas
+al profesor, en [`consultas/`](consultas/). El punto de partida general del repositorio sigue siendo
+[`AGENTS.md`](../../AGENTS.md).
 
 El *Apunte CeIVM 2026* describe la máquina virtual, no una etapa, y por eso vive con los demás
 documentos del lenguaje en [`documentacion/minijava/`](../../documentacion/minijava). Los originales
 de la CeIVM y de los testers están en `vendor/CeiVM2026/` y `vendor/testersGeneracion/`, que no se
-versionan. Lo que contestó el profesor está en [`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md).
+versionan; lo que se usa está copiado en `compilador/`. Lo que contestó el profesor está en
+[`CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md).

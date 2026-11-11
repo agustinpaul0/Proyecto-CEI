@@ -110,7 +110,8 @@ La Etapa 5 agrega las suyas, de `Pautas Etapa 5.pdf`:
   y el tipo de la variable `init` en los testers para apuntar a cualquier clase con
   `public static void main` — se aprovechó esa libertad para evitar el nesting `main/java/main/`.
 - El *working directory* de los tests debe ser la raíz del proyecto Maven (`compilador/`), porque los
-  testers usan paths relativos duros. Los testers **de la cátedra** esperan `resources/sinErrores/`
+  testers usan paths relativos duros. El de la Etapa 5 lanza además `java -jar CeIVM-cei2011.jar`
+  desde ahí, así que la CeIVM vive en `compilador/`. Los testers **de la cátedra** esperan `resources/sinErrores/`
   y `resources/conErrores/`, sin subcarpeta, así que **ahí vive el corpus de la etapa que se está
   entregando** y armar el zip no requiere copiar nada. Los de las etapas anteriores quedan
   archivados en `resources/lexico/`, `resources/sintactico/` y `resources/declaraciones/` (ver

@@ -6,7 +6,7 @@
 
 ```bash
 cd compilador
-mvn test                 # suite completa: la nuestra + los 6 testers de la cátedra (vintage engine)
+mvn test                 # suite completa: la nuestra + los 9 testers de la cátedra (vintage engine)
 mvn verify                # + chequeo de umbral de cobertura JaCoCo (falla si baja del umbral)
 mvn -Pmutacion verify     # PIT — mutantes sobrevivientes = tests faltantes (verify, no test:
                           # PIT esta atado a esa fase y con `test` no muta nada)
@@ -22,13 +22,19 @@ mvn test -Pfase-lexico
 mvn test -Pfase-sintactico
 mvn test -Pfase-semantico
 mvn test -Pfase-sentencias
+mvn test -Pfase-generacion
+mvn test -Pfase-generacion -Ddiferencial.programas=3000   # el contraste con Java, más grande
 ```
 
 ### Invocar el compilador
 
 ```bash
-# El contrato de la cátedra: un único argumento, cualquier extensión.
-java -jar target/Compilador.jar programa1.java
+# El contrato de la cátedra para la Etapa 5: el fuente y el archivo de salida,
+# con cualquier extensión. Es la etapa por defecto.
+java -jar target/Compilador.jar programa1.java salida.txt
+
+# Y el código generado se corre con la CeIVM de la cátedra, que está en compilador/.
+java -jar CeIVM-cei2011.jar salida.txt
 
 # Etapa 1: el volcado de tokens del léxico.
 java -jar target/Compilador.jar --etapa=1 resources/lexico/sinErrores/lexSinErrores01.java
@@ -39,13 +45,14 @@ java -jar target/Compilador.jar --etapa=2 resources/sintactico/sinErrores/todosL
 # Etapa 3: el chequeo de declaraciones, sin mirar los cuerpos.
 java -jar target/Compilador.jar --etapa=3 resources/declaraciones/sinErrores/herenciaGenericaConArgumento.java
 
-# Etapa 4: además, el chequeo de sentencias. Es también la etapa por defecto.
-java -jar target/Compilador.jar resources/catedra/sentencias/conErrores/semIIError04.java
+# Etapa 4: además, el chequeo de sentencias.
+java -jar target/Compilador.jar --etapa=4 resources/catedra/sentencias/conErrores/semIIError04.java
 ```
 
-Sin `--etapa`, corre la última etapa, la 4. Cada etapa tiene su opción explícita, y los testers de
-la cátedra de cada una la pasan (`--etapa=1` a `--etapa=4`), así que una etapa nueva
-no obliga a tocarlos. `Main` elige el módulo principal en un mapa de etapa a módulo: una etapa
+Sin `--etapa`, corre la última etapa, la 5, que exige el archivo de salida: sin él, el compilador
+imprime el uso. Si hay un error, el archivo no se escribe. Cada etapa tiene su opción explícita, y
+los testers de la cátedra de las anteriores la pasan (`--etapa=1` a `--etapa=4`), así que una etapa
+nueva no obliga a tocarlos. El de la Etapa 5 llama sólo con el fuente y la salida. `Main` elige el módulo principal en un mapa de etapa a módulo: una etapa
 nueva es una entrada más, y `MainTest` controla que el mapa cubra exactamente las etapas que
 acepta la opción.
 
@@ -82,10 +89,13 @@ zip localmente y sirve para medirlo antes de pushear.
 
 **No hay ningún paso de copia.** Los testers de la cátedra buscan el corpus en
 `resources/sinErrores/` y `resources/conErrores/`, escrito a fuego y sin subcarpeta, así que el
-corpus de la etapa **que se entrega** vive ahí: hoy, el de la Etapa 4. Los de las etapas anteriores
-quedan archivados en `resources/lexico/`, `resources/sintactico/` y `resources/declaraciones/`, y
-sus testers los buscan ahí. Cada uno se corre entero con su perfil (`-Pfase-lexico`,
-`-Pfase-sintactico`, `-Pfase-semantico`).
+corpus de la etapa **que se entrega** vive ahí: hoy, el de la Etapa 5. Los de las etapas anteriores
+quedan archivados en `resources/lexico/`, `resources/sintactico/`, `resources/declaraciones/` y
+`resources/sentencias/`, y sus testers los buscan ahí. Cada uno se corre entero con su perfil
+(`-Pfase-lexico`, `-Pfase-sintactico`, `-Pfase-semantico`, `-Pfase-sentencias`). El tester de la
+cátedra de la Etapa 5 busca sus casos en `resources/catedra/generacion/`, lanza la CeIVM desde la
+raíz del proyecto Maven (`compilador/CeIVM-cei2011.jar`, versionado como excepción a los `.jar`) y
+deja ahí un `[caso].out` por fuente, que el `.gitignore` excluye.
 
 El corpus ajeno de `CorpusExternoTest` va adentro del proyecto, en
 `compilador/resources/corpus-externo/`. Son 29.101 fuentes, empaquetados en un `.tar.gz` de 4,4 MB,
@@ -96,7 +106,7 @@ las cabeceras del zip pesaban tanto como los fuentes
 
 **La contracara, que conviene tener presente:** el tester de la Etapa 1 que la cátedra tiene
 también busca en `resources/sinErrores/`, así que sobre esta entrega encontraría los casos de la
-Etapa 4. Es deliberado: la raíz le pertenece a la etapa que se está entregando, y las anteriores ya
+Etapa 5. Es deliberado: la raíz le pertenece a la etapa que se está entregando, y las anteriores ya
 tienen su corpus completo en su carpeta. Cuando arranque una etapa nueva, el corpus de la actual se
 muda a su carpeta y el nuevo ocupa la raíz.
 
@@ -113,7 +123,8 @@ compilador y los logros perseguidos); la Etapa 2, slide 33 (cómo compilar y cor
 transformación de la gramática con su versión final, los tipos de errores sintácticos, la
 documentación usual de un proyecto de software y los logros que se intentan); la Etapa 3, slide 36
 (cómo compilar y correr, el diagrama de clases de la tabla de símbolos y los logros que se
-intentan). Requisitos fijados por el usuario: **lo más breve y conciso posible**, con sólo lo que
+intentan); la Etapa 4, slide 38 (lo mismo, con el diagrama de clases de los AST); y la Etapa 5,
+slide 34 (cómo compilar y correr, y los logros que se intentan). Requisitos fijados por el usuario: **lo más breve y conciso posible**, con sólo lo que
 exigen las Pautas y sin repetir `documentacion/`; **paleta de colores monocromática**, **portada
 minimalista** e **índice/tabla de contenidos**. Los diagramas de clases siguen UML: un miembro
 estático va **subrayado**, no con un renglón que diga «estática», que se leería como un atributo, y

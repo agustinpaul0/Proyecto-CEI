@@ -76,18 +76,27 @@ Puntaje: 20 puntos, con los 3 logros acreditados, y 96 en total en la Tabla gene
 
 El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7).
 
-## Etapa 5 — Generación de código: PLANIFICADA
+## Etapa 5 — Generación de código: IMPLEMENTADA, SIN ENTREGAR
 
 Entrega: 20/11/2026 a las 16:00; Entrega Anticipada, hasta el 18/11 a las 16:00, que es el
 objetivo. Traduce el programa a CeIASM, el lenguaje de la CeIVM, y escribe el archivo de salida:
-`java -jar Compilador.jar programa.java salida.txt`. Sin logros de código: sólo Entrega Anticipada,
-Imbatibilidad y Congrats!.
+`java -jar Compilador.jar programa.java salida.txt`. Es la etapa por defecto, y su corpus está en la
+raíz de `compilador/resources/` (`mvn test -Pfase-generacion`). Una pasada separada después del
+chequeo: cada nodo genera sus instrucciones, con los desplazamientos que fijó el análisis semántico.
+Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y Congrats!.
 
-El material está leído y el plan, escrito: [`etapas/etapa-5/plan.md`](etapas/etapa-5/plan.md).
-Todavía no hay código.
+| | |
+|---|---|
+| Cátedra | los 4 casos pasan con su tester, que corre la CeIVM |
+| Corpus a mano | 55 programas, contrastados con su primera línea y con `javac`/`java` 25 |
+| Errores | 10 del punto de entrada, los 376 de la Etapa 4 por la Etapa 5, y 18 de ejecución |
+| Diferencial | 300 programas generados al azar en cada corrida, y 3.000 a pedido, iguales a Java |
+| Robustez | los ~40.000 fuentes anteriores generan sin caerse y lo generado ensambla |
+| Suite | 18.751 tests; 98 % de instrucciones y 95 % de ramas; mutación 95 %, y 97 % en la generación |
+| Informe | `etapas/etapa-5/entregables/` |
 
 **Pendiente abierto:** mandarle al profesor las cinco consultas de
 `etapas/etapa-5/consultas/dudas.pdf`: el error si falta `main` o hay dos, el mensaje de los
 errores de ejecución, el valor de los escapes, el orden de evaluación de una asignación y si dos
-literales String iguales son el mismo objeto. Cada una tiene una propuesta que se implementa
-mientras tanto.
+literales String iguales son el mismo objeto. Cada una tiene su propuesta implementada
+([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §2).

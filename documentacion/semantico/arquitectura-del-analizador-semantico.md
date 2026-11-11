@@ -92,6 +92,11 @@ classDiagram
         +chequearDeclaraciones()$
         +consolidar()$
         +chequearSentencias()$
+        -finDeArchivo : Token$
+        -puntoDeEntrada : Metodo$
+        +setFinDeArchivo(Token)$
+        +chequearPuntoDeEntrada()$
+        +generarCodigo(Generador)$
     }
     class EntidadesPredefinidas {
         ~OBJECT : String$
@@ -122,6 +127,12 @@ classDiagram
     }
     class ClaseOInterfaz {
         <<abstract>>
+        -disposicionDeVT : List~ClaveDeMetodo~
+        #heredarDisposicion(ClaseOInterfaz)
+        #agregarPropiosALaVT()
+        -agregarALaVT(ClaveDeMetodo)
+        +disposicionDeVT() List~ClaveDeMetodo~
+        +offsetEnVT(ClaveDeMetodo) int
     }
     TablaDeSimbolos *-- ClaseOInterfaz : *
     TablaDeSimbolos ..> EntidadesPredefinidas : carga
@@ -169,6 +180,12 @@ classDiagram
         #verificarUnSoloParametroDeTipo()
         -ancestroQueAportaUnParametro(Set~ClaseOInterfaz~) Optional~TipoReferencia~
         -tieneParametroDeTipo(Set~ClaseOInterfaz~) boolean
+        -disposicionDeVT : List~ClaveDeMetodo~
+        #heredarDisposicion(ClaseOInterfaz)
+        #agregarPropiosALaVT()
+        -agregarALaVT(ClaveDeMetodo)
+        +disposicionDeVT() List~ClaveDeMetodo~
+        +offsetEnVT(ClaveDeMetodo) int
     }
     class ControlDeRedefinicion {
         <<interface>>
@@ -198,6 +215,11 @@ classDiagram
         -heredarAtributos(Clase, Sustitucion)
         -controlarRedefinicion(Metodo, Metodo, ClaseOInterfaz)$
         -verificarImplementacion(Interfaz, Sustitucion)
+        +generar(Generador)
+        +main() Optional~Metodo~
+        +offsetDeAtributo(String) int
+        +tamanioDelCIR() int
+        -unidadesPropias() List~Unidad~
     }
     class Interfaz {
         +Interfaz(Token)
@@ -273,6 +295,14 @@ classDiagram
         ~chequearCuerpo(Clase)
         +agregarParametro(Token, Tipo)
         #verificarParametrosEn(ClaseOInterfaz, boolean)
+        +esDeInstancia()* boolean
+        +etiqueta()* String
+        -celdaDeThis() int
+        +offsetDeParametro(int) int
+        +offsetDeRetorno() int
+        +celdasALiberar() int
+        +generar(Generador)
+        +generarFin(Generador)
     }
     class Metodo {
         -estatico : boolean
@@ -286,10 +316,15 @@ classDiagram
         +mismaSignaturaQue(Metodo) boolean
         ~estaBienDeclarado(ClaseOInterfaz)
         ~instanciado(Sustitucion) Metodo
+        +esDeInstancia() boolean
+        +etiqueta() String
+        +esVoid() boolean
     }
     class Constructor {
         +Constructor(Token)
         ~estaBienDeclarado(Clase)
+        +esDeInstancia() boolean
+        +etiqueta() String
     }
     class Parametro {
         <<record>>
@@ -311,6 +346,12 @@ classDiagram
     }
     class ClaseOInterfaz {
         <<abstract>>
+        -disposicionDeVT : List~ClaveDeMetodo~
+        #heredarDisposicion(ClaseOInterfaz)
+        #agregarPropiosALaVT()
+        -agregarALaVT(ClaveDeMetodo)
+        +disposicionDeVT() List~ClaveDeMetodo~
+        +offsetEnVT(ClaveDeMetodo) int
     }
     class NodoBloque
     Miembro <|.. Atributo
@@ -452,6 +493,12 @@ classDiagram
     }
     class ClaseOInterfaz {
         <<abstract>>
+        -disposicionDeVT : List~ClaveDeMetodo~
+        #heredarDisposicion(ClaseOInterfaz)
+        #agregarPropiosALaVT()
+        -agregarALaVT(ClaveDeMetodo)
+        +disposicionDeVT() List~ClaveDeMetodo~
+        +offsetEnVT(ClaveDeMetodo) int
     }
     Tipo <|.. TipoPrimitivo
     Tipo <|.. TipoVoid

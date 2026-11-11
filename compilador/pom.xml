@@ -266,6 +266,7 @@
                                 <param>minijava.casos.TesterDeCasosSemanticosEstricto</param>
                                 <param>minijava.sentencias.*Test</param>
                                 <param>minijava.casos.TesterDeCasosSentenciasEstricto</param>
+                                <param>minijava.generacion.*Test</param>
                             </targetTests>
                             <!-- La implementación de referencia de la cátedra no se
                                  testea ni se usa: mutarla sólo produce ruido. -->
@@ -287,6 +288,8 @@
                                 <param>minijava.sentencias.*FuzzTest</param>
                                 <param>minijava.sentencias.Robustez*Test</param>
                                 <param>minijava.sentencias.CorpusGenerado*Test</param>
+                                <param>minijava.generacion.RobustezDeLaGeneracionTest</param>
+                                <param>minijava.generacion.ContrasteDiferencialTest</param>
                             </excludedTestClasses>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>

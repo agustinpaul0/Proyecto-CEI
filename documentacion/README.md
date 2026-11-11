@@ -16,6 +16,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 | [`sintactico/`](sintactico/README.md) | **Etapa 2 — Analizador Sintáctico.** La gramática (original, transformación y final), arquitectura, decisiones y logros. |
 | [`semantico/`](semantico/README.md) | **Etapa 3 — Analizador Semántico, Parte I.** La tabla de símbolos, el esquema de traducción, los controles y sus errores. |
 | [`sentencias/`](sentencias/README.md) | **Etapa 4 — Analizador Semántico, Parte II.** Los AST, su esquema de traducción, el chequeo de sentencias y sus errores. |
+| [`generacion/`](generacion/README.md) | **Etapa 5 — Generación de código.** La traducción a CeIASM, las estructuras en ejecución, las rutinas de soporte y los errores de ejecución. |
 | [`compartido/`](compartido/README.md) | Lo que **no pertenece a una sola etapa**: la estrategia de testing, el manejo de errores y el manejador de archivo. |
 | [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
 | [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos, reglas de sintaxis, semántica y la máquina virtual CeIVM. |
@@ -32,7 +33,8 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 2. [`sintactico/README.md`](sintactico/README.md) — la Etapa 2, el analizador sintáctico.
 3. [`semantico/README.md`](semantico/README.md) — la Etapa 3, la tabla de símbolos.
 4. [`sentencias/README.md`](sentencias/README.md) — la Etapa 4, los AST y el chequeo de sentencias.
-5. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
+5. [`generacion/README.md`](generacion/README.md) — la Etapa 5, la generación de código para la CeIVM.
+6. [`compartido/manejo-de-errores.md`](compartido/manejo-de-errores.md) — cómo se reporta un error.
 
 **Si vas a escribir código**, primero:
 
@@ -49,7 +51,7 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 | 2 | Analizador Sintáctico Descendente Recursivo | entregada y corregida, sin observaciones |
 | 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | entregada y corregida, sin observaciones |
 | 4 | Analizador Semántico, Parte II: AST y chequeo de sentencias | entregada y corregida, sin observaciones |
-| 5 | Generación de código para la máquina virtual CeIVM | **planificada** — sin logros de código |
+| 5 | Generación de código para la máquina virtual CeIVM | **implementada** — sin logros de código |
 
 ## Las dos reglas que gobiernan todas las decisiones
 
