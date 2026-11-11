@@ -57,8 +57,8 @@ parámetro (el control 22). El chequeo de declaraciones sigue los dos, también 
 ## Etapa 4 — Analizador Semántico, Parte II: TERMINADA
 
 Entregada dentro del plazo de la Entrega Anticipada (28/10/2026) y corregida sin comentarios.
-Corre con `--etapa=4`, y su corpus está en la raíz de `compilador/resources/`
-(`mvn test -Pfase-sentencias`) hasta que el de la Etapa 5 ocupe su lugar. El sintáctico arma el AST de cada cuerpo con acciones de una EDT y lo cuelga de su unidad; después de
+Corre con `--etapa=4`, y su corpus está en `compilador/resources/sentencias/`
+(`mvn test -Pfase-sentencias`). El sintáctico arma el AST de cada cuerpo con acciones de una EDT y lo cuelga de su unidad; después de
 las declaraciones y la consolidación, cada nodo se chequea por delegación. Sin logros de código: sólo
 Imbatibilidad, Entrega Anticipada y Grandioso Laburo!.
 
@@ -95,8 +95,14 @@ Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y Congrats!.
 | Suite | 18.751 tests; 98 % de instrucciones y 95 % de ramas; mutación 95 %, y 97 % en la generación |
 | Informe | `etapas/etapa-5/entregables/` |
 
-**Pendiente abierto:** mandarle al profesor las cinco consultas de
-`etapas/etapa-5/consultas/dudas.pdf`: el error si falta `main` o hay dos, el mensaje de los
-errores de ejecución, el valor de los escapes, el orden de evaluación de una asignación y si dos
-literales String iguales son el mismo objeto. Cada una tiene su propuesta implementada
-([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §2).
+**Pendiente abierto:** la respuesta del profesor a dos envíos.
+
+- Las cinco consultas de `etapas/etapa-5/consultas/dudas.pdf`: el error si falta `main` o hay dos,
+  el mensaje de los errores de ejecución, el valor de los escapes, el orden de evaluación de una
+  asignación y si dos literales String iguales son el mismo objeto. Cada una tiene su propuesta
+  implementada
+  ([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §2).
+- Una consulta aparte, por mensaje: el `.out` de ejemplo de los testers contradice al documento
+  (§7) en `System.read()`, al que le resta 48, y en `debugPrint`, que no salta de línea. Se sigue el
+  documento: `read` devuelve el byte tal cual y `debugPrint` termina la línea
+  ([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §4).

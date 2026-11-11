@@ -12,7 +12,7 @@ etapas anteriores, a CeIASM, el lenguaje de la máquina virtual de la cátedra (
 | Diseño | Una pasada separada después del chequeo: cada nodo del AST y cada unidad generan sus instrucciones. Los desplazamientos los fija el análisis semántico. |
 | Ejecución | `java -jar CeIVM-cei2011.jar salida.txt`, con la CeIVM que está en `compilador/`. |
 | Logros | Sólo los que no piden código: Entrega Anticipada, Imbatibilidad y Congrats! |
-| Consultas al profesor | Cinco, pendientes: [`../../etapas/etapa-5/consultas/dudas.pdf`](../../etapas/etapa-5/consultas/dudas.pdf). Cada una tiene su propuesta implementada. |
+| Consultas al profesor | Pendientes: las cinco de [`../../etapas/etapa-5/consultas/dudas.pdf`](../../etapas/etapa-5/consultas/dudas.pdf) y, por mensaje, los dos defectos del `.out` de ejemplo ([`decisiones-de-logica.md`](decisiones-de-logica.md) §4). Cada una tiene su propuesta implementada. |
 
 ## Documentos
 

@@ -57,4 +57,5 @@ El `.out` de ejemplo que acompaña a la CeIVM y a los testers (`[gen-01.java].ou
   para un `5`;
 - su `debugPrint` no salta de línea; el documento dice que «imprime un entero y finaliza la línea».
 
-El tester de la cátedra busca fragmentos, así que acepta las dos formas.
+El tester de la cátedra busca fragmentos, así que acepta las dos formas. Los dos puntos están
+consultados al profesor.
