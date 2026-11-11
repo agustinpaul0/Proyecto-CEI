@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 24/10/2026
+**Última actualización:** 11/11/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -54,13 +54,16 @@ permitía, y el profesor aclaró que un tipo que hereda sin argumento no puede d
 parámetro (el control 22). El chequeo de declaraciones sigue los dos, también con `--etapa=3`
 (`documentacion/sentencias/decisiones-de-logica.md` §4).
 
-## Etapa 4 — Analizador Semántico, Parte II: IMPLEMENTADA, SIN ENTREGAR
+## Etapa 4 — Analizador Semántico, Parte II: TERMINADA
 
-Entrega: 30/10/2026 a las 16:00; Entrega Anticipada, hasta el 28/10 a las 16:00. Corre con
-`--etapa=4`, que es la etapa por defecto, y su corpus está en la raíz de `compilador/resources/`
-(`mvn test -Pfase-sentencias`). El sintáctico arma el AST de cada cuerpo con acciones de una EDT y
-lo cuelga de su unidad; después de las declaraciones y la consolidación, cada nodo se chequea por
-delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Grandioso Laburo!.
+Entregada dentro del plazo de la Entrega Anticipada (28/10/2026) y corregida sin comentarios.
+Corre con `--etapa=4`, y su corpus está en la raíz de `compilador/resources/`
+(`mvn test -Pfase-sentencias`) hasta que el de la Etapa 5 ocupe su lugar. El sintáctico arma el AST de cada cuerpo con acciones de una EDT y lo cuelga de su unidad; después de
+las declaraciones y la consolidación, cada nodo se chequea por delegación. Sin logros de código: sólo
+Imbatibilidad, Entrega Anticipada y Grandioso Laburo!.
+
+Puntaje: 20 puntos, con los 3 logros acreditados, y 96 en total en la Tabla general de Puntos
+(`etapas/Tabla general de Puntos.pdf`).
 
 | | |
 |---|---|
@@ -73,4 +76,18 @@ delegación. Sin logros de código: sólo Imbatibilidad, Entrega Anticipada y Gr
 
 El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7).
 
-## Etapa 5: SIN EMPEZAR
+## Etapa 5 — Generación de código: PLANIFICADA
+
+Entrega: 20/11/2026 a las 16:00; Entrega Anticipada, hasta el 18/11 a las 16:00, que es el
+objetivo. Traduce el programa a CeIASM, el lenguaje de la CeIVM, y escribe el archivo de salida:
+`java -jar Compilador.jar programa.java salida.txt`. Sin logros de código: sólo Entrega Anticipada,
+Imbatibilidad y Congrats!.
+
+El material está leído y el plan, escrito: [`etapas/etapa-5/plan.md`](etapas/etapa-5/plan.md).
+Todavía no hay código.
+
+**Pendiente abierto:** mandarle al profesor las cinco consultas de
+`etapas/etapa-5/consultas/dudas.pdf`: el error si falta `main` o hay dos, el mensaje de los
+errores de ejecución, el valor de los escapes, el orden de evaluación de una asignación y si dos
+literales String iguales son el mismo objeto. Cada una tiene una propuesta que se implementa
+mientras tanto.

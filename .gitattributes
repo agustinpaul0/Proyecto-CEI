@@ -6,3 +6,4 @@
 .gitattributes export-ignore
 compilador/.run export-ignore
 compilador/.run/** export-ignore
+etapas/etapa-5/plan.md export-ignore

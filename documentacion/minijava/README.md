@@ -9,6 +9,7 @@ Viven acá y no dentro de `etapas/` porque los usan todas las etapas.
 | `Reglas de Sintaxis MiniJava 2026.pdf` | La gramática del lenguaje en notación BNF-extendida. Es la fuente de la Etapa 2. |
 | `MiniJava-Semantica-2026-Parte 1.pdf` | Los controles semánticos de las declaraciones: tabla de símbolos, tipos, genericidad, herencia y entidades predefinidas. Es la fuente de la Etapa 3. |
 | `MiniJava-Semantica-Completa-2026.pdf` | El documento completo: las declaraciones de la Parte I, con las aclaraciones de genericidad y contexto estático, y los controles de expresiones y sentencias (conformidad, nombres, operadores, llamadas, arreglos, sentencias). Es la fuente de la Etapa 4, y reemplaza a la Parte I donde se contradicen. |
+| `Apunte-CeIVM-2026.pdf` | La máquina virtual CeIVM y su lenguaje CeIASM: memoria, instrucciones, registros de activación, CIR, tablas virtuales, arreglos, Strings, predefinidos, errores de ejecución y las rutinas del heap. Es la fuente de la Etapa 5. |
 
 ## Cómo leerlos
 
@@ -28,6 +29,8 @@ permitido usar extracción de texto **sólo** para ubicar en qué página está 
 - Semántica, documento completo → [`../sentencias/`](../sentencias/README.md), y los cambios que
   impone a las declaraciones, en
   [`../sentencias/decisiones-de-logica.md`](../sentencias/decisiones-de-logica.md) §4
+- Apunte CeIVM → todavía sin documentación propia: el plan de la Etapa 5 está en
+  [`../../etapas/etapa-5/plan.md`](../../etapas/etapa-5/plan.md)
 
 Una nota sobre la transcripción: el PDF de sintaxis escribe `[]` como si fuera un símbolo, pero
 léxicamente son **dos** tokens — «Aspectos Léxicos» no define ningún token `[]`. La transcripción

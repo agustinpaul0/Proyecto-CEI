@@ -46,19 +46,25 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   decisión del usuario: sólo Entrega Anticipada, Imbatibilidad y Kudos. **El estado y las
   decisiones están en [`documentacion/semantico/README.md`](documentacion/semantico/README.md); lo
   que contestó el profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
-- **Etapa 4** (entrega 30/10/2026 a las 16:00; Entrega Anticipada hasta el 28/10): Analizador
+- **Etapa 4** (entregada como Entrega Anticipada y **corregida**, sin comentarios): Analizador
   Semántico, Parte II: AST y chequeo de sentencias. Sin logros de código, por decisión del usuario:
   sólo Imbatibilidad, Entrega Anticipada y Grandioso Laburo!. **El estado y las decisiones están en
   [`documentacion/sentencias/README.md`](documentacion/sentencias/README.md); lo que contestó el
   profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
-- Etapa 5 (traducción a código de la máquina virtual): sin especificación todavía.
+- **Etapa 5** (entrega 20/11/2026 a las 16:00; Entrega Anticipada hasta el 18/11, que es el
+  objetivo): generación de código para la CeIVM. Sin logros de código, por decisión del usuario:
+  sólo Entrega Anticipada, Imbatibilidad y Congrats!. Implementación lo más simple posible, por los
+  caminos que recomienda la cátedra; la suite de tests, lo más robusta posible. **El plan está en
+  [`etapas/etapa-5/plan.md`](etapas/etapa-5/plan.md), y las consultas al profesor, en
+  [`etapas/etapa-5/consultas/`](etapas/etapa-5/consultas/).**
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:
   `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf`,
   `documentacion/minijava/Reglas de Sintaxis MiniJava 2026.pdf`,
-  `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf` (la fuente de la Etapa 3) y
+  `documentacion/minijava/MiniJava-Semantica-2026-Parte 1.pdf` (la fuente de la Etapa 3),
   `documentacion/minijava/MiniJava-Semantica-Completa-2026.pdf` (la de la Etapa 4, que reemplaza a la
-  Parte I donde se contradicen).
+  Parte I donde se contradicen) y `documentacion/minijava/Apunte-CeIVM-2026.pdf` (la máquina virtual
+  y la traducción a CeIASM, la fuente de la Etapa 5).
 - Material provisto por la cátedra (no modificar la interfaz, sí se puede reemplazar/extender la
   implementación): `SourceManager`/`SourceManagerImpl` (contenido original intacto; viven en
   `minijava.comun.io`, agrupadas con la interfaz/implementación propia — no en un paquete aparte),
@@ -68,7 +74,10 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   con la guía de la Etapa 2). Los originales están en `vendor/`, que **no se versiona** y no
   lo lee nada del proyecto: lo que se usa está copiado adentro de `compilador/` (los testers en
   `src/test/java/catedra/`, los casos de ejemplo en `resources/catedra/sintactico/`,
-  `resources/catedra/semantico/` y `resources/catedra/sentencias/`).
+  `resources/catedra/semantico/` y `resources/catedra/sentencias/`). La Etapa 5 trae
+  `testersGeneracion/` (1 tester JUnit 4 que corre el código generado en la CeIVM + 4 casos de
+  ejemplo con su `.out` + guía de uso) y `CeiVM2026/` (el jar de la CeIVM, las rutinas del heap y un
+  ejemplo), todavía sin incorporar a `compilador/`.
 - Material ajeno de un compañero: `compilador/resources/corpus-externo/`, el corpus de
   fuzzing de Giuliano Taormina ya podado, que corre `CorpusExternoTest`. La atribución está en su
   `CREDITOS.md`; la poda, en `documentacion/compartido/estrategia-de-testing.md`. Y los casos
@@ -114,6 +123,8 @@ donde está el `pom.xml`). Las configuraciones versionadas «Suite Etapa 3» y �
 | Consultar el contrato de salida, el token de cada error o los logros de la Etapa 3 | `etapas/etapa-3/Pautas Etapa 3.pdf` (errores 28-30, éxito 31, informe 36, logros 38-41) |
 | Tocar los AST, el `Contexto` o un control de sentencias | [`documentacion/sentencias/README.md`](documentacion/sentencias/README.md) + `documentacion/minijava/MiniJava-Semantica-Completa-2026.pdf` (§9 a §14) + `etapas/etapa-4/Clase 09…11` |
 | Consultar el contrato de salida, el token de cada error o los logros de la Etapa 4 | `etapas/etapa-4/Pautas Etapa 4.pdf` (flujo 15-27, errores 30-31, éxito 32, informe 38, logros 39-48) |
+| Planificar o implementar la generación de código | [`etapas/etapa-5/plan.md`](etapas/etapa-5/plan.md) + `documentacion/minijava/Apunte-CeIVM-2026.pdf` + `etapas/etapa-5/Clase 12…16` |
+| Consultar la invocación, el contrato de salida o los logros de la Etapa 5 | `etapas/etapa-5/Pautas Etapa 5.pdf` (flujo 9-26, entrega 28, éxito 29, invocación 30, informe 34, logros 36-42) |
 | Cualquier duda de comportamiento que no aparece resuelta en ningún archivo de `documentacion/proyecto/` | [`documentacion/proyecto/protocolo-de-investigacion.md`](documentacion/proyecto/protocolo-de-investigacion.md) — **antes** de escribir código |
 | Tocar reconocimiento de un token, agregar/cambiar una regla léxica | [`documentacion/lexico/especificacion-lexica-de-minijava.md`](documentacion/lexico/especificacion-lexica-de-minijava.md) (tokens, ER formal y decisiones) |
 | Tocar un estado del AF, el driver, paquetes, o cualquier decisión estructural | [`documentacion/lexico/arquitectura-del-analizador-lexico.md`](documentacion/lexico/arquitectura-del-analizador-lexico.md) + [`documentacion/lexico/patron-state-metodo-por-estado.md`](documentacion/lexico/patron-state-metodo-por-estado.md) |

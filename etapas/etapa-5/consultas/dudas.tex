@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{article}
+\input{../../etapa-3/entregables/informe/preambulo}
+\fancyhead[L]{\footnotesize\color{tinta}Compiladores e Intérpretes --- Etapa 5}
+\fancyhead[R]{\footnotesize\color{tinta}Dudas}
+
+\newcommand{\cod}[1]{\texttt{#1}}
+\newcommand{\pregunta}[1]{\par\medskip\needspace{4\baselineskip}\noindent\textbf{#1}\par\smallskip}
+\DefineVerbatimEnvironment{fuente}{Verbatim}%
+  {fontsize=\small,xleftmargin=1.2em,frame=leftline,framerule=1.2pt,framesep=0.8em,numbers=left,numbersep=4pt}
+\usepackage{needspace}
+\titleformat{\section}{\Large\bfseries\raggedright}{\thesection}{0.7em}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55ex}
+
+\begin{document}
+\thispagestyle{fancy}
+\raggedright
+
+{\LARGE\bfseries Consultas --- Etapa 5 (generación de código)\par}
+\smallskip
+{\color{tinta}Agustín Paul --- L.U. 147524\par}
+\smallskip
+{\color{tinta}\rule{\textwidth}{0.6pt}}
+\medskip
+
+Te paso las dudas de la Etapa 5. En cada una hay un ejemplo y lo que pienso hacer; con un «sí» o
+con la otra opción me alcanza. «El documento» es \emph{Semántica de MiniJava -- Documento
+completo} (v3.0) y «el apunte», el \emph{Apunte CeIVM 2026}. Las líneas arrancan en 1.
+
+\pregunta{1. ¿Qué error doy si no hay \cod{main}, o si hay más de uno?}
+
+El documento (§8 y §14) deja para esta etapa el control del punto de entrada, y el apunte (§15)
+dice que todo programa declara un \cod{static void main()}. No encontré qué reportar:
+
+\begin{fuente}
+class Aa {
+    void main() { }
+}
+\end{fuente}
+
+Mi idea: cuenta sólo un \cod{main} estático, \cod{void} y sin parámetros, declarado en la clase (no
+heredado). Si no hay ninguno, un error semántico en el fin de archivo, como hace el sintáctico
+cuando falta algo al final: acá, \cod{[Error:\$|4]}, porque el archivo termina con un salto de
+línea. Si hay dos, en clases distintas, el error va
+en el nombre del segundo, como un nombre repetido.\\
+Alternativas: reportar en otro token, o no controlarlo (en Java compila y falla recién al ejecutar).
+
+\pregunta{2. Los errores de ejecución que controla mi código, ¿con qué mensaje terminan?}
+
+\begin{fuente}
+class Init {
+    static void main() {
+        var a = new int[2];
+        a[5] = 1;
+    }
+}
+\end{fuente}
+
+El apunte (§12 y §17) pide controlar el índice fuera de rango y el tamaño negativo, y sugiere una
+rutina que imprima un mensaje y haga \cod{HALT}. Pero tras un \cod{HALT} la CeIVM imprime «La
+ejecución del programa finalizó exitosamente.», como en un programa sin errores. Mi idea: imprimir
+\cod{Error en tiempo de ejecucion: indice fuera de rango} y terminar con \cod{HALT}.\\
+¿Está bien así, o preferís que termine provocando un error de la propia VM, para que no diga
+«exitosamente»? ¿Hay un formato de mensaje que esperen?
+
+\pregunta{3. ¿Qué valor tienen los escapes en los literales?}
+
+\begin{fuente}
+class Init {
+    static void main() {
+        System.printCln('\n');
+        System.printCln('\q');
+        System.printSln("a\tb");
+    }
+}
+\end{fuente}
+
+Los aspectos léxicos (§2.3.2) aceptan \cod{'\textbackslash x'} con cualquier \cod{x}, pero no dicen
+su valor, y para los Strings dicen que «el valor del literal corresponde a la cadena de caracteres
+entre las comillas». Mi idea: como en Java, \cod{\textbackslash n} es el salto de línea,
+\cod{\textbackslash t} el tabulador, etcétera, también dentro de los Strings; y como Java rechaza
+\cod{'\textbackslash q'}, para los escapes que Java no tiene, el valor es el carácter mismo
+(\cod{q}).\\
+Alternativa: los Strings se toman crudos, y \cod{"a\textbackslash tb"} tiene cuatro caracteres.
+
+\pregunta{4. Para confirmar: en una asignación a un atributo o a un arreglo, ¿evalúo primero el lado derecho?}
+
+\begin{fuente}
+class Init {
+    int x;
+    static Init obj() { debugPrint(1); return new Init(); }
+    static int val() { debugPrint(2); return 5; }
+    static void main() {
+        obj().x = val();
+    }
+}
+\end{fuente}
+
+Sigo el esquema de la Clase 16 (slides 18 a 29) y del apunte (§7): primero el valor, después la
+referencia, \cod{SWAP} y \cod{STOREREF}. Imprime 2 y después 1. En Java imprime 1 y después 2: el
+lado izquierdo se evalúa primero.\\
+Alternativa: hacerlo como Java.
+
+\pregunta{5. Para confirmar: dos literales String iguales, ¿son el mismo objeto?}
+
+\begin{fuente}
+class Init {
+    static void main() {
+        System.printBln("hola" == "hola");
+    }
+}
+\end{fuente}
+
+El apunte (§13) aloja cada literal en el heap y el documento (§11.2) compara las referencias por
+identidad, así que, creando el String cada vez que se evalúa el literal, imprime \cod{false}. En
+Java imprime \cod{true}, porque los literales iguales son el mismo objeto.\\
+Alternativa: crear cada literal distinto una sola vez, al arrancar, para que dé \cod{true} como en
+Java.
+
+\end{document}

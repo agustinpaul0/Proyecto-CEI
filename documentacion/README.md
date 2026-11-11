@@ -18,7 +18,7 @@ hace cada cosa de la forma en que la hace**, y de dónde sale cada decisión.
 | [`sentencias/`](sentencias/README.md) | **Etapa 4 — Analizador Semántico, Parte II.** Los AST, su esquema de traducción, el chequeo de sentencias y sus errores. |
 | [`compartido/`](compartido/README.md) | Lo que **no pertenece a una sola etapa**: la estrategia de testing, el manejo de errores y el manejador de archivo. |
 | [`proyecto/`](proyecto/README.md) | Cómo se trabaja: el flujo de trabajo, el protocolo de investigación, las convenciones de la cátedra y los comandos. |
-| [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos, reglas de sintaxis y semántica. |
+| [`minijava/`](minijava/README.md) | Los PDF de la cátedra que describen **el lenguaje**, no una etapa: aspectos léxicos, reglas de sintaxis, semántica y la máquina virtual CeIVM. |
 
 Lo que el profesor indicó explícitamente, con ejemplos de qué acepta el compilador y qué no, está
 reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
@@ -48,8 +48,8 @@ reunido en [`../CONVENCIONES-CATEDRA.md`](../CONVENCIONES-CATEDRA.md).
 | 1 | Analizador Léxico + Módulo Principal | entregada y corregida, sin observaciones |
 | 2 | Analizador Sintáctico Descendente Recursivo | entregada y corregida, sin observaciones |
 | 3 | Analizador Semántico, Parte I: tabla de símbolos y chequeo de declaraciones | entregada y corregida, sin observaciones |
-| 4 | Analizador Semántico, Parte II: AST y chequeo de sentencias | **implementada** — sin logros de código |
-| 5 | Traducción a código de la máquina virtual | sin especificación todavía |
+| 4 | Analizador Semántico, Parte II: AST y chequeo de sentencias | entregada y corregida, sin observaciones |
+| 5 | Generación de código para la máquina virtual CeIVM | **planificada** — sin logros de código |
 
 ## Las dos reglas que gobiernan todas las decisiones
 

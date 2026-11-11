@@ -72,6 +72,22 @@ La Etapa 4 agrega las suyas, de `Pautas Etapa 4.pdf`:
 - El informe indica cómo compilar y correr, e incluye el diagrama de clases de los AST y los logros
   que se intentan (slide 38).
 
+La Etapa 5 agrega las suyas, de `Pautas Etapa 5.pdf`:
+
+- Si los chequeos terminan sin errores, el Módulo Principal le pide a la tabla de símbolos que
+  genere el código: cada nodo del AST genera las instrucciones CeIVM de lo que representa, y el
+  resultado va al archivo de salida (slides 22-23).
+- Invocación: `java -jar Compilador.jar programa1.java salida.txt`, el fuente y el archivo de salida,
+  con **cualquier extensión** (slide 30).
+- Análisis exitoso → `Compilacion Exitosa` y después `[SinErrores]` (slide 29), y el archivo de
+  salida con el código generado (slide 24). El código tiene que correr en la CeIVM y hacer lo que
+  dice el fuente (slide 25).
+- Los errores se manejan como en las etapas anteriores (slide 26).
+- El tester de la cátedra corre el `.out` con la CeIVM desde la raíz del proyecto y busca en su
+  salida cada fragmento de la primera línea del caso, `///1234&exitosamente`, separados por `&`
+  (guía de los testers, slides 7-14).
+- El informe indica cómo compilar y correr, y los logros que se intentan (slide 34).
+
 ## Invariantes técnicas duras
 
 - **Sin `System.exit()` en ningún punto del código de producción.** Los testers de la cátedra
