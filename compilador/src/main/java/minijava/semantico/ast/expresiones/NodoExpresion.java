@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -12,6 +13,18 @@ import minijava.semantico.tipos.Tipo;
 public abstract class NodoExpresion {
 
     public abstract Tipo chequear(Contexto contexto) throws ExcepcionSemantica;
+
+    // Clase 16, slides 10-11: deja el valor de la expresión en el tope de la pila.
+    // Corre sólo sobre un AST ya chequeado, que dejó resueltos los nombres.
+    public abstract void generar(Generador g);
+
+    // Con el valor a asignar en el tope, lo guarda en el destino que designa esta
+    // expresión y lo consume. Es el lado izquierdo de la Clase 16, slide 29: en lugar
+    // de una marca de «lado izquierdo», un método aparte. Sólo lo llama una
+    // asignación sobre un destino que el chequeo ya encontró asignable.
+    public void generarAlmacenamiento(Generador g) {
+        throw new IllegalStateException(this + " no es un destino asignable");
+    }
 
     // El token donde javac ubica un error de la expresión entera, por ejemplo una
     // condición que no es boolean: el operador de una binaria, el `[` de un

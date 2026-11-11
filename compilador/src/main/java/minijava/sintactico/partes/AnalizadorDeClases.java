@@ -25,6 +25,7 @@ public final class AnalizadorDeClases extends ParteDelAnalizador {
     // Inicial -> ListaClases eof
     public void inicial() throws ExcepcionLexica, ExcepcionSintactica {
         listaClases();
+        TablaDeSimbolos.setFinDeArchivo(actual());
         match(TipoDeToken.EOF);
     }
 

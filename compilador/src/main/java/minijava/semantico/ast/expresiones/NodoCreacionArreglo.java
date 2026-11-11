@@ -1,5 +1,7 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.RutinasDeSoporte;
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -35,6 +37,31 @@ public final class NodoCreacionArreglo extends NodoExpresion {
             }
         }
         return TipoArreglo.de(base, tamanios.size());
+    }
+
+    // Apunte §12. Con una dimensión, la rutina crea el arreglo. Con más, los tamaños
+    // van a un arreglo de enteros que recorre la rutina recursiva desde el nivel 0.
+    @Override
+    public void generar(Generador g) {
+        g.gen("RMEM 1");
+        if (tamanios.size() == 1) {
+            tamanios.getFirst().generar(g);
+            g.gen("PUSH " + RutinasDeSoporte.NUEVO_ARREGLO);
+            g.gen("CALL");
+            return;
+        }
+        g.gen("RMEM 1");
+        g.gen("PUSH " + tamanios.size());
+        g.gen("PUSH " + RutinasDeSoporte.NUEVO_ARREGLO);
+        g.gen("CALL");
+        for (int i = 0; i < tamanios.size(); i++) {
+            g.gen("DUP");
+            tamanios.get(i).generar(g);
+            g.gen("STOREREF " + (i + 2));
+        }
+        g.gen("PUSH 0");
+        g.gen("PUSH " + RutinasDeSoporte.NUEVO_ARREGLO_MULTI);
+        g.gen("CALL");
     }
 
     @Override

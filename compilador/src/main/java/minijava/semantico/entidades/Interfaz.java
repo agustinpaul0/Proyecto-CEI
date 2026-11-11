@@ -54,13 +54,18 @@ public final class Interfaz extends ClaseOInterfaz {
 
     @Override
     protected void consolidarConAncestros() throws ExcepcionSemantica {
+        ClaseOInterfaz object = TablaDeSimbolos.object();
+        object.consolidar();
+        heredarDisposicion(object);
         if (extendida != null) {
             Interfaz ancestro = (Interfaz) extendida.declaracion();
             ancestro.consolidar();
             heredarMetodos(ancestro, sustitucionHacia(extendida, ancestro),
                     Interfaz::controlarRedefinicion);
+            heredarDisposicion(ancestro);
         }
         verificarContraObject();
+        agregarPropiosALaVT();
     }
 
     private static void controlarRedefinicion(Metodo propio, Metodo heredado, ClaseOInterfaz ancestro)

@@ -16,13 +16,24 @@ class OpcionesDeInvocacionTest {
         return OpcionesDeInvocacion.parsear(argumentos);
     }
 
-    // El contrato de las Pautas: un único argumento, la ruta, sin ninguna opción.
+    // El contrato de las Pautas Etapa 5, slide 30: el fuente y el archivo de
+    // salida, sin ninguna opción.
     @Test
-    void conSoloLaRutaCorreLaEtapaCuatro() {
+    void conLaRutaYLaSalidaCorreLaEtapaCinco() {
+        var opciones = parsear("programa1.java", "salida.txt");
+
+        assertEquals(5, opciones.etapa());
+        assertEquals("programa1.java", opciones.rutaFuente());
+        assertEquals("salida.txt", opciones.rutaSalida());
+        assertTrue(opciones.avisos().isEmpty());
+    }
+
+    @Test
+    void conSoloLaRutaNoHaySalida() {
         var opciones = parsear("programa1.java");
 
-        assertEquals(4, opciones.etapa());
         assertEquals("programa1.java", opciones.rutaFuente());
+        assertNull(opciones.rutaSalida());
         assertTrue(opciones.avisos().isEmpty());
     }
 
@@ -36,14 +47,14 @@ class OpcionesDeInvocacionTest {
 
     // Cada etapa anterior se corrige por separado y es ejecutable de forma aislada.
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3})
+    @ValueSource(ints = {1, 2, 3, 4})
     void unaEtapaAnteriorSeSeleccionaConSuOpcion(int etapa) {
         assertEquals(etapa, parsear("--etapa=" + etapa, "programa1.java").etapa());
     }
 
     @Test
-    void laEtapaCuatroExplicitaEsLoMismoQueNoIndicarNinguna() {
-        assertEquals(parsear("fuente.java").etapa(), parsear("--etapa=4", "fuente.java").etapa());
+    void laEtapaCincoExplicitaEsLoMismoQueNoIndicarNinguna() {
+        assertEquals(parsear("fuente.java").etapa(), parsear("--etapa=5", "fuente.java").etapa());
     }
 
     @Test
@@ -52,7 +63,7 @@ class OpcionesDeInvocacionTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"--etapa=0", "--etapa=5", "--etapa=x", "--etapa="})
+    @ValueSource(strings = {"--etapa=0", "--etapa=6", "--etapa=x", "--etapa="})
     void unaEtapaNoSoportadaAvisaYCaeEnLaPorDefecto(String argumento) {
         var opciones = parsear(argumento, "fuente.java");
 
@@ -73,12 +84,21 @@ class OpcionesDeInvocacionTest {
     }
 
     @Test
-    void unSegundoArchivoAvisaYSeQuedaConElPrimero() {
-        var opciones = parsear("uno.java", "dos.java");
+    void unTercerArchivoAvisaYSeQuedaConLosDosPrimeros() {
+        var opciones = parsear("uno.java", "salida.txt", "dos.java");
 
         assertEquals("uno.java", opciones.rutaFuente());
+        assertEquals("salida.txt", opciones.rutaSalida());
         assertEquals(1, opciones.avisos().size());
         assertTrue(opciones.avisos().getFirst().contains("dos.java"), opciones.avisos().toString());
+    }
+
+    @Test
+    void laSalidaTambienSeAceptaConCualquierExtensionYAntesDeLasOpciones() {
+        var opciones = parsear("fuente.mjava", "salida", "--etapa=5");
+
+        assertEquals("salida", opciones.rutaSalida());
+        assertEquals(5, opciones.etapa());
     }
 
     // Cualquier extensión, incluida ninguna: lo exigen las Pautas explícitamente.
@@ -90,7 +110,7 @@ class OpcionesDeInvocacionTest {
 
     @Test
     void seAcumulaUnAvisoPorCadaProblemaDistinto() {
-        var opciones = parsear("--etapa=9", "--inventada", "uno.java", "dos.java");
+        var opciones = parsear("--etapa=9", "--inventada", "uno.java", "salida.txt", "dos.java");
 
         assertEquals(3, opciones.avisos().size(), opciones.avisos().toString());
     }

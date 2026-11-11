@@ -1,5 +1,6 @@
 package minijava.semantico.entidades;
 
+import minijava.generacion.Etiquetas;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.errores.ExcepcionSemantica;
 
@@ -7,6 +8,16 @@ public final class Constructor extends Unidad implements Miembro {
 
     public Constructor(Token nombre) {
         super(nombre);
+    }
+
+    @Override
+    public boolean esDeInstancia() {
+        return true;
+    }
+
+    @Override
+    public String etiqueta() {
+        return Etiquetas.constructor(declarante().nombre(), aridad());
     }
 
     void estaBienDeclarado(Clase clase) throws ExcepcionSemantica {

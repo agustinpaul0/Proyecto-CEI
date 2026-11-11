@@ -51,15 +51,16 @@ class CasosDeLaCatedraSentenciasTest {
         assertEquals(codigoEsperado(caso), lineas.getLast());
     }
 
-    // El tester de la cátedra llama a main() sólo con la ruta: la etapa por
-    // defecto tiene que ser la del chequeo de sentencias.
+    // La etapa por defecto, la de la generación de código, también corre el
+    // chequeo de sentencias, y un error lo reporta igual que la Etapa 4.
     @Test
     void sinIndicarLaEtapaCorreElChequeoDeSentencias() {
         PrintStream consola = System.out;
         ByteArrayOutputStream capturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(capturada, true, StandardCharsets.UTF_8));
         try {
-            Main.main(new String[]{RAIZ.resolve("conErrores/semIIError01.java").toString()});
+            Main.main(new String[]{RAIZ.resolve("conErrores/semIIError01.java").toString(),
+                    Path.of(System.getProperty("java.io.tmpdir"), "semIIError01.out").toString()});
         } finally {
             System.setOut(consola);
         }

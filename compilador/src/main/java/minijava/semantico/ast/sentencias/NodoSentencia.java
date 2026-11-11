@@ -1,5 +1,6 @@
 package minijava.semantico.ast.sentencias;
 
+import minijava.generacion.Generador;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.ast.expresiones.NodoExpresion;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -11,6 +12,9 @@ import minijava.semantico.tipos.TipoPrimitivo;
 public abstract class NodoSentencia {
 
     public abstract void chequear(Contexto contexto) throws ExcepcionSemantica;
+
+    // Clase 16: genera el código de la sentencia, que deja la pila como la encontró.
+    public abstract void generar(Generador g);
 
     // Documento §12.4: la condición de un if o de un while es boolean.
     protected static void chequearCondicion(NodoExpresion condicion, Contexto contexto)

@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
@@ -27,6 +28,18 @@ public final class NodoUnario extends NodoExpresion {
                     + " no admite el tipo " + tipo.nombre());
         }
         return esperado;
+    }
+
+    @Override
+    public void generar(Generador g) {
+        operando.generar(g);
+        switch (operador.tipo()) {
+            case OP_NEGACION -> g.gen("NOT");
+            case OP_RESTA -> g.gen("NEG");
+            default -> {
+                // El + unario no cambia el valor.
+            }
+        }
     }
 
     @Override

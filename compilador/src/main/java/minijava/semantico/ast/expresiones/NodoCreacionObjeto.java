@@ -1,5 +1,7 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Etiquetas;
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.entidades.Clase;
@@ -19,6 +21,8 @@ public final class NodoCreacionObjeto extends NodoExpresion {
     private final Token nuevo;
     private final TipoReferencia tipo;
     private final List<NodoExpresion> argumentos;
+    private Clase clase;
+    private Constructor constructor;
 
     public NodoCreacionObjeto(Token nuevo, TipoReferencia tipo, List<NodoExpresion> argumentos) {
         this.nuevo = nuevo;
@@ -30,15 +34,37 @@ public final class NodoCreacionObjeto extends NodoExpresion {
     public Tipo chequear(Contexto contexto) throws ExcepcionSemantica {
         tipo.verificarEn(contexto.clase(), contexto.esEstatico());
         ClaseOInterfaz declarado = tipo.declaracion();
-        if (!(declarado instanceof Clase clase)) {
+        if (!(declarado instanceof Clase claseCreada)) {
             throw new ExcepcionSemantica(nuevo, tipo.nombreDelTipo() + " es una interfaz y no se instancia");
         }
-        Constructor constructor = clase.constructor(argumentos.size()).orElseThrow(() ->
+        clase = claseCreada;
+        constructor = clase.constructor(argumentos.size()).orElseThrow(() ->
                 new ExcepcionSemantica(nuevo, clase.nombre() + " no tiene un constructor con "
                         + argumentos.size() + " parametros"));
         Argumentos.chequear(argumentos, constructor.parametros(),
                 ClaseOInterfaz.sustitucionHacia(tipo, clase), nuevo, contexto);
         return tipo;
+    }
+
+    // Apunte §11, p. 21: alojar el CIR, cargarle la VT, y llamar al constructor con
+    // la referencia como `this` debajo de los argumentos y como resultado debajo de
+    // todo.
+    @Override
+    public void generar(Generador g) {
+        g.gen("RMEM 1");
+        g.gen("PUSH " + clase.tamanioDelCIR());
+        g.gen("PUSH " + Etiquetas.MALLOC);
+        g.gen("CALL");
+        g.gen("DUP");
+        g.gen("PUSH " + Etiquetas.tablaVirtual(clase.nombre()));
+        g.gen("STOREREF 0");
+        g.gen("DUP");
+        for (NodoExpresion argumento : argumentos) {
+            argumento.generar(g);
+            g.gen("SWAP");
+        }
+        g.gen("PUSH " + constructor.etiqueta());
+        g.gen("CALL");
     }
 
     @Override

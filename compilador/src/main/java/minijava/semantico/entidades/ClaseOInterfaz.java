@@ -6,6 +6,7 @@ import minijava.semantico.tabla.TablaDeSimbolos;
 import minijava.semantico.tipos.Sustitucion;
 import minijava.semantico.tipos.TipoReferencia;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
     private final Map<ClaveDeMetodo, Metodo> metodosPropios = new LinkedHashMap<>();
     private Map<ClaveDeMetodo, Metodo> metodos = metodosPropios;
     private boolean consolidado;
+    private final List<ClaveDeMetodo> disposicionDeVT = new ArrayList<>();
 
     protected ClaseOInterfaz(Token token) {
         this.token = token;
@@ -98,6 +100,41 @@ public abstract sealed class ClaseOInterfaz permits Clase, Interfaz {
     }
 
     protected abstract void consolidarConAncestros() throws ExcepcionSemantica;
+
+    // Apunte §9 y §9.1: la entrada 0 es toString; siguen las de los ancestros, en
+    // su mismo desplazamiento, y después los métodos de instancia nuevos en el
+    // orden del fuente. Una redefinición reusa la entrada heredada y un estático
+    // no ocupa ninguna. Se calcula al consolidar, después de los ancestros (Clase
+    // 16, slides 36-37).
+    protected void heredarDisposicion(ClaseOInterfaz ancestro) {
+        ancestro.disposicionDeVT.forEach(this::agregarALaVT);
+    }
+
+    protected void agregarPropiosALaVT() {
+        for (Metodo propio : metodosPropios.values()) {
+            if (!propio.esEstatico()) {
+                agregarALaVT(propio.clave());
+            }
+        }
+    }
+
+    private void agregarALaVT(ClaveDeMetodo clave) {
+        if (!disposicionDeVT.contains(clave)) {
+            disposicionDeVT.add(clave);
+        }
+    }
+
+    public List<ClaveDeMetodo> disposicionDeVT() {
+        return List.copyOf(disposicionDeVT);
+    }
+
+    public int offsetEnVT(ClaveDeMetodo clave) {
+        int offset = disposicionDeVT.indexOf(clave);
+        if (offset < 0) {
+            throw new IllegalStateException(clave + " no esta en la VT de " + nombre());
+        }
+        return offset;
+    }
 
     protected void heredarMetodos(ClaseOInterfaz ancestro, Sustitucion sustitucion,
                                   ControlDeRedefinicion controlDeRedefinicion) throws ExcepcionSemantica {

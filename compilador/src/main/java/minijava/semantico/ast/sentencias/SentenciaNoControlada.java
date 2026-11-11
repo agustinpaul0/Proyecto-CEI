@@ -1,5 +1,6 @@
 package minijava.semantico.ast.sentencias;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -19,6 +20,11 @@ public final class SentenciaNoControlada extends NodoSentencia {
     public void chequear(Contexto contexto) throws ExcepcionSemantica {
         throw new ExcepcionSemantica(token, "La sentencia que empieza con " + token.lexema()
                 + " es de un logro que el compilador no controla");
+    }
+
+    @Override
+    public void generar(Generador g) {
+        throw new IllegalStateException("Una sentencia no controlada no pasa el chequeo: " + token);
     }
 
     @Override

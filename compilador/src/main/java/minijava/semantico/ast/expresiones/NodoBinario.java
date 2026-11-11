@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -51,6 +52,47 @@ public final class NodoBinario extends NodoExpresion {
     private ExcepcionSemantica error(Tipo tipoIzquierdo, Tipo tipoDerecho) {
         return new ExcepcionSemantica(operador, "El operador " + operador.lexema() + " no admite los tipos "
                 + tipoIzquierdo.nombre() + " y " + tipoDerecho.nombre());
+    }
+
+    @Override
+    public void generar(Generador g) {
+        izquierda.generar(g);
+        switch (operador.tipo()) {
+            case OP_AND -> cortocircuito(g, "BF");
+            case OP_OR -> cortocircuito(g, "BT");
+            default -> {
+                derecha.generar(g);
+                g.gen(instruccion());
+            }
+        }
+    }
+
+    // Documento §11.2: && y || se evalúan con cortocircuito. Si el izquierdo ya
+    // decide, queda como resultado y el derecho no se evalúa.
+    private void cortocircuito(Generador g, String salto) {
+        String fin = g.etiquetaNueva("cortocircuito");
+        g.gen("DUP");
+        g.gen(salto + " " + fin);
+        g.gen("POP");
+        derecha.generar(g);
+        g.etiqueta(fin);
+    }
+
+    private String instruccion() {
+        return switch (operador.tipo()) {
+            case OP_SUMA -> "ADD";
+            case OP_RESTA -> "SUB";
+            case OP_MULT -> "MUL";
+            case OP_DIV -> "DIV";
+            case OP_MODULO -> "MOD";
+            case OP_IGUAL -> "EQ";
+            case OP_DISTINTO -> "NE";
+            case OP_MENOR -> "LT";
+            case OP_MAYOR -> "GT";
+            case OP_MENOR_IGUAL -> "LE";
+            case OP_MAYOR_IGUAL -> "GE";
+            default -> throw new IllegalStateException("Operador binario sin instruccion: " + operador);
+        };
     }
 
     @Override

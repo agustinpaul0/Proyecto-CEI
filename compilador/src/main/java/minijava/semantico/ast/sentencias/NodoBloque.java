@@ -1,5 +1,6 @@
 package minijava.semantico.ast.sentencias;
 
+import minijava.generacion.Generador;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
 
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 public final class NodoBloque extends NodoSentencia {
 
     private final List<NodoSentencia> sentencias;
+    private int locales;
 
     public NodoBloque(List<NodoSentencia> sentencias) {
         this.sentencias = List.copyOf(sentencias);
@@ -22,7 +24,19 @@ public final class NodoBloque extends NodoSentencia {
         for (NodoSentencia sentencia : sentencias) {
             sentencia.chequear(contexto);
         }
+        locales = contexto.localesDelBloqueActual();
         contexto.cerrarBloque();
+    }
+
+    // Apunte §8: al cerrar el bloque se liberan sus locales.
+    @Override
+    public void generar(Generador g) {
+        for (NodoSentencia sentencia : sentencias) {
+            sentencia.generar(g);
+        }
+        if (locales > 0) {
+            g.gen("FMEM " + locales);
+        }
     }
 
     @Override

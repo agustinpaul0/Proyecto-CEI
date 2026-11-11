@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -21,6 +22,11 @@ public final class ExpresionNoControlada extends NodoExpresion {
     public Tipo chequear(Contexto contexto) throws ExcepcionSemantica {
         throw new ExcepcionSemantica(token, "La construccion con " + token.lexema()
                 + " es de un logro que el compilador no controla");
+    }
+
+    @Override
+    public void generar(Generador g) {
+        throw new IllegalStateException("Una construccion no controlada no pasa el chequeo: " + token);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package minijava.semantico.ast.sentencias;
 
+import minijava.semantico.tipos.TipoVoid;
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.ast.expresiones.NodoExpresion;
@@ -12,6 +14,7 @@ import minijava.semantico.errores.ExcepcionSemantica;
 public final class NodoSentenciaExpresion extends NodoSentencia {
 
     private final NodoExpresion expresion;
+    private boolean dejaUnValor;
 
     public NodoSentenciaExpresion(NodoExpresion expresion) {
         this.expresion = expresion;
@@ -19,12 +22,22 @@ public final class NodoSentenciaExpresion extends NodoSentencia {
 
     @Override
     public void chequear(Contexto contexto) throws ExcepcionSemantica {
-        expresion.chequear(contexto);
+        dejaUnValor = expresion.chequear(contexto) != TipoVoid.VOID;
         if (!expresion.esAsignacion() && !expresion.esLlamada()) {
             Token culpable = expresion instanceof NodoParentizada parentizada
                     ? parentizada.parentesis() : expresion.token();
             throw new ExcepcionSemantica(culpable,
                     "Como sentencia, una expresion tiene que ser una asignacion o una llamada");
+        }
+    }
+
+    // Apunte §7: el valor de una asignación, un new o una llamada con resultado no
+    // se usa, y se descarta.
+    @Override
+    public void generar(Generador g) {
+        expresion.generar(g);
+        if (dejaUnValor) {
+            g.gen("POP");
         }
     }
 

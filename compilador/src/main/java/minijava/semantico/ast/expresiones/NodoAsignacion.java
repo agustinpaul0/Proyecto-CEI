@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -33,6 +34,16 @@ public final class NodoAsignacion extends NodoExpresion {
             throw new ExcepcionSemantica(igual, "El lado izquierdo de la asignacion no es asignable");
         }
         return destino;
+    }
+
+    // Clase 16, slides 18-29, y Apunte §7: el valor, una copia que queda como
+    // resultado de la asignación, y el destino. El lado derecho se evalúa primero
+    // (consulta 4 al profesor, pendiente).
+    @Override
+    public void generar(Generador g) {
+        derecha.generar(g);
+        g.gen("DUP");
+        izquierda.generarAlmacenamiento(g);
     }
 
     @Override

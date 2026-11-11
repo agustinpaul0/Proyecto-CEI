@@ -1,5 +1,6 @@
 package minijava.semantico.ast;
 
+import minijava.generacion.Ubicacion;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.entidades.Clase;
 import minijava.semantico.entidades.Constructor;
@@ -32,6 +33,10 @@ public final class Contexto {
 
     public Clase clase() {
         return clase;
+    }
+
+    public Unidad unidad() {
+        return unidad;
     }
 
     public boolean esEstatico() {
@@ -74,7 +79,25 @@ public final class Contexto {
             throw new ExcepcionSemantica(nombre, "La variable local " + nombre.lexema()
                     + " ya esta declarada");
         }
-        bloques.peek().put(nombre.lexema(), new VariableLocal(nombre, tipo));
+        bloques.peek().put(nombre.lexema(), new VariableLocal(nombre, tipo, -localesVivas()));
+    }
+
+    // Las locales que ocupan el registro de activación en este punto: las de todos
+    // los bloques abiertos. Son las que libera un `return` (Apunte §8.1).
+    public int localesVivas() {
+        return bloques.stream().mapToInt(Map::size).sum();
+    }
+
+    public int localesDelBloqueActual() {
+        return bloques.peek().size();
+    }
+
+    // Dónde está la local o el parámetro con ese nombre, con la misma prioridad de
+    // localOParametro.
+    public Optional<Ubicacion> ubicacionDeLocalOParametro(String nombre) {
+        return local(nombre).map(VariableLocal::offset)
+                .or(() -> parametro(nombre).map(p -> unidad.offsetDeParametro(p.posicion())))
+                .map(Ubicacion.EnRegistroDeActivacion::new);
     }
 
     // Documento §10.1, pasos 1 y 2: primero una local visible, después un parámetro.

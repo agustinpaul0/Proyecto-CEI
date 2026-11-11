@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.entidades.Clase;
@@ -23,6 +24,7 @@ public final class NodoLlamadaEstatica extends NodoExpresion {
     private final Token nombre;
     private final Token parentesis;
     private final List<NodoExpresion> argumentos;
+    private Metodo metodo;
 
     public NodoLlamadaEstatica(Token clase, Token punto, Token nombre, Token parentesis,
                                List<NodoExpresion> argumentos) {
@@ -42,7 +44,7 @@ public final class NodoLlamadaEstatica extends NodoExpresion {
                     + " es una interfaz: sus metodos no se llaman con el nombre del tipo");
         }
         ClaveDeMetodo clave = new ClaveDeMetodo(nombre.lexema(), argumentos.size());
-        Metodo metodo = declarada.metodo(clave).orElseThrow(() -> new ExcepcionSemantica(punto,
+        metodo = declarada.metodo(clave).orElseThrow(() -> new ExcepcionSemantica(punto,
                 "El metodo " + clave + " no esta declarado en " + clase.lexema()));
         if (!metodo.esEstatico()) {
             throw new ExcepcionSemantica(punto, "El metodo " + clave
@@ -50,6 +52,11 @@ public final class NodoLlamadaEstatica extends NodoExpresion {
         }
         Argumentos.chequear(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
         return metodo.retorno();
+    }
+
+    @Override
+    public void generar(Generador g) {
+        Llamadas.estatica(g, metodo, argumentos);
     }
 
     @Override

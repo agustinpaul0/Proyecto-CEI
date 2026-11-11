@@ -1,5 +1,7 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.RutinasDeSoporte;
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -34,6 +36,29 @@ public final class NodoAccesoArreglo extends NodoExpresion {
                     + tipoDelIndice.nombre() + " y tiene que ser int");
         }
         return arreglo.componente();
+    }
+
+    // Apunte §12: la rutina controla el arreglo nulo y el rango, y deja la dirección
+    // arreglo+indice; el 2 saltea la VT y la longitud.
+    @Override
+    public void generar(Generador g) {
+        generarDireccion(g);
+        g.gen("LOADREF 2");
+    }
+
+    @Override
+    public void generarAlmacenamiento(Generador g) {
+        generarDireccion(g);
+        g.gen("SWAP");
+        g.gen("STOREREF 2");
+    }
+
+    private void generarDireccion(Generador g) {
+        g.gen("RMEM 1");
+        receptor.generar(g);
+        indice.generar(g);
+        g.gen("PUSH " + RutinasDeSoporte.COMPONENTE);
+        g.gen("CALL");
     }
 
     @Override

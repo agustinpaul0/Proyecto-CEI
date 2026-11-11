@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.entidades.ClaseOInterfaz;
@@ -22,6 +23,8 @@ public final class NodoLlamadaConReceptor extends NodoEncadenado {
 
     private final Token parentesis;
     private final List<NodoExpresion> argumentos;
+    private Metodo elegido;
+    private int offsetEnVT;
 
     public NodoLlamadaConReceptor(NodoExpresion receptor, Token punto, Token nombre, Token parentesis,
                                   List<NodoExpresion> argumentos) {
@@ -41,9 +44,10 @@ public final class NodoLlamadaConReceptor extends NodoEncadenado {
         ClaveDeMetodo clave = new ClaveDeMetodo(nombre.lexema(), argumentos.size());
         Sustitucion sustitucion = Sustitucion.identidad();
         Optional<Metodo> metodo;
+        ClaseOInterfaz declarado = TablaDeSimbolos.object();
         switch (tipoDelReceptor) {
             case TipoReferencia referencia -> {
-                ClaseOInterfaz declarado = TablaDeSimbolos.tipo(referencia.nombreDelTipo()).orElseThrow();
+                declarado = TablaDeSimbolos.tipo(referencia.nombreDelTipo()).orElseThrow();
                 sustitucion = ClaseOInterfaz.sustitucionHacia(referencia, declarado);
                 metodo = declarado.metodo(clave);
                 if (declarado instanceof Interfaz) {
@@ -53,9 +57,26 @@ public final class NodoLlamadaConReceptor extends NodoEncadenado {
             case TipoArreglo arreglo -> metodo = deObject(clave);
             default -> throw sinMiembros(tipoDelReceptor);
         }
-        Metodo elegido = metodo.orElseThrow(() -> noDeclarado("El metodo " + clave, tipoDelReceptor));
+        elegido = metodo.orElseThrow(() -> noDeclarado("El metodo " + clave, tipoDelReceptor));
         Argumentos.chequear(argumentos, elegido.parametros(), sustitucion, nombre, contexto);
+        if (!elegido.esEstatico()) {
+            offsetEnVT = declarado.offsetEnVT(clave);
+        }
         return elegido.retorno().instanciar(sustitucion);
+    }
+
+    // Documento §10.2: con un receptor se puede elegir un estático; el receptor se
+    // evalúa igual, y se descarta, porque no hay despacho dinámico. Un arreglo usa
+    // la VT de Object (Apunte §12).
+    @Override
+    public void generar(Generador g) {
+        receptor.generar(g);
+        if (elegido.esEstatico()) {
+            g.gen("POP");
+            Llamadas.estatica(g, elegido, argumentos);
+        } else {
+            Llamadas.dinamica(g, elegido, offsetEnVT, argumentos);
+        }
     }
 
     // Una interfaz y un arreglo ofrecen los métodos de instancia de Object

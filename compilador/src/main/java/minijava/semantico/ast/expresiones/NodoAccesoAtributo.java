@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.entidades.Atributo;
@@ -22,6 +23,7 @@ public final class NodoAccesoAtributo extends NodoEncadenado {
     // Lo único que no se sabe sin el tipo del receptor: si es el `length` de un
     // arreglo. Lo fija `chequear`, que la asignación corre antes de preguntar.
     private boolean esLengthDeArreglo;
+    private int offset;
 
     public NodoAccesoAtributo(NodoExpresion receptor, Token punto, Token nombre) {
         super(receptor, punto, nombre);
@@ -33,6 +35,7 @@ public final class NodoAccesoAtributo extends NodoEncadenado {
         switch (tipoDelReceptor) {
             case TipoArreglo arreglo when nombre.lexema().equals(LENGTH) -> {
                 esLengthDeArreglo = true;
+                offset = 1;
                 return TipoPrimitivo.INT;
             }
             case TipoArreglo arreglo -> throw noDeclarado("El atributo " + nombre.lexema(), tipoDelReceptor);
@@ -51,7 +54,22 @@ public final class NodoAccesoAtributo extends NodoEncadenado {
         }
         Atributo atributo = clase.atributo(nombre.lexema()).orElseThrow(() ->
                 noDeclarado("El atributo " + nombre.lexema(), referencia));
+        offset = clase.offsetDeAtributo(nombre.lexema());
         return atributo.tipo().instanciar(ClaseOInterfaz.sustitucionHacia(referencia, clase));
+    }
+
+    // El length de un arreglo está en el desplazamiento 1 (Apunte §12).
+    @Override
+    public void generar(Generador g) {
+        receptor.generar(g);
+        g.gen("LOADREF " + offset);
+    }
+
+    @Override
+    public void generarAlmacenamiento(Generador g) {
+        receptor.generar(g);
+        g.gen("SWAP");
+        g.gen("STOREREF " + offset);
     }
 
     @Override

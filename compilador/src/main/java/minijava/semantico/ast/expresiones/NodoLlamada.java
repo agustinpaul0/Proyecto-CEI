@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.entidades.ClaveDeMetodo;
@@ -17,6 +18,8 @@ public final class NodoLlamada extends NodoExpresion {
     private final Token nombre;
     private final Token parentesis;
     private final List<NodoExpresion> argumentos;
+    private Metodo metodo;
+    private int offsetEnVT;
 
     public NodoLlamada(Token nombre, Token parentesis, List<NodoExpresion> argumentos) {
         this.nombre = nombre;
@@ -27,14 +30,28 @@ public final class NodoLlamada extends NodoExpresion {
     @Override
     public Tipo chequear(Contexto contexto) throws ExcepcionSemantica {
         ClaveDeMetodo clave = new ClaveDeMetodo(nombre.lexema(), argumentos.size());
-        Metodo metodo = contexto.clase().metodo(clave).orElseThrow(() -> new ExcepcionSemantica(nombre,
+        metodo = contexto.clase().metodo(clave).orElseThrow(() -> new ExcepcionSemantica(nombre,
                 "El metodo " + clave + " no esta declarado en " + contexto.clase().nombre()));
         if (contexto.esEstatico() && !metodo.esEstatico()) {
             throw new ExcepcionSemantica(nombre, "El metodo de instancia " + clave
                     + " no se puede llamar sin receptor en un metodo estatico");
         }
         Argumentos.chequear(argumentos, metodo.parametros(), Sustitucion.identidad(), nombre, contexto);
+        if (!metodo.esEstatico()) {
+            offsetEnVT = contexto.clase().offsetEnVT(clave);
+        }
         return metodo.retorno();
+    }
+
+    // Sin receptor, un método de instancia se llama sobre `this`.
+    @Override
+    public void generar(Generador g) {
+        if (metodo.esEstatico()) {
+            Llamadas.estatica(g, metodo, argumentos);
+        } else {
+            g.gen("LOAD 3");
+            Llamadas.dinamica(g, metodo, offsetEnVT, argumentos);
+        }
     }
 
     // javac ubica en el `(` el error de una llamada cuyo resultado no sirve donde

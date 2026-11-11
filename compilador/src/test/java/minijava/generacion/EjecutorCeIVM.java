@@ -16,6 +16,8 @@ import java.nio.file.Path;
 public final class EjecutorCeIVM {
 
     private static final int MEMORIA = 8192;
+    // Lo que la CeIVM agrega al terminar bien, después de la salida del programa.
+    private static final String FIN_EXITOSO = "\n\nLa ejecución del programa finalizó exitosamente.";
 
     private EjecutorCeIVM() {
     }
@@ -47,9 +49,10 @@ public final class EjecutorCeIVM {
 
     public static Ejecucion correr(Path archivo, String entrada) {
         ByteArrayOutputStream salida = new ByteArrayOutputStream();
+        ByteArrayOutputStream errores = new ByteArrayOutputStream();
         CeIVMAPI vm = new CeIVMAPI(MEMORIA,
                 new ByteArrayInputStream(entrada.getBytes(StandardCharsets.UTF_8)),
-                salida, salida, StandardCharsets.UTF_8.name());
+                salida, errores, StandardCharsets.UTF_8.name());
         String error = null;
         try {
             vm.parseAndAssemble(archivo.toString());
@@ -59,7 +62,14 @@ public final class EjecutorCeIVM {
         } catch (Exception excepcion) {
             error = String.valueOf(excepcion.getMessage());
         }
-        return new Ejecucion(salida.toString(StandardCharsets.UTF_8), error);
+        String impreso = salida.toString(StandardCharsets.UTF_8);
+        int fin = impreso.lastIndexOf(FIN_EXITOSO);
+        if (fin >= 0) {
+            impreso = impreso.substring(0, fin);
+        } else if (error == null) {
+            error = "La CeIVM no informo el fin de la ejecucion: " + errores.toString(StandardCharsets.UTF_8);
+        }
+        return new Ejecucion(impreso, error);
     }
 
     // Sólo ensambla: para los fuentes de la robustez, que no se ejecutan.

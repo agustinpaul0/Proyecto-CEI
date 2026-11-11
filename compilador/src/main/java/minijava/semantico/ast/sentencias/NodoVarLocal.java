@@ -1,5 +1,6 @@
 package minijava.semantico.ast.sentencias;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.ast.expresiones.NodoExpresion;
@@ -34,6 +35,13 @@ public final class NodoVarLocal extends NodoSentencia {
                     + " a partir de un inicializador de tipo " + tipo.nombre());
         }
         contexto.declararLocal(nombre, tipo);
+    }
+
+    // Apunte §8: el valor del inicializador queda justo en la celda de la nueva
+    // local, que es el tope de la pila al empezar la sentencia.
+    @Override
+    public void generar(Generador g) {
+        inicial.generar(g);
     }
 
     @Override

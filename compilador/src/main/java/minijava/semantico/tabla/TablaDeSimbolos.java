@@ -1,10 +1,14 @@
 package minijava.semantico.tabla;
 
+import minijava.generacion.Etiquetas;
+import minijava.generacion.Generador;
+import minijava.generacion.RutinasDeSoporte;
 import minijava.lexico.tokens.TipoDeToken;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.entidades.Clase;
 import minijava.semantico.entidades.Interfaz;
 import minijava.semantico.entidades.ClaseOInterfaz;
+import minijava.semantico.entidades.Metodo;
 import minijava.semantico.entidades.Unidad;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tipos.TipoReferencia;
@@ -30,6 +34,8 @@ public final class TablaDeSimbolos {
     private static ClaseOInterfaz tipoActual;
     private static Unidad unidadActual;
     private static ExcepcionSemantica primerRepetido;
+    private static Token finDeArchivo;
+    private static Metodo puntoDeEntrada;
 
     static {
         inicializar();
@@ -45,6 +51,8 @@ public final class TablaDeSimbolos {
         tipoActual = null;
         unidadActual = null;
         primerRepetido = null;
+        finDeArchivo = null;
+        puntoDeEntrada = null;
         EntidadesPredefinidas.cargar();
     }
 
@@ -144,6 +152,49 @@ public final class TablaDeSimbolos {
         for (ClaseOInterfaz tipo : tipos.values()) {
             if (tipo instanceof Clase clase) {
                 clase.chequearSentencias();
+            }
+        }
+    }
+
+    public static void setFinDeArchivo(Token eof) {
+        finDeArchivo = eof;
+    }
+
+    // Documento §1, §8 y §14: el control del punto de entrada es de la Etapa 5, y el
+    // Apunte §15 dice que todo programa declara un `static void main()`. El error,
+    // si falta, va en el fin de archivo; si hay dos, en el nombre del segundo, en el
+    // orden del fuente, como un nombre repetido (consulta 1 al profesor, pendiente).
+    public static void chequearPuntoDeEntrada() throws ExcepcionSemantica {
+        puntoDeEntrada = null;
+        for (ClaseOInterfaz tipo : tipos.values()) {
+            if (tipo instanceof Clase clase && clase.main().isPresent()) {
+                Metodo main = clase.main().get();
+                if (puntoDeEntrada != null) {
+                    throw new ExcepcionSemantica(main.token(), "Ya hay un metodo main en "
+                            + puntoDeEntrada.declarante().nombre() + ": el programa tiene un solo punto de entrada");
+                }
+                puntoDeEntrada = main;
+            }
+        }
+        if (puntoDeEntrada == null) {
+            throw new ExcepcionSemantica(finDeArchivo, "El programa no declara un metodo static void main()");
+        }
+    }
+
+    // Pautas Etapa 5, slide 22, y Apunte §15: el código de inicialización, que
+    // prepara el heap, llama al main y detiene la máquina; las rutinas de soporte;
+    // y el de cada clase, en el orden del fuente.
+    public static void generarCodigo(Generador g) {
+        g.seccionDeCodigo();
+        g.gen("PUSH " + Etiquetas.HEAP_INIT);
+        g.gen("CALL");
+        g.gen("PUSH " + puntoDeEntrada.etiqueta());
+        g.gen("CALL");
+        g.gen("HALT");
+        RutinasDeSoporte.generar(g);
+        for (ClaseOInterfaz tipo : tipos.values()) {
+            if (tipo instanceof Clase clase) {
+                clase.generar(g);
             }
         }
     }

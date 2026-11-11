@@ -1,10 +1,12 @@
 package minijava.semantico.entidades;
 
+import minijava.generacion.Etiquetas;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.sentencias.NodoBloque;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tipos.Sustitucion;
 import minijava.semantico.tipos.Tipo;
+import minijava.semantico.tipos.TipoVoid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,20 @@ public final class Metodo extends Unidad implements Miembro {
 
     public Tipo retorno() {
         return retorno;
+    }
+
+    @Override
+    public boolean esDeInstancia() {
+        return !estatico;
+    }
+
+    @Override
+    public String etiqueta() {
+        return Etiquetas.metodo(declarante().nombre(), nombre(), aridad());
+    }
+
+    public boolean esVoid() {
+        return retorno == TipoVoid.VOID;
     }
 
     public ClaveDeMetodo clave() {

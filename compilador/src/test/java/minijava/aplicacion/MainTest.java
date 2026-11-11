@@ -44,7 +44,7 @@ class MainTest {
 
     @Test
     void conUnArchivoInexistenteInformaElProblemaYNoLanzaExcepcion(@TempDir Path dir) {
-        String salida = capturarSalidaDe(dir.resolve("no-existe.mjava").toString());
+        String salida = capturarSalidaDe(dir.resolve("no-existe.mjava").toString(), dir.resolve("s.out").toString());
 
         assertTrue(salida.contains("No se pudo leer el archivo fuente"), salida);
     }
@@ -53,21 +53,48 @@ class MainTest {
     @Test
     void aceptaCualquierExtensionDeArchivo(@TempDir Path dir) throws Exception {
         Path archivo = dir.resolve("fuente.loquesea");
-        Files.writeString(archivo, "class C1 {}\n");
+        Files.writeString(archivo, "class C1 { static void main() { } }\n");
+        Path salida = dir.resolve("salida.otra");
 
-        assertTrue(capturarSalidaDe(archivo.toString()).contains("[SinErrores]"));
+        assertTrue(capturarSalidaDe(archivo.toString(), salida.toString()).contains("[SinErrores]"));
+        assertTrue(Files.exists(salida));
         assertTrue(capturarSalidaDe("--etapa=1", archivo.toString()).contains("[SinErrores]"));
     }
 
     @Test
-    void sinEtapaCorreElAnalizadorSemantico(@TempDir Path dir) throws Exception {
+    void sinEtapaCorreElAnalizadorSemanticoYNoEscribeLaSalidaSiHayErrores(@TempDir Path dir) throws Exception {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, "class C1 extends Nada {}\n");
+        Path destino = dir.resolve("salida.txt");
 
-        String salida = capturarSalidaDe(archivo.toString());
+        String salida = capturarSalidaDe(archivo.toString(), destino.toString());
 
         assertTrue(salida.contains("[Error:Nada|1]"), salida);
         assertFalse(salida.contains("(pr_class,class,1)"), salida);
+        assertFalse(Files.exists(destino));
+    }
+
+    // Pautas Etapa 5, slide 30: el archivo de salida es parte de la invocación.
+    @Test
+    void sinArchivoDeSalidaLaEtapaCincoInformaElUso(@TempDir Path dir) throws Exception {
+        Path archivo = dir.resolve("fuente.mjava");
+        Files.writeString(archivo, "class C1 { static void main() { } }\n");
+
+        String salida = capturarSalidaDe(archivo.toString());
+
+        assertTrue(salida.contains("Uso:"), salida);
+        assertFalse(salida.contains("[SinErrores]"), salida);
+    }
+
+    @Test
+    void siNoPuedeEscribirLaSalidaLoInforma(@TempDir Path dir) throws Exception {
+        Path archivo = dir.resolve("fuente.mjava");
+        Files.writeString(archivo, "class C1 { static void main() { } }\n");
+
+        String salida = capturarSalidaDe(archivo.toString(), dir.resolve("no/existe/salida.txt").toString());
+
+        assertTrue(salida.contains("No se pudo escribir el archivo de salida"), salida);
+        assertFalse(salida.contains("[SinErrores]"), salida);
     }
 
     @Test
@@ -115,7 +142,7 @@ class MainTest {
         Path archivo = dir.resolve("fuente.mjava");
         Files.writeString(archivo, "class C1 {}\n");
 
-        String salida = capturarSalidaDe("--inventada", archivo.toString());
+        String salida = capturarSalidaDe("--inventada", "--etapa=4", archivo.toString());
 
         assertTrue(salida.contains("--inventada"), salida);
         assertTrue(salida.contains("[SinErrores]"), salida);

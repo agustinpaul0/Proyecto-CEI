@@ -1,5 +1,7 @@
 package minijava.semantico.entidades;
 
+import minijava.generacion.Generador;
+import minijava.generacion.Predefinidos;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.ast.sentencias.NodoBloque;
@@ -71,6 +73,55 @@ public abstract sealed class Unidad permits Metodo, Constructor {
         if (cuerpo != null) {
             cuerpo.chequear(new Contexto(clase, this));
         }
+    }
+
+    // Un método de instancia o un constructor: tiene `this` en el desplazamiento 3.
+    public abstract boolean esDeInstancia();
+
+    public abstract String etiqueta();
+
+    private int celdaDeThis() {
+        return esDeInstancia() ? 1 : 0;
+    }
+
+    // Apunte §10, tabla de la p. 19: con n parámetros, el i-ésimo (desde 1) está en
+    // n+3-i, o en n+4-i si hay `this`. `posicion` cuenta desde 0.
+    public int offsetDeParametro(int posicion) {
+        return aridad() + 2 - posicion + celdaDeThis();
+    }
+
+    public int offsetDeRetorno() {
+        return aridad() + 3 + celdaDeThis();
+    }
+
+    public int celdasALiberar() {
+        return aridad() + celdaDeThis();
+    }
+
+    // Apunte §8 y §10: prólogo, cuerpo y fin. El constructor por defecto y los
+    // métodos predefinidos no tienen cuerpo en el AST.
+    public void generar(Generador g) {
+        g.etiqueta(etiqueta());
+        g.gen("LOADFP");
+        g.gen("LOADSP");
+        g.gen("STOREFP");
+        if (cuerpo == null) {
+            Predefinidos.generarCuerpo(g, declarante.nombre(), nombre(), aridad());
+        } else {
+            cuerpo.generar(g);
+        }
+        generarFin(g);
+    }
+
+    // El final de la unidad, que también usa cada `return` después de liberar sus
+    // locales. Un constructor deja `this` como resultado del `new` (Apunte §11).
+    public void generarFin(Generador g) {
+        if (this instanceof Constructor) {
+            g.gen("LOAD 3");
+            g.gen("STORE " + offsetDeRetorno());
+        }
+        g.gen("STOREFP");
+        g.gen("RET " + celdasALiberar());
     }
 
     public void agregarParametro(Token nombre, Tipo tipo) {

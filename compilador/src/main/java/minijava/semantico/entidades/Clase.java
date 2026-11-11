@@ -1,5 +1,7 @@
 package minijava.semantico.entidades;
 
+import minijava.generacion.Etiquetas;
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.errores.ExcepcionSemantica;
 import minijava.semantico.tabla.TablaDeSimbolos;
@@ -116,6 +118,12 @@ public final class Clase extends ClaseOInterfaz {
     // que lo declara, así que los métodos heredados de la tabla consolidada se
     // saltean. Las unidades se recorren en el orden del fuente, como javac.
     public void chequearSentencias() throws ExcepcionSemantica {
+        for (Unidad unidad : unidadesPropias()) {
+            unidad.chequearCuerpo(this);
+        }
+    }
+
+    private List<Unidad> unidadesPropias() {
         List<Unidad> propias = new ArrayList<>(constructores.values());
         for (Metodo metodo : metodos()) {
             if (metodo.declarante() == this) {
@@ -123,9 +131,15 @@ public final class Clase extends ClaseOInterfaz {
             }
         }
         propias.sort(Comparator.comparingInt(unidadesEnOrden::indexOf));
-        for (Unidad unidad : propias) {
-            unidad.chequearCuerpo(this);
-        }
+        return propias;
+    }
+
+    // Documento §1 y Apunte §15: el punto de entrada es un `static void main()`
+    // que la clase declara.
+    public Optional<Metodo> main() {
+        return metodosPropios().stream()
+                .filter(m -> m.nombre().equals("main") && m.aridad() == 0 && m.esEstatico() && m.esVoid())
+                .findFirst();
     }
 
     @Override
@@ -182,11 +196,40 @@ public final class Clase extends ClaseOInterfaz {
             Sustitucion sustitucion = sustitucionHacia(padre, ancestro);
             heredarAtributos(ancestro, sustitucion);
             heredarMetodos(ancestro, sustitucion, Clase::controlarRedefinicion);
+            heredarDisposicion(ancestro);
         }
         if (interfaz != null) {
             Interfaz implementada = (Interfaz) interfaz.declaracion();
             implementada.consolidar();
             verificarImplementacion(implementada, sustitucionHacia(interfaz, implementada));
+            heredarDisposicion(implementada);
+        }
+        agregarPropiosALaVT();
+    }
+
+    // Apunte §9: el desplazamiento 0 del CIR es la VT, y los atributos siguen en el
+    // orden de la tabla consolidada, con los heredados primero. Así un atributo
+    // heredado tiene el mismo desplazamiento en el ancestro y en el descendiente.
+    public int offsetDeAtributo(String nombre) {
+        return new ArrayList<>(atributos.keySet()).indexOf(nombre) + 1;
+    }
+
+    public int tamanioDelCIR() {
+        return atributos.size() + 1;
+    }
+
+    // Clase 16, slides 37-41: la VT en .data y el código de cada unidad que declara
+    // esta clase. Las heredadas se generan en su clase, como se chequean.
+    public void generar(Generador g) {
+        g.seccionDeDatos();
+        List<String> implementaciones = new ArrayList<>();
+        for (ClaveDeMetodo clave : disposicionDeVT()) {
+            implementaciones.add(metodo(clave).orElseThrow().etiqueta());
+        }
+        g.datos(Etiquetas.tablaVirtual(nombre()), implementaciones);
+        g.seccionDeCodigo();
+        for (Unidad unidad : unidadesPropias()) {
+            unidad.generar(g);
         }
     }
 

@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -20,6 +21,11 @@ public final class NodoParentizada extends NodoExpresion {
     @Override
     public Tipo chequear(Contexto contexto) throws ExcepcionSemantica {
         return interna.chequear(contexto);
+    }
+
+    @Override
+    public void generar(Generador g) {
+        interna.generar(g);
     }
 
     // Como en javac, un error de tipo de la expresión entera se ubica adentro de

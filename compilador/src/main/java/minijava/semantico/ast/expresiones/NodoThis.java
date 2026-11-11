@@ -1,5 +1,6 @@
 package minijava.semantico.ast.expresiones;
 
+import minijava.generacion.Generador;
 import minijava.lexico.tokens.Token;
 import minijava.semantico.ast.Contexto;
 import minijava.semantico.errores.ExcepcionSemantica;
@@ -20,6 +21,11 @@ public final class NodoThis extends NodoExpresion {
             throw new ExcepcionSemantica(palabraThis, "this no se puede usar en un metodo estatico");
         }
         return contexto.tipoDeThis();
+    }
+
+    @Override
+    public void generar(Generador g) {
+        g.gen("LOAD 3");
     }
 
     @Override
