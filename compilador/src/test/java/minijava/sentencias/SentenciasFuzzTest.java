@@ -44,7 +44,7 @@ class SentenciasFuzzTest {
     }
 
     private static List<String> cargarFuentes() {
-        try (Stream<Path> archivos = Files.list(Path.of("resources", "sinErrores"))) {
+        try (Stream<Path> archivos = Files.list(Path.of("resources", "sentencias", "sinErrores"))) {
             List<String> fuentes = new ArrayList<>();
             for (Path archivo : archivos.sorted().toList()) {
                 fuentes.add(Files.readString(archivo));

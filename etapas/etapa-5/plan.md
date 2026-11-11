@@ -168,20 +168,22 @@ compilador: la salida esperada sale de Java o de la cátedra.
 
 ## 5. Orden de trabajo
 
-| Día | Qué |
-|---|---|
-| 11/11 | Plan, dudas al profesor, estado del repositorio al día. |
-| 12/11 | Mudar el corpus de la Etapa 4. Opciones y `Main`. `Generador`, arranque, rutinas del heap, predefinidos, `main`. Pasan `gen-01`. |
-| 13/11 | Offsets y VT al consolidar. Atributos, unidades, llamadas estáticas y dinámicas, `new`. Pasan `gen-02` a `gen-04`. |
-| 14/11 | Sentencias, operadores con cortocircuito, Strings, interfaces y genéricos. Corpus a mano en paralelo, contrastado con Java. |
-| 15/11 | Arreglos y errores de ejecución. Rutinas de soporte con sus unitarios. |
-| 16/11 | Generador diferencial, propiedades, robustez. Aplicar las respuestas del profesor. |
-| 17/11 | Cobertura y mutación. `documentacion/generacion/`, diagramas, informe mínimo, `/cerrar`. |
-| 18/11 | Prueba del zip desde GitHub y entrega antes de las 16:00. |
+Toda la etapa se hace el 11/11, en siete fases, con un commit por fase y los tests primero en cada
+una. Queda margen hasta la Entrega Anticipada del 18/11 para aplicar las respuestas del profesor.
+
+| Fase | Qué | Termina cuando |
+|---|---|---|
+| 1 | Mudar el corpus de la Etapa 4, la CeIVM en `compilador/`, el ejecutor en proceso, el tester de la cátedra y el perfil `fase-generacion` | las Etapas 1 a 4 siguen verdes |
+| 2 | Opciones y `Main`, `Generador`, arranque, rutinas del heap, predefinidos, `main`, unidades estáticas | pasa `gen-01` |
+| 3 | Offsets y VT al consolidar, atributos, locales, llamadas estáticas y dinámicas, `new`, `this` | pasan `gen-02` a `gen-04` |
+| 4 | Sentencias, operadores con cortocircuito, escapes, Strings, interfaces y genéricos | el corpus a mano de esas construcciones da lo mismo en la CeIVM y en Java |
+| 5 | Arreglos y errores de ejecución | los errores de ejecución dan su mensaje |
+| 6 | Adaptador a Java, generador diferencial, propiedades, robustez, mutación | `mvn verify` verde con todas las baterías |
+| 7 | `documentacion/generacion/`, documentos de estado, informe mínimo, `/cerrar` | deuda cero y zip medido |
 
 ## 6. Riesgos
 
-- **Que el profesor conteste tarde.** Cada duda tiene una propuesta concreta que se implementa
+- **Que el profesor conteste después de implementar.** Cada duda tiene una propuesta concreta que se implementa
   mientras tanto, con su test, para que cambiar de criterio sea tocar un caso.
 - **El tiempo de la batería.** Un proceso de la CeIVM por caso tarda ~0,2 s; por eso los casos
   propios usan la API en proceso y sólo el tester de la cátedra lanza procesos.

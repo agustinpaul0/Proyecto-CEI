@@ -5,6 +5,11 @@ compilador/.jqwik-database
 # Java
 *.class
 *.jar
+# La CeIVM de la cátedra: el tester de la Etapa 5 la busca en la raíz del proyecto
+# Maven y la lanza para correr el código generado.
+!compilador/CeIVM-cei2011.jar
+# Lo que escribe ese tester en la raíz: un `[caso].out` por fuente.
+compilador/*.out
 
 # IDE — IntelliJ IDEA
 .idea/

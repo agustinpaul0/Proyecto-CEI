@@ -31,7 +31,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TesterDeCasosSentenciasSinErrores {
 
     private static final String MENSAJE_DE_EXITO = "[SinErrores]";
-    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sinErrores/";
+    private static final String TEST_FILES_DIRECTORY_PATH = "resources/sentencias/sinErrores/";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static final PrintStream CONSOLA = System.out;
 

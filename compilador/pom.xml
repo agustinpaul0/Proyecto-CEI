@@ -55,6 +55,16 @@
             <version>${jqwik.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- La CeIVM de la cátedra, que no está en ningún repositorio Maven. Los
+             tests la usan en proceso, por su API (CeIVMAPI), para correr el código
+             generado sin lanzar un proceso por caso. -->
+        <dependency>
+            <groupId>ar.edu.uns.cs.cei</groupId>
+            <artifactId>ceivm</artifactId>
+            <version>2011</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/CeIVM-cei2011.jar</systemPath>
+        </dependency>
         <!-- Para leer los corpus generados, que se versionan como .tar.gz
              (CorpusEmpaquetado). -->
         <dependency>
@@ -200,6 +210,13 @@
             <id>fase-sentencias</id>
             <properties>
                 <fases>sentencias,comun,catedra.EtapaSentencias</fases>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>fase-generacion</id>
+            <properties>
+                <fases>generacion,comun,catedra.EtapaGeneracion</fases>
             </properties>
         </profile>
 
