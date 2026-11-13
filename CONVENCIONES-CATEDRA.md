@@ -19,9 +19,81 @@ class Clase {                  class Clase {
 }
 ```
 
+## Etapa 5 — Generación de código
+
+### 1. Sin `main`, el error va en el fin de archivo; con dos, en el nombre del segundo
+
+Cuenta sólo un `main` estático, `void` y sin parámetros, declarado en una clase: uno heredado es el
+mismo método. Java compila sin `main` y falla recién al lanzar; acá es un error semántico.
+
+| Fuente | Resultado |
+|---|---|
+| `class Aa { void main() { } }` | `[Error:$\|2]`: el de instancia no cuenta |
+| `class Aa { static void main() { } }` y `class Bb { static void main() { } }`, en las líneas 1 y 2 | `[Error:main\|2]` |
+| `class Base { static void main() { } }` y `class Der extends Base { }` | `[SinErrores]` |
+
+Desarrollo:
+[`generacion/decisiones-de-deteccion-de-errores.md` §1](documentacion/generacion/decisiones-de-deteccion-de-errores.md).
+
+### 2. Un error de ejecución propio imprime un mensaje y termina con `HALT`
+
+El índice fuera de rango y el tamaño negativo, que controla el código generado (Apunte §17). La
+cátedra busca en la salida `Error` y `Exitosamente`, así que no importa que la CeIVM informe, tras el
+`HALT`, que la ejecución terminó exitosamente.
+
+| Sentencias | Salida en la CeIVM |
+|---|---|
+| `var a = new int[2];` y `a[5] = 1;` | `Error en tiempo de ejecucion: indice fuera de rango` |
+| `var a = new int[-1];` | `Error en tiempo de ejecucion: tamanio de arreglo negativo` |
+
+Desarrollo:
+[`generacion/decisiones-de-deteccion-de-errores.md` §2](documentacion/generacion/decisiones-de-deteccion-de-errores.md).
+
+### 3. Los escapes valen lo que en Java
+
+También dentro de los Strings. Un escape que Java no tiene, y que los aspectos léxicos aceptan, vale
+el carácter mismo.
+
+| Sentencia | Salida |
+|---|---|
+| `System.printSln("a\tb");` | `a`, un tabulador y `b` |
+| `System.printCln('\q');` | `q` |
+
+Desarrollo: [`generacion/decisiones-de-logica.md` §2](documentacion/generacion/decisiones-de-logica.md).
+
+### 4. Una asignación evalúa primero el lado derecho
+
+Como el esquema de la Clase 16 (slides 18 a 29) y el Apunte §7: el valor, después la referencia,
+`SWAP` y `STOREREF`. En Java se evalúa primero el lado izquierdo.
+
+| Fuente | Salida |
+|---|---|
+| `obj().x = val();`, donde `obj()` hace `debugPrint(1)` y `val()`, `debugPrint(2)` | `2` y después `1` |
+
+### 5. Dos literales String iguales son objetos distintos
+
+Cada evaluación de un literal crea un String en el heap (Apunte §13), y `==` compara referencias
+(documento §11.2). En Java son el mismo objeto.
+
+| Sentencia | Salida |
+|---|---|
+| `System.printBln("hola" == "hola");` | `false` |
+
+### 6. Donde el `.out` de ejemplo contradice al documento, rige el documento
+
+El ejemplo que acompaña a los testers (`[gen-01.java].out`) está mal en dos puntos: `System.read()`
+devuelve el próximo byte de la entrada tal cual, sin restarle 48, y `debugPrint` imprime el entero y
+termina la línea (documento §7).
+
+| Fuente | Resultado |
+|---|---|
+| `debugPrint(System.read());`, con la entrada `5` | `53` y un salto de línea |
+
+Desarrollo: [`generacion/decisiones-de-logica.md` §4](documentacion/generacion/decisiones-de-logica.md).
+
 ## Etapa 4 — Analizador Semántico, Parte II
 
-### 1. Los operadores binarios no tienen precedencia
+### 7. Los operadores binarios no tienen precedencia
 
 Van los trece en un mismo nivel y asocian a izquierda, como fija el documento completo, §11.
 
@@ -31,7 +103,7 @@ Van los trece en un mismo nivel y asocian a izquierda, como fija el documento co
 
 Desarrollo: [`sentencias/esquema-de-traduccion.md`](documentacion/sentencias/esquema-de-traduccion.md).
 
-### 2. Un genérico sin argumento es un error fuera de la herencia, y en ella no suma un parámetro
+### 8. Un genérico sin argumento es un error fuera de la herencia, y en ella no suma un parámetro
 
 En atributos, parámetros, retornos, tipos base de arreglos y creaciones, como dice el documento
 completo, §5.2. La Parte I lo permitía en las declaraciones; el profesor aclaró que en la Etapa 3
@@ -54,7 +126,7 @@ el argumento o sin parámetro propio. Vale también para `implements` y la exten
 
 Desarrollo: [`sentencias/decisiones-de-logica.md` §4](documentacion/sentencias/decisiones-de-logica.md).
 
-### 3. Una interfaz ofrece los métodos de `Object`
+### 9. Una interfaz ofrece los métodos de `Object`
 
 Como en Java (JLS §9.2), aunque el documento, §10.2, nombre sólo los declarados y los heredados.
 
@@ -62,7 +134,7 @@ Como en Java (JLS §9.2), aunque el documento, §10.2, nombre sólo los declarad
 |---|---|
 | `interface Ix { }` y `class Aa { void m(Ix i) { i.toString(); } }` | `[SinErrores]` |
 
-### 4. Un argumento que no conforma se marca en el nombre del método o en el `new`
+### 10. Un argumento que no conforma se marca en el nombre del método o en el `new`
 
 En un método, el nombre, como en el caso de la cátedra `semIIError04`. En un constructor, el
 `new`, como el constructor sin esa aridad. No la expresión del argumento, porque puede ser
@@ -76,7 +148,7 @@ compleja y no queda claro qué token usar.
 Desarrollo:
 [`sentencias/decisiones-de-deteccion-de-errores.md`](documentacion/sentencias/decisiones-de-deteccion-de-errores.md).
 
-### 5. Una asignación chequea sus dos lados antes de ver si el izquierdo es asignable
+### 11. Una asignación chequea sus dos lados antes de ver si el izquierdo es asignable
 
 Es el orden de `NodoExpAsig` en la Clase 11 (slides 26, 31 y 36). `javac` reporta primero el
 destino.
@@ -85,7 +157,7 @@ destino.
 |---|---|
 | `this = x;`, con `x` sin declarar | `[Error:x\|3]` |
 
-### 6. Una sentencia-expresión chequea sus tipos antes que su forma
+### 12. Una sentencia-expresión chequea sus tipos antes que su forma
 
 Cada expresión chequea sus subexpresiones antes de determinar su resultado (documento, §11).
 `javac` reporta primero que no es una sentencia.
@@ -97,7 +169,7 @@ Cada expresión chequea sus subexpresiones antes de determinar su resultado (doc
 Desarrollo de los dos:
 [`sentencias/decisiones-de-logica.md` §6](documentacion/sentencias/decisiones-de-logica.md).
 
-### 7. Un cuerpo se chequea sólo en la clase que lo declara
+### 13. Un cuerpo se chequea sólo en la clase que lo declara
 
 Cada método y constructor anota quién es su dueño, la clase que lo declara, y el chequeo de
 sentencias saltea los que son de otra clase: un método heredado está en la tabla del descendiente,
@@ -111,7 +183,7 @@ Desarrollo: [`sentencias/decisiones-de-diseno.md` §5](documentacion/sentencias/
 
 ## Etapa 3 — Analizador Semántico, Parte I
 
-### 8. Los logros son independientes entre etapas
+### 14. Los logros son independientes entre etapas
 
 Si un logro de una etapa no se continúa en la siguiente, los programas con que se prueba la etapa
 siguiente no traen esa construcción. Por ejemplo, con Lambdas hecho en la Etapa 2 y no continuado
@@ -122,13 +194,13 @@ MiniJava base: el parser sigue aceptando lo que agregan los logros de la Etapa 2
 
 Desarrollo: [`semantico/decisiones-de-logica.md` §1](documentacion/semantico/decisiones-de-logica.md).
 
-### 9. No se exige un `main`
+### 15. No se exige un `main`
 
 | Fuente | Resultado |
 |---|---|
 | `class Aa { }` | `[SinErrores]` |
 
-### 10. `String` y `System` se pueden extender
+### 16. `String` y `System` se pueden extender
 
 `final` es parte del logro Sobrecarga! E3, que no se persigue. Java no deja extenderlas; acá sí.
 
@@ -137,7 +209,7 @@ Desarrollo: [`semantico/decisiones-de-logica.md` §1](documentacion/semantico/de
 | `class Aa extends String { }` | `[SinErrores]` |
 | `class Aa extends System { static int read() { } }`, en la línea 1 | `[Error:read\|1]`: redeclara un estático heredado |
 
-### 11. La `T` en un método estático y la interfaz contra `Object` se controlan
+### 17. La `T` en un método estático y la interfaz contra `Object` se controlan
 
 Se controlan como en Java, aunque el documento de la cátedra no los nombre.
 
@@ -146,7 +218,7 @@ Se controlan como en Java, aunque el documento de la cátedra no los nombre.
 | `class Caja<T> { static T crear() { } }` | `[Error:T\|1]` |
 | `interface Ix { int toString(); }` | `[Error:toString\|1]` |
 
-### 12. Donde el token queda a elección, se sigue a `javac`
+### 18. Donde el token queda a elección, se sigue a `javac`
 
 El profesor aceptó cualquier criterio en estos tres errores:
 
@@ -159,7 +231,7 @@ El profesor aceptó cualquier criterio en estos tres errores:
 Desarrollo:
 [`semantico/decisiones-de-deteccion-de-errores.md`](documentacion/semantico/decisiones-de-deteccion-de-errores.md).
 
-### 13. Los cuerpos son de la Etapa 4
+### 19. Los cuerpos son de la Etapa 4
 
 Todo lo que está dentro de un cuerpo es chequeo de sentencias, y queda para la Etapa 4. Esto
 incluye los nombres no declarados, la compatibilidad de tipos, la aridad de las llamadas, las
@@ -172,7 +244,7 @@ operadores. En la Etapa 3 se controlan sólo las declaraciones.
 
 ## Etapa 2 — Analizador Sintáctico
 
-### 14. El `for` lleva una expresión en cada hueco
+### 20. El `for` lleva una expresión en cada hueco
 
 La Pauta del logro Fors! E2 dice *«se restringe a una sola sentencia/expresión por separador»*
 (slide 41). Es **una** por hueco, no *a lo sumo una*: la inicialización, la condición y la
@@ -190,7 +262,7 @@ actualización son obligatorias. Java las hace opcionales; acá no.
 
 Desarrollo: [`decisiones-de-logica.md` §10](documentacion/sintactico/decisiones-de-logica.md).
 
-### 15. La variable de control del `for` se declara sólo con `var`
+### 21. La variable de control del `for` se declara sólo con `var`
 
 Los logros son independientes entre sí: el `for` no toma el declarador tipado del logro Variables
 Locales Clásicas, ni en el `for` estándar ni en el de iteradores.
@@ -203,7 +275,7 @@ Locales Clásicas, ni en el `for` estándar ni en el de iteradores.
 
 Desarrollo: [`decisiones-de-logica.md` §10](documentacion/sintactico/decisiones-de-logica.md).
 
-### 16. Sin asignaciones anidadas, salvo entre paréntesis
+### 22. Sin asignaciones anidadas, salvo entre paréntesis
 
 El declarador de Variables Locales Clásicas sigue el mismo criterio que el `var` de la gramática
 base, donde el lado derecho del `=` es una `<ExpresionCompuesta>`, que no admite otro `=`. Un
@@ -226,7 +298,7 @@ para todo lado derecho de un `=`: la asignación y los inicializadores.
 
 Desarrollo: [`decisiones-de-logica.md` §3](documentacion/sintactico/decisiones-de-logica.md).
 
-### 17. La inicialización de arreglos es la de Java
+### 23. La inicialización de arreglos es la de Java
 
 Con inicializador, ninguna dimensión lleva tamaño (JLS §15.10.1), los inicializadores se anidan y la
 coma final es opcional (JLS §10.6). El inicializador sólo aparece después de `new`.
@@ -258,7 +330,7 @@ tuvo observaciones, así que el criterio queda confirmado.
 
 Desarrollo: [`decisiones-de-logica.md` §7](documentacion/sintactico/decisiones-de-logica.md).
 
-### 18. No hay atributos estáticos
+### 24. No hay atributos estáticos
 
 `static` es modificador de métodos y de nada más, como en la gramática base.
 
@@ -281,7 +353,7 @@ profesor: es apego a la gramática base.
 
 Desarrollo: [`decisiones-de-logica.md` §6 y §12](documentacion/sintactico/decisiones-de-logica.md).
 
-### 19. `static` y la visibilidad van en cualquier orden, y `protected` no existe
+### 25. `static` y la visibilidad van en cualquier orden, y `protected` no existe
 
 `public static` y `static public` son válidos los dos, y lo mismo con `private`. Repetir la
 visibilidad no lo es. `protected` no se agrega: no está en MiniJava.
@@ -297,7 +369,7 @@ visibilidad no lo es. `protected` no se agrega: no está en MiniJava.
 
 Desarrollo: [`decisiones-de-logica.md` §6](documentacion/sintactico/decisiones-de-logica.md).
 
-### 20. Los logros no son configurables
+### 26. Los logros no son configurables
 
 El compilador corre siempre con todos sus logros. Elegir con cuáles correr complejiza la gramática
 sin necesidad, y cada etapa nueva obligaría a rehacer ese trabajo.
@@ -305,7 +377,7 @@ sin necesidad, y cada etapa nueva obligaría a rehacer ese trabajo.
 Desarrollo: [`flujo-de-trabajo.md`](documentacion/proyecto/flujo-de-trabajo.md), «Los logros no son
 configurables».
 
-### 21. La recursión a derecha se traduce con recursión, no con `while`
+### 27. La recursión a derecha se traduce con recursión, no con `while`
 
 Es el Esquema Simple de Clase 5 (slide 59) sin desvíos. El `while` aleja el código del esquema que
 se extiende en el semántico y es más propenso a errores.
@@ -313,7 +385,7 @@ se extiende en el semántico y es más propenso a errores.
 Desarrollo: [`decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md),
 «Decisiones cerradas».
 
-### 22. Ningún método de no terminal omite el `else` final
+### 28. Ningún método de no terminal omite el `else` final
 
 Si el no terminal no es anulable, el `else` final de su cadena de Primeros es el error (Clase 5,
 slide 39). Si alguna parte derecha deriva a ε, es un `else` vacío con la producción citada al lado
@@ -323,7 +395,7 @@ producción vacía.
 Desarrollo: [`decisiones-de-diseno.md`](documentacion/sintactico/decisiones-de-diseno.md),
 «Decisiones cerradas».
 
-### 23. El lexema del fin de archivo es `$`
+### 29. El lexema del fin de archivo es `$`
 
 El material de la cátedra se contradice: Pautas slide 26 y *Aspectos Léxicos* §2.5 dicen `$`, y la
 *Guía de uso de los testers — Etapa 2*, §5, dice que es vacío (`[Error:|N]`). Se consultó y el
@@ -338,14 +410,14 @@ Desarrollo:
 
 ## Etapa 1 — Analizador Léxico
 
-### 24. `float` es palabra reservada; `double` no
+### 30. `float` es palabra reservada; `double` no
 
 `float` no figura en ningún PDF de la cátedra y se agrega por confirmación del profesor. MiniJava
 tiene un solo tipo de punto flotante, así que `double` es un identificador común.
 
 Desarrollo: [`lexico/decisiones-de-logica.md` §3.1](documentacion/lexico/decisiones-de-logica.md).
 
-### 25. Un escape mal formado descarta el `litString` hasta su comilla de cierre
+### 31. Un escape mal formado descarta el `litString` hasta su comilla de cierre
 
 Ante un escape Unicode sin sus cuatro dígitos hexadecimales dentro de un `litString`
 (`"a\u12G4"`), se reporta el error y se descarta lo que queda del literal hasta su comilla de

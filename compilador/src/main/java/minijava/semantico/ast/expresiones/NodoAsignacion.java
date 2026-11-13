@@ -37,8 +37,8 @@ public final class NodoAsignacion extends NodoExpresion {
     }
 
     // Clase 16, slides 18-29, y Apunte §7: el valor, una copia que queda como
-    // resultado de la asignación, y el destino. El lado derecho se evalúa primero
-    // (consulta 4 al profesor, pendiente).
+    // resultado de la asignación, y el destino. El lado derecho se evalúa primero,
+    // a diferencia de Java (CONVENCIONES-CATEDRA §4).
     @Override
     public void generar(Generador g) {
         derecha.generar(g);

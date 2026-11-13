@@ -47,8 +47,8 @@ public final class NodoLiteral extends NodoExpresion {
         }
     }
 
-    // Apunte §13: el literal se aloja en el heap cada vez que se evalúa (consulta 5
-    // al profesor, pendiente).
+    // Apunte §13: el literal se aloja en el heap cada vez que se evalúa, así que
+    // dos literales iguales son objetos distintos (CONVENCIONES-CATEDRA §5).
     private void generarString(Generador g) {
         List<Integer> caracteres = ValorDeLiteral.cadena(literal.lexema());
         RutinasDeSoporte.alojarString(g, caracteres.size());

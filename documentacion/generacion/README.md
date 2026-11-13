@@ -12,7 +12,7 @@ etapas anteriores, a CeIASM, el lenguaje de la máquina virtual de la cátedra (
 | Diseño | Una pasada separada después del chequeo: cada nodo del AST y cada unidad generan sus instrucciones. Los desplazamientos los fija el análisis semántico. |
 | Ejecución | `java -jar CeIVM-cei2011.jar salida.txt`, con la CeIVM que está en `compilador/`. |
 | Logros | Sólo los que no piden código: Entrega Anticipada, Imbatibilidad y Congrats! |
-| Consultas al profesor | Pendientes: las cinco de [`../../etapas/etapa-5/consultas/dudas.pdf`](../../etapas/etapa-5/consultas/dudas.pdf) y, por mensaje, los dos defectos del `.out` de ejemplo ([`decisiones-de-logica.md`](decisiones-de-logica.md) §4). Cada una tiene su propuesta implementada. |
+| Lo que contestó el profesor | [`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1 a §6: confirmó las cinco propuestas de [`../../etapas/etapa-5/consultas/dudas.pdf`](../../etapas/etapa-5/consultas/dudas.pdf) y que el `.out` de ejemplo está mal donde contradice al documento. |
 
 ## Documentos
 
@@ -20,7 +20,7 @@ etapas anteriores, a CeIASM, el lenguaje de la máquina virtual de la cátedra (
 |---|---|
 | [`arquitectura-de-la-generacion.md`](arquitectura-de-la-generacion.md) | El flujo, las estructuras en ejecución, los desplazamientos y qué genera cada nodo. |
 | [`decisiones-de-diseno.md`](decisiones-de-diseno.md) | Cómo quedan en el código las recomendaciones de la cátedra, y las alternativas evaluadas. |
-| [`decisiones-de-logica.md`](decisiones-de-logica.md) | Qué se traduce, qué resuelven las consultas pendientes y los defectos del material. |
+| [`decisiones-de-logica.md`](decisiones-de-logica.md) | Qué se traduce, qué contestó el profesor y los defectos del material. |
 | [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) | El error del punto de entrada y los errores de ejecución. |
 | [`resolucion-de-logros.md`](resolucion-de-logros.md) | Los logros de la etapa y por qué se persiguen sólo tres. |
 

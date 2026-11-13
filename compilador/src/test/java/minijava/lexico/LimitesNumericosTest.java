@@ -85,7 +85,7 @@ class LimitesNumericosTest {
     }
 
     // javac SÍ los rechaza (3.5e38f -> floating-point number too large), pero al
-    // convertir el literal, no al tokenizarlo. Pendiente de consultar (todos.md).
+    // convertir el literal, no al tokenizarlo (especificacion-lexica-de-minijava.md).
     @ParameterizedTest
     @ValueSource(strings = {"3.5e38f", "1e-46f", "1.8e308", "1e999"})
     void unFloatFueraDelRangoDeJavaSigueSiendoUnTokenValido(String fuente, @TempDir Path dir)

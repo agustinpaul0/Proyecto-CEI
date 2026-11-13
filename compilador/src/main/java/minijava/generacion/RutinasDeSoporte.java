@@ -45,8 +45,8 @@ public final class RutinasDeSoporte {
         g.gen("STOREREF 1");
     }
 
-    // Consulta 2 al profesor, pendiente: el apunte (§17) sugiere imprimir un mensaje
-    // y terminar con HALT.
+    // Apunte §17 y CONVENCIONES-CATEDRA §2: un mensaje que empieza con «Error», que
+    // es lo que busca la cátedra en la salida, y HALT.
     private static void abortar(Generador g, String mensaje) {
         g.gen("PUSH " + mensaje);
         g.gen("SPRINT");

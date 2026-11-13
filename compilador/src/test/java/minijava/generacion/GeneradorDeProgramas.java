@@ -10,8 +10,8 @@ import java.util.Random;
 // Se evita, a propósito, todo lo que hace que MiniJava y Java difieran o que uno
 // de los dos falle:
 // - cada binario va entre paréntesis, porque MiniJava no tiene precedencia;
-// - el lado izquierdo de una asignación no tiene efectos (consulta 4);
-// - no se comparan Strings por identidad (consulta 5) ni se usa el toString de Object;
+// - el lado izquierdo de una asignación no tiene efectos (CONVENCIONES-CATEDRA §4);
+// - no se comparan Strings por identidad (CONVENCIONES-CATEDRA §5) ni se usa el toString de Object;
 // - los divisores son siempre positivos y los índices, válidos;
 // - sólo las clases sin descendientes declaran constructores: Java llama al
 //   constructor del padre y MiniJava no (documento §6.3);

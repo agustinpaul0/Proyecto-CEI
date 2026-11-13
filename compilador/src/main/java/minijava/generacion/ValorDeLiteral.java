@@ -7,7 +7,7 @@ import java.util.List;
 // Aspectos Léxicos §2.3.2 acepta `'\x'` con cualquier x sin decir su valor. Un
 // escape de Java vale lo que en Java (JLS §3.10.7 y §3.3, verificado con javac
 // 25); uno que Java no tiene vale el carácter mismo, porque javac lo rechaza y no
-// hay nada que imitar (consulta 3 al profesor, pendiente).
+// hay nada que imitar (CONVENCIONES-CATEDRA §3).
 public final class ValorDeLiteral {
 
     private ValorDeLiteral() {

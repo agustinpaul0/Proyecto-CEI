@@ -3,7 +3,7 @@
 Dónde está cada etapa. El detalle técnico vive en `documentacion/`; lo que indicó el profesor, en
 [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).
 
-**Última actualización:** 11/11/2026
+**Última actualización:** 13/11/2026
 
 ## Etapa 1 — Analizador Léxico: TERMINADA
 
@@ -27,7 +27,7 @@ aislada con `--etapa=2`, y su corpus está en `compilador/resources/sintactico/`
 
 Dos lecturas siguen a la base y no a Java, a sabiendas y documentadas en el informe: un atributo
 por declaración (`int a, b;` no vale) y `new int[2][]` sin inicializador no vale. Para lo segundo,
-el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §17).
+el profesor acepta las dos variantes, y la corrección lo confirmó (`CONVENCIONES-CATEDRA.md` §23).
 
 ## Etapa 3 — Analizador Semántico, Parte I: TERMINADA
 
@@ -48,7 +48,7 @@ Puntos.
 | Robustez | el compilador completo corre sin caerse sobre los ~39.600 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-3/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §8 a §13). El
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §14 a §19). El
 documento completo de semántica, publicado con la Etapa 4, prohíbe los tipos raw que la Parte I
 permitía, y el profesor aclaró que un tipo que hereda sin argumento no puede declarar su propio
 parámetro (el control 22). El chequeo de declaraciones sigue los dos, también con `--etapa=3`
@@ -74,9 +74,9 @@ Puntaje: 20 puntos, con los 3 logros acreditados, y 96 en total en la Tabla gene
 | Robustez | el compilador completo corre sin caerse sobre los ~40.000 fuentes de las etapas anteriores |
 | Informe | `etapas/etapa-4/entregables/` |
 
-El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §1 a §7).
+El profesor contestó todas las consultas de la etapa (`CONVENCIONES-CATEDRA.md` §7 a §13).
 
-## Etapa 5 — Generación de código: IMPLEMENTADA, SIN ENTREGAR
+## Etapa 5 — Generación de código: LISTA PARA ENTREGAR
 
 Entrega: 20/11/2026 a las 16:00; Entrega Anticipada, hasta el 18/11 a las 16:00, que es el
 objetivo. Traduce el programa a CeIASM, el lenguaje de la CeIVM, y escribe el archivo de salida:
@@ -95,14 +95,5 @@ Sin logros de código: sólo Entrega Anticipada, Imbatibilidad y Congrats!.
 | Suite | 18.751 tests; 98 % de instrucciones y 95 % de ramas; mutación 95 %, y 97 % en la generación |
 | Informe | `etapas/etapa-5/entregables/` |
 
-**Pendiente abierto:** la respuesta del profesor a dos envíos.
-
-- Las cinco consultas de `etapas/etapa-5/consultas/dudas.pdf`: el error si falta `main` o hay dos,
-  el mensaje de los errores de ejecución, el valor de los escapes, el orden de evaluación de una
-  asignación y si dos literales String iguales son el mismo objeto. Cada una tiene su propuesta
-  implementada
-  ([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §2).
-- Una consulta aparte, por mensaje: el `.out` de ejemplo de los testers contradice al documento
-  (§7) en `System.read()`, al que le resta 48, y en `debugPrint`, que no salta de línea. Se sigue el
-  documento: `read` devuelve el byte tal cual y `debugPrint` termina la línea
-  ([`documentacion/generacion/decisiones-de-logica.md`](documentacion/generacion/decisiones-de-logica.md) §4).
+El profesor contestó todas las consultas de la etapa y confirmó las seis propuestas implementadas
+(`CONVENCIONES-CATEDRA.md` §1 a §6).

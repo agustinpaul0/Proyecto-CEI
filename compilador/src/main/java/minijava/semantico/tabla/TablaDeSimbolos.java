@@ -163,7 +163,7 @@ public final class TablaDeSimbolos {
     // Documento §1, §8 y §14: el control del punto de entrada es de la Etapa 5, y el
     // Apunte §15 dice que todo programa declara un `static void main()`. El error,
     // si falta, va en el fin de archivo; si hay dos, en el nombre del segundo, en el
-    // orden del fuente, como un nombre repetido (consulta 1 al profesor, pendiente).
+    // orden del fuente, como un nombre repetido (CONVENCIONES-CATEDRA §1).
     public static void chequearPuntoDeEntrada() throws ExcepcionSemantica {
         puntoDeEntrada = null;
         for (ClaseOInterfaz tipo : tipos.values()) {

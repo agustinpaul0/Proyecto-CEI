@@ -56,7 +56,7 @@ para **MiniJava** — subconjunto estricto de Java, sin excepciones ni hilos —
   sólo Entrega Anticipada, Imbatibilidad y Congrats!. Implementación lo más simple posible, por los
   caminos que recomienda la cátedra; la suite de tests, lo más robusta posible. **El estado y las
   decisiones están en [`documentacion/generacion/README.md`](documentacion/generacion/README.md);
-  las consultas al profesor, pendientes, en [`etapas/etapa-5/consultas/`](etapas/etapa-5/consultas/).**
+  lo que contestó el profesor, en [`CONVENCIONES-CATEDRA.md`](CONVENCIONES-CATEDRA.md).**
 - Consignas: `etapas/etapa-N/README.md` y `Pautas Etapa N.pdf`, más las clases de esa etapa.
 - Material técnico del lenguaje, común a todas las etapas:
   `documentacion/minijava/Aspectos Lexicos MiniJava 2026.pdf`,

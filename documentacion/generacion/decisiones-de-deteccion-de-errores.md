@@ -8,7 +8,7 @@ reportan igual que antes (Pautas Etapa 5, slide 26).
 
 El documento completo (§1, §8 y §14) deja para la Etapa 5 el control del punto de entrada, y el
 Apunte §15 dice que todo programa MiniJava declara un `static void main()`. No dice qué error dar;
-es la consulta 1 al profesor, pendiente, y esta es la propuesta implementada:
+lo resolvió el profesor ([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1):
 
 - Cuenta sólo un método `main` **estático, `void` y sin parámetros**, declarado en una clase. Uno
   heredado no cuenta otra vez: es el mismo método.
@@ -45,6 +45,7 @@ generado ensambla. Los de las otras dos los detecta la CeIVM, o el código gener
 La referencia nula de un arreglo se detecta sobre la referencia original, antes de sumarle el
 índice, como pide el Apunte §12: la rutina `componente` lee la longitud con `LOADREF 1`.
 
-Cómo termina un error propio es la consulta 2 al profesor: el Apunte sugiere un mensaje y `HALT`,
-pero tras un `HALT` la CeIVM informa que la ejecución terminó exitosamente. Los casos están en
-`resources/errores-de-ejecucion/`.
+Un error propio termina con un mensaje y `HALT`, como sugiere el Apunte. Tras el `HALT` la CeIVM
+informa que la ejecución terminó exitosamente, pero la cátedra busca en la salida `Error` y
+`Exitosamente` ([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §2). Los casos
+están en `resources/errores-de-ejecucion/`.

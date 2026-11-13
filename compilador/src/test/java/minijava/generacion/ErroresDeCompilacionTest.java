@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Los errores que agrega la Etapa 5, los del punto de entrada (consulta 1 al
-// profesor), y los de la Etapa 4 corridos por la Etapa 5: el reporte es el de
+// Los errores que agrega la Etapa 5, los del punto de entrada (CONVENCIONES-CATEDRA
+// §1), y los de la Etapa 4 corridos por la Etapa 5: el reporte es el de
 // siempre, mensaje, línea en blanco y código (Pautas Etapa 5, slide 26), y no se
 // escribe el archivo de salida.
 @Tag("generacion")

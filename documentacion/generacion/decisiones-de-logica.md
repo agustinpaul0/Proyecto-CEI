@@ -8,7 +8,7 @@ documento completo de semántica; lo que no dicen se resuelve como en Java, veri
 ## 1. El lenguaje que se traduce
 
 El MiniJava base que chequea la Etapa 4. Los logros son independientes entre etapas
-([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §8), así que las construcciones de
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §14), así que las construcciones de
 logros que el parser acepta (`for`, el ternario, los posfijos, las locales tipadas, los atributos
 inicializados) siguen siendo un error semántico y nunca llegan a generarse.
 
@@ -16,12 +16,13 @@ inicializados) siguen siendo un error semántico y nunca llegan a generarse.
 traduce como sus bits, sólo para que el compilador no se caiga; operar con floats es el logro Floats
 y Coerción E5, que no se persigue.
 
-## 2. Las consultas pendientes, con su propuesta
+## 2. Lo que contestó el profesor
 
 Las cinco preguntas de [`../../etapas/etapa-5/consultas/dudas.pdf`](../../etapas/etapa-5/consultas/dudas.pdf).
-Cada propuesta está en un solo lugar del código y tiene sus casos, así que cambiarla es tocar eso.
+El profesor confirmó las cinco propuestas
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §1 a §5).
 
-| Consulta | Propuesta implementada | Java (verificado con `javac` 25) |
+| Consulta | Respuesta | Java (verificado con `javac` 25) |
 |---|---|---|
 | 1. El error si falta `main` o hay más de uno | [`decisiones-de-deteccion-de-errores.md`](decisiones-de-deteccion-de-errores.md) §1 | compila sin `main`; falla al lanzar |
 | 2. Cómo termina un error de ejecución propio | un mensaje y `HALT` (Apunte §17) | una excepción |
@@ -57,5 +58,6 @@ El `.out` de ejemplo que acompaña a la CeIVM y a los testers (`[gen-01.java].ou
   para un `5`;
 - su `debugPrint` no salta de línea; el documento dice que «imprime un entero y finaliza la línea».
 
-El tester de la cátedra busca fragmentos, así que acepta las dos formas. Los dos puntos están
-consultados al profesor.
+El tester de la cátedra busca fragmentos, así que acepta las dos formas. El profesor confirmó que el
+ejemplo está mal en los dos puntos
+([`../../CONVENCIONES-CATEDRA.md`](../../CONVENCIONES-CATEDRA.md) §6).
